@@ -1,0 +1,10 @@
+{
+  "name": "jth",
+  "version": "0.1.0",
+  "description": "jth",
+  "main": "index.js",
+  "dependencies": {
+    "opencomb": "*",
+    "welab": "*"
+  }
+}
