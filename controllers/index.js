@@ -11,7 +11,7 @@ module.exports = {
 
         // middleware.APPORBIND 申请，绑定
         middleware.request( middleware.APPORBIND,{
-            BRAND_CODE:"", //品牌编号
+            BRAND_CODE:"00011", //品牌编号
             MIC_ID:"", //微信账号ID
             MEM_APP_NO:"", //申请单号
             TYPE:"0", //0：新会员申请，1：老会员绑定
