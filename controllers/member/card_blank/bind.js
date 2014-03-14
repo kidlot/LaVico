@@ -1,6 +1,6 @@
 /**
  * Created by David Xu on 3/12/14.
- * 会员解除绑定
+ * 会员绑定
  */
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 
@@ -18,14 +18,15 @@ module.exports = {
     ,actions:{
 
         save:{
-
+                layout:null,
+                view:null,
                 process:function(seed,nut){
-
+                    nut.disabled = true ;
                     var wxid = seed.wxid;
                     var userCardNumber = seed.userCardNumber;
                     var userName = seed.userName;
                     var userTel = seed.userTel;
-
+                    var returnDoc = this;
                     // middleware.APPORBIND 申请，绑定
                     middleware.request( middleware.APPORBIND,{
                         BRAND_CODE:"L", //品牌编号
@@ -38,9 +39,13 @@ module.exports = {
                         MOBILE_TELEPHONE_NO:userTel, //手机号
                         MEM_OLDCARD_NO:userCardNumber //老卡编号
                         //6226 0458 3697 4321
-                    },function(err,doc){
-                        return doc;
-                    })
+                    },returnDoc.hold(function(err,doc){
+                        console.log(doc);
+                        var data = JSON.stringify(doc);
+                        returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
+                        returnDoc.res.write(data);
+                        returnDoc.res.end();
+                    }));
 
                     //6226045836974321
                 }
