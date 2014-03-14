@@ -1,9 +1,79 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+如果您没有实体会员卡，请申领会员卡
+<form>
+    会员卡号：<input type="text" id="userCardNumber" name="userCardNumber" value=""/><br/>
+    手机：<input type="text" id="userTel" name="userTel" value=""/><span id="getCaptcha">获取验证码</span><br/>
+    验证码:<input type="text" id="userCaptcha" name="userCaptcha" value=""/><br/>
+    <input type="text" id="wxid" name="wxid" value="{@wxid}" />
+    <input type="button" id="submit" value="解除绑定"/>
+</form>
 
-</body>
-</html>
+<script>
+    window.onload = function(){
+        var fourNum;
+        var userTel;
+        var getRandomNum = function(num){
+            //获得一个随机Num位的数
+            var arr =[];
+            for(var i = 1; i <= num; i++){
+                arr.push(Math.floor(Math.random()*10));
+            }
+            var str = arr.join('');
+            return str;
+        }
+        $('#getCaptcha').click(function(){
+            // 向短信接口发送一个手机号码和短信内容，短信内容包括验证码
+
+            userTel = $('#userTel').val();
+            if(userTel ==''){
+                alert('请输入手机号码！');
+                return false;
+            }
+            var reg = /^1[358]\d{9}$/g;
+            if(!reg.test(userTel)){
+                alert('请输入有效的手机号码！');
+            }
+            fourNum = parseInt(getRandomNum(4));
+
+            console.log(fourNum);
+        });
+        $('#submit').click(function(){
+
+            var userCardNumber = $('#userCardNumber').val();
+            var userTel = $('#userTel').val();
+            var userCaptcha = $('#userCaptcha').val();
+
+            if(userCaptcha==''){
+                alert('请填写验证码');
+                return false;
+            }
+            if(userCaptcha != fourNum){
+                alert('验证码不正确');
+                return false;
+            }
+            if(userCardNumber == ''){
+                alert('请填写会员卡号');
+                return false;
+            }
+            if(userTel == ''){
+                alert('请填写手机号吗');
+                return false;
+            }
+            $.ajax({
+                url:'/lavico/member/card_member/unbind:unlock',
+                type:'POST',
+                data:{
+                    'userCardNumber':userCardNumber,
+                    'userTel':userTel
+                },
+                success:function(data){
+                    console.log(data);
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+
+        });
+
+    }
+</script>
