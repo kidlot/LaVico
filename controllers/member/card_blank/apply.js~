@@ -1,0 +1,30 @@
+var middleware = require('../../../lib/middleware.js');
+module.exports = {
+	layout: null,
+	view: "lavico/templates/member/card_blank/apply.html",
+	process: function(seed,nut)
+	{
+		nut.model.uid = seed.uid;
+	},
+	actions:{
+		apply_card:{
+			process:function(seed,nut){
+				nut.disabled = true ;
+				this.step(function(doc){
+          //openid=1234&MEM_PSN_CNAME=alee&MEM_PSN_SEX=1&MOBILE_TELEPHONE_NO=18812341235&MEM_PSN_BIRTHDAY=1982-10-11					
+					middleware.request('/lavico.middleware/MemberApply',{
+						openid:seed.uid, //微信账号ID
+						MEM_PSN_CNAME:seed.name, //会员姓名
+						MEM_PSN_SEX:seed.sex, //性别 0：女，1：男
+						MEM_PSN_BIRTHDAY:seed.birthday, //生日
+						MOBILE_TELEPHONE_NO:seed.mobile, //手机号
+					},this.hold(function(err,doc){
+						//console.log(doc);
+						return doc;	
+					}))
+				});
+														
+			}
+		}
+	}
+}
