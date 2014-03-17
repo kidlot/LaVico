@@ -1,7 +1,7 @@
 module.exports = {
 
 	layout: "welab/Layout"
-	, view: "lavico/templates/bargain/form.html"
+	, view: "lavico/templates/bargain/kv.html"
 
     , process: function(seed,nut)
     {
@@ -31,7 +31,8 @@ module.exports = {
         $('#stopDate').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
-            minView: 2
+            minView: 2,
+            endDate: new Date()
         });
     }
 
@@ -51,8 +52,6 @@ module.exports = {
                     return;
                 }
 
-                postData.startDate = new Date(postData.startDate + " 00:00:00").getTime()
-                postData.stopDate = new Date(postData.stopDate + " 00:00:00").getTime()
                 if(seed._id){
 
                     helper.db.coll("lavico/bargain").update({_id:helper.db.id(seed._id)},{$set:postData},this.hold(function(err,doc){

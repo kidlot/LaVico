@@ -61,13 +61,13 @@
                         <tr>
                             <th>开始时间</th>
                             <td>
-                                <input type="text" id="startDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.startDate && new Date(doc.startDate+28800000).toISOString().substr(0,10)}">
+                                <input type="text" id="startDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.startDate}">
                             </td>
                         </tr>
                         <tr>
                             <th>结束时间</th>
                             <td>
-                                <input type="text" id="stopDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.stopDate && new Date(doc.stopDate+28800000).toISOString().substr(0,10)}">
+                                <input type="text" id="stopDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.stopDate}">
                             </td>
                         </tr>
                         </tbody></table>

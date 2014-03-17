@@ -1,0 +1,32 @@
+<div>{@ doc.name}</div>
+        <div>{@ doc.introduction}</div>
+        <div>{@ doc.pic}</div>
+<div>price:{@ doc.price}</div>
+        <div><input type="text" value=""></div>
+        <div><input type="button" value="侃价" onclick="bargain()"></div>
+
+
+<script>
+
+function bargain(){
+
+    $.ajax({
+        url:'/lavico/bargain/detail:bargain',
+        type:'POST',
+        data:{
+            'userCardNumber':userCardNumber,
+            'userName':userName,
+            'userTel':userTel
+        },
+        success:function(data){
+
+        },
+        error:function(msg){
+            alert(msg);
+        }
+    });
+}
+
+
+
+</script>
