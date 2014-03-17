@@ -10,6 +10,7 @@ module.exports = {
     view:null,
     process:function(seed,nut){
         var wxid = seed.wxid ? seed.wxid : 'oBf_qJQ8nGyKu5vbnB1_u5okMT6Y';//预先定义微信ID
+        nut.model.wxid = wxid;
         //根据WXID来判断会员的类型
         //判断会员接口
         //返回值 type = card_blank || card_member
@@ -26,5 +27,7 @@ module.exports = {
             //跳转到 lavico/index
         }
         this.res.end();
+    },
+    viewIn:function(){
     }
 }
