@@ -1,17 +1,19 @@
 http = require('http');
 querystring = require('querystring');
 
-# 申请和绑定会员
-exports.APPORBIND = 'apporbind';
-
-exports.request = (action, post_data, cb)->
+exports.request = (url, post_data, cb)->
 
   post_data = querystring.stringify(post_data);
 
   options = {
     host: '127.0.0.1',
-    port: 8080,
+<<<<<<< HEAD
+    port: 8081,
     path: '/LaVico/member/'+action+'?'+post_data,
+=======
+    port: 8080,
+    path: url+'?'+post_data,
+>>>>>>> 0a49d603a96fbd064b10a3fd3e70ae8e2a90c9be
     method: 'GET'
   };
 
