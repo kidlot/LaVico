@@ -19,10 +19,19 @@ module.exports = {
     viewIn:function(){
         var wxid = $('#wxid').val();
         $('#announcement').click(function(){
-            window.location.href="/lavico/member/card_member/announcement/index?wxid"+wxid;//跳转到会员公告页面
+            window.location.href="/lavico/member/card_member/announcement/index?wxid="+wxid;//跳转到会员公告页面
         });
         $('#coupon').click(function(){
-            window.location.href="/lavico/member/card_member/coupon/index?wxid"+wxid;//跳转到会员公告页面
+            window.location.href="/lavico/member/card_member/coupon/index?wxid="+wxid;//跳转到会员公告页面
+        });
+        $('#points').click(function(){
+            window.location.href="/lavico/member/card_member/points/index?wxid="+wxid;//跳转到会员公告页面
+        });
+        $('#buy').click(function(){
+            window.location.href="/lavico/member/card_member/buy?wxid="+wxid;//跳转到会员公告页面
+        });
+        $('#fav').click(function(){
+            window.location.href="/lavico/member/card_member/fav?wxid="+wxid;//跳转到会员公告页面
         });
 
     }

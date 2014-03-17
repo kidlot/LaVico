@@ -193,37 +193,35 @@ module.exports = {
                     var userTel = seed.userTel;
 
                     var returnDoc = this;
-                    // middleware.APPORBIND 申请，绑定
-//                    middleware.request( middleware.APPORBIND,{
-//                        BRAND_CODE:"L", //品牌编号
-//                        MIC_ID:wxid, //微信账号ID
-//                        MEM_APP_NO:"LS", //申请单号
-//                        TYPE:"1", //0：新会员申请，1：老会员绑定
-//                        MEM_PSN_CNAME:userName, //会员姓名
-//                        MEM_PSN_SEX:"1", //性别 0：女，1：男
-//                        MEM_PSN_BIRTHDAY:"2012-11-11", //生日
-//                        MOBILE_TELEPHONE_NO:userTel, //手机号
-//                        MEM_OLDCARD_NO:userCardNumber //老卡编号
-//                        //6226 0458 3697 4321
-//                    },returnDoc.hold(function(err,doc){
-//                        console.log(doc);
-//                        var data = JSON.stringify(doc);
-//                        //记录到数据库-会员绑定历史记录
-//                    }));
 
-                    helper.db.coll("lavico/bind").insert({
-                        'createTime':new Date().getTime(),
-                        'wxid':wxid,
-                        'userCardNumber':userCardNumber,
-                        'userName':userName,
-                        'userTel':userTel,
-                        'type':'bind'
-                    },function(err, doc) {});
+                    middleware.request( "/lavico.middleware/MemeberBind",{
+                        openid:wxid,
+                        MOBILE_TELEPHONE_NO:userTel,
+                        MEM_OLDCARD_NO:userCardNumber,
+                        MEM_PSN_CNAME:userName
+                    },function(err,doc){
 
-                    returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
-                    returnDoc.res.write(data);
-                    returnDoc.res.end();
-                    console.log('++++++++++++');
+                        console.log(doc);
+
+                        helper.db.coll("lavico/bind").insert({
+                            'createTime':new Date().getTime(),
+                            'wxid':wxid,
+                            'userCardNumber':userCardNumber,
+                            'userName':userName,
+                            'userTel':userTel,
+                            'type':'bind'
+                        },function(err, doc) {});
+
+                        returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
+                        returnDoc.res.write(doc);
+                        returnDoc.res.end();
+                        console.log('++++++++++++');
+
+                    })
+
+
+
+
                     //6226045836974321
                 }
         }
