@@ -12,7 +12,7 @@ module.exports = {
     layout:null
     ,view: 'lavico/templates/member/card_member/unbind.html'
     ,process:function(seed, nut){
-        var wxid = seed.wxid ? seed.wxid : 'oBf_qJQ8nGyKu5vbnB1_u5okMT6Y';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
         nut.model.wxid = wxid ;
         // middleware.APPORBIND 申请，绑定
     }

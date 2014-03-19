@@ -10,7 +10,7 @@ module.exports = {
     ,view: 'lavico/templates/member/card_blank/bind.html'
     ,process:function(seed, nut){
         //nut.disabled = true ;
-        var wxid = seed.wxid ? seed.wxid : 'oBf_qJQ8nGyKu5vbnB1_u5oTEST';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
         nut.model.wxid = wxid ;
     }
     ,viewIn:function(){
