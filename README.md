@@ -19,7 +19,7 @@ welab/customers 表说明<br/>
 最近修改时间：lastModified 单位是毫秒<br/>
 会员绑定情况：HaiLanMemberInfo<br/>
 	     {<br/>
-		//bindInfo内字段说明<br/>
+		//HaiLanMemberInfo<br/>
 	        创建时间：createTime 单位是毫秒<br/>
 		会员ID: memberID<br/>
 		绑定卡号：memberCardNumber<br/>
