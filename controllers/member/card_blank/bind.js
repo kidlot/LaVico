@@ -194,7 +194,7 @@ module.exports = {
 
                     var returnDoc = this;
 
-                    middleware.request( "/lavico.middleware/MemeberBind",{
+                    middleware.request( "/lavico.middleware/MemberBind",{
                         openid:wxid,
                         MOBILE_TELEPHONE_NO:userTel,
                         MEM_OLDCARD_NO:userCardNumber,
@@ -212,9 +212,9 @@ module.exports = {
                             'type':'bind'
                         },function(err, doc) {});
 
-                        returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
-                        returnDoc.res.write(doc);
-                        returnDoc.res.end();
+//                        returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
+//                        returnDoc.res.write(doc);
+//                        returnDoc.res.end();
                         console.log('++++++++++++');
 
                     })
