@@ -60,8 +60,6 @@ module.exports = {
                     return false;
                 }
                 /////////////////////////
-
-                console.log('激活按钮');
                 fourNum = getRandomNum(4);
                 console.log(fourNum);
                 // 向短信接口发送一个手机号码和短信内容，短信内容包括验证码
@@ -80,18 +78,13 @@ module.exports = {
                         $('#timer').html($('#timer').html() - 1);
                     }
                 },1000);
-
+            //Function getCaptcha()
             }
 
-            var submitCheck = function(){
-
-
-            }
+            var submitCheck = function(){}
 
             $('#getCaptcha').bind('click', getCaptcha);
-
             $('#submit').click(function(){
-
                 //submitCheck();
                 var wxid = $('#wxid').val();
                 var userName = $('#userName').val();
@@ -134,6 +127,8 @@ module.exports = {
                     alert('验证码不正确');
                     return false;
                 }
+                var MEMBER_ID;//返回的数据
+                var successTip = '绑定成功';
 
                 //submitCheck
                 $.ajax({
@@ -144,86 +139,80 @@ module.exports = {
                         'userCardNumber':userCardNumber,
                         'userName':userName,
                         'userTel':userTel
-                    },
-                    success:function(data){
-                        console.log('++++++++++++++++++++++');
-                        console.log(data);
-                        console.log('++++++++++++++++++++++');
-                        var dataJson = eval('(' + data + ')');
-                        if(dataJson.O_ISSUCCEED == 'Y'){
-                            //成功
-                            console.log(dataJson.O_HINT);
-                            alert(dataJson.O_HINT);
-                        }else if(dataJson.O_ISSUCCEED == 'N'){
-                            //失败
-                            console.log(dataJson.O_HINT);
-                            alert(dataJson.O_HINT);
+                    }}).done(function(data){
+                        /*返回的数据
+                        * {"MEMBER_ID":9114883,"issuccessed":true,"error":""}
+                        *  MEMBER_ID: 海澜CRM会员ID
+                        *  issuccessed: true/false 操作是否成功
+                        *  error: 如果失败，返回的错误提示
+                        * */
+                        var returnJson = data || {};
+                        if(returnJson.issuccessed == true){
+                            //绑定成功之后，跳转到card_member页面
+
+                            alert(successTip);
+                            MEMBER_ID = returnJson.MEMBER_ID;
+                            window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&MEMBER_ID='+MEMBER_ID;
+
+                        }else if(returnJson.issuccessed == false){
+                            alert(returnJson.error);
+
+                            /*假设绑定会员，成功之后*/
+                            MEMBER_ID = '9114883';
+                            window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&member_id='+MEMBER_ID;
+                            /*假设绑定会员，成功之后*/
+
                         }else{
-                            //其他错误
-                            var otherError = 'O_ISSUCCEED的返回值有误';
-                            console.log(otherError);
-                            //console.log(typeof(dataJson));
+                            alert('网络不稳定，请稍后再尝试');
                         }
-                    },
-                    error:function(msg){
-                        console.log('----------------------');
-                        alert(msg);
-                        console.log('----------------------');
-
-                    }
-                });
-
-
-
+                    });
+            //$('#submit').click();
             });
-
-
-
+    //ViewIn End
     }
     ,actions:{
 
-        save:{
-                layout:null,
-                view:null,
-                process:function(seed,nut){
-                    nut.disabled = true ;
-                    var wxid = seed.wxid;
-                    var userCardNumber = seed.userCardNumber;
-                    var userName = seed.userName;
-                    var userTel = seed.userTel;
+                save:{
 
-                    var returnDoc = this;
+                        layout:null,
+                        view:null,
+                        process:function(seed,nut){
 
-                    middleware.request( "/lavico.middleware/MemberBind",{
-                        openid:wxid,
-                        MOBILE_TELEPHONE_NO:userTel,
-                        MEM_OLDCARD_NO:userCardNumber,
-                        MEM_PSN_CNAME:userName
-                    },function(err,doc){
+                            nut.disabled = true ;
+                            var wxid = seed.wxid;
+                            var userCardNumber = seed.userCardNumber;
+                            var userName = seed.userName;
+                            var userTel = seed.userTel;
 
-                        console.log(doc);
+                            var _this = this;
 
-                        helper.db.coll("lavico/bind").insert({
-                            'createTime':new Date().getTime(),
-                            'wxid':wxid,
-                            'userCardNumber':userCardNumber,
-                            'userName':userName,
-                            'userTel':userTel,
-                            'type':'bind'
-                        },function(err, doc) {});
+                            middleware.request( "/lavico.middleware/MemberBind",{
+                                openid:wxid,
+                                MOBILE_TELEPHONE_NO:userTel,
+                                MEM_OLDCARD_NO:userCardNumber,
+                                MEM_PSN_CNAME:userName
+                            },_this.hold(function(err,doc){
 
-//                        returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
-//                        returnDoc.res.write(doc);
-//                        returnDoc.res.end();
-                        console.log('++++++++++++');
+                                helper.db.coll("lavico/bind").insert({
+                                    'createTime':new Date().getTime(),
+                                    'wxid':wxid,
+                                    'userCardNumber':userCardNumber,
+                                    'userName':userName,
+                                    'userTel':userTel,
+                                    'type':'bind'
+                                },function(err, doc) {});
 
-                    })
+                                _this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                                _this.res.write(doc);
+                                _this.res.end();
 
 
 
-
-                    //6226045836974321
+                            }));
+                        //Process End
+                        }
+                //Save End
                 }
-        }
+    //Actions End
     }
 }

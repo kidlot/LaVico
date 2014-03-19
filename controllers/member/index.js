@@ -27,6 +27,7 @@ module.exports = {
             //跳转到 lavico/index
         }
         this.res.end();
+
     },
     viewIn:function(){
     }
