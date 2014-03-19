@@ -10,7 +10,7 @@ module.exports = {
     ,view: 'lavico/templates/member/card_blank/bind.html'
     ,process:function(seed, nut){
         //nut.disabled = true ;
-        var wxid = seed.wxid ? seed.wxid : 'oBf_qJQ8nGyKu5vbnB1_u5okMT6Y';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
         nut.model.wxid = wxid ;
     }
     ,viewIn:function(){
@@ -55,12 +55,13 @@ module.exports = {
                     alert('请填写卡号');
                     return false;
                 }
-                if(!reg.test(userCardNumber)){
-                    alert('请输入有效的卡号');
-                    return false;
-                }
+//                if(!reg.test(userCardNumber)){
+//                    alert('请输入有效的卡号');
+//                    return false;
+//                }
                 /////////////////////////
                 fourNum = getRandomNum(4);
+                $('#userCaptcha').val(fourNum);
                 console.log(fourNum);
                 // 向短信接口发送一个手机号码和短信内容，短信内容包括验证码
                 clearTimeout(timer);
@@ -94,15 +95,15 @@ module.exports = {
                 //userCarNumberCheck();//检验卡号的合法性
 
                 var userCardNumber = $.trim($('#userCardNumber').val());
-                var reg = /^\d{16}$/;
+                var reg = /^L\d{12}$/;
                 if(userCardNumber ==''){
                     alert('请填写卡号');
                     return false;
                 }
-                if(!reg.test(userCardNumber)){
-                    alert('请输入有效的卡号');
-                    return false;
-                }
+//                if(!reg.test(userCardNumber)){
+//                    alert('请输入有效的卡号');
+//                    return false;
+//                }
 
                 if(userName == ''){
                     alert('请输入您的姓名');
@@ -158,8 +159,8 @@ module.exports = {
                             alert(returnJson.error);
 
                             /*假设绑定会员，成功之后*/
-                            MEMBER_ID = '9114883';
-                            window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&member_id='+MEMBER_ID;
+//                            MEMBER_ID = '9114883';
+//                            window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&member_id='+MEMBER_ID;
                             /*假设绑定会员，成功之后*/
 
                         }else{
@@ -205,9 +206,6 @@ module.exports = {
                                 _this.res.writeHead(200, { 'Content-Type': 'application/json' });
                                 _this.res.write(doc);
                                 _this.res.end();
-
-
-
                             }));
                         //Process End
                         }
