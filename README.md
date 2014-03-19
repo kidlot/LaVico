@@ -1,9 +1,9 @@
 
 
-welab/customers 表说明
-注册时间：registerTime 单位是毫秒
-姓名：realname
-用户ID: _id
+welab/customers 表说明<br/>
+注册时间：registerTime 单位是毫秒<br/>
+姓名：realname<br/>
+用户ID: _id<br/>
 微信ID: wxid
 性别：gender     值：male/female
 生日：birthday   单位是毫秒 getTime（）
