@@ -33,6 +33,9 @@ module.exports = {
         $('#fav').click(function(){
             window.location.href="/lavico/member/card_member/fav?wxid="+wxid;//跳转到会员公告页面
         });
+        $('#info').click(function(){
+            window.location.href="/lavico/member/card_member/info?wxid="+wxid;//跳转到会员公告页面
+        });
 
     }
 }
