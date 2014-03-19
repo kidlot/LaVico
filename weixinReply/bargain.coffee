@@ -28,11 +28,11 @@ exports.load =  ()->
 
 
   wechatapi.registerReply(9, (params, req, res, next) ->
-      if (params.Content == "我要侃价") {
+      if (params.Content == "我要侃价")
 
-      }else{
 
-      }
+      else
+        next()
   )
 
   wechatapi.makeQueue();
