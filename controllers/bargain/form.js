@@ -165,7 +165,7 @@ module.exports = {
                 var timeout = 60 * 10 * 1000
                 if( this.req.session._bargain_lastTime + timeout > new Date().getTime()){
 
-                    //res = {err:1,msg:"10分钟内只能侃价一次！"}
+                    res = {err:1,msg:"10分钟内只能侃价一次！"}
                 }
 
                 if(!seed._id){

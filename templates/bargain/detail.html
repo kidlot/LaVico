@@ -5,13 +5,21 @@
         <div>{@ doc.name}</div>
         <div>颜色：{@ doc.colors}</div>
         <div>尺码：{@ doc.sizes}</div>
-        <div><img scr="{@ doc.pic}"/></div>
+        <div><img src="{@ doc.pic}" width="100px"/></div>
         <div>市场零售价：{@ doc.price}</div>
-        <div><input type="hidden" value="{@ doc._id}" id="_id"></div>
-        <div><input type="button" value="立即侃价" onclick="_step('bargain')"></div>
+        <div><input type="hidden" value="{@ doc._id}" id="_id">
+            <input type="hidden" value="{@ wxid}" id="wxid"></div>
+
+        <div>
+            <if condition="@isTimeOut">
+                <input type="button" value="休息休息，10分钟后才能再侃价" >
+            <else/>
+                <input type="button" value="立即侃价" id="bargainButton" onclick="_step('bargain')">
+            </if>
+        </div>
 
     </div>
-    <div style="position: absolute; width: 350px; height:200px; top: 0px; left: 0px; background-color: #000000; color: #ffffff; display: none" id="_alert">
+    <div style="position: absolute; width: 400px; height:400px; top: 0px; left: 0px; background-color: #000000; color: #ffffff; display: none" id="_alert">
 
         <div id="_win_bargain" class="channel">
 
@@ -61,7 +69,7 @@
             <div>如果您觉得出价高了
                 可以放弃此次机会
                 十分钟以后再来和我侃价</div>
-            <div><input type="button" value="放弃" onclick="_close()"></div>
+            <div><input type="button" value="放弃" onclick="giveup()"></div>
         </div>
 
         <div id="_win_step2_low" class="channel">
@@ -70,14 +78,18 @@
             <div>您的价格让小朗心寒的吐血
                 休息一下，有心想买的话10分钟后再来
                 好好出个价</div>
-            <div><input type="button" value="我去休息下" onclick="_close()"></div>
+            <div><input type="button" value="我去休息下" onclick="giveup()"></div>
         </div>
 
     </div>
 
 </div>
 <script>
-
+function giveup(){
+    $("#bargainButton").val("休息休息，10分钟后才能再侃价")
+    $("#bargainButton").attr('onclick',"return false;");
+    _close()
+}
 function _close(){
     $("#_alert").hide()
 }
@@ -91,6 +103,8 @@ function _step(channelName){
     }
     if(channelName == "success"){
         deal(function(){
+            $("#bargainButton").val("您已成功侃价，请查看您的“专属礼券”")
+            $("#bargainButton").attr('onclick',"location.href='/lavico/bargain/index';return false;");
             _func()
         })
     }else{
@@ -103,7 +117,8 @@ function deal(cb){
         url:'/lavico/bargain/form:deal',
         type:'POST',
         data:{
-            '_id':$("#_id").val()
+            '_id':$("#_id").val(),
+            'wxid':$("#wxid").val()
         },
         success:function(data){
             if(data.err == 0){
