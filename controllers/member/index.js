@@ -21,7 +21,14 @@ module.exports = {
         }else{
 
             /*第一步 查询此用户是否为会员*/
-
+            helper.db.coll('welab/customers').findOne({ wechatid: wxid },this.hold(function(err, doc){
+                if(err){
+                    throw err;
+                }
+                if(doc){
+                    console.log(doc);
+                }
+            }));
 
 
             /*第二步 跳转会员的页面*/

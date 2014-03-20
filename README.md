@@ -5,6 +5,11 @@
 姓名：realname<br/>
 用户ID: _id<br/>
 微信ID: wechatid<br/>
+关注时间:<br/>
+最近会话时间:<br/>
+会话数:<br/>
+标签:<br/>
+备注：remarks<br/>
 性别：gender     值：male/female<br/>
 生日：birthday   单位是毫秒 getTime（）<br/>
 手机号码：mobile<br/>
@@ -34,6 +39,8 @@
 		}<br/>
 //字段若有问题，请及时在群里讨论<br/>
 
+申请会员卡{白卡}-测试链接：
+
 申请绑定-测试链接：
 http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=oBf_qJTu0Vn5nFlXFSVpCIbKIk8o&MOBILE_TELEPHONE_NO=18616845116&MEM_OLDCARD_NO=L201403191126&MEM_PSN_CNAME=徐大卫
 
@@ -44,3 +51,9 @@ http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=oBf_qJTu0Vn5nFlXFSVpCI
 http://127.0.0.1:8080/lavico.middleware/Points?MEMBER_ID=9123084
 http://127.0.0.1:8080/lavico.middleware/Points?MEMBER_ID=9121535
 
+<h2>lavico/user/logs表</h2>
+所有日后可能产生数据统计需求的地方，都要预先把数据记录到lavico/user/logs表中。
+
+必填字段 createTime,wxid,action,data(对象)
+
+helper.db.coll("lavico/user/logs").insert({createTime:new Date().getTime(),wxid:seed.wxid,action:"侃价交易成功",data:{prodoctID:seed._id}}, (err, doc)->)
