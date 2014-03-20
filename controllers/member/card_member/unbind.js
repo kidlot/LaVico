@@ -85,7 +85,7 @@ module.exports = {
                     openid:wxid,
                     MEMBER_ID:userCardNumber,
                 },_this.hold(function(err,doc){
-//openid=1237&MEMBER_ID=9123084
+//  openid=1237&MEMBER_ID=9123084
 //                    helper.db.coll("lavico/bind").insert({
 //                        'createTime':new Date().getTime(),
 //                        'wxid':wxid,
