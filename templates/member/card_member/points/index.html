@@ -1,16 +1,30 @@
 <h1>积分明细</h1>
-公告：年度积分即将清零, 查看详情
-目前可用积分：+1200
+<h2>公告：年度积分即将清零, 查看详情</h2>
+<h2>目前积分：{@remaining}</h2>
+<h3>会员类型：{@level}</h3>
 
-2014年-获得 3400-使用 480
-        商户消费 时间      +1200
-        积分兑换 时间      -120
-        参加活动 时间      +3200
+<ul>
+    <foreach for="@log" key="key">
+        <li>{@log[key].time}-获得 {@log[key].value}</li>
+    </foreach>
+</ul>
+海澜帐号ID：<input type="text" id="member_ID" name="member_ID" value="{@member_ID}"/>
+        <br/>
+doc：<span id="doc">{@doc}</span>
+wxopenid:{@wxopenid}
+<pre>
+{ remaining: 699,
+level: 1,
+log:
+[ { value: '-10', time: '2014-03-18 13:52:42.0', memo: '' },
+{ value: '281', time: '2014-03-18 14:30:20.0', memo: '' },
+{ value: '398',time: '2014-03-18 09:48:20.0',memo: '审核会员申请时自动插入' },
+{ value: '318', time: '2014-03-18 11:33:59.0', memo: '' },
+{ value: '-318', time: '2014-03-18 13:06:24.0', memo: '' },
+{ value: '10', time: '2014-03-18 22:16:38.0', memo: '' },
+{ value: '20', time: '2014-03-18 22:25:24.0', memo: '' } ] }
+</pre>
 
-2013年-获得 3000-使用 480
-        商户消费 时间      +1200
-        积分兑换 时间      -120
-        参加活动 时间      +3200
 
 
 

@@ -4,7 +4,7 @@
 注册时间：registerTime 单位是毫秒<br/>
 姓名：realname<br/>
 用户ID: _id<br/>
-微信ID: wxid<br/>
+微信ID: wechatid<br/>
 性别：gender     值：male/female<br/>
 生日：birthday   单位是毫秒 getTime（）<br/>
 手机号码：mobile<br/>

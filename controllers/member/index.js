@@ -7,26 +7,38 @@ var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
     layout:null,
-    view:null,
+    view:'lavico/templates/member/index.html',
     process:function(seed,nut){
-        var wxid = seed.wxid ? seed.wxid : 'oBf_qJQ8nGyKu5vbnB1_u5okMT6Y';//预先定义微信ID
+        var wxid = seed.openid ? seed.openid : 'undefined';
         nut.model.wxid = wxid;
+
         //根据WXID来判断会员的类型
         //判断会员接口
         //返回值 type = card_blank || card_member
-        var type = 'card_blank';
-        if(type == "card_blank"){
-            this.res.writeHead(302, {'location':'/lavico/member/card_blank/index?wxid='+wxid})
-            //跳转 lavico/member/card_blank/index
-        }else if(type == 'card_member'){
-            this.res.writeHead(302, {'location':'/lavico/member/card_member/index?wxid='+wxid})
-            //跳转 lavico/memeber/card_blank/index
+
+        if(wxid =='undefined'){
+             //此情况属于意外情况，必须强制停止
         }else{
-            this.res.writeHead(302, {'location':'/lavico/index?wxid='+wxid})
-            //返回错误Error
-            //跳转到 lavico/index
+
+            /*第一步 查询此用户是否为会员*/
+
+
+
+            /*第二步 跳转会员的页面*/
+            var type = 'card_blank';
+            if(type == "card_blank"){
+                this.res.writeHead(302, {'location':'/lavico/member/card_blank/index?wxid='+wxid})
+                //跳转 lavico/member/card_blank/index
+            }else if(type == 'card_member'){
+                this.res.writeHead(302, {'location':'/lavico/member/card_member/index?wxid='+wxid})
+                //跳转 lavico/memeber/card_blank/index
+            }else{
+                this.res.writeHead(302, {'location':'/lavico/index?wxid='+wxid})
+                //返回错误Error
+                //跳转到 lavico/index
+            }
+            this.res.end();
         }
-        this.res.end();
 
     },
     viewIn:function(){

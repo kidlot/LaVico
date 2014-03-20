@@ -9,8 +9,22 @@ module.exports = {
     layout:null,
     view:'lavico/templates/member/card_member/index.html',
     process:function(seed,nut){
-        var wxid = seed.wxid ? seed.wxid : 'oBf_qJQ8nGyKu5vbnB1_u5okMT6Y';//预先定义微信ID
-        nut.model.wxid = wxid;
+
+        var defaultTestID = 'oBf_qJTu0Vn5nFlXFSVpCIbKIk8o';//设置默认测试微信ID
+        var wxid = seed.wxid ? seed.wxid : defaultTestID;//预先定义微信ID
+        this.req.session.wxid = wxid;//默认是30分钟失效期 SESSION
+
+        nut.model.wxid = wxid;//设置模版的微信ID变量值
+
+        /*
+        * 其他会员页面WXID使用方法
+        *  var wxid = seed.wxid ? seed.wxid : this.req.session.wxid;//预先定义微信ID
+        *  if(wxid ==''){
+        *       this.res.writeHead(302, {'location':'/lavico/member/index})
+        *       this.res.end();
+        *  }
+        * */
+
         //根据WXID来判断会员的类型
         //判断会员接口
         //返回值 type = card_blank || card_member
