@@ -34,6 +34,7 @@
 		}<br/>
 //字段若有问题，请及时在群里讨论<br/>
 
-申请绑定-测试链接：http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=1237&MOBILE_TELEPHONE_NO=18616845116&MEM_OLDCARD_NO=L201403191126&MEM_PSN_CNAME=aaa
+申请绑定-测试链接：http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=oBf_qJTu0Vn5nFlXFSVpCIbKIk8o&MOBILE_TELEPHONE_NO=18616845116&MEM_OLDCARD_NO=L201403191126&MEM_PSN_CNAME=aaa
 
-解除绑定-测试链接：http://127.0.0.1:8080/lavico.middleware/MemberUnbind?openid=1237&MEMBER_ID=9123084
+解除绑定-测试链接：http://127.0.0.1:8080/lavico.middleware/MemberUnbind?openid=oBf_qJTu0Vn5nFlXFSVpCIbKIk8o&MEMBER_ID=9123084
+

@@ -34,11 +34,13 @@ module.exports = {
             var address = $('#address').val();
             var favoriteStyle = $('#favoriteStyle').val();
             var favoriteColor = $('#favoriteColor').val();
+            var registerTime = new date().getTime();
 
             $.ajax({
                 url:'/lavico/member/card_member/info:Modified',
                 type:'POST',
                 data:{
+                    'registerTime':registerTime,
                     'realname':realname,
                     'gender':gender,
                     'birthday':birthday,
@@ -66,6 +68,7 @@ module.exports = {
                 nut.disabled = true ;
                 console.log(seed.realname);
                 helper.db.coll('welab/customers').insert({
+                    'registerTime':seed.registerTime,
                     'realname':seed.realname,
                     'gender':seed.gender,
                     'birthday':seed.birthday,
