@@ -22,7 +22,12 @@ module.exports = {
                 //获得一个随机Num位的数
                 var arr =[];
                 for(var i = 1; i <= num; i++){
-                    arr.push(Math.floor(Math.random()*10));
+                    var _num = Math.floor(Math.random()*10);
+                    if(_num != 0){
+                        arr.push(Math.floor(Math.random()*10));
+                    }else{
+                        arr.push(1);
+                    }
                 }
                 var str = arr.join('');
                 return str;
@@ -120,11 +125,11 @@ module.exports = {
                     return false;
                 }
 
-                if(userCaptcha==''){
+                if(userCaptcha ==''){
                     alert('请填写验证码');
                     return false;
                 }
-                if(String(userCaptcha) != fourNum){
+                if(userCaptcha != fourNum){
                     alert('验证码不正确');
                     return false;
                 }

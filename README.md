@@ -40,3 +40,7 @@ http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=oBf_qJTu0Vn5nFlXFSVpCI
 
 解除绑定-测试链接：http://127.0.0.1:8080/lavico.middleware/MemberUnbind?openid=oBf_qJTu0Vn5nFlXFSVpCIbKIk8o&MEMBER_ID=9123084
 
+个人积分-测试链接：
+http://127.0.0.1:8080/lavico.middleware/Points?MEMBER_ID=9123084
+http://127.0.0.1:8080/lavico.middleware/Points?MEMBER_ID=9121535
+

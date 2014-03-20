@@ -23,7 +23,12 @@ module.exports = {
             //获得一个随机Num位的数
             var arr =[];
             for(var i = 1; i <= num; i++){
-                arr.push(Math.floor(Math.random()*10));
+                var _num = Math.floor(Math.random()*10);
+                if(_num != 0){
+                    arr.push(Math.floor(Math.random()*10));
+                }else{
+                    arr.push(1);
+                }
             }
             var str = arr.join('');
             return str;
@@ -47,19 +52,26 @@ module.exports = {
         });
         $('#submit').click(function(){
 
-            var userCardNumber = $('#userCardNumber').val();
-            var userTel = $('#userTel').val();
-            var userCaptcha = $('#userCaptcha').val();
+            var wxid = $('#wxid').val();
+            var member_ID = $('#member_ID').val();
 
             $.ajax({
                 url:'/lavico/member/card_member/unbind:unlock',
                 type:'POST',
+                dataType:'json',
                 data:{
                     'wxid':wxid,
-                    'userCardNumber':userCardNumber,
-                    'userTel':userTel
+                    'member_ID':member_ID
                 },
                 success:function(data){
+                    var dataJson = data;
+                    if(dataJson['issuccessed'] == 'true'){//dataJson.issuccessed
+                        alert('解绑成功');
+                    }else if (dataJson['issuccessed'] == 'false'){
+                        alert('解绑失败');
+                    }else{
+                        alert('解绑失败，请稍后再尝试');
+                    }
                     console.log(data);
                 },
                 error:function(msg){
@@ -77,13 +89,12 @@ module.exports = {
                 //解除绑定
                 nut.disabled = true ;
                 var wxid = seed.wxid;
-                var userCardNumber = seed.userCardNumber;
-                var userTel = seed.userTel;
+                var member_ID = seed.member_ID;
                 var _this = this;
 
                 middleware.request( "/lavico.middleware/MemberUnbind",{
-                    openid:wxid,
-                    MEMBER_ID:userCardNumber,
+                    'openid':wxid,
+                    'MEMBER_ID':member_ID,
                 },_this.hold(function(err,doc){
 //  openid=1237&MEMBER_ID=9123084
 //                    helper.db.coll("lavico/bind").insert({
