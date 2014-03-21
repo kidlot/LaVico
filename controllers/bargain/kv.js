@@ -1,6 +1,6 @@
 module.exports = {
 
-	layout: "welab/Layout"
+	layout: null
 	, view: "lavico/templates/bargain/kv.html"
 
     , process: function(seed,nut)

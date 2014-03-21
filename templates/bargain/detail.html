@@ -1,3 +1,5 @@
+<meta name="viewport" content="width=360,user-scalable=no" />
+
 <div style="position: relative">
 
     <div style="position: absolute;">
@@ -117,8 +119,10 @@ function deal(cb){
         url:'/lavico/bargain/form:deal',
         type:'POST',
         data:{
+            'price':$("#price").val(),
             '_id':$("#_id").val(),
-            'wxid':$("#wxid").val()
+            'wxid':$("#wxid").val(),
+            'productID':$("#_id").val()
         },
         success:function(data){
             if(data.err == 0){
@@ -145,13 +149,13 @@ function bargain(){
         type:'POST',
         data:{
             'price':$("#price").val(),
-            '_id':$("#_id").val()
+            '_id':$("#_id").val(),
+            'wxid':$("#wxid").val()
         },
         success:function(data){
             if(data.err == 0){
                 _step("step"+data.step+'_'+data.doc)
                 $("#_win_step"+data.step+'_'+data.doc).find(".stepPrice").text($("#price").val())
-                $("#price").val("")
                 console.log(data)
             }else{
                 alert(data.msg)
