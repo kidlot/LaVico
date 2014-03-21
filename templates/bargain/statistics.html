@@ -1,0 +1,72 @@
+<style>
+    .checkbox .icons .first-icon, .radio .icons .first-icon, .checkbox .icons .second-icon, .radio .icons .second-icon {
+        background-color: #E7E7E7;
+    }
+    .mlm, .mhm, .mam {
+        margin-left: 0px;
+    }
+    .mrm, .mhm, .mam {
+        margin-right: 0px;
+    }
+</style>
+<br>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+        <div class="btn-group" style="float: left;">
+            <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown"><em class="icon02"></em> 操作 <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="/lavico/bargain/statistics:export?startDate={@ seed.startDate}&stopDate={@ seed.stopDate}">导出活动积分名单</a></li>
+            </ul>
+        </div>
+
+
+        <div style="float: right;">
+            <div style="float: right; width: 306px;">
+                <form method="get">
+                <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ seed.startDate}">
+                <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ seed.stopDate}">
+                <input type="submit" class="btn btn-xs btn-primary mhm" value="搜索">
+                <a href="/lavico/bargain/statistics" class="btn btn-xs btn-primary mhm" >重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <span class="label label-primary">参与人数:{@ uv1}</span>
+        <span class="label label-important">成交人数:{@ uv2}</span>
+
+
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>昵称</th>
+                <th>手机号</th>
+                <th>时间</th>
+                <th>成交价</th>
+                <th>产品名称</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@page.docs" var="doc">
+                <tr>
+                    <td>{@ doc.user.realname}</td>
+                    <td>{@ doc.user.mobile}</td>
+                    <td>{@ new Date(doc.createTime + 60*60*8*1000).toISOString().substr(0,10)}</td>
+                    <td>{@ doc.data.price}</td>
+                    <td>{@ doc.product.name}</td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/bargain/statistics?page=%pagenum%" />
+        <!--  /pagination  -->
+
+    </div>
+</div>
+
+
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
