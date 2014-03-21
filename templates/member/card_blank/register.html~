@@ -79,36 +79,36 @@ window.onload = function(){
 
 	$("#submit").click(function(){	
 		if($("#name").val() == ''){
-			alert("aaaa");
+			alert("请输入姓名");
 			$("#name").focus();
 			return	false;
 		}
 		if($("#sex").val() == ''){
-			alert("b");
+			alert("请选择性别");
 			$("#sex").focus();
 			return	false;
 		}
 		if($("#year").val() == ''){
-			alert("c1");
+			alert("请选择出生年月日");
 			return	false;
 		}
 		if($("#month").val() == ''){
-			alert("c2");
+			alert("请选择出生年月日");
 			return	false;
 		}
 		if($("#day").val() == ''){
-			alert("c3");
+			alert("请选择出生年月日");
 			return	false;
 		}				
 		if($("#mobile").val() =='' || !(/^1[1358]\d{9}$/i.test($("#mobile").val())) ){
-			alert("d");
+			alert("请输入正确的手机号码");
 			return	false;
 		}
 		if($("#id_code").val() == ''){
-			alert("e");
+			alert("验证码错误");
 			return	false;
 		}
-		$.get('http://dolphin.imagchina.com/lavico/member/card_blank/apply:apply_card',{
+		$.get('http://dolphin.imagchina.com/lavico/member/card_blank/register:apply_card',{
 				uid : $("#uid").val(),
 				name : $("#name").val(),
 				sex : $("#sex").val(),
@@ -117,8 +117,10 @@ window.onload = function(){
 				id_code : $("#id_code").val()
 			},
 			function(data){
-				if(!data.result){
-					alert('fff');
+				if(data.issuccessed){
+					alert("恭喜你，注册成功");
+				}else{
+				  alert(data.error);
 				}
 			}
 		);											

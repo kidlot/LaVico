@@ -42,7 +42,8 @@ module.exports = {
               returnDoc.res.end();			    
 					  }
 					}))
-				});									
+				});
+														
 			}
 		}
 	}

@@ -19,7 +19,10 @@ module.exports = {
 						MEM_PSN_BIRTHDAY:seed.birthday, //生日
 						MOBILE_TELEPHONE_NO:seed.mobile, //手机号
 					},this.hold(function(err,doc){
-						//console.log(doc);
+					  if(doc.error){
+					  
+					  }
+						console.log(doc);
 						return doc;	
 					}))
 				});

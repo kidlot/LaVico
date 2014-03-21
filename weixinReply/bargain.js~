@@ -27,13 +27,7 @@
         return this.on = false;
       }
     };
-    wechatapi.registerReply(9, function(params, req, res, next) {
-      if ((params.Content === "我要侃价")) {
 
-      } else {
-        return {};
-      }
-    });
     return wechatapi.makeQueue();
   };
 
