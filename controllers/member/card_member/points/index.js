@@ -14,12 +14,6 @@ module.exports = {
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
 
-        //wxid ---> member_ID
-
-
-
-
-
 
         var member_ID = seed.member_ID = '9121535';//海澜会员ID
         var _this = this;

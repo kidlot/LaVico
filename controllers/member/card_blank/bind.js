@@ -208,9 +208,10 @@ module.exports = {
                                 MEM_PSN_CNAME:userName
                             },_this.hold(function(err,doc){
 
-                                //记录用户动作
                                 var dataJson = JSON.parse(doc);
                                 console.log(dataJson);
+
+                                //记录用户动作
                                 helper.db.coll("lavico/user/logs").insert(
                                     {
                                         'createTime':new Date().getTime(),
@@ -219,16 +220,18 @@ module.exports = {
                                         'userName':userName,
                                         'userTel':userTel,
                                         'action':"申请绑定",
-                                        'response':dataJson
+                                        'result':dataJson
                                     },
                                     function(err, doc){
                                         console.log(doc);
+
                                     }
                                 );
 
                                 _this.res.writeHead(200, { 'Content-Type': 'application/json' });
                                 _this.res.write(doc);
                                 _this.res.end();
+
                             }));
                         //Process End
                         }
