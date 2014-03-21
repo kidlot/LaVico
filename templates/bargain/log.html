@@ -10,15 +10,19 @@
     }
 </style>
 <ul class="breadcrumb clearfix">
-    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+    <li class="b01"><a href="/lavico/bargain/statistics">返回</a> <em></em></li>
 </ul>
 
 <div class="panel panel-default">
     <div class="panel-heading" style="height: 50px">
-
         <div class="btn-group" style="float: left;">
-            <a href="/lavico/bargain/log" class="btn btn-xs btn-primary mhm" >查看明细</a>
+            <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown"><em class="icon02"></em> 操作 <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="/lavico/bargain/statistics:export?startDate={@ startDate}&stopDate={@ stopDate}">导出活动积分名单</a></li>
+            </ul>
         </div>
+
+
         <div style="float: right;">
             <div style="float: right; width: 306px;">
                 <form method="get">
@@ -32,29 +36,34 @@
     </div>
     <div class="panel-body">
 
-        <span class="label label-primary">总参与人数:{@ uv1}</span>
-        <span class="label label-important">总成交人数:{@ uv2}</span>
-
         <table class="table" id="tagList">
             <thead>
             <tr>
+                <th>OPENID</th>
+                <th>卡号</th>
+                <th>昵称</th>
+                <th>手机号</th>
                 <th>时间</th>
-                <th>参与人数</th>
-                <th>成交人数</th>
+                <th>成交价</th>
+                <th>产品名称</th>
             </tr>
             </thead>
             <tbody>
-            <foreach for="@dateList" var="doc">
+            <foreach for="@page.docs" var="doc">
                 <tr>
-                    <td>{@ doc.title}</td>
-                    <td>{@ doc.uv1}</td>
-                    <td>{@ doc.uv2}</td>
+                    <td>{@ doc.wxid}</td>
+                    <td>{@ doc.user.HaiLanMemberInfo && doc.user.HaiLanMemberInfo.memberCardNumber}</td>
+                    <td>{@ doc.user.realname}</td>
+                    <td>{@ doc.user.mobile}</td>
+                    <td>{@ new Date(doc.createTime + 60*60*8*1000).toISOString().substr(0,10)}</td>
+                    <td>{@ doc.data.price}</td>
+                    <td>{@ doc.product.name}</td>
                 </tr>
             </foreach>
             </tbody>
         </table>
 
-        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/bargain/statistics?startDate={@ startDate}&stopDate={@ stopDate}&page=%pagenum%" />
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/bargain/log?startDate={@ startDate}&stopDate={@ stopDate}&page=%pagenum%" />
         <!--  /pagination  -->
 
     </div>

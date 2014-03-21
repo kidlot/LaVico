@@ -2,95 +2,49 @@
 (function() {
   module.exports = {
     layout: "welab/Layout",
-    view: "lavico/templates/bargain/statistics.html",
+    view: "lavico/templates/bargain/log.html",
     process: function(seed, nut) {
-      var d1, d2, dJsDay, dateList, day, endTimeStamp, jsDay, o, startTimeStamp, thisb, _fn, _i, _len, _page;
+      var endTimeStamp, startTimeStamp, thisb, where, _page;
       _page = {};
       thisb = this;
+      where = {
+        action: "侃价成交"
+      };
       startTimeStamp = new Date(seed.startDate + " 00:00:00").getTime();
       endTimeStamp = new Date(seed.stopDate + " 23:59:59").getTime();
-      dateList = [];
-      day = 60 * 60 * 24 * 1000;
-      jsDay = startTimeStamp;
-      while (jsDay < endTimeStamp) {
-        dJsDay = new Date(jsDay);
-        dateList.push({
-          title: dJsDay.getFullYear() + "-" + (dJsDay.getMonth() + 1) + "-" + dJsDay.getDate()
-        });
-        jsDay = jsDay + day;
+      if (seed.startDate && seed.stopDate) {
+        where.createTime = {
+          $gt: startTimeStamp,
+          $lt: endTimeStamp
+        };
       }
-      _fn = function(o) {
-        helper.db.coll("lavico/user/logs").aggregate([
-          {
-            $match: {
-              action: "侃价",
-              createTime: {
-                $gt: d1,
-                $lt: d2
-              }
-            }
-          }, {
-            $group: {
-              _id: "$wxid"
-            }
-          }
-        ], thisb.hold(function(err, doc) {
-          return o.uv1 = doc ? doc.length : 0;
-        }));
-        return helper.db.coll("lavico/user/logs").aggregate([
-          {
-            $match: {
-              action: "侃价成交",
-              createTime: {
-                $gt: d1,
-                $lt: d2
-              }
-            }
-          }, {
-            $group: {
-              _id: "$wxid"
-            }
-          }
-        ], thisb.hold(function(err, doc) {
-          return o.uv2 = doc ? doc.length : 0;
-        }));
-      };
-      for (_i = 0, _len = dateList.length; _i < _len; _i++) {
-        o = dateList[_i];
-        d1 = new Date(o.title + " 00:00:00").getTime();
-        d2 = new Date(o.title + " 23:59:59").getTime();
-        _fn(o);
-      }
-      helper.db.coll("lavico/user/logs").aggregate([
-        {
-          $match: {
-            action: "侃价"
-          }
-        }, {
-          $group: {
-            _id: "$wxid"
-          }
+      helper.db.coll("lavico/user/logs").find(where).sort({
+        createTime: -1
+      }).page(50, seed.page || 1, this.hold(function(err, page) {
+        var o, _i, _len, _ref, _results;
+        _page = page || {};
+        _ref = page.docs;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          o = _ref[_i];
+          _results.push((function(o) {
+            helper.db.coll("welab/customers").findOne({
+              wechatid: o.wxid
+            }, thisb.hold(function(err, doc2) {
+              return o.user = doc2 || {};
+            }));
+            return helper.db.coll("lavico/bargain").findOne({
+              _id: helper.db.id(o.data.productID)
+            }, thisb.hold(function(err, doc2) {
+              return o.product = doc2 || {};
+            }));
+          })(o));
         }
-      ], this.hold(function(err, doc) {
-        return nut.model.uv1 = doc ? doc.length : 0;
-      }));
-      helper.db.coll("lavico/user/logs").aggregate([
-        {
-          $match: {
-            action: "侃价成交"
-          }
-        }, {
-          $group: {
-            _id: "$wxid"
-          }
-        }
-      ], this.hold(function(err, doc) {
-        return nut.model.uv2 = doc ? doc.length : 0;
+        return _results;
       }));
       return this.step(function() {
         nut.model.startDate = seed.startDate;
         nut.model.stopDate = seed.stopDate;
-        nut.model.dateList = dateList;
         return nut.model.page = _page || {};
       });
     },
