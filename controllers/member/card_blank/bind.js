@@ -10,10 +10,17 @@ module.exports = {
     ,view: 'lavico/templates/member/card_blank/bind.html'
     ,process:function(seed, nut){
         //nut.disabled = true ;
-        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         nut.model.wxid = wxid ;
     }
     ,viewIn:function(){
+
+            var wxid = jQuery('#wxid').val();
+            if(wxid == 'undefined'){
+                alert('请登陆微信后，查看本页面');
+                jQuery('body').hide();
+            }
+            //oBf_qJTu0Vn5nFlXFSVpCIbKIk8o
 
             var fourNum;//4位验证码
             var userTel;//用户手机号吗
@@ -157,8 +164,8 @@ module.exports = {
                             //绑定成功之后，跳转到card_member页面
 
                             alert(successTip);
-                            MEMBER_ID = returnJson.MEMBER_ID;
-                            window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&MEMBER_ID='+MEMBER_ID;
+                            //MEMBER_ID = returnJson.MEMBER_ID;
+                            //window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&MEMBER_ID='+MEMBER_ID;
 
                         }else if(returnJson.issuccessed == false){
                             alert(returnJson.error);

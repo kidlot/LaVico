@@ -12,11 +12,18 @@ module.exports = {
     layout:null
     ,view: 'lavico/templates/member/card_member/unbind.html'
     ,process:function(seed, nut){
-        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         nut.model.wxid = wxid ;
         // middleware.APPORBIND 申请，绑定
     }
     ,viewIn:function(){
+
+        var wxid = jQuery('#wxid').val();
+        if(wxid == 'undefined'){
+            alert('请登陆微信后，查看本页面');
+            jQuery('body').hide();
+        }
+
         var fourNum;
         var userTel;
         var getRandomNum = function(num){
@@ -54,7 +61,16 @@ module.exports = {
 
             var wxid = $('#wxid').val();
             var member_ID = $('#member_ID').val();
+            var userCaptcha = $('#userCaptcha').val();
 
+            if(!userCaptcha){
+                alert('请输入验证码！');
+                return false;
+            }
+            if(fourNum != userCaptcha){
+                alert('验证码不正确！');
+                return false;
+            }
             $.ajax({
                 url:'/lavico/member/card_member/unbind:unlock',
                 type:'POST',

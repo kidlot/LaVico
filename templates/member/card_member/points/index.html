@@ -5,14 +5,18 @@
 
 <ul>
     <foreach for="@log" key="key">
-        <li>{@log[key].time}-获得 {@log[key].value}</li>
+        <li>在{@log[key].time} 积分{@log[key].value}
+
+            </li>
     </foreach>
 </ul>
-海澜帐号ID：<input type="text" id="member_ID" name="member_ID" value="{@member_ID}"/>
-        <br/>
-doc：<span id="doc">{@doc}</span>
+<br/>
+
+<pre style="display: none;">
+    海澜帐号ID：<input type="text" id="member_ID" name="member_ID" value="{@member_ID}"/>
+
+    doc：<span id="doc">{@doc}</span>
 wxopenid:{@wxopenid}
-<pre>
 { remaining: 699,
 level: 1,
 log:
