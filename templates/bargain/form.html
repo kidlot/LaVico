@@ -120,8 +120,8 @@
                 })
 
                 aFormInput['pic'] = $("#showPic").attr("src")
-                aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
-                aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
+                if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
+                if($("input[name='sizesVal']").val()) aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
 
                 if(_inputCheck){
                     var oLinkOptions = {} ;

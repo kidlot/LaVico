@@ -69,7 +69,7 @@ module.exports = {
                 }
 
                 postData.startDate = new Date(postData.startDate + " 00:00:00").getTime()
-                postData.stopDate = new Date(postData.stopDate + " 00:00:00").getTime()
+                postData.stopDate = new Date(postData.stopDate + " 23:59:59").getTime()
                 if(seed._id){
 
                     helper.db.coll("lavico/bargain").update({_id:helper.db.id(seed._id)},{$set:postData},this.hold(function(err,doc){
@@ -86,10 +86,7 @@ module.exports = {
                     }));
                 }
 
-
-
                 nut.message("保存成功",null,'success') ;
-
             }
         }
 
@@ -125,6 +122,8 @@ module.exports = {
         , deal:{
             process: function(seed,nut){
 
+                _log(seed.wxid,"侃价成交",{price:seed.price,productID:seed.productID})
+                this.req.session._bargain_lastDealTime = new Date().getTime()
                 this.step(function(){
                     nut.disable();
                     var data = JSON.stringify({err:0});
@@ -168,6 +167,14 @@ module.exports = {
                     res = {err:1,msg:"10分钟内只能侃价一次！"}
                 }
 
+                var timeout = 60 * 60 * 24 * 1000
+                if( this.req.session._bargain_lastDealTime + timeout > new Date().getTime()){
+
+                    //res = {err:1,msg:"一天只能成交一次！"}
+                }
+
+
+
                 if(!seed._id){
                     res = {err:1,msg:"没有_ID"}
                 }
@@ -176,6 +183,9 @@ module.exports = {
 
                     helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
                         if(doc){
+
+
+                            _log(seed.wxid,"侃价",{step:parseInt(this.req.session._bargain_step),price:seed.price,productID:seed._id,bargain:_bargain(seed.price,doc.minPrice)})
 
                             if(this.req.session._bargain_step == 1){
 
@@ -215,3 +225,8 @@ function _bargain(price,minPrice){
 
 
 
+function _log(wxid,action,data){
+    helper.db.coll("lavico/user/logs").insert({createTime:new Date().getTime(),wxid:wxid,action:action,data:data}, function(err, doc){
+        if(err)console.log(err)
+    })
+}
