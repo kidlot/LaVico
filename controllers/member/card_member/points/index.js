@@ -12,7 +12,15 @@ module.exports = {
     view:'lavico/templates/member/card_member/points/index.html',
     process:function(seed, nut){
 
-        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
+
+        //wxid ---> member_ID
+
+
+
+
+
+
         var member_ID = seed.member_ID = '9121535';//海澜会员ID
         var _this = this;
         nut.model.wxid = wxid ;
@@ -45,6 +53,12 @@ module.exports = {
 
     },
     viewIn:function(){
+        //先判断是否存在微信ID参数
+        var wxid = $('#wxid').val();
+        if(wxid =='undefined'){
+            alert('请登陆微信后，查看本页面');
+            jQuery('.ocview').hide();
+        }
         /*返回的个人积分的dataJson
          {
              "remaining":699,
