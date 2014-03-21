@@ -28,35 +28,32 @@ module.exports = {
 
             },_this.hold(function(err,doc){
 
-                nut.model.doc = doc;
                 var dataJson = eval('('+doc+')');
                 console.log(dataJson);
-
                 nut.model.remaining = dataJson.remaining;//当前积分
                 nut.model.level = dataJson.level;//当前会员卡类型
-
                 nut.model.log = dataJson.log;//当前会员的积分记录
                 return dataJson;
             }));
         });
 
-//
-//        this.step(function(dataJson){
-//
-//            //记录用户动作
-//            helper.db.coll("lavico/user/logs").insert(
-//                {
-//                    'createTime':new Date().getTime(),
-//                    'wxid':seed.wxid,
-//                    'member_ID':member_ID,
-//                    'action':"查看专属礼券",
-//                    'response':dataJson
-//                },
-//                function(err, doc){
-//                    console.log(doc);
-//                }
-//            );
-//        });
+
+        this.step(function(dataJson){
+
+            //记录用户动作
+            helper.db.coll("lavico/user/logs").insert(
+                {
+                    'createTime':new Date().getTime(),
+                    'wxid':seed.wxid,
+                    'member_ID':member_ID,
+                    'action':"查看积分明细",
+                    'response':dataJson
+                },
+                function(err, doc){
+                    console.log(doc);
+                }
+            );
+        });
 
 
 
