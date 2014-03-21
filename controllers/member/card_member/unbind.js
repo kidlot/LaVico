@@ -12,11 +12,18 @@ module.exports = {
     layout:null
     ,view: 'lavico/templates/member/card_member/unbind.html'
     ,process:function(seed, nut){
-        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         nut.model.wxid = wxid ;
         // middleware.APPORBIND 申请，绑定
     }
     ,viewIn:function(){
+
+        var wxid = jQuery('#wxid').val();
+        if(wxid == 'undefined'){
+            alert('请登陆微信后，查看本页面');
+            jQuery('body').hide();
+        }
+
         var fourNum;
         var userTel;
         var getRandomNum = function(num){
@@ -54,7 +61,16 @@ module.exports = {
 
             var wxid = $('#wxid').val();
             var member_ID = $('#member_ID').val();
+            var userCaptcha = $('#userCaptcha').val();
 
+            if(!userCaptcha){
+                alert('请输入验证码！');
+                return false;
+            }
+            if(fourNum != userCaptcha){
+                alert('验证码不正确！');
+                return false;
+            }
             $.ajax({
                 url:'/lavico/member/card_member/unbind:unlock',
                 type:'POST',
@@ -89,22 +105,29 @@ module.exports = {
                 //解除绑定
                 nut.disabled = true ;
                 var wxid = seed.wxid;
-                var member_ID = seed.member_ID;
+                var member_id = seed.member_ID;
                 var _this = this;
 
                 middleware.request( "/lavico.middleware/MemberUnbind",{
                     'openid':wxid,
-                    'MEMBER_ID':member_ID,
+                    'MEMBER_ID':member_id,
                 },_this.hold(function(err,doc){
-//  openid=1237&MEMBER_ID=9123084
-//                    helper.db.coll("lavico/bind").insert({
-//                        'createTime':new Date().getTime(),
-//                        'wxid':wxid,
-//                        'userCardNumber':userCardNumber,
-//                        'userTel':userTel,
-//                        'type':'unbind'
-//                    },function(err, doc) {});
 
+                    //记录用户动作
+                    var dataJson = JSON.parse(doc);
+                    console.log(dataJson);
+                    helper.db.coll("lavico/user/logs").insert(
+                        {
+                            'createTime':new Date().getTime(),
+                            'wxid':seed.wxid,
+                            'member_ID':member_id,
+                            'action':"解除绑定",
+                            'response':dataJson
+                        },
+                        function(err, doc){
+                            console.log(doc);
+                        }
+                    );
                     console.log(doc);
                     _this.res.writeHead(200, { 'Content-Type': 'application/json' });
                     _this.res.write(doc);

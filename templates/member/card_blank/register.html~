@@ -138,7 +138,7 @@ window.onload = function(){
 			},
 			function(data){
 			  alert(data);
-			  data = eval("("+data+")");
+			  data = eval(data);
 			  alert(data);
 				if(data.issuccessed){
 					alert("恭喜你，注册成功");

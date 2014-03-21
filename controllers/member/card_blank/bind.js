@@ -10,10 +10,17 @@ module.exports = {
     ,view: 'lavico/templates/member/card_blank/bind.html'
     ,process:function(seed, nut){
         //nut.disabled = true ;
-        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         nut.model.wxid = wxid ;
     }
     ,viewIn:function(){
+
+            var wxid = jQuery('#wxid').val();
+            if(wxid == 'undefined'){
+                alert('请登陆微信后，查看本页面');
+                jQuery('body').hide();
+            }
+            //oBf_qJTu0Vn5nFlXFSVpCIbKIk8o
 
             var fourNum;//4位验证码
             var userTel;//用户手机号吗
@@ -157,8 +164,10 @@ module.exports = {
                             //绑定成功之后，跳转到card_member页面
 
                             alert(successTip);
-                            MEMBER_ID = returnJson.MEMBER_ID;
-                            window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&MEMBER_ID='+MEMBER_ID;
+
+                            //MEMBER_ID = returnJson.MEMBER_ID;
+                            //window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&MEMBER_ID='+MEMBER_ID;
+
 
                         }else if(returnJson.issuccessed == false){
                             alert(returnJson.error);
@@ -199,14 +208,23 @@ module.exports = {
                                 MEM_PSN_CNAME:userName
                             },_this.hold(function(err,doc){
 
-                                helper.db.coll("lavico/bind").insert({
-                                    'createTime':new Date().getTime(),
-                                    'wxid':wxid,
-                                    'userCardNumber':userCardNumber,
-                                    'userName':userName,
-                                    'userTel':userTel,
-                                    'type':'bind'
-                                },function(err, doc) {});
+                                //记录用户动作
+                                var dataJson = JSON.parse(doc);
+                                console.log(dataJson);
+                                helper.db.coll("lavico/user/logs").insert(
+                                    {
+                                        'createTime':new Date().getTime(),
+                                        'wxid':seed.wxid,
+                                        'userCardNumber':userCardNumber,
+                                        'userName':userName,
+                                        'userTel':userTel,
+                                        'action':"申请绑定",
+                                        'response':dataJson
+                                    },
+                                    function(err, doc){
+                                        console.log(doc);
+                                    }
+                                );
 
                                 _this.res.writeHead(200, { 'Content-Type': 'application/json' });
                                 _this.res.write(doc);

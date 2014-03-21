@@ -1,6 +1,6 @@
 var wechatutil = require("welab/controllers/wechat-api/util.js") ;
 var bargain = require("./weixinReply/bargain.js") ;
-var member_apply = require("./weixinReply/apply.js") ;
+var member_apply = require("./weixinReply/member_apply.js") ;
 
 exports.onload = function(application){
 
