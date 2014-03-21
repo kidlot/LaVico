@@ -1,0 +1,76 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+
+        <div style="width: 300px;">
+            <a href="/lavico/bargain/form" class="btn btn-xs btn-primary mhm stay">增加</a>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>产品ID</th>
+                <th>产品名称</th>
+                <th>市场零售价</th>
+                <th>最低价格</th>
+                <th>最高价格</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@page.docs" var="doc">
+                <tr>
+                    <td>{@ doc.id}</td>
+                    <td>{@ doc.name}</td>
+                    <td>{@ doc.price}</td>
+                    <td>{@ doc.minPrice}</td>
+                    <td>{@ doc.maxPrice}</td>
+                    <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
+                    <td>
+                        <a href="/lavico/bargain/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">修改</a>
+                        <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/bargain/index?page=%pagenum%" />
+        <!--  /pagination  -->
+
+    </div>
+</div>
+
+        <script>
+            function func_remove(_id,event){
+
+                if (confirm("真的要删除吗？")){
+
+                    $.ajax({
+                        url: "/lavico/bargain/form:remove?_id="+_id,
+                        cache: false
+                    }).done(function( json ) {
+                                if(json.err == 0){
+                                    $(event).parents("tr").fadeOut();
+                                }else{
+                                    $.globalMessenger().post({
+                                        message: json.msg,
+                                        type: 'error',
+                                        showCloseButton: true})
+                                }
+                            });
+
+                }else{
+                    return false;
+                }
+            }
+        </script>

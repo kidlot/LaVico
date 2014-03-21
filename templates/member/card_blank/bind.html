@@ -1,0 +1,31 @@
+如果您没有实体会员卡，请申领会员卡
+<form method="post">
+    会员卡号：<input type="text" id="userCardNumber" name="userCardNumber" value="L201403191126"/>例子：L201403191126<br/>
+    姓名：<input type="text" id="userName" name="userName" value="徐大卫"/><br/>
+    手机：<input type="text" id="userTel" name="userTel" value="18616845116"/><span id="getCaptcha">获取验证码</span>
+         <span id="timer" style="display:none;"></span><br/>
+    验证码:<input type="text" id="userCaptcha" name="userCaptcha" value=""/><br/>
+    <span style="display:none;">微信ID:<input type="text" id="wxid" name="wxid" value="{@wxid}" /></span>
+          <input type="button" id="submit" value="提交"/>
+</form>
+<div style="display:none">
+可以用来测试的<br/>
+会员老卡号：L201403191126，电话18616845116
+<br/>
+http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=1237&MOBILE_TELEPHONE_NO=18616845116&MEM_OLDCARD_NO=L201403191126&MEM_PSN_CNAME=徐大卫
+<br/>
+重复绑定: {"MEMBER_ID":0,"issuccessed":false,"error":"根据会员卡号和手机号无法准确找到会员，无法绑定"}
+绑定成功: {"MEMBER_ID":9123084,"issuccessed":false,"error":"null"}
+<br/>
+ID:oBf_qJTu0Vn5nFlXFSVpCIbKIk8o
+<br/>
+
+申请绑定-测试链接：<br/>
+http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=1237&MOBILE_TELEPHONE_NO=18616845116&MEM_OLDCARD_NO=L201403191126&MEM_PSN_CNAME=徐大卫<br/>
+<br/>
+解除绑定-测试链接：<br/>
+http://127.0.0.1:8080/lavico.middleware/MemberUnbind?openid=1237&MEMBER_ID=9123084<br/>
+解绑成功：{"issuccessed":"true","error":""}<br/>
+解绑失败：{"issuccessed":"false","error":""}<br/>
+
+</div>

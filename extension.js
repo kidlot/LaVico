@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //微信调用
 var wechatapi = require("welab/lib/wechat-api.js") ;
 //事件队列
@@ -65,3 +66,47 @@ exports.onload=function(application){
         }
     });
 }
+=======
+var wechatutil = require("welab/controllers/wechat-api/util.js") ;
+var bargain = require("./weixinReply/bargain.js") ;
+var member_apply = require("./weixinReply/apply.js") ;
+
+exports.onload = function(application){
+
+
+    // 我要侃价
+    bargain.load()
+	member_apply.load();
+
+    /**
+     * reply list
+     * @param oriMsg
+     * @param replyDoc
+     * @param apiReq
+     * @returns {Array}
+     */
+    wechatutil.makeReply.list = function(oriMsg,replyDoc,apiReq)
+    {
+        replyDoc.items.unshift(replyDoc) ;
+
+        var ret = [] ;
+        var replyId = replyDoc._id.toString() ;
+        for(var i=0;i<replyDoc.items.length;i++)
+        {
+            var item = replyDoc.items[i] ;
+            ret.push({
+                title: item.title
+                , description: item.tabloid
+                , picurl: item.pic? "http://"+apiReq.headers.host+item.pic: ''
+                , url: item.link?
+                    item.link.replace("{host}",apiReq.headers.host).replace("{wxid}",oriMsg.FromUserName):
+                    ("http://"+apiReq.headers.host+"/welab/detail?_id="+replyId+(i ? ("&item="+(i)): "" )+"&wxid="+oriMsg.FromUserName)
+            }) ;
+        }
+        return ret ;
+    }
+
+
+}
+
+>>>>>>> b7589ca29fed154329f1eaef1c87355a7dd8b09d
