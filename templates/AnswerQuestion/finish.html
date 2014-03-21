@@ -1,0 +1,22 @@
+<script>
+    window.onload=function(){
+        var receiveResult=JSON.parse('{@result}');
+        for(var i=0;i<receiveResult.length;i++){
+            if(receiveResult[i].getLabel!="" && typeof(receiveResult[i].getLabel) != "undefined"){
+                $(".wd").append("<li>恭喜你获得:"+receiveResult[i].getLabel+"</li>");
+            }
+            if(receiveResult[i].getScore!="" && typeof(receiveResult[i].getScore) != "undefined"){
+                $(".wd").append("<li>恭喜你获得:"+receiveResult[i].getScore+"积分</li>");
+            }
+            if(receiveResult[i].getActivities!="" &&  typeof(receiveResult[i].getScore)!= "undefined"){
+                $(".wd").append("<li>恭喜你获得:"+receiveResult[i].getActivities+"奖券</li>");
+            }
+        }
+    }
+</script>
+感谢你的答题
+<div class="result">
+    <ul class="wd">
+
+    </ul>
+</div>

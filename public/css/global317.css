@@ -1,0 +1,92 @@
+﻿@charset "utf-8";
+/* RESET */
+html,body,div,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input,abbr,article,aside,command,details,figcaption,figure,footer,header,hgroup,mark,meter,nav,output,progress,section,summary,time { margin: 0; padding: 0; }
+img { border: 0 none; vertical-align: top; }
+ul, li { list-style-type: none; }
+h1, h2, h3, h4, h5, h6 { font-size: 14px; }
+body, input, select, button, textarea { font: normal 100% \5FAE\8F6F\96C5\9ED1,Helvetica, Arial, sans-serif; }
+button { cursor: pointer; }
+i, em, cite { font-style: normal; }
+body { background: #fff; color: #363636; line-height: 1.2; }
+a, a:link { color: #222; text-decoration: none; }
+a:visited {  }
+a:active, a:hover { text-decoration: none; }
+a:focus { outline: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+article,aside,footer,header,hgroup,nav,section,figure,figcaption { display: block; }
+
+/* LAYOUT */
+.fixed:after { content: "."; display: block; clear: both; height: 0; visibility: hidden; }
+.fixed { display: block; min-height: 1%; }
+*html .fixed { height: 1%; }
+.clear { display: block!important; float: none!important; clear: both; overflow: hidden; width: auto!important; height: 0!important; margin: 0 auto!important; padding: 0!important; font-size: 0; line-height: 0; }
+.more { float: right; }
+	.more a { font-weight: normal; font-size: 12px; }
+.fl, .fr { display: inline; float: left; }
+.fr { float: right; }
+
+#header,
+#main { width:586px; height:auto; margin:0 auto; overflow:hidden; }
+#header .but_1, 
+#header .but_2 { width:100px; height:40px;  }        
+#header .but_1 { float:left; }
+#header .but_2 { float:right; }
+
+#main { }
+#main h2 { font-size:20px;padding:16px 0; }
+#main .page { width:auto; height:auto; border:1px solid #999; padding:12px 20px; overflow:hidden; margin-bottom:10px; position:relative; }
+#main .page .label { width:64px; line-height:26px; padding-right:10px; display:inline-block; vertical-align:top; text-align:right;  }
+#main .page .name { width:458px; line-height:24px; display:inline-block; vertical-align:top;border:1px solid #666; padding:0 5px; font-size:14px; }
+#main .page_2 { padding:0 20px 10px; min-height:418px; }
+#main .page_3 { padding:0 20px 10px; }
+#main .page h3 { font-size:16px;padding:10px 0; }
+#main .page .option { height:26px; padding:10px 0; }
+#main .page .option select { width:180px; height:26px; display:inline-block;vertical-align:top; }
+
+#main .page .topic { position:relative; }
+#main .page .topic .head_1,
+#main .page .topic .head_2 { height:26px; line-height:26px; text-align:center;  display:inline-block; vertical-align:top; position:absolute; }
+#main .page .topic .head_1 { width:50px; top:-36px; left:338px; }
+#main .page .topic .head_2 { width:50px; top:-36px; left:442px; }
+
+#main .page .more .head_1 { left:490px; }
+#main .page .single label { width:150px; line-height:25px; text-align:right; display:block; float:left; }
+#main .page .single input { margin:0 6px; }
+
+#main .page ul { overflow:hidden; }
+#main .page ul li { height:60px;padding-bottom:10px; }
+#main .page ul li .groupTitle { width:64px; height:60px; text-align:right; float:left; padding-right:10px; line-height:26px; position:relative; }
+#main .page ul li .groupTitle a { width:10px; line-height:24px; position:absolute; left:12px; top:0px; display:block; }
+#main .page ul li .groupContent { width:470px; height:60px; float:left; }
+#main .page ul li .groupContent .groupText,
+#main .page ul li .groupContent .uploading { height:25px; display:block; }
+#main .page ul li .groupContent .groupText input {height:23px; line-height:23px; float:left;border:1px solid #666; font-size:14px; padding:0 5px; }
+#main .page ul li .groupContent .groupText .groupText_1 { width:244px; margin-right:10px;  }
+#main .page ul li .groupContent .groupText .groupText_2 { width:40px; margin-right:10px;  }
+#main .page ul li .groupContent .groupText .groupText_3 { width:130px;  border:1px solid inset;}
+
+#main .page .more ul li .groupContent .groupText .groupText_1 { width:396px; margin-right:10px; }
+#main .page .more ul li .groupContent .groupText .groupText_2 {margin-right:0px; }
+
+.padd_bom { padding-bottom:10px; }
+/*#main .page ul li .groupContent .uploading .groupName { width:80px; float:left; }*/
+#main .page ul li .groupContent .uploading .file { width:424px; line-height:23px; float:left; }
+#main .page ul li .groupContent .uploading .preview { width:34px; height:23px;border:1px solid #666;margin-left:10px; display:block; float:left; }
+#main .page .add_option { width:470px; height:24px; line-height:24px; border:1px solid #999; background:#ccc; float:right; text-align:center; }
+
+#main .add_topic { width:584px; height:44px; line-height:44px; border:1px solid #999; text-align:center; display:block; background:#ccc;}
+
+#main .page .awardsCon { width:470px; height:auto; padding-left:74px ;overflow:hidden; padding-bottom:10px;}
+#main .page .awardsCon .awardsTitle { width:38px; height:58px; display:block; float:left; margin-right:10px; line-height:60px;font-size:14px;border:1px solid #666; text-align:center; }
+#main .page .awardsCon .awardsRight { width:auto; height:auto; float:left; display:block; }
+.h25 { width:auto; height:25px; display:block; }
+#main .page .awardsCon .awardsRight input { height:23px; line-height:23px; margin:0 6px;border:1px solid #666; }
+.h25 .w28 { width:34px; text-align:center;}
+.h25 .w100 { width:90px; padding:0 5px; }
+.h25 .w60 { width:60px; padding:0 5px; }
+
+.h100 { height:98px; line-height:98px; }
+.h25 .w310 { width:300px; padding:0 5px; }
+
+.uploadFile { display:none; }
+.close { width:30px; height:30px; position:absolute; top:0px; right:0px; font-size:26px;text-align:center }

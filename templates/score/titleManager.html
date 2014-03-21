@@ -1,0 +1,208 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
+    <li class="b02"><a href="/welab/setting/company" class="stay">帐号</a> <em></em></li>
+    <li class="active"><span>企业信息</span></li>
+</ul>
+
+<div class="panel panel-default formText">
+    <div class="panel-heading clearfix">
+        <a class="btn btn-defalut btn-social-googleplus pull-left save" href="/welab/dashboard"><i class="fui-check-inverted"></i> 放弃</a>
+        <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="applyToken()"><i class="fui-check-inverted"></i> 保存</a>
+    </div>
+    <div class="panel-body" style="background:#f9fafb;">
+        <div class="col-md-6">
+            <form class="bs-docs-example stay" action="#" method="post">
+
+                <div class="form-group">
+                    <label style="font-size:25"><b class="dot"></b>基础设置</label><br/>
+                    试卷名：<input type="text" name="companyname" class="input-sm" id="compname">
+                </div>
+                <div class="form-group">
+                    <label style="font-size:25"><b class="dot"></b>题目设置</label><br/>
+                    第1题：<br/>
+                    题目：<input type="text" name="companyname" class="input-sm"><br/>
+                    选项：<select name="opts">
+                        <option value="0">单选题</option>
+                        <option value="1">多选题</option>
+                        <option value="2">主观题</option>
+                    </select>
+                    <span>分值</span>
+                    <span>下一步</span>
+                    <div>
+                        A:<input type="text" name="oa" class="input-sm">
+                        <input type="text" name="oa_score" style="width:40"><input type="text" name="oa_next"  style="width:40"><br/>
+                        <input type="button" name="upPic" value="上传配图">
+                        <input type="file" name="oa_next"  class="input-sm">
+                        <input type="button" name="del" value="xx">
+                    </div>
+                    <div>
+                        B:<input type="text" name="oa" class="input-sm"><input type="text" name="oa_score" style="width:40"><input type="text" name="oa_next"  style="width:40"><br/>
+                        <input type="button" name="upPic" value="上传配图"><input type="text" name="oa_next"  class="input-sm">
+                        <input type="button" name="del" value="xx">
+                    </div>
+                    <div>
+                        C:<input type="text" name="oa" class="input-sm"><input type="text" name="oa_score" style="width:40"><input type="text" name="oa_next"  style="width:40"><br/>
+                        <input type="button" name="upPic" value="上传配图"><input type="text" name="oa_next"  class="input-sm">
+                        <input type="button" name="del" value="xx">
+                    </div>
+                    <div>
+                        D:<input type="text" name="oa" class="input-sm"><input type="text" name="oa_score" style="width:40"><input type="text" name="oa_next"  style="width:40"><br/>
+                        <input type="button" name="upPic" value="上传配图"><input type="text" name="oa_next"  class="input-sm">
+                        <input type="button" name="del" value="xx">
+                    </div>
+                    <input type="button" name="btn" value="+增加选项（最多6项）">
+                </div>
+                <input type="submit" name="btn" value="+增加题目">
+            </form>
+
+
+
+            <form class="bs-docs-example stay" action="#" method="post">
+                <div class="form-group">
+                    <label style="font-size:25"><b class="dot"></b>奖项设置</label><br/>
+                    奖项一：
+                </div>
+                <div style=" overflow: hidden">
+                    <div style="float:left; width:50px; height: 50px; border:1px solid black">条件</div>
+                    <div style="float:left;width:200px;  height: 50px">
+                        分值<input type="text" name="score1" style="width:50px">~<input type="text" name="score2" style="width:50px"><br/>
+                        标签<input type="text" name="score1" style="width:50px">
+                    </div>
+                </div>
+                <div style="overflow: hidden">
+                    <div style="float:left; width:50px; height: 50px; border:1px solid black">结果</div>
+                    <div style="float:left;width:200px;  height: 50px">
+                        获得标签：<input type="text" name="score1" style="width:50px"><br/>
+                        获得积分：<input type="text" name="score1" style="width:50px"><br/>
+                        获得礼券：<input type="text" name="score1" style="width:50px">
+                        <input type="submit" name="btn" value="+增加奖项">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    /*保存
+     theme:主题
+     description:奖项设置
+     relief:免责声明
+     themePicUrl:主题图片路径
+     themeUrl:主题点击链接
+     options:选项[{
+         optionId:题目编号
+         title:题目
+         type:类型（1单选，2多选，3简答）
+         choose:选项[{
+             chooseID:选项编号
+             chooseName:选项名称
+             choosePicUrl:选项图片路径
+             chooseScore:积分
+             chooseNext:下一题编号或标签(如果没有标签，默认下一题；如果标签为数值，代表跳转题号；如果标签为负数，代表结束end)
+        }]
+         chooseAnswerBySingle:单选题答案
+         answerScore:简答积分
+         answerRange:字数范围{
+         minCount:最小字体
+         maxCount:最大字体
+     }
+     }]
+     */
+
+    window.applyToken = function(){
+        /*
+        $.action('/s/s/s/s/s:save',{},function(err,nut){
+
+
+        })
+        */
+
+        //$.post(url,data,callback,"json");
+
+        $.ajax({
+            type: "POST",
+            url: "/welab/score/addScore:save",
+
+            data:{jsonData:{
+                _id:1,
+                theme:"开心活动缤纷快乐",
+                description:"奖项设置",
+                relief:"免责声明",
+                themePicUrl:"主题图片路径",
+                themeUrl:"/welab/score/addScore",
+                options:[
+                    {optionId:101,
+                    title:"Lavico的中文名称是什么",
+                    type:1,
+                    choose:[{
+                        chooseID:101001,
+                        chooseName:"啦微高",
+                        choosePicUrl:"http://www.ulifu.cn/uploads/allimg/111226/1-1112261A419105.jpg",
+                    },{
+                        chooseID:101002,
+                        chooseName:"郎维高",
+                        choosePicUrl:"http://file.youboy.com/a/70/95/50/2/9807592.jpg",
+                        chooseNext:"2",//没有填写就表示下一题
+                      },{
+                        chooseID:101003,
+                        chooseName:"辣微告",
+                        choosePicUrl:"http://img.taopic.com/uploads/allimg/130203/234692-13020321222383.jpg",
+                        chooseNext:"",
+                    }],
+                    chooseAnswerBySingle:"我们的名字是“郎维高”哦！",
+                    },
+                    {
+                        optionId:102,
+                        title:"Lavico的特点是什么",
+                        type:2,
+                        choose:[{
+                            chooseID:102001,
+                            chooseName:"高品质的服务",
+                            choosePicUrl:"http://www.ulifu.cn/uploads/allimg/111226/1-1112261A419105.jpg",
+                            chooseScore:4,
+                        },{
+                            chooseID:102002,
+                            chooseName:"优秀的团队",
+                            choosePicUrl:"http://www.ulifu.cn/uploads/allimg/111226/1-1112261A419105.jpg",
+                            chooseScore:6,
+                        },{
+                            chooseID:102003,
+                            chooseName:"优良的口碑",
+                            choosePicUrl:"http://www.ulifu.cn/uploads/allimg/111226/1-1112261A419105.jpg",
+                            chooseScore:4,
+                        },{
+                            chooseID:102004,
+                            chooseName:"优雅的环境",
+                            choosePicUrl:"http://www.ulifu.cn/uploads/allimg/111226/1-1112261A419105.jpg",
+                            chooseScore:3,
+                        }],
+                    },
+                    {
+                        optionId:103,
+                        title:"你对我们有什么问题",
+                        type:3,
+                        answerScore:6,
+                        answerRange:{minCount:6,maxCount:10}
+                    }]
+            }}
+           /*
+            data: {
+                abc:{xxx:123,yyy:{
+                   aa:[1,2,3,{
+                       chooseID:102004,
+                       chooseName:"优雅的环境",
+                       choosePicUrl:"http://www.ulifu.cn/uploads/allimg/111226/1-1112261A419105.jpg",
+                       chooseScore:3,
+                   }]
+                }
+                }
+            }
+            */
+        }).done(function(msg){
+                        alert(msg.ret);
+                }
+        );
+    }
+
+ </script>
