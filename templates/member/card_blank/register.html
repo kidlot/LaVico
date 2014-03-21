@@ -10,7 +10,7 @@
 		<select id="month"></select>月  
 		<select id="day"></select>日  <br/>
 	<span>手机</span><input AutoComplete='on' id='mobile' /><br/>
-	<span>验证码</span><input id='id_code' /><br/>
+	<span>验证码</span><input id='id_code' /><input type='button' value='获取验证码' id='get_id_code' /><br/>
 	<br/>
 <input type='button' id='submit' value='提交' />
 <input type='hidden' id='uid' value='{@ uid}'>
@@ -71,6 +71,31 @@ window.onload = function(){
             $("#day").append(str);  
         }  
     }  
+ 
+  var flag = 0;
+  $("#get_id_code").click(function(){
+    if(flag){
+      return false;
+    }
+    flag = 1;
+    checktime = setTimeout(re_get_code,30000);
+    $("#get_id_code").val('稍后再发');
+    $.get('http://dolphin.imagchina.com/lavico/member/card_blank/register:id_code',{
+      },function(data){
+        data = eval('('+data+')');
+        alert(data.result);
+        if(data.result == 'ofen'){
+          alert('请稍后再获取！');
+        }else{
+          alert('验证码发送成功，请在2分钟内输入！');
+        }
+      }
+    );
+  });
+  function re_get_code(){
+    $("#get_id_code").val('获取验证码');
+    flag = 0;
+  }
   
 	$("#submit").click(function(){	
 		if($("#name").val() == ''){
@@ -114,6 +139,8 @@ window.onload = function(){
 			function(data){
 				if(data.issuccessed){
 					alert("恭喜你，注册成功");
+				}else if(data.code_error){
+				  alert("验证码错误");
 				}else{
 				  alert(data.error);
 				}
