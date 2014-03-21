@@ -34,10 +34,10 @@
       if (params.Content === "我要侃价") {
         return helper.db.coll("lavico/bargain").find({
           startDate: {
-            $lt: new Date().getTime()
+            $lte: new Date().getTime()
           },
           stopDate: {
-            $gt: new Date().getTime()
+            $gte: new Date().getTime()
           }
         }).toArray(function(err, doc) {
           var docs, i, _i, _len;

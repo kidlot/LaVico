@@ -90,7 +90,8 @@
         layout: null,
         view: null,
         process: function(seed, nut) {
-          var endTimeStamp, startTimeStamp, where, _docs;
+          var endTimeStamp, startTimeStamp, thisb, where, _docs;
+          thisb = this;
           where = {
             action: "侃价成交"
           };
@@ -149,8 +150,8 @@
               }
             ];
             conf.rows = [];
-            for (i = _i = 0, _len = docs.length; _i < _len; i = ++_i) {
-              o = docs[i];
+            for (i = _i = 0, _len = _docs.length; _i < _len; i = ++_i) {
+              o = _docs[i];
               conf.rows.push([o.user.realname, o.user.mobile, new Date(o.createTime + 60 * 60 * 8 * 1000).toISOString().substr(0, 10), o.data.price, o.product.name]);
             }
             result = nodeExcel.execute(conf);

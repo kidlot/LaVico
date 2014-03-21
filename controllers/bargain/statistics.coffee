@@ -33,7 +33,6 @@ module.exports = {
     )) ;
 
 
-
     #参与人数:
 
     helper.db.coll("lavico/user/logs").aggregate([
@@ -90,6 +89,7 @@ module.exports = {
       view:null,
       process: (seed,nut)->
 
+        thisb = this
 
         where = {action:"侃价成交"}
 
@@ -147,7 +147,7 @@ module.exports = {
 
           conf.rows = [];
 
-          for o,i in docs
+          for o,i in _docs
             conf.rows.push([o.user.realname,o.user.mobile,new Date(o.createTime + 60*60*8*1000).toISOString().substr(0,10), o.data.price, o.product.name])
 
 

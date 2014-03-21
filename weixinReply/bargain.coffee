@@ -32,7 +32,7 @@ exports.load =  ()->
 
       if (params.Content == "我要侃价")
 
-          helper.db.coll("lavico/bargain").find({startDate:{$lt:new Date().getTime()},stopDate:{$gt:new Date().getTime()}}).toArray((err, doc) ->
+          helper.db.coll("lavico/bargain").find({startDate:{$lte:new Date().getTime()},stopDate:{$gte:new Date().getTime()}}).toArray((err, doc) ->
 
             console.log(err) if err
 

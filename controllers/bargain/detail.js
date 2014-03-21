@@ -9,7 +9,7 @@ module.exports = {
 
         if(seed.wxid && seed._id){
 
-            helper.db.coll("lavico/bargain").findOne({startDate:{$lt:new Date().getTime()},stopDate:{$gt:new Date().getTime()},_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
+            helper.db.coll("lavico/bargain").findOne({startDate:{$lte:new Date().getTime()},stopDate:{$gte:new Date().getTime()},_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
             }))
         }else{
