@@ -32,6 +32,52 @@ module.exports = {
 
     )) ;
 
+    # 每天人数
+
+    dateList = []
+
+    day = 60 * 60 * 24 * 1000
+    jsDay = startTimeStamp
+    while ( jsDay < endTimeStamp)
+      dJsDay = new Date(jsDay)
+      dateList.push({
+        title: dJsDay.getFullYear() + "-" + (dJsDay.getMonth()+1) + "-" + dJsDay.getDate()
+      })
+      jsDay = jsDay + day
+
+
+
+    for o in dateList
+      d1 = new Date(o.title + " 00:00:00").getTime();
+      d2 = new Date(o.title + " 23:59:59").getTime();
+
+      ((o)->
+
+
+        #参与人数:
+        helper.db.coll("lavico/user/logs").aggregate([
+          {$match:{action:"侃价",createTime:{$gt:d1,$lt:d2}}},
+          {$group:{_id:"$wxid"}}
+        ],
+          thisb.hold((err,doc)->
+            o.uv1 = if doc then doc.length else 0
+          )
+        )
+
+        #成交人数:
+
+        helper.db.coll("lavico/user/logs").aggregate([
+          {$match:{action:"侃价成交",createTime:{$gt:d1,$lt:d2}}},
+          {$group:{_id:"$wxid"}}
+        ],
+          thisb.hold((err,doc)->
+            o.uv2 = if doc then doc.length else 0
+          )
+        )
+      )(o)
+
+
+
 
     #参与人数:
 
@@ -61,6 +107,7 @@ module.exports = {
     this.step(()->
 
       nut.model.seed = seed
+      nut.model.dateList = dateList
       nut.model.page = _page || {}
     )
 

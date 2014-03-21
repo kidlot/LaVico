@@ -4,7 +4,7 @@
     layout: "welab/Layout",
     view: "lavico/templates/bargain/statistics.html",
     process: function(seed, nut) {
-      var endTimeStamp, startTimeStamp, thisb, where, _page;
+      var d1, d2, dJsDay, dateList, day, endTimeStamp, jsDay, o, startTimeStamp, thisb, where, _fn, _i, _len, _page;
       _page = {};
       thisb = this;
       where = {
@@ -42,6 +42,58 @@
         }
         return _results;
       }));
+      dateList = [];
+      day = 60 * 60 * 24 * 1000;
+      jsDay = startTimeStamp;
+      while (jsDay < endTimeStamp) {
+        dJsDay = new Date(jsDay);
+        dateList.push({
+          title: dJsDay.getFullYear() + "-" + (dJsDay.getMonth() + 1) + "-" + dJsDay.getDate()
+        });
+        jsDay = jsDay + day;
+      }
+      _fn = function(o) {
+        helper.db.coll("lavico/user/logs").aggregate([
+          {
+            $match: {
+              action: "侃价",
+              createTime: {
+                $gt: d1,
+                $lt: d2
+              }
+            }
+          }, {
+            $group: {
+              _id: "$wxid"
+            }
+          }
+        ], thisb.hold(function(err, doc) {
+          return o.uv1 = doc ? doc.length : 0;
+        }));
+        return helper.db.coll("lavico/user/logs").aggregate([
+          {
+            $match: {
+              action: "侃价成交",
+              createTime: {
+                $gt: d1,
+                $lt: d2
+              }
+            }
+          }, {
+            $group: {
+              _id: "$wxid"
+            }
+          }
+        ], thisb.hold(function(err, doc) {
+          return o.uv2 = doc ? doc.length : 0;
+        }));
+      };
+      for (_i = 0, _len = dateList.length; _i < _len; _i++) {
+        o = dateList[_i];
+        d1 = new Date(o.title + " 00:00:00").getTime();
+        d2 = new Date(o.title + " 23:59:59").getTime();
+        _fn(o);
+      }
       helper.db.coll("lavico/user/logs").aggregate([
         {
           $match: {
@@ -70,6 +122,7 @@
       }));
       return this.step(function() {
         nut.model.seed = seed;
+        nut.model.dateList = dateList;
         return nut.model.page = _page || {};
       });
     },
