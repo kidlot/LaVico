@@ -28,10 +28,10 @@
       }
     };
     wechatapi.registerReply(9, function(params, req, res, next) {
-      if ((params.Content === "我要侃价")) {
+      if (params.Content === "我要侃价") {
 
       } else {
-        return {};
+        return next();
       }
     });
     return wechatapi.makeQueue();

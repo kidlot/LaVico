@@ -33,6 +33,23 @@ module.exports = {
             autoclose: true,
             minView: 2
         });
+
+
+        jQuery("#colors").tagsManager({
+            hiddenTagListName: 'colorsVal'
+        });
+        jQuery("#sizes").tagsManager({
+            hiddenTagListName: 'sizesVal'
+        });
+
+
+        $.each($("#colors").attr("dbValue").split(","),function(i,o){
+            $("#colors").tagsManager('pushTag',o);
+        })
+
+        $.each($("#sizes").attr("dbValue").split(","),function(i,o){
+            $("#sizes").tagsManager('pushTag',o);
+        })
     }
 
     , actions: {
@@ -104,12 +121,97 @@ module.exports = {
                 })
             }
         }
+
+        , deal:{
+            process: function(seed,nut){
+
+                this.step(function(){
+                    nut.disable();
+                    var data = JSON.stringify({err:0});
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write(data);
+                    this.res.end();
+                })
+            }
+        }
+        , bargain: {
+
+            process: function(seed,nut){
+
+                var res = {}
+
+                if(seed.clear == "true"){
+
+                    this.req.session._bargain_step = null
+                    this.req.session._bargain_lastTime = null
+
+                    nut.disable();
+                    var data = JSON.stringify({ok:true});
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write(data);
+                    this.res.end();
+
+                    return
+                }
+
+                // step
+                if(!this.req.session._bargain_step){
+                    this.req.session._bargain_step = 1;
+                }
+
+                this.req.session._bargain_lastPrice = seed.price;
+
+                // timeout
+                var timeout = 60 * 10 * 1000
+                if( this.req.session._bargain_lastTime + timeout > new Date().getTime()){
+
+                    res = {err:1,msg:"10分钟内只能侃价一次！"}
+                }
+
+                if(!seed._id){
+                    res = {err:1,msg:"没有_ID"}
+                }
+
+                if(res.err != 1){
+
+                    helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
+                        if(doc){
+
+                            if(this.req.session._bargain_step == 1){
+
+                                res = {err:0,step:1,doc:_bargain(seed.price,doc.minPrice)}
+                                this.req.session._bargain_step = 2;
+
+                            }else if(this.req.session._bargain_step == 2){
+
+                                res = {err:0,step:2,doc:_bargain(seed.price,doc.minPrice)}
+                                this.req.session._bargain_step = 1;
+                                this.req.session._bargain_lastTime = new Date().getTime()
+                            }
+
+
+                        }else{
+                            res = {err:1,msg:"_ID不存在"}
+                        }
+                    }))
+                }
+
+                this.step(function(){
+                    nut.disable();
+                    var data = JSON.stringify(res);
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write(data);
+                    this.res.end();
+                })
+            }
+        }
     }
 }
 
 
-
-
+function _bargain(price,minPrice){
+    return price < parseInt(minPrice) ? "low" : "high";
+}
 
 
 

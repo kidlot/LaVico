@@ -12,12 +12,74 @@ module.exports = {
     layout:null
     ,view: 'lavico/templates/member/card_member/unbind.html'
     ,process:function(seed, nut){
-        var wxid = seed.wxid ? seed.wxid : 'oBf_qJQ8nGyKu5vbnB1_u5okMT6Y';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : '1237';//预先定义微信ID
         nut.model.wxid = wxid ;
         // middleware.APPORBIND 申请，绑定
     }
     ,viewIn:function(){
+        var fourNum;
+        var userTel;
+        var getRandomNum = function(num){
+            //获得一个随机Num位的数
+            var arr =[];
+            for(var i = 1; i <= num; i++){
+                var _num = Math.floor(Math.random()*10);
+                if(_num != 0){
+                    arr.push(Math.floor(Math.random()*10));
+                }else{
+                    arr.push(1);
+                }
+            }
+            var str = arr.join('');
+            return str;
+        }
+        $('#getCaptcha').click(function(){
+            // 向短信接口发送一个手机号码和短信内容，短信内容包括验证码
 
+            userTel = $('#userTel').val();
+            if(userTel ==''){
+                alert('请输入手机号码！');
+                return false;
+            }
+            var reg = /^1[358]\d{9}$/g;
+            if(!reg.test(userTel)){
+                alert('请输入有效的手机号码！');
+            }
+            fourNum = parseInt(getRandomNum(4));
+            $('#userCaptcha').val(fourNum);
+
+            console.log(fourNum);
+        });
+        $('#submit').click(function(){
+
+            var wxid = $('#wxid').val();
+            var member_ID = $('#member_ID').val();
+
+            $.ajax({
+                url:'/lavico/member/card_member/unbind:unlock',
+                type:'POST',
+                dataType:'json',
+                data:{
+                    'wxid':wxid,
+                    'member_ID':member_ID
+                },
+                success:function(data){
+                    var dataJson = data;
+                    if(dataJson['issuccessed'] == 'true'){//dataJson.issuccessed
+                        alert('解绑成功');
+                    }else if (dataJson['issuccessed'] == 'false'){
+                        alert('解绑失败');
+                    }else{
+                        alert('解绑失败，请稍后再尝试');
+                    }
+                    console.log(data);
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+
+        });
     }
     ,actions:{
         unlock:{
@@ -27,15 +89,28 @@ module.exports = {
                 //解除绑定
                 nut.disabled = true ;
                 var wxid = seed.wxid;
-                var userCardNumber = seed.userCardNumber;
-                var userTel = seed.userTel;
-                var returnDoc = this;
+                var member_ID = seed.member_ID;
+                var _this = this;
 
-                // 解除绑定
-                data = '';
-                returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
-                returnDoc.res.write(data);
-                returnDoc.res.end();
+                middleware.request( "/lavico.middleware/MemberUnbind",{
+                    'openid':wxid,
+                    'MEMBER_ID':member_ID,
+                },_this.hold(function(err,doc){
+//  openid=1237&MEMBER_ID=9123084
+//                    helper.db.coll("lavico/bind").insert({
+//                        'createTime':new Date().getTime(),
+//                        'wxid':wxid,
+//                        'userCardNumber':userCardNumber,
+//                        'userTel':userTel,
+//                        'type':'unbind'
+//                    },function(err, doc) {});
+
+                    console.log(doc);
+                    _this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    _this.res.write(doc);
+                    _this.res.end();
+
+                }));
 
             }
         }

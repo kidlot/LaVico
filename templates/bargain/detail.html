@@ -1,32 +1,167 @@
-<div>{@ doc.name}</div>
-        <div>{@ doc.introduction}</div>
-        <div>{@ doc.pic}</div>
-<div>price:{@ doc.price}</div>
-        <div><input type="text" value=""></div>
-        <div><input type="button" value="侃价" onclick="bargain()"></div>
+<div style="position: relative">
+
+    <div style="position: absolute;">
+
+        <div>{@ doc.name}</div>
+        <div>颜色：{@ doc.colors}</div>
+        <div>尺码：{@ doc.sizes}</div>
+        <div><img src="{@ doc.pic}" width="100px"/></div>
+        <div>市场零售价：{@ doc.price}</div>
+        <div><input type="hidden" value="{@ doc._id}" id="_id">
+            <input type="hidden" value="{@ wxid}" id="wxid"></div>
+
+        <div>
+            <if condition="@isTimeOut">
+                <input type="button" value="休息休息，10分钟后才能再侃价" >
+            <else/>
+                <input type="button" value="立即侃价" id="bargainButton" onclick="_step('bargain')">
+            </if>
+        </div>
+
+    </div>
+    <div style="position: absolute; width: 400px; height:400px; top: 0px; left: 0px; background-color: #000000; color: #ffffff; display: none" id="_alert">
+
+        <div id="_win_bargain" class="channel">
+
+            <div>请在下方输入您的心理价位(精确到元，例如1200)</div>
+            <div><input type="text" value="" id="price"></div>
+            <div><input type="button" value="确定" onclick="bargain()"></div>
+        </div>
+
+        <div id="_win_success" class="channel">
+
+            <div>恭喜你成交
+                已经存入您的“专属礼券”
+                点击查看</div>
+            <div><input type="button" value="关闭" onclick="_close()" ></div>
+        </div>
+
+        <!-- STEP1 -->
+        <div id="_win_step1_high" class="channel">
+
+            <div><span class="stepPrice" style="font-size: 24">999</span>元</div>
+            <div>就喜欢和您这种爽气的买家做生意
+                成交</div>
+            <div><input type="button" value="我确认价格，成交" onclick="_step('success')"></div>
+            <div>如果您觉得出价高了
+                可以再重新出价一次
+                不过只有最后一次机会哦</div>
+            <div><input type="button" value="重新出价" onclick="_step('bargain')" ></div>
+        </div>
+
+        <div id="_win_step1_low" class="channel">
+
+            <div><span class="stepPrice" style="font-size: 24">999</span>元</div>
+            <div>您的价格让小朗吐血
+                再加点儿呗
+                不过只有最后一次机会哦</div>
+            <div><input type="button" value="重新出价" onclick="_step('bargain')"></div>
+        </div>
 
 
+        <!-- STEP2 -->
+        <div id="_win_step2_high" class="channel">
+
+            <div><span class="stepPrice" style="font-size: 24">999</span>元</div>
+            <div>就喜欢和您这种爽气的买家做生意
+                成交</div>
+            <div><input type="button" value="我确认价格，成交" onclick="_step('success')"></div>
+            <div>如果您觉得出价高了
+                可以放弃此次机会
+                十分钟以后再来和我侃价</div>
+            <div><input type="button" value="放弃" onclick="giveup()"></div>
+        </div>
+
+        <div id="_win_step2_low" class="channel">
+
+            <div><span class="stepPrice" style="font-size: 24">999</span>元</div>
+            <div>您的价格让小朗心寒的吐血
+                休息一下，有心想买的话10分钟后再来
+                好好出个价</div>
+            <div><input type="button" value="我去休息下" onclick="giveup()"></div>
+        </div>
+
+    </div>
+
+</div>
 <script>
+function giveup(){
+    $("#bargainButton").val("休息休息，10分钟后才能再侃价")
+    $("#bargainButton").attr('onclick',"return false;");
+    _close()
+}
+function _close(){
+    $("#_alert").hide()
+}
+function _step(channelName){
 
-function bargain(){
+    var _func = function(){
 
+        $("#_alert .channel").hide()
+        $("#_win_"+channelName).show()
+        $("#_alert").show()
+    }
+    if(channelName == "success"){
+        deal(function(){
+            $("#bargainButton").val("您已成功侃价，请查看您的“专属礼券”")
+            $("#bargainButton").attr('onclick',"location.href='/lavico/bargain/index';return false;");
+            _func()
+        })
+    }else{
+        _func()
+    }
+}
+
+function deal(cb){
     $.ajax({
-        url:'/lavico/bargain/detail:bargain',
+        url:'/lavico/bargain/form:deal',
         type:'POST',
         data:{
-            'userCardNumber':userCardNumber,
-            'userName':userName,
-            'userTel':userTel
+            '_id':$("#_id").val(),
+            'wxid':$("#wxid").val()
         },
         success:function(data){
-
+            if(data.err == 0){
+                cb()
+            }else{
+                alert(data.msg)
+            }
         },
         error:function(msg){
-            alert(msg);
+            console.log(msg);
         }
     });
 }
 
+function bargain(){
+
+    if(!$("#price").val()){
+        alert("请输入您心目中的价格！")
+        return
+    }
+
+    $.ajax({
+        url:'/lavico/bargain/form:bargain',
+        type:'POST',
+        data:{
+            'price':$("#price").val(),
+            '_id':$("#_id").val()
+        },
+        success:function(data){
+            if(data.err == 0){
+                _step("step"+data.step+'_'+data.doc)
+                $("#_win_step"+data.step+'_'+data.doc).find(".stepPrice").text($("#price").val())
+                $("#price").val("")
+                console.log(data)
+            }else{
+                alert(data.msg)
+            }
+        },
+        error:function(msg){
+            console.log(msg);
+        }
+    });
+}
 
 
 </script>

@@ -27,7 +27,17 @@
         return this.on = false;
       }
     };
+    wechatapi.registerReply(9, function(params, req, res, next) {
+<<<<<<< HEAD
+      if ((params.Content === "我要侃价")) {
+=======
+      if (params.Content === "我要侃价") {
+>>>>>>> 9fa5dc6decf95af5683a12ff798b44f555038c31
 
+      } else {
+        return next();
+      }
+    });
     return wechatapi.makeQueue();
   };
 

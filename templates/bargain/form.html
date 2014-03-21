@@ -8,10 +8,10 @@
         <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
     </div>
         <div class="panel-body" style="background:#f9fafb;">
-            <div class="col-md-5">
-                <img id="showPic" style="width: 300; height: 380" src="{@ doc.pic || '/lavico/public/images/u6.png'}">
+            <div class="col-md-4">
+                <img id="showPic" style="width: 300; height: 380" src="{@ doc.pic || '/lavico/public/images/u6.jpg'}">
             </div>
-            <div class="col-md-7">
+            <div class="col-md-8">
 
                 <div style="padding: 15px">
                     <table cellpadding="10">
@@ -46,9 +46,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>最高价格</th>
+                            <th>剩余数量</th>
                             <td>
-                                <input type="text" id="maxPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.maxPrice}">
+                                <input type="text" id="surplus" class="form-control input-sm postData" style="width: 150px" value="{@ doc.surplus}">
                             </td>
                         </tr>
                         <tr>
@@ -56,6 +56,18 @@
                             <td>
                                 <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." id="pic" onchange="fileSelected();">
                                 &nbsp;<span id="progressNumber"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>颜色</th>
+                            <td>
+                                <input type="text" class="form-control input-sm tm-input tm-input-info" name="colors" id="colors" dbValue="{@ doc.colors}" placeholder="设置多个标签请用'，'或者'回车'分隔" style="width: 230px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>尺码</th>
+                            <td>
+                                <input type="text" class="form-control input-sm tm-input tm-input-info" name="sizes" id="sizes" dbValue="{@ doc.sizes}" placeholder="设置多个标签请用'，'或者'回车'分隔" style="width: 230px;">
                             </td>
                         </tr>
                         <tr>
@@ -81,6 +93,10 @@
 
         <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
         <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+        <link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
+        <script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
+
         <script>
 
             function save ( ){
@@ -104,6 +120,8 @@
                 })
 
                 aFormInput['pic'] = $("#showPic").attr("src")
+                aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
+                aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
 
                 if(_inputCheck){
                     var oLinkOptions = {} ;
