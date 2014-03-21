@@ -164,8 +164,10 @@ module.exports = {
                             //绑定成功之后，跳转到card_member页面
 
                             alert(successTip);
+
                             //MEMBER_ID = returnJson.MEMBER_ID;
                             //window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&MEMBER_ID='+MEMBER_ID;
+
 
                         }else if(returnJson.issuccessed == false){
                             alert(returnJson.error);
@@ -206,14 +208,23 @@ module.exports = {
                                 MEM_PSN_CNAME:userName
                             },_this.hold(function(err,doc){
 
-                                helper.db.coll("lavico/bind").insert({
-                                    'createTime':new Date().getTime(),
-                                    'wxid':wxid,
-                                    'userCardNumber':userCardNumber,
-                                    'userName':userName,
-                                    'userTel':userTel,
-                                    'type':'bind'
-                                },function(err, doc) {});
+                                //记录用户动作
+                                var dataJson = JSON.parse(doc);
+                                console.log(dataJson);
+                                helper.db.coll("lavico/user/logs").insert(
+                                    {
+                                        'createTime':new Date().getTime(),
+                                        'wxid':seed.wxid,
+                                        'userCardNumber':userCardNumber,
+                                        'userName':userName,
+                                        'userTel':userTel,
+                                        'action':"申请绑定",
+                                        'response':dataJson
+                                    },
+                                    function(err, doc){
+                                        console.log(doc);
+                                    }
+                                );
 
                                 _this.res.writeHead(200, { 'Content-Type': 'application/json' });
                                 _this.res.write(doc);

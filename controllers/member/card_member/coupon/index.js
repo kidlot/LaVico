@@ -34,7 +34,7 @@ module.exports = {
                 if (data == {}){
                     this.terminate();
                 }
-                
+
             });
 
             this.step(function(){
@@ -90,6 +90,20 @@ module.exports = {
 
                     nut.model.overdueCoupons = overdueCoupons;//已过期
                     nut.model.overdueCouponsLength = overdueCoupons.length;
+
+                    //记录用户动作
+                    helper.db.coll("lavico/user/logs").insert(
+                        {
+                            'createTime':new Date().getTime(),
+                            'wxid':seed.wxid,
+                            'member_ID':member_id,
+                            'action':"查看专属礼券",
+                            'response':couponData
+                        },
+                        function(err, doc){
+                            console.log(doc);
+                        }
+                    );
 
 
 

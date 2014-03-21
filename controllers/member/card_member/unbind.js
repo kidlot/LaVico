@@ -105,22 +105,29 @@ module.exports = {
                 //解除绑定
                 nut.disabled = true ;
                 var wxid = seed.wxid;
-                var member_ID = seed.member_ID;
+                var member_id = seed.member_ID;
                 var _this = this;
 
                 middleware.request( "/lavico.middleware/MemberUnbind",{
                     'openid':wxid,
-                    'MEMBER_ID':member_ID,
+                    'MEMBER_ID':member_id,
                 },_this.hold(function(err,doc){
-//  openid=1237&MEMBER_ID=9123084
-//                    helper.db.coll("lavico/bind").insert({
-//                        'createTime':new Date().getTime(),
-//                        'wxid':wxid,
-//                        'userCardNumber':userCardNumber,
-//                        'userTel':userTel,
-//                        'type':'unbind'
-//                    },function(err, doc) {});
 
+                    //记录用户动作
+                    var dataJson = JSON.parse(doc);
+                    console.log(dataJson);
+                    helper.db.coll("lavico/user/logs").insert(
+                        {
+                            'createTime':new Date().getTime(),
+                            'wxid':seed.wxid,
+                            'member_ID':member_id,
+                            'action':"解除绑定",
+                            'response':dataJson
+                        },
+                        function(err, doc){
+                            console.log(doc);
+                        }
+                    );
                     console.log(doc);
                     _this.res.writeHead(200, { 'Content-Type': 'application/json' });
                     _this.res.write(doc);
