@@ -12,6 +12,12 @@ module.exports = {
         //nut.disabled = true ;
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         nut.model.wxid = wxid ;
+        this.step(function(){
+            if(wxid == 'undefined'){
+                this.terminate();
+            }
+        });
+
     }
     ,viewIn:function(){
 
@@ -152,6 +158,7 @@ module.exports = {
                         'userCardNumber':userCardNumber,
                         'userName':userName,
                         'userTel':userTel
+
                     }}).done(function(data){
                         /*返回的数据
                         * {"MEMBER_ID":9114883,"issuccessed":true,"error":""}
@@ -198,38 +205,130 @@ module.exports = {
                             var userCardNumber = seed.userCardNumber;
                             var userName = seed.userName;
                             var userTel = seed.userTel;
+                            var returnDoc;//中间件返回的数据,不过它是字符串格式的JSON
+                            var dataJson; //中间件返回的数据,它是原数据转化之后的JSON
 
-                            var _this = this;
+                            this.step(function(){
 
-                            middleware.request( "/lavico.middleware/MemberBind",{
-                                openid:wxid,
-                                MOBILE_TELEPHONE_NO:userTel,
-                                MEM_OLDCARD_NO:userCardNumber,
-                                MEM_PSN_CNAME:userName
-                            },_this.hold(function(err,doc){
+                            //第一步，请求中间件接口
 
-                                //记录用户动作
-                                var dataJson = JSON.parse(doc);
-                                console.log(dataJson);
-                                helper.db.coll("lavico/user/logs").insert(
-                                    {
-                                        'createTime':new Date().getTime(),
-                                        'wxid':seed.wxid,
-                                        'userCardNumber':userCardNumber,
-                                        'userName':userName,
-                                        'userTel':userTel,
-                                        'action':"申请绑定",
-                                        'response':dataJson
-                                    },
-                                    function(err, doc){
-                                        console.log(doc);
+                                middleware.request( "/lavico.middleware/MemberBind",{
+                                    openid:wxid,
+                                    MOBILE_TELEPHONE_NO:userTel,
+                                    MEM_OLDCARD_NO:userCardNumber,
+                                    MEM_PSN_CNAME:userName
+                                },this.hold(function(err,doc){
+
+                                    dataJson = JSON.parse(doc);
+                                    returnDoc = doc;
+                                    console.log(dataJson);
+                                    //记录用户动作
+                                    helper.db.coll("lavico/user/logs").insert(
+                                        {
+                                            'createTime':new Date().getTime(),
+                                            'wxid':seed.wxid,
+                                            'userCardNumber':userCardNumber,
+                                            'userName':userName,
+                                            'userTel':userTel,
+                                            'action':"申请绑定",
+                                            'result':dataJson
+                                        },
+                                        function(err, doc){
+                                            console.log(doc);
+                                        }
+                                    );
+                                    return dataJson;
+                                }));
+
+                            });
+
+//                            this.step(function(dataJson){
+//
+//                            //此步为调试
+//
+//                                if(dataJson.issuccessed == true){
+//                                    //绑定成功
+//                                    console.log('绑定成功');
+//
+//                                }else if(dataJson.issuccessed == false){
+//                                    //绑定失败
+//                                    console.log('会员申请老卡绑定失败');
+//                                    //this.terminate();
+//                                }else{
+//                                    console.log('会员申请老卡绑定失败，可能由于网络原因');
+//                                    //this.terminate();
+//                                }
+//                                console.log('2');
+//                            });
+
+
+                            this.step(function(){
+
+                                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){return doc; }));
+                            });
+
+                            this.step(function(doc){
+
+                                if(dataJson.issuccessed == true){
+                                    //中间件返回的数据如果是绑定成功，则需要更新数据库
+                                    if(!doc){
+                                        //如果找不到此用户，先添加此wxid用户
+                                        helper.db.coll('welab/customers').insert({wechatid:wxid},this.hold(function(err, doc){
+
+                                            console.log(doc);
+                                            helper.db.coll('welab/customers').update({wechatid:wxid},{
+                                                $set:{
+                                                    'realname':userName,
+                                                    'mobile':userTel,
+                                                    'HaiLanMemberInfo':{
+                                                        'createTime':new Date().getTime(),
+                                                        'memberID':dataJson.MEMBER_ID,
+                                                        'action':'bind',
+                                                        'lastModified':new Date().getTime()
+                                                    }
+                                                }
+                                            }, function(err, doc){
+
+                                            });
+
+                                        }));
+                                    }else{
+                                        //找到此用户，直接更新用户信息
+                                        helper.db.coll('welab/customers').update({wechatid:wxid},{
+                                            $set:{
+                                                'realname':userName,
+                                                'mobile':userTel,
+                                                'HaiLanMemberInfo':{
+                                                    'createTime':new Date().getTime(),
+                                                    'memberID':dataJson.MEMBER_ID,
+                                                    'action':'bind'
+                                                }
+                                            }
+                                        },function(err,doc){
+                                            console.log(doc);
+                                        });
+
                                     }
-                                );
 
-                                _this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                                _this.res.write(doc);
-                                _this.res.end();
-                            }));
+                                }else if(dataJson.issuccessed == false){
+
+                                    console.log('会员申请老卡绑定失败');
+
+                                }else{
+
+                                    console.log('会员申请老卡绑定失败，可能由于网络原因');
+
+                                }
+
+                            });
+
+                            this.step(function(){
+                                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                                this.res.write(returnDoc);
+                                this.res.end();
+                            });
+
+
                         //Process End
                         }
                 //Save End

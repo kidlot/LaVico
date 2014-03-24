@@ -35,7 +35,6 @@
  	        绑定状态识别： action 值：bind,unbind<br/>
 		//bind:绑定状态<br/>
 		//unbind:解绑状态<br/>
-		绑定修改时间：lastModified 单位是毫秒<br/>
 		}<br/>
 //字段若有问题，请及时在群里讨论<br/>
 

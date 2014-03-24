@@ -14,42 +14,48 @@ module.exports = {
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
 
-        //wxid ---> member_ID
-
-
-
-
-
-
-        var member_ID = seed.member_ID = '9121535';//海澜会员ID
+        var member_ID  = '9121535';//海澜会员ID
         var _this = this;
         nut.model.wxid = wxid ;
         nut.model.member_ID = member_ID;
 
+
         //接口处理-个人积分接口
-        middleware.request( "/lavico.middleware/Points",{
+        this.step(function(){
+            middleware.request( "/lavico.middleware/Points",{
 
-            'MEMBER_ID':member_ID
+                'MEMBER_ID':member_ID
 
-        },_this.hold(function(err,doc){
+            },_this.hold(function(err,doc){
 
-            console.log(doc);
-            nut.model.doc = doc;
-            var dataType = typeof doc;
-            var dataJson = eval('('+doc+')');
-            console.log(dataType);
-            console.log(dataJson);
-
-            nut.model.remaining = dataJson.remaining;//当前积分
-            nut.model.level = dataJson.level;//当前会员卡类型
-
-
-            nut.model.wxopenid = this.req.session.wxopenid;
-            console.log(this.req.session);
-            nut.model.log = dataJson.log;//当前会员的积分记录
+                var dataJson = eval('('+doc+')');
+                console.log(dataJson);
+                nut.model.remaining = dataJson.remaining;//当前积分
+                nut.model.level = dataJson.level;//当前会员卡类型
+                nut.model.log = dataJson.log;//当前会员的积分记录
+                return dataJson;
+            }));
+        });
 
 
-        }));
+        this.step(function(dataJson){
+
+            //记录用户动作
+            helper.db.coll("lavico/user/logs").insert(
+                {
+                    'createTime':new Date().getTime(),
+                    'wxid':seed.wxid,
+                    'member_ID':member_ID,
+                    'action':"查看积分明细",
+                    'response':dataJson
+                },
+                function(err, doc){
+                    console.log(doc);
+                }
+            );
+        });
+
+
 
     },
     viewIn:function(){
