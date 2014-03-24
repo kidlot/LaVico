@@ -5,10 +5,6 @@
   "main": "index.js",
   "dependencies": {
     "opencomb": "*",
-<<<<<<< HEAD
-    "lavico": "*"
-=======
     "welab": "*"
->>>>>>> b7589ca29fed154329f1eaef1c87355a7dd8b09d
   }
 }

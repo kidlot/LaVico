@@ -1,11 +1,15 @@
-<<<<<<< HEAD
-//微信调用
-var wechatapi = require("welab/lib/wechat-api.js") ;
-//事件队列
+var wechatutil = require("welab/controllers/wechat-api/util.js") ;
+var bargain = require("./weixinReply/bargain.js") ;
+var member_apply = require("./weixinReply/apply.js") ;
 var aSteps = require("./lib/aSteps.js");
 
-exports.onload=function(application){
-    //微信入口
+exports.onload = function(application){
+
+
+    // 我要侃价
+    bargain.load()
+	member_apply.load();
+
     wechatapi.registerReply(9,function(msg,req,res,next){
         //如果
         if (msg.MsgType == "text" && msg.Content=="lv") {
@@ -35,7 +39,7 @@ exports.onload=function(application){
                     return eval(doc).length;
                 });
             //console.log(util.insertGetScore());
-                res.reply("进入录入选项");
+            res.reply("进入录入选项");
         }else{
             next();
         }
@@ -65,18 +69,6 @@ exports.onload=function(application){
 
         }
     });
-}
-=======
-var wechatutil = require("welab/controllers/wechat-api/util.js") ;
-var bargain = require("./weixinReply/bargain.js") ;
-var member_apply = require("./weixinReply/apply.js") ;
-
-exports.onload = function(application){
-
-
-    // 我要侃价
-    bargain.load()
-	member_apply.load();
 
     /**
      * reply list
@@ -108,5 +100,3 @@ exports.onload = function(application){
 
 
 }
-
->>>>>>> b7589ca29fed154329f1eaef1c87355a7dd8b09d
