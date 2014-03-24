@@ -83,6 +83,7 @@ window.onload = function(){
     $.get('http://dolphin.imagchina.com/lavico/member/card_blank/register:id_code',{
       },function(data){
         data = eval('('+data+')');
+        alert(data.result);
         if(data.result == 'ofen'){
           alert('请稍后再获取！');
         }else{
@@ -136,6 +137,9 @@ window.onload = function(){
 				id_code : $("#id_code").val()
 			},
 			function(data){
+			  alert(data);
+			  data = eval(data);
+			  alert(data);
 				if(data.issuccessed){
 					alert("恭喜你，注册成功");
 				}else if(data.code_error){

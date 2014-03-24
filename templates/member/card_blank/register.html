@@ -137,6 +137,9 @@ window.onload = function(){
 				id_code : $("#id_code").val()
 			},
 			function(data){
+			  alert(data);
+			  data = eval("("+data+")");
+			  alert(data);
 				if(data.issuccessed){
 					alert("恭喜你，注册成功");
 				}else if(data.code_error){

@@ -12,19 +12,12 @@ module.exports = {
 				nut.disabled = true ;
 				var returnDoc = this;
 				this.step(function(){
-				  if(!this.req.session.id_code || (set_id_code_time + 60000) < new Date().getTime() || nut.id_code != this.req.session.id_code){
-				    console.log('aa');
-            returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
-            returnDoc.res.write("{result:'code_error'}");
+				  if(!this.req.session.set_id_code_time || (this.req.session.set_id_code_time + 60000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
+            returnDoc.res.writeHead(200, { 'Content-Type': 'text/plain' });
+            returnDoc.res.write("{code_error:'id_code_error'}");
             returnDoc.res.end();
-            returnDoc.terminate();				  
-				  }else{
-				    console.log('aa');
-            returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
-            returnDoc.res.write("{result:'aa'}");
-            returnDoc.res.end();
-            returnDoc.terminate();						  
-				  }
+            returnDoc.terminate();
+          }
 				});
 				
 				this.step(function(){
@@ -47,13 +40,12 @@ module.exports = {
                   type:1,         //普通会员卡
                   action:1       // 申请  
               },this.hold(function(err, insert_doc) {
-                console.log(err);
-                returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
+                returnDoc.res.writeHead(200, { 'Content-Type': 'text/plain' });
                 returnDoc.res.write(doc);
                 returnDoc.res.end();           
               }));					    
 					  }else{
-              returnDoc.res.writeHead(200, { 'Content-Type': 'application/json' });
+              returnDoc.res.writeHead(200, { 'Content-Type': 'text/plain' });
               returnDoc.res.write(doc);
               returnDoc.res.end();			    
 					  }

@@ -1,0 +1,14 @@
+<script>
+ window.onload=function(){
+    var data={@jsonReply};
+    for(var o in data){
+        stringConn="<tr><td>"+data[o].theme+"</td><td>"+data[o].createTime+"</td><td>"+data[o].themeCount+"</td><td>0</td><td>0</td><td><a href=recordScore?_id="+data[o]._id+"&optionID=1&chooseNext=1>浏览</a></td></tr>";
+        $(".lineDef").append(stringConn);
+    }
+ }
+</script>
+
+<table border="1" class="lineDef">
+    <tr><td>试卷名称</td><td>创建时间</td><td>题目数</td><td>参与人数</td><td>完成人数</td><td>操作</td></tr>
+
+</table>

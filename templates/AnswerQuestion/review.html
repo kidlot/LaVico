@@ -1,0 +1,97 @@
+<script>
+function build(){
+    var jsonObject=JSON.parse('{@option}');
+    var _id='{@themeId}';
+    var optionCount={@optionCount};
+
+    $(".title").append(jsonObject.title);
+    if(jsonObject.type==2){
+        $(".content").append("<textarea cols='30' rows='5' name='descContent'></textarea>");
+    }
+    else{
+        for(var j=0;j<jsonObject.choose.length;j++){
+            //判断是否有图片
+            if(jsonObject.choose[j].uploadFile==""){
+                if(jsonObject.type==0){//单选
+                    //显示题目  value为"题号+选项编号+积分+下一题编号"或者“题号+选项编号+积分+标签”
+                    $(".content ul").append("<li><input type='radio' name='radio' class='single' value='"+jsonObject.optionId+"+"+jsonObject.choose[j].chooseID+"+"+jsonObject.choose[j].chooseScore+"+"+jsonObject.choose[j].chooseNext+"'>"+jsonObject.choose[j].chooseName+"</li>");
+                }else if(jsonObject.type==1){//复选
+                    $(".content ul").append("<li><input type='checkbox' name='chk' value='"+jsonObject.optionId+"+"+jsonObject.choose[j].chooseID+"+"+jsonObject.choose[j].chooseScore+"+"+jsonObject.choose[j].chooseNext+"'>"+jsonObject.choose[j].chooseName+"</li>");
+                }
+            }else{
+                if(jsonObject.type==0){
+                    $(".content ul").append("<li><input type='radio' name='radio' class='single' value='"+jsonObject.optionId+"+"+jsonObject.choose[j].chooseID+"+"+jsonObject.choose[j].chooseScore+"+"+jsonObject.choose[j].chooseNext+"'>"+jsonObject.choose[j].chooseName+"<img src='"+jsonObject.choose[j].uploadFile+"' name='radioimg' width='100' height='100'></li>");
+                }else if(jsonObject.type==1){
+                    $(".content ul").append("<li><input type='checkbox' name='chk' value='"+jsonObject.optionId+"+"+jsonObject.choose[j].chooseID+"+"+jsonObject.choose[j].chooseScore+"+"+jsonObject.choose[j].chooseNext+"'>"+jsonObject.choose[j].chooseName+"<img src='"+jsonObject.choose[j].uploadFile+"' width='100' height='100' name='chkimg'></li>");
+                }
+            }
+        }
+    }
+    //finish btn or next btn
+    if(jsonObject.optionId<optionCount){
+        $('.btn').append('<input type="button" name="next" value="下一题" onclick="nextChoose()">');
+    }else
+    {
+        $('.btn').append('<input type="button" name="next" value="完成" onclick="finish()">');
+    }
+}
+
+function nextChoose(){
+    var value=0;
+    var valueArr="";
+    var scoreAll=0;
+    if($(".content").find("textarea")>0){//description
+        var content=$("textarea[name='descContent']").val();
+        //record score and trac
+        //record answer
+        location.href="/lavico/AnswerQuestion/SimpleQuestion?_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+value;
+    }else if($("input[name='radio']")>0){//single
+        //record score and trace
+        value=$("input[name='radio']:checked").val();
+        valueArr=value.split('+');
+        location.href="/lavico/AnswerQuestion/record?type=0&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3];
+    }else if($("input[name='chk']:checked")>0){//mutil
+        $("input[name='chk']:checked").each(function(){
+            value=$(this).val();
+            valueArr=value.split('+');
+            if(!isNaN(parseInt(valueArr[2])))
+                scoreAll+=parseInt(valueArr[2]);//累计选项积分
+        }
+        location.href="/lavico/AnswerQuestion/record?type=1&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+scoreAll+"&chooseNext="+valueArr[3];
+    }
+}
+
+function finish(){
+    if(jsonObject.type==2){
+        var content=$("textarea[name='descContent']").val();
+        location.href="/lavico/AnswerQuestion/finish?type=2&optionId="+jsonObject.optionId+"&_id="+_id+"score="+jsonObject.chooseScore+"&chooseNext="+jsonObject.chooseNext;
+    }else{
+
+        if($("input[name='radio']")>0){//single
+            //record score and trace
+            value=$("input[name='radio']:checked").val();
+            valueArr=value.split('+');
+            location.href="/lavico/AnswerQuestion/finish?type=0&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3];
+        }else if($("input[name='chk']:checked")>0){//mutil
+            $("input[name='chk']:checked").each(function(){
+                value=$(this).val();
+                valueArr=value.split('+');
+                if(!isNaN(parseInt(valueArr[2])))
+                    scoreAll+=parseInt(valueArr[2]);//累计选项积分
+            }
+            location.href="/lavico/AnswerQuestion/finish?type=1&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+scoreAll+"&chooseNext="+valueArr[3];
+        }
+
+    }
+}
+
+window.onload=build;
+</script>
+<div>
+    题目名称:<span class="title">&nbsp;</span>
+    <div class="content">
+        <ul style="list-style: none">
+        </ul>
+    </div>
+    <span class="btn"></span>
+</div>

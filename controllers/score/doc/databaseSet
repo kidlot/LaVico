@@ -1,0 +1,70 @@
+themeQuestion(主题问题表)
+_id:表编号
+theme:主题
+description:奖项设置
+relief:免责声明
+themePicUrl:主题图片路径
+themeUrl:主题点击链接
+options:选项[{
+        optionId:题目编号
+        title:题目
+        type:类型（0单选，1多选，2简答）
+        choose:选项[{
+            chooseID:选项编号
+            chooseName:选项名称
+            choosePicUrl:选项图片路径
+            chooseScore:积分
+            chooseNext:下一题编号或标签(如果没有标签，默认下一题；如果标签为数值，代表跳转题号；如果标签为负数，代表结束end)
+        }]
+        //chooseAnswerBySingle:单选题答案
+        answerScore:简答积分
+        answerRange:字数范围{
+            minCount:最小字体
+            maxCount:最大字体
+        }
+    }]
+scoreGift(积分换物品表)
+_id：表编号
+//optionId:题目编号
+themeId:主题编号
+conditionLabel:条件标签(用数值设置标签，如-1：代表“获得xx”填写)
+scoreMinMax{[
+    conditionMinScore:条件最低分,
+    conditionMaxScore:条件最高分,
+    getLabel:获得标签
+    getScore:获得积分
+    getGift:获得活动ID]
+    }
+
+custReceive(客户换购表)
+_id:表编号
+custId:客户编号
+themeId:主题编号
+isFinish:是否完成(没完成，表示参与人数。完成表示完成人数)
+getScore:获得积分
+getLabel:获得标签
+getGift:获得礼券
+createTime:创建时间
+receiveTime:领取时间
+
+custAnswerResult(客户主观题解答)
+_id:表编号
+custId:客户编号
+optionId:题目编号
+resultValue:回答结果
+
+/*
+获取用户ID和主题编号，（积分标签）类别积分标签
+
+进入“scoreGift”表 根据用户ID查找活动ID
+
+类别编号
+1.传入积分根据范围，查找标签和积分
+2.传入标签，查找积分
+3.传入分数，分数到了，查找积分
+
+
+将 客户编号，主题编号，获得积分/获得标签/获得礼券，存入“custReceive”
+
+获得活动
+*/
