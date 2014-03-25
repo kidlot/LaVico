@@ -1,17 +1,14 @@
 <script type="text/javascript">
-
-
-
 var jsonObject=JSON.parse('{@option}');
 var _id='{@_id}';
 var optionCount={@optionCount};
+var wechatid='{@wechatid}';
 
 function build(){
 $(".title").append(jsonObject.title);
 if(jsonObject.type==2){
     $(".content").append("<textarea cols='30' rows='5' name='descContent'></textarea>");
 }else{
-
             //判断是否有图片
             for(var i=0;i<jsonObject.choose.length;i++){
             	if(jsonObject.choose[i].uploadFile=="" || jsonObject.choose[i].uploadFile=="undefined"){
@@ -30,9 +27,9 @@ if(jsonObject.type==2){
             	}else{//exists photo
             		if(jsonObject.type==0){//simgleChoose
                     	//show  value:"题号+选项编号+积分+下一题编号"或者“题号+选项编号+积分+标签”
-                    	$(".content ul").append("<li><input type='radio' name='singleChooseInput' class='single' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"<img src='"+jsonObject.choose[i].uploadFile+"' name='radioimg' width='100' height='100'></li>");
+                    	$(".content ul").append("<li><input type='radio' name='singleChooseInput' class='single' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='"+jsonObject.choose[i].uploadFile+"' name='radioimg' width='100' height='100'></li>");
                 	}else if(jsonObject.type==1){//mutilChoose
-                    	$(".content ul").append("<li><input type='checkbox' name='mutilChooseInput' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"<img src='"+jsonObject.choose[i].uploadFile+"' name='chkimg' width='100' height='100'></li>");
+                    	$(".content ul").append("<li><input type='checkbox' name='mutilChooseInput' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='"+jsonObject.choose[i].uploadFile+"' name='chkimg' width='100' height='100'></li>");
                     }
             	}
         	}
@@ -50,13 +47,13 @@ if(jsonObject.type==2){
 function finish(){
     if(jsonObject.type==2){
         var content=$("textarea[name='descContent']").val();
-        location.href="/lavico/answerQuestion/simpleQuestion?finish=true&score="+jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content;
+        location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&finish=true&score="+jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content;
     }else{
         if($("input[name='singleChooseInput']")>0){//single
             //record score and trace
             value=$("input[name='singleChooseInput']:checked").val();
             valueArr=value.split('+');
-            location.href="/lavico/answerQuestion/record?finish=true&type=0&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3];
+            location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=0&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3];
         }else if($("input[name='mutilChooseInput']:checked").length>0){//mutil
            $("input[name='chk']:checked").each(function(){
                 value=$(this).val();
@@ -64,7 +61,7 @@ function finish(){
                 if(!isNaN(parseInt(valueArr[2])))
                     score+=parseInt(valueArr[2]);//累计选项积分
             });
-            location.href="/lavico/answerQuestion/record?finish=true&type=1&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+score+"&chooseNext="+valueArr[3];
+            location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=1&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+score+"&chooseNext="+valueArr[3];
         }
 
     }

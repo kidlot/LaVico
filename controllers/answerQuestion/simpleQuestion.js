@@ -10,7 +10,7 @@ module.exports={
     	var _id=seed._id;
         var optionId=seed.optionId;
         var receiveAnswer=seed.receiveAnswer;
-        var custId="cust101";
+        var wechatid=seed.wechatid;
         var score=seed.score;
 
         //字数判断
@@ -28,7 +28,7 @@ module.exports={
                         helper.db.coll("lavico/custAnswerResult").insert(
                         {
                             "themeId":helper.db.id(_id),
-                            "custId":custId,
+                            "wechatid":wechatid,
                             "optionId":optionId,
                             "resultValue":receiveAnswer
                         },function(err,doc){
@@ -42,7 +42,7 @@ module.exports={
                                 //update score
                                 if(doc){
                                     helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),
-                                            "isFinish":false,"custId":custId,"optionId":parseInt(optionId)},
+                                            "isFinish":false,"wechatid":wechatid,"optionId":parseInt(optionId)},
                                         {$set:{"getScore":parseInt(score)}},function(err,doc){});
                                 }else{
                                     //session
@@ -51,7 +51,7 @@ module.exports={
                                     console.log("simpleQuestion:"+then.req.session.scoreAll);
                                     //不存在录入
                                     helper.db.coll("lavico/custReceive").insert({
-                                        "custId": custId,
+                                        "wechatid": wechatid,
                                         "themeId": helper.db.id(_id),
                                         "isFinish": false,
                                         "optionId": parseInt(optionId),
@@ -76,11 +76,11 @@ module.exports={
 
                         //判断是否为最后一题
                         if(seed.finish){
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?flag=true&_id="+_id+"&optionId="+optionId});
+                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+"&flag=true&_id="+_id+"&optionId="+optionId});
                             this.res.end();
                         }else{
                             //go to next option
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?optionId="+(parseInt(optionId)+1)+"&_id="+_id});
+                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+wechatid+"&optionId="+(parseInt(optionId)+1)+"&_id="+_id});
                             this.res.end();
                         }
                     }else{

@@ -1,5 +1,5 @@
 module.exports={
-	layout:null,
+	layout:"welab/layout",
     view:"lavico/templates/answerQuestion/themeList.html",
     	process:function(seed,nut){
         then = this;

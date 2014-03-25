@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html> 
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="/lavico/public/css/global.css" type="text/css" />
+<script src="/lavico/public/js/saveTheme.js" type="text/javascript"></script>
+<script src="/lavico/public/js/add.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<header id="header">
+    <input type="button" value="放弃" class="but_1" />
+    <input type="button" value="保存" class="but_2" />
+</header>
+<div id="main">
+    <h2>基础设置</h2>
+    <div class="page">
+        <label class="label">试卷名：</label><input type="text" value="" placeholder="输入文本..." class="name" />
+        <div>
+            <div>开始时间:<input type="text" name="beginTime"></div>
+            <div>结束时间:<input type="text" name="endTime"></div>
+            <div>开关
+                <select name="isOpen">
+                    <option value="0">关</option>
+                    <option value="1" selected="selected">开</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <h2>题目设置</h2>
+    <div class="add_topic_page1">
+        <div class="page page_2">
+            <h3>第<em class="question_num">1</em>题</h3>
+            <label class="label">题目：</label><input type="text" value="" placeholder="输入文本..." class="name" />
+            <div class="option">
+                <label class="label">选项：</label><select class="select">
+                    <option value="0">单选题</option>
+                    <option value="1">多选题</option>
+                    <option value="2">主观题</option>
+                </select>               
+            </div>
+            <div class="grouping">
+                <div class="topic">
+                    <span class="head_1">分值</span>
+                    <span class="head_2">下一步</span>
+                    <ul class="topic_list">
+                        <li>
+                            <div class="groupTitle">A.</div>
+                            <div class="groupContent">
+                                <span class="groupText padd_bom">
+                                    <input type="text" class="groupText_1" id="t11"/>
+                                    <input type="text" class="groupText_2" id="s11" />
+                                    <input type="text" class="groupText_3" id="x11" />
+                                </span>
+                                <span class="uploading">
+                                    <input type="text" name="uploadFile" class="uploadFile"/>
+                                    <input type="file" name="file" class="file"  onchange="fileSelected(this)"/>
+                                    <span class="alert file_box" style="display:block">
+                                        <img class="media-object" style="width: 64px; height: 64px;" src="/node_modules/welab/public/defaultPic.png">
+                                        <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                    </span>
+
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="groupTitle">B.</div>
+                            <div class="groupContent">
+                                <span class="groupText padd_bom">
+                                    <input type="text" class="groupText_1" id="t12"/>
+                                    <input type="text" class="groupText_2" id="s12"/>
+                                    <input type="text" class="groupText_3" id="x12"/>
+                                </span>
+                                <span class="uploading">
+                                    <input type="text" name="uploadFile" class="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this);"/>
+                                    <span class="alert file_box" style="display:block">
+                                        <img class="media-object" style="width: 64px; height: 64px;" src="/node_modules/welab/public/defaultPic.png">
+                                        <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="groupTitle"><span class='lal'>C.</span><a href="javascript:void(0)" class="remove">x</a></div>
+                            <div class="groupContent">
+                                <span class="groupText padd_bom">
+                                    <input type="text" class="groupText_1" />
+                                    <input type="text" class="groupText_2"/>
+                                    <input type="text" class="groupText_3"/>
+                                </span>
+                                <span class="uploading">
+                                    <input type="text" name="uploadFile" class="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this);"/>
+                                    <span class="alert file_box" style="display:block">
+                                        <img class="media-object" style="width: 64px; height: 64px;" src="/node_modules/welab/public/defaultPic.png">
+                                        <span><a href="javascript:;" onclick="delPic(this)">删除</a></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="groupTitle"><span class='lal'>D.</span><a href="javascript:void(0)" class="remove">x</a></div>
+                            <div class="groupContent">
+                                <span class="groupText padd_bom">
+                                    <input type="text" class="groupText_1" />
+                                    <input type="text" class="groupText_2" />
+                                    <input type="text" class="groupText_3" />
+                                </span>
+                                <span class="uploading">
+                                    <input type="text" name="uploadFile" class="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this);"/>
+                                    <span class="alert file_box" style="display:block">
+                                        <img class="media-object" style="width: 64px; height: 64px;" src="/node_modules/welab/public/defaultPic.png">
+                                        <span><a href="javascript:;" onclick="delPic(this)">删除</a></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="javascript:void(0)" class="add_option" id="option0"><b>+</b>添加选项（最多6项）</a>
+                </div>
+                <div class="topic more" style="display:none">
+                    <span class="head_1">分值</span>
+                    <ul>
+                        <li>
+                            <div class="groupTitle">A.</div>
+                            <div class="groupContent">
+                                <span class="groupText padd_bom">
+                                 <input type="text" class="groupText_1" />
+                                    <input type="text" class="groupText_2" />
+                                </span>
+                                <span class="uploading">
+                                    <input type="text" name="uploadFile" class="uploadFile" />
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this);"/>
+                                    <span class="alert file_box" style="display:block">
+                                        <img class="media-object" style="width: 64px; height: 64px;" src="/node_modules/welab/public/defaultPic.png">
+                                        <span><a href="javascript:;" onclick="delPic(this)">删除</a></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="groupTitle">B.</div>
+                            <div class="groupContent">
+                                <span class="groupText padd_bom">
+                                    <input type="text" class="groupText_1" />
+                                    <input type="text" class="groupText_2" />
+                                </span>
+                                <span class="uploading">
+                                    <input type="text" name="uploadFile" class="uploadFile" />
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this);"/>
+                                    <span class="alert file_box" style="display:block">
+                                        <img class="media-object" style="width: 64px; height: 64px;" src="/node_modules/welab/public/defaultPic.png">
+                                        <span><a href="javascript:;" onclick="delPic(this)">删除</a></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="groupTitle"><span class='lal'>C.</span><a href="javascript:void(0)" class="remove">x</a></div>
+                            <div class="groupContent">
+                                <span class="groupText padd_bom">
+                                    <input type="text" class="groupText_1" />
+                                <input type="text" class="groupText_2" />
+                                </span>
+                                <span class="uploading">
+                                    <input type="text" name="uploadFile" class="uploadFile" />
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this);"/>
+                                    <span class="alert file_box alert-success picView" style="display:block">
+                                        <img class="media-object" style="width: 64px; height: 64px;" src="/node_modules/welab/public/defaultPic.png">
+                                        <span><a href="javascript:;" onclick="delPic(this)">删除</a></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="groupTitle"><span class='lal'>D.</span><a href="javascript:void(0)" class="remove">x</a></div>
+                            <div class="groupContent">
+                                <span class="groupText padd_bom">
+                                    <input type="text" class="groupText_1" />
+                                    <input type="text" class="groupText_2" />
+                                </span>
+                                <span class="uploading">
+                                    <input type="text" name="uploadFile" class="uploadFile" />
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this);"/>
+                                    <span class="alert file_box" style="display:block">
+                                        <img class="media-object" style="width: 64px; height: 64px;" src="/node_modules/welab/public/defaultPic.png">
+                                        <span><a href="javascript:;" onclick="delPic(this)">删除</a></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="javascript:void(0)" class="add_option" id="option_more0"><b>+</b>添加选项（最多6项）</a>
+                </div>
+                <div class="topic single" style="display:none">
+                    <span class="h25 padd_bom">
+                        <label>分值：</label><input type="text" value="0" class="w60" name="gegt"/>
+                    </span>
+                    <span class="h25">
+                        <label>字数限制：</label><input type="text" value="0" class="w60" name="gegtMinLen"/>~<input name="gegtMaxLen" type="text" value="0" class="w60" />
+                    </span>
+                </div>
+            </div>          
+    </div>
+    </div>
+    <a href="javascript:void(0)" class="add_topic" id="add_title"><b>+</b>添加题目</a>
+    <h2>奖项设置</h2>
+    <div class="add_topic_page2" id="pageAw0">
+        <div class="page page_3">
+            <h3>奖项1：</h3>
+            <div class="awardsCon">
+                <span class="awardsTitle">条件</span>
+                <span class="awardsRight">
+                    <span class="h25 padd_bom">
+                        <label>分值：</label><input type="text" value="0" class="w28" />~<input type="text" value="0" class="w28" />
+                    </span>
+                    <span class="h25">
+                        <label>标签：</label><input type="text" value="" class="w100" placeholder="输入标签" />
+                    </span>
+                </span>
+            </div>
+            <div class="awardsCon">
+                <span class="awardsTitle h100">结果</span>
+                <span class="awardsRight">
+                    <span class="h25 padd_bom">
+                        <label>获得标签：</label><input type="text" value="" class="w100" placeholder="输入标签" />
+                    </span>
+                    <span class="h25 padd_bom">
+                        <label>获得积分：</label><input type="text" value="" class="w100" placeholder="输入标签" />
+                    </span>
+                    <span class="h25">
+                        <label>获得礼券：</label><input type="text" value="" class="w310" placeholder="输入标签" />
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <a href="javascript:void(0)" class="add_topic" id="add_awards"><b>+</b>添加奖项</a>
+</div>
+<footer id="footer"></footer>
+
+</body>
+</html>

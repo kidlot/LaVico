@@ -6,7 +6,7 @@ module.exports={
         var then=this;
     	var _id=seed._id;
     	var opptionId=seed.optionId;
-    	var custId="cust101";
+    	var wechatid=seed.wechatid;
         //console.log(this.req.session.scoreAll);
     	var scoreAll=this.req.session.scoreAll;
         console.log("log:"+seed.flag);

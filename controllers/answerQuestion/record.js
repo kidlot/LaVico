@@ -9,21 +9,18 @@ module.exports={
         var chooseId=seed.chooseId;
         var score=seed.score;
         var chooseNext=seed.chooseNext;
-        var custId="cust101";
+        var wechatid=seed.wechatid;
         var finish=seed.finish;
         var mutilFlag=false;
         //single or mutil: isNum
 
-
-        console.log("chooseNext:"+chooseNext);
-
         if(!isNaN(parseInt(score))){
         	//number
-        	helper.db.coll("lavico/custReceive").findOne({"themeId":helper.db.id(_id),"isFinish":false,"custId":custId,"optionId":parseInt(optionId)},this.hold(function(err,doc){
+        	helper.db.coll("lavico/custReceive").findOne({"themeId":helper.db.id(_id),"isFinish":false,"wechatid":wechatid,"optionId":parseInt(optionId)},this.hold(function(err,doc){
                 if(err)throw err;
                 //update score
                 if(doc!=null){
-                    helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"isFinish":false,"custId":custId,"optionId":parseInt(optionId)},
+                    helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"isFinish":false,"wechatid":wechatid,"optionId":parseInt(optionId)},
                         {$set:{"getScore":parseInt(score)}},function(err,doc){});
                 }
                 else{
@@ -82,7 +79,7 @@ module.exports={
 
                 for(var i=0;i<choArr.length;i++){
                     helper.db.coll("lavico/custReceive").insert({
-                            "custId": custId,
+                            "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
                             "isFinish": true,
                             "optionId": parseInt(optionId),
@@ -110,7 +107,7 @@ module.exports={
 
           if(mutilFlag){
               helper.db.coll("lavico/custReceive").insert({
-                  "custId": custId,
+                  "wechatid": wechatid,
                   "themeId": helper.db.id(_id),
                   "isFinish": false,
                   "optionId": parseInt(optionId),

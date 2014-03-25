@@ -5,6 +5,7 @@ module.exports={
     	var _id=seed._id;
         var optionId=seed.optionId;
     	var beginTime="",endTime="",isOpen="";
+        var wechatid=seed.wechatid;
     	//判断活动是否开启或到期
     	this.step(function(){
         //判断活动是否开启或到期
@@ -36,6 +37,8 @@ module.exports={
        }
 
       });
+
+     nut.model.wechatid=wechatid;
   }
 }
 function createTime(){
