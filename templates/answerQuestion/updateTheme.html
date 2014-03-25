@@ -1,0 +1,113 @@
+<script>
+var themeDoc=JSON.parse('{@themeDoc}');
+function initForm(){
+	//themeDic
+	$('input[name=themeName]').val(themeDoc.theme);
+	$('input[name=beginTime]').val(themeDoc.beginTime);
+	$('input[name=endTime]').val(themeDoc.endTime);
+	$('select[name=isOpen]').val(themeDoc.isOpen);
+
+	//添加奖项
+	for(var i=0;i<themeDoc.scoreMinMax.length;i++){
+		//alert(themeDoc.scoreMinMax[i].conditionMinScore);
+		$('div[name=hiddenScoreMinMaxOne]:hidden input[name=conditionMinScore]').val(themeDoc.scoreMinMax[i].conditionMinScore);
+		
+		$('div[name=scoreMinMax]').prepend($('div[name=hiddenScoreMinMaxOne]:hidden').html());
+		$('div[name=scoreMinMax] div[name=hiddenScoreMinMaxOne]').show();
+	}
+}
+
+window.onload=initForm;
+</script>
+<style>
+.borderLine{
+	border:1px solid black
+}
+.chooseSty{
+	list-style:none;
+	line-height:60px;
+}
+</style>
+<div name='container'>
+<h1>Lavico答题抢积分</h1>
+<h2>基础设置</h2>
+<div name='themeDic'>
+  题目：<input type='text' name='themeName'>
+  是否开启:<select name='isOpen'>
+				<option value='0'>关</option>
+				<option value='1'>开</option>
+			 </select><br/>
+  开始时间:<input type='text' name='beginTime'>
+  结束时间:<input type='text' name='endTime'><br/>
+ 
+</div>
+<h2>题目设置</h2>
+<div name='optionSet'>
+	<div name='oneOption' class='borderLine'>
+		第1题<br/>
+		选项名称:<input type='text' name='title'>
+		选项类型:<select name='type'>
+					<option value='0'>单选题</option>
+					<option value='1'>复选题</option>
+					<option value='2'>简单题</option>
+				</select><br/>
+		 <ul name='choose' class='chooseSty'>
+		 	<li>
+		 		<div name='chooseOne'>
+		 			<input type='hidden' name='chooseID'>
+		 			A<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:<input type="file" name="uploadFile" class="file"  onchange="fileSelected(this)"/>
+		 		</div>
+		 	</li>
+		 	<li>
+		 		<div name='chooseOne'>
+		 			<input type='hidden' name='chooseID'>
+		 			B<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:<input type="file" name="uploadFile" class="file"  onchange="fileSelected(this)"/>
+		 		</div>
+		 	</li>
+		 	<li>
+		 		<div name='chooseOne'>
+		 			<input type='hidden' name='chooseID'>
+		 			C<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:<input type="file" name="uploadFile" class="file"  onchange="fileSelected(this)"/>
+		 		</div>
+		 	</li>
+		 	<li>
+		 		<div name='chooseOne'>
+		 			<input type='hidden' name='chooseID'>
+		 			D<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:<input type="file" name="uploadFile" class="file"  onchange="fileSelected(this)"/>
+		 		</div>
+		 	</li>
+		 </ul>
+		 <input type='button' name='addChooseOne' value='添加选项(最多6项)'>
+	</div>
+	<input type='button' name='addChoose' value='添加题目'>
+<h2>奖项设置</h2>
+<div name='scoreMinMax' class='borderLine'>
+	
+	<input type='button' name='addScoreMinMax' value='添加奖项'>
+</div>
+<input type='button' name='save' value='更新保存'>
+</div>
+</div> 
+
+
+
+<div name='hiddenScoreMinMaxOne' style='display:none'>
+	<div name='scoreMinMaxOne'>
+		<strong>条件:</strong>低分值:<input type='text' name='conditionMinScore'>~高分值:<input type='text' name='conditionMaxScore'> <strong>设置标签:</strong><input type='text' name='conditionLabel'><br/>
+		<strong>结果:</strong>所获标签:<input type='text' name='getLabel'> 所获积分:<input type='text' name='getScore'> 所获奖券:<input type='text' name='getActivities'>
+	</div>
+</div>
+
+   
