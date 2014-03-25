@@ -162,7 +162,7 @@ $(function () {
         */
         $.ajax({
             type: "POST",
-            url: "/lavico/score/addScore:save",
+            url: "/lavico/answerQuestion/addScore:save",
             data:{json:jsonData}
         }).done(function(msg){
                 alert(msg.ret);

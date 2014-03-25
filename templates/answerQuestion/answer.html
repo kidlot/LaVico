@@ -45,23 +45,35 @@ if(jsonObject.type==2){
 }
 
 function finish(){
+    var value=0;
+    var valueArr="";
+    var score=0;
+    var valueSelect="";
+
     if(jsonObject.type==2){
         var content=$("textarea[name='descContent']").val();
         location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&finish=true&score="+jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content;
     }else{
-        if($("input[name='singleChooseInput']")>0){//single
+        if($("input[name='singleChooseInput']").length>0){//single
             //record score and trace
             value=$("input[name='singleChooseInput']:checked").val();
             valueArr=value.split('+');
             location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=0&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3];
         }else if($("input[name='mutilChooseInput']:checked").length>0){//mutil
-           $("input[name='chk']:checked").each(function(){
+
+            var selectChooseIdArr="";
+           $("input[name='mutilChooseInput']:checked").each(function(){
                 value=$(this).val();
                 valueArr=value.split('+');
+
+                selectChooseIdArr+=valueArr[1]+"_";//点击的所有选项ID
+
                 if(!isNaN(parseInt(valueArr[2])))
                     score+=parseInt(valueArr[2]);//累计选项积分
+
+
             });
-            location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=1&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+score+"&chooseNext="+valueArr[3];
+            location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=1&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3];
         }
 
     }
@@ -72,6 +84,7 @@ function nextChoose(){
     var value=0;
     var valueArr="";
     var score=0;
+    var valueSelect="";
 
     if($(".content").find("textarea").length>0){//simple
 		var content=$("textarea[name='descContent']").val();
@@ -83,15 +96,20 @@ function nextChoose(){
        location.href="/lavico/answerQuestion/record?type=0&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3];
 
     }else if($("input[name='mutilChooseInput']:checked").length>0){//mutil
+
+       var selectChooseIdArr="";
        $("input[name='mutilChooseInput']:checked").each(function(){
             value=$(this).val();
             valueArr=value.split('+');
+
+           selectChooseIdArr+=valueArr[1]+"_";//点击的所有选项ID
+
             if(!isNaN(parseInt(valueArr[2])))
                 score+=parseInt(valueArr[2]);//累计选项积分
-        });
-       location.href="/lavico/answerQuestion/record?type=1&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+score+"&chooseNext="+valueArr[3];
-    }
 
+        });
+       location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=1&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3];
+    }
 }
 
 window.onload=build;

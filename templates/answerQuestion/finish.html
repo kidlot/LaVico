@@ -12,7 +12,8 @@ function showResult(){
 			$("ul[name='showResult']").append("<li>恭喜您获得 "+getResultJSON[i].getLabel+" 称号</li>");
 		if(getResultJSON[i].getActivities!="")
             if(getResultJSON[i].getActivities!="undefined")
-			$("ul[name='showResult']").append("<li>恭喜您获得 "+getResultJSON[i].getActivities+" 商户奖券</li>");
+                if(getResultJSON[i].getActivities!=0)
+			        $("ul[name='showResult']").append("<li>恭喜您获得 "+getResultJSON[i].getActivities+" 商户奖券</li>");
 	}	
 }
 window.onload=showResult;

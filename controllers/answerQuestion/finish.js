@@ -9,12 +9,11 @@ module.exports={
     	var wechatid=seed.wechatid;
         //console.log(this.req.session.scoreAll);
     	var scoreAll=this.req.session.scoreAll;
-        console.log("log:"+seed.flag);
         if(seed.flag!="false")
         {
             //insert true
             helper.db.coll("lavico/custReceive").insert({
-                "custId": custId,
+                "wechatid": wechatid,
                 "themeId": helper.db.id(_id),
                 "isFinish": true,
                 "optionId": 0,
@@ -55,12 +54,12 @@ module.exports={
 
 
                         helper.db.coll("lavico/custReceive").insert({
-                            "custId": custId,
+                            "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
                             "isFinish": true,
-                            "optionId": -1,
-                            "chooseId": -1,
-                            "getChooseScore": then.req.session.scoreAll,
+                            "optionId": 0,
+                            "chooseId": 0,
+                            "getChooseScore": parseInt(then.req.session.scoreAll),
                             "getChooseLabel":"",
                             "getLabel": getLabel,
                             "getGift":  getActivities,
@@ -105,8 +104,8 @@ module.exports={
             */
             var resultList="[";
             console.log("_id:"+_id);
-            console.log("custId:"+custId);
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"custId":custId,"isFinish":true}).toArray(then.hold(function(err,scoreRange){
+            console.log("wechatid:"+wechatid);
+            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,"isFinish":true}).toArray(then.hold(function(err,scoreRange){
                 console.log(scoreRange.length);
                 for(var i=0;i<scoreRange.length;i++){
 
