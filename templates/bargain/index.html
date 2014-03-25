@@ -14,7 +14,6 @@
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th>产品ID</th>
                 <th>产品名称</th>
                 <th>市场零售价</th>
                 <th>最低价格</th>
@@ -27,7 +26,6 @@
             <tbody>
             <foreach for="@page.docs" var="doc">
                 <tr>
-                    <td>{@ doc.id}</td>
                     <td>{@ doc.name}</td>
                     <td>{@ doc.price}</td>
                     <td>{@ doc.minPrice}</td>
@@ -36,6 +34,7 @@
                     <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
                     <td>
                         <a href="/lavico/bargain/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">修改</a>
+                        <a href="javascript:;" onclick="copyToClipboard('http://{host}/lavico/bargain/detail?wxid={wxid}&_id={@doc._id}')" class="btn btn-xs btn-primary mhm">复制链接</a>
                         <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
                     </td>
                 </tr>
@@ -71,6 +70,46 @@
 
                 }else{
                     return false;
+                }
+            }
+
+            function copyToClipboard(txt) {
+
+                if (window.clipboardData) {
+                    window.clipboardData.clearData();
+                    window.clipboardData.setData("Text", txt);
+                    alert("复制成功！")
+                } else if (navigator.userAgent.indexOf("Opera") != -1) {
+                    window.location = txt;
+                    alert("复制成功！");
+                } else if (window.netscape) {
+                    try {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    } catch (e) {
+                        alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将 'signed.applets.codebase_principal_support'设置为'true'");
+                    }
+                    var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+                    if (!clip)
+                        return;
+                    var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+                    if (!trans)
+                        return;
+                    trans.addDataFlavor('text/unicode');
+                    var str = new Object();
+                    var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+                    var copytext = txt;
+                    str.data = copytext;
+                    trans.setTransferData("text/unicode", str, copytext.length * 2);
+                    var clipid = Components.interfaces.nsIClipboard;
+                    if (!clip)
+                        return false;
+                    clip.setData(trans, null, clipid.kGlobalClipboard);
+                    alert("复制成功！")
+                }else if(typeof(copy) == "function"){
+                    copy(txt);
+                    alert("复制成功！")
+                }else{
+                    alert("浏览器不支持,请手动复制。"+txt)
                 }
             }
         </script>

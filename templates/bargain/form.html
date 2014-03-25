@@ -16,12 +16,7 @@
 
                 <div style="padding: 15px">
                     <table cellpadding="10">
-                        <tbody><tr>
-                            <th>产品ID</th>
-                            <td>
-                                <input type="text" id="id" class="form-control input-sm postData" style="width: 150px" value="{@ doc.id}">
-                            </td>
-                        </tr>
+                        <tbody>
                         <tr>
                             <th>产品名称</th>
                             <td>
@@ -90,6 +85,14 @@
                                 <input type="text" id="stopDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.stopDate && new Date(doc.stopDate+28800000).toISOString().substr(0,10)}">
                             </td>
                         </tr>
+                        <if condition="@doc._id">
+                        <tr>
+                            <th>链接地址</th>
+                            <td>
+                                http://{host}/lavico/bargain/detail?_id={@ doc._id}&wxid={wxid}
+                            </td>
+                        </tr>
+                        </if>
                         </tbody></table>
                         <input type="hidden" id="_id" value="{@ doc._id}">
                 </div>

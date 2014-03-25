@@ -139,51 +139,68 @@ module.exports = {
 
                 var res = {}
 
-                if(seed.clear == "true"){
+                then = this
 
-                    this.req.session._bargain_step = null
-                    this.req.session._bargain_lastTime = null
-
+                var _write = function(res){
                     nut.disable();
-                    var data = JSON.stringify({ok:true});
-                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                    this.res.write(data);
-                    this.res.end();
-
-                    return
+                    var data = JSON.stringify(res);
+                    then.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    then.res.write(data);
+                    then.res.end();
+                    return;
                 }
+
+                if(!seed._id){
+                    _write({err:1,msg:"没有_ID"})
+                    return;
+                }
+
+                if(!seed.wxid){
+                    _write({err:1,msg:"没有wxid"})
+                    return;
+                }
+
 
                 // step
                 if(!this.req.session._bargain_step){
                     this.req.session._bargain_step = 1;
                 }
 
-                this.req.session._bargain_lastPrice = seed.price;
-
                 // timeout
-                var timeout = 60 * 10 * 1000
-                if( this.req.session._bargain_lastTime + timeout > new Date().getTime()){
+                this.step(function(){
 
-                    res = {err:1,msg:"10分钟内只能侃价一次！"}
-                }
+                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价成交"}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
-                var timeout = 60 * 60 * 24 * 1000
-                if( this.req.session._bargain_lastDealTime + timeout > new Date().getTime()){
+                        if(doc.length > 0){
+                            _write({err:1,msg:"您已经成交过此商品，不能再出价了。"})
+                            this.terminate()
+                        }
+                        return;
+                    }))
+                })
 
-                    //res = {err:1,msg:"一天只能成交一次！"}
-                }
+                this.step(function(){
+
+                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+
+                        if(doc.length > 0){
+                            var timeout = 60 * 10 * 1000
+
+                            if( doc[0].createTime + timeout > new Date().getTime()){
+
+                                _write({err:1,msg:"休息休息，10分钟后才能再侃价"})
+                                this.terminate()
+                            }
+                        }
+                        return;
+                    }))
+                })
 
 
-
-                if(!seed._id){
-                    res = {err:1,msg:"没有_ID"}
-                }
-
-                if(res.err != 1){
+                this.step(function(){
 
                     helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
                         if(doc){
-
 
                             _log(seed.wxid,"侃价",{step:parseInt(this.req.session._bargain_step),price:seed.price,productID:seed._id,bargain:_bargain(seed.price,doc.minPrice)})
 
@@ -196,7 +213,6 @@ module.exports = {
 
                                 res = {err:0,step:2,doc:_bargain(seed.price,doc.minPrice)}
                                 this.req.session._bargain_step = 1;
-                                this.req.session._bargain_lastTime = new Date().getTime()
                             }
 
 
@@ -204,14 +220,10 @@ module.exports = {
                             res = {err:1,msg:"_ID不存在"}
                         }
                     }))
-                }
+                })
 
                 this.step(function(){
-                    nut.disable();
-                    var data = JSON.stringify(res);
-                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                    this.res.write(data);
-                    this.res.end();
+                    _write(res);
                 })
             }
         }
