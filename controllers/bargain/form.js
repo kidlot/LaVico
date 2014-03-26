@@ -15,6 +15,7 @@ module.exports = {
         }
 
         this.step(function(){
+            nut.model._id = seed._id
             nut.model.doc = doc
         })
 
@@ -49,6 +50,14 @@ module.exports = {
 
         $.each($("#sizes").attr("dbValue").split(","),function(i,o){
             $("#sizes").tagsManager('pushTag',o);
+        })
+
+        $.each($("#mapsValue").val().split(","),function(i,o){
+            $('#maps option').each(function(ii,oo){
+                if(o == $(oo).text()){
+                    $(oo).attr('selected',"selected");
+                }
+            })
         })
     }
 
@@ -122,8 +131,7 @@ module.exports = {
         , deal:{
             process: function(seed,nut){
 
-                _log(seed.wxid,"侃价成交",{price:seed.price,productID:seed.productID})
-                this.req.session._bargain_lastDealTime = new Date().getTime()
+                _log(seed.wxid,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
                 this.step(function(){
                     nut.disable();
                     var data = JSON.stringify({err:0});
@@ -133,6 +141,20 @@ module.exports = {
                 })
             }
         }
+        , giveup:{
+            process: function(seed,nut){
+
+                _log(seed.wxid,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:false})
+                this.step(function(){
+                    nut.disable();
+                    var data = JSON.stringify({err:0});
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write(data);
+                    this.res.end();
+                })
+            }
+        }
+
         , bargain: {
 
             process: function(seed,nut){
@@ -166,7 +188,7 @@ module.exports = {
                     this.req.session._bargain_step = 1;
                 }
 
-                // timeout
+                // repeat
                 this.step(function(){
 
                     helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价成交"}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
@@ -179,6 +201,7 @@ module.exports = {
                     }))
                 })
 
+                // timeout
                 this.step(function(){
 
                     helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
@@ -196,6 +219,19 @@ module.exports = {
                     }))
                 })
 
+
+                // max
+                this.step(function(){
+                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":3,"data.stat":true}).count(this.hold(function(err,num){
+
+                        helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
+                            if(num >= _doc.surplus){
+                                _write({err:1,msg:"此商品已销售完毕，请选其它商品。"})
+                                this.terminate()
+                            }
+                        }))
+                    }))
+                })
 
                 this.step(function(){
 

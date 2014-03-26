@@ -18,7 +18,7 @@
                     <table cellpadding="10">
                         <tbody>
                         <tr>
-                            <th>产品名称</th>
+                            <th style="width: 100px;">产品名称</th>
                             <td>
                                 <input type="text" id="name" class="form-control input-sm postData" style="width: 150px" value="{@ doc.name}">
                             </td>
@@ -26,7 +26,7 @@
                         <tr>
                             <th>产品简介</th>
                             <td>
-                                <input type="text" id="introduction" class="form-control input-sm postData" style="width: 150px" value="{@ doc.introduction}">
+                                <textarea class="form-control postData" rows="3" id="introduction" style="width: 300px">{@ doc.introduction}</textarea>
                             </td>
                         </tr>
                         <tr>
@@ -85,7 +85,25 @@
                                 <input type="text" id="stopDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.stopDate && new Date(doc.stopDate+28800000).toISOString().substr(0,10)}">
                             </td>
                         </tr>
-                        <if condition="@doc._id">
+                        <tr>
+                            <th>门店</th>
+                            <td>
+                                <select multiple="multiple" size="10" class="form-control postData" style="width: 300px" id="maps">
+                                    <option>门店1</option>
+                                    <option>门店2</option>
+                                    <option>门店3</option>
+                                    <option>门店4</option>
+                                    <option>门店5</option>
+                                    <option>门店6</option>
+                                    <option>门店7</option>
+                                    <option>门店8</option>
+                                    <option>门店9</option>
+                                    <option>门店10</option>
+                                </select>
+                                <input type="hidden" id="mapsValue" value="{@ doc.maps}">
+                            </td>
+                        </tr>
+                        <if condition="@doc">
                         <tr>
                             <th>链接地址</th>
                             <td>
@@ -94,7 +112,7 @@
                         </tr>
                         </if>
                         </tbody></table>
-                        <input type="hidden" id="_id" value="{@ doc._id}">
+                        <input type="hidden" id="_id" value="{@_id}">
                 </div>
 
 

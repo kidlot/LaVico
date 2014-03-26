@@ -4,11 +4,13 @@
     layout: "welab/Layout",
     view: "lavico/templates/bargain/statistics.html",
     process: function(seed, nut) {
-      var d1, d2, dJsDay, dateList, day, endTimeStamp, jsDay, o, startTimeStamp, thisb, _fn, _i, _len, _page;
+      var d1, d2, dJsDay, dTime, dateList, day, endTimeStamp, jsDay, o, startTimeStamp, thisb, _fn, _i, _len, _page, _ym;
       _page = {};
       thisb = this;
-      startTimeStamp = new Date(seed.startDate + " 00:00:00").getTime();
-      endTimeStamp = new Date(seed.stopDate + " 23:59:59").getTime();
+      dTime = new Date();
+      _ym = dTime.getFullYear() + "-" + (dTime.getMonth() + 1);
+      startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym + "-01 00:00:00").getTime();
+      endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym + "-31 23:59:59").getTime();
       dateList = [];
       day = 60 * 60 * 24 * 1000;
       jsDay = startTimeStamp;
@@ -88,8 +90,8 @@
         return nut.model.uv2 = doc ? doc.length : 0;
       }));
       return this.step(function() {
-        nut.model.startDate = seed.startDate;
-        nut.model.stopDate = seed.stopDate;
+        nut.model.startDate = new Date(startTimeStamp + 60 * 60 * 8 * 1000).toISOString().substr(0, 10);
+        nut.model.stopDate = new Date(endTimeStamp + 60 * 60 * 8 * 1000).toISOString().substr(0, 10);
         nut.model.dateList = dateList;
         return nut.model.page = _page || {};
       });

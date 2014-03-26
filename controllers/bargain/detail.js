@@ -28,11 +28,10 @@ module.exports = {
             this.res.end();
         }
 
-
-        // timeout
+        // repeat
         this.step(function(){
 
-            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价成交"}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":3,"data.stat":true}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                 if(doc.length > 0){
 
@@ -43,6 +42,7 @@ module.exports = {
             }))
         })
 
+        // timeout
         this.step(function(){
 
             helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
@@ -59,6 +59,20 @@ module.exports = {
             }))
         })
 
+
+        // max
+        this.step(function(){
+            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":3,"data.stat":true}).count(this.hold(function(err,num){
+
+                console.log(doc.surplus)
+                console.log(num)
+                if(num >= doc.surplus){
+                    nut.model.res = {err:1,msg:"此商品已销售完毕，请选其它商品。"};
+                    this.terminate()
+                }
+                return;
+            }))
+        })
         this.step(function(){
 
             nut.model.res = {err:0};

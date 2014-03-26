@@ -26,6 +26,7 @@
             </if>
         </div>
 
+        <input type="button" value="查看门店" onclick="location.href='/lavico/bargain/maps?_id={@doc._id}'">
     </div>
     <div style="position: absolute; width: 400px; height:400px; top: 0px; left: 0px; background-color: #000000; color: #ffffff; display: none" id="_alert">
 
@@ -94,9 +95,31 @@
 </div>
 <script>
 function giveup(){
-    $("#bargainButton").val("休息休息，10分钟后才能再侃价")
-    $("#bargainButton").attr('onclick',"return false;");
-    _close()
+
+    $.ajax({
+        url:'/lavico/bargain/form:giveup',
+        type:'POST',
+        data:{
+            'price':$("#price").val(),
+            '_id':$("#_id").val(),
+            'wxid':$("#wxid").val(),
+            'productID':$("#_id").val()
+        },
+        success:function(data){
+            if(data.err == 0){
+
+                $("#bargainButton").val("休息休息，10分钟后才能再侃价")
+                $("#bargainButton").attr('onclick',"return false;");
+                _close()
+            }else{
+                alert(data.msg)
+            }
+        },
+        error:function(msg){
+            console.log(msg);
+        }
+    });
+
 }
 function _close(){
     $("#_alert").hide()

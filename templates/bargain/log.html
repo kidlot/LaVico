@@ -39,25 +39,25 @@
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th>OPENID</th>
                 <th>卡号</th>
                 <th>昵称</th>
                 <th>手机号</th>
                 <th>时间</th>
                 <th>成交价</th>
                 <th>产品名称</th>
+                <th>结果</th>
             </tr>
             </thead>
             <tbody>
             <foreach for="@page.docs" var="doc">
                 <tr>
-                    <td>{@ doc.wxid}</td>
                     <td>{@ doc.user.HaiLanMemberInfo && doc.user.HaiLanMemberInfo.memberCardNumber}</td>
                     <td>{@ doc.user.realname}</td>
                     <td>{@ doc.user.mobile}</td>
                     <td>{@ new Date(doc.createTime + 60*60*8*1000).toISOString().substr(0,10)}</td>
                     <td>{@ doc.data.price}</td>
                     <td>{@ doc.product.name}</td>
+                    <td>{@ doc.data.stat==true?"成交":"放弃"}</td>
                 </tr>
             </foreach>
             </tbody>
