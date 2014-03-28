@@ -138,40 +138,7 @@ module.exports = {
                                 then.terminate();
                               }
 				                    });
-                            this.step(function(){
 
-                            //第一步，请求中间件接口
-
-                                middleware.request( "/lavico.middleware/MemberBind",{
-                                    openid:wxid,
-                                    MOBILE_TELEPHONE_NO:userTel,
-                                    MEM_OLDCARD_NO:userCardNumber,
-                                    MEM_PSN_CNAME:userName
-                                },this.hold(function(err,doc){
-
-                                    dataJson = JSON.parse(doc);
-                                    returnDoc = doc;
-                                    console.log(dataJson);
-                                    //记录用户动作
-                                    helper.db.coll("lavico/user/logs").insert(
-                                        {
-                                            'createTime':new Date().getTime(),
-                                            'wxid':seed.wxid,
-                                            'userCardNumber':userCardNumber,
-                                            'userName':userName,
-                                            'userTel':userTel,
-                                            'action':"申请绑定",
-                                            'result':dataJson
-                                        },
-                                        function(err, doc){
-                                            console.log(doc);
-                                        }
-                                    );
-                                    return dataJson;
-                                }));
-                                
-
-                            });
 
 
                             this.step(function(){
