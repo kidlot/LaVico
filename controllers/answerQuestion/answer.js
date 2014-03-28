@@ -6,6 +6,13 @@ module.exports={
         var optionId=seed.optionId;
     	var beginTime="",endTime="",isOpen="";
         var wechatid=seed.wechatid;
+
+        if(optionId==1){
+            this.req.session.scoreAll=0;
+        }
+
+        console.log(wechatid);
+
     	//判断活动是否开启或到期
     	this.step(function(){
         //判断活动是否开启或到期
@@ -28,6 +35,7 @@ module.exports={
                       nut.model.option=JSON.stringify(cursor.options[i]);
                       nut.model._id=_id;
                       nut.model.optionCount=cursor.options.length;
+                      nut.model.wechatid=wechatid;
                     }
                    }
                }));
