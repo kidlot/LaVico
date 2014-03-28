@@ -1,7 +1,7 @@
 module.exports = {
 
 	layout: null
-	, view: "lavico/templates/bargain/detail.html"
+	, view: "lavico/templates/lookbook/detail.html"
 
     , process: function(seed,nut)
     {
@@ -16,7 +16,7 @@ module.exports = {
             nut.model.wxid = seed.wxid
             nut.model._id = seed._id
 
-            helper.db.coll("lavico/bargain").findOne({startDate:{$lte:new Date().getTime()},stopDate:{$gte:new Date().getTime()},_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
+            helper.db.coll("lavico/lookbook").findOne({startDate:{$lte:new Date().getTime()},stopDate:{$gte:new Date().getTime()},_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
                 nut.model.doc = doc
             }))
