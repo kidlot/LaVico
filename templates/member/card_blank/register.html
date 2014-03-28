@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=360,user-scalable=no" />
 <a href="http://www.baidu.com">点击绑定实体卡</a><br/><br/>
 	<span>姓名</span><input id='name' value='' /><br/>
 	<span>性别</span>
@@ -9,14 +10,16 @@
 		<select id="year"></select>年  
 		<select id="month"></select>月  
 		<select id="day"></select>日  <br/>
-	<span>手机</span><input AutoComplete='on' id='mobile' /><br/>
-	<span>验证码</span><input id='id_code' /><input type='button' value='获取验证码' id='get_id_code' /><br/>
+	<span>手机</span><input AutoComplete='on' id='mobile' /><input type='button' value='获取验证码' id='get_id_code' /><br/>
+	<span>验证码</span><input id='id_code' /><br/>
 	<br/>
 <input type='button' id='submit' value='提交' />
 <input type='hidden' id='uid' value='{@ uid}'>
 
+
 <script>
 window.onload = function(){
+var doname = 'http://dolphin.imagchina.com';
     $(function () {  
         var $day = $("#day"),  
           $month = $("#month"),  
@@ -72,26 +75,44 @@ window.onload = function(){
         }  
     }  
  
+  var timer60Seconds;
   var flag = 0;
   $("#get_id_code").click(function(){
+		if($("#mobile").val() =='' || !(/^1[358]\d{9}$/i.test($("#mobile").val())) ){
+			alert("请输入正确的手机号码");
+			return	false;
+		}  
     if(flag){
       return false;
     }
     flag = 1;
-    checktime = setTimeout(re_get_code,30000);
-    $("#get_id_code").val('稍后再发');
-    $.get('http://dolphin.imagchina.com/lavico/member/card_blank/register:id_code',{
+    $.get(doname+'/lavico/member/card_blank/code:id_code',{
       },function(data){
         data = eval('('+data+')');
-        alert(data.result);
         if(data.result == 'ofen'){
           alert('请稍后再获取！');
+        }else if(data.result == 'ok'){
+          set_interval();
+          //alert('验证码发送成功，请在2分钟内输入！');
         }else{
-          alert('验证码发送成功，请在2分钟内输入！');
+          alert('something error pelase refresh your browser!')
         }
       }
     );
   });
+  function set_interval(){
+    var time = 60;
+    $("#get_id_code").val('请'+time+'秒稍后再获取');
+    timer60Seconds = setInterval(function(){
+      time--;
+      if(time == 0){
+          clearInterval(timer60Seconds);
+          re_get_code();
+      }else{
+          $("#get_id_code").val('请'+time+'秒稍后再获取');
+      }
+    },1000);
+  }  
   function re_get_code(){
     $("#get_id_code").val('获取验证码');
     flag = 0;
@@ -120,7 +141,7 @@ window.onload = function(){
 			alert("请选择出生年月日");
 			return	false;
 		}				
-		if($("#mobile").val() =='' || !(/^1[1358]\d{9}$/i.test($("#mobile").val())) ){
+		if($("#mobile").val() =='' || !(/^1[358]\d{9}$/i.test($("#mobile").val())) ){
 			alert("请输入正确的手机号码");
 			return	false;
 		}
@@ -128,7 +149,7 @@ window.onload = function(){
 			alert("验证码错误");
 			return	false;
 		}
-		$.get('http://dolphin.imagchina.com/lavico/member/card_blank/register:apply_card',{
+		$.get(doname+'/lavico/member/card_blank/register:apply_card',{
 				uid : $("#uid").val(),
 				name : $("#name").val(),
 				sex : $("#sex").val(),
@@ -137,9 +158,7 @@ window.onload = function(){
 				id_code : $("#id_code").val()
 			},
 			function(data){
-			  alert(data);
 			  data = eval("("+data+")");
-			  alert(data);
 				if(data.issuccessed){
 					alert("恭喜你，注册成功");
 				}else if(data.code_error){

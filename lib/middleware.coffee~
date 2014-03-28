@@ -7,13 +7,8 @@ exports.request = (url, post_data, cb)->
 
   options = {
     host: '127.0.0.1',
-<<<<<<< HEAD
     port: 8081,
-    path: '/LaVico/member/'+action+'?'+post_data,
-=======
-    port: 8080,
     path: url+'?'+post_data,
->>>>>>> 0a49d603a96fbd064b10a3fd3e70ae8e2a90c9be
     method: 'GET'
   };
 
