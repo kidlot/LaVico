@@ -7,7 +7,7 @@ module.exports = {
     {
         var doc = {};
 
-        if(seed._id){
+        if(seed._id && seed.wxid){
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
@@ -15,6 +15,9 @@ module.exports = {
         }
 
         this.step(function(){
+
+            nut.model.wxid = seed.wxid
+            nut.model._id = seed._id
             nut.model.doc = doc
         })
 

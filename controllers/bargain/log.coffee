@@ -8,10 +8,13 @@ module.exports = {
 
     _page = {}
     thisb = this
-    where = {action:"侃价成交"}
+    where = {action:"侃价","data.step":3}
 
-    startTimeStamp = new Date(seed.startDate + " 00:00:00").getTime();
-    endTimeStamp = new Date(seed.stopDate + " 23:59:59").getTime();
+    dTime = new Date()
+    _ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1)
+
+    startTimeStamp = if seed.startDate then new Date(seed.startDate + " 00:00:00").getTime() else new Date(_ym+"-01 00:00:00").getTime();
+    endTimeStamp = if seed.stopDate then new Date(seed.stopDate + " 23:59:59").getTime() else new Date(_ym+"-31 23:59:59").getTime();
 
     if (seed.startDate && seed.stopDate)
       where.createTime = {$gt:startTimeStamp,$lt:endTimeStamp}
@@ -35,8 +38,8 @@ module.exports = {
 
     this.step(()->
 
-      nut.model.startDate = seed.startDate
-      nut.model.stopDate = seed.stopDate
+      nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+      nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
       nut.model.page = _page || {}
     )
 

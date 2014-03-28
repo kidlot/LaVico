@@ -4,14 +4,17 @@
     layout: "welab/Layout",
     view: "lavico/templates/bargain/log.html",
     process: function(seed, nut) {
-      var endTimeStamp, startTimeStamp, thisb, where, _page;
+      var dTime, endTimeStamp, startTimeStamp, thisb, where, _page, _ym;
       _page = {};
       thisb = this;
       where = {
-        action: "侃价成交"
+        action: "侃价",
+        "data.step": 3
       };
-      startTimeStamp = new Date(seed.startDate + " 00:00:00").getTime();
-      endTimeStamp = new Date(seed.stopDate + " 23:59:59").getTime();
+      dTime = new Date();
+      _ym = dTime.getFullYear() + "-" + (dTime.getMonth() + 1);
+      startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym + "-01 00:00:00").getTime();
+      endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym + "-31 23:59:59").getTime();
       if (seed.startDate && seed.stopDate) {
         where.createTime = {
           $gt: startTimeStamp,
@@ -43,8 +46,8 @@
         return _results;
       }));
       return this.step(function() {
-        nut.model.startDate = seed.startDate;
-        nut.model.stopDate = seed.stopDate;
+        nut.model.startDate = new Date(startTimeStamp + 60 * 60 * 8 * 1000).toISOString().substr(0, 10);
+        nut.model.stopDate = new Date(endTimeStamp + 60 * 60 * 8 * 1000).toISOString().substr(0, 10);
         return nut.model.page = _page || {};
       });
     },

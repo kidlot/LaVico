@@ -1,0 +1,25 @@
+<script>
+var jsonStr="{@getResult}";
+var  getResultJSON= eval('(' + jsonStr + ')');
+
+function showResult(){
+	for(var i=0;i<getResultJSON.length;i++){
+		if(getResultJSON[i].getScore!=0)
+            if(getResultJSON[i].getScore!="undefined")
+			    $("ul[name='showResult']").append("<li>恭喜您获得 "+getResultJSON[i].getScore+" 商户积分</li>");
+		if(getResultJSON[i].getLabel!="")
+            if(getResultJSON[i].getLabel!="undefined")
+			$("ul[name='showResult']").append("<li>恭喜您获得 "+getResultJSON[i].getLabel+" 称号</li>");
+		if(getResultJSON[i].getActivities!="")
+            if(getResultJSON[i].getActivities!="undefined")
+                if(getResultJSON[i].getActivities!=0)
+			        $("ul[name='showResult']").append("<li>恭喜您获得 "+getResultJSON[i].getActivities+" 商户奖券</li>");
+	}	
+}
+window.onload=showResult;
+
+</script>
+<h2>感谢你的答题</h2>
+<ul name="showResult">
+
+</ul>

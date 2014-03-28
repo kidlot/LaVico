@@ -14,13 +14,19 @@
             <input type="hidden" value="{@ wxid}" id="wxid"></div>
 
         <div>
-            <if condition="@isTimeOut">
-                <input type="button" value="休息休息，10分钟后才能再侃价" >
+            <if condition="@res.err==1">
+
+                <if condition="@res.url">
+                    <input type="button" value="{@res.msg}" onclick="location.href='{@res.url}'">
+                    <else/>
+                    <input type="button" value="{@res.msg}" >
+                </if>
             <else/>
                 <input type="button" value="立即侃价" id="bargainButton" onclick="_step('bargain')">
             </if>
         </div>
 
+        <input type="button" value="查看门店" onclick="location.href='/lavico/bargain/maps?_id={@doc._id}'">
     </div>
     <div style="position: absolute; width: 400px; height:400px; top: 0px; left: 0px; background-color: #000000; color: #ffffff; display: none" id="_alert">
 
@@ -89,13 +95,36 @@
 </div>
 <script>
 function giveup(){
-    $("#bargainButton").val("休息休息，10分钟后才能再侃价")
-    $("#bargainButton").attr('onclick',"return false;");
-    _close()
+
+    $.ajax({
+        url:'/lavico/bargain/form:giveup',
+        type:'POST',
+        data:{
+            'price':$("#price").val(),
+            '_id':$("#_id").val(),
+            'wxid':$("#wxid").val(),
+            'productID':$("#_id").val()
+        },
+        success:function(data){
+            if(data.err == 0){
+
+                $("#bargainButton").val("休息休息，10分钟后才能再侃价")
+                $("#bargainButton").attr('onclick',"return false;");
+                _close()
+            }else{
+                alert(data.msg)
+            }
+        },
+        error:function(msg){
+            console.log(msg);
+        }
+    });
+
 }
 function _close(){
     $("#_alert").hide()
 }
+
 function _step(channelName){
 
     var _func = function(){
@@ -107,7 +136,7 @@ function _step(channelName){
     if(channelName == "success"){
         deal(function(){
             $("#bargainButton").val("您已成功侃价，请查看您的“专属礼券”")
-            $("#bargainButton").attr('onclick',"location.href='/lavico/bargain/index';return false;");
+            $("#bargainButton").attr('onclick',"location.replace(this.href); event.returnValue=false;location.href='http://www.baidu.com'");
             _func()
         })
     }else{
@@ -145,6 +174,10 @@ function bargain(){
         return
     }
 
+    if(isNaN($("#price").val())){
+        alert("请输入数字！")
+        return
+    }
     $.ajax({
         url:'/lavico/bargain/form:bargain',
         type:'POST',
@@ -167,6 +200,10 @@ function bargain(){
         }
     });
 }
+window.onload = function(){
+    if($("#bargainButton").val() == "我要侃价"){
 
+    }
+}
 
 </script>
