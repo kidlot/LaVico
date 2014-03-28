@@ -18,16 +18,17 @@ if(jsonObject.type==2){
                         var chooseNext=jsonObject.choose[i].chooseNext;
                         if(chooseNext.substr(1,1)=="#")
                             chooseNext=chooseNext.substr(2);
-
+                       
                     	//show  value:"题号+选项编号+积分+下一题编号"或者“题号+选项编号+积分+标签”
-                    	$(".content ul").append("<li><input type='radio' name='singleChooseInput' class='single' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"</li>");
+                    	$(".content ul").append("<li><input onclick='showCorrent()' type='radio' name='singleChooseInput' class='single' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"<span name='correntImg' style='display:none'><img width='15px' height='15px' src=/lavico/public/images/"+jsonObject.choose[i].isCorrect+".png></span></li>");
                 	}else if(jsonObject.type==1){//mutilChoose
                     	$(".content ul").append("<li><input type='checkbox' name='mutilChooseInput' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"</li>");
                     }
             	}else{//exists photo
             		if(jsonObject.type==0){//simgleChoose
+                    
                     	//show  value:"题号+选项编号+积分+下一题编号"或者“题号+选项编号+积分+标签”
-                    	$(".content ul").append("<li><input type='radio' name='singleChooseInput' class='single' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='"+jsonObject.choose[i].uploadFile+"' name='radioimg' width='100' height='100'></li>");
+                    	$(".content ul").append("<li><input onclick='showCorrent()' type='radio' name='singleChooseInput' class='single' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"<span name='correntImg' style='display:none'><img width='15px' height='15px'  src=/lavico/public/images/"+jsonObject.choose[i].isCorrect+".png></span><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="+jsonObject.choose[i].uploadFile+" name='radioimg' width='100' height='100'></li>");
                 	}else if(jsonObject.type==1){//mutilChoose
                     	$(".content ul").append("<li><input type='checkbox' name='mutilChooseInput' value='"+jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='"+jsonObject.choose[i].uploadFile+"' name='chkimg' width='100' height='100'></li>");
                     }
@@ -42,6 +43,12 @@ if(jsonObject.type==2){
     {
         $('.btn').append('<input type="button" name="next" value="完成" onclick="finish()">');
     }
+}
+
+function showCorrent(){
+    //<span name='correntImg'>
+    $("span[name='correntImg']").show();
+    $("input[name='singleChooseInput']").attr("disabled",true);
 }
 
 function finish(){
@@ -93,7 +100,7 @@ function nextChoose(){
     }else if($("input[name='singleChooseInput']").length>0){//single
        value=$("input[name='singleChooseInput']:checked").val();
        valueArr=value.split('+');
-       location.href="/lavico/answerQuestion/record?type=0&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3];
+       location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=0&optionId="+valueArr[0]+"&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3];
 
     }else if($("input[name='mutilChooseInput']:checked").length>0){//mutil
 

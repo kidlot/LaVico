@@ -5,11 +5,7 @@ module.exports = {
 		    nut.disabled = true ;
 		    then = this;
 		    this.step(function(){
-		      console.log('aa')
 		      var set_id_code_time = this.req.session.set_id_code_time;
-		      console.log(set_id_code_time);
-		      console.log(this.req.session.id_code);
-		      console.log(new Date().getTime());
           if(set_id_code_time && (set_id_code_time + 30000) > new Date().getTime()){
             then.res.writeHead(200, { 'Content-Type': 'text/plain' });
             then.res.write("{result:'ofen'}");

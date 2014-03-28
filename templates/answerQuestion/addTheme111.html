@@ -1,0 +1,587 @@
+<script src='/lavico/public/js/addTheme.js' type='text/javascript'></script>
+<script>
+function addOptions(){
+	$("div[name='optionSet']").append($("div[name='hiddenOption']").find("div[name='oneOption']").clone());
+}
+function addGift(){
+	$("div[name='setGift']:last").append($("div[name='hideSetGift']").find("div[name='scoreMinMaxOne']").clone());
+}
+function setGiftDel(alink){
+	$(alink).parent().remove();
+}
+function delChoose(btnDelChoose){
+	$(btnDelChoose).parent().parent().remove();
+}
+function addChoose(btnAddChoose){
+	if($(btnAddChoose).prev().find("li:visible").length<6){
+		$(btnAddChoose).prev().append($("div[name='hideAddChoose']").find("li").clone());
+	}
+}
+function addMutilChoose(btnAddMutil){
+	if($(btnAddMutil).prev().find('div[name=mutilOne]').length<6){
+		$(btnAddMutil).prev().append($("div[name=hideMutilOne]").find("div[name=mutilOne]").clone());
+	}
+}
+function delMutilOneF(btnDel){
+	$(btnDel).parent().remove();
+}
+function delNewOption(btnDelOption){
+	$(btnDelOption).parent().remove();
+}
+function changeType(btnSelect){
+	if($(btnSelect).val()==0){
+		$(btnSelect).parent().find("div[name=sinple]").show();
+		$(btnSelect).parent().find("div[name=mutilWDiv]").hide();
+		$(btnSelect).parent().find("div[name=simpleAnswer]").hide();
+	}else if($(btnSelect).val()==1){
+		$(btnSelect).parent().find("div[name=sinple]").hide();
+		$(btnSelect).parent().find("div[name=mutilWDiv]").show();
+		$(btnSelect).parent().find("div[name=simpleAnswer]").hide();
+	}else{
+		$(btnSelect).parent().find("div[name=sinple]").hide();
+		$(btnSelect).parent().find("div[name=mutilWDiv]").hide();
+		$(btnSelect).parent().find("div[name=simpleAnswer]").show();
+	}
+}
+
+function init(){
+	
+	var jsonParse=JSON.parse('{@themeDoc}');
+	//基础设置
+	$("input[name=themeName]").val(jsonParse.theme);
+	$("select[name=isOpen]").val(jsonParse.isOpen);
+	$("input[name=beginTime]").val(jsonParse.beginTime);
+	$("input[name=endTime]").val(jsonParse.endTime);
+
+	//题目设置
+	for(var i=0;i<jsonParse.options.length;i++){
+		$("div[name='optionSet']").append($("div[name='uphiddenOption']").find("div[name='oneOption']").clone());
+		$needOption=$("div[name='optionSet']").find("div[name='oneOption']:last");
+		$needOption.find("input[name=title]").val(jsonParse.options[i].title);
+		$needOption.find("select").val(jsonParse.options[i].type);
+		if(jsonParse.options[i].type==0){
+
+				$needOption.find("div[name=sinple]").show();
+				$needOption.find("div[name=mutilWDiv]").hide();
+				//配置其他选项
+				for(var m=0;m<4;m++)
+					$needOption.find("div[name=mutilDiv]").append($("div[name=hideMutil]").find("div[name='mutilOne']").clone());
+				$needOption.append($("div[name=hideSimple] div").clone());
+
+
+
+
+				$optSinpleUL=$needOption.find("div[name=sinple] ul");
+
+				for(var j=0;j<jsonParse.options[i].choose.length;j++){
+					$optSinpleUL.append($("div[name='hideSinple'] li").clone());
+					if(jsonParse.options[i].choose[j].isCorrect==1){
+						$optSinpleUL.find("li:last").find("input[name='correct']").attr("checked",true);
+					}
+                    //alert(jsonParse.options[i].choose[j].chooseID);
+                    $optSinpleUL.find("li:last").find("input[name='chooseID']").val(jsonParse.options[i].choose[j].chooseID);
+					$optSinpleUL.find("li:last").find("input[name='chooseName']").val(jsonParse.options[i].choose[j].chooseName);
+					$optSinpleUL.find("li:last").find("input[name='chooseScore']").val(jsonParse.options[i].choose[j].chooseScore);
+					$optSinpleUL.find("li:last").find("input[name='chooseNext']").val(jsonParse.options[i].choose[j].chooseNext);
+					//配图
+					$optSinpleUL.find("li:last").find("img").attr('src',jsonParse.options[i].choose[j].uploadFile);
+					$optSinpleUL.find("li:last").find("span[name=upPic]").show();
+					$optSinpleUL.find("li:last").find("input[name=uploadFile]").val(jsonParse.options[i].choose[j].uploadFile);
+				}
+				
+		}else if(jsonParse.options[i].type==1){
+				$needOption.find("div[name=sinple]").hide();//单选隐藏
+				$needOption.find("div[name=mutilWDiv]").show();//复选显示
+
+				//配置其他选项
+				
+				for(var m=0;m<4;m++)
+					$needOption.find("div[name=sinple] ul").append($("div[name=hideSinple] li").clone());
+				$needOption.append($("div[name=hideSimple] div").clone());
+				
+
+				$optMutilUL=$needOption.find("div[name=mutilDiv]")//1
+
+
+				for(var j=0;j<jsonParse.options[i].choose.length;j++){	
+					$optMutilUL.append($("div[name=hideMutil]").find("div[name=mutilOne]").clone());
+
+					$optMutilUL.find("div:last").parent().find("input[name=mutilTitle]").val(jsonParse.options[i].choose[j].chooseName);
+
+					$optMutilUL.find("div:last").parent().find("input[name=mutilScore]").val(jsonParse.options[i].choose[j].chooseScore);
+					
+					//配图
+					
+					$optSinpleUL.find("li:last").find("img").attr('src',jsonParse.options[i].choose[j].uploadFile);
+					$optSinpleUL.find("li:last").find("span[name=upPic]").show();
+					$optSinpleUL.find("li:last").find("input[name=uploadFile]").val(jsonParse.options[i].choose[j].uploadFile);
+					
+
+				}
+		}else if(jsonParse.options[i].type==2){
+				$needOption.find("div[name=sinple]").hide();
+				$needOption.find("div[name=mutilWDiv]").hide();
+				
+				for(var m=0;m<4;m++){
+					$needOption.find("div[name=mutilDiv]").append($("div[name=hideMutil] div").clone());
+					$needOption.find("div[name=sinple] ul").append($("div[name=hideSinple] li").clone());
+				}
+				$needOption.append($("div[name=hideSimple] div").clone());
+
+				$needOption.find("div[name=simpleAnswer]:last").show();
+				
+
+				$needOption.find("div[name=simpleAnswer]:last").find("input[name=simpleScore]").val(jsonParse.options[i].answerScore);
+				$needOption.find("div[name=simpleAnswer]:last").find("input[name=simpleMinLen]").val(jsonParse.options[i].answerRange.minCount);
+				$needOption.find("div[name=simpleAnswer]:last").find("input[name=simpleMaxLen]").val(jsonParse.options[i].answerRange.maxCount);
+		}
+	}
+
+	//奖项设置
+	for(var j=0;j<jsonParse.scoreMinMax.length;j++){
+		$("div[name='setGift']").append($("div[name='hideSetGift'] div").clone());
+		$("div[name='setGift']").find("input[name='conditionMinScore']:last").val(jsonParse.scoreMinMax[j].conditionMinScore);
+		$("div[name='setGift']").find("input[name='conditionMaxScore']:last").val(jsonParse.scoreMinMax[j].conditionMaxScore);
+		$("div[name='setGift']").find("input[name='conditionLabel']:last").val(jsonParse.scoreMinMax[j].conditionLabel);
+		$("div[name='setGift']").find("input[name='getLabel']:last").val(jsonParse.scoreMinMax[j].getLabel);
+		$("div[name='setGift']").find("input[name='getScore']:last").val(jsonParse.scoreMinMax[j].getScore);
+		$("div[name='setGift']").find("input[name='getActivities']:last").val(jsonParse.scoreMinMax[j].getActivities);
+
+	}
+	
+}
+window.onload=init;
+</script>
+<style>
+.borderLine{
+	border:1px solid black
+}
+.chooseSty{
+	list-style:none;
+	line-height:60px;
+}
+#containerHide{
+	display: none;
+}
+</style>
+<div name='container' class="index-data mb20">
+<div class="panel-heading index-icon-1"><span class="box-title">基础设置</span></div>
+<div name='themeDic' class="box-container">
+  题目：<input type='text' name='themeName'>
+  是否开启:<select name='isOpen'>
+				<option value='0'>关</option>
+				<option value='1' selected='selected'>开</option>
+			 </select><br/>
+  开始时间:<input type='text' name='beginTime'>
+  结束时间:<input type='text' name='endTime'><br/>
+</div>
+</div>
+
+<div class="panel-heading index-icon-1"><span class="box-title">题目设置</span></div>
+<div name='optionSet' class="box-container">
+</div>
+
+<input type='button' name='addChoose' value='添加题目' onclick='addOptions()'>
+<div class="panel-heading index-icon-1"><span class="box-title">奖项设置</span></div>
+<div name='setGift' class="box-container"
+        >
+</div> 
+<input type='button' name='addScoreMinMax' value='添加奖项' onclick='addGift()'><br/>
+<input type='button' name='save' id='save' value='更新保存'>
+
+
+<!--隐藏标签-->
+<div name='hideMutilOne' id='containerHide'>
+<div name='mutilOne'>
+	<input type='button' name='delMutilOne' value='删除' onclick='delMutilOneF(this)'>
+	题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:
+</div>
+</div>
+
+
+
+<div name='hideAddChoose' id='containerHide'>
+<li>
+	<div name='chooseOne'>
+		<input type='button' name='delChoose' value='删除' onclick='delChoose(this)'>
+		<input type='hidden' name='chooseID'>
+		<input type='text' name='chooseName'>
+	分值:<input type='text' name='chooseScore'>
+	下一题/标签:<input type='text' name='chooseNext'>
+	配图:<div>
+            <input type="hidden" name="uploadFile"/>
+            <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+            <span name='upPic' id='containerHide'>
+                <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+            </span>
+        </div>
+	</div>
+</li>
+</div>
+
+
+<div name='hiddenOption' id='containerHide'>
+	<div name='oneOption' class='borderLine'><br/>
+		选项名称:<input type='text' name='title'>
+		选项类型:<select name='type' onchange='changeType(this)'>
+					<option value='0'>单选题</option>
+					<option value='1'>复选题</option>
+					<option value='2'>简单题</option>
+				</select><input type='button' name='delNewAddOptoin' value='删除题目' onclick='delNewOption(this)'>
+				<br/>
+		<div name='sinple'>
+		 <ul name='choose' class='chooseSty'>
+		 	<li>
+		 		<div name='chooseOne'>
+		 			<input type='hidden' name='chooseID'>
+		 			正确答案:<input type='checkbox' name='correct'/>
+		 			选项:<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:
+                    <div>
+                        <input type="hidden" name="uploadFile"/>
+                        <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                    </div>
+		 		</div>
+		 	</li>
+		 	<li>
+		 		<div name='chooseOne'>
+		 			<input type='hidden' name='chooseID'>
+					正确答案:<input type='checkbox' name='correct'/>
+		 			选项:<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:
+					<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+		 		</div>
+		 	</li>
+		 	<li> 
+		 		<div name='chooseOne'>
+		 			<input type='button' name='delChoose' value='删除' onclick='delChoose(this)'>
+		 			<input type='hidden' name='chooseID'>
+		 			正确答案:<input type='checkbox' name='correct'/>
+		 			选项:<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:
+					<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object'  style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                    </div>
+		 		</div>
+		 	</li>
+		 	<li>
+		 		<div name='chooseOne'>
+		 			<input type='button' name='delChoose' value='删除' onclick='delChoose(this)'>
+		 			<input type='hidden' name='chooseID'>
+		 			正确答案:<input type='checkbox' name='correct'/>
+		 			选项:<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:
+					<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+		 		</div>
+		 	</li>
+		 </ul>
+		
+		 <input type='button' name='addChooseOne' value='添加选项(最多6项)' onclick='addChoose(this)'>
+		</div>
+		<div name="mutilWDiv" id='containerHide'>
+			 <div name='mutilDiv' class='borderLine'>
+			 	<div name='mutilOne'>
+			 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:
+                    <input type="file" name="file" >
+			 	</div>
+			 	<div name='mutilOne'>
+			 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:
+                    <div>
+                        <input type="hidden" name="uploadFile"/>
+                        <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                    </div>
+			 	</div>
+			 	<div name='mutilOne'>
+			 		<input type='button' name='delMutilOne' value='删除' onclick='delMutilOneF(this)'>
+			 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:
+                    <div>
+                        <input type="hidden" name="uploadFile"/>
+                        <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                    </div>
+			 	</div>
+			 	<div name='mutilOne'>
+			 		<input type='button' name='delMutilOne' value='删除' onclick='delMutilOneF(this)'>>
+			 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:
+                    <div>
+                        <input type="hidden" name="uploadFile"/>
+                        <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                    </div>
+			 	</div>
+			 </div>
+			 <input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)'>
+		</div>
+		<div name='simpleAnswer' class='borderLine' id='containerHide'>
+			 积分:<input type='text' name='simpleScore'> 字数范围:<input type='text' name='simpleMinLen'>~<input type='text' name='simpleMaxLen'>
+		</div>
+	</div>
+</div>
+
+   
+<div name='uphiddenOption' id='containerHide'>
+	<div name='oneOption' class='borderLine'>
+		<br/>
+		选项名称:<input type='text' name='title'>
+		选项类型:<select name='type' onchange='changeType(this)'>
+					<option value='0'>单选题</option>
+					<option value='1'>复选题</option>
+					<option value='2'>简单题</option>
+				</select><input type='button' name='delNewAddOptoin' value='删除题目' onclick='delNewOption(this)'>
+				<br/>
+		<div name='sinple'>
+		 	<ul name='choose' class='chooseSty'>
+		 	</ul>
+		 	<input type='button' name='addChooseOne' value='添加选项(最多6项)' onclick='addChoose(this)'>
+		</div>
+
+		<div name="mutilWDiv" id='containerHide'>
+			 <div name='mutilDiv' class='borderLine'>
+			 </div>
+			 <input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)'>
+		</div>
+	</div>
+</div>
+
+<div name='hideSinple' id='containerHide'>
+<li>
+		 		<div name='chooseOne'>
+		 			<input type='button' name='delChoose' value='删除' onclick='delChoose(this)'>
+		 			<input type='hidden' name='chooseID'>
+		 			正确答案:<input type='checkbox' name='correct'/>
+		 			选项:<input type='text' name='chooseName'>
+					分值:<input type='text' name='chooseScore'>
+					下一题/标签:<input type='text' name='chooseNext'>
+					配图:<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+		 		</div>
+		 	</li>
+</div>
+
+<div name='hideMutil'  id='containerHide'>
+<div name='mutilOne'>
+ 		<input type='button' name='delMutilOne' value='删除' onclick='delMutilOneF(this)'>
+ 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>
+ 		配图:<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+                             </div>
+
+</div>
+
+
+<div name='hideSimple' id='containerHide'>
+<div name='simpleAnswer' class='borderLine' id='containerHide'>
+			 积分:<input type='text' name='simpleScore'> 字数范围:<input type='text' name='simpleMinLen'>~<input type='text' name='simpleMaxLen'>
+		</div>
+</div>
+
+
+<div name='hideSetGift' id='containerHide'>
+<div name='scoreMinMaxOne' class='borderLine'>
+			<strong>条件:</strong>低分值:<input type='text' name='conditionMinScore'>~高分值:<input type='text' name='conditionMaxScore'> <strong>设置标签:</strong><input type='text' name='conditionLabel'><br/>
+			<strong>结果:</strong>所获标签:<input type='text' name='getLabel'> 所获积分:<input type='text' name='getScore'> 所获奖券:<input type='text' name='getActivities'>
+			<input type='button' value='delete' name='delSetGift' onclick='setGiftDel(this)'>
+</div>
+</div>
+
+<div name='hideMain' id='containerHide'>
+<div name='oneOption' class='borderLine'><br/>
+		选项名称:<input type='text' name='title'>
+		选项类型:<select name='ctype' onchange='changeType(this)'>
+					<option value='0'>单选题</option>
+					<option value='1'>复选题</option>
+					<option value='2'>简单题</option>
+				</select>
+				<br/>
+		<div name='sinple'>
+			 <ul name='choose' class='chooseSty'>
+				 	<li>
+				 		<div name='chooseOne'>
+				 			<input type='hidden' name='chooseID'>
+				 			正确答案:<input type='radio' name='correct'/>
+				 			选项:<input type='text' name='chooseName'>
+							分值:<input type='text' name='chooseScore'>
+							下一题/标签:<input type='text' name='chooseNext'>
+							配图:
+							 <div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+				 		</div>
+				 	</li>
+				 	<li>
+				 		<div name='chooseOne'>
+				 			<input type='hidden' name='chooseID'>
+				 			正确答案:<input type='radio' name='correct'/>
+				 			选项:<input type='text' name='chooseName'>
+							分值:<input type='text' name='chooseScore'>
+							下一题/标签:<input type='text' name='chooseNext'>
+							配图:
+							<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span  name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+				 		</div>
+				 	</li>
+				 	<li>
+				 		<div name='chooseOne'>
+				 			<input type='button' name='delChoose' value='删除' onclick='delChoose(this)'>
+				 			<input type='hidden' name='chooseID'>
+				 			正确答案:<input type='radio' name='correct'/>
+				 			选项:<input type='text' name='chooseName'>
+							分值:<input type='text' name='chooseScore'>
+							下一题/标签:<input type='text' name='chooseNext'>
+							配图:
+							<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+				 		</div>
+				 	</li>
+				 	<li>
+				 		<div name='chooseOne'>
+				 			<input type='button' name='delChoose' value='删除' onclick='delChoose(this)'>
+				 			<input type='hidden' name='chooseID'>
+				 			正确答案:<input type='radio' name='correct'/>
+				 			选项:<input type='text' name='chooseName'>
+							分值:<input type='text' name='chooseScore'>
+							下一题/标签:<input type='text' name='chooseNext'>
+							配图:
+							<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+				 		</div>
+				 	</li>
+			 </ul>
+		 	<input type='button' name='addChooseOne' value='添加选项(最多6项)' onclick='addChoose(this)'>
+		</div>
+		<div name="mutilWDiv" id='containerHide'>
+			 <div name='mutilDiv' class='borderLine'>
+			 	<div name='mutilOne'>
+			 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+			 	</div>
+			 	<div name='mutilOne'>
+			 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+			 	</div>
+			 	<div name='mutilOne'>
+			 		<input type='button' name='delMutilOne' value='删除' onclick='delMutilOneF(this)'>
+			 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+			 	</div>
+			 	<div name='mutilOne'>
+			 		<input type='button' name='delMutilOne' value='删除' onclick='delMutilOneF(this)'>>
+			 		题目设置:<input type='text' name='mutilTitle'>&nbsp;积分设置：<input type='text' name='mutilScore'>配图:<div>
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                <span name='upPic' id='containerHide'>
+                                    <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+                                    <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+                                </span>
+                             </div>
+			 	</div>
+			 </div>
+			 <input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)'>
+		</div>
+		<div name='simpleAnswer' class='borderLine' id='containerHide'>
+			标题:<input type='text' name='simpleTitle'> 积分:<input type='text' name='simpleScore'> 字数范围:<input type='text' name='simpleMinLen'>~<input type='text' name='simpleMaxLen'>
+		</div>
+	</div>
+</div>
+
+<div name='hideScoreMinMaxOne1' id='containerHide'>
+<div name='scoreMinMaxOne' class='borderLine'>
+			<strong>条件:</strong>低分值:<input type='text' name='conditionMinScore'>~高分值:<input type='text' name='conditionMaxScore'> <strong>设置标签:</strong><input type='text' name='conditionLabel'><br/>
+			<strong>结果:</strong>所获标签:<input type='text' name='getLabel'> 所获积分:<input type='text' name='getScore'> 所获奖券:<input type='text' name='getActivities'>
+		</div>
+</div>

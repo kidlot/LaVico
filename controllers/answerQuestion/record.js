@@ -9,7 +9,7 @@ module.exports={
         var chooseId=seed.chooseId;//选项编号
         var score=seed.score;//所获分值
         var chooseNext=seed.chooseNext;//下一题/标签
-        var wechatid="cust101";//微信ID
+        var wechatid=seed.wechatid;//微信ID
         var finish=seed.finish;//是否为“完成”按钮 true
         //var mutilFlag=false;//?
 
@@ -30,8 +30,8 @@ module.exports={
                     //判断是为积分还是标签
                    if(!isNaN(score)){
                        //session
-                       then.req.session.scoreAll=score;
-
+                       then.req.session.scoreAll+=parseInt(score);
+                       console.log("record:"+then.req.session.scoreAll);
                        //记录积分
                        helper.db.coll("lavico/custReceive").insert({
                            "wechatid": wechatid,
@@ -62,11 +62,18 @@ module.exports={
                             this.res.end();
                         }
                     }else{
-
+                        var chooseNextB;
                         //判断标签是否有“逗号”为
-                        if(chooseNext.indexOf(',')!=-1){
+                        chooseNextB=chooseNext.indexOf(',');
+                        if(chooseNextB<0){
+                            chooseNextB=chooseNext.indexOf(' ')
+                        }
+                        if(chooseNextB!=-1){
                             //如果有逗号，不是数字，记录标签
                             var choArr=chooseNext.split(',');
+                            if(choArr.length<=0){
+                                choArr=chooseNext.split(' ');
+                            }
                             for(var i=0;i<choArr.length;i++){
 
                                 helper.db.coll("lavico/custReceive").insert({
@@ -99,7 +106,7 @@ module.exports={
                     }
                 }else if(type==1){
                     //复选题
-                    then.req.session.scoreAll=score;
+                    then.req.session.scoreAll+=parseInt(score);
 
                     var selectChooseIdArr=seed.chooseId;
                     var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);

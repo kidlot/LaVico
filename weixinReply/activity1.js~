@@ -12,12 +12,15 @@
       type: '定制应用',
       icon: '/welab/apps/photowall/public/icon_s.png',
       on: true,
-      title: '活动管理',
-      desc: '活动管理',
+      title: '我要侃价',
+      desc: '我要侃价',
       btns: [
         {
           title: '管理',
-          controller: '/lavico/activity'
+          controller: '/lavico/bargain'
+        }, {
+          title: '统计',
+          controller: '/lavico/bargain/statistics'
         }
       ],
       start: function() {
