@@ -7,20 +7,17 @@
   welabExtension = require('welab/extension.js');
 
   exports.load = function() {
-    return welabExtension.apps.bargain = {
+    return welabExtension.apps.activity = {
       categories: ['图片'],
       type: '定制应用',
       icon: '/welab/apps/photowall/public/icon_s.png',
       on: true,
-      title: '我要侃价',
-      desc: '我要侃价',
+      title: '活动管理',
+      desc: '活动管理',
       btns: [
         {
           title: '管理',
-          controller: '/lavico/bargain'
-        }, {
-          title: '统计',
-          controller: '/lavico/bargain/statistics'
+          controller: '/lavico/activity'
         }
       ],
       start: function() {

@@ -27,6 +27,8 @@ module.exports={
                 },function(err,doc){
             });
 
+
+
     	var scoreRange;//jsonObject
 
         //判断是否是标签过来的
@@ -67,6 +69,12 @@ module.exports={
                             "createTime": createTime()
                         },function(err,doc){});
 
+
+
+
+
+
+
 					resultList+="{"
 						+"getLabel:'"+getLabel
 						+"',getScore:"+getScore
@@ -102,11 +110,13 @@ module.exports={
                 }
             }));
             */
+            var customerLab="{tags:[";
+
             var resultList="[";
             console.log("_id:"+_id);
             console.log("wechatid:"+wechatid);
             helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,"isFinish":true}).toArray(then.hold(function(err,scoreRange){
-                console.log(scoreRange.length);
+
                 for(var i=0;i<scoreRange.length;i++){
 
                     var getLabel= scoreRange[i].getLabel=="undefined"?"":scoreRange[i].getLabel;
@@ -116,6 +126,11 @@ module.exports={
                         getScore=0;
                     }
 
+
+                    customerLab+=getLabel+",";
+
+
+
                     resultList+="{"
                         +"getLabel:'"+getLabel
                         +"',getScore:"+getScore
@@ -123,9 +138,18 @@ module.exports={
                     if(i<scoreRange.length-1){resultList+=",";}
                 }
             resultList+="]";
+            //console.log(customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]}");
+            customerLab=JSON.parse(customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]}");
+            //console.log(customerLab);//[2014-4-4,ok]
+            //helper.db.coll("welab/customers").update({wechatid:wechatid},{$set:customerLab},function(err,doc){});
 
             nut.model.getResult=resultList;
             }));
+
+
+
+
+
         }
 
 

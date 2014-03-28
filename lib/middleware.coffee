@@ -7,7 +7,7 @@ exports.request = (url, post_data, cb)->
 
   options = {
     host: '127.0.0.1',
-    port: 8080,
+    port: 8081,
     path: url+'?'+post_data,
     method: 'GET'
   };

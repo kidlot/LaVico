@@ -26,83 +26,6 @@ module.exports = {
                 alert('请登陆微信后，查看本页面');
                 jQuery('body').hide();
             }
-            //oBf_qJTu0Vn5nFlXFSVpCIbKIk8o
-
-            var fourNum;//4位验证码
-            var userTel;//用户手机号吗
-            var timer;//计时器 60秒
-            var getRandomNum = function(num){
-                //获得一个随机Num位的数
-                var arr =[];
-                for(var i = 1; i <= num; i++){
-                    var _num = Math.floor(Math.random()*10);
-                    if(_num != 0){
-                        arr.push(Math.floor(Math.random()*10));
-                    }else{
-                        arr.push(1);
-                    }
-                }
-                var str = arr.join('');
-                return str;
-            }
-
-            var getCaptcha = function(){
-                //获取验证码
-                var userName = $('#userName').val();
-                var userTel = $('#userTel').val();
-                var userCaptcha = $('#userCaptcha').val();
-
-                if(userName == ''){
-                    alert('请输入您的姓名');
-                    return false;
-                }
-                if(userTel ==''){
-                    alert('请输入手机号码！');
-                    return false;
-                }
-                var reg = /^1[358]\d{9}$/g;
-                if(!reg.test(userTel)){
-                    alert('请输入有效的手机号码！');
-                    return false;
-                }
-                //userCarNumberCheck();//检验卡号的合法性
-
-                var userCardNumber = $.trim($('#userCardNumber').val());
-                var reg = /^\d{16}$/;
-                if(userCardNumber ==''){
-                    alert('请填写卡号');
-                    return false;
-                }
-//                if(!reg.test(userCardNumber)){
-//                    alert('请输入有效的卡号');
-//                    return false;
-//                }
-                /////////////////////////
-                fourNum = getRandomNum(4);
-                $('#userCaptcha').val(fourNum);
-                console.log(fourNum);
-                // 向短信接口发送一个手机号码和短信内容，短信内容包括验证码
-                clearTimeout(timer);
-                $('#getCaptcha').unbind('click', getCaptcha);
-                $('#timer').html('60');
-                $('#timer').show();
-                timer = setTimeout(function(){
-                    $('#getCaptcha').bind('click', getCaptcha);
-                    clearInterval(timer60Seconds);
-                },62000);
-                var timer60Seconds = setInterval(function(){
-                    if($('#timer').html() == 0){
-                        $('#timer').hide();
-                    }else{
-                        $('#timer').html($('#timer').html() - 1);
-                    }
-                },1000);
-            //Function getCaptcha()
-            }
-
-            var submitCheck = function(){}
-
-            $('#getCaptcha').bind('click', getCaptcha);
             $('#submit').click(function(){
                 //submitCheck();
                 var wxid = $('#wxid').val();
@@ -142,10 +65,6 @@ module.exports = {
                     alert('请填写验证码');
                     return false;
                 }
-                if(userCaptcha != fourNum){
-                    alert('验证码不正确');
-                    return false;
-                }
                 var MEMBER_ID;//返回的数据
                 var successTip = '绑定成功';
 
@@ -157,7 +76,8 @@ module.exports = {
                         'wxid':wxid,
                         'userCardNumber':userCardNumber,
                         'userName':userName,
-                        'userTel':userTel
+                        'userTel':userTel,
+                        'id_code':userCaptcha
 
                     }}).done(function(data){
                         /*返回的数据
@@ -184,6 +104,8 @@ module.exports = {
 //                            window.location.href='/lavico/member/card_member/index?wxid='+wxid+'&member_id='+MEMBER_ID;
                             /*假设绑定会员，成功之后*/
 
+                        }else if(returnJson.code_error){
+                            alert('验证码错误');
                         }else{
                             alert('网络不稳定，请稍后再尝试');
                         }
@@ -207,7 +129,15 @@ module.exports = {
                             var userTel = seed.userTel;
                             var returnDoc;//中间件返回的数据,不过它是字符串格式的JSON
                             var dataJson; //中间件返回的数据,它是原数据转化之后的JSON
-
+				                    var then = this;
+				                    this.step(function(){
+				                      if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 300000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
+                                then.res.writeHead(200, { 'Content-Type': 'application/json' });
+                                then.res.write('{"code_error":"id_code_error"}');
+                                then.res.end();
+                                then.terminate();
+                              }
+				                    });
                             this.step(function(){
 
                             //第一步，请求中间件接口
@@ -239,38 +169,21 @@ module.exports = {
                                     );
                                     return dataJson;
                                 }));
+                                
 
                             });
-
-//                            this.step(function(dataJson){
-//
-//                            //此步为调试
-//
-//                                if(dataJson.issuccessed == true){
-//                                    //绑定成功
-//                                    console.log('绑定成功');
-//
-//                                }else if(dataJson.issuccessed == false){
-//                                    //绑定失败
-//                                    console.log('会员申请老卡绑定失败');
-//                                    //this.terminate();
-//                                }else{
-//                                    console.log('会员申请老卡绑定失败，可能由于网络原因');
-//                                    //this.terminate();
-//                                }
-//                                console.log('2');
-//                            });
 
 
                             this.step(function(){
 
                                 helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){return doc; }));
                             });
-
                             this.step(function(doc){
-
                                 if(dataJson.issuccessed == true){
                                     //中间件返回的数据如果是绑定成功，则需要更新数据库
+                                    console.log('dd')
+                                    //then.req.session.id_code = '';
+                                    console.log('cc')
                                     if(!doc){
                                         //如果找不到此用户，先添加此wxid用户
                                         helper.db.coll('welab/customers').insert({wechatid:wxid},this.hold(function(err, doc){
@@ -293,7 +206,7 @@ module.exports = {
 
                                         }));
                                     }else{
-                                        //找到此用户，直接更新用户信息
+                                        //找到此用户，直接更新用户信息                                    
                                         helper.db.coll('welab/customers').update({wechatid:wxid},{
                                             $set:{
                                                 'realname':userName,
@@ -321,7 +234,6 @@ module.exports = {
                                 }
 
                             });
-
                             this.step(function(){
                                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
                                 this.res.write(returnDoc);

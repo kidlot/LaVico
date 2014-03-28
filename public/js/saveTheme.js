@@ -223,8 +223,12 @@ function uploadComplete(evt) {
     //$(".picView").find("img").attr("src",json.model.fileName);
 
     //隐藏域
+
     $(picShowDisc).prev().val(json.model.fileName);
     $(picShowDisc).next().find(".media-object").attr("src",json.model.fileName);
+
+
+
     //alert($(picShowDisc).prev().val());
 
     setVal( nowLineNum, {pic:json.model.fileName});

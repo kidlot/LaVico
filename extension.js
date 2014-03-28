@@ -1,7 +1,14 @@
 var wechatutil = require("welab/controllers/wechat-api/util.js") ;
 var bargain = require("./weixinReply/bargain.js") ;
+
+var member_apply = require("./weixinReply/apply.js") ;
+var score=require("./weixinReply/score.js")
+
+var activity = require("./weixinReply/activity.js") ;
 var lookbook = require("./weixinReply/lookbook.js") ;
+
 //var member_apply = require("./weixinReply/apply.js") ;
+
 var aSteps = require("./lib/aSteps.js");
 
 exports.onload = function(application){
@@ -9,8 +16,15 @@ exports.onload = function(application){
 
     // 我要侃价
     bargain.load()
+
+	member_apply.load();
+    //json.cao
+    score.load();
+
+	  activity.load();
     // 精英搭配
     lookbook.load()
+
 
 	//member_apply.load();
 
