@@ -110,7 +110,7 @@ module.exports={
                 }
             }));
             */
-            var customerLab="[";
+            var customerLab="{tags:[";
 
             var resultList="[";
             console.log("_id:"+_id);
@@ -138,10 +138,10 @@ module.exports={
                     if(i<scoreRange.length-1){resultList+=",";}
                 }
             resultList+="]";
-
-            customerLab=customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]";
+            //console.log(customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]}");
+            customerLab=JSON.parse(customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]}");
             //console.log(customerLab);//[2014-4-4,ok]
-            helper.db.coll("welab/customers").update({wechatid:wechatid},{$set:customerLab},function(err,doc){});
+            //helper.db.coll("welab/customers").update({wechatid:wechatid},{$set:customerLab},function(err,doc){});
 
             nut.model.getResult=resultList;
             }));
