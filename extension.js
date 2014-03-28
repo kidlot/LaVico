@@ -1,16 +1,14 @@
 var wechatutil = require("welab/controllers/wechat-api/util.js") ;
 var bargain = require("./weixinReply/bargain.js") ;
-<<<<<<< HEAD
+
 var member_apply = require("./weixinReply/apply.js") ;
 var score=require("./weixinReply/score.js")
-=======
-<<<<<<< HEAD
+
 var activity = require("./weixinReply/activity.js") ;
-=======
 var lookbook = require("./weixinReply/lookbook.js") ;
+
 //var member_apply = require("./weixinReply/apply.js") ;
->>>>>>> e4c4b16a2a1b6f8546496c2fddbae66d7386183c
->>>>>>> d61396166c571fdd5b145cbda0f242e59967c141
+
 var aSteps = require("./lib/aSteps.js");
 
 exports.onload = function(application){
@@ -18,23 +16,20 @@ exports.onload = function(application){
 
     // 我要侃价
     bargain.load()
-<<<<<<< HEAD
+
 	member_apply.load();
     //json.cao
     score.load();
-=======
-<<<<<<< HEAD
+
 	  activity.load();
-=======
     // 精英搭配
     lookbook.load()
->>>>>>> d61396166c571fdd5b145cbda0f242e59967c141
+
 
 	//member_apply.load();
 
 
 
->>>>>>> e4c4b16a2a1b6f8546496c2fddbae66d7386183c
     /**
      * reply list
      * @param oriMsg
