@@ -1,7 +1,6 @@
 var wechatutil = require("welab/controllers/wechat-api/util.js") ;
 var bargain = require("./weixinReply/bargain.js") ;
 
-var member_apply = require("./weixinReply/apply.js") ;
 var score=require("./weixinReply/score.js")
 
 var activity = require("./weixinReply/activity.js") ;
@@ -17,7 +16,6 @@ exports.onload = function(application){
     // 我要侃价
     bargain.load()
 
-	member_apply.load();
     //json.cao
     score.load();
 
