@@ -16,6 +16,7 @@ module.exports = {
 
         this.step(function(){
             nut.model._id = seed._id
+            nut.model.jsonDoc = JSON.stringify(doc)
             nut.model.doc = doc
         })
 
@@ -48,6 +49,7 @@ module.exports = {
 
                 var postData = JSON.parse(seed.postData);
 
+                console.log(postData)
                 if(postData.length == 0 ){
                     nut.message("保存失败。数据不能为空",null,'error') ;
                     return;
