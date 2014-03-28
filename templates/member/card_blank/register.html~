@@ -15,6 +15,7 @@
 <input type='button' id='submit' value='提交' />
 <input type='hidden' id='uid' value='{@ uid}'>
 
+
 <script>
 window.onload = function(){
     $(function () {  
@@ -80,7 +81,7 @@ window.onload = function(){
     flag = 1;
     checktime = setTimeout(re_get_code,30000);
     $("#get_id_code").val('稍后再发');
-    $.get('http://dolphin.imagchina.com/lavico/member/card_blank/register:id_code',{
+    $.get('http://dolphin.imagchina.com/lavico/member/card_blank/code:id_code',{
       },function(data){
         data = eval('('+data+')');
         alert(data.result);
@@ -138,7 +139,7 @@ window.onload = function(){
 			},
 			function(data){
 			  alert(data);
-			  data = eval(data);
+			  data = eval("("+data+")");
 			  alert(data);
 				if(data.issuccessed){
 					alert("恭喜你，注册成功");
