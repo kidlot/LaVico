@@ -63,17 +63,24 @@ window.lookbook = {
 
 
         $(".pageList").append(o)
+
+
         this.updateEvent(o)
         o.fadeIn()
 
         this.refreshCode();
+
+        o.addProduct = function(){
+            lookbook.addProduct(o.find(".addProduct"))
+        }
+        return o;
     }
 
     , addProduct: function(params){
 
         this.sumProduct ++
 
-        // params = event 增加一个空产品
+        // params = event 增加一个空产品,params为BUTTON
         // params = number 增加一个带内容的产品 arguments1 page数 arguments2 product数 arguments3 数据
         if(typeof(params) == "number"){
 
@@ -85,10 +92,10 @@ window.lookbook = {
             o.find("textarea").val(arguments[2].detail)
             o.find("img").attr("src",arguments[2].pic)
         }else{
-            var o = $(params).prev().find(".panel").eq(0).clone()
+            var o = params.prev().find(".panel").eq(0).clone()
             var _id = lookbook._getPageProductID(params)
             this.page[parseInt(_id.pageId)].product.push({pic:undefined,name:undefined,detail:undefined})
-            var productDiv = $(params).prev()
+            var productDiv = params.prev()
 
             o.find("input[type='text']").val("")
             o.find("img").attr("src","/lavico/public/images/u6.jpg")
@@ -163,8 +170,8 @@ window.lookbook = {
 
     , _getPageProductID: function(oButton){
 
-        var pageId = $(oButton).parents("div.pagePanel").find("code[class='page']").text()
-        var productId = $(oButton).parents("div.productPanel").find("code[class='product']").text()
+        var pageId = oButton.parents("div.pagePanel").find("code[class='page']").text()
+        var productId = oButton.parents("div.productPanel").find("code[class='product']").text()
 
         return {pageId:parseInt(pageId)-1, productId:parseInt(productId)-1}
     }
@@ -215,7 +222,6 @@ window.onload = function(){
             lookbook.on = formData.on
         }
     }else{
-        lookbook.addPage()
-        lookbook.addProduct(0,0,{})
+        lookbook.addPage().addProduct()
     }
 }
