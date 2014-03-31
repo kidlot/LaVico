@@ -49,14 +49,11 @@ module.exports = {
 
                 var postData = JSON.parse(seed.postData);
 
-                console.log(postData)
                 if(postData.length == 0 ){
                     nut.message("保存失败。数据不能为空",null,'error') ;
                     return;
                 }
 
-                postData.startDate = new Date(postData.startDate + " 00:00:00").getTime()
-                postData.stopDate = new Date(postData.stopDate + " 23:59:59").getTime()
                 if(seed._id){
 
                     helper.db.coll("lavico/lookbook").update({_id:helper.db.id(seed._id)},{$set:postData},this.hold(function(err,doc){
