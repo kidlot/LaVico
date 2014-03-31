@@ -130,11 +130,11 @@ window.lookbook = {
                 window.lookbook[this.name] = $(this).val()
             }
             if(paramName.length == 2){
-                var _id = lookbook._getPageProductID(this)
+                var _id = lookbook._getPageProductID($(this))
                 window.lookbook.page[parseInt(_id.pageId)][paramName[1]] = $(this).val()
             }
             if(paramName.length == 3){
-                var _id = lookbook._getPageProductID(this)
+                var _id = lookbook._getPageProductID($(this))
                 window.lookbook.page[parseInt(_id.pageId)].product[parseInt(_id.productId)][paramName[2]] = $(this).val()
             }
         })
@@ -147,7 +147,7 @@ window.lookbook = {
                 lookbook.refreshCode()
             });
 
-            var _id = lookbook._getPageProductID(this)
+            var _id = lookbook._getPageProductID($(this))
             if(!isNaN(_id.productId)){
                 lookbook.page[_id.pageId].product.splice(_id.productId,1)
             }else{

@@ -208,7 +208,7 @@
         $(window.oLastInput).prev().attr("src",filename)
 
         // update model
-        var _id = lookbook._getPageProductID(window.oLastInput)
+        var _id = lookbook._getPageProductID($(window.oLastInput))
 
         if(!isNaN(_id.productId)){
             window.lookbook.page[parseInt(_id.pageId)].product[parseInt(_id.productId)].pic = filename
