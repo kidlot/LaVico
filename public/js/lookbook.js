@@ -5,6 +5,7 @@ window.lookbook = {
     type: "",
     startDate: 0,
     stopDate: 0,
+    sumProduct:0,
     page: [
 
     ]
@@ -69,6 +70,8 @@ window.lookbook = {
     }
 
     , addProduct: function(params){
+
+        this.sumProduct ++
 
         // params = event 增加一个空产品
         // params = number 增加一个带内容的产品 arguments1 page数 arguments2 product数 arguments3 数据

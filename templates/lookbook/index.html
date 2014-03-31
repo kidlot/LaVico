@@ -1,12 +1,16 @@
+
 <ul class="breadcrumb clearfix">
-    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/lookbook/index" >精英搭配</a></li>
+    <li class="pull-right"><a href="/lavico/lookbook/index"><i class="fui-arrow-left"></i>返回</a></li>
 </ul>
 
 <div class="panel panel-default">
     <div class="panel-heading">
 
         <div style="width: 300px;">
-            <a href="/lavico/lookbook/form" class="btn btn-xs btn-primary mhm">增加</a>
+            <a href="/lavico/lookbook/form" class="btn btn-xs btn-primary mhm">新增手册</a>
         </div>
     </div>
     <div class="panel-body">
@@ -14,27 +18,28 @@
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th>产品名称</th>
-                <th>市场零售价</th>
-                <th>最低价格</th>
-                <th>剩余数量</th>
+                <th>名称</th>
+                <th>状态</th>
                 <th>开始时间</th>
                 <th>结束时间</th>
-                <th></th>
+                <th>类型</th>
+                <th>页数</th>
+                <th>单品数</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <foreach for="@page.docs" var="doc">
                 <tr>
                     <td>{@ doc.name}</td>
-                    <td>{@ doc.price}</td>
-                    <td>{@ doc.minPrice}</td>
-                    <td>{@ doc.surplus}</td>
+                    <td>{@ doc.stat}</td>
                     <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ doc.type}</td>
+                    <td>{@ doc.page.length}</td>
+                    <td>{@ doc.sumProduct}</td>
                     <td>
                         <a href="/lavico/lookbook/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm">修改</a>
-                        <a href="javascript:;" onclick="copyToClipboard('http://{host}/lavico/lookbook/detail?wxid={wxid}&_id={@doc._id}')" class="btn btn-xs btn-primary mhm">复制链接</a>
                         <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
                     </td>
                 </tr>
