@@ -6,7 +6,7 @@
     <div class="panel-heading">
 
         <div style="width: 300px;">
-            <a href="/lavico/lookbook/form" class="btn btn-xs btn-primary mhm stay">增加</a>
+            <a href="/lavico/lookbook/form" class="btn btn-xs btn-primary mhm">增加</a>
         </div>
     </div>
     <div class="panel-body">
@@ -33,7 +33,7 @@
                     <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
                     <td>
-                        <a href="/lavico/lookbook/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">修改</a>
+                        <a href="/lavico/lookbook/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm">修改</a>
                         <a href="javascript:;" onclick="copyToClipboard('http://{host}/lavico/lookbook/detail?wxid={wxid}&_id={@doc._id}')" class="btn btn-xs btn-primary mhm">复制链接</a>
                         <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
                     </td>

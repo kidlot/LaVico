@@ -19,8 +19,11 @@ window.lookbook = {
         $.request(oLinkOptions,function(err,nut){
             if(err) throw err ;
 
-            nut.msgqueue.popup() ;
-            //$.controller("/lavico/lookbook/index",null,"lazy");
+            if(nut.msgqueue[0].type=="success"){
+                $.controller("/lavico/lookbook/index",null,"lazy");
+            }else{
+                nut.msgqueue.popup() ;
+            }
         }) ;
     }
 
@@ -48,9 +51,13 @@ window.lookbook = {
             o.find("input[name='page.name']").val(oPage.name)
             o.find("textarea").val(oPage.detail)
             o.find("img").attr("src",oPage.pic)
+
+            this.page.push({pic:oPage.pic,name:oPage.name,detail:oPage.detail,product:[]})
         }else{
             o.find("input[type='text'],textarea").val("")
             o.find("img").attr("src","/lavico/public/images/u6.jpg")
+
+            this.page.push({pic:undefined,name:undefined,detail:undefined,product:[]})
         }
 
 
@@ -59,7 +66,6 @@ window.lookbook = {
         o.fadeIn()
 
         this.refreshCode();
-        this.page.push({pic:oPage.pic,name:oPage.name,detail:oPage.detail,product:[]})
     }
 
     , addProduct: function(params){
