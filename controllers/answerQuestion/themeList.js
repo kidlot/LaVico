@@ -1,3 +1,4 @@
+//http://{host}/lavico/answerQuestion/answer?_id=5335249d1576b3bd27000c72&optionId=1&wechatid={wxid}
 module.exports={
 	layout:"welab/Layout",
     view:"lavico/templates/answerQuestion/themeList.html",

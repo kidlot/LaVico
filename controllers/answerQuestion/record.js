@@ -13,8 +13,6 @@ module.exports={
         var finish=seed.finish;//是否为“完成”按钮 true
         //var mutilFlag=false;//?
 
-
-
         var docvar=null;//是否已经有存储
         this.step(function(){
         //判断是否已经记录
@@ -31,7 +29,6 @@ module.exports={
                    if(!isNaN(score)){
                        //session
                        then.req.session.scoreAll+=parseInt(score);
-                       console.log("record:"+then.req.session.scoreAll);
                        //记录积分
                        helper.db.coll("lavico/custReceive").insert({
                            "wechatid": wechatid,
@@ -39,7 +36,7 @@ module.exports={
                            "isFinish": false,
                            "optionId": parseInt(optionId),
                            "chooseId": parseInt(chooseId),
-                           "getChooseScore": parseInt(then.req.session.scoreAll),
+                           "getChooseScore": parseInt(score),
                            "getChooseLabel":"",
                            "getLabel": "",
                            "getGift":  "",
@@ -63,17 +60,48 @@ module.exports={
                         }
                     }else{
                         var chooseNextB;
+                        var customerLab="{tags:[";
                         //判断标签是否有“逗号”为
                         chooseNextB=chooseNext.indexOf(',');
                         if(chooseNextB<0){
-                            chooseNextB=chooseNext.indexOf(' ')
+                            chooseNextB=chooseNext.indexOf(' ');
                         }
                         if(chooseNextB!=-1){
                             //如果有逗号，不是数字，记录标签
+                            //注意：split如果在没有符号的情况下，返回1
                             var choArr=chooseNext.split(',');
-                            if(choArr.length<=0){
+                            if(choArr.length<=1){
                                 choArr=chooseNext.split(' ');
                             }
+                            //记录至customers表
+                            for(var i=0;i<choArr.length;i++){
+                                customerLab+="'"+choArr[i]+"'"+",";
+                            }
+                            var jsonStr=customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]}";
+                            console.log(jsonStr);
+                            customerLab=eval('('+jsonStr+')');
+                            helper.db.coll("welab/customers").update({wechatid:wechatid},{$set:customerLab},function(err,doc){});
+
+                            /*
+                            //session
+                            then.req.session.scoreAll+=parseInt(score);
+                            //记录积分
+                            helper.db.coll("lavico/custReceive").insert({
+                                "wechatid": wechatid,
+                                "themeId": helper.db.id(_id),
+                                "isFinish": false,
+                                "optionId": parseInt(optionId),
+                                "chooseId": parseInt(chooseId),
+                                "getChooseScore": parseInt(score),
+                                "getChooseLabel":"",
+                                "getLabel": "",
+                                "getGift":  "",
+                                "compScore": "",
+                                "createTime": createTime()
+                            },function(err,doc){
+                            });
+
+                            //记录总分
                             for(var i=0;i<choArr.length;i++){
 
                                 helper.db.coll("lavico/custReceive").insert({
@@ -84,14 +112,14 @@ module.exports={
                                     "chooseId": parseInt(chooseId),
                                     "getChooseScore": parseInt(then.req.session.scoreAll),
                                     "getChooseLabel":"",
-                                    "getLabel": choArr[i],
+                                    "getLabel": "",
                                     "getGift":  "",
                                     "compScore": "",
                                     "createTime": createTime()
                                 },function(err,doc){
                                 });
-
                             }
+                            */
                             this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+"&flag=false&_id="+_id+"&optionId="+optionId});
                             this.res.end();
                         }else{
