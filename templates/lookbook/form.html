@@ -9,8 +9,8 @@
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
     <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
-    <li class="b03"><a href="/welab/AppList" class="stay">精英搭配</a></li>
-    <li class="b03"><a href="/welab/AppList" class="stay">编辑</a></li>
+    <li class="b03"><a href="/lavico/lookbook/index" >精英搭配</a></li>
+    <li class="b03"><a href="#" class="stay">编辑</a></li>
     <li class="pull-right"><a href="/lavico/lookbook/index"><i class="fui-arrow-left"></i>返回</a></li>
 </ul>
 
@@ -21,7 +21,7 @@
         <div class="col-md-12">
             <br>
             <div style="min-height: 70px;">
-                <h5 style="color: #1abc9c" class="pull-left">2014秋冬搭配手册</h5>
+                <h5 style="color: #1abc9c" class="pull-left" id="pagename">{@ doc.name||'2014秋冬搭配手册'}</h5>
                 <input type="hidden" id="_id" value="{@ _id}">
                 <div id="jsonDoc" style="display: none">{@ jsonDoc}</div>
                 <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="lookbook.save()"><i class="fui-check-inverted"></i> 保存</a>
@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">名称</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" placeholder="2014春季潮流搭配" style="width: 300px;" value="{@ doc.name}">
+                        <input type="text" class="form-control" name="name" placeholder="2014春季潮流搭配" style="width: 300px;" value="{@ doc.name}" oninput="$('#pagename').text(this.value)">
                     </div>
                 </div>
                 <div class="form-group">
@@ -62,8 +62,8 @@
                     <div class="col-sm-10">
                         <select class="form-control" style="width: 150px" name="type">
                             <option value="瀑布流型">瀑布流型</option>
-                            <option value="瀑布流型">瀑布流型</option>
-                            <option value="瀑布流型">瀑布流型</option>
+                            <option value="整图型">整图型</option>
+                            <option value="列表型">列表型</option>
                         </select>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
                                 <div class="productList">
-                                    <div class="panel panel-default formText productPanel">
+                                    <div class="panel panel-default formText productPanel" style="display: none">
 
                                         <div class="panel-heading clearfix" style="padding: 3px 15px; height: 30px;">
                                             <p class="pull-left" style="margin-bottom: 0px;font-size: 16px">单品 <code class="product">1</code></p>
@@ -141,13 +141,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a class="btn btn-success btn-social-googleplus pull-right addProduct" href="javascript:;" onclick="lookbook.addProduct(this)">增加单品</a>
+                                <a class="btn btn-success btn-social-googleplus pull-right addProduct" href="javascript:;" onclick="lookbook.addProduct($(this))">增加单品</a>
                             </div>
 
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-success btn-social-googleplus pull-right" href="javascript:;" onclick="lookbook.addPage()" style="margin-top: 10px">增加页面</a>
+                <a class="btn btn-success btn-social-googleplus pull-right" href="javascript:;" onclick="var o = lookbook.addPage();o.addProduct()" style="margin-top: 10px">增加页面</a>
             </form>
         </div>
     </div>
