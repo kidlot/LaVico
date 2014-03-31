@@ -55,8 +55,6 @@ module.exports = {
                     return;
                 }
 
-                postData.startDate = new Date(postData.startDate + " 00:00:00").getTime()
-                postData.stopDate = new Date(postData.stopDate + " 23:59:59").getTime()
                 if(seed._id){
 
                     helper.db.coll("lavico/lookbook").update({_id:helper.db.id(seed._id)},{$set:postData},this.hold(function(err,doc){
