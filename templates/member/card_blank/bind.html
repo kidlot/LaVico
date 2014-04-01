@@ -25,11 +25,10 @@ window.onload = function(){
     flag = 1;
     $.get('/lavico/member/card_blank/code:id_code',{
       },function(data){
-        flag = 0;
         data = eval('('+data+')');
         if(data.result == 'ofen'){
           alert('请稍后再获取！');
-        }else if(data.result == 'ok'){
+        }else if(data.result == 'ok'){ 
           set_interval();
           $('#userCaptcha').val(data.id_code);
           //alert('验证码发送成功，请在2分钟内输入！');
@@ -40,6 +39,7 @@ window.onload = function(){
     );
   });
   function set_interval(){
+    clearInterval(timer60Seconds);
     var time = 60;
     $("#get_id_code").val('请'+time+'秒稍后再获取');
     timer60Seconds = setInterval(function(){

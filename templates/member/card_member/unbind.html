@@ -23,7 +23,6 @@ window.onload = function(){
     flag = 1;
     $.get('/lavico/member/card_blank/code:id_code',{
       },function(data){
-        flag = 0;
         data = eval('('+data+')');
         if(data.result == 'ofen'){
           alert('请稍后再获取！');
