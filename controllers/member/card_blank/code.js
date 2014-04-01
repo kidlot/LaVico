@@ -16,7 +16,7 @@ module.exports = {
             this.req.session.set_id_code_time = new Date().getTime();
             console.log(id_code);
             then.res.writeHead(200, { 'Content-Type': 'text/plain' });
-            then.res.write("{result:'ok'}");
+            then.res.write('{"result":"ok","id_code":"'+id_code+'"}');
             then.res.end(); 
           }
 		    });

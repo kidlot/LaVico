@@ -15,7 +15,7 @@ module.exports = {
         var wxid = seed.wxid;
         this.step(function(){
           helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err,doc){
-            nut.model.MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "" ;
+            nut.model.MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.MEMBER_ID : "" ;
             nut.model.wxid = doc.wechatid;
             nut.model.mobile = doc.mobile;
           }));

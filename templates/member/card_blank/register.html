@@ -4,14 +4,14 @@
 	<span>性别</span>
 	<select id='sex'>
 		<option value='1'>男</option>
-		<option value='0'>男</option>
+		<option value='0'>女</option>
 	</select><br/>
 	<span>生日</span>
 		<select id="year"></select>年  
 		<select id="month"></select>月  
 		<select id="day"></select>日  <br/>
 	<span>手机</span><input AutoComplete='on' id='mobile' /><input type='button' value='获取验证码' id='get_id_code' /><br/>
-	<span>验证码</span><input id='id_code' /><br/>
+	<span>验证码</span><input id='id_code' value='' /><br/>
 	<br/>
 <input type='button' id='submit' value='提交' />
 <input type='hidden' id='uid' value='{@ uid}'>
@@ -19,7 +19,6 @@
 
 <script>
 window.onload = function(){
-var doname = 'http://dolphin.imagchina.com';
     $(function () {  
         var $day = $("#day"),  
           $month = $("#month"),  
@@ -86,13 +85,15 @@ var doname = 'http://dolphin.imagchina.com';
       return false;
     }
     flag = 1;
-    $.get(doname+'/lavico/member/card_blank/code:id_code',{
+    $.get('/lavico/member/card_blank/code:id_code',{
       },function(data){
         data = eval('('+data+')');
         if(data.result == 'ofen'){
           alert('请稍后再获取！');
-        }else if(data.result == 'ok'){
+          flag = 0;
+        }else if(data.result == 'ok'){  
           set_interval();
+          $('#id_code').val(data.id_code);
           //alert('验证码发送成功，请在2分钟内输入！');
         }else{
           alert('something error pelase refresh your browser!')
@@ -101,6 +102,7 @@ var doname = 'http://dolphin.imagchina.com';
     );
   });
   function set_interval(){
+    clearInterval(timer60Seconds);
     var time = 60;
     $("#get_id_code").val('请'+time+'秒稍后再获取');
     timer60Seconds = setInterval(function(){
@@ -149,7 +151,7 @@ var doname = 'http://dolphin.imagchina.com';
 			alert("验证码错误");
 			return	false;
 		}
-		$.get(doname+'/lavico/member/card_blank/register:apply_card',{
+		$.get('/lavico/member/card_blank/register:apply_card',{
 				uid : $("#uid").val(),
 				name : $("#name").val(),
 				sex : $("#sex").val(),

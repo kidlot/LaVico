@@ -3,7 +3,7 @@ window.onload=function(){
     var data={@jsonReply};
     for(var o in data){
        // stringConn="<tr><td>"+data[o].theme+"</td><td>"+data[o].createTime+"</td><td>"+data[o].themeCount+"</td><td>"+data[o].partakeCount+"</td><td>"+data[o].finishCount+"</td><td><a href=answer?wechatid="+wechatid+"&_id="+data[o]._id+"&optionId=1>浏览</a></td></tr>";
-        stringConn="<tr><td>"+data[o]._id+"</td><td>"+data[o].theme+"</td><td>"+data[o].createTime+"</td><td>"+data[o].themeCount+"</td><td>"+data[o].partakeCount+"</td><td>"+data[o].finishCount+"</td><td><a href=updateTheme?_id="+data[o]._id+"&optionId=1>Update</a></td></tr>";
+        stringConn="<tr><td> http://{host}/lavico/answerQuestion/answer?_id="+data[o]._id+"&optionId=1&wechatid={wxid}</td><td>"+data[o].theme+"</td><td>"+data[o].createTime+"</td><td>"+data[o].themeCount+"</td><td>"+data[o].partakeCount+"</td><td>"+data[o].finishCount+"</td><td><a href=updateTheme?_id="+data[o]._id+"&optionId=1>Update</a></td></tr>";
         $(".lineDef").append(stringConn);
         $("#tagList tbody").append(stringConn);
     }
@@ -12,8 +12,8 @@ window.onload=function(){
 
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/addTheme" class="stay">addTheme</a> <em></em></li>
-    <li class="active"><span>themeList</span></li>
+    <li class="b02"><a href="/lavico/answerQuestion/addTheme" class="stay">添加题目</a> <em></em></li>
+    <li class="active"><span>列表管理</span></li>
 </ul>
 <!--
 <table border="1" name="showList" class="lineDef">
@@ -32,7 +32,7 @@ window.onload=function(){
                     <table class="table table-hover" id="tagList">
                         <thead>
                         <tr>
-                            <th>_id</th>
+                            <th>绑定URL</th>
                             <th>名称</th>
                             <th>创建时间</th>
                             <th>题目数</th>
