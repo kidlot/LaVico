@@ -90,6 +90,7 @@ window.onload = function(){
         data = eval('('+data+')');
         if(data.result == 'ofen'){
           alert('请稍后再获取！');
+          flag = 0;
         }else if(data.result == 'ok'){  
           set_interval();
           $('#id_code').val(data.id_code);
@@ -101,6 +102,7 @@ window.onload = function(){
     );
   });
   function set_interval(){
+    clearInterval(timer60Seconds);
     var time = 60;
     $("#get_id_code").val('请'+time+'秒稍后再获取');
     timer60Seconds = setInterval(function(){

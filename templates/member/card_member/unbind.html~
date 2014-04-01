@@ -25,10 +25,9 @@ window.onload = function(){
       },function(data){
         data = eval('('+data+')');
         if(data.result == 'ofen'){
+          flag = 0;
           alert('请稍后再获取！');
         }else if(data.result == 'ok'){
-          flag = 0;
-          clearInterval(timer60Seconds);
           set_interval();
           $('#userCaptcha').val(data.id_code);
           //alert('验证码发送成功，请在2分钟内输入！');
@@ -39,6 +38,7 @@ window.onload = function(){
     );
   });
   function set_interval(){
+    clearInterval(timer60Seconds);
     var time = 60;
     $("#get_id_code").val('请'+time+'秒稍后再获取');
     timer60Seconds = setInterval(function(){
