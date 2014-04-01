@@ -4,7 +4,7 @@
 	<span>性别</span>
 	<select id='sex'>
 		<option value='1'>男</option>
-		<option value='0'>男</option>
+		<option value='0'>女</option>
 	</select><br/>
 	<span>生日</span>
 		<select id="year"></select>年  
@@ -90,6 +90,7 @@ var doname = 'http://dolphin.imagchina.com';
       },function(data){
         data = eval('('+data+')');
         if(data.result == 'ofen'){
+          flag = 0;
           alert('请稍后再获取！');
         }else if(data.result == 'ok'){
           set_interval();

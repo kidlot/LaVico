@@ -20,30 +20,61 @@ module.exports = {
           }
 				});
 				
-				this.step(function(){		
-					middleware.request('/lavico.middleware/MemberApply',{
+				
+				this.step(function(){
+				  var data_request = {
 						openid:seed.uid, //微信账号ID
 						MEM_PSN_CNAME:seed.name, //会员姓名
 						MEM_PSN_SEX:seed.sex, //性别 0：女，1：男
 						MEM_PSN_BIRTHDAY:seed.birthday, //生日
-						MOBILE_TELEPHONE_NO:seed.mobile, //手机号
-					},this.hold(function(err,doc){
-					  doc_json = JSON.parse(doc); 
+						MOBILE_TELEPHONE_NO:seed.mobile, //手机号				  
+				  };
+					middleware.request('/lavico.middleware/MemberApply',
+              data_request
+					  ,this.hold(function(err,doc){
+					  doc_json = JSON.parse(doc);
+            helper.db.coll("lavico/user/logs").insert(
+                {
+                    'createTime':new Date().getTime(),
+                    'wxid':seed.uid,
+                    'action':"申请会员卡",
+                    'data':doc_json,
+                    'realname':seed.name,
+                    'mobile':seed.mobile,
+                    'request':data_request
+                },
+                function(err, doc){
+                    console.log(doc);
+                }
+            );					  
+					  
 					  if(doc_json.MEMBER_ID){
-					    then.req.session.id_code = '';     
-              helper.db.coll("lavico/member").insert({
-                  createTime:new Date().getTime(),
-                  wxid:seed.uid,
-                  userCardNumber:doc_json.MEMBER_ID,
-                  userName:seed.name,
-                  userTel:seed.mobile,
-                  type:1,         //普通会员卡
-                  action:1       // 申请  
+					    then.req.session.id_code = '';
+					    var sex = '';
+					    if(seed.sex == 1){
+					      sex = 'male';
+					    }else if(seed.sex === 0){
+					      sex = 'female';
+					    }
+					    console.log(sex);
+              helper.db.coll('welab/customers').update({wechatid:seed.uid},{
+                  $set:{
+                    'realname':seed.name,
+                    'mobile':seed.mobile,
+                    'birthday':seed.birthday,
+                    'gender':sex,
+                    'HaiLanMemberInfo':{
+                        'memberID':doc_json.MEMBER_ID,
+                        'action':'bind',
+                        'lastModified':new Date().getTime(),
+                        'type':1
+                    }  
+                  }
               },this.hold(function(err, insert_doc) {
                 then.res.writeHead(200, { 'Content-Type': 'text/plain' });
                 then.res.write(doc);
                 then.res.end();           
-              }));					    
+              }));		         		    
 					  }else{
               then.res.writeHead(200, { 'Content-Type': 'text/plain' });
               then.res.write(doc);
