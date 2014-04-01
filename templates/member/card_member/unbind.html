@@ -11,7 +11,6 @@
 
 window.onload = function(){
   var timer60Seconds;
-  var doname = 'http://dolphin.imagchina.com';
   var flag = 0;
   $("#get_id_code").click(function(){
 		if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
@@ -22,7 +21,7 @@ window.onload = function(){
       return false;
     }
     flag = 1;
-    $.get(doname+'/lavico/member/card_blank/code:id_code',{
+    $.get('/lavico/member/card_blank/code:id_code',{
       },function(data){
         flag = 0;
         data = eval('('+data+')');
@@ -30,6 +29,7 @@ window.onload = function(){
           alert('请稍后再获取！');
         }else if(data.result == 'ok'){
           set_interval();
+          $('#userCaptcha').val(data.id_code);
           //alert('验证码发送成功，请在2分钟内输入！');
         }else{
           alert('something error pelase refresh your browser!')
