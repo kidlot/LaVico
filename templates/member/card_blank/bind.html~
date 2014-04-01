@@ -8,33 +8,11 @@
     <span style="display:none;">微信ID:<input type="text" id="wxid" name="wxid" value="{@wxid}" /></span>
           <input type="button" id="submit" value="提交"/>
 </form>
-<div style="display:none">
-可以用来测试的<br/>
-会员老卡号：L201403191126，电话18616845116
-<br/>
-http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=1237&MOBILE_TELEPHONE_NO=18616845116&MEM_OLDCARD_NO=L201403191126&MEM_PSN_CNAME=徐大卫
-<br/>
-重复绑定: {"MEMBER_ID":0,"issuccessed":false,"error":"根据会员卡号和手机号无法准确找到会员，无法绑定"}
-绑定成功: {"MEMBER_ID":9123084,"issuccessed":false,"error":"null"}
-<br/>
-ID:oBf_qJTu0Vn5nFlXFSVpCIbKIk8o
-<br/>
-
-申请绑定-测试链接：<br/>
-http://127.0.0.1:8080/lavico.middleware/MemberBind?openid=1237&MOBILE_TELEPHONE_NO=18616845116&MEM_OLDCARD_NO=L201403191126&MEM_PSN_CNAME=徐大卫<br/>
-<br/>
-解除绑定-测试链接：<br/>
-http://127.0.0.1:8080/lavico.middleware/MemberUnbind?openid=1237&MEMBER_ID=9123084<br/>
-解绑成功：{"issuccessed":"true","error":""}<br/>
-解绑失败：{"issuccessed":"false","error":""}<br/>
-
-</div>
 
 <script>
 
 window.onload = function(){
   var timer60Seconds;
-  var doname = 'http://dolphin.imagchina.com';
   var flag = 0;
   $("#get_id_code").click(function(){
 		if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
@@ -45,8 +23,9 @@ window.onload = function(){
       return false;
     }
     flag = 1;
-    $.get(doname+'/lavico/member/card_blank/code:id_code',{
+    $.get('/lavico/member/card_blank/code:id_code',{
       },function(data){
+        flag = 0;
         data = eval('('+data+')');
         if(data.result == 'ofen'){
           alert('请稍后再获取！');

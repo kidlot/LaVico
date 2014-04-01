@@ -64,7 +64,6 @@ module.exports = {
                     'birthday':seed.birthday,
                     'gender':sex,
                     'HaiLanMemberInfo':{
-                        'createTime':new Date().getTime(),
                         'memberID':doc_json.MEMBER_ID,
                         'action':'bind',
                         'lastModified':new Date().getTime(),
