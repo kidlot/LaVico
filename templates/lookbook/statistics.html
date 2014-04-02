@@ -55,34 +55,21 @@
             </tbody>
         </table>
 
-        <div>
-            <input type="submit" class="btn btn-xs btn-primary mhm pull-left" value="条件帅选">
-            <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="全部导出">
-            <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信">
-            <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签">
-        </div>
-        <table class="table" id="tagList">
-            <thead>
-            <tr>
-                <th>名称</th>
-                <th style="width: 100px">收藏数</th>
-            </tr>
-            </thead>
-            <tbody>
-            <foreach for="@doc.page" var="doc">
 
-                <foreach for="@doc.product" var="doc2">
-                    <tr>
-                        <td>{@ doc2.name}</td>
-                        <td>{@ doc2.sumFavorites}</td>
-                    </tr>
-                </foreach>
-            </foreach>
-            </tbody>
-        </table>
+
+        <include file="lavico/templates/searchForm.html" />
+        <div class="panel-body" style="padding: 0px">
+            <div class="childview">
+                <View name="userList" />
+            </div>
+        </div>
+
     </div>
 </div>
 
+
+<script src="/welab/public/js/searchbox.js"></script>
+<link href="/welab/public/css/searchbox.css" rel="stylesheet">
 
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
