@@ -4,9 +4,9 @@
     <button class="btn btn-primary handle_btn" type="button" onclick="$('#searchView').fadeIn('100')"><em class="icon01"></em>条件筛选</button>
 
 
-    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="全部导出">
+    <a class="btn btn-xs btn-primary mhm pull-right" id="exportssd">全部导出</a>
     <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信">
-    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签">
+    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签" onclick="userSetTagView()">
 </div>
 
 <div class="form-search searchbox" id="searchView" style="display: none">
@@ -89,6 +89,27 @@
 
 </div>
 
+
+<!-- 设置标签 -->
+<div class="modal fade" id="tagModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">设置标签</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm tm-input tm-input-info" style="width:240px;"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="userTagBtn()">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
         <script>
 
                 function btnsearch(obj){
@@ -112,4 +133,56 @@
                         , logic: $("[name=searchLogic]").val()
                     },'.childview>.ocview') ;
                 } ;
+
+                var oUserSetOption;
+
+                function userSetTagView(){
+
+                    var aList = getUserList();
+                    if( aList.length == 0){
+                        $.globalMessenger().post({
+                            message: '至少选择一个用户.',
+                            type: 'error',
+                            showCloseButton: true})
+                        return ;
+                    }
+
+                    jQuery("#tags").tagsManager('empty');
+
+                    $('#tagModal').modal('toggle');
+                    oUserSetOption = {} ;
+                    oUserSetOption.data = [];
+                    oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+                    return false;
+                };
+
+                function userTagBtn(){
+
+                    var tags = $("input[type='hidden'][name='tagsVal']").val();
+                    if( tags == ""){
+                        $.globalMessenger().post({
+                            message: '至少设置一个标签.',
+                            type: 'error',
+                            showCloseButton: true})
+                        return ;
+                    }
+
+                    var oUserSetOption = {} ;
+                    oUserSetOption.data = [];
+                    oUserSetOption.data.push({name:"sUserList",value:getUserList().join(",")});
+                    oUserSetOption.data.push({name:"sTagList",value:tags});
+                    oUserSetOption.type = "POST";
+                    oUserSetOption.url = "/welab/user/tags:setUserTag";
+
+                    $.request(oUserSetOption,function(err,nut){
+                        if(err) throw err ;
+                        nut.msgqueue.popup() ;
+
+                        $.controller("/lavico/lookbook/statistics?_id="+$("#_id").val(),null,"lazy");
+                    }) ;
+
+                    $('#tagModal').modal('toggle');
+                    return false;
+
+                };
         </script>

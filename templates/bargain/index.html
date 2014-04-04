@@ -15,6 +15,7 @@
             <thead>
             <tr>
                 <th>产品名称</th>
+                <th>状态</th>
                 <th>市场零售价</th>
                 <th>最低价格</th>
                 <th>剩余数量</th>
@@ -27,6 +28,7 @@
             <foreach for="@page.docs" var="doc">
                 <tr>
                     <td>{@ doc.name}</td>
+                    <td>{@ doc.stat}</td>
                     <td>{@ doc.price}</td>
                     <td>{@ doc.minPrice}</td>
                     <td>{@ doc.surplus}</td>

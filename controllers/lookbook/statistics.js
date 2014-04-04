@@ -52,7 +52,7 @@ module.exports = {
             var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
             nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
-
+            seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate};
         })
     }
     , children: {
@@ -61,21 +61,29 @@ module.exports = {
 
             layout: "welab/Layout"
             , view: "lavico/templates/userList.html"
+
+            , process: function(seed,nut)
+            {
+                nut.model.startDate = seed.startDate
+                nut.model.stopDate = seed.stopDate
+            }
             , viewIn : function(){
 
                 console.log("userList")
+
                 $("#userList").flexigrid({
-                    url: '/lavico/userList:jsonData',
+                    url: '/lavico/userList:jsonData?unwind=lookbook&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
                     dataType: 'json',
                     colModel : [
                         {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
                         {display: '日期', name : 'lookbook.createDate', width : 150, sortable : true},
                         {display: '姓名', name : 'realname', width : 150, sortable : true},
-                        {display: '性别', name : 'gender', width : 80, sortable : true},
-                        {display: '年龄', name : 'birthday', width : 80, sortable : true},
-                        {display: '城市', name : 'city', width : 150, sortable : true},
-                        {display: '标签', name : 'tags', width : 300, sortable : true},
+                        {display: '标签', name : 'tags', width : 442, sortable : true},
+                        {display: '名称', name : 'lookbook.name', width : 150, sortable : true},
 
+                        {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
+                        {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
+                        {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
                         {display: '已关注(天)', name : 'followTime', width : 70, sortable : true, hide:true},
                         {display: '已注册(天)', name : 'registerTime', width : 70, sortable : true, hide:true},
                         {display: '未会话(天)', name : 'lastMessageTime', width : 70, sortable : true, hide:true},
@@ -108,6 +116,7 @@ module.exports = {
                         })
                     }
                 });
+
             }
         }
 
@@ -126,7 +135,12 @@ module.exports = {
             minView: 2
         });
 
+        jQuery("#tags").tagsManager({
+            prefilled: [],
+            hiddenTagListName: 'tagsVal'
+        });
 
+        $("#exportssd").attr("href","/lavico/userList:exports?unwind=lookbook&data=%7B%22name%22%3A%22%E5%90%8D%E7%A7%B0%22%2C%22createDate%22%3A%22%E6%94%B6%E8%97%8F%E6%97%B6%E9%97%B4%22%7D")
     }
 
 

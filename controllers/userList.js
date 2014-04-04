@@ -29,7 +29,7 @@ module.exports = {
                 count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
 
-                var conditions = search.conditions(seed) ;
+                var conditions = search.conditions(seed) || {} ;
 
                 var _data = {};
                 var _rows = [];
@@ -44,52 +44,84 @@ module.exports = {
 
                 this.step(function(){
 
-                    helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
-                        if(err) throw err ;
+                    var arrregateParams = [
+                        {$match:conditions}
+                    ]
 
-                        _data.page = page.currentPage
-                        _data.total = page.totalcount
+                    if(seed.unwind){
 
-                        for (var i=0; i<page.docs.length; i++)
-                        {
-                            page.docs[i].input = '<input type="checkbox" userid="'+page.docs[i]._id+'" onclick="checkUser(this)" >';
-                            page.docs[i].realname = page.docs[i].realname || '未注册用户';
-                            page.docs[i].city = page.docs[i].city || '';
-                            page.docs[i].followCount = page.docs[i].followCount || '1';
-                            page.docs[i].messageCount = page.docs[i].messageCount && otherData.totaMessages ? (page.docs[i].messageCount) + " <span style='color: #1ABC9C'>" + (parseInt((page.docs[i].messageCount / otherData.totaMessages)*100)) + "%</span>" : "0";
-                            page.docs[i].isRegister = page.docs[i].registerTime ? "是" : "否"
-                            page.docs[i].gender = page.docs[i].gender == 'female'?"女": (page.docs[i].gender == 'male' ? "男" : '未知')
-                            page.docs[i].birthday = parseInt(((new Date()) - (parseInt(page.docs[i].birthday))) / (1000*60*60*24*365))
-                            page.docs[i]['lookbook.createDate'] = page.docs[i].lookbook[0].createDate
+                        conditions[seed.unwind+".createDate"] = {$gt:new Date(seed.startDate + " 00:00:00").getTime(), $lt:new Date(seed.stopDate + " 23:59:59").getTime()}
+                        arrregateParams.push({$unwind: "$"+seed.unwind})
+                    }
+                    helper.db.coll("welab/customers").aggregate(
+                        arrregateParams
+                        ,this.hold(function(err,docs){
+                            if(err) console.log(err) ;
 
-                            var tags = [];
-                            if( page.docs[i].tags){
-                                for (var ii=0; ii<page.docs[i].tags.length; ii++)
-                                {
-                                    tags.push('<span class="tm-tag tm-tag-info" ><span>'+page.docs[i].tags[ii]+'</span><a href="#" class="tm-tag-remove" tagidtoremove="1" data-dismiss="alert" onclick="removeTagOrKeyword(this)">×</a></span>')
+                            _data.page = (parseInt(seed.page)||1)
+                            _data.total = docs.length
+
+                        })
+                    );
+
+                    arrregateParams.push({$sort:sort})
+                    arrregateParams.push({$skip:((parseInt(seed.page)-1)||0)*(parseInt(seed.rp) || 20)})
+                    arrregateParams.push({$limit:(parseInt(seed.rp) || 20)})
+                    helper.db.coll("welab/customers").aggregate(
+                        arrregateParams
+                        ,this.hold(function(err,docs){
+                            if(err) console.log(err) ;
+
+                            for (var i=0; i<docs.length; i++)
+                            {
+                                docs[i].input = '<input type="checkbox" userid="'+docs[i]._id+'" onclick="checkUser(this)" >';
+                                docs[i].realname = docs[i].realname || '未注册用户';
+                                docs[i].city = docs[i].city || '';
+                                docs[i].followCount = docs[i].followCount || '1';
+                                docs[i].messageCount = docs[i].messageCount && otherData.totaMessages ? (docs[i].messageCount) + " <span style='color: #1ABC9C'>" + (parseInt((docs[i].messageCount / otherData.totaMessages)*100)) + "%</span>" : "0";
+                                docs[i].isRegister = docs[i].registerTime ? "是" : "否"
+                                docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
+                                docs[i].birthday = parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365))
+
+                                var tags = [];
+                                if( docs[i].tags){
+                                    for (var ii=0; ii<docs[i].tags.length; ii++)
+                                    {
+                                        tags.push('<span class="tm-tag tm-tag-info" ><span>'+docs[i].tags[ii]+'</span></span>')
+                                    }
                                 }
+                                docs[i].tags = tags.join("&nbsp;")
+                                docs[i].followTimebak = docs[i].followTime;
+                                docs[i].followTime = parseInt(((new Date()) - (new Date(docs[i].followTime*1000))) / (1000*60*60*24))
+                                docs[i].registerTime = parseInt(((new Date()) - (new Date(docs[i].registerTime))) / (1000*60*60*24))
+                                docs[i].lastMessageTime = parseInt(((new Date()) - (new Date(docs[i].lastMessageTime))) / (1000*60*60*24))
+                                docs[i].isBlacklist = "否"
+                                docs[i].viewCount = docs[i].viewCount && otherData.totalView ? (docs[i].viewCount) + " <span style='color: #1ABC9C'>" + (parseInt((docs[i].viewCount / otherData.totalView)*100)) + "%</span>" : "0";
+
+
+                                for(var oi in docs[i]){
+
+                                    if(typeof(docs[i][oi]) == "object"){
+                                        for(var oii in docs[i][oi]){
+
+                                            if(oii == "createDate"){
+
+                                                docs[i][oi+"."+oii] = new Date(docs[i][oi][oii] + 60*60*8*1000).toISOString().substr(0,10)
+                                            }else{
+
+                                                docs[i][oi+"."+oii] = docs[i][oi][oii]
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                _rows.push(docs[i])
                             }
-                            page.docs[i].tags = tags.join("&nbsp;")
-                            page.docs[i].followTimebak = page.docs[i].followTime;
-                            page.docs[i].followTime = parseInt(((new Date()) - (new Date(page.docs[i].followTime*1000))) / (1000*60*60*24))
-                            page.docs[i].registerTime = parseInt(((new Date()) - (new Date(page.docs[i].registerTime))) / (1000*60*60*24))
-                            page.docs[i].lastMessageTime = parseInt(((new Date()) - (new Date(page.docs[i].lastMessageTime))) / (1000*60*60*24))
-                            page.docs[i].isBlacklist = "否"
-                            page.docs[i].viewCount = page.docs[i].viewCount && otherData.totalView ? (page.docs[i].viewCount) + " <span style='color: #1ABC9C'>" + (parseInt((page.docs[i].viewCount / otherData.totalView)*100)) + "%</span>" : "0";
 
-                            var viewFriendCount = page.docs[i].viewFriendCount + page.docs[i].viewTimeLineCount;
-
-                            page.docs[i].viewFriendCount = viewFriendCount && otherData.totalViewFriend ? (viewFriendCount) + " <span style='color: #1ABC9C'>" + (parseInt((viewFriendCount / otherData.totalViewFriend)*100)) + "%</span>" : "0";
-                            var viewShareCount = page.docs[i].shareFriendCount + page.docs[i].shareTimeLineCount;
-
-                            page.docs[i].shareFriendCount = viewShareCount && otherData.totalShare ? (viewShareCount) + " <span style='color: #1ABC9C'>" + (parseInt((viewShareCount / otherData.totalShare)*100)) + "%</span>" : "0";
-                            _rows.push(page.docs[i])
-
-                            page.docs[i].unfollowTimeForFollow = page.docs[i].isFollow == false ? parseInt((page.docs[i].unfollowTime - (page.docs[i].followTimebak*1000)) / (1000*60*60*24)) : '尚未取消关注'
-                            page.docs[i].unfollowTimeForReg = page.docs[i].registerTime ? parseInt((page.docs[i].unfollowTime - (page.docs[i].registerTime)) / (1000*60*60*24)) : '尚未注册'
-                        }
-                        _data.rows = _rows;
-                    })) ;
+                            _data.rows = _rows;
+                        })
+                    );
 
                 })
 
@@ -101,6 +133,175 @@ module.exports = {
                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
                     this.res.write(data);
                     this.res.end();
+                })
+            }
+
+        }
+
+
+        , exports: {
+
+            process: function (seed, nut) {
+
+                nut.disabled = true ;
+
+                var conditions = search.conditions(seed) || {} ;
+
+                var _data = {};
+                var _rows = [];
+
+                var sort = {_id:-1};
+                if(seed.sortname){
+
+                    var order = seed.sortorder == "asc" ? 1 : -1;
+                    sort = eval("({\""+seed.sortname+"\":"+order+"})")
+                }
+
+
+                this.step(function(){
+
+                    var arrregateParams = [
+                        {$match:conditions}
+                    ]
+
+                    if(seed.unwind){
+                        arrregateParams.push({$unwind: "$"+seed.unwind})
+                    }
+
+                    arrregateParams.push({$sort:sort})
+                    helper.db.coll("welab/customers").aggregate(
+                        arrregateParams
+                        ,this.hold(function(err,docs){
+                            if(err) console.log(err) ;
+
+                            try{
+                                for (var i=0; i<docs.length; i++)
+                                {
+                                    docs[i].realname = docs[i].realname || '未注册用户';
+                                    docs[i].city = docs[i].province + docs[i].city;
+                                    docs[i].followCount = docs[i].followCount || '1';
+                                    docs[i].messageCount = docs[i].messageCount;
+                                    docs[i].isRegister = docs[i].registerTime ? "是" : "否"
+                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
+                                    docs[i].birthday = docs[i].birthday ? parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365)) : "未知"
+
+                                    var tags = [];
+                                    if( docs[i].tags){
+                                        for (var ii=0; ii<docs[i].tags.length; ii++)
+                                        {
+                                            tags.push(docs[i].tags[ii])
+                                        }
+                                    }
+                                    docs[i].tags = tags.join(",")
+                                    docs[i].followTimebak = docs[i].followTime;
+                                    docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
+                                    docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
+                                    docs[i].lastMessageTime = docs[i].lastMessageTime ? new Date(docs[i].lastMessageTime).toISOString().substr(0,10) : "未知"
+                                    _rows.push(docs[i])
+                                }
+                            }catch(e){
+                                if(e) console.log(e)
+                            }
+
+
+                            _data = _rows;
+                        })
+                    );
+
+                })
+
+
+
+                this.step(function(){
+
+                    console.log(_data)
+
+                    try{
+                        var nodeExcel = require('excel-export');
+                        var conf = {};
+                        conf.cols = [
+                            {
+                                caption: '姓名',
+                                type: 'string'
+                            }, {
+                                caption: '城市',
+                                type: 'string'
+                            }, {
+                                caption: '关注次数',
+                                type: 'string'
+                            }, {
+                                caption: '消息总数',
+                                type: 'string'
+                            }, {
+                                caption: '性别',
+                                type: 'string'
+                            }, {
+                                caption: '生日',
+                                type: 'string'
+                            }, {
+                                caption: '关注时间',
+                                type: 'string'
+                            }, {
+                                caption: '注册时间',
+                                type: 'string'
+                            }
+                        ];
+
+                        if(seed.unwind && seed.data){
+                            var data = JSON.parse(seed.data)
+                            for(var ii in data){
+                                conf.cols.push({
+                                    caption: data[ii],
+                                    type: 'string'
+                                })
+                            }
+                        }
+                        conf.rows = [];
+
+                        for(var i=0 ;i < _data.length ;i++){
+
+                            var rows;
+                            rows = [
+                                _data[i].realname,
+                                _data[i].city,
+                                _data[i].followCount,
+                                _data[i].messageCount,
+                                _data[i].gender,
+                                _data[i].birthday,
+                                _data[i].followTime,
+                                _data[i].registerTime
+                            ]
+
+                            if(seed.unwind && seed.data){
+                                var data = JSON.parse(seed.data)
+                                for(var ii in data){
+                                    if(ii == "createDate"){
+                                        var val = new Date(_data[i][seed.unwind][ii] + 60*60*8*1000).toISOString().substr(0,10)
+                                    }else{
+                                        var val = _data[i][seed.unwind][ii]
+                                    }
+
+                                    rows.push(
+                                        val
+                                    )
+
+                                }
+                            }
+                            conf.rows.push(rows)
+
+                        }
+                    }catch(e){
+                        if(e) console.log(e)
+                    }
+
+
+                    console.log(conf)
+
+                    var result = nodeExcel.execute(conf);
+                    this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                    this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                    this.res.write(result, 'binary');
+                    return this.res.end();
                 })
             }
 
