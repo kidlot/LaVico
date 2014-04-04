@@ -126,6 +126,9 @@ module.exports = {
                         'createTime':new Date().getTime(),
                         'wxid':seed.wxid,
                         'action':"info",
+                        'data':doc_json,
+                        'realname':seed.name,
+                        'mobile':seed.mobile,
                         'request':data_request
                     },
                     function(err, doc){

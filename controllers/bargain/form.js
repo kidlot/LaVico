@@ -131,6 +131,13 @@ module.exports = {
         , deal:{
             process: function(seed,nut){
 
+                var bargain = {price:seed.price,productID:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
+                helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
+                    if(err ){
+                        throw err;
+                    }
+                })) ;
+
                 _log(seed.wxid,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
                 this.step(function(){
                     nut.disable();
@@ -143,6 +150,14 @@ module.exports = {
         }
         , giveup:{
             process: function(seed,nut){
+
+                var bargain = {price:seed.price,productID:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:false}
+                helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
+                    if(err ){
+                        throw err;
+                    }
+                })) ;
+
 
                 _log(seed.wxid,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:false})
                 this.step(function(){

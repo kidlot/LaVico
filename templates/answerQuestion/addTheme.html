@@ -58,8 +58,8 @@ function changeType(btnSelect){
 </script>
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/themeList" class="stay">题组列表</a> <em></em></li>
-    <li class="active"><span>添加题目</span></li>
+    <li class="b02"><a href="/lavico/answerQuestion/themeList" class="stay">themeList</a> <em></em></li>
+    <li class="active"><span>addTheme</span></li>
 </ul>
 
 
@@ -106,7 +106,7 @@ function changeType(btnSelect){
                             <input type="hidden" name="uploadFile"/>
                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                         </div>
-                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' id="containerHide">
+                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -128,7 +128,7 @@ function changeType(btnSelect){
                             <input type="hidden" name="uploadFile"/>
                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                         </div>
-                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' id="containerHide">
+                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -150,7 +150,7 @@ function changeType(btnSelect){
                             <input type="hidden" name="uploadFile"/>
                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                         </div>
-                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -172,7 +172,7 @@ function changeType(btnSelect){
                             <input type="hidden" name="uploadFile"/>
                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                         </div>
-                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -184,7 +184,7 @@ function changeType(btnSelect){
                 </li>
             </ul>
 
-            <center> <input type='button' name='addChooseOne' value='添加选项(最多6项)' onclick='addChoose(this)' class="btn btn-embossed btn-primary btnsearch"></center>
+            <input type='button' name='addChooseOne' value='添加选项(最多6项)' onclick='addChoose(this)'>
         </div>
         <div name="mutilWDiv" id='containerHide'>
             <div name='mutilDiv'>
@@ -197,7 +197,7 @@ function changeType(btnSelect){
                         <input type="hidden" name="uploadFile"/>
                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                     </div>
-                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' id="containerHide">
+                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
         <span name='upPic'>
             <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
             <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
@@ -213,7 +213,7 @@ function changeType(btnSelect){
                         <input type="hidden" name="uploadFile"/>
                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                     </div>
-                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
         <span name='upPic'>
             <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
             <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
@@ -229,7 +229,7 @@ function changeType(btnSelect){
                         <input type="hidden" name="uploadFile"/>
                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                     </div>
-                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
         <span name='upPic'>
             <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
             <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
@@ -245,7 +245,7 @@ function changeType(btnSelect){
                         <input type="hidden" name="uploadFile"/>
                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                     </div>
-                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
         <span name='upPic'>
             <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
             <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
@@ -253,7 +253,7 @@ function changeType(btnSelect){
                     </div>
                 </div>
             </div>
-            <center><input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)' class="btn btn-embossed btn-primary btnsearch"></center>
+            <input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)'>
         </div>
         <div name='simpleAnswer'  id='containerHide' style="line-height:20px; border-bottom: 2px solid gray; overflow: hidden; padding: 10px;margin-left: 30px">
             积分:<input type='text' name='simpleScore' class="form-control input-sm" style="width: 250px">&nbsp;&nbsp;
@@ -277,7 +277,7 @@ function changeType(btnSelect){
 </div>
 </div>
 <input type='button' name='addScoreMinMax' value='添加奖项' onclick='addGift()'><br/>
-<input type='button' name='save' id='save' value='添加题目'>
+<input type='button' name='save' id='save' value='更新保存'>
 
 <!--隐藏标签-->
 <div name='hideMutilOne' id='containerHide'>
@@ -290,7 +290,7 @@ function changeType(btnSelect){
             <input type="hidden" name="uploadFile"/>
             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
         </div>
-        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
         <span name='upPic'>
             <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
             <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
@@ -313,7 +313,7 @@ function changeType(btnSelect){
                 <input type="hidden" name="uploadFile"/>
                 <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
             </div>
-            <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+            <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic' id='containerHide'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -341,13 +341,13 @@ function changeType(btnSelect){
         <div name='sinple'>
             <ul name='choose' class='chooseSty'>
             </ul>
-            <center><input type='button' name='addChooseOne' value='添加选项(最多6项)'  onclick='addChoose(this)' class="btn btn-embossed btn-primary btnsearch"></center>
+            <input type='button' name='addChooseOne' value='添加选项(最多6项)' onclick='addChoose(this)'>
         </div>
 
         <div name="mutilWDiv" id='containerHide'>
             <div name='mutilDiv'>
             </div>
-            <center><input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)' class="btn btn-embossed btn-primary btnsearch"></center>
+            <input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)'>
         </div>
     </div>
 </div>
@@ -365,7 +365,7 @@ function changeType(btnSelect){
                 <input type="hidden" name="uploadFile"/>
                 <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
             </div>
-            <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+            <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -387,7 +387,7 @@ function changeType(btnSelect){
             <input type="hidden" name="uploadFile"/>
             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
         </div>
-        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
         <span name='upPic'>
             <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
             <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
@@ -419,7 +419,7 @@ function changeType(btnSelect){
 </div>
 
 <div name='hideScoreMinMaxOne1' id='containerHide'>
-    <div name='scoreMinMaxOne'>
+    <div name='scoreMinMaxOne' class='borderLine'>
         <strong>条件:</strong>低分值:<input type='text' name='conditionMinScore'>~高分值:<input type='text' name='conditionMaxScore'> <strong>设置标签:</strong><input type='text' name='conditionLabel'><br/>
         <strong>结果:</strong>所获标签:<input type='text' name='getLabel'> 所获积分:<input type='text' name='getScore'> 所获奖券:<input type='text' name='getActivities'>
     </div>
@@ -449,7 +449,7 @@ function changeType(btnSelect){
                             <input type="hidden" name="uploadFile"/>
                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                         </div>
-                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -471,7 +471,7 @@ function changeType(btnSelect){
                             <input type="hidden" name="uploadFile"/>
                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                         </div>
-                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -493,7 +493,7 @@ function changeType(btnSelect){
                             <input type="hidden" name="uploadFile"/>
                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                         </div>
-                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -515,7 +515,7 @@ function changeType(btnSelect){
                             <input type="hidden" name="uploadFile"/>
                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                         </div>
-                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                        <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg' >
                                 <span name='upPic'>
                                     <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
                                     <span><a href="javascript:" onclick="delPic(this)">删除</a>
@@ -527,7 +527,7 @@ function changeType(btnSelect){
                 </li>
             </ul>
 
-            <center><input type='button' name='addChooseOne' value='添加选项(最多6项)' onclick='addChoose(this)' class="btn btn-embossed btn-primary btnsearch"></center>
+            <input type='button' name='addChooseOne' value='添加选项(最多6项)' onclick='addChoose(this)'>
         </div>
         <div name="mutilWDiv" id='containerHide'>
             <div name='mutilDiv'>
@@ -540,7 +540,7 @@ function changeType(btnSelect){
                         <input type="hidden" name="uploadFile"/>
                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                     </div>
-                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
         <span name='upPic'>
             <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
             <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
@@ -556,7 +556,7 @@ function changeType(btnSelect){
                         <input type="hidden" name="uploadFile"/>
                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                     </div>
-                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
+                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
         <span name='upPic'>
             <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
             <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
@@ -572,11 +572,11 @@ function changeType(btnSelect){
                         <input type="hidden" name="uploadFile"/>
                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                     </div>
-                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
-                    <span name='upPic'>
-                        <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
-                        <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
-                    </span>
+                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
+        <span name='upPic'>
+            <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+            <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+        </span>
                     </div>
                 </div>
                 <div name='mutilOne' style="line-height:40px; border-bottom: 2px solid gray; overflow: hidden; padding: 10px;margin-left: 30px">
@@ -588,15 +588,15 @@ function changeType(btnSelect){
                         <input type="hidden" name="uploadFile"/>
                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                     </div>
-                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'  id="containerHide">
-                        <span name='upPic'>
-                            <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
-                            <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
-                        </span>
+                    <div style='float:left;width:200px;height:100px;padding-top: 10px' name='divImg'>
+        <span name='upPic'>
+            <img name="picimg" class='media-object' style="width: 64px; height: 64px;" src="">
+            <span><a href="javascript:" onclick="delPic(this)">删除</a></span>
+        </span>
                     </div>
                 </div>
             </div>
-            <center><input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)' class="btn btn-embossed btn-primary btnsearch"></center>
+            <input type='button' name='addMutilOne' value='添加选项(最多6项)' onclick='addMutilChoose(this)'>
         </div>
         <div name='simpleAnswer'  id='containerHide' style="line-height:20px; border-bottom: 2px solid gray; overflow: hidden; padding: 10px;margin-left: 30px">
             积分:<input type='text' name='simpleScore' class="form-control input-sm" style="width: 250px">&nbsp;&nbsp;

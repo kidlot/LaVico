@@ -5,7 +5,7 @@
 
     <div style="position: absolute;">
 
-        <div>{@ doc.name}</div>
+        <div class="name">{@ doc.name}</div>
         <div>颜色：{@ doc.colors}</div>
         <div>尺码：{@ doc.sizes}</div>
         <div><img src="{@ doc.pic}" width="100px"/></div>
@@ -101,6 +101,7 @@ function giveup(){
         type:'POST',
         data:{
             'price':$("#price").val(),
+            'name':$(".name").text(),
             '_id':$("#_id").val(),
             'wxid':$("#wxid").val(),
             'productID':$("#_id").val()
@@ -150,6 +151,7 @@ function deal(cb){
         type:'POST',
         data:{
             'price':$("#price").val(),
+            'name':$(".name").text(),
             '_id':$("#_id").val(),
             'wxid':$("#wxid").val(),
             'productID':$("#_id").val()

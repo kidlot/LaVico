@@ -63,10 +63,8 @@ module.exports = {
                     }else{
                         alert('解绑失败，请稍后再尝试');
                     }
-                    console.log(data);
                 },
                 error:function(msg){
-                    console.log(msg);
                 }
             });
 
@@ -105,7 +103,6 @@ module.exports = {
                           {
                               'createTime':new Date().getTime(),
                               'wxid':seed.wxid,
-                              'MEMBER_ID':MEMBER_ID,
                               'action':"unbind",
                               'data':dataJson,
                               'request':data_request
@@ -120,7 +117,6 @@ module.exports = {
                 this.step(function(doc){
                   var dataJson = JSON.parse(doc);
                   if(dataJson.issuccessed == 'true'){
-                    console.log('aa');
 				            _this.req.session.id_code = '';
                     helper.db.coll('welab/customers').update({wechatid:wxid},{
                         $set:{

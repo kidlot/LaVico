@@ -21,15 +21,14 @@
             <a href="/lavico/lookbook/index"><i class="fui-arrow-left"></i>返回</a>
         </div>
         <div class="btn-group" style="float: left; margin-left: 15px">
-            <h6 style="margin-top: 2px; color: #1ABC9C">2014秋冬搭配手册</h6>
+            <h6 style="margin-top: 2px; color: #1ABC9C">{@ doc.name}</h6>
+            <input type="hidden" id="_id" value="{@ _id}">
         </div>
         <div style="float: right;">
             <div style="float: right; width: 306px;">
-                <form method="get">
                 <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
                 <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
-                <input type="submit" class="btn btn-xs btn-primary mhm" value="搜索">
-                </form>
+                <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
             </div>
         </div>
     </div>
@@ -39,7 +38,7 @@
             <thead>
             <tr>
                 <th>名称</th>
-                <th style="width: 100px">收藏数</th>
+                <th style="width: 200px">收藏数</th>
             </tr>
             </thead>
             <tbody>
@@ -48,41 +47,33 @@
                 <foreach for="@doc.product" var="doc2">
                 <tr>
                     <td>{@ doc2.name}</td>
-                    <td>{@ doc2.sumFavorites}</td>
+                    <td>{@ doc2.sumFavorites}----[<a target="_blank" href="/lavico/lookbook/favorites:save?wxid=osKoBj5W3fw0385l1k3O2aj2Neco&pid={@ doc2._id}">测试收藏</a>]</td>
                 </tr>
                 </foreach>
             </foreach>
             </tbody>
         </table>
 
-        <div>
-            <input type="submit" class="btn btn-xs btn-primary mhm pull-left" value="条件帅选">
-            <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="全部导出">
-            <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信">
-            <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签">
-        </div>
-        <table class="table" id="tagList">
-            <thead>
-            <tr>
-                <th>名称</th>
-                <th style="width: 100px">收藏数</th>
-            </tr>
-            </thead>
-            <tbody>
-            <foreach for="@doc.page" var="doc">
 
-                <foreach for="@doc.product" var="doc2">
-                    <tr>
-                        <td>{@ doc2.name}</td>
-                        <td>{@ doc2.sumFavorites}</td>
-                    </tr>
-                </foreach>
-            </foreach>
-            </tbody>
-        </table>
+
+        <include file="lavico/templates/searchForm.html" />
+        <div class="panel-body" style="padding: 0px">
+            <div class="childview">
+                <View name="userList" />
+            </div>
+        </div>
+
     </div>
 </div>
 
 
+
+<link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
+<script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
+
+<script src="/welab/public/js/searchbox.js"></script>
+<link href="/welab/public/css/searchbox.css" rel="stylesheet">
+
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+

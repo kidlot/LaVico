@@ -1,65 +1,79 @@
 <style>
-    .checkbox .icons .first-icon, .radio .icons .first-icon, .checkbox .icons .second-icon, .radio .icons .second-icon {
-        background-color: #E7E7E7;
-    }
-    .mlm, .mhm, .mam {
-        margin-left: 0px;
-    }
-    .mrm, .mhm, .mam {
-        margin-right: 0px;
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
     }
 </style>
+
 <ul class="breadcrumb clearfix">
-    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/bargain/index" >精英搭配</a></li>
+    <li class="b03"><a href="#" class="stay">统计</a></li>
+    <li class="pull-right"><a href="/lavico/bargain/index"><i class="fui-arrow-left"></i>返回</a></li>
 </ul>
 
 <div class="panel panel-default">
     <div class="panel-heading" style="height: 50px">
 
-        <div class="btn-group" style="float: left;">
-            <a href="/lavico/bargain/log" class="btn btn-xs btn-primary mhm" >查看明细</a>
+        <div class="btn-group" style="float: left; margin-top: 6px">
+            <a href="/lavico/bargain/index"><i class="fui-arrow-left"></i>返回</a>
+        </div>
+        <div class="btn-group" style="float: left; margin-left: 15px">
+            <h6 style="margin-top: 2px; color: #1ABC9C">{@ doc.name}</h6>
+            <input type="hidden" id="_id" value="{@ _id}">
         </div>
         <div style="float: right;">
             <div style="float: right; width: 306px;">
-                <form method="get">
                 <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
                 <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
-                <input type="submit" class="btn btn-xs btn-primary mhm" value="搜索">
-                <a href="/lavico/bargain/statistics" class="btn btn-xs btn-primary mhm" >重置</a>
-                </form>
+                <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
             </div>
         </div>
     </div>
     <div class="panel-body">
 
-        <span class="label label-primary">总参与人数:{@ uv1}</span>
-        <span class="label label-important">总成交人数:{@ uv2}</span>
-
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th>时间</th>
-                <th>参与人数</th>
-                <th>成交人数</th>
+                <th>名称</th>
+                <th style="width: 100px">参与人数</th>
+                <th style="width: 100px">成交人数</th>
+                <th style="width: 100px">最低成交价</th>
+                <th style="width: 100px">最高成交价</th>
             </tr>
             </thead>
             <tbody>
-            <foreach for="@dateList" var="doc">
                 <tr>
-                    <td>{@ doc.title}</td>
-                    <td>{@ doc.uv1}</td>
-                    <td>{@ doc.uv2}</td>
+                    <td>{@ doc.name}</td>
+                    <td>{@ doc.pv}</td>
+                    <td>{@ doc.uv}</td>
+                    <td>{@ doc.min}</td>
+                    <td>{@ doc.max}</td>
                 </tr>
-            </foreach>
             </tbody>
         </table>
 
-        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/bargain/statistics?startDate={@ startDate}&stopDate={@ stopDate}&page=%pagenum%" />
-        <!--  /pagination  -->
+
+
+        <include file="lavico/templates/searchForm.html" />
+        <div class="panel-body" style="padding: 0px">
+            <div class="childview">
+                <View name="userList" />
+            </div>
+        </div>
 
     </div>
 </div>
 
+
+
+<link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
+<script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
+
+<script src="/welab/public/js/searchbox.js"></script>
+<link href="/welab/public/css/searchbox.css" rel="stylesheet">
 
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
