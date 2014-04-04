@@ -51,7 +51,7 @@ module.exports = {
                         'data':{"result":"member_id not found"}
                     },
                     function(err, doc){
-
+                        console.log(doc);
                     }
                 );                 
                 then.terminate();            
@@ -71,7 +71,7 @@ module.exports = {
                         'data':{"result":"ok"}
                     },
                     function(err, doc){
-
+                        console.log(doc);
                     }
                 );                  
                 

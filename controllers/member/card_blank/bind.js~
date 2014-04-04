@@ -127,9 +127,6 @@ module.exports = {
                                         {
                                             'createTime':new Date().getTime(),
                                             'wxid':seed.wxid,
-                                            'userCardNumber':userCardNumber,
-                                            'userName':userName,
-                                            'userTel':userTel,
                                             'action':"bind",
                                             'data':dataJson,
                                             'request':data_request
@@ -162,10 +159,8 @@ module.exports = {
                                       }else{
                                         type = 0;
                                       }
-                                      console.log(type);
                                 }));                                  
                               }else{
-                                console.log(dataJson.issuccessed);
                               }
                               return doc;
                             });

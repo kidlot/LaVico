@@ -15,7 +15,7 @@ module.exports = {
         var wxid = seed.wxid;
         this.step(function(){
           helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err,doc){
-            nut.model.MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.MEMBER_ID : "" ;
+            nut.model.MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "" ;
             nut.model.wxid = doc.wechatid;
             nut.model.mobile = doc.mobile;
           }));
@@ -63,10 +63,8 @@ module.exports = {
                     }else{
                         alert('解绑失败，请稍后再尝试');
                     }
-                    console.log(data);
                 },
                 error:function(msg){
-                    console.log(msg);
                 }
             });
 
@@ -120,7 +118,6 @@ module.exports = {
                 this.step(function(doc){
                   var dataJson = JSON.parse(doc);
                   if(dataJson.issuccessed == 'true'){
-                    console.log('aa');
 				            _this.req.session.id_code = '';
                     helper.db.coll('welab/customers').update({wechatid:wxid},{
                         $set:{
