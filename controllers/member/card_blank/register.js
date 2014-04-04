@@ -37,31 +37,27 @@ module.exports = {
                 {
                     'createTime':new Date().getTime(),
                     'wxid':seed.uid,
-                    'action':"申请会员卡",
+                    'action':"apply",
                     'data':doc_json,
-                    'realname':seed.name,
-                    'mobile':seed.mobile,
                     'request':data_request
                 },
                 function(err, doc){
-                    console.log(doc);
                 }
             );					  
 					  
-					  if(doc_json.MEMBER_ID){
+					  if(doc_json.issuccessed == true){
 					    then.req.session.id_code = '';
 					    var sex = '';
-					    if(seed.sex == 1){
+					    if(seed.sex == '1'){
 					      sex = 'male';
-					    }else if(seed.sex === 0){
+					    }else if(seed.sex === '0'){
 					      sex = 'female';
 					    }
-					    console.log(sex);
               helper.db.coll('welab/customers').update({wechatid:seed.uid},{
                   $set:{
                     'realname':seed.name,
                     'mobile':seed.mobile,
-                    'birthday':seed.birthday,
+                    'birthday':new Date(seed.birthday).getTime(),
                     'gender':sex,
                     'HaiLanMemberInfo':{
                         'memberID':doc_json.MEMBER_ID,
@@ -75,7 +71,7 @@ module.exports = {
                 then.res.write(doc);
                 then.res.end();           
               }));		         		    
-					  }else{
+					  }else if(doc_json.issuccessed == false){
               then.res.writeHead(200, { 'Content-Type': 'text/plain' });
               then.res.write(doc);
               then.res.end();			    

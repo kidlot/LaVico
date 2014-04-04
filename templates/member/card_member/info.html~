@@ -16,8 +16,8 @@
     <lable>喜好款式</lable><input id="favoriteStyle" name="favoriteStyle" type="text" value="修身、立体剪裁"/><br/>
     <lable>喜好颜色</lable><input id="favoriteColor" name="favoriteColor" type="text" value="黑色、蓝色、白色"/><br/>
     <input id='submit' name='submit' type="button" value="提交修改">
-    <input id='is_send' type='hidden' name='is_send' value='{@is_send}' >
-    <input id='wxid' type='hidden' name='wxid' value='{@wxid}' >
+    <input id='is_send' name='is_send' value='{@is_send}' >
+    <input id='wxid' name='wxid' value='{@wxid}' >
 </form>
 </div>
 

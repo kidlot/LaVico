@@ -118,7 +118,6 @@ module.exports = {
                                   MEM_OLDCARD_NO:userCardNumber,
                                   MEM_PSN_CNAME:userName		  
 			                        };
-			                        console.log(data_request);
                               middleware.request( "/lavico.middleware/MemberBind",
                                   data_request,
                                   this.hold(function(err,doc){
@@ -127,9 +126,6 @@ module.exports = {
                                         {
                                             'createTime':new Date().getTime(),
                                             'wxid':seed.wxid,
-                                            'userCardNumber':userCardNumber,
-                                            'userName':userName,
-                                            'userTel':userTel,
                                             'action':"bind",
                                             'data':dataJson,
                                             'request':data_request
@@ -150,9 +146,7 @@ module.exports = {
                                       MEMBER_ID:dataJson.MEMBER_ID
                                     }
                                     ,then.hold(function(err,req_doc){
-                                      console.log(req_doc);  
                                       var member_level = eval('('+req_doc+')');
-                                      console.log(member_level);
                                       if(member_level.level == '01'){
                                         type = 1;
                                       }else if(member_level.level == '02'){
@@ -162,10 +156,8 @@ module.exports = {
                                       }else{
                                         type = 0;
                                       }
-                                      console.log(type);
                                 }));                                  
                               }else{
-                                console.log(dataJson.issuccessed);
                               }
                               return doc;
                             });

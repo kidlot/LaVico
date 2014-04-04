@@ -14,7 +14,7 @@
                 <form role="form" id="formText">
                     <div class="form-group">
                         <label><b class="dot"></b>礼品名称</label><span>(方便查找与管理)</span>
-                        <input type="text" class="form-control input-sm postData" id="name" name="name" placeholder="请输入...">
+                        <input type="text" value='{@activity.name}' class="form-control input-sm postData" id="name" name="name" placeholder="请输入...">
                     </div>
                     <span id="tagKeywordView">
                     <div class="form-group">
@@ -22,24 +22,20 @@
                         <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." id="pic" onchange="fileSelected();">
                         &nbsp;<span id="progressNumber"></span>
 
-                        <div class="alert alert-success picView file_box" style="display: none">
-                            <img id='image' class="media-object" style="height: 64px;" src="">
+                        <div class="alert alert-success picView file_box">
+                            <img id='image' class="media-object" style="height: 64px;" src="{@activity.pic}">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label><b class="dot"></b>礼品数量</label><span>(每个关键词建议不超过8个汉字，最多支持15个汉字)</span>
-                        <input type="text" class="form-control input-sm tm-input tm-input-info postData" name="total" id="total" placeholder="设置多个标签请用'，'或者'回车'分隔">
                     </div>
                     </span>
                     <div class="form-group">
                         <label><b class="dot"></b>礼品描述</label><span>(摘要是正文的简单描述，字数不宜过多)</span>
-                        <textarea class="form-control input-sm postData" rows="3" id="introduce" name="introduce" placeholder="请输入..."></textarea>
+                        <textarea class="form-control input-sm postData" rows="3" id="introduce" name="introduce" placeholder="请输入...">{@activity.introduce}</textarea>
                     </div>
                     <div class="form-group">
                         <label><b class="dot"></b>使用说明</label><span></span>
-                        <textarea class="form-control input-sm postData" rows="3" id="introduction" name="introduction" placeholder="请输入..."></textarea>
+                        <textarea class="form-control input-sm postData" rows="3" id="introduction" name="introduction" placeholder="请输入...">{@activity.introduction}</textarea>
                     </div>
-                    <input type=hidden vale='' />
+                    <input type=hidden name='aid' id='aid' value='{@activity.aid}' />
                 </form>
             </div>
         </div>        
@@ -57,12 +53,12 @@
     
     var aItemList = {};
     var flag = 0;
+    var _inputCheck = true;
     function save ( ){
         if(flag){
           alert('something error,please refresh your browser!');
           return false;
         }
-        flag = 1;
         var _inputCheck = true;
         $(".postData").each(function(i,o){
             if(! $(o).val()){
@@ -71,23 +67,29 @@
                     message: $(o).prev().prev().text() + " 不能为空！",
                     type: 'error',
                     showCloseButton: true})
+            }else{
+              aItemList[$(o).attr("id")] = $(o).val()
             }
-            if(!aItemList.pic){
-                _inputCheck = false;
-                $.globalMessenger().post({
-                    message:"上传图片 不能为空！",
-                    type: 'error',
-                    showCloseButton: true})                
-            }
-            aItemList[$(o).attr("id")] = $(o).val()
         })
-        _inputCheck = false;
+              
+        if(!$(".picView").find("img").attr("src")){
+            _inputCheck = false;
+            $.globalMessenger().post({
+                message:"上传图片 不能为空！",
+                type: 'error',
+                showCloseButton: true})                
+        }else{
+          aItemList['pic'] = $(".picView").find("img").attr("src");
+        }
+        
+                    
+
         if(_inputCheck){
             var oLinkOptions = {} ;
             oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'aid',value:$("#aid").val()}];
             oLinkOptions.type = "POST";
             oLinkOptions.url = "/lavico/activity/index:save";
-
+            flag = 1;
             $.request(oLinkOptions,function(err,nut){
                 if(err) throw err ;
                 flag = 0;
@@ -138,7 +140,6 @@
 
     function uploadComplete(evt) {
         var json = eval('(' + evt.target.responseText + ')');
-        $(".picView").css("display","");
         $(".picView").find("img").attr("src",json.model.fileName)
         aItemList['pic'] = json.model.fileName;
 
