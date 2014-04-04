@@ -1,0 +1,186 @@
+
+<div style="margin-bottom: 10px">
+
+    <button class="btn btn-primary handle_btn" type="button" onclick="$('#searchView').fadeIn('100')"><em class="icon01"></em>条件筛选</button>
+
+
+    <a class="btn btn-xs btn-primary mhm pull-right" id="exportssd">全部导出</a>
+    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信">
+    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签" onclick="userSetTagView()">
+</div>
+
+<div class="form-search searchbox" id="searchView" style="display: none">
+
+  <div style="margin-top: 5px; margin-bottom: 5px;">
+    <span>符合以下</span>
+
+    <select name="searchLogic" class="form-control input-sm"  style="width:80px;">
+      <option value="or">任意</option>
+      <option value="and">全部</option>
+    </select>
+    <span>条件</span>
+  </div>
+
+  <div class="searchConditionOuter"></div>
+
+    <div class="mb15">
+        <a class="glyphicon glyphicon-plus-sign lnk-add-condition" href="javascript:void(0)"></a> <a class="lnk-add-condition" href="javascript:void(0)">添加条件</a>
+    </div>
+
+  <div>
+      <button type="button" class="btn btn-embossed btn-primary" onclick="btnsearch(this)">查看</button>
+      <button type="button" class="btn btn-embossed btn-primary " onclick="btncancel()">取消筛选</button>
+  </div>
+
+</div>
+
+<div style="display:none" class="searchTemplates">
+  <div class="searchConditionTemplate searchCondition" style="margin-bottom: 5px;">
+    <a href="javascript:;"><i class="glyphicon glyphicon-minus-sign removeItem"></i></a>
+    <select name="searchFieldName" class="form-control input-sm" style="width:80px">
+      <option value="realname" search-field-type="text">姓名</option>
+      <option value="gender" search-field-type="gender">性别</option>
+      <option value="age" search-field-type="num">年龄</option>
+      <option value="email" search-field-type="text">电子邮件</option>
+      <option value="mobile" search-field-type="text">移动电话</option>
+      <option value="createtime" search-field-type="date">注册时间</option>
+      <option value="followTime" search-field-type="date">关注时间</option>
+      <option value="tags" search-field-type="value">标签</option>
+    </select>
+  </div>
+
+  <span class="searchExpression searchExpressionGender">
+    <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
+      <option value="male">男</option>
+      <option value="female">女</option>
+    </select>
+  </span>
+
+  <span class="searchExpression searchExpressionText">
+    <select name="searchConditionOperator" class="form-control input-sm" style="width:80px">
+      <option value="is">是</option>
+      <option value="not">不是</option>
+      <option value="match">包含</option>
+      <option value="notmatch">不包含</option>
+      <!--<option value="startwith">起始于</option>-->
+        <!--<option vakue="endwith">结束于</option>-->
+    </select>
+    <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
+  </span>
+
+  <span class="searchExpression searchExpressionNum">
+    <select name="searchConditionOperator" class="form-control input-sm" style="width:80px">
+      <option value="eq">等于</option>
+      <option value="gt">大于</option>
+      <option value="lt">小于</option>
+      <option value="gte">大于等于</option>
+      <option value="lte">小于等于</option>
+    </select>
+    <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
+  </span>
+
+  <span class="searchExpression searchExpressionDate">
+      <input type="text" name="searchConditionValue" class="datepicker form-control input-sm" style="width:200px"/>
+  </span>
+
+  <span class="searchExpression searchExpressionValue">
+    <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
+  </span>
+
+</div>
+
+
+<!-- 设置标签 -->
+<div class="modal fade" id="tagModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">设置标签</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm tm-input tm-input-info" style="width:240px;"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="userTagBtn()">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+        <script>
+
+            function search(){
+                window.location.href = "/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
+            }
+                function btnsearch(obj){
+                    var conditions = $(obj).searchConditions() ;
+
+                    if(!conditions.length)
+                        return ;
+
+
+                    $("#userList").flexOptions({params: [{name:"conditions",value:JSON.stringify(conditions)},{name:"logic",value:$("[name=searchLogic]").val()}]});
+                    $('#userList').flexOptions({newp: 1}).flexReload();
+
+                } ;
+
+                function btncancel(){
+
+                    location.reload()
+                } ;
+
+                var oUserSetOption;
+
+                function userSetTagView(){
+
+                    var aList = getUserList();
+                    if( aList.length == 0){
+                        $.globalMessenger().post({
+                            message: '至少选择一个用户.',
+                            type: 'error',
+                            showCloseButton: true})
+                        return ;
+                    }
+
+                    jQuery("#tags").tagsManager('empty');
+
+                    $('#tagModal').modal('toggle');
+                    oUserSetOption = {} ;
+                    oUserSetOption.data = [];
+                    oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+                    return false;
+                };
+
+                function userTagBtn(){
+
+                    var tags = $("input[type='hidden'][name='tagsVal']").val();
+                    if( tags == ""){
+                        $.globalMessenger().post({
+                            message: '至少设置一个标签.',
+                            type: 'error',
+                            showCloseButton: true})
+                        return ;
+                    }
+
+                    var oUserSetOption = {} ;
+                    oUserSetOption.data = [];
+                    oUserSetOption.data.push({name:"sUserList",value:getUserList().join(",")});
+                    oUserSetOption.data.push({name:"sTagList",value:tags});
+                    oUserSetOption.type = "POST";
+                    oUserSetOption.url = "/welab/user/tags:setUserTag";
+
+                    $.request(oUserSetOption,function(err,nut){
+                        if(err) throw err ;
+                        nut.msgqueue.popup() ;
+
+                        $.controller("/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val(),null,"lazy");
+                    }) ;
+
+                    $('#tagModal').modal('toggle');
+                    return false;
+
+                };
+        </script>

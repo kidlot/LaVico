@@ -53,12 +53,12 @@ window.lookbook = {
             o.find("textarea").val(oPage.detail)
             o.find("img").attr("src",oPage.pic)
 
-            this.page.push({pic:oPage.pic,name:oPage.name,detail:oPage.detail,product:[]})
+            this.page.push({pic:oPage.pic,name:oPage.name,detail:oPage.detail,_id:oPage._id,product:[]})
         }else{
             o.find("input[type='text'],textarea").val("")
             o.find("img").attr("src","/lavico/public/images/u6.jpg")
 
-            this.page.push({pic:undefined,name:undefined,detail:undefined,product:[]})
+            this.page.push({pic:undefined,name:undefined,detail:undefined,_id:this.__id(),product:[]})
         }
 
 
@@ -94,7 +94,7 @@ window.lookbook = {
         }else{
             var o = params.prev().find(".panel").eq(0).clone()
             var _id = lookbook._getPageProductID(params)
-            this.page[parseInt(_id.pageId)].product.push({pic:undefined,name:undefined,detail:undefined})
+            this.page[parseInt(_id.pageId)].product.push({pic:undefined,name:undefined,detail:undefined,_id:this.__id()})
             var productDiv = params.prev()
 
             o.find("input[type='text']").val("")
@@ -110,6 +110,9 @@ window.lookbook = {
 
     }
 
+    , __id: function(){
+        return new Date().getTime().toString() + parseInt(Math.random() * 100000000)
+    }
     , refreshCode: function(){
 
         $(".pageList>.panel").each(function(i,o){
@@ -130,11 +133,11 @@ window.lookbook = {
                 window.lookbook[this.name] = $(this).val()
             }
             if(paramName.length == 2){
-                var _id = lookbook._getPageProductID(this)
+                var _id = lookbook._getPageProductID($(this))
                 window.lookbook.page[parseInt(_id.pageId)][paramName[1]] = $(this).val()
             }
             if(paramName.length == 3){
-                var _id = lookbook._getPageProductID(this)
+                var _id = lookbook._getPageProductID($(this))
                 window.lookbook.page[parseInt(_id.pageId)].product[parseInt(_id.productId)][paramName[2]] = $(this).val()
             }
         })
@@ -147,7 +150,7 @@ window.lookbook = {
                 lookbook.refreshCode()
             });
 
-            var _id = lookbook._getPageProductID(this)
+            var _id = lookbook._getPageProductID($(this))
             if(!isNaN(_id.productId)){
                 lookbook.page[_id.pageId].product.splice(_id.productId,1)
             }else{

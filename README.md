@@ -1,3 +1,13 @@
+## 关于用户信息记录的说明
+
+#一共三个地方
+- lavico/user/log 表 。这里存的是最详细的操作记录。如 XX时间第一次砍价，XX时间第二次砍价。XX时间成交（三条记录）
+- welab/feeds 表。 用来存储可以在welab里“动态”中可以看到的消息  。如 XX人今天砍价了，您是不是也要来？。
+- welab/customers 表。 不同模块创建一个数组类型的字段，用于方便模块的统计页面。如 精英搭配  lookbook:[{name:'衣服',createDate:1111111},{},{}]
+
+
+
+
 
 <h2>welab/customers 表说明</h2>
 注册时间：registerTime 单位是毫秒<br/>
