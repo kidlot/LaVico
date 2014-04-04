@@ -9,6 +9,60 @@ module.exports = {
 
     , process: function (seed, nut) {
 
+        nut.model.startDate = seed.startDate
+        nut.model.stopDate = seed.stopDate
+        nut.model.unwind = seed.unwind
+    }
+    , viewIn : function(){
+
+        console.log("userList")
+
+        $("#userList").flexigrid({
+            url: '/lavico/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
+            dataType: 'json',
+            colModel : [
+                {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
+                {display: '日期', name : $(".unwind").val()+'.createDate', width : 150, sortable : true},
+                {display: '姓名', name : 'realname', width : 150, sortable : true},
+                {display: '标签', name : 'tags', width : 442, sortable : true},
+                {display: '名称', name : $(".unwind").val()+'.name', width : 150, sortable : true},
+
+                {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
+                {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
+                {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
+                {display: '已关注(天)', name : 'followTime', width : 70, sortable : true, hide:true},
+                {display: '已注册(天)', name : 'registerTime', width : 70, sortable : true, hide:true},
+                {display: '未会话(天)', name : 'lastMessageTime', width : 70, sortable : true, hide:true},
+                {display: '会话数(占比)', name : 'messageCount', width : 100, sortable : true, hide:true}
+            ],
+            //sortname: "input",
+            sortorder: "desc",
+            usepager: true,
+            useRp: true,
+            rp: 17,
+            showTableToggleBtn: true,
+            width: 929,
+            height: 590,
+            onSuccess:function(o){
+
+                $("#userList").find("tr").find("td").each(function(i,o){
+                    $(o).click(function(){
+
+
+                        if( event.srcElement.nodeName == "DIV" || event.srcElement.nodeName == "TD"){
+
+                            if( !$(o).parent().hasClass("trSelected") ){
+
+                                $(o).parent().find("td:eq(0)").find("input")[0].checked = true;
+                            }else{
+                                $(o).parent().find("td:eq(0)").find("input")[0].checked = false;
+                            }
+                        }
+                    })
+                })
+            }
+        });
+
     }
     , actions: {
 

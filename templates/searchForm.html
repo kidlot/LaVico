@@ -112,6 +112,9 @@
 
         <script>
 
+            function search(){
+                window.location.href = "/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
+            }
                 function btnsearch(obj){
                     var conditions = $(obj).searchConditions() ;
 
@@ -126,12 +129,7 @@
 
                 function btncancel(){
 
-                    $('#searchView').fadeOut('100')
-                    $('.searchConditionOuter').empty()
-                    $.controller("/lavico/lookbook/statistics:userList",{
-                        conditions:JSON.stringify({})
-                        , logic: $("[name=searchLogic]").val()
-                    },'.childview>.ocview') ;
+                    location.reload()
                 } ;
 
                 var oUserSetOption;
@@ -178,7 +176,7 @@
                         if(err) throw err ;
                         nut.msgqueue.popup() ;
 
-                        $.controller("/lavico/lookbook/statistics?_id="+$("#_id").val(),null,"lazy");
+                        $.controller("/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val(),null,"lazy");
                     }) ;
 
                     $('#tagModal').modal('toggle');

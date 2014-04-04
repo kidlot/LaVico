@@ -1,0 +1,65 @@
+<style>
+    .checkbox .icons .first-icon, .radio .icons .first-icon, .checkbox .icons .second-icon, .radio .icons .second-icon {
+        background-color: #E7E7E7;
+    }
+    .mlm, .mhm, .mam {
+        margin-left: 0px;
+    }
+    .mrm, .mhm, .mam {
+        margin-right: 0px;
+    }
+</style>
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+
+        <div class="btn-group" style="float: left;">
+            <a href="/lavico/bargain/log" class="btn btn-xs btn-primary mhm" >查看明细</a>
+        </div>
+        <div style="float: right;">
+            <div style="float: right; width: 306px;">
+                <form method="get">
+                <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
+                <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
+                <input type="submit" class="btn btn-xs btn-primary mhm" value="搜索">
+                <a href="/lavico/bargain/statistics" class="btn btn-xs btn-primary mhm" >重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <span class="label label-primary">总参与人数:{@ uv1}</span>
+        <span class="label label-important">总成交人数:{@ uv2}</span>
+
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>时间</th>
+                <th>参与人数</th>
+                <th>成交人数</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@dateList" var="doc">
+                <tr>
+                    <td>{@ doc.title}</td>
+                    <td>{@ doc.uv1}</td>
+                    <td>{@ doc.uv2}</td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/bargain/statistics?startDate={@ startDate}&stopDate={@ stopDate}&page=%pagenum%" />
+        <!--  /pagination  -->
+
+    </div>
+</div>
+
+
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">

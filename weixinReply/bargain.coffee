@@ -15,10 +15,6 @@ exports.load =  ()->
         {
           title: '管理'
         , controller: '/lavico/bargain'
-        },
-        {
-          title: '统计'
-        , controller: '/lavico/bargain/statistics'
         }
       ]
     , start: ()->

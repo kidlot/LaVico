@@ -36,7 +36,7 @@
                     <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
                     <td>
                         <a href="/lavico/bargain/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">修改</a>
-                        <a href="javascript:;" onclick="copyToClipboard('http://{host}/lavico/bargain/detail?wxid={wxid}&_id={@doc._id}')" class="btn btn-xs btn-primary mhm">复制链接</a>
+                        <a href="/lavico/bargain/statistics?_id={@ doc._id}" class="btn btn-xs btn-primary mhm">统计</a>
                         <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
                     </td>
                 </tr>

@@ -13,9 +13,6 @@ exports.load = function () {
         {
           title: '管理',
           controller: '/lavico/lookbook'
-        }, {
-          title: '统计',
-          controller: '/lavico/lookbook/statistics'
         }
       ],
       start: function() {
