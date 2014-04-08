@@ -73,9 +73,9 @@ module.exports = {
                         'id_code':userCaptcha
                     }}).done(function(data){
                         var returnJson = data || {};
-                        if(returnJson.issuccessed == true){
+                        if(returnJson.success == true){
                             alert('绑定成功');
-                        }else if(returnJson.issuccessed == false){
+                        }else if(returnJson.success == false){
                             alert(returnJson.error);
                         }else if(returnJson.code_error){
                             alert('验证码错误');
@@ -118,7 +118,7 @@ module.exports = {
                                   MEM_OLDCARD_NO:userCardNumber,
                                   MEM_PSN_CNAME:userName		  
 			                        };
-                              middleware.request( "/lavico.middleware/MemberBind",
+                              middleware.request( "Member/Bind",
                                   data_request,
                                   this.hold(function(err,doc){
                                     var dataJson = JSON.parse(doc);
@@ -141,30 +141,30 @@ module.exports = {
                             
                             this.step(function(doc){
                               var dataJson = JSON.parse(data_doc);
-                              if(dataJson.issuccessed == true){
-                                middleware.request( "/lavico.middleware/Points",{
-                                      MEMBER_ID:dataJson.MEMBER_ID
-                                    }
-                                    ,then.hold(function(err,req_doc){
-                                      var member_level = eval('('+req_doc+')');
-                                      if(member_level.level == '01'){
-                                        type = 1;
-                                      }else if(member_level.level == '02'){
-                                        type = 2;
-                                      }else if(member_level.level == '03'){
-                                        type = 3;
-                                      }else{
-                                        type = 0;
-                                      }
-                                }));                                  
-                              }else{
-                              }
+//                              if(dataJson.success == true){
+//                                middleware.request( "/lavico.middleware/Points",{
+//                                      MEMBER_ID:dataJson.MEMBER_ID
+//                                    }
+//                                    ,then.hold(function(err,req_doc){
+//                                      var member_level = eval('('+req_doc+')');
+//                                      if(member_level.level == '01'){
+//                                        type = 1;
+//                                      }else if(member_level.level == '02'){
+//                                        type = 2;
+//                                      }else if(member_level.level == '03'){
+//                                        type = 3;
+//                                      }else{
+//                                        type = 0;
+//                                      }
+//                                }));                                  
+//                              }else{
+//                              }
                               return doc;
                             });
 
                             this.step(function(doc){
                                 var dataJson = JSON.parse(data_doc);
-                                if(dataJson.issuccessed == true){
+                                if(dataJson.success == true){
                                     then.req.session.id_code = '';
                                     helper.db.coll('welab/customers').update({wechatid:wxid},{
                                         $set:{

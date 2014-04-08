@@ -54,9 +54,9 @@ module.exports = {
                 },
                 success:function(data){
                     var dataJson = data;
-                    if(dataJson['issuccessed'] == 'true'){//dataJson.issuccessed
+                    if(dataJson['success'] == true){//dataJson.issuccessed
                         alert('解绑成功');
-                    }else if (dataJson['issuccessed'] == 'false'){
+                    }else if (dataJson['success'] == false){
                         alert('解绑失败');
                     }else if(dataJson.code_error){
                         alert('验证码错误');
@@ -95,7 +95,7 @@ module.exports = {
                 };
                 
                 this.step(function(){
-                  middleware.request( "/lavico.middleware/MemberUnbind",
+                  middleware.request( "Member/Unbind",
                     data_request,
                     _this.hold(function(err,doc){
                       var dataJson = JSON.parse(doc);
@@ -116,7 +116,7 @@ module.exports = {
                 
                 this.step(function(doc){
                   var dataJson = JSON.parse(doc);
-                  if(dataJson.issuccessed == 'true'){
+                  if(dataJson.success == true){
 				            _this.req.session.id_code = '';
                     helper.db.coll('welab/customers').update({wechatid:wxid},{
                         $set:{
@@ -130,8 +130,7 @@ module.exports = {
                       _this.res.write(doc);
                       _this.res.end();           
                     }));	 
-                  }else if(dataJson.issuccessed == 'false'){
-                    console.log('bb');
+                  }else if(dataJson.success == false){
                     _this.res.writeHead(200, { 'Content-Type': 'application/json' });
                     _this.res.write(doc);
                     _this.res.end();		
