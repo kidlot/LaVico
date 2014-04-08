@@ -38,7 +38,7 @@
             <thead>
             <tr>
                 <th>名称</th>
-                <th style="width: 100px">收藏数</th>
+                <th style="width: 200px">收藏数</th>
             </tr>
             </thead>
             <tbody>
@@ -47,7 +47,7 @@
                 <foreach for="@doc.product" var="doc2">
                 <tr>
                     <td>{@ doc2.name}</td>
-                    <td>{@ doc2.sumFavorites}</td>
+                    <td>{@ doc2.sumFavorites}----[<a target="_blank" href="/lavico/lookbook/favorites:save?wxid=osKoBj5W3fw0385l1k3O2aj2Neco&pid={@ doc2._id}">测试收藏</a>]</td>
                 </tr>
                 </foreach>
             </foreach>

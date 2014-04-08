@@ -144,9 +144,9 @@ $(function () {
 /*
  * 图片上传开始
  */
-var picShowDisc;
+var $picShowDisc1;
 function fileSelected(pic) {
-    picShowDisc=pic;
+    $picShowDisc1=$(pic);
     uploadFile(pic);
 }
 
@@ -176,11 +176,15 @@ function uploadProgress(evt) {
 function uploadComplete(evt) {
     var json = eval('(' + evt.target.responseText + ')');
     //隐藏域
-
+    $picShowDisc1.parent().find("input[name='uploadFile']").val(json.model.fileName);
+    $picShowDisc1.parent().next().find("img[name='picimg']").attr("src",json.model.fileName);
+    console.log($picShowDisc1.parent().next().find("img[name='picimg']").attr("src"));
+    $picShowDisc1.parent().next().show();
+    /*
     $(picShowDisc).parent().parent().parent().prev().find("input[name='uploadFile']").val(json.model.fileName);
     $(picShowDisc).parent().parent().find("img[name='picimg']").attr("src",json.model.fileName);
     $(picShowDisc).parent().parent().parent().show();
-
+    */
 
     //setVal( nowLineNum, {pic:json.model.fileName});
     //$("#pic").val("")

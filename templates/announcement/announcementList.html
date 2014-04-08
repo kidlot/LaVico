@@ -1,0 +1,26 @@
+<table class="table table-hover" id="tagList">
+    <tr>
+        <th style="width:200px">名称</th>
+        <th style="width:50px">时间</th>
+        <th style="width:50px">操作</th>
+    </tr>
+    <foreach for="@page.docs" var="doc">
+    <tr>
+        <td><input type="hidden" name="anno_id" value="{@doc._id}"><a href="/lavico/announcement/updateAnnouncement?id={@doc._id}" style="text-decoration: underline">{@doc.title}</a></td>
+        <td>{@doc.createTime}</td>
+        <td>
+            <div style="float:left">
+                <if condition="{@doc.isOpen}">
+                    <input type="button" name="btnOpenClose" value="开">
+                <else/>
+                    <input type="button" name="btnOpenClose" value="关">
+                </if>
+            </div>
+            <div style="float:left">
+                <input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
+            </div>
+        </td>
+    </tr>
+    </foreach>
+</table>
+<include file="welab/templates/paginator.html" model="@page" model.url="/lavico/announcement/announcementIndex:page?page=%pagenum%" />
