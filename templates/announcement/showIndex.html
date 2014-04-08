@@ -1,0 +1,15 @@
+<style>
+    a{text-decoration: none;}
+    ul{list-style: none; width: 200px; display:}
+    ul li{border: 1px solid gray; padding: 8px;}
+    ul a{display: block; width:200px;color:black;font-size:14px;}
+</style>
+<div>
+    <ul>
+        <foreach for="@docs" var="doc">
+            <li>
+               <a href="/lavico/announcement/showDetails?_id={@doc._id}"> {@doc.content}<br/>{@doc.createTime}</a>
+            </li>
+        </foreach>
+    </ul>
+</div>

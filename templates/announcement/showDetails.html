@@ -1,0 +1,28 @@
+<style>
+    #announcementList{
+        border: 1px solid gray;
+        width: 200px;
+    }
+    #title{
+        text-align: center;
+        border-bottom: 1px solid gray;
+        width: 200px;
+        height: 30px;
+   }
+   #content{
+       width: 200px;
+       height: 200px;
+   }
+</style>
+<div>
+    <if condition="@doc">
+        <div id="announcementList">
+            <div id="title">{@doc.title}</div>
+            <div id="content">{@doc.content}</div>
+        </div>
+    <else/>
+        您的操作有问题
+    </if>
+
+    
+</div>

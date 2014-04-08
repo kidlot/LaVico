@@ -22,6 +22,7 @@ module.exports={
                     })) ;
                 });
                 this.step(function(){
+                    console.log(_page);
                     nut.model.page = _page || {} ;
                 })
             },
