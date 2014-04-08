@@ -16,7 +16,7 @@
                 <th>活动CODE</th>
                 <th>活动名称</th>
                 <th>促销活动礼品</th>
-                <th>优惠券类别</th>
+                <th>优惠券金额</th>
                 <th>已发/总数</th>
                 <th></th>
             </tr>
@@ -60,7 +60,7 @@
             </foreach>
             </tbody>
         </table>
-        
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/bargain/index?page=%pagenum%" />
     </div>
 </div>
 <style>
