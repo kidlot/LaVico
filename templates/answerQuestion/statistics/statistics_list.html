@@ -1,0 +1,77 @@
+<style>
+    .floatRight{float: right;}
+    .width50{width:50px;}
+    .width100{width:100px;}
+    .width150{width:150px;}
+    .width250{width:250px;}
+    .width350{width:350px;}
+    .height35{heigth:35px;}
+    .staCount{background-color:#e8e8e8;}
+    .lineCenter{text-align: center;}
+    .maginTop20{margin-top:20px;}
+    .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
+    .borderBtm{border-bottom:1px solid darkgray;}
+</style>
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="#" class="stay">应用管理</a> <em></em></li>
+    <li class="b02"><a href="#" class="stay">问答测试</a> <em></em></li>
+    <li class="active"><span>统计</span></li>
+</ul>
+
+<div name="container" class="panel panel-default">
+    <div name="title" style="padding: 10px;">
+        <div class="height35">
+            <input type="button" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">所有问答测试</span>
+            <input type="button" value="新增题目" name="btnSave" class="btn btn-embossed btn-primary" style="float: right; margin-left: 300px;">        </div>
+    </div>
+    <div nam="main">
+        <div name="getMember" class="maginTop20">
+            <table class="tableSty">
+                <tr class="staCount borderBtm">
+                    <td class="width250">名称</td>
+                    <td class="width50">状态</td>
+                    <td class="width50">开始时间</td>
+                    <td class="width50">结束时间</td>
+                    <td class="width50">类型</td>
+                    <td class="width100">完成/参与</td>
+                    <td class="width50">完成率</td>
+                    <td class="width150">操作</td>
+                </tr>
+            <foreach for="@docs" var="doc">
+                <tr class="borderBtm">
+                    <td class="width250"><a href="statistics_true?_id=123">{@doc.theme}</a></td>
+                    <td class="width50">
+                        <if condition="{@doc.isOpen}">
+                            进行中
+                        <else/>
+                            已关闭
+                        </if>
+                    </td>
+                    <td class="width50">{@doc.beginTime}</td>
+                    <td class="width50">{@doc.endTime}</td>
+                    <td class="width50">
+                        {@doc.themeType}
+                        <if condition="{@doc.themeType===0}">
+                            对错型
+                        <else if condition="{@doc.themeType===1}">
+                            测试题
+                        <else>
+                            调查题
+                        </if>
+                    </td>
+                    <td class="width100">{@doc.finishCount}/100</td>
+                    <td class="width50">50%</td>
+                    <td class="width150">
+                        <input type="button" name="txtIsOpen" value="开">
+                        <input type="button" name="btnStatistics" value="统计">
+                        <input type="button" name="btn" value="关闭">
+                    </td>
+                </tr>
+            </foreach>
+            </table>
+            <div>
+                <span>223条记录</span>
+            </div>
+        </div>
+    </div>
+</div>
