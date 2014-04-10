@@ -1,0 +1,149 @@
+<style>
+    .floatRight{float: right;}
+    .width50{width:50px;}
+    .width100{width:100px;}
+    .width150{width:150px;}
+    .width250{width:250px;}
+    .width350{width:350px;}
+    .height35{heigth:35px;}
+    .staCount{background-color:#e8e8e8;}
+    .lineCenter{text-align: center;}
+    .maginTop20{margin-top:20px;}
+    .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
+    .borderBtm{border-bottom:1px solid darkgray;}
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="#" class="stay">应用管理</a> <em></em></li>
+    <li class="b02"><a href="#" class="stay">问答测试</a> <em></em></li>
+    <li class="active"><span>统计</span></li>
+</ul>
+
+<div name="container" class="panel panel-default">
+    <div name="title" style="padding: 10px;">
+        <div class="height35">
+            <input type="button" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">服装知识全对获100积分</span>
+            <input type="button" value="保存" name="btnSave" class="btn btn-embossed btn-primary" style="float: right; margin-left: 300px;">
+        </div>
+    </div>
+
+    <div nam="main">
+        <div name="getCount">
+        <table class="tableSty">
+            <tr class="staCount borderBtm">
+                <td class="width250">名称</td>
+                <td class="width50">类型</td>
+                <td class="width50">参与</td>
+                <td class="width50">完成</td>
+                <td class="width50">全对</td>
+                <td class="width50">完成率</td>
+                <td class="width50">全对率</td>
+            </tr>
+            <tr class="borderBtm">
+                <td class="width250">服装知识全对获100积分</td>
+                <td class="width50">对错型</td>
+                <td class="width50">200</td>
+                <td class="width50">100</td>
+                <td class="width50">50</td>
+                <td class="width50">50%</td>
+                <td class="width50">50%</td>
+            </tr>
+        </table>
+        </div>
+
+        <div name="getLabel" class="maginTop20">
+            <table class="tableSty ">
+                <tr class="staCount borderBtm">
+                    <td class="width250">获得标签</td>
+                    <td class="width50">获得</td>
+                    <td class="width50">获得率</td>
+                </tr>
+                <tr class="borderBtm">
+                    <td class="width250">全对达人</td>
+                    <td class="width50">20</td>
+                    <td class="width50">90%</td>
+                </tr>
+                <tr class="borderBtm">
+                    <td class="width250">全对达人</td>
+                    <td class="width50">20</td>
+                    <td class="width50">90%</td>
+                </tr>
+            </table>
+        </div>
+
+        <div name="getScore" class="maginTop20">
+            <table class="tableSty">
+                <tr class="staCount borderBtm">
+                    <td class="width250">获得奖励</td>
+                    <td class="width50">获得</td>
+                    <td class="width50">获得率</td>
+                </tr>
+                <tr class="borderBtm">
+                    <td class="width250">全对达人</td>
+                    <td class="width50">20</td>
+                    <td class="width50">90%</td>
+                </tr>
+                <tr class="borderBtm">
+                    <td class="width250">全对达人</td>
+                    <td class="width50">20</td>
+                    <td class="width50">90%</td>
+                </tr>
+            </table>
+        </div>
+
+        <div name="getTheme" class="maginTop20">
+            <table class="tableSty">
+                <tr class="staCount borderBtm">
+                    <td class="width50">序号</td>
+                    <td class="width250">题目</td>
+                    <td class="width50">题型</td>
+                    <td class="width50">正确率</td>
+                    <td class="width50">操作</td>
+                </tr>
+                <tr class="borderBtm">
+                    <td class="width50">1</td>
+                    <td class="width250">以下哪个是西装的英文名称</td>
+                    <td class="width50">单选题</td>
+                    <td class="width50">100%</td>
+                    <td class="width50"><input type="button" name="btnSta" value="统计"></td>
+                </tr>
+                <tr class="borderBtm">
+                    <td class="width50">1</td>
+                    <td class="width250">以下哪个是西装的英文名称</td>
+                    <td class="width50">单选题</td>
+                    <td class="width50">100%</td>
+                    <td class="width50"><input type="button" name="btnSta" value="统计"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div name="getMember" class="maginTop20">
+           <div><input type="button" name="btnExcel" value="全部导出"></div>
+            <table class="tableSty">
+                <tr class="staCount borderBtm">
+                    <td class="width50"><input type="checkbox" name="all"></input></td>
+                    <td class="width250">时间</td>
+                    <td class="width50">姓名</td>
+                    <td class="width50">性别</td>
+                    <td class="width50">年龄</td>
+                    <td class="width50">城市</td>
+                    <td class="width50">正确率</td>
+                    <td class="width50">获得标签</td>
+                    <td class="width50">获得奖励</td>
+                </tr>
+                <tr class="borderBtm">
+                    <td class="width50"><input type="checkbox" name="all"></input></td>
+                    <td class="width250">2014-4-4 12:20:25</td>
+                    <td class="width50">张学友</td>
+                    <td class="width50">男</td>
+                    <td class="width50">40</td>
+                    <td class="width50">香港</td>
+                    <td class="width50">100%</td>
+                    <td class="width50">全对达人</td>
+                    <td class="width50">100积分</td>
+                </tr>
+            </table>
+            分页
+        </div>
+    </div>
+</div>
