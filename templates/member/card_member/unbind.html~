@@ -25,8 +25,8 @@ window.onload = function(){
       },function(data){
         data = eval('('+data+')');
         if(data.result == 'ofen'){
-          flag = 0;
           alert('请稍后再获取！');
+          flag = 0;
         }else if(data.result == 'ok'){
           set_interval();
           $('#userCaptcha').val(data.id_code);

@@ -141,24 +141,23 @@ module.exports = {
                             
                             this.step(function(doc){
                               var dataJson = JSON.parse(data_doc);
-//                              if(dataJson.success == true){
-//                                middleware.request( "/lavico.middleware/Points",{
-//                                      MEMBER_ID:dataJson.MEMBER_ID
-//                                    }
-//                                    ,then.hold(function(err,req_doc){
-//                                      var member_level = eval('('+req_doc+')');
-//                                      if(member_level.level == '01'){
-//                                        type = 1;
-//                                      }else if(member_level.level == '02'){
-//                                        type = 2;
-//                                      }else if(member_level.level == '03'){
-//                                        type = 3;
-//                                      }else{
-//                                        type = 0;
-//                                      }
-//                                }));                                  
-//                              }else{
-//                              }
+                              if(dataJson.success == true){
+                                middleware.request( "Member/Level/"+dataJson.MEMBER_ID,{
+                                    }
+                                    ,then.hold(function(err,req_doc){
+                                      var member_level = eval('('+req_doc+')');
+                                      if(member_level.level == '01'){
+                                        type = 1;
+                                      }else if(member_level.level == '02'){
+                                        type = 2;
+                                      }else if(member_level.level == '03'){
+                                        type = 3;
+                                      }else{
+                                        type = 0;
+                                      }
+                                }));                                  
+                              }else{
+                              }
                               return doc;
                             });
 

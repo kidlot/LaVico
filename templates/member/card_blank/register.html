@@ -1,5 +1,5 @@
 <meta name="viewport" content="width=360,user-scalable=no" />
-<a href="http://www.baidu.com">点击绑定实体卡</a><br/><br/>
+<!--<a href="http://www.baidu.com">点击绑定实体卡</a><br/><br/>-->
 	<span>姓名</span><input id='name' value='' /><br/>
 	<span>性别</span>
 	<select id='sex'>
@@ -162,8 +162,12 @@ window.onload = function(){
 			function(data){
 			  data = eval("("+data+")");
 				if(data.success){
-				  alert("恭喜你，注册成功");
-				  return false;
+				  if(data.error){
+				    alert(data.error);
+				  }else{
+					  alert("恭喜你，注册成功");
+					}
+					return false;
 				}else if(data.code_error){
 				  alert("验证码错误");
 				  return false;

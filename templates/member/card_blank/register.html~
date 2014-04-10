@@ -162,8 +162,12 @@ window.onload = function(){
 			function(data){
 			  data = eval("("+data+")");
 				if(data.success){
-				  alert("恭喜你，注册成功");
-				  return false;
+				  if(data.error){
+				    alert(data.error);
+				  }else{
+					  alert("恭喜你，注册成功");
+					}
+					return false;
 				}else if(data.code_error){
 				  alert("验证码错误");
 				  return false;
