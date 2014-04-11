@@ -29,44 +29,7 @@ module.exports = {
           }
 		    }))
 	    });
-	    this.step(function(doc){
-	      var count = 0;
-	      var then = this;
-        for(var i=0;i<doc.length;i++){
-          (function(i){
-            helper.db.coll("lavico/activity").findOne({aid:doc[i].PROMOTION_CODE},then.hold(function(err,detail){
-              count ++ ;
-              if(detail){
-                if(detail.name){
-                  doc[i].PROMOTION_NAME = detail.name;
-                }
-                doc[i].name = detail.name;
-                if(detail.start_time){
-                  var start_date =   new Date(parseInt(detail.start_time));
-                  var start_date_format = start_date.getFullYear()+'-'+(start_date.getMonth()+1)+'-'+start_date.getDate();                    
-                  doc[i].start_time = start_date_format;
-                }
-                if(detail.end_time){
-                  var end_date =   new Date(parseInt(detail.end_time));
-                  var end_date_format = end_date.getFullYear()+'-'+(end_date.getMonth()+1)+'-'+end_date.getDate();                    
-                  doc[i].end_time = end_date_format;
-                }
-                if(detail.time){
-                  var date =   new Date(parseInt(detail.time));
-                  var date_format = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();                    
-                  doc[i].end_time = date_format;
-                }
-              }else{
-                helper.db.coll("lavico/activity").insert({aid:doc[i].PROMOTION_CODE},function(err,info){});
-              }
-              if(count == doc.length){
-                return doc;
-                then.terminate();
-              }
-            }));
-          })(i);			          
-        }
-	    });
+	
 	    this.step(function(list){   
 	      nut.model.list = list;
 	    });  	            
@@ -76,11 +39,51 @@ module.exports = {
         layout: "welab/Layout",
         view: "lavico/templates/activity/modify.html",
         process:function(seed,nut){
-          this.step(function(){
-            helper.db.coll('lavico/activity').findOne({aid:seed.aid},this.hold(function(err,doc){
-              return doc ? doc : {};
+          var perPage = 4;
+          var pageNum = seed.page ? seed.page : 1;
+          var then = this;
+	        this.step(function(doc){	
+		        middleware.request('Coupon/Promotions',{
+		          perPage:perPage,
+              pageNum:pageNum,
+              code:seed.aid
+		        },this.hold(function(err,doc){
+		          		        
+		          doc = doc.replace(/[\n\r\t]/,'');
+              var doc_json = eval('(' + doc + ')');
+              
+              var page = {};
+              page.lastPage = Math.ceil(doc_json.total/perPage);
+              page.currentPage = pageNum;
+              page.totalcount = doc_json.total;
+              nut.model.page = page;
+              
+              
+              if(doc_json && doc_json.list && doc_json.list[0]){
+                return doc_json.list[0];
+              }else{
+                return {};
+              }
+		        }))
+	        });        
+        
+        
+          this.step(function(activity){
+            helper.db.coll('lavico/activity').findOne({aid:activity.PROMOTION_CODE},this.hold(function(err,doc){
+              if(doc){
+                for(var j=0;j<activity.coupons.length;j++){
+                  for(var k=0;k<doc.coupons.length;k++){
+                    if(activity.coupons[j].QTY == doc.coupons[k].QTY){
+                      activity.coupons[j].pic = doc.coupons[k].pic;
+                      activity.coupons[j].introduction = doc.coupons[k].introduction;
+                    }
+                  }
+                }                   
+              }
+              return activity;
             }));
           });
+          
           this.step(function(doc){
             if(doc.start_time){
               var start_date =   new Date(parseInt(doc.start_time));
@@ -118,25 +121,42 @@ module.exports = {
               nut.view.disable() ;
 
               var postData = JSON.parse(seed.postData);
-
+              var then = this;
               if(postData.length == 0 ){
                   nut.message("保存失败。数据不能为空",null,'error') ;
                   return;
               }
-              if(seed.aid){
-                  helper.db.coll("lavico/activity").update({aid:seed.aid},{$set:postData},this.hold(function(err,doc){
-                      if(err){
-                          throw err;
-                      }else{
-                          nut.message("保存成功",null,'success') ;
-                      }
-                  }));
-              }else{
+              this.step(function(){
+                if(!seed.aid){
                   nut.message("保存失败，缺少活动CODE",null,'success') ;
-              }
+                  then.terminate();
+                }
+              });
+              this.step(function(){
+                var activity = [];
+                for(var o in postData){  
+                  var coupons = {};
+                  coupons['QTY'] = o;
+                  coupons['pic'] = postData[o].pic;
+                  coupons['introduction'] = postData[o].introduction;
+                  activity.push(coupons);
+                }
+                helper.db.coll("lavico/activity").update({aid:seed.aid},{$set:{coupons:activity}},{multi:false,upsert:true},this.hold(function(err,doc){
+                    if(err){
+                        throw err;
+                    }else{
+                        nut.message("保存成功",null,'success') ;
+                    }
+                }));                    
+              });              
           }
       }
     }
+}
+Array.prototype.in_array = function(e) 
+{ 
+for(i=0;i<this.length && this[i]!=e;i++); 
+return !(i==this.length); 
 }
 
 

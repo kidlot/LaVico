@@ -2,49 +2,86 @@
     <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
 </ul>
 
-<div class="panel panel-default formText">
+<div class="panel panel-default formText" >
     <div class="panel-heading clearfix">
         <a class="btn btn-defalut btn-social-googleplus pull-left" href="/lavico/activity"><i class="fui-arrow-left"></i> 返回</a>
         <a class="btn btn-success btn-social-googleplus pull-right" href="javascript:;" onclick="save()" ><i class="glyphicon glyphicon-circle-arrow-down"></i> 保存</a>
     </div>    
-    <div class="panel-body">
-       <div class="">   <!-- <div class="col-md-6 rightRow" style="height:1000px;">   -->
+    <div class="panel-body" style="background:#f9fafb;">
+       <div class="col-md-12">
             <div class="settingView">
                 <div class="form-arrow"></div>
-                <form role="form" id="formText">
+                <form class="form-horizontal" role="form">     
+                    <h6>原始信息</h6>
+                    <br>
                     <div class="form-group">
-                        <label><b class="dot"></b>礼品名称</label><span>(方便查找与管理)</span>
-                        <input type="text" value='{@activity.name}' class="form-control input-sm postData" id="name" name="name" placeholder="请输入...">
-                    </div>
-                    <span id="tagKeywordView">
-                    <div class="form-group">
-                        <label><b class="dot"></b>上传图片 <span>(720像素*400像素，小于800K)</span></label>
-                        <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." id="pic" onchange="fileSelected();">
-                        &nbsp;<span id="progressNumber"></span>
-
-                        <div class="alert alert-success picView file_box">
-                            <img id='image' class="media-object" style="height: 64px;" src="{@activity.pic}">
+                        <label for="inputEmail3" class="col-sm-2">类型</label>
+                        <div class="col-sm-10">
+                            <span>{@activity.type}</span>
                         </div>
                     </div>
-                    </span>
                     <div class="form-group">
-                        <label><b class="dot"></b>礼品描述</label><span>(摘要是正文的简单描述，字数不宜过多)</span>
-                        <textarea class="form-control input-sm postData" rows="3" id="introduce" name="introduce" placeholder="请输入...">{@activity.introduce}</textarea>
+                        <label for="inputEmail3" class="col-sm-2">名称</label>
+                        <div class="col-sm-10">
+                            <span>{@activity.PROMOTION_NAME}</span>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label><b class="dot"></b>使用说明</label><span></span>
-                        <textarea class="form-control input-sm postData" rows="3" id="introduction" name="introduction" placeholder="请输入...">{@activity.introduction}</textarea>
-                    </div>
+                        <label for="inputEmail3" class="col-sm-2">描述</label>
+                        <div class="col-sm-10">
+                            <span>{@activity.PROMOTION_DESC}</span>
+                        </div>
+                    </div>                                        
+                      
+                  
+
+                    <br>
+                    <h6>附加信息</h6>
+                    <br>                    
+                    
+                    <foreach for="@activity.coupons" var="doc">
+                      <div class="panel panel-default formText pagePanel">
+                          <div class="panel-body">
+                              <div class="col-md-9">
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">面值</label>
+                                      <div class="col-sm-10">
+                                          <span>{@doc.QTY}</span>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">券图<span>(400×400)</span></label>
+                                      <div class="col-sm-10">
+                                        <input type="file" class="input-xlarge"  style="width:206px" data="{@doc.QTY}" name="{@doc.QTY}" placeholder="请输入...." id="{@doc.QTY}" onchange="fileSelected(this.id);">
+                                        &nbsp;<span calss="progressNumber"></span>
+
+                                        <div class="alert alert-success picView file_box">
+                                            <img id='{@doc.QTY}_image' class="media-object image_data" data="{@doc.QTY}" style="height: 64px;" src="{@doc.pic}">
+                                        </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">使用说明</label>
+                                      <div class="col-sm-10">
+                                          <textarea class="form-control input-sm postData" rows="3" data="{@doc.QTY}" id="{@doc.QTY}_introduction" name="{@doc.QTY}_introduction" placeholder="请输入...">{@doc.introduction}</textarea>
+                                      </div>
+                                  </div>                           
+                              </div>
+                          </div>
+                      </div>
+                    </foreach>                    
+                    
+                    
+                    
+                    
                     <input type=hidden name='aid' id='aid' value='{@activity.aid}' />
                 </form>
             </div>
         </div>        
     </div>
 </div>
-<link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
-<script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
-
-<script type="text/javascript" src="/welab/public/js/jquery.json-2.4.js"></script>
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
 
 <script>
@@ -55,10 +92,10 @@
     var flag = 0;
     var _inputCheck = true;
     function save ( ){
-        if(flag){
-          alert('something error,please refresh your browser!');
-          return false;
-        }
+      //  if(flag){
+       //   alert('something error,please refresh your browser!');
+        //  return false;
+       // }
         var _inputCheck = true;
         $(".postData").each(function(i,o){
             if(! $(o).val()){
@@ -68,28 +105,22 @@
                     type: 'error',
                     showCloseButton: true})
             }else{
-              aItemList[$(o).attr("id")] = $(o).val()
+              if(!aItemList[$(o).attr("data")]){
+                aItemList[$(o).attr("data")] = {};
+              }
+              aItemList[$(o).attr("data")].introduction = $(o).val();
             }
         })
-              
-        if(!$(".picView").find("img").attr("src")){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message:"上传图片 不能为空！",
-                type: 'error',
-                showCloseButton: true})                
-        }else{
-          aItemList['pic'] = $(".picView").find("img").attr("src");
-        }
         
-        if(!/^\d+$/.test(aItemList['total'])){
-          _inputCheck = false;
-          $.globalMessenger().post({
-              message:"礼品数量必须是数字！",
-              type: 'error',
-              showCloseButton: true})            
-        }
-                    
+        $(".image_data").each(function(i,o){
+          if($(o).attr('src')){
+            if(!aItemList[$(o).attr("data")]){
+              aItemList[$(o).attr("data")] = {};
+            }
+            aItemList[$(o).attr("data")].pic = $(o).attr("src");            
+          }
+        });
+                            
 
         if(_inputCheck){
             var oLinkOptions = {} ;
@@ -105,58 +136,64 @@
             }) ;
         }
 
-    }
+    }   
+    
+    
+      
+      
+      var lastPic = ""
+      function fileSelected(inputid) {
 
-    function fileSelected() {
+          $("#"+inputid).next(".progressNumber").text("")
+          var file = document.getElementById(inputid).files[0];
+          if (file) {
+              var fileSize = 0;
+              if (file.size > 1024 * 1024)
+                  fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+              else
+                  fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 
-        document.getElementById('progressNumber').innerHTML = "";
-        var file = document.getElementById('pic').files[0];
-        if (file) {
-            var fileSize = 0;
-            if (file.size > 1024 * 1024)
-                fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-            else
-                fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+              lastPic = inputid
+              uploadFile();
+          }
+      }
 
+      function uploadFile() {
+          var fd = new FormData();
+          fd.append(lastPic, document.getElementById(lastPic).files[0]);
+          var xhr = new XMLHttpRequest();
+          xhr.upload.addEventListener("progress", uploadProgress, false);
+          xhr.addEventListener("load", uploadComplete, false);
+          xhr.addEventListener("error", uploadFailed, false);
+          xhr.addEventListener("abort", uploadCanceled, false);
+          xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
+          xhr.send(fd);
+      }
 
-            uploadFile();
-        }
-    }
+      function uploadProgress(evt) {
+          if (evt.lengthComputable) {
+              var percentComplete = Math.round(evt.loaded * 100 / evt.total);
 
-    function uploadFile() {
-        var fd = new FormData();
-        fd.append("pic", document.getElementById('pic').files[0]);
-        var xhr = new XMLHttpRequest();
-        xhr.upload.addEventListener("progress", uploadProgress, false);
-        xhr.addEventListener("load", uploadComplete, false);
-        xhr.addEventListener("error", uploadFailed, false);
-        xhr.addEventListener("abort", uploadCanceled, false);
-        xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
-        xhr.send(fd);
-    }
+              $("#"+lastPic).next(".progressNumber").text(percentComplete.toString() + '%')
+          }
+          else {
+              $("#"+lastPic).next(".progressNumber").text('unable to compute')
+          }
+      }
 
-    function uploadProgress(evt) {
-        if (evt.lengthComputable) {
-            var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-            document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
-        }
-        else {
-            document.getElementById('progressNumber').innerHTML = 'unable to compute';
-        }
-    }
+      function uploadComplete(evt) {
+          var json = eval('(' + evt.target.responseText + ')');
+          
+          var filename = json.model.fileName;
+          $("#"+lastPic+"_image").attr("src",filename)
+          
+      }
 
-    function uploadComplete(evt) {
-        var json = eval('(' + evt.target.responseText + ')');
-        $(".picView").find("img").attr("src",json.model.fileName)
-        aItemList['pic'] = json.model.fileName;
+      function uploadFailed(evt) {
+          alert("There was an error attempting to upload the file.");
+      }
 
-    }
-
-    function uploadFailed(evt) {
-        alert("There was an error attempting to upload the file.");
-    }
-
-    function uploadCanceled(evt) {
-        alert("The upload has been canceled by the user or the browser dropped the connection.");
-    }
+      function uploadCanceled(evt) {
+          alert("The upload has been canceled by the user or the browser dropped the connection.");
+      }
 </script>     
