@@ -1,0 +1,187 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/shake" >摇一摇</a></li>
+    <li class="b03"><a href="#" class="stay">编辑</a></li>
+    <li class="pull-right"><a href="/lavico/shake"><i class="fui-arrow-left"></i>返回</a></li>
+</ul>
+
+<div class="panel panel-default formText" >
+    <div class="panel-heading clearfix">
+    </div>
+    <div class="panel-body" style="background:#f9fafb;">
+        <div class="col-md-12">
+            <br>
+            <div style="min-height: 70px;">
+                <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
+            </div>
+
+            <form class="form-horizontal" role="form">
+                <h6>基础设置</h6>
+                <br>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">状态</label>
+                    <div class="col-sm-10">
+
+                        <div class="switch has-switch way">
+                            <div class="switch-animate switch-off" onclick="audioClick(this)">
+                                <input type="checkbox" data-toggle="switch">
+                                <span class="switch-left">关</span>
+                                <label>&nbsp;</label>
+                                <span class="switch-right">开</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">图文URL</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"  readonly value="http://wechat.imagchina.com/application.php?id=1" style="width: 300px;color: #9B9B9B;float: left">
+                        <button type="button" class="btn btn-primary" style="float: left;margin-left: 6px">复制</button>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">开始/结束</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="startDate" name="startDate" class="form-control" style="width: 150px;display:inline-block;" value="{@ list.startDate && new Date(list.startDate+28800000).toISOString().substr(0,10)}">
+                        <input type="text" id="endDate" name="endDate" class="form-control" style="width: 150px;display:inline-block;" value="{@ list.stopDate && new Date(list.stopDate+28800000).toISOString().substr(0,10)}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" placeholder="2014春季潮流搭配" style="width: 300px;" value="{@ list.name}" oninput="$('#pagename').text(this.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">券</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" style="width: 150px" id='activity_select' name="type">
+                          <foreach for="@list" var="doc">  
+                            <option value="{@doc.aid}">{@doc.name}</option>
+                          </foreach>  
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">抽奖频率</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" style="width: 150px;display:inline-block;" name="type">
+                            <option value="1">1天</option>
+                            <option value="2">1周</option>
+                            <option value="3">2周</option>
+                            <option value="4">1月</option>
+                            <option value="100">永久</option>
+                        </select>
+                        <input type="text" class="form-control" name="name" placeholder="2014春季潮流搭配" style="width: 300px;display:inline-block;" value="{@ list.name}" oninput="$('#pagename').text(this.value)">
+                    </div>
+                    <div class="col-sm-10">
+                        
+                    </div>
+                </div>                
+
+
+
+                <br>
+                <h6>内容设置</h6>
+                <br>
+
+                <foreach for="@list" var="doc">
+                  <div id='{@doc.aid}' style='display:none;'>
+                    <foreach for="@doc.coupons" var="coupons">
+                      <div class="panel panel-default formText pagePanel">
+                          <div class="panel-body">
+                              <div class="col-md-9">
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">券名</label>
+                                      <div class="col-sm-10">
+                                          <span>{@coupons.QTY}</span>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">券图</label>
+                                      <div class="col-sm-10">
+                                          <img src="{@coupons.pic}" />
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">剩余/总数</label>
+                                      <div class="col-sm-10">
+                                          <span>{@coupons.USED}/{@coupons.COUNT}</span>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">抽奖概率</label>
+                                      <div class="col-sm-10">
+                                          <input type="text" class="form-control" style="width:150px;display:inline-block">%
+                                      </div>
+                                  </div>                            
+                              </div>
+                          </div>
+                      </div>
+                    </foreach>
+                  </div>
+                </foreach>    
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+<script>
+window.onload = function(){
+  $('#activity_select').change(function(){
+    $("#"+$(this).val()).css('display','block');
+  });
+}
+
+function save ( ){
+
+    var aFormInput = {}
+
+    var _inputCheck = true;
+    $(".postData").each(function(i,o){
+
+        if(! $(o).val()){
+
+            _inputCheck = false;
+            $.globalMessenger().post({
+                message: $(o).parent().prev().text() + " 不能为空！",
+                type: 'error',
+                showCloseButton: true})
+        }
+
+        aFormInput[$(o).attr("id")] = $(o).val()
+    })
+
+    aFormInput['pic'] = $("#showPic").attr("src")
+    aFormInput['pic_big'] = $("#showPic_big").val()
+    if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
+    if($("input[name='sizesVal']").val()) aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
+
+    if(_inputCheck){
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+        oLinkOptions.type = "POST";
+        oLinkOptions.url = "/lavico/bargain/form:save";
+
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+
+            nut.msgqueue.popup() ;
+            $.controller("/lavico/bargain/index",null,"lazy");
+        }) ;
+    }
+}
+</script>
