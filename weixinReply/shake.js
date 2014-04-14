@@ -7,17 +7,17 @@
   welabExtension = require('welab/extension.js');
 
   exports.load = function() {
-    return welabExtension.apps.activity = {
+    return welabExtension.apps.shake = {
       categories: ['图片'],
       type: '定制应用',
       icon: '/welab/apps/photowall/public/icon_s.png',
       on: true,
-      title: '活动券',
-      desc: '活动券',
+      title: '摇一摇',
+      desc: '摇一摇',
       btns: [
         {
-          title: '活动券',
-          controller: '/lavico/activity'
+          title: '摇一摇',
+          controller: '/lavico/shake'
         }
       ],
       start: function() {
