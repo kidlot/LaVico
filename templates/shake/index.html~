@@ -11,10 +11,9 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-
         <div style="width: 300px;">
-            <a href="/lavico/shake" class="btn btn-xs btn-primary mhm stay">刷新</a>
-        </div>
+            <a href="/lavico/shake/index:modify_html" class="btn btn-xs btn-primary mhm stay">新增摇一摇</a>
+        </div>        
     </div>
     <div class="panel-body">
         <table class="table" id="tagList">
@@ -34,7 +33,7 @@
             </tr>
             </thead>
             <tbody>
-            <foreach for="@list" var="doc">
+            <foreach for="@list.docs" var="doc">
                 <tr>
                     <td><a href="/lavico/shake/index:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
                     <td>{@ doc.status}</td>
@@ -98,7 +97,7 @@
             </foreach>
             </tbody>
         </table>
-        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/activity/index?page=%pagenum%" />
+        <include file="welab/templates/paginator.html" model="@list" model.url="/lavico/activity/index?page=%pagenum%" />
     </div>
 </div>
 <style>

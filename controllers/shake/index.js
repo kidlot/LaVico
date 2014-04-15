@@ -4,68 +4,46 @@ module.exports = {
     view: "lavico/templates/shake/index.html",      
     process:function(seed,nut){
 
-      var perPage = 1000;
+      var perPage = 1;
       var pageNum = seed.page ? seed.page : 1;
-	    this.step(function(doc){	
-		    middleware.request('Coupon/Promotions',{
-		      perPage:perPage,
-          pageNum:pageNum
-		    },this.hold(function(err,doc){		      
-          //var doc = '{"total":9,"list":[{"PROMOTION_CODE":"L2013112709","PROMOTION_NAME":"无限制现金券","PROMOTION_DESC":"无限制现金券","row_number":1,"coupons":[{"QTY":123,"COUNT":1,"USED":1},{"QTY":50,"COUNT":500,"USED":0},{"QTY":1000,"COUNT":4,"USED":3},{"QTY":500,"COUNT":49,"USED":40},{"QTY":100,"COUNT":2,"USED":2},{"QTY":10000,"COUNT":50,"USED":50}]},{"PROMOTION_CODE":"MQL201401200001","PROMOTION_NAME":"长沙友谊满3000收500券","PROMOTION_DESC":"长沙友谊满3000收500券","row_number":2,"coupons":[{"QTY":91,"COUNT":1,"USED":0},{"QTY":500,"COUNT":1,"USED":1},{"QTY":100,"COUNT":2,"USED":2}]},{"PROMOTION_CODE":"CQA201401030002","PROMOTION_NAME":"满500抵用100","PROMOTION_DESC":"满500抵用100","row_number":3,"coupons":[{"QTY":100,"COUNT":30,"USED":7}]},{"PROMOTION_CODE":"CPL201401140001","PROMOTION_NAME":"奥德臣原价满10000减2500","PROMOTION_DESC":"奥德臣原价满10000减2500","row_number":4,"coupons":[{"QTY":90,"COUNT":1,"USED":1}]},{"PROMOTION_CODE":"CQL201404010004","PROMOTION_NAME":"贡平礼品券测试","PROMOTION_DESC":"贡平礼品券测试","row_number":5,"coupons":[{"QTY":398,"COUNT":1,"USED":0}]},{"PROMOTION_CODE":"MQL201402180001","PROMOTION_NAME":"ew","PROMOTION_DESC":"ewr","row_number":6,"coupons":[]},{"PROMOTION_CODE":"CQL201402250001","PROMOTION_NAME":"买衬衫送袜子","PROMOTION_DESC":"买衬衫送袜子","row_number":7,"coupons":[{"QTY":150,"COUNT":3,"USED":1}]},{"PROMOTION_CODE":"CQL201312230001","PROMOTION_NAME":"满400抵80券","PROMOTION_DESC":"满400抵80券","row_number":8,"coupons":[{"QTY":79,"COUNT":1,"USED":1},{"QTY":97,"COUNT":1,"USED":0},{"QTY":20,"COUNT":1,"USED":1},{"QTY":100,"COUNT":23,"USED":0}]},{"PROMOTION_CODE":"CQL201403260003","PROMOTION_NAME":"398元券仅限衬衫","PROMOTION_DESC":"398元券仅限衬衫","row_number":9,"coupons":[{"QTY":398,"COUNT":5,"USED":0}]}],"perPage":20,"pageNum":1}';
+      var then = this;
 
-		      doc = doc.replace(/[\n\r\t]/,'');
-          var doc_json = eval('(' + doc + ')');
-          
-          var page = {};
-          page.lastPage = Math.ceil(doc_json.total/perPage);
-          page.currentPage = pageNum;
-          page.totalcount = doc_json.total;
-          nut.model.page = page;
-          
-          
-          if(doc_json && doc_json.list){
-            return doc_json.list;
-          }else{
-            return {};
+      var list = {};
+      helper.db.coll("lavico/shake").find({}).sort({createTime:-1}).page(perPage,pageNum,then.hold(function(err,page){
+          list = page
+          for (var i=0;i<page.docs.length;i++)
+          {
+              if(new Date().getTime() < list.docs[i].startDate){
+                  list.docs[i].status = "未开始"
+              }else if(new Date().getTime() > list.docs[i].endDate){
+                  list.docs[i].status = "已结束"
+              }else{
+                  list.docs[i].status = "进行中"
+              }
           }
-		    }))
-	    });
-	    
-      this.step(function(doc){
-        var count = 0;
-        var then = this;
-        var activity = new Array();
-        for(var i=0;i<doc.length;i++){
-          (function(i){
-            helper.db.coll("lavico/shake").find({aid:doc[i].PROMOTION_CODE}).toArray(then.hold(function(err,detail){
-              count ++ ;
-              for(var j=0;j<detail.length;j++){
-                for(var o in doc[i]){                  
-                  detail[j][o] = doc[i][o];
-                }                
-                
+      })) ;
 
-                if(parseInt(detail[j].startDate) > new Date().getTime()){
-                  detail[j].status = '未开始'
-                }else if(parseInt(detail[j].startDate) < new Date().getTime() && parseInt(detail[j].endDate) > new Date().getTime()){
-                  detail[j].status = '进行中'
-                }else if(parseInt(detail[j].endDate) < new Date().getTime()){
-                  detail[j].status = '已结束'
-                }else{
-                  detail[j].status = '未知'
+
+      this.step(function(){
+        if(list && list.docs){
+          for(var i=0;i<list.docs.length;i++){
+            (function(i){
+              middleware.request('Coupon/Promotions',{
+                perPage:perPage,
+                pageNum:pageNum,
+                code:list.docs[i].aid
+              },then.hold(function(err,doc){
+		            doc = doc.replace(/[\n\r\t]/,'');
+                var doc_json = eval('(' + doc + ')');
+                for(var o in doc_json.list[0]){
+                  list.docs[i][o] = doc_json.list[0][o];
                 }
-                activity.push(detail[j]);
-              }
-              if(count == doc.length){
-                return activity;
-                then.terminate();
-              }
-            }));
-          })(i);			          
-        }
-      });	    
-	
-	    this.step(function(list){
+              }))
+            })(i);			          
+          }
+        }       
+      })
+	    this.step(function(){
 	      nut.model.list = list;
 	    }); 
  	            
