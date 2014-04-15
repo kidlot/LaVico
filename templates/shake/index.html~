@@ -1,4 +1,3 @@
-
 <style>
     label {
         display: inline-block;
@@ -29,17 +28,18 @@
                 <th>剩余/总数</th>
                 <th>参与人数</th>
                 <th>获得人数</th>
+                <th></th>
                 <th>操作</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <foreach for="@list" var="doc">
                 <tr>
-                    <td><a href="/lavico/activity/index:modify_html?aid={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_CODE}</a></td>
-                    <td>{@ doc.name}</td>
+                    <td><a href="/lavico/shake/index:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
                     <td>{@ doc.status}</td>
-                    <td>{@ doc.startDate}</td>
-                    <td>{@ doc.endDate}</td>
+                    <td>{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}</td>
                     <td>
                       <table class="children_table">
                         <tbody>
@@ -57,7 +57,7 @@
                           <foreach for='@doc.coupons' var='value'>
                             <tr>
                               <td>
-                                {@value.USED}/{@value.COUNT}
+                                {@ value.COUNT-value.USED}/{@value.COUNT}
                               </td>
                             </tr>
                           </foreach>
@@ -79,13 +79,20 @@
                       </table>
                     </td>                                     
                     <td>
-                        <div class="switch-animate switch-on" onclick="audioClick(this,'activity')" id="activity">
-                            <span class="switch-left">ON</span>
-                            <label>&nbsp;</label>
-                            <span class="switch-right">OFF</span>
-                        </div>                    
+                        <div class="switch has-switch way">
+                            <div class="switch-animate switch-{@ doc.switcher}" data="{@ doc._id}" onclick="audioClick(this)">
+                                <input type="checkbox" data-toggle="switch">
+                                <span class="switch-left">关</span>
+                                <label>&nbsp;</label>
+                                <span class="switch-right">开</span></div>
+
+                        </div>
+                    </td>
+                    <td>
                         <a href="/lavico/activity/index:history?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">记录</a>
-                        <a href="/lavico/activity/index:history?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">删除</a>
+                    </td>
+                    <td>
+                        <a href="/lavico/activity/index:history?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">删除</a>                  
                     </td>
                 </tr>
             </foreach>
@@ -104,5 +111,27 @@
 }  
 </style>
 <script>
-
+function audioClick(o){
+  var flag = '';
+  if ($(o).hasClass("switch-off")){
+      $(o).removeClass("switch-off")
+      $(o).addClass("switch-on")
+      flag = 'on'; //  开
+  }else{
+      $(o).addClass("switch-off")
+      $(o).removeClass("switch-on")
+      flag = 'off'; // 关
+  }
+  if(flag){
+      var oLinkOptions = {} ;
+      oLinkOptions.data = [{name:'switcher',value:flag},{name:'_id',value:$(o).attr('data')}];
+      oLinkOptions.type = "POST";
+      oLinkOptions.url = "/lavico/shake/index:switcher";
+      $.request(oLinkOptions,function(err,nut){
+          if(err) throw err ;
+          nut.msgqueue.popup() ;
+          //$.controller("/lavico/shake",null,"lazy");
+      });
+  }
+}
 </script>
