@@ -16,8 +16,7 @@
                 <th>活动CODE</th>
                 <th>活动名称</th>
                 <th>促销活动礼品</th>
-                <th>优惠券金额</th>
-                <th>已发/总数</th>
+                <th><span class='th_left'>优惠面值</span><span class='th_center'>类型</span><span class='th_right'>已发/总数</span></th>
                 <th></th>
             </tr>
             </thead>
@@ -33,24 +32,16 @@
                           <foreach for='@doc.coupons' var='value'>
                             <tr>
                               <td>{@value.QTY}</td>
-                            </tr>
-                          </foreach>
-                        </tbody>
-                      </table>
-                    </td>
-                    <td>
-                      <table class="children_table">
-                        <tbody>
-                          <foreach for='@doc.coupons' var='value'>
-                            <tr>
+                              <td><if condition="{@value.TYPE == '01'}">现金抵用券<elseif condition="{@value.TYPE == '02'}"/>礼品券</if>,<if condition="{@value.CLS == '101'}">现金抵用券<elseif condition="{@value.CLS == '102'}"/>礼品券<elseif condition="{@value.CLS == '103'}"/>生日券</if>
+                              </td>
                               <td>
                                 {@value.USED}/{@value.COUNT}
                               </td>
-                            </tr>
+                            </tr>                            
                           </foreach>
                         </tbody>
                       </table>
-                    </td>
+                    </td>                    
                     <td>
                         <a href="/lavico/activity/index:history?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">记录</a>
                     </td>
@@ -64,11 +55,33 @@
 <style>
 #tagList tr td .children_table tr td{
   #background:white;
+}
+#tagList tr th{
+  text-align:center;
+}
+#tagList tr th .th_left{
+  float:left;
+  padding:0px 15px;
+}
+#tagList tr th .th_center{
+  text-align:left;
+  padding:0px 15px;
+}
+#tagList tr th .th_right{
+  float:right;
+  padding:0px 15px;
 } 
 #tagList tr td .children_table tr td{
   border-bottom: 5px #edeff0 solid;
   border-top: 5px #edeff0 solid;
-}  
+}
+#tagList tr td .children_table tr th{
+  border: none;
+  padding: 12px 15px;
+  vertical-align: middle;
+  border-bottom: 5px #edeff0 solid;
+  border-top: 5px #edeff0 solid;
+} 
 </style>
 <script>
 

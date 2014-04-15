@@ -74,7 +74,8 @@
                     
                     
                     
-                    <input type=hidden name='aid' id='aid' value='{@activity.aid}' />
+                    <input type=hidden name='aid' id='aid' value='{@activity.PROMOTION_CODE}' />
+                    <input type=hidden name='id' id='id' value='{@activity.id}' />
                 </form>
             </div>
         </div>        
@@ -124,7 +125,7 @@
 
         if(_inputCheck){
             var oLinkOptions = {} ;
-            oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'aid',value:$("#aid").val()}];
+            oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'id',value:$("#id").val()}];
             oLinkOptions.type = "POST";
             oLinkOptions.url = "/lavico/activity/index:save";
             flag = 1;
