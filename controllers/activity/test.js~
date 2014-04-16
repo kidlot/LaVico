@@ -18,14 +18,18 @@ module.exports = {
               }
               var shake;
               this.step(function(){
+                console.log(seed.aid)
                 helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
+                    console.log(doc)
                    shake = doc;
                 }));
               });
+              
               this.step(function(){
                 if(!shake){
                   write_info(then,'{"result":"cannot"}');              
                 }
+                write_info(then,'{"result":"cannot"}');         
               })
 
               var count=0;
@@ -54,21 +58,21 @@ module.exports = {
               })
               
               
-              var flag = 0;
-              this.step(function(){
-		            middleware.request('Coupon/Promotions',{
-		              perPage:20,
-                  pageNum:1,
-                  code:shake.aid
-		            },this.hold(function(err,doc){	        
-		              doc = doc.replace(/[\n\r\t]/,'');
-                  var doc_list = eval('(' + doc + ')');
-                  var doc_json = doc_list.list[0];
-                  if(doc_json && doc_json.coupons && doc_json.coupons[0] && (doc_json.coupons[0].COUNT > doc_json.coupons[0].USED)){
-                    flag = 1;
-                  }
-		            }))              
-              })
+//              var flag = 0;
+//              this.step(function(){
+//		            middleware.request('Coupon/Promotions',{
+//		              perPage:20,
+//                  pageNum:1,
+//                  code:shake.aid
+//		            },this.hold(function(err,doc){	        
+//		              doc = doc.replace(/[\n\r\t]/,'');
+//                  var doc_list = eval('(' + doc + ')');
+//                  var doc_json = doc_list.list[0];
+//                  if(doc_json && doc_json.coupons && doc_json.coupons[0] && (doc_json.coupons[0].COUNT > doc_json.coupons[0].USED)){
+//                    flag = 1;
+//                  }
+//		            }))              
+//              })
               
               
               this.step(function(){

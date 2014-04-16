@@ -18,14 +18,17 @@ module.exports = {
               }
               var shake;
               this.step(function(){
+                console.log(seed.aid)
                 helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
+                    console.log(doc)
                    shake = doc;
                 }));
               });
+              
               this.step(function(){
                 if(!shake){
                   write_info(then,'{"result":"cannot"}');              
-                }
+                }       
               })
 
               var count=0;
