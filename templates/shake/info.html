@@ -1,0 +1,69 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div style="width: 300px;">
+            <a href="/lavico/shake" class="btn btn-xs btn-primary mhm stay">返回优惠券</a>
+        </div>        
+    </div>
+    <div class="panel-body">
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>面值</th>
+                <th>参与人数</th>
+                <th>获得人数</th>
+                <th>设定中奖率</th>
+                <th>实际中奖率</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>名称</td>
+                <td>面值</td>
+                <td>参与人数</td>
+                <td>获得人数</td>
+                <td>设定中奖率</td>
+                <td>实际中奖率</td>
+            </tr>           
+            </tbody>
+        </table>
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>时间</th>
+                <th>姓名</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@list.docs" var="doc">
+                <tr>
+                    <td><a href="/lavico/shake/index:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
+                    <td>{@ doc.createTime && new Date(parseInt(doc.createTime)+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ doc.realname}</td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>        
+        <include file="welab/templates/paginator.html" model="@list" model.url="/lavico/shake/index?page=%pagenum%" />
+    </div>
+</div>
+<style>
+#tagList tr td .children_table tr td{
+  #background:white;
+} 
+#tagList tr td .children_table tr td{
+  border-bottom: 5px #edeff0 solid;
+  border-top: 5px #edeff0 solid;
+}  
+</style>

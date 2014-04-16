@@ -4,7 +4,7 @@ module.exports = {
     view: "lavico/templates/shake/index.html",      
     process:function(seed,nut){
 
-      var perPage = 20;
+      var perPage = 1;
       var pageNum = seed.page ? seed.page : 1;
       var then = this;
 
@@ -30,7 +30,7 @@ module.exports = {
             (function(i){
               middleware.request('Coupon/Promotions',{
                 perPage:perPage,
-                pageNum:pageNum,
+                pageNum:1,
                 code:list.docs[i].aid
               },then.hold(function(err,doc){
 		            doc = doc.replace(/[\n\r\t]/,'');
@@ -111,7 +111,6 @@ module.exports = {
                   if(shake){
                     return shake;
                   }
-                  then.terminate();
               }));
             }
           })        
@@ -133,13 +132,13 @@ module.exports = {
           $('#endDate').datetimepicker({
               format: 'yyyy-mm-dd',
               autoclose: true,
-              minView: 2,
-              endDate: new Date()
+              minView: 2
           })
         }         
       },
       save: {
-
+          layout: "welab/Layout",
+          view: "lavico/templates/shake/info.html",
           process: function(seed,nut)
           {
 
@@ -150,8 +149,8 @@ module.exports = {
               if(postData.length == 0 ){
                   nut.message("保存失败。数据不能为空",null,'error') ;
                   return;
-              }        
-              helper.db.coll("lavico/shake").update({_id:seed._id},postData,{multi:false,upsert:true},this.hold(function(err,doc){
+              }
+              helper.db.coll("lavico/shake").update({_id:helper.db.id(seed._id)},postData,{multi:false,upsert:true},this.hold(function(err,doc){
                   if(err){
                       throw err;
                   }else{
@@ -161,6 +160,24 @@ module.exports = {
 
           }
       },
+      remove: {
+          layout: "welab/Layout",
+          view: "lavico/templates/shake/info.html",
+          process: function(seed,nut)
+          {
+
+              nut.view.disable() ;
+
+              helper.db.coll("lavico/shake").remove({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
+                  if(err){
+                      throw err;
+                  }else{
+                      nut.message("删除成功",null,'success') ;
+                  }
+              }));
+
+          }
+      },      
       switcher:{
           process: function(seed,nut)
           {
@@ -176,7 +193,23 @@ module.exports = {
               }));
 
           }      
-      }
+      },
+      info:{
+          process: function(seed,nut)
+          {
+
+              nut.view.disable() ;
+                 
+              helper.db.coll("lavico/shake").update({_id:helper.db.id(seed._id)},{$set:{switcher:seed.switcher}},this.hold(function(err,doc){
+                  if(err){
+                      throw err;
+                  }else{
+                      nut.message("保存成功",null,'success') ;
+                  }
+              }));
+
+          }      
+      }      
       
       
     
