@@ -49,8 +49,8 @@
             <foreach for="@list.docs" var="doc">
                 <tr>
                     <td><a href="/lavico/shake/index:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
-                    <td>{@ doc.status}</td>
                     <td>{@ doc.createTime && new Date(parseInt(doc.createTime)+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ doc.realname}</td>
                 </tr>
             </foreach>
             </tbody>

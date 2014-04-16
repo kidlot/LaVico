@@ -134,6 +134,24 @@ module.exports = {
               autoclose: true,
               minView: 2
           })
+          
+          if($("#aid").val()){
+            aid = $("#aid").val();
+            $("#activity_select  option").each(function(){
+              if($(this).val() == aid){
+                $(this).attr("selected","true");
+              }
+              $(".promotion_detail").css('display','none');
+              $("#"+aid).css('display','block');
+              $("#"+aid+" .lottery_chance").val($('#lottery_chance').val());   
+            });
+          }
+
+          $('#activity_select').change(function(){
+            aid = $(this).val();
+            $(".promotion_detail").css('display','none');
+            $("#"+$(this).val()).css('display','block');
+          });
         }         
       },
       save: {
