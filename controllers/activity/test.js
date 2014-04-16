@@ -87,7 +87,6 @@ module.exports = {
                   if(Math.floor(Math.random()*100+1) <= shake.lottery[0].lottery_chance){
 		                middleware.request('Coupon/FetchCoupon',{
 		                  openid:seed.uid,
-                      qty:0,
                       PROMOTION_CODE:shake.aid,
                       point:0,
                       otherPromId:seed.aid
