@@ -18,9 +18,7 @@ module.exports = {
               }
               var shake;
               this.step(function(){
-                console.log(seed.aid)
                 helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
-                    console.log(doc)
                    shake = doc;
                 }));
               });
@@ -28,8 +26,7 @@ module.exports = {
               this.step(function(){
                 if(!shake){
                   write_info(then,'{"result":"cannot"}');              
-                }
-                write_info(then,'{"result":"cannot"}');         
+                }       
               })
 
               var count=0;
@@ -73,13 +70,13 @@ module.exports = {
 //                  }
 //		            }))              
 //              })
-              
-              
-              this.step(function(){
-                if(!flag){
-                    write_info(then,'{"result":"nocount"}');                 
-                }
-              })
+//              
+//              
+//              this.step(function(){ 
+//                if(!flag){
+//                    write_info(then,'{"result":"nocount"}');                 
+//                }
+//              })
                             
               this.step(function(){
                   var activity = {};
@@ -101,6 +98,7 @@ module.exports = {
 		                    helper.db.coll("shake/shake").insert(activity,function(err,doc){});		                  
 		                    write_info(then,'{"result":"win"}');
 		                  }else{
+		                    console.log('{"result":"'+doc.error+'"}')
 		                    write_info(then,'{"result":"'+doc.error+'"}');
 		                  }
 		                })) 
