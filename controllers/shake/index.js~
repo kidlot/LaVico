@@ -161,8 +161,6 @@ module.exports = {
           }
       },
       remove: {
-          layout: "welab/Layout",
-          view: "lavico/templates/shake/info.html",
           process: function(seed,nut)
           {
 
@@ -194,20 +192,37 @@ module.exports = {
 
           }      
       },
-      info:{
+      history:{
+          layout: "welab/Layout",
+          view: "lavico/templates/shake/info.html",      
           process: function(seed,nut)
           {
-
-              nut.view.disable() ;
-                 
-              helper.db.coll("lavico/shake").update({_id:helper.db.id(seed._id)},{$set:{switcher:seed.switcher}},this.hold(function(err,doc){
-                  if(err){
-                      throw err;
-                  }else{
-                      nut.message("保存成功",null,'success') ;
-                  }
-              }));
-
+              var shake = {};
+              var list = {};
+              var perPage = 20;
+              var pageNum = seed.page ? seed.page : 1; 
+              var then = this;             
+              this.step(function(){ 
+                helper.db.coll("lavico/shake").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
+                    shake = doc;
+                }));
+              })
+              this.step(function(){
+                  helper.db.coll("shake/shake").find({aid:shake._id.toString()}).sort({createTime:-1}).page(perPage,pageNum,then.hold(function(err,page){
+                      list = page
+                  })) ;
+              })
+              this.step(function(){
+                for(var i=0;i<list.docs.length;i++){
+                  helper.db.coll("welab/customers").find({wechatid:list.docs[i].uid},then.hold(function(err,doc){
+                    console.log(doc)
+                  })) ;                  
+                }
+              })
+              this.step(function(){
+                nut.model.shake = shake;
+                nut.model.list = list;            
+              })              
           }      
       }      
       
