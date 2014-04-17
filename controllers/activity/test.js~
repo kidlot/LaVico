@@ -60,29 +60,31 @@ module.exports = {
                   activity.code = shake.aid;
                   activity.uid = seed.uid;
                   activity.name = shake.name;
-                  activity._id = shake.aid;
                   activity.QTY = shake.lottery[0].QTY;          
                   activity.createDate = new Date().getTime();
                   if(Math.floor(Math.random()*100+1) <= shake.lottery[0].lottery_chance){
-//		                middleware.request('Coupon/FetchCoupon',{
-//		                  openid:seed.uid,
-//                      PROMOTION_CODE:shake.aid,
-//                      point:0,
-//                      otherPromId:seed.aid
-//		                },this.hold(function(err,doc){
-//		                  doc = eval("("+doc+")");
-//		                  if(doc.success == true){
+		                middleware.request('Coupon/FetchCoupon',{
+		                  openid:seed.uid,
+                      PROMOTION_CODE:shake.aid,
+                      point:0,
+                      otherPromId:seed.aid
+		                },this.hold(function(err,doc){
+		                  doc = eval("("+doc+")");
+		                  if(doc.success == true){
 		                    helper.db.coll('welab/customers').update({wechatid:seed.uid},{$addToSet:{shake:activity}},function(err,doc){
 		                    })	                    
 		                    helper.db.coll("shake/shake").insert(activity,function(err,doc){});		                  
 		                    write_info(then,'{"result":"win"}');
-//		                  }else{
-//		                    write_info(then,'{"result":"'+doc.error+'"}');
-//		                  }
-//		                })) 
+		                  }else{
+		                    write_info(then,'{"result":"'+doc.error+'"}');
+		                  }
+		                })) 
                         
                   }else{
-                    helper.db.coll('shake/shake').insert(activity,function(err,doc){});
+                    helper.db.coll('shake/shake').insert(activity,function(err,doc){
+                      console.log(doc)
+                      console.log(err)
+                    });
                     write_info(then,'{"result":"unwin"}');
                   }
               })

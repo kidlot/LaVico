@@ -32,26 +32,22 @@ module.exports = {
                 list.docs[i].count = _doc2.length;
             }))
             
-            this.step(function(){
-                helper.db.coll("shake/shake").aggregate(
-                            [
-                              {$match:{
-                                  aid:list.docs[i]._id.toString()
-                                }
-                              },
-                              {$group:{
-                                _id:'$uid',
-                                total:{$sum:1}
-                                }
-                              }
-                            ]
-                            ,then.hold(function(err,doc){
-                              list.docs[i].total = doc.length;
-                            })
-                        )
-            })            
-            
-            
+            helper.db.coll("shake/shake").aggregate(
+                        [
+                          {$match:{
+                              aid:list.docs[i]._id.toString()
+                            }
+                          },
+                          {$group:{
+                            _id:'$uid',
+                            total:{$sum:1}
+                            }
+                          }
+                        ]
+                        ,then.hold(function(err,doc){
+                          list.docs[i].total = doc.length;
+                        })
+                    )        
           })(i);  
         }
       })

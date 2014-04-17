@@ -60,7 +60,6 @@ module.exports = {
                   activity.code = shake.aid;
                   activity.uid = seed.uid;
                   activity.name = shake.name;
-                  activity._id = shake.aid;
                   activity.QTY = shake.lottery[0].QTY;          
                   activity.createDate = new Date().getTime();
                   if(Math.floor(Math.random()*100+1) <= shake.lottery[0].lottery_chance){
@@ -82,7 +81,10 @@ module.exports = {
 		                })) 
                         
                   }else{
-                    helper.db.coll('shake/shake').insert(activity,function(err,doc){});
+                    helper.db.coll('shake/shake').insert(activity,function(err,doc){
+                      console.log(doc)
+                      console.log(err)
+                    });
                     write_info(then,'{"result":"unwin"}');
                   }
               })

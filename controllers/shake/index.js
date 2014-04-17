@@ -48,8 +48,6 @@ module.exports = {
                           list.docs[i].total = doc.length;
                         })
                     )        
-            
-            
           })(i);  
         }
       })
