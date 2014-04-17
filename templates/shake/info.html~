@@ -26,8 +26,8 @@
         </div>
         <div style="float: right;">
             <div style="float: right; width: 306px;">
-                <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
-                <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
+                <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}">
+                <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}">
                 <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
             </div>
         </div>

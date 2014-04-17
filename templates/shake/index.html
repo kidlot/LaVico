@@ -63,19 +63,11 @@
                         </tbody>
                       </table>
                     </td>
-                    <td>{@ doc.join}</td>
                     <td>
-                      <table class="children_table">
-                        <tbody>
-                          <foreach for='@doc.coupons' var='value'>
-                            <tr>
-                              <td>
-                                {@value.USED}/{@value.COUNT}
-                              </td>
-                            </tr>
-                          </foreach>
-                        </tbody>
-                      </table>
+                        {@doc.total}
+                    </td>   
+                    <td>
+                        {@doc.count}
                     </td>                                     
                     <td>
                         <div class="switch has-switch way">

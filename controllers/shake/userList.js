@@ -12,16 +12,17 @@ module.exports = {
         nut.model.startDate = seed.startDate
         nut.model.stopDate = seed.stopDate
         nut.model.unwind = seed.unwind
+        nut.model._id = seed._id
     }
     , viewIn : function(){
 
         console.log("userList")
         $("#userList").flexigrid({
-            url: '/lavico/shake/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
+            url: '/lavico/shake/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val()+"&_id="+$("._id").val(),
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
-                {display: '日期', name : $(".unwind").val()+'.createDate', width : 150, sortable : true},
+                {display: '时间', name : $(".unwind").val()+'.createDate', width : 150, sortable : true},
                 {display: '姓名', name : 'realname', width : 150, sortable : true},
                 {display: '标签', name : 'tags', width : 292, sortable : true},
                 {display: '名称', name : $(".unwind").val()+'.name', width : 150, sortable : true},
@@ -81,7 +82,6 @@ module.exports = {
                 count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
                 count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
-
                 var conditions = search.conditions(seed) || {} ;
                 var _data = {};
                 var _rows = [];
@@ -96,21 +96,26 @@ module.exports = {
 
                 this.step(function(){
 
+                    if(seed._id){
+                        conditions[seed.unwind+".aid"] = seed._id;
+                    }
+
                     var arrregateParams = [
                         {$match:conditions}
                     ]
+                    
+
+ 
 
                     if(seed.unwind){
-
                         conditions[seed.unwind+".createDate"] = {$gt:new Date(seed.startDate + " 00:00:00").getTime(), $lt:new Date(seed.stopDate + " 23:59:59").getTime()}
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
+
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
                             if(err) console.log(err) ;
-                            
-                            
                             _data.page = (parseInt(seed.page)||1)
                             _data.total = docs.length
 
