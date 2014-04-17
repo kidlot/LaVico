@@ -23,7 +23,7 @@
             <tbody>
             <foreach for="@list" var="doc">
                 <tr>
-                    <td><a href="/lavico/shake/index:modify_html?_id={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_CODE}</a></td>
+                    <td><a href="/lavico/activity/index:modify_html?_id={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_CODE}</a></td>
                     <td>{@ doc.PROMOTION_NAME}</td>
                     <td>{@ doc.PROMOTION_DESC}</td>
                     <td>

@@ -118,6 +118,7 @@
                     </foreach>
                   </div>
                 </foreach>
+                <input type='hidden' id='lottery_input' value='{@shake.lottery_input}' />
                 <input type='hidden' id='_id' value='{@shake._id}' />
                 <input type='hidden' id='aid' value='{@shake.aid}' />
                 <input type='hidden' id='lottery_chance' value='{@ shake.lottery && shake.lottery[0] && shake.lottery[0].lottery_chance}' />
@@ -130,25 +131,7 @@
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
 <script>
-window.onload = function(){
-  if($("#aid").val()){
-    aid = $("#aid").val();
-    $("#activity_select  option").each(function(){
-      if($(this).val() == aid){
-        $(this).attr("selected","true");
-      }
-      $(".promotion_detail").css('display','none');
-      $("#"+aid).css('display','block');
-      $("#"+aid+" .lottery_chance").val($('#lottery_chance').val());   
-    });
-  }
 
-  $('#activity_select').change(function(){
-    aid = $(this).val();
-    $(".promotion_detail").css('display','none');
-    $("#"+$(this).val()).css('display','block');
-  });
-}
 
 
 

@@ -44,7 +44,7 @@ module.exports = {
                  }else{
                     write_info(then,'{"result":"something error"}');                                      
                  }
-                 helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createTime:{$gte:start_time}},this.hold(function(err,doc){
+                 helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
                     count = doc;
                  }));
               })
@@ -53,37 +53,16 @@ module.exports = {
                     write_info(then,'{"result":"has no chance"}');              
                  } 
               })
-              
-              
-//              var flag = 0;
-//              this.step(function(){
-//		            middleware.request('Coupon/Promotions',{
-//		              perPage:20,
-//                  pageNum:1,
-//                  code:shake.aid
-//		            },this.hold(function(err,doc){	        
-//		              doc = doc.replace(/[\n\r\t]/,'');
-//                  var doc_list = eval('(' + doc + ')');
-//                  var doc_json = doc_list.list[0];
-//                  if(doc_json && doc_json.coupons && doc_json.coupons[0] && (doc_json.coupons[0].COUNT > doc_json.coupons[0].USED)){
-//                    flag = 1;
-//                  }
-//		            }))              
-//              })
-//              
-//              
-//              this.step(function(){ 
-//                if(!flag){
-//                    write_info(then,'{"result":"nocount"}');                 
-//                }
-//              })
                             
               this.step(function(){
                   var activity = {};
                   activity.aid = seed.aid;
                   activity.code = shake.aid;
                   activity.uid = seed.uid;
-                  activity.createTime = new Date().getTime();
+                  activity.name = shake.name;
+                  activity._id = shake.aid;
+                  activity.QTY = shake.lottery[0].QTY;          
+                  activity.createDate = new Date().getTime();
                   if(Math.floor(Math.random()*100+1) <= shake.lottery[0].lottery_chance){
 		                middleware.request('Coupon/FetchCoupon',{
 		                  openid:seed.uid,
@@ -93,7 +72,8 @@ module.exports = {
 		                },this.hold(function(err,doc){
 		                  doc = eval("("+doc+")");
 		                  if(doc.success == true){
-		                    helper.db.coll("shake/win").insert(activity,function(err,doc){});
+		                    helper.db.coll('welab/customers').update({wechatid:seed.uid},{$addToSet:{shake:activity}},function(err,doc){
+		                    })	                    
 		                    helper.db.coll("shake/shake").insert(activity,function(err,doc){});		                  
 		                    write_info(then,'{"result":"win"}');
 		                  }else{

@@ -4,7 +4,7 @@ module.exports = {
     view: "lavico/templates/shake/index.html",      
     process:function(seed,nut){
 
-      var perPage = 1;
+      var perPage = 10;
       var pageNum = seed.page ? seed.page : 1;
       var then = this;
 
@@ -146,6 +146,16 @@ module.exports = {
               $("#"+aid+" .lottery_chance").val($('#lottery_chance').val());   
             });
           }
+          
+          var lottery_input = $("#lottery_input").val();
+          if(lottery_input){
+            $("#lottery_cycle  option").each(function(){
+              if($(this).val() == lottery_input){
+                $(this).attr("selected","true");
+              }
+            });            
+          }
+          
 
           $('#activity_select').change(function(){
             aid = $(this).val();
