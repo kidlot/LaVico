@@ -1,7 +1,3 @@
-/*
-location.href="/lavico/answerQuestion/simpleQuestion?_id="
-+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content;
-*/
 module.exports={
     layout:null,
     view:null,
@@ -50,12 +46,11 @@ module.exports={
                                         "compScore": "",
                                         "createTime": createTime()
                                         },function(err,doc){});
-
                         }
                         //判断是否为最后一题
                         if(seed.finish=="true"){
 
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+"&flag=true&_id="+_id+"&optionId="+optionId});
+                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+"&_id="+_id+"&optionId="+optionId});
                             this.res.end();
                         }else{
                             this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+wechatid+"&optionId="+(parseInt(optionId)+1)+"&_id="+_id});
@@ -65,9 +60,7 @@ module.exports={
                         //tip
                         nut.write("<script>alert('字数不符合要求，请重填');history.back()</script>");
                     }
-
                 }
-
             }
         }));
 

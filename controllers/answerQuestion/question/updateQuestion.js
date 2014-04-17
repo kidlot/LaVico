@@ -1,19 +1,25 @@
 /**
- * Created by root on 14-4-8.
+ * Created by root on 14-4-9.
  */
 module.exports={
     layout:"welab/Layout",
-    view:"lavico/templates/answerQuestion/question/addQuestion.html",
+    view:"lavico/templates/answerQuestion/question/updateQuestion.html",
     process:function(seed,nut){
-
+        id=seed._id;
+        helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(id)},this.hold(function(err,doc){
+            if(err) throw err;
+            nut.model.docs=doc;
+            console.log(doc);
+        }))
     },
     actions:{
         save:{
             process:function(seed,nut){
-                    console.log(seed.json);
-                    helper.db.coll("lavico/themeQuestion").insert(eval('('+seed.json+')'),this.hold(function(err, doc) {
-                            if(err) throw err;
-                        }));
+
+                helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(seed._id)}
+                    ,eval('('+seed.json+')'),this.hold(function(err, doc) {
+                        if(err) throw err;
+                    }))
             }
         }
     },

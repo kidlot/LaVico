@@ -1,6 +1,6 @@
 <script>
     window.onload=function(){
-        var receiveResult=JSON.parse('{@result}');
+        var receiveResult=eval('('+"{@result}"+')');
         for(var i=0;i<receiveResult.length;i++){
             if(receiveResult[i].getLabel!="" && typeof(receiveResult[i].getLabel) != "undefined"){
                 $(".wd").append("<li>恭喜你获得:"+receiveResult[i].getLabel+"</li>");

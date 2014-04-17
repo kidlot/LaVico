@@ -2,47 +2,115 @@ module.exports={
     layout:"welab/Layout",
     view:"lavico/templates/answerQuestion/statistics/statistics_list.html",
     process:function(seed,nut){
+        var then=this;
+
+        var themeArr=[];
+
+
         helper.db.coll("lavico/themeQuestion").find({}).toArray(this.hold(function(err,doc){
-          if(err) throw err;
-          var themeArr=[];
-          for(var e in doc){
-              var jsonOne={};
-              jsonOne.beginTime=doc[e].beginTime;
-              jsonOne.endTime=doc[e].endTime;
-              jsonOne.isOpen=doc[e].isOpen;
-              jsonOne.theme=doc[e].theme;
-              jsonOne.themeType=doc[e].themeType;
-              //参与人数
-              helper.db.coll("lavico/custReceive").aggregate(
-                  [
+            if(err) throw err;
+            then.step(function(){
+             for(var e in doc){
+                 var jsonOne={};
+                 jsonOne.beginTime=doc[e].beginTime;
+                 jsonOne.endTime=doc[e].endTime;
+                 jsonOne.isOpen=doc[e].isOpen;
+                 jsonOne.theme=doc[e].theme;
+                 jsonOne.themeType=doc[e].themeType;
+                 jsonOne.themeId=doc[e]._id;
 
-                      {$group:{_id:"$themeId",totalPop:{$count:"$wechatid"}}},
-                      {$match:{_id:doc[e].themeId}}
-                  ],
-                  this.hold(function(err,doc){
-                     console.log(doc);
-                  })
-              )
+                  //参与人数
+                 (function(i,jsonOne){
+                     helper.db.coll("lavico/custReceive").aggregate(
+                         [
+                             {$group:{_id:"$themeId",count:{$addToSet:"$wechatid"}}},
+                             {$match:{_id:helper.db.id(i)}}
+                         ],then.hold(function(err,doc){
+                             if(err) throw err;
+                             try{
+                                 jsonOne.totalPop=doc[0].count.length;
+                             }catch(e){
+                                 jsonOne.totalPop=0;
+                             }
+                         }));
 
-              //完成人数
-              helper.db.coll("lavico/custReceive")
-                  .find({"themeId":helper.db.id(doc[e]._id),"isFinish":true,"optionId":0,"getLabel":"","getGift":"","compScore":""}).count(
-                  this.hold(function(err,doc){
-                      if(err)throw err;
-                      //console.log(doc);
-                      //console.log(typeof doc);
-                      if(doc==0)
-                        jsonOne.finishCount=0;
-                      else
-                        jsonOne.finishCount=doc;
-                  })
-              );
+                 })(doc[e]._id,jsonOne);
 
+                 //完成人数
+                 (function(i,jsonOne){
+                     helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(doc[e]._id),"isFinish":true,"optionId":0,"getLabel":"","getGift":"","compScore":""})
+                         .count(
+                             then.hold(function(err,doc){
+                                 if(err)throw err;
+                                 if(doc==0){
+                                     jsonOne.finishCount=0;
+                                 }
+                                 else{
+                                     jsonOne.finishCount=doc;
+                                 }
+                             })
+                         )
+                     themeArr.push(jsonOne);
+                 })(doc[e]._id,jsonOne);
+             }
+            });
+        }))
 
-              themeArr.push(jsonOne);
-          }
-          nut.model.docs=themeArr;
+        then.step(function(){
+            nut.model.docs=themeArr;
+        })
+    },
+    actions:{
+        close:{
+            process:function(seed,nut){
+                helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(seed._id)},this.hold(
+                    function(err,doc){
+                        if(err) throw err
+                        if(doc){
+                            console.log(doc.isOpen);
+                            var iOpen=doc.isOpen==0?'1':'0';
+                            helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(seed._id)},{$set:{isOpen:iOpen}},
+                                this.hold(function(err,doc){
+                                }));
+                        }
+                    })
+                )
+            }
+        },
+        del:{
+            process:function(seed,nut){
+                helper.db.coll("lavico/themeQuestion").remove({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
+                    if(err) throw err;
+                    //this.res.writeHead(302, {'Location': "/lavico/answerQuestion/");
+                    //this.res.end();
+                }));
+            }
+        }
+    },
+    viewIn:function(){
+        $("input[name='btnDel']").click(function(){
+            var id=$(this).parent().prev().prev("input[type=hidden]").val();
+            $.get("/lavico/answerQuestion/statistics/statistics_list:del",{_id:id} ,function(result){
+                location.href='/lavico/answerQuestion/statistics/statistics_list';
+            });
+        });
 
-        }));
+        $("input[name='btnOpenClose']").click(function(){
+            var id=$(this).parent().prev("input[type=hidden]").val();
+            if($(this).val()=="开"){
+                $(this).val("关");
+            }else{
+                $(this).val("开");
+            }
+            $.get("/lavico/answerQuestion/statistics/statistics_list:close",{_id:id},function(result){
+                location.href='/lavico/answerQuestion/statistics/statistics_list';
+            })
+        });
+
+        $("input[name='btnStatistics']").click(function(){
+            var themeVal=$(this).next("input[name='tongji']").val();
+            var themeValArr= themeVal.split("_");
+            location.href="/lavico/answerQuestion/statistics/statistics_true?_id="+themeValArr[2]+"&finishCount="+themeValArr[0]+"&totalPop="+themeValArr[1];
+        });
     }
 }

@@ -7,6 +7,7 @@ module.exports={
         this.req.session.scoreAll=0;
         var partakeCount=new Array();
         var finishCount=new Array();
+        var resultList;
         //从数据库查找数据,并组织为Model
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").find().toArray(this.hold(function(err,cursor){
@@ -51,8 +52,28 @@ module.exports={
                     if(i<cursor.length-1){reply+=","}
                 }
                 reply+="]";
-                nut.model.jsonReply=reply;
+
+                resultList=eval('('+reply+')')
+
+
+
             }));
-        });
+        })
+
+        then.step(function(){
+            pageSize=20
+            page={}
+            page.lastPage=resultList.length%pageSize==0 ? parseInt(resultList.length/pageSize) : parseInt(resultList.length/pageSize)+1;
+            page.currentPage=typeof(seed.page)=="undefined"?1:seed.page
+            page.totalCount=resultList.length
+            page.docs=[]
+
+            for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+20;j++){
+                if(typeof(resultList[j])!="undefined")
+                    page.docs.push(resultList[j])
+            }
+            nut.model.jsonReply=page.docs
+
+        })
     }
 }

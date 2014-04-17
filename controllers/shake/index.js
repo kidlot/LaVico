@@ -46,7 +46,7 @@ module.exports = {
 	    this.step(function(){
 	      nut.model.list = list;
 	    }); 
- 	            
+
     },
     actions:{
       modify_html:{
