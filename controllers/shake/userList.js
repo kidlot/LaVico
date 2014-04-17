@@ -105,8 +105,6 @@ module.exports = {
                     ]
                     
 
- 
-
                     if(seed.unwind){
                         conditions[seed.unwind+".createDate"] = {$gt:new Date(seed.startDate + " 00:00:00").getTime(), $lt:new Date(seed.stopDate + " 23:59:59").getTime()}
                         arrregateParams.push({$unwind: "$"+seed.unwind})
