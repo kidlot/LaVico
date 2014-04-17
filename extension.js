@@ -3,6 +3,7 @@ var bargain = require("./weixinReply/bargain.js") ;
 var score=require("./weixinReply/score.js");
 var announcement=require("./weixinReply/announcement.js");
 var activity = require("./weixinReply/activity.js") ;
+var shake = require("./weixinReply/shake.js") ;
 var lookbook = require("./weixinReply/lookbook.js") ;
 //var member_apply = require("./weixinReply/apply.js") ;
 var aSteps = require("./lib/aSteps.js");
@@ -16,7 +17,8 @@ exports.onload = function(application){
     //公告
     announcement.load();
 
-	activity.load();
+	  activity.load();
+	  shake.load();
     // 精英搭配
     lookbook.load()
 

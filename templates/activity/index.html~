@@ -13,30 +13,24 @@
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th>活动CODE</th>
                 <th>活动名称</th>
-                <th>促销活动礼品</th>
-                <th><span class='th_left'>优惠面值</span><span class='th_center'>类型</span><span class='th_right'>已发/总数</span></th>
+                <th>活动CODE</th>
+                <th><span class='th_left'>面值</span><span class='th_center'>类型</span><span class='th_right'>已发/总数</span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <foreach for="@list" var="doc">
                 <tr>
-                    <td><a href="/lavico/activity/index:modify_html?aid={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_CODE}</a></td>
-                    <td>{@ doc.PROMOTION_NAME}</td>
-                    <td>{@ doc.PROMOTION_DESC}</td>
+                    <td><a href="/lavico/activity/index:modify_html?aid={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_NAME}</a></td>
                     <td>
                       <table class="children_table">
                         <tbody>
                           <foreach for='@doc.coupons' var='value'>
                             <tr>
                               <td>{@value.QTY}</td>
-                              <td><if condition="{@value.TYPE == '01'}">现金抵用券<elseif condition="{@value.TYPE == '02'}"/>礼品券</if>,<if condition="{@value.CLS == '101'}">现金抵用券<elseif condition="{@value.CLS == '102'}"/>礼品券<elseif condition="{@value.CLS == '103'}"/>生日券</if>
-                              </td>
-                              <td>
-                                {@value.USED}/{@value.COUNT}
-                              </td>
+                              <td><if condition="{@value.TYPE == '01'}">现金抵用券<elseif condition="{@value.TYPE == '02'}"/>礼品券</if>,<if condition="{@value.CLS == '101'}">现金抵用券<elseif condition="{@value.CLS == '102'}"/>礼品券<elseif condition="{@value.CLS == '103'}"/>生日券</if></td>
+                              <td>{@value.USED}/{@value.COUNT}</td>
                             </tr>                            
                           </foreach>
                         </tbody>

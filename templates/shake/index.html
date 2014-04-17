@@ -63,19 +63,11 @@
                         </tbody>
                       </table>
                     </td>
-                    <td>{@ doc.join}</td>
                     <td>
-                      <table class="children_table">
-                        <tbody>
-                          <foreach for='@doc.coupons' var='value'>
-                            <tr>
-                              <td>
-                                {@value.USED}/{@value.COUNT}
-                              </td>
-                            </tr>
-                          </foreach>
-                        </tbody>
-                      </table>
+                        {@doc.total}
+                    </td>   
+                    <td>
+                        {@doc.count}
                     </td>                                     
                     <td>
                         <div class="switch has-switch way">
@@ -88,11 +80,11 @@
                         </div>
                     </td>
                     <td>
-                        <a href="/lavico/activity/index:history?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">记录</a>
+                        <a href="/lavico/shake/statistics?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">记录</a>
                     </td>
                     <td>
-                        <a href="/lavico/activity/index:history?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">删除</a>                  
-                    </td>
+                        <div onclick="remove_a(this,'{@doc._id}');" class="btn btn-xs btn-primary mhm stay">删除</div>                  
+                    </td> 
                 </tr>
             </foreach>
             </tbody>
@@ -131,6 +123,24 @@ function audioClick(o){
           nut.msgqueue.popup() ;
           //$.controller("/lavico/shake",null,"lazy");
       });
+  }
+}
+function remove_a(o,_id){
+  if(_id){
+      var oLinkOptions = {} ;
+      oLinkOptions.data = [{name:'_id',value:_id}];
+      oLinkOptions.type = "POST";
+      oLinkOptions.url = "/lavico/shake/index:remove";
+      $.request(oLinkOptions,function(err,nut){
+          if(err) throw err ;
+          nut.msgqueue.popup() ;
+          $.controller("/lavico/shake",null,"lazy");
+      });
+  }else{
+      $.globalMessenger().post({
+          message: "缺少信息！",
+          type: 'error',
+          showCloseButton: true})    
   }
 }
 </script>

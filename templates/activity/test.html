@@ -1,0 +1,17 @@
+<meta name="viewport" content="width=360,user-scalable=no" />
+<input type='button' onclick="shake(this)" value="don't click me" />
+<input type='hidden' id='uid' value="{@uid}" />
+<input type='hidden' id='aid' value="{@aid}" />
+<script>
+  function shake(){
+    if(!$("#uid").val() || !$("#aid").val()){
+      alert('缺少信息')
+    }
+    $.get('/lavico/activity/test:shake',{
+        uid:$("#uid").val(),
+        aid:$("#aid").val()
+      },function(data){
+        alert(data.result);
+      })
+  }
+</script>
