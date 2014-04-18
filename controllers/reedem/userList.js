@@ -2,31 +2,27 @@ var search = require("welab/lib/search.js") ;
 var util = require("welab/controllers/summary/util.js") ;
 
 module.exports = {
-
-
     layout: "welab/Layout"
     , view: "lavico/templates/reedem/userList.html"
-
     , process: function (seed, nut) {
-
         nut.model.startDate = seed.startDate
         nut.model.stopDate = seed.stopDate
-        nut.model.unwind = seed.unwind
-        nut.model._id = seed._id
+        nut.model.unwind = seed.unwind//
+        nut.model._id = seed._id//
     }
     , viewIn : function(){
 
-        console.log("userList")
         $("#userList").flexigrid({
-            url: '/lavico/shake/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val()+"&_id="+$("._id").val(),
+            url: '/lavico/reedem/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val()+"&_id="+$("._id").val(),
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
-                {display: '时间', name : $(".unwind").val()+'.createDate', width : 150, sortable : true},
+                {display: '时间', name : 'reedem.createDate', width : 150, sortable : true},
                 {display: '姓名', name : 'realname', width : 150, sortable : true},
                 {display: '标签', name : 'tags', width : 292, sortable : true},
-                {display: '名称', name : $(".unwind").val()+'.name', width : 150, sortable : true},
+                {display: '消耗积分', name : $(".unwind").val()+'.needScore', width : 150, sortable : true},
                 {display: '面值', name : $(".unwind").val()+'.QTY', width : 150, sortable : true},
+
 
                 {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
                 {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
@@ -186,6 +182,7 @@ module.exports = {
 
 
                 this.step(function(){
+                    console.log(_data)
 
                     var data = JSON.stringify(_data);
                     this.res.writeHead(200, { 'Content-Type': 'application/json' });

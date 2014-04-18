@@ -1,6 +1,6 @@
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
-    <li class="b02"><a href="/welab/addGift" class="stay">增加礼品</a> <em></em></li>
+    <li class="b02"><a href="/lavico/reedem/addReedem" class="stay">新增内容</a> <em></em></li>
     <li class="active"><span>积分兑换</span></li>
 </ul>
 <div class="panel panel-default">
@@ -48,7 +48,8 @@
                          </foreach>
                     </td>
                     <td>{@ doc.needScore}</td>
-                    <td> xxx
+                    <td>
+                        {@doc.allExchangeCount}
                     </td>
                     <td>
                         <div class="switch has-switch way">
@@ -61,7 +62,7 @@
                         </div>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-xs btn-primary mhm stay">统计</a>
+                        <a href="tongji?reedem_id={@doc._id}" class="btn btn-xs btn-primary mhm">统计</a>
                     </td>
                     <td>
                         <a href="reedem_list:del?_id={@doc._id}" class="btn btn-xs btn-primary mhm ">删除</a>

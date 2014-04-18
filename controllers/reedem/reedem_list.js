@@ -27,7 +27,6 @@ module.exports={
             }
         })) ;
 
-
         this.step(function(){
             if(list && list.docs){
                 for(var i=0;i<list.docs.length;i++){
@@ -40,22 +39,38 @@ module.exports={
                             doc = doc.replace(/[\n\r\t]/,'');
                             var doc_json = eval('(' + doc + ')');
                             for(var o in doc_json.list[0]){
+
                                 list.docs[i][o] = doc_json.list[0][o];
                             }
                         }))
                     })(i);
                 }
             }
-        })
-        this.step(function(){
+        });
 
-           // console.log(list)
+        this.step(function(){
+            for(var i in list.docs){
+                (function(doc){
+                    helper.db.coll("lavico/exchangeRecord").find({reddem_id:doc._id.toString()}).count(then.hold(function(err,result){
+                        if(err) throw err;
+                        console.log("result:"+result)
+                        if(result){
+                            doc.allExchangeCount=result;
+                        }else{
+                            doc.allExchangeCount=0;
+                        }
+                    }))
+
+                })(list.docs[i])
+            }
+        });
+
+        this.step(function(){
             nut.model.list = list;
         });
 
     },
     actions:{
-
         del:{
             process:function(seed,nut){
                 nut.view.disable();
@@ -83,5 +98,4 @@ module.exports={
             }
         }
     }
-
 }
