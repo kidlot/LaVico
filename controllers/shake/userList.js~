@@ -101,7 +101,7 @@ module.exports = {
                     }
 
                     var arrregateParams = [
-                        {$match:conditions}
+                        
                     ]
                     
 
@@ -111,7 +111,8 @@ module.exports = {
                         conditions[seed.unwind+".createDate"] = {$gt:new Date(seed.startDate + " 00:00:00").getTime(), $lt:new Date(seed.stopDate + " 23:59:59").getTime()}
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
-                    console.log(arrregateParams)
+
+arrregateParams['$match'] = conditions
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
