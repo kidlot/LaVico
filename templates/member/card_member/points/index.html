@@ -1,27 +1,17 @@
 <h1>积分明细</h1>
 <h2>公告：年度积分即将清零, 查看详情</h2>
 <h2>目前积分：{@remaining}</h2>
-<h3>会员类型：{@level}</h3>
 
 <ul>
     <foreach for="@log" key="key">
-        <li>在{@log[key].time} 积分{@log[key].value}</li>
+        <li>在{@log[key].time} 积分{@log[key].value},{@log[key].memo}</li>
     </foreach>
 </ul>
 <br/>
 
 <pre style="display: none;">
     海澜帐号ID：<input type="text" id="member_ID" name="member_ID" value="{@member_ID}"/>
-    { remaining: 699,
-    level: 1,
-    log:
-    [ { value: '-10', time: '2014-03-18 13:52:42.0', memo: '' },
-    { value: '281', time: '2014-03-18 14:30:20.0', memo: '' },
-    { value: '398',time: '2014-03-18 09:48:20.0',memo: '审核会员申请时自动插入' },
-    { value: '318', time: '2014-03-18 11:33:59.0', memo: '' },
-    { value: '-318', time: '2014-03-18 13:06:24.0', memo: '' },
-    { value: '10', time: '2014-03-18 22:16:38.0', memo: '' },
-    { value: '20', time: '2014-03-18 22:25:24.0', memo: '' } ] }
+ 
 </pre>
 
 
