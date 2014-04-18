@@ -16,7 +16,7 @@ module.exports={
                     memberId:postDate.memberId,
                     qty:postDate.qty
                 },this.hold(function(err,doc){
-                    if(doc.success)
+                    //if(doc.success)
                         //nut.message("保存成功",null,'success') ;
                 }))
             }

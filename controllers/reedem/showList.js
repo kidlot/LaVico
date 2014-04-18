@@ -12,6 +12,7 @@ module.exports={
                 if(result){
                     return result.HaiLanMemberInfo.memberID;
                 }else{
+                    write_info(then,"您的访问不对请和核查访问方式![缺少wechatId]"){
                     this.terminate();
                 }
             }))
@@ -20,7 +21,7 @@ module.exports={
         this.step(function(memberId){
             //nut.model.memberId=memberId;
             if(memberId){
-                memberId=9123084
+                //memberId=9123084
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
                         if(err) throw err;
                         //console.log(result);
