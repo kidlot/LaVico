@@ -12,7 +12,7 @@ module.exports={
                 if(result){
                     return result.HaiLanMemberInfo.memberID;
                 }else{
-                    write_info(then,"您的访问不对请和核查访问方式![缺少wechatId]"){
+                    write_info(then,"您的访问不对请和核查访问方式![缺少wechatId]")
                     this.terminate();
                 }
             }))
