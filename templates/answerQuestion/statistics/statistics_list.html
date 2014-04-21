@@ -50,21 +50,30 @@
                     <td class="width50">{@doc.beginTime}</td>
                     <td class="width50">{@doc.endTime}</td>
                     <td class="width50">
-                        {@doc.themeType}
-                        <if condition="{@doc.themeType===0}">
+                        <if condition="{@doc.themeType==0}">
                             对错型
-                        <else if condition="{@doc.themeType===1}">
+                        <elseif condition="{@doc.themeType==1}"/>
                             测试题
-                        <else>
+                        <else/>
                             调查题
                         </if>
                     </td>
-                    <td class="width100">{@doc.finishCount}/100</td>
+                    <td class="width100">&nbsp;&nbsp;{@doc.finishCount}/{@doc.totalPop}</td>
                     <td class="width50">50%</td>
                     <td class="width150">
-                        <input type="button" name="txtIsOpen" value="开">
-                        <input type="button" name="btnStatistics" value="统计">
-                        <input type="button" name="btn" value="关闭">
+                        <input type="hidden" name="_id" value="{@doc.themeId}"/>
+                        <div style="float:left">
+                            <if condition="{@doc.isOpen==1}">
+                                <input type="button" name="btnOpenClose" value="开">
+                            <else/>
+                                <input type="button" name="btnOpenClose" value="关">
+                            </if>
+                            <input type="button" name="btnStatistics" value="统计">
+                            <input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}"
+                        </div>
+                        <div style="float:left">
+                            <input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
+                        </div>
                     </td>
                 </tr>
             </foreach>

@@ -139,6 +139,7 @@
           $("#"+inputid).next(".progressNumber").text("")
           var file = document.getElementById(inputid).files[0];
           if (file) {
+
               var fileSize = 0;
               if (file.size > 1024 * 1024)
                   fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
@@ -146,7 +147,9 @@
                   fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 
               lastPic = inputid
+
               uploadFile();
+
           }
       }
 
@@ -160,6 +163,7 @@
           xhr.addEventListener("abort", uploadCanceled, false);
           xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
           xhr.send(fd);
+
       }
 
       function uploadProgress(evt) {
@@ -175,10 +179,8 @@
 
       function uploadComplete(evt) {
           var json = eval('(' + evt.target.responseText + ')');
-          
           var filename = json.model.fileName;
           $("#"+lastPic+"_image").attr("src",filename)
-          
       }
 
       function uploadFailed(evt) {

@@ -22,7 +22,8 @@
 <div name="container" class="panel panel-default">
     <div name="title" style="padding: 10px;">
         <div class="height35">
-            <input type="button" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">服装知识全对获100积分</span>
+
+            <input type="button" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">{@docs.doc.theme}</span>
             <input type="button" value="保存" name="btnSave" class="btn btn-embossed btn-primary" style="float: right; margin-left: 300px;">
         </div>
     </div>
@@ -40,56 +41,40 @@
                 <td class="width50">全对率</td>
             </tr>
             <tr class="borderBtm">
-                <td class="width250">服装知识全对获100积分</td>
-                <td class="width50">对错型</td>
-                <td class="width50">200</td>
-                <td class="width50">100</td>
-                <td class="width50">50</td>
-                <td class="width50">50%</td>
-                <td class="width50">50%</td>
+                <td class="width250" id="abc">123{@docs.doc.theme}</td>
+                <td class="width50">
+                <if condition="{@docs.doc.themeType==0}">
+                    对错型
+                <elseif condition="{@docs.doc.themeType==1"/>
+                    测试型
+                <else/>
+                    主观型
+                </if>
+                </td>
+                <td class="width50">{@docs.totalPop}</td>
+                <td class="width50">{@docs.finishCount}</td>
+                <td class="width50">{@allCountPeople}</td>
+                <td class="width50" name="wcl">
+                <if condition="{@docs.finishCount==0}">
+                    0%
+                <else/>
+                    {@parseInt(docs.finishCount/docs.finishCount*100)}%
+                </if>
+                </td>
+                <td class="width50" name="qdl">
+                    <if condition="{@allCountPeople==0}">
+                        0%
+                    <else/>
+                        {@parseInt(docs.totalPop/allCountPeople*100)}%
+                    </if>
+                </td>
             </tr>
         </table>
         </div>
 
-        <div name="getLabel" class="maginTop20">
-            <table class="tableSty ">
-                <tr class="staCount borderBtm">
-                    <td class="width250">获得标签</td>
-                    <td class="width50">获得</td>
-                    <td class="width50">获得率</td>
-                </tr>
-                <tr class="borderBtm">
-                    <td class="width250">全对达人</td>
-                    <td class="width50">20</td>
-                    <td class="width50">90%</td>
-                </tr>
-                <tr class="borderBtm">
-                    <td class="width250">全对达人</td>
-                    <td class="width50">20</td>
-                    <td class="width50">90%</td>
-                </tr>
-            </table>
-        </div>
+        <view name="lab"/>
+        <view name="score"/>
 
-        <div name="getScore" class="maginTop20">
-            <table class="tableSty">
-                <tr class="staCount borderBtm">
-                    <td class="width250">获得奖励</td>
-                    <td class="width50">获得</td>
-                    <td class="width50">获得率</td>
-                </tr>
-                <tr class="borderBtm">
-                    <td class="width250">全对达人</td>
-                    <td class="width50">20</td>
-                    <td class="width50">90%</td>
-                </tr>
-                <tr class="borderBtm">
-                    <td class="width250">全对达人</td>
-                    <td class="width50">20</td>
-                    <td class="width50">90%</td>
-                </tr>
-            </table>
-        </div>
 
         <div name="getTheme" class="maginTop20">
             <table class="tableSty">
@@ -100,50 +85,36 @@
                     <td class="width50">正确率</td>
                     <td class="width50">操作</td>
                 </tr>
+             <foreach for="@docs.doc.options" var="doc3">
+                 {@docs.options}
                 <tr class="borderBtm">
-                    <td class="width50">1</td>
-                    <td class="width250">以下哪个是西装的英文名称</td>
-                    <td class="width50">单选题</td>
-                    <td class="width50">100%</td>
-                    <td class="width50"><input type="button" name="btnSta" value="统计"></td>
+                    <td class="width50">{@doc3.optionId}</td>
+                    <td class="width250">{@doc3.title}</td>
+                    <td class="width50">
+                        <if condition="@doc3.type==0">
+                            单选题
+                        <elseif condition=""/>
+                            多选题
+                        <else/>
+                            主观题
+                        </if>
+                    </td>
+                    <td class="width50">
+                        <foreach for="@allRight" var="right">
+                            <if condition="{@right.themeId==docs.doc._id && right.optionId==doc3.optionId}">
+                                {@parseInt(right.rightNum/right.allNum*100)}%
+                            </if>
+                        </foreach>
+                    </td>
+                    <td class="width50"><a href="statistics_oneDetail?themeId={@docs.doc._id}&optionId={@doc3.optionId}">统计</a></td>
                 </tr>
-                <tr class="borderBtm">
-                    <td class="width50">1</td>
-                    <td class="width250">以下哪个是西装的英文名称</td>
-                    <td class="width50">单选题</td>
-                    <td class="width50">100%</td>
-                    <td class="width50"><input type="button" name="btnSta" value="统计"></td>
-                </tr>
+             </foreach>
             </table>
         </div>
 
-        <div name="getMember" class="maginTop20">
-           <div><input type="button" name="btnExcel" value="全部导出"></div>
-            <table class="tableSty">
-                <tr class="staCount borderBtm">
-                    <td class="width50"><input type="checkbox" name="all"></input></td>
-                    <td class="width250">时间</td>
-                    <td class="width50">姓名</td>
-                    <td class="width50">性别</td>
-                    <td class="width50">年龄</td>
-                    <td class="width50">城市</td>
-                    <td class="width50">正确率</td>
-                    <td class="width50">获得标签</td>
-                    <td class="width50">获得奖励</td>
-                </tr>
-                <tr class="borderBtm">
-                    <td class="width50"><input type="checkbox" name="all"></input></td>
-                    <td class="width250">2014-4-4 12:20:25</td>
-                    <td class="width50">张学友</td>
-                    <td class="width50">男</td>
-                    <td class="width50">40</td>
-                    <td class="width50">香港</td>
-                    <td class="width50">100%</td>
-                    <td class="width50">全对达人</td>
-                    <td class="width50">100积分</td>
-                </tr>
-            </table>
-            分页
-        </div>
+        <view name="finishPeople"/>
+
+
+
     </div>
 </div>

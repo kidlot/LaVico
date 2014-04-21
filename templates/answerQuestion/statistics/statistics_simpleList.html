@@ -1,0 +1,57 @@
+<style>
+    .floatRight{float: right;}
+    .width50{width:50px;}
+    .width100{width:100px;}
+    .width150{width:150px;}
+    .width250{width:250px;}
+    .width350{width:350px;}
+    .height35{heigth:35px;}
+    .staCount{background-color:#e8e8e8;}
+    .lineCenter{text-align: center;}
+    .maginTop20{margin-top:20px;}
+    .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
+    .borderBtm{border-bottom:1px solid darkgray;}
+    .margin10{margin-bottom: 10px;}
+</style>
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b02"><a href="/lavico/announcement/addAnnouncement" class="stay">添加公告</a> <em></em></li>
+    <li class="active"><span>公告列表</span></li>
+</ul>
+
+<div name="container" class="panel panel-default">
+    <div name="title" style="padding: 10px;">
+        <div class="height35">
+            <input type="button" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">{@resultJson.title}</span>
+            <a class="btn btn-embossed btn-primary" style="float: right; margin-left: 300px;" href="/lavico/answerQuestion/statistics/statistics_simpleList:exportXsl?themeId={@_id}&optionId={@optionId}">导出</a>
+        </div>
+    </div>
+
+    <div name="getTheme" class="maginTop20">
+
+            <foreach for="@resultJson" var="people">
+                <table class="tableSty margin10">
+                <tr  class="borderBtm staCount"><td>
+                    <input type="hidden" name="_id" value="{@people._id}">
+                    <input type="hidden" name="_id" value="{@people.themeId}">
+                    <input type="hidden" name="_id" value="{@people.wechatid}">
+                    <input type="hidden" name="_id" value="{@people.optionId}">
+                    姓名:{@people.peop.realname}
+                </td><td>性别:
+                  <if condition="{@people.peop.gender=='male'}">
+                      男
+                   <else/>
+                      女
+                  </if>
+                </td>
+                    <td>电话:{@people.peop.mobile}</td>
+                    <td>email:{@people.peop.email}</td>
+                    <td>行业:{@people.peop.profession}</td>
+                    <td>城市:{@people.peop.city}</td></tr>
+                <tr><td colspan="6">回答内容</td></tr>
+                <tr><td colspan="6">{@people.resultValue}</td></tr>
+                </table>
+            </foreach>
+        <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@resultJson" model.url="/lavico/answerQuestion/statistics/statistics_simpleList?themeId={@_id}&optionId={@optionId}&page=%pagenum%" /></div>
+    </div>
+</div>

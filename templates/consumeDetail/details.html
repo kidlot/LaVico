@@ -1,0 +1,30 @@
+<style>
+*{margin: 0px;padding: 0px;}
+.container{border: 1px solid black; width: 300px; overflow: hidden;}
+</style>
+<div class="container">
+    <div style="width: 300px;height: 30px; background-color:#419641;line-height: 30px;text-align:center">消费记录</div>
+    <p style="width: 300px;height: 30px;">消费总金额:12000</p>
+    <ul>
+
+        <li style="border-bottom: 1px solid darkgray;clear: both">
+            <div style="overflow: hidden">
+                <div style="width:300px;height: 30px;background-color: #e8e8e8;">{@yearList.year}<span style="margin-left: 100px">￥{@moneyAll}</span></div>
+                <foreach for="@yearList.val" var="oneYearInfo" key="key">
+                <div style="float: left;width: 100px;border: ">
+
+                        {@oneYearInfo.PRODUCT_NAME}<br>
+                        {@oneYearInfo.GOODSNO}<br>
+                        {@oneYearInfo.date}<br>
+
+                </div>
+                <div style="float: right;width: 100px; height: 70px;">
+                    ￥{@oneYearInfo.AMT}
+                </div>
+
+                </foreach>
+            </div>
+        </li>
+
+    </ul>
+</div>

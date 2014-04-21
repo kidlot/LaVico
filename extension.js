@@ -1,6 +1,7 @@
 var wechatutil = require("welab/controllers/wechat-api/util.js") ;
 var bargain = require("./weixinReply/bargain.js") ;
 var score=require("./weixinReply/score.js");
+var reedem=require("./weixinReply/reedem.js");
 var announcement=require("./weixinReply/announcement.js");
 var activity = require("./weixinReply/activity.js") ;
 var shake = require("./weixinReply/shake.js") ;
@@ -16,9 +17,11 @@ exports.onload = function(application){
     score.load();
     //公告
     announcement.load();
+    //积分兑换
+    reedem.load();
 
-	  activity.load();
-	  shake.load();
+	activity.load();
+	shake.load();
     // 精英搭配
     lookbook.load()
 
