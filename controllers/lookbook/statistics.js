@@ -51,7 +51,7 @@ module.exports = {
             var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
             nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
-            seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate,unwind:"lookbook"};
+            seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate,_id:seed._id,unwind:"lookbook"};
         })
     }
     , children: {
