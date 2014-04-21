@@ -12,13 +12,14 @@ module.exports = {
         nut.model.startDate = seed.startDate
         nut.model.stopDate = seed.stopDate
         nut.model.unwind = seed.unwind
+        nut.model._id = seed._id
     }
     , viewIn : function(){
 
         console.log("userList")
 
         $("#userList").flexigrid({
-            url: '/lavico/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
+            url: '/lavico/userList:jsonData?unwind='+$(".unwind").val()+'&_id='+$("._id").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
@@ -99,7 +100,7 @@ module.exports = {
                 this.step(function(){
 
                     var arrregateParams = [
-                        {$match:conditions}
+
                     ]
 
                     if(seed.unwind){
@@ -107,6 +108,12 @@ module.exports = {
                         conditions[seed.unwind+".createDate"] = {$gt:new Date(seed.startDate + " 00:00:00").getTime(), $lt:new Date(seed.stopDate + " 23:59:59").getTime()}
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
+
+                    if(seed._id){
+                        conditions[seed.unwind+"._id"] = seed._id
+                    }
+                    arrregateParams.push({$match:conditions})
+                    console.log(arrregateParams)
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){

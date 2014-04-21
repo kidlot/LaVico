@@ -1,3 +1,5 @@
+var middleware = require('lavico/lib/middleware.js');//引入中间件
+
 module.exports = {
 
 	layout: "welab/Layout"
@@ -11,8 +13,17 @@ module.exports = {
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
+                console.log(doc)
             }))
         }
+
+        //shops
+        middleware.request( "Shops",
+            {perPage:1000},
+            this.hold(function(err,doc){
+                nut.model.shops = JSON.parse(doc)
+            }));
+
 
         this.step(function(){
             nut.model._id = seed._id
@@ -54,7 +65,7 @@ module.exports = {
 
         $.each($("#mapsValue").val().split(","),function(i,o){
             $('#maps option').each(function(ii,oo){
-                if(o == $(oo).text()){
+                if(o == $(oo).val()){
                     $(oo).attr('selected',"selected");
                 }
             })
@@ -131,7 +142,12 @@ module.exports = {
         , deal:{
             process: function(seed,nut){
 
-                var bargain = {price:seed.price,productID:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
+//                middleware.request( "Coupon/FetchCoupon",
+//                    {openid:seed.wxid,otherPromId:"111",PROMOTION_CODE:seed.promotionsCode,qty:seed.price,point:0},
+//                    this.hold(function(err,doc){
+//                }));
+
+                var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
                 helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
                     if(err ){
                         throw err;
