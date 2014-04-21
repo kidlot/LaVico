@@ -18,7 +18,7 @@ module.exports = {
 
         console.log("userList")
         $("#userList").flexigrid({
-            url: '/lavico/shake/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val()+"&_id="+jQuery("#_id").val(),
+            url: '/lavico/shake/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val()+"&_id="+$("._id").val(),
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
