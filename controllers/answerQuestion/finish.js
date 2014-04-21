@@ -1,191 +1,130 @@
 module.exports={
-	layout:null,
-    view:"lavico/templates/answerQuestion/finish.html",
+    layout:null,
+    view:"lavico/templates/AnswerQuestion/finish.html",
     process:function(seed,nut){
-        var then=this;
-    	var _id=seed._id;
-    	var opptionId=seed.optionId;
-    	var wechatid=seed.wechatid;
-    	var scoreAll=this.req.session.scoreAll;
-        var stopLab=seed.stopLab;
-        //非停止标签过来
-        console.log(stopLab);
-        if(stopLab!="true"){
-            //插入总积分
-            helper.db.coll("lavico/custReceive").insert({
-                "wechatid": wechatid,
-                "themeId": helper.db.id(_id),
-                "isFinish": true,
-                "optionId": 0,
-                "chooseId": 0,
-                "getChooseScore": parseInt(scoreAll),
-                "getChooseLabel":"",
-                "getLabel": "",
-                "getGift":  "",
-                "compScore": "",
-                "createTime": createTime()
-                },function(err,doc){
-            });
+        var type=seed.type;
+        var optionId=seed.optionId;
+        var _id=_id;
+        var chooseId=seed.chooseId;
+        var score=seed.score;
+        var chooseNext=seed.chooseNext;
 
-        //查找单题组,获取分值范围数组
-    	var scoreRange;
-        this.step(function(){
-    		helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
-	    		if(err) throw err;
-    			scoreRange=doc.scoreMinMax;
-    		}));
-        });
-		this.step(function(){
-			var resultList="[";
-			for(var i=0;i<scoreRange.length;i++){
-				var minlen=scoreRange[i].conditionMinScore;//获取低分值
-				var maxlen=scoreRange[i].conditionMaxScore;//获取高分值
-				if(scoreAll>=minlen && scoreAll<=maxlen){//在分值范围中
-                    //获取三个奖励
-                    var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
-                    var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
-                    var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
+        if(type==1 or type==0){
+            //如果分值存在,记录积分
+            if(!isNaN(parseInt(score))){
 
-                    helper.db.coll("lavico/custReceive").insert({
-                        "wechatid": wechatid,
-                        "themeId": helper.db.id(_id),
-                        "isFinish": true,
-                        "optionId": 0,
-                        "chooseId": 0,
-                        "getChooseScore": parseInt(then.req.session.scoreAll),
-                        "getChooseLabel":"",
-                        "getLabel": getLabel,
-                        "getGift":  getActivities,
-                        "compScore": getScore,
-                        "createTime": createTime()
-                    },function(err,doc){});
-
-                    //记录json准备显示
-					resultList+="{"
-						+"getLabel:'"+getLabel
-						+"',getScore:"+getScore
-						+",getActivities:'"+getActivities+"'}";
-
-				}
-                if((scoreAll>=minlen && scoreAll<=maxlen || scoreRange[i].conditionLabel!="") && i<scoreRange.length-1 )
-                    resultList+=",";
-			}
-			resultList+="]";
-            //返回显示
-			//nut.model.getResult=resultList;
-
-            console.log(resultList);
-
-
-            nut.model.result=resultList;
-		})
-      }else{
-      //停止标签过来
-            //记录总分
-            helper.db.coll("lavico/custReceive").insert({
-                "wechatid": wechatid,
-                "themeId": helper.db.id(_id),
-                "isFinish": true,
-                "optionId": 0,
-                "chooseId": 0,
-                "getChooseScore": parseInt(then.req.session.scoreAll),
-                "getChooseLabel":"",
-                "getLabel": "",
-                "getGift":  "",
-                "compScore": 0,
-                "createTime": createTime()
-            },function(err,doc){});
-
-
-
-
-            //记录获得东西
-            var scoreRange;
-            this.step(function(){
-                helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
-                    if(err) throw err;
-                    scoreRange=doc.scoreMinMax;
-                }));
-            });
-            this.step(function(){
-                var resultList="[";
-                for(var i=0;i<scoreRange.length;i++){
-                    //session上的停止标签和db中的设置标签一致
-                    if(then.req.session.customerLabel==scoreRange[i].conditionLabel){
-                        var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
-                        var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
-                        var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
+                helper.db.coll("lavico/custReceive").findOne({"themeId":_id, "custId":"cust101","optionId":optionId},function(err,doc){
+                    if(err)throw err;
+                    //存在更新
+                    if(doc){
+                        helper.db.coll("lavico/custReceive").update({"themeId":_id, "custId":"cust101","optionId":optionId},
+                            {$set:{"getScore":score}},function(err,doc){});
+                    }else{
+                        //session
+                        this.req.session.scoreAll+=parseInt(scoreAll);
+                        //不存在录入
                         helper.db.coll("lavico/custReceive").insert({
-                            "wechatid": wechatid,
-                            "themeId": helper.db.id(_id),
-                            "isFinish": true,
-                            "optionId": 0,
-                            "chooseId": 0,
-                            "getChooseScore": parseInt(then.req.session.scoreAll),
-                            "getChooseLabel":"",
-                            "getLabel": getLabel,
-                            "getGift":  getActivities,
-                            "compScore": getScore,
+                            "custId": "cust101",
+                            "themeId": _id,
+                            "isFinish": false,
+                            "optionId": optionID,
+                            "chooseId": chooseID,
+                            "getScore": parseInt(scoreAll),
+                            "getLabel": "",
+                            "getGift":  "",
+                            "compScore": "",
                             "createTime": createTime()
-                        },function(err,doc){});
-                        resultList+="{"
-                            +"getLabel:'"+getLabel
-                            +"',getScore:"+getScore
-                            +",getActivities:'"+getActivities+"'}";
+                        },function(err,doc){
+                        });
                     }
-
-                    //判断是否有session自定义标签
-                    var custLabel=then.req.session.customerLabel
-                    if(custLabel!=""){
-                        //存在,录入customer
-                        var customerLab="{tags:[";
-
-                        var choArr=custLabel.split(',');
-                        if(choArr.length<=1){
-                            choArr=custLabel.split(' ');
-                        }
-                        //记录至customers表
-                        for(var i=0;i<choArr.length;i++){
-                            customerLab+="'"+choArr[i]+"'"+",";
-                        }
-                        var jsonStr=customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]}";
-
-                        customerLab=eval('('+jsonStr+')');
-                        helper.db.coll("welab/customers").update({wechatid:wechatid},{$set:customerLab},function(err,doc){});
-                    }
-
-                }
-
-                resultList+="]";
-                //nut.model.getResult=resultList;
-                nut.model.result=resultList;
-            })
-
-            /*
-            var resultList="[";
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,"isFinish":true}).toArray(then.hold(function(err,scoreRange){
-                for(var i=0;i<scoreRange.length;i++){
-                    var getLabel= scoreRange[i].getLabel=="undefined"?"":scoreRange[i].getLabel;
-                    var getActivities= scoreRange[i].getActivities=="undefined"?0:scoreRange[i].getActivities;
-                    var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
-                    if(typeof(getScore)=="undefined"){
-                        getScore=0;
-                    }
-                    resultList+="{"
-                        +"getLabel:'"+getLabel
-                        +"',getScore:"+getScore
-                        +",getActivities:'"+getActivities+"'}";
-                    if(i<scoreRange.length-1){resultList+=",";}
-                }
-            resultList+="]";
-            nut.model.getResult=resultList;
-            }));
-            */
+                });
+        }else(type==2){
+            //
+            helper.db.coll("lavico/custAnswerResult").insert({
+                "themeId":_id,
+                "custId":'cust101',
+                "optionId":optionId,
+                "resultValue":receiveAnswer
+            },function(err,doc){});
         }
+    }
 
+        helper.db.coll("lavico/custReceive").insert({
+            "custId": "cust101",
+            "themeId": _id,
+            "isFinish": true,
+            "optionId": optionId,
+            "chooseId": chooseId,
+            "getScore": this.req.session.scoreAll,
+            "getLabel": "",
+            "getGift":  "",
+            "compScore": "",
+            "createTime": createTime()
+        },function(err,doc){});
 
- 	}
+    //查结果
+    /*
+     根据总分是否在题目指定的范围内
+     根据标签获取值
+     */
+     var scoreAll= this.req.session.scoreAll;
+     helper.db.coll("lavico/themeQuestion").find({"_id":_id}).toArray(function(err,doc){
+         for(var i=0;i<doc.scoreMinMax.length;i++){
+             var minScore= doc.scoreMinMax[i].conditionMinScore;
+             var maxScore= doc.scoreMinMax[i].conditionMaxScore;
+             if(scoreAll>minScore && scoreAll<maxScore && doc.scoreMinMax[i].getLabel==""){
+                //helper.db.coll("lavico/custReceive").findOne({"custId": "cust101","themeId": _id,"isFinish":true},function(err,cur){
+                    //insert
+                    helper.db.coll("lavico/custReceive").insert(
+                        {   "custId": "cust101",
+                            "themeId": _id,
+                            "isFinish": true,
+                            "optionId": 0
+                            "chooseId": 0
+                            "getScore": this.req.session.scoreAll,
+                            "getLabel": doc.scoreMinMax[i].getLabel,
+                            "getGift":  doc.scoreMinMax[i].getActivities,
+                            "compScore": doc.scoreMinMax[i].getScore,
+                            "createTime": createTime()
+                        },function(err,cdoc){});
+             }else if(doc.scoreMinMax[i].getLabel!="" && scoreAll>minScore && scoreAll<maxScore){
+                 helper.db.coll("lavico/custReceive").insert(
+                     {   "custId": "cust101",
+                         "themeId": _id,
+                         "isFinish": true,
+                         "optionId": 0
+                         "chooseId": 0
+                         "getScore": this.req.session.scoreAll,
+                         "getLabel": doc.scoreMinMax[i].getLabel,
+                         "getGift":  doc.scoreMinMax[i].getActivities,
+                         "compScore": doc.scoreMinMax[i].getScore,
+                         "createTime": createTime()
+                     },function(err,cdoc){});
+             }else if(doc.scoreMinMax[i].getLabel!="" && (minScore=="" || maxScore=="")){
+                 helper.db.coll("lavico/custReceive").insert(
+                     {   "custId": "cust101",
+                         "themeId": _id,
+                         "isFinish": true,
+                         "optionId": 0
+                         "chooseId": 0
+                         "getScore": this.req.session.scoreAll,
+                         "getLabel": doc.scoreMinMax[i].getLabel,
+                         "getGift":  doc.scoreMinMax[i].getActivities,
+                         "compScore": doc.scoreMinMax[i].getScore,
+                         "createTime": createTime()
+                     },function(err,cdoc){});
+             }
+         }
+
+        }
+     });
+
+        //显示结果
+        helper.db.coll("lavico/custReceive").find({"custId": "cust101", "themeId": _id,"isFinish": true}).toArray(function(err,doc){
+                num.model.result=JSON.stringify(doc);
+        });
 }
+
 
 function createTime(){
     var d = new Date();
