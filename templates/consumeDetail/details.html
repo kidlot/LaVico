@@ -8,20 +8,24 @@
     <ul>
 
         <li style="border-bottom: 1px solid darkgray;clear: both">
-            <div style="overflow: hidden">
-                <div style="width:300px;height: 30px;background-color: #e8e8e8;">{@yearList.year}<span style="margin-left: 100px">￥{@moneyAll}</span></div>
+            <div style="overflow: hidden; ">
+                <div style="width:300px;height: 30px;border:1px solid red; background-color: #e8e8e8;">{@yearList.year}<span style="margin-left: 100px">￥{@moneyAll}</span></div>
                 <foreach for="@yearList.val" var="oneYearInfo" key="key">
-                <div style="float: left;width: 100px;border: ">
+                    <div style="overflow: hidden;border:1px solid black">
+                <div style="float: left;width: 150px;height: 100px">
 
                         {@oneYearInfo.PRODUCT_NAME}<br>
                         {@oneYearInfo.GOODSNO}<br>
-                        {@oneYearInfo.date}<br>
+                    <script type="template/script">
+                         var date=new Date(oneYearInfo.date).getFullYear()+"-"+new Date(oneYearInfo.date).getMonth()+"-"+new Date(oneYearInfo.date).getDate()+" "+new Date(oneYearInfo.date).getHours()+":"+new Date(oneYearInfo.date).getMinutes()+":"+new Date(oneYearInfo.date).getSeconds();
+                    </script>
+                        {@date}<br>
 
                 </div>
-                <div style="float: right;width: 100px; height: 70px;">
+                <div style="float: right;width: 100px; height: 100px;">
                     ￥{@oneYearInfo.AMT}
                 </div>
-
+                    </div>
                 </foreach>
             </div>
         </li>

@@ -57,7 +57,20 @@ module.exports={
         }))
 
         then.step(function(){
-            nut.model.docs=themeArr;
+
+            pageSize=20
+            page={}
+            page.lastPage=themeArr.length%pageSize==0 ? parseInt(themeArr.length/pageSize) : parseInt(themeArr.length/pageSize)+1;
+            page.currentPage=typeof(seed.page)=="undefined"?1:seed.page
+            page.totalCount=themeArr.length
+            page.docs=[]
+            for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+20;j++){
+                if(typeof(themeArr[j])!="undefined")
+                    page.docs.push(themeArr[j])
+            }
+            nut.model.docs=page.docs;
+
+            //nut.model.docs=themeArr;
         })
     },
     actions:{

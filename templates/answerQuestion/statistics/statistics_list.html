@@ -78,9 +78,7 @@
                 </tr>
             </foreach>
             </table>
-            <div>
-                <span>223条记录</span>
-            </div>
+            <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@docs" model.url="/lavico/answerQuestion/statistics/statistics_list?page=%pagenum%" /></div>
         </div>
     </div>
 </div>

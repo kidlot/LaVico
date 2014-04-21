@@ -5,6 +5,7 @@ module.exports={
     process:function(seed,nut){
         var perPage = 1000;
         var pageNum = seed.page ? seed.page : 1;
+
         var then = this;
         //Coupon/Promotions:券表
         this.step(function(doc){
@@ -12,6 +13,7 @@ module.exports={
                 perPage:perPage,
                 pageNum:pageNum
             },this.hold(function(err,doc){
+                console.log("doc:"+doc)
                 doc = doc.replace(/[\n\r\t]/,'');
                 var doc_json = eval('(' + doc + ')');
 

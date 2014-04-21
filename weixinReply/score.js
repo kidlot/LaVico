@@ -17,10 +17,10 @@
             btns: [
                 {
                     title: '添加',
-                    controller: '/lavico/answerQuestion/addTheme'
+                    controller: '/lavico/answerQuestion/question/addQuestion'
                 }, {
                     title: '列表',
-                    controller: '/lavico/answerQuestion/themeList'
+                    controller: '/lavico/answerQuestion/statistics/statistics_list'
                 }
             ],
             start: function() {

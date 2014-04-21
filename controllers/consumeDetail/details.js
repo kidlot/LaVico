@@ -11,8 +11,25 @@ module.exports={
         var yearAll={}
         var moneyAll=0
 
+        var member;
+
         this.step(function(){
-            middleware.request("Member/Spending/9123084",data_request,
+
+            helper.db.coll("welab/customers").findOne({wechatid:seed.wechatId},this.hold(function(err,result){
+                if(err) throw err;
+                if(result){
+                    member=result.HaiLanMemberInfo.memberID
+                }else{
+                    this.terminate();
+                }
+
+            }))
+
+        })
+
+
+        this.step(function(){
+            middleware.request("Member/Spending/"+member,data_request,
                 this.hold(function(err,doc){
                     console.log(doc)
                     if(err) throw err

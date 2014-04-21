@@ -2,16 +2,18 @@
 window.onload=function(){
    $("#addCoin").click(function(){
        var arr={};
-       arr["memberId"]=$("#memberId").val();
+       arr["realName"]=$("#realName").val();
        arr["qty"]=$('#qty').val();
+       arr["mobile"]=$("#mobile").val();
        $.get("/lavico/reedem/addCoin_Test:submit",{postDate:JSON.stringify(arr)},function(result){
-           $("span").html("OK");
+           $("span").html(result);
 
        })
    })
 }
 </script>
-会员编号:<input type="text" id="memberId"><br/>
+会员姓名:<input type="text" id="realName"><br/>
+会员手机:<input type="text" id="mobile"><br/>
 添加积分:<input type="text" id="qty"><br/>
 <button id="addCoin">添加</button>
 <span></span>
