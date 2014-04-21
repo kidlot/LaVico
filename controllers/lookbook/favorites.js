@@ -18,7 +18,7 @@ module.exports = {
                     this.step(function(){
 
                         if(seed.wxid && seed.pid){
-                            helper.db.coll("lavico/favorites").findOne({productId:seed.pid},this.hold(function(err,_doc){
+                            helper.db.coll("lavico/favorites").findOne({productId:seed.pid,wxid:seed.wxid},this.hold(function(err,_doc){
 
                                 if(err) console.log(err)
 
@@ -66,9 +66,9 @@ module.exports = {
                             _log(seed.wxid,"收藏",{lookbookid:doc._id,pageid:oPage._id,productId:oProduct._id,wxid:seed.wxid,createDate:new Date().getTime()})
 
                             var lookbook = {
-                                "_id": doc._id,
+                                "_id": doc._id.toString(),
                                 "pageId": oPage._id,
-                                "productId": oProduct._id,
+                                "productID": oProduct._id,
                                 "createDate": new Date().getTime(),
                                 "name": oProduct.name
                             }

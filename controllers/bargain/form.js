@@ -147,7 +147,7 @@ module.exports = {
 //                    this.hold(function(err,doc){
 //                }));
 
-                var bargain = {price:seed.price,productID:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
+                var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
                 helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
                     if(err ){
                         throw err;

@@ -110,8 +110,7 @@ module.exports = {
                     }
 
                     if(seed._id){
-
-                        conditions[seed.unwind+".productID"] = seed._id
+                        conditions[seed.unwind+"._id"] = seed._id
                     }
                     arrregateParams.push({$match:conditions})
                     console.log(arrregateParams)
