@@ -75,7 +75,7 @@ module.exports = {
     }
     , children: {
 
-        userList: "lavico/reedem/userList.js"
+        userList: "lavico/shake/userList.js"
 
     }
     , viewIn : function(){
