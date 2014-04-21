@@ -1,0 +1,238 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/shake" >摇一摇</a></li>
+    <li class="b03"><a href="#" class="stay">编辑</a></li>
+    <li class="pull-right"><a href="/lavico/shake"><i class="fui-arrow-left"></i>返回</a></li>
+</ul>
+
+<div class="panel panel-default formText" >
+    <div class="panel-heading clearfix">
+    </div>
+    <div class="panel-body" style="background:#f9fafb;">
+        <div class="col-md-12">
+            <br>
+            <div style="min-height: 70px;">
+                <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
+            </div>
+
+            <form class="form-horizontal" role="form">
+                <h6>基础设置</h6>
+                <br>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">图文URL</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"  readonly value="http://dolphin.imagchina.com/lavico/activity/test?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
+                        <button type="button" class="btn btn-primary" style="float: left;margin-left: 6px">复制</button>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">开始/结束</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="startDate" name="startDate" class="form-control" style="width: 150px;display:inline-block;" value="{@ shake.startDate && new Date(parseInt(shake.startDate)+28800000).toISOString().substr(0,10)}">
+                        <input type="text" id="endDate" name="endDate" class="form-control" style="width: 150px;display:inline-block;" value="{@ shake.endDate && new Date(parseInt(shake.endDate)+28800000).toISOString().substr(0,10)}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control postData" id='name' name="name" placeholder="名称" style="width: 300px;" value="{@ shake.name}" oninput="$('#pagename').text(this.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">券</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" style="width: 150px" id='activity_select' name="type">
+                          <option value="0">请选择优惠券</option>
+                          <foreach for="@list" var="doc">  
+                            <option value="{@doc.PROMOTION_CODE}">{@doc.PROMOTION_NAME}</option>
+                          </foreach>  
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">抽奖频率</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id='lottery_cycle' style="width: 150px;display:inline-block;" name="type">
+                            <option value="1">1天</option>
+                            <option value="2">1周</option>
+                            <option value="3">1月</option>
+                            <option value="100">永久</option>
+                        </select>
+                        <input type="text" id='lottery_count' class="form-control" name="name" placeholder="抽奖次数" style="width: 300px;display:inline-block;" value="{@ shake.lottery_count}" oninput="$('#pagename').text(this.value)">
+                    </div>
+                    <div class="col-sm-10">
+                        
+                    </div>
+                </div>                
+
+
+
+                <br>
+                <h6>内容设置</h6>
+                <br>
+
+                <foreach for="@list" var="doc">
+                  <div id='{@doc.PROMOTION_CODE}' class="promotion_detail" style='display:none;'>
+                    <foreach for="@doc.coupons" var="coupons">
+                      <div class="panel panel-default formText pagePanel">
+                          <div class="panel-body">
+                              <div class="col-md-9">
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">券名</label>
+                                      <div class="col-sm-10">
+                                          <span>{@coupons.QTY}</span>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">券图</label>
+                                      <div class="col-sm-10">
+                                          <img src="{@coupons.pic}" />
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">剩余/总数</label>
+                                      <div class="col-sm-10">
+                                          <span>{@ coupons.COUNT-coupons.USED}/{@coupons.COUNT}</span>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">抽奖概率</label>
+                                      <div class="col-sm-10">
+                                          <input type="text" data="{@coupons.QTY}" value='' class="form-control postData lottery_chance" style="width:150px;display:inline-block">%
+                                      </div>
+                                  </div>                            
+                              </div>
+                          </div>
+                      </div>
+                    </foreach>
+                  </div>
+                </foreach>
+                <input type='hidden' id='lottery_input' value='{@shake.lottery_cycle}' />
+                <input type='hidden' id='_id' value='{@shake._id}' />
+                <input type='hidden' id='aid' value='{@shake.aid}' />
+                <input type='hidden' id='lottery_chance' value='{@ shake.lottery && shake.lottery[0] && shake.lottery[0].lottery_chance}' />
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+<script>
+
+
+
+
+function save ( ){
+
+    var aFormInput = {}
+
+    var _inputCheck = true;
+    
+    
+    if(!$("#startDate").val()){
+      _inputCheck = false;
+      $.globalMessenger().post({
+          message: "请选择开始时间！",
+          type: 'error',
+          showCloseButton: true})
+      
+    }
+    if(!$("#endDate").val()){
+      _inputCheck = false;
+      $.globalMessenger().post({
+          message: "请选择结束时间！",
+          type: 'error',
+          showCloseButton: true})
+      
+    }
+    
+    if(!$("#name").val()){
+      _inputCheck = false;
+      $.globalMessenger().post({
+          message: "请填写名称！",
+          type: 'error',
+          showCloseButton: true})      
+    }    
+    
+    
+    if(!aid){
+      _inputCheck = false;
+      $.globalMessenger().post({
+          message: "请选择券！",
+          type: 'error',
+          showCloseButton: true})      
+    }
+    
+    
+    if(!$('#lottery_cycle').val()){
+      _inputCheck = false;
+      $.globalMessenger().post({
+          message: "请选择抽奖频率！",
+          type: 'error',
+          showCloseButton: true})       
+    }
+    if(!$('#lottery_count').val()){
+      _inputCheck = false;
+      $.globalMessenger().post({
+          message: "请填写抽奖次数！",
+          type: 'error',
+          showCloseButton: true})       
+    }
+    
+    if(!_inputCheck){
+      return false;
+    }
+    
+    aFormInput['lottery'] = new Array();
+    $("#"+aid+" .postData").each(function(i,o){
+        if(! $(o).val()){
+            _inputCheck = false;
+            $.globalMessenger().post({
+                message: $(o).parent().prev().text() + " 不能为空！",
+                type: 'error',
+                showCloseButton: true})
+        }else{
+          aFormInput['lottery'].push({'QTY':$(o).attr('data'),'lottery_chance':$(o).val()});
+        }
+    })
+    
+
+  
+    aFormInput['startDate'] = new Date($("#startDate").val()).getTime();
+    aFormInput['endDate'] = new Date($("#endDate").val()).getTime();
+    aFormInput['aid'] = aid;
+    aFormInput['name'] = $("#name").val();
+    aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
+    aFormInput['lottery_count'] = $("#lottery_count").val();
+    aFormInput['switcher'] = 'on';
+    aFormInput['createTime'] = new Date().getTime();
+    
+    
+    if(_inputCheck){
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+        oLinkOptions.type = "POST";
+        oLinkOptions.url = "/lavico/shake/index:save";
+
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+
+            nut.msgqueue.popup() ;
+            $.controller("/lavico/shake",null,"lazy");
+        }) ;
+    }
+}
+</script>

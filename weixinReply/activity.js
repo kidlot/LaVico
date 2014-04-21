@@ -12,11 +12,11 @@
       type: '定制应用',
       icon: '/welab/apps/photowall/public/icon_s.png',
       on: true,
-      title: '活动管理',
-      desc: '活动管理',
+      title: '活动券',
+      desc: '活动券',
       btns: [
         {
-          title: '管理',
+          title: '活动券',
           controller: '/lavico/activity'
         }
       ],

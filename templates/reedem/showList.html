@@ -1,0 +1,48 @@
+目前可用积分：
+<if condition="{@$helper.gt(reedemJson.point,0)}">
++{@reedemJson.point}
+<else/>
+-{@reedemJson.point}
+</if>
+<br/>
+
+<strong>可兑换</strong>
+<ul style="list-style: none">
+    <foreach for="@reedemJson.canUse" var="canUseOne">
+    <li>
+        <div style="width: 250px; overflow: hidden;border: 1px solid gray">
+            <div style="width: 80px; float: left;height: 80; border: 1px solid red"><img src="{@canUseOne.smallPic}" name="smallPic" width="80" height="80"></div>
+            <div style="width: 160px; float: left;height: 80px;border:1px solid blue">{@canUseOne.name}<br/>
+                {@canUseOne.introduction}<br/>
+                所需积分：{@canUseOne.needScore}<br/>
+                剩余数量：{@canUseOne.stillUse}
+            </div>
+            <div style="clear: both;width: 300px; height: 100">
+                <a href="#"  name="se">礼品介绍及兑换细则</a>
+                <a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"  name="nowGet">立即兑换</a>
+            </div>
+        </div>
+    </li>
+    </foreach>
+</ul>
+
+<strong>暂不可兑换</strong>
+<ul style="list-style: none">
+    <foreach for="@reedemJson.noCanUse" var="canUseOne">
+        <li>
+            <div style="width: 250px; overflow: hidden;border: 1px solid gray">
+                <div style="width: 80px; float: left;height: 80; border: 1px solid red"><img src="{@canUseOne.smallPic}" name="smallPic" width="80" height="80"></div>
+                <div style="width: 160px; float: left;height: 80px;border:1px solid blue">{@canUseOne.name}<br/>
+                    {@canUseOne.introduction}<br/>
+                    所需积分：{@canUseOne.needScore}<br/>
+                    剩余数量：{@canUseOne.stillUse}
+                </div>
+                <div style="clear: both;width: 300px; height: 100">
+                    <a href="#" name="se">礼品介绍及兑换细则</a>
+                    <a href="#"  name="nowGet">立即兑换</a>
+                </div>
+            </div>
+        </li>
+    </foreach>
+</ul>
+

@@ -29,7 +29,7 @@ module.exports = {
 						MEM_PSN_BIRTHDAY:seed.birthday, //生日
 						MOBILE_TELEPHONE_NO:seed.mobile, //手机号				  
 				  };
-					middleware.request('/lavico.middleware/MemberApply',
+					middleware.request('Member/Apply',
               data_request
 					  ,this.hold(function(err,doc){
 					  doc_json = JSON.parse(doc);
@@ -45,7 +45,7 @@ module.exports = {
                 }
             );					  
 					  
-					  if(doc_json.issuccessed == true){
+					  if(doc_json.success == true){
 					    then.req.session.id_code = '';
 					    var sex = '';
 					    if(seed.sex == '1'){
@@ -71,7 +71,7 @@ module.exports = {
                 then.res.write(doc);
                 then.res.end();           
               }));		         		    
-					  }else if(doc_json.issuccessed == false){
+					  }else if(doc_json.success == false){
               then.res.writeHead(200, { 'Content-Type': 'text/plain' });
               then.res.write(doc);
               then.res.end();			    

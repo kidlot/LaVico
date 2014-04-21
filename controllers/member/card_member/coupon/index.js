@@ -31,7 +31,6 @@ module.exports = {
             var usedCoupons = [];//已使用的03
             var overdueCoupons = [];//已到期失效 04
             var errorCoupons = [];//错误                   
-             
             if(!member_id){
                 nut.model.ineffectiveCoupons = ineffectiveCoupons;
                 nut.model.ineffectiveCouponsLength = 0;
@@ -57,12 +56,13 @@ module.exports = {
                 then.terminate();            
             }
             
-            middleware.request( "/lavico.middleware/Coupons",{
-                'MEMBER_ID' : member_id
+            middleware.request( "Coupon/GetCoupons",{
+                'memberId' : member_id,
+                'perPage':10000,
+                'pageNum':1
             },this.hold(function(err,doc){
                 var couponData = JSON.parse(doc);
-                coupons = couponData.coupons;
-                
+                coupons = couponData.list;
                 helper.db.coll("lavico/user/logs").insert(
                     {
                         'createTime':new Date().getTime(),
@@ -76,19 +76,19 @@ module.exports = {
                 );                  
                 
                 for(var _i in coupons){
-                    if(coupons[_i].status == '01'){
+                    if(coupons[_i].COUPON_STATUS == '01'){
 
                         ineffectiveCoupons.push(coupons[_i]);
 
-                    }else if(coupons[_i].status == '02'){
+                    }else if(coupons[_i].COUPON_STATUS == '02'){
 
                         effectiveCoupons.push(coupons[_i]);
 
-                    }else if(coupons[_i].status == '03'){
+                    }else if(coupons[_i].COUPON_STATUS == '03'){
 
                         usedCoupons.push(coupons[_i]);
 
-                    }else if(coupons[_i].status == '04'){
+                    }else if(coupons[_i].COUPON_STATUS == '04'){
 
                         overdueCoupons.push(coupons[_i]);
 

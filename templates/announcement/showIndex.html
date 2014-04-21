@@ -8,7 +8,7 @@
     <ul>
         <foreach for="@docs" var="doc">
             <li>
-               <a href="/lavico/announcement/showDetails?_id={@doc._id}"> {@doc.content}<br/>{@doc.createTime}</a>
+               <a href="/lavico/announcement/showDetails?_id={@doc._id}"> {@doc.title}<br/>{@doc.createTime}</a>
             </li>
         </foreach>
     </ul>

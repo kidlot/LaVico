@@ -1,18 +1,8 @@
-<script>
-window.onload=function(){
-    var data={@jsonReply};
-    for(var o in data){
-       // stringConn="<tr><td>"+data[o].theme+"</td><td>"+data[o].createTime+"</td><td>"+data[o].themeCount+"</td><td>"+data[o].partakeCount+"</td><td>"+data[o].finishCount+"</td><td><a href=answer?wechatid="+wechatid+"&_id="+data[o]._id+"&optionId=1>浏览</a></td></tr>";
-        stringConn="<tr><td> http://{host}/lavico/answerQuestion/answer?_id="+data[o]._id+"&optionId=1&wechatid={wxid}</td><td>"+data[o].theme+"</td><td>"+data[o].createTime+"</td><td>"+data[o].themeCount+"</td><td>"+data[o].partakeCount+"</td><td>"+data[o].finishCount+"</td><td><a href=updateTheme?_id="+data[o]._id+"&optionId=1>Update</a></td></tr>";
-        $(".lineDef").append(stringConn);
-        $("#tagList tbody").append(stringConn);
-    }
-}
-</script>
+
 
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/addTheme" class="stay">添加题目</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/question/addQuestion" class="stay">添加题目</a> <em></em></li>
     <li class="active"><span>列表管理</span></li>
 </ul>
 <!--
@@ -42,9 +32,19 @@ window.onload=function(){
                         </tr>
                         </thead>
                         <tbody>
-
+                        <foreach for="@jsonReply" var="doc">
+                            <tr><td style='width:100px'> http://{host}/lavico/answerQuestion/answer?_id={@doc._id}&optionId=1&wechatid={wxid}</td>
+                                <td style='width:150px'>{@doc.theme}</td>
+                                <td style='width:100px'>{@doc.createTime}</td>
+                                <td style='width:50px'>{@doc.themeCount}</td>
+                                <td style='width:50px'>{@doc.partakeCount}</td>
+                                <td style='width:50px'>{@doc.finishCount}</td>
+                                <td style='width:50px'><a href=question/updateQuestion?_id={@doc._id}&optionId=1>Update</a></td>
+                            </tr>
+                        </foreach>
                         </tbody>
                     </table>
+                    <include file="welab/templates/paginator.html" model="@jsonReply" model.url="/lavico/answerQuestion/themeList?page=%pagenum%" />
                 </div>
             </div>
         </div>
