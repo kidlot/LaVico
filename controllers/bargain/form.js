@@ -90,6 +90,10 @@ module.exports = {
 
                 postData.startDate = new Date(postData.startDate + " 00:00:00").getTime()
                 postData.stopDate = new Date(postData.stopDate + " 23:59:59").getTime()
+
+                if(postData.surplus){
+                    postData.surplus = parseInt(postData.surplus)
+                }
                 if(seed._id){
 
                     helper.db.coll("lavico/bargain").update({_id:helper.db.id(seed._id)},{$set:postData},this.hold(function(err,doc){
@@ -151,11 +155,18 @@ module.exports = {
                 var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
                 helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
                     if(err ){
-                        throw err;
+                        console.log(err)
                     }
                 })) ;
 
                 _log(seed.wxid,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
+
+                helper.db.coll("lavico/bargain").update({_id : helper.db.id(seed._id)}, {$inc:{surplus:-1}},this.hold(function(err,doc){
+                    if(err ){
+                        console.log(err)
+                    }
+                })) ;
+
                 this.step(function(){
                     nut.disable();
                     var data = JSON.stringify({err:0});
