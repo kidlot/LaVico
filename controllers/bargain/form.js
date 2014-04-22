@@ -142,10 +142,11 @@ module.exports = {
         , deal:{
             process: function(seed,nut){
 
-//                middleware.request( "Coupon/FetchCoupon",
-//                    {openid:seed.wxid,otherPromId:"111",PROMOTION_CODE:seed.promotionsCode,qty:seed.price,point:0},
-//                    this.hold(function(err,doc){
-//                }));
+                middleware.request("Coupon/FetchCoupon",
+                    {openid: seed.wxid, otherPromId: "111", PROMOTION_CODE: seed.promotionsCode, qty: seed.price, point: 0},
+                    this.hold(function (err, doc) {
+                        console.log(doc)
+                    }));
 
                 var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
                 helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){

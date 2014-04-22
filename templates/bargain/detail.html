@@ -13,6 +13,7 @@
         <div><input type="hidden" value="{@ doc._id}" id="_id">
             <input type="hidden" value="{@ wxid}" id="wxid">
             <input type="hidden" value="{@ doc.promotionsCode}" id="promotionsCode"></div>
+        <input type="hidden" value="{@ doc.point}" id="point"></div>
 
         <div>
             <if condition="@res.err==1">
@@ -156,7 +157,8 @@ function deal(cb){
             '_id':$("#_id").val(),
             'wxid':$("#wxid").val(),
             'productID':$("#_id").val(),
-            'promotionsCode':$("#promotionsCode").val()
+            'promotionsCode':$("#promotionsCode").val(),
+            'point':$("#point").val()
         },
         success:function(data){
             if(data.err == 0){
