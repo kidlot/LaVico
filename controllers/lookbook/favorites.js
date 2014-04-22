@@ -82,7 +82,7 @@ module.exports = {
                         }))
 
 
-                        var data = JSON.stringify({err:0});
+                        var data = JSON.stringify({err:0,msg:"收藏成功"});
                         this.res.writeHead(200, { 'Content-Type': 'application/json' });
                         this.res.write(data);
                         this.res.end();
