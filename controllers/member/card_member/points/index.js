@@ -52,16 +52,22 @@ module.exports = {
                 nut.model.wxid = wxid ;
                 nut.model.member_ID = member_id;
                 middleware.request( "Point/"+member_id,{
+                    'pageNum':1,
+                    'perPage':100000
 
                 },this.hold(function(err,doc){
 
                     var dataJson = JSON.parse(doc)
-                    //console.log(dataJson.point);
-                    nut.model.remaining = dataJson.point;
-                    //nut.model.remaining = dataJson.remaining;//当前积分
-                    //nut.model.level = dataJson.level;//当前会员卡类型
-                    //nut.model.log = dataJson.log;//当前会员的积分记录
-                    //return dataJson;
+
+
+                    //当前积分
+                    if(parseInt(dataJson.point) < 0){
+                        nut.model.remaining = dataJson.point;
+                    }else{
+                        nut.model.remaining = '+' + dataJson.point;
+                    }
+
+
                 }));
             }
 
@@ -69,38 +75,34 @@ module.exports = {
 
       this.step(function(){
             middleware.request( "Point/Log/"+member_id,{
-
-            
-
+                'pageNum':1,
+                'perPage':100000
             },this.hold(function(err,doc){
 
+                var newLog = new Array();
                 var dataJson = JSON.parse(doc);
-                /* {
-                      "log":[
-                          {
-                              "value":"1207",
-                              "time":"2014-03-06 00:00:00.0",
-                              "memo":"每满500减200"
-                          },
-                          {
-                              "value":"1207",
-                              "time":"2014-03-06 00:00:00.0",
-                              "memo":"每满500减200"
-                          },
-                          ... ...
-                      ],
-                      "total": 30,
-                      "perPage": 20,
-                      "pageNum": 20
-                  }
-                */
-                console.log(dataJson);
-                nut.model.log = dataJson.log;//当前会员的积分记录
+
+                for(var i=0; i<dataJson.log.length; i++){
+
+                    var _temp = dataJson.log[i];
+                    var _time = formatDate( new Date(dataJson.log[i].time));//消费时间
+                    var _value = (dataJson.log[i].value < 0) ? dataJson.log[i].value: ('+'+dataJson.log[i].value);
+                    var _MEMO = dataJson.log[i].MEMO;
+
+                    var _json = {
+                        'MEMO' : _MEMO,
+                        'value' : _value,
+                        'time'  : _time,
+                        'source' : dataJson.log[i].source
+                    };
+                    newLog.push(_json);
+
+                }
+
+                nut.model.log = newLog;//当前会员的积分记录
                
             }));
         });
-
-      
 
 
     },
@@ -131,4 +133,14 @@ module.exports = {
          */
 
     }
+}
+
+function   formatDate(now){
+    var   year=now.getFullYear();
+    var   month=now.getMonth()+1;
+    var   date=now.getDate();
+    var   hour=now.getHours();
+    var   minute=now.getMinutes();
+    var   second=now.getSeconds();
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
 }
