@@ -81,24 +81,71 @@ module.exports = {
 
                 var newLog = new Array();
                 var dataJson = JSON.parse(doc);
-
+                console.log(dataJson);
                 for(var i=0; i<dataJson.log.length; i++){
 
                     var _temp = dataJson.log[i];
-                    var _time = formatDate( new Date(dataJson.log[i].time));//消费时间
+                    var _time = formatDate(new Date(dataJson.log[i].time));//消费时间
+                    var _year = (new Date(dataJson.log[i].time)).getFullYear();
+                    var _month = (new Date(dataJson.log[i].time)).getMonth()+ 1;
                     var _value = (dataJson.log[i].value < 0) ? dataJson.log[i].value: ('+'+dataJson.log[i].value);
-                    var _MEMO = dataJson.log[i].MEMO;
+                    var _source = String(dataJson.log[i].source);
+
+                    if(_source == '01'){
+                        _MEMO = '用户消费';
+                    }else if(_source == '02'){
+                        _MEMO = dataJson.log[i].MEMO;
+                    }else if(_source == '03'){
+                        _MEMO = '客服调整积分';
+                    }else{
+                        _MEMO = '';
+                    }
 
                     var _json = {
                         'MEMO' : _MEMO,
                         'value' : _value,
                         'time'  : _time,
-                        'source' : dataJson.log[i].source
+                        'source' : _source,
+                        'meta' : dataJson.log[i].MEMO,
+                        'year':_year,
+                        'month':_month,
+                        'yearmonth':_year+'&'+_month,
+                        'type':'normal'
                     };
                     newLog.push(_json);
 
                 }
+                console.log(newLog);
 
+                var _sumGetPoint;
+                var _sumUsedPoint;
+                var _temp = newLog[0].yearmonth;
+                for(var i=0; i < newLog.length; i++){
+
+                    if(i == 0){
+                        _sumGetPoint = 0;
+                        _sumUsedPoint = 0;
+                    }else{
+
+                        if(_temp == newLog[i].yearmonth){
+
+                            if(){
+
+                            }else{
+
+                            }
+                            _sumGetPoint = eval(_sumGetPoint + newLog[i].value);
+
+                        }else{
+
+                            _temp = newLog[i].yearmonth;
+
+                        }
+                    }
+
+                }
+
+                nut.model.dataJson = JSON.stringify(dataJson);
                 nut.model.log = newLog;//当前会员的积分记录
                
             }));
