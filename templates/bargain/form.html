@@ -74,6 +74,18 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>活动代码</th>
+                            <td>
+                                <input type="text" id="promotionsCode" class="form-control input-sm postData" style="width: 150px" value="{@ doc.promotionsCode}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>扣除积分</th>
+                            <td>
+                                <input type="text" id="deductionIntegral" class="form-control input-sm postData" style="width: 150px" value="{@ doc.deductionIntegral}">
+                            </td>
+                        </tr>
+                        <tr>
                             <th>开始时间</th>
                             <td>
                                 <input type="text" id="startDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.startDate && new Date(doc.startDate+28800000).toISOString().substr(0,10)}">
@@ -89,16 +101,9 @@
                             <th>门店</th>
                             <td>
                                 <select multiple="multiple" size="10" class="form-control postData" style="width: 300px" id="maps">
-                                    <option>门店1</option>
-                                    <option>门店2</option>
-                                    <option>门店3</option>
-                                    <option>门店4</option>
-                                    <option>门店5</option>
-                                    <option>门店6</option>
-                                    <option>门店7</option>
-                                    <option>门店8</option>
-                                    <option>门店9</option>
-                                    <option>门店10</option>
+                                    <foreach for="@shops.list" var="docmaps">
+                                        <option value="{@docmaps.CODE.replace(/\s*/g, '')}">{@docmaps.NAME}</option>
+                                    </foreach>
                                 </select>
                                 <input type="hidden" id="mapsValue" value="{@ doc.maps}">
                             </td>

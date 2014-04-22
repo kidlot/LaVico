@@ -10,8 +10,12 @@
         <div>尺码：{@ doc.sizes}</div>
         <div><img src="{@ doc.pic}" width="100px"/></div>
         <div>市场零售价：{@ doc.price}</div>
-        <div><input type="hidden" value="{@ doc._id}" id="_id">
-            <input type="hidden" value="{@ wxid}" id="wxid"></div>
+        <div>
+            <input type="hidden" value="{@ doc._id}" id="_id">
+            <input type="hidden" value="{@ wxid}" id="wxid">
+            <input type="hidden" value="{@ doc.promotionsCode}" id="promotionsCode">
+            <input type="hidden" value="{@ doc.deductionIntegral}" id="point">
+        </div>
 
         <div>
             <if condition="@res.err==1">
@@ -154,7 +158,9 @@ function deal(cb){
             'name':$(".name").text(),
             '_id':$("#_id").val(),
             'wxid':$("#wxid").val(),
-            'productID':$("#_id").val()
+            'productID':$("#_id").val(),
+            'promotionsCode':$("#promotionsCode").val(),
+            'point':$("#point").val()
         },
         success:function(data){
             if(data.err == 0){

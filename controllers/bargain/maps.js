@@ -1,3 +1,5 @@
+var middleware = require('lavico/lib/middleware.js');//引入中间件
+
 module.exports = {
 
 	layout: null
@@ -11,11 +13,36 @@ module.exports = {
 
             nut.model.wxid = seed.wxid
             nut.model._id = seed._id
+            var doc
 
-            helper.db.coll("lavico/bargain").findOne({startDate:{$lte:new Date().getTime()},stopDate:{$gte:new Date().getTime()},_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
+            helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
-                nut.model.doc = doc
             }))
+
+            this.step(function(){
+                doc.shops2 = []
+                //shops
+                middleware.request( "Shops",
+                    {perPage:1000},
+                    this.hold(function(err,shoplist){
+                        var _shops = JSON.parse(shoplist)
+
+                            for(var i=0 ; i< _shops.list.length ;i ++){
+                                for(var ii=0 ; ii< doc.maps.length ;ii ++){
+                                    if(_shops.list[i].CODE.replace(/\s*/g, '') == doc.maps[ii]){
+                                        doc.shops2.push(_shops.list[i].NAME)
+                                    }
+                                }
+                            }
+                }));
+            })
+
+
+            this.step(function(){
+
+                nut.model.doc = doc
+            })
+
         }else{
             nut.disable();
             var data = JSON.stringify({err:1,msg:"没有产品ID"});

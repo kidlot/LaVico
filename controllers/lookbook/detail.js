@@ -27,55 +27,6 @@ module.exports = {
             this.res.write(data);
             this.res.end();
         }
-
-        // repeat
-        this.step(function(){
-
-            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":3,"data.stat":true}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
-
-                if(doc.length > 0){
-
-                    nut.model.res = {err:1,msg:"您已成功侃价，请查看您的“专属礼券”",url:"http://www.baidu.com"};
-                    this.terminate()
-                }
-                return;
-            }))
-        })
-
-        // timeout
-        this.step(function(){
-
-            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
-
-                if(doc.length > 0){
-                    var timeout = 60 * 10 * 1000
-
-                    if( doc[0].createTime + timeout > new Date().getTime()){
-                        nut.model.res = {err:1,msg:"休息休息，10分钟后才能再侃价"};
-                        this.terminate()
-                    }
-                }
-                return;
-            }))
-        })
-
-
-        // max
-        this.step(function(){
-            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":3,"data.stat":true}).count(this.hold(function(err,num){
-
-                if(num >= doc.surplus){
-                    nut.model.res = {err:1,msg:"此商品已销售完毕，请选其它商品。"};
-                    this.terminate()
-                }
-                return;
-            }))
-        })
-        this.step(function(){
-
-            nut.model.res = {err:0};
-        })
-
     }
 }
 

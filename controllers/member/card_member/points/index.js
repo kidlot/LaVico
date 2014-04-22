@@ -13,48 +13,96 @@ module.exports = {
     process:function(seed, nut){
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
+        var member_id;
+        this.step(function(){
 
-        var member_ID  = '9121535';//海澜会员ID
-        var _this = this;
-        nut.model.wxid = wxid ;
-        nut.model.member_ID = member_ID;
 
+            if(wxid == 'undefined'){
+                //缺少微信ID参数，强制中断
+                nut.disable();//不显示模版
+                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                this.res.write('{"error":"wxid_is_empty"}');
+                this.res.end();
+                this.terminate();
+            }else{
+
+                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                    if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID ){
+                        member_id =  doc.HaiLanMemberInfo.memberID;
+                    }else{
+                        member_id = 'undefined';
+                    }
+                }));
+
+            }
+
+        });
 
         //接口处理-个人积分接口
         this.step(function(){
-            middleware.request( "/lavico.middleware/Points",{
 
-                'MEMBER_ID':member_ID
+            if(member_id == "undefined"){
+                //缺少微信ID参数，强制中断
+                nut.disable();//不显示模版
+                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                this.res.write('{"error":"memberid_not_found"}');
+                this.res.end();
+                this.terminate();
+            }else{
+                nut.model.wxid = wxid ;
+                nut.model.member_ID = member_id;
+                middleware.request( "Point/"+member_id,{
+                    'pageNum':1,
+                    'perPage':100000
 
-            },_this.hold(function(err,doc){
+                },this.hold(function(err,doc){
 
-                var dataJson = eval('('+doc+')');
-                console.log(dataJson);
-                nut.model.remaining = dataJson.remaining;//当前积分
-                nut.model.level = dataJson.level;//当前会员卡类型
-                nut.model.log = dataJson.log;//当前会员的积分记录
-                return dataJson;
+                    var dataJson = JSON.parse(doc)
+
+
+                    //当前积分
+                    if(parseInt(dataJson.point) < 0){
+                        nut.model.remaining = dataJson.point;
+                    }else{
+                        nut.model.remaining = '+' + dataJson.point;
+                    }
+
+
+                }));
+            }
+
+        });
+
+      this.step(function(){
+            middleware.request( "Point/Log/"+member_id,{
+                'pageNum':1,
+                'perPage':100000
+            },this.hold(function(err,doc){
+
+                var newLog = new Array();
+                var dataJson = JSON.parse(doc);
+
+                for(var i=0; i<dataJson.log.length; i++){
+
+                    var _temp = dataJson.log[i];
+                    var _time = formatDate( new Date(dataJson.log[i].time));//消费时间
+                    var _value = (dataJson.log[i].value < 0) ? dataJson.log[i].value: ('+'+dataJson.log[i].value);
+                    var _MEMO = dataJson.log[i].MEMO;
+
+                    var _json = {
+                        'MEMO' : _MEMO,
+                        'value' : _value,
+                        'time'  : _time,
+                        'source' : dataJson.log[i].source
+                    };
+                    newLog.push(_json);
+
+                }
+
+                nut.model.log = newLog;//当前会员的积分记录
+               
             }));
         });
-
-
-        this.step(function(dataJson){
-
-            //记录用户动作
-            helper.db.coll("lavico/user/logs").insert(
-                {
-                    'createTime':new Date().getTime(),
-                    'wxid':seed.wxid,
-                    'member_ID':member_ID,
-                    'action':"查看积分明细",
-                    'response':dataJson
-                },
-                function(err, doc){
-                    console.log(doc);
-                }
-            );
-        });
-
 
 
     },
@@ -85,4 +133,14 @@ module.exports = {
          */
 
     }
+}
+
+function   formatDate(now){
+    var   year=now.getFullYear();
+    var   month=now.getMonth()+1;
+    var   date=now.getDate();
+    var   hour=now.getHours();
+    var   minute=now.getMinutes();
+    var   second=now.getSeconds();
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
 }
