@@ -20,7 +20,7 @@ module.exports = {
 
                         (function(i,ii){
 
-                            helper.db.coll("welab/customers").find({"lookbook.productId":docs.page[i].product[ii]._id}).count(then.hold(function(err,_doc2){
+                            helper.db.coll("welab/customers").find({"lookbook.productID":docs.page[i].product[ii]._id}).count(then.hold(function(err,_doc2){
                                 docs.page[i].product[ii].sumFavorites = _doc2
                             }))
                         })(i,ii)
