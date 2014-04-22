@@ -16,12 +16,28 @@ module.exports={
                      *hold只能完成终止下一个step.在当前step中同步操作需要闭包来封装，因为node的回调函数是异步的
                      */
                     (function(i){
+                        helper.db.coll("lavico/custReceive").aggregate([
+                            {$group:{_id:"$themeId",count:{$addToSet:"$wechatid"}}},
+                            {$match:{_id:helper.db.id(cursor[i]._id)}}
+                        ],then.hold(function(err,doc){
+                            console.log(doc);
+                            if(err) throw err;
+                            try{
+                                //console.log("1:"+doc[0].count.length)
+                                partakeCount[i]=doc[0].count.length;
+                            }catch(e){
+                                //console.log("0:"+0);
+                                partakeCount[i]=0;
+                            }
+                        }));
+                        /*
                         helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(cursor[i]._id),"isFinish":false}).count(then.hold(function(err,doc){
                             //参与人数
 
                             partakeCount[i]=doc;
                         }));
-                        helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(cursor[i]._id),"isFinish":true,"optionId":0,"chooseId":0}).count(then.hold(function(err,doc){
+                        */
+                        helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(cursor[i]._id),"isFinish":true,"optionId":0,"chooseId":0,"getChooseLabel":"","getLabel":"","getGift":""}).count(then.hold(function(err,doc){
                             //完成人数
                             finishCount[i]=doc;
                         }));

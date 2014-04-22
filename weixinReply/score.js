@@ -20,6 +20,9 @@
                     controller: '/lavico/answerQuestion/question/addQuestion'
                 }, {
                     title: '列表',
+                    controller: '/lavico/answerQuestion/themeList'
+                },{
+                    title: '统计',
                     controller: '/lavico/answerQuestion/statistics/statistics_list'
                 }
             ],

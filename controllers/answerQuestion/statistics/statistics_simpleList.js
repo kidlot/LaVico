@@ -5,7 +5,6 @@ module.exports={
         var then=this
         var themeId=seed.themeId
         var optionId=seed.optionId
-
         var resultList
 
         this.step(function(){
@@ -21,7 +20,6 @@ module.exports={
                 (function(i){
                     helper.db.coll("welab/customers").findOne({wechatid:resultList[i].wechatid},then.hold(function(err,doc){
                         if(err)throw err
-
                         if(doc){
                             var visiPeople={}
                             visiPeople.realname=doc.realname
@@ -60,7 +58,6 @@ module.exports={
             process:function(seed,nut){
                 console.log(seed.themeId)
                 console.log(seed.optionId)
-
 
                 var then=this
                 var themeId=seed.themeId
@@ -139,7 +136,6 @@ module.exports={
                 this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
                 this.res.write(result, 'binary');
                 return this.res.end();
-
 
             }
         }

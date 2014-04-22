@@ -14,6 +14,8 @@ module.exports={
         var stopLabel=seed.stopLabel;//停止标签
         var customerLabel=seed.customerLabel;//自定义标签
 
+        console.log("input:"+_id);
+
         var docvar=null;//是否已经有存储,即，是否已经做过此题
         this.step(function(){
         //判断是否已经记录
@@ -27,6 +29,7 @@ module.exports={
                 if(type==0){//单选
                    //积分在数字情况下记录
                    if(!isNaN(score)){
+                       console.log("000")
                        //session累加
                        then.req.session.scoreAll+=parseInt(score);
                        //记录积分
@@ -210,15 +213,23 @@ module.exports={
                     }
                 }
             }else{
-                if(then.req.session.isFinish){
-                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
-                        "&_id="+_id+"&optionId="+then.req.session.optionId});
-                    this.res.end();
+                if(then.req.session.optionId){
+                    if(then.req.session.isFinish){
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                            "&_id="+_id+"&optionId="+then.req.session.optionId});
+                        this.res.end();
+                    }else{
+                        console.log("wechatid:"+wechatid);
+                        console.log("_id:"+_id);
+                        console.log("then.req.session.optionId:"+then.req.session.optionId);
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+                            wechatid+"&_id="+_id+
+                            "&optionId="+then.req.session.optionId});
+                        this.res.end();
+                    }
                 }else{
-                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
-                        wechatid+"&_id="+_id+
-                        "&optionId="+then.req.session.optionId});
-                    this.res.end();
+                    nut.write("很抱歉，您已经参加过此测试了请<a href='#'>返回</a>");
+                    then.terminate();
                 }
 
             }

@@ -12,9 +12,11 @@
                 <div style="width:300px;height: 30px;border:1px solid red; background-color: #e8e8e8;">{@yearList.year}<span style="margin-left: 100px">￥{@moneyAll}</span></div>
                 <foreach for="@yearList.val" var="oneYearInfo" key="key">
                     <div style="overflow: hidden;border:1px solid black">
-                <div style="float: left;width: 150px;height: 100px">
+                <div style="float: left;width: 150px;">
 
                         {@oneYearInfo.PRODUCT_NAME}<br>
+                </div>
+
                         {@oneYearInfo.GOODSNO}<br>
                     <script type="template/script">
                          var date=new Date(oneYearInfo.date).getFullYear()+"-"+new Date(oneYearInfo.date).getMonth()+"-"+new Date(oneYearInfo.date).getDate()+" "+new Date(oneYearInfo.date).getHours()+":"+new Date(oneYearInfo.date).getMinutes()+":"+new Date(oneYearInfo.date).getSeconds();

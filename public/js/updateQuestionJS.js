@@ -151,6 +151,7 @@ $(function () {
             data:{_id:$("input[name=_id]").val(),json:jsonData}
         }).done(function(msg){
                 alert("成功");
+                location.href="/lavico/answerQuestion/question/updateQuestion?_id="+$("input[name=_id]").val()
             });
     });
 });
@@ -209,13 +210,13 @@ function delPic (then){
 
     var oLinkOptions = {} ;
     oLinkOptions.data = [];
-    //alert($(then).parent().prev().attr("src"));
+    alert($(then).parent().prev().attr("src"));
     oLinkOptions.data.push({name:"pic",value:$(then).parent().prev().attr("src")});
     oLinkOptions.type = "POST";
     oLinkOptions.url = "/welab/Uploadify:delpic";
 
 
-    $(picShowDisc).parent().parent().find("div[name='divImg']").hide();
+    $(picShowDisc).parent().parent().parent().hide();
 
 
     $.request(oLinkOptions,function(err,nut){

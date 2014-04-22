@@ -68,6 +68,7 @@ module.exports={
                 if(typeof(themeArr[j])!="undefined")
                     page.docs.push(themeArr[j])
             }
+
             nut.model.docs=page.docs;
 
             //nut.model.docs=themeArr;
@@ -108,17 +109,7 @@ module.exports={
             });
         });
 
-        $("input[name='btnOpenClose']").click(function(){
-            var id=$(this).parent().prev("input[type=hidden]").val();
-            if($(this).val()=="开"){
-                $(this).val("关");
-            }else{
-                $(this).val("开");
-            }
-            $.get("/lavico/answerQuestion/statistics/statistics_list:close",{_id:id},function(result){
-                location.href='/lavico/answerQuestion/statistics/statistics_list';
-            })
-        });
+
 
         $("input[name='btnStatistics']").click(function(){
             var themeVal=$(this).next("input[name='tongji']").val();

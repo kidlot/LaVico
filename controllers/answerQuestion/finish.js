@@ -9,9 +9,10 @@ module.exports={
     	var scoreAll=this.req.session.scoreAll;
         var stopLab=seed.stopLab;
         //非停止标签过来
-        console.log(stopLab);
+        console.log("stopLab:"+stopLab);
         if(stopLab!="true"){
             //插入总积分
+            console.log("okkk")
             helper.db.coll("lavico/custReceive").insert({
                 "wechatid": wechatid,
                 "themeId": helper.db.id(_id),
@@ -37,6 +38,7 @@ module.exports={
         });
 		this.step(function(){
 			var resultList="[";
+            console.log("scoreRange.length:"+scoreRange.length)
 			for(var i=0;i<scoreRange.length;i++){
 				var minlen=scoreRange[i].conditionMinScore;//获取低分值
 				var maxlen=scoreRange[i].conditionMaxScore;//获取高分值
@@ -69,15 +71,14 @@ module.exports={
 				}
                 if((scoreAll>=minlen && scoreAll<=maxlen || scoreRange[i].conditionLabel!="") && i<scoreRange.length-1 )
                     resultList+=",";
+
 			}
 			resultList+="]";
-            //返回显示
-			//nut.model.getResult=resultList;
-
             console.log(resultList);
-
-
+            //返回显示
+            then.req.session.optionId=""
             nut.model.result=resultList;
+
 		})
       }else{
       //停止标签过来
@@ -95,9 +96,6 @@ module.exports={
                 "compScore": 0,
                 "createTime": createTime()
             },function(err,doc){});
-
-
-
 
             //记录获得东西
             var scoreRange;
@@ -139,7 +137,6 @@ module.exports={
                     if(custLabel!=""){
                         //存在,录入customer
                         var customerLab="{tags:[";
-
                         var choArr=custLabel.split(',');
                         if(choArr.length<=1){
                             choArr=custLabel.split(' ');
@@ -149,25 +146,29 @@ module.exports={
                             customerLab+="'"+choArr[i]+"'"+",";
                         }
                         var jsonStr=customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]}";
-
                         customerLab=eval('('+jsonStr+')');
                         helper.db.coll("welab/customers").update({wechatid:wechatid},{$set:customerLab},function(err,doc){});
                     }
-
                 }
-
                 resultList+="]";
+                then.req.session.optionId=""
                 //nut.model.getResult=resultList;
                 nut.model.result=resultList;
             })
-
-            /*
             var resultList="[";
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,"isFinish":true}).toArray(then.hold(function(err,scoreRange){
+
+            console.log("id:"+_id)
+            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,"isFinish":true})
+                    .toArray(then.hold(function(err,scoreRange){
                 for(var i=0;i<scoreRange.length;i++){
                     var getLabel= scoreRange[i].getLabel=="undefined"?"":scoreRange[i].getLabel;
                     var getActivities= scoreRange[i].getActivities=="undefined"?0:scoreRange[i].getActivities;
                     var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
+
+                    console.log("getLabel:"+getLabel);
+                    console.log("getActivities:"+getActivities);
+                    console.log("getScore:"+getScore);
+
                     if(typeof(getScore)=="undefined"){
                         getScore=0;
                     }
@@ -178,12 +179,10 @@ module.exports={
                     if(i<scoreRange.length-1){resultList+=",";}
                 }
             resultList+="]";
+            console.log("resultList:"+resultList);
             nut.model.getResult=resultList;
             }));
-            */
         }
-
-
  	}
 }
 

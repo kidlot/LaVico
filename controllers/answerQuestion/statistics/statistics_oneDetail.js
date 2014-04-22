@@ -58,8 +58,12 @@ module.exports={
                             {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$wechatid"}}}
                         ],this.hold(function(err,doc){
                             if(err)throw err
-                            //console.log(doc);
-                            visitedPeople=doc[0].count
+                            if(doc!=""){
+                                visitedPeople=doc[0].count
+                            }else{
+
+                                this.terminate();
+                            }
                         })
                     )
                 })
@@ -184,7 +188,7 @@ module.exports={
                         conf.rows.push(rows)
                     }
 
-                    console.log(conf);
+
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                     this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");

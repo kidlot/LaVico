@@ -10,15 +10,16 @@ module.exports={
         data_request.pageNum=num
         var yearAll={}
         var moneyAll=0
-
         var member;
 
         this.step(function(){
 
             helper.db.coll("welab/customers").findOne({wechatid:seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
-                if(result){
-                    member=result.HaiLanMemberInfo.memberID
+                console.log("result:"+result);
+                if(result==null){
+                    //member=result.HaiLanMemberInfo.memberID
+                    member=9123084
                 }else{
                     this.terminate();
                 }
@@ -27,11 +28,10 @@ module.exports={
 
         })
 
-
         this.step(function(){
             middleware.request("Member/Spending/"+member,data_request,
                 this.hold(function(err,doc){
-                    console.log(doc)
+                    console.log("doc:"+doc)
                     if(err) throw err
                     var docsJson=JSON.parse(doc)
                     //console.log(doc)
@@ -51,9 +51,9 @@ module.exports={
         })
 
         this.step(function(){
-
-            nut.model.yearList=yearAll
             console.log(yearAll)
+            nut.model.yearList=yearAll
+
             nut.model.moneyAll=moneyAll
         })
 

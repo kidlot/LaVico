@@ -1,0 +1,22 @@
+
+<ul style="list-style: none;">
+    <foreach for="{@city_docs}" var="docs">
+    <li style="border: 1px solid gray;width: 300px; height: 130px; cursor:hand;">
+        <a  style="display: block; text-decoration: none;color:#000000" href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@docs.CODE}1'">
+            <strong>{@docs.NAME}</strong><br>
+            商店名称:{@docs.ADDR}<br>
+            商店电话:{@docs.TEL}<br>
+        <if condition="{@docs.ACT}">
+           <if condition="{@docs.ACT.length<10}">
+                活动:{@docs.ACT}
+           <else/>
+               活动:{@docs.ACT.subString(0,7)}...
+           </if>
+        <else/>
+            活动:当前无活动
+        </if>
+        </a>
+    </li>
+
+    </foreach>
+</ul>

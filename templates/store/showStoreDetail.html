@@ -1,0 +1,14 @@
+<a href="javascript:history.back()">back</a>
+<div style="width: 250px; height: 300px; border: 1px solid #000000">
+    {@searchCity.NAME}<br>
+    <if condition="{@searchCity.PICURL==null}">
+        <img src="/lavico/public/images/lavico_default.png" width="200" height="100">
+    <else/>
+        <img src="{@searchCity.PICURL}" width="250" height="150">
+    </if><br>
+    地址：{@searchCity.ADDR}<br>
+    电话：{@searchCity.TEL}<br>
+    ---------------------------------------------
+    近期活动：<br>
+    {@searchCity.ACT}
+</div>
