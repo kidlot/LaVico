@@ -15,37 +15,56 @@ module.exports = {
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         var member_id;
         this.step(function(){
-            helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
-                if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID ){
-                  member_id =  doc.HaiLanMemberInfo.memberID;
-                }
-            }));
+
+
+            if(wxid == 'undefined'){
+                //缺少微信ID参数，强制中断
+                nut.disable();//不显示模版
+                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                this.res.write('{"error":"wxid_is_empty"}');
+                this.res.end();
+                this.terminate();
+            }else{
+
+                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                    if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID ){
+                        member_id =  doc.HaiLanMemberInfo.memberID;
+                    }else{
+                        member_id = 'undefined';
+                    }
+                }));
+
+            }
 
         });
 
         //接口处理-个人积分接口
         this.step(function(){
-        
-            
-              nut.model.wxid = wxid ;
-              nut.model.member_ID = member_id;
 
-           
-        
-              middleware.request( "Point/"+member_id,{
+            if(member_id == "undefined"){
+                //缺少微信ID参数，强制中断
+                nut.disable();//不显示模版
+                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                this.res.write('{"error":"memberid_not_found"}');
+                this.res.end();
+                this.terminate();
+            }else{
+                nut.model.wxid = wxid ;
+                nut.model.member_ID = member_id;
+                middleware.request( "Point/"+member_id,{
 
-               
+                },this.hold(function(err,doc){
 
-            },this.hold(function(err,doc){
+                    var dataJson = JSON.parse(doc)
+                    //console.log(dataJson.point);
+                    nut.model.remaining = dataJson.point;
+                    //nut.model.remaining = dataJson.remaining;//当前积分
+                    //nut.model.level = dataJson.level;//当前会员卡类型
+                    //nut.model.log = dataJson.log;//当前会员的积分记录
+                    //return dataJson;
+                }));
+            }
 
-                var dataJson = JSON.parse(doc)
-                console.log(dataJson.point);
-                nut.model.remaining = dataJson.point;
-                //nut.model.remaining = dataJson.remaining;//当前积分
-                //nut.model.level = dataJson.level;//当前会员卡类型
-                //nut.model.log = dataJson.log;//当前会员的积分记录
-                //return dataJson;
-            }));
         });
 
       this.step(function(){
@@ -76,7 +95,6 @@ module.exports = {
                   }
                 */
                 console.log(dataJson);
-
                 nut.model.log = dataJson.log;//当前会员的积分记录
                
             }));
