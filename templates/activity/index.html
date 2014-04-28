@@ -15,8 +15,9 @@
             <tr>
                 <th>活动名称</th>
                 <th>活动CODE</th>
-                <th><span class='th_left'>面值</span><span class='th_center'>类型</span><span class='th_right'>已发/总数</span></th>
-                <th></th>
+                <th>面值</th>
+                <th>类型</th>
+                <th>已发/总数</th>
             </tr>
             </thead>
             <tbody>
@@ -25,20 +26,13 @@
                     <td><a href="/lavico/activity/index:modify_html?aid={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_NAME}</a></td>
                     <td>{@ doc.PROMOTION_CODE}</td>
                     <td>
-                      <table class="children_table">
-                        <tbody>
-                          <foreach for='@doc.coupons' var='value'>
-                            <tr>
-                              <td>{@value.QTY}</td>
-                              <td><if condition="{@value.TYPE == '01'}">现金抵用券<elseif condition="{@value.TYPE == '02'}"/>礼品券</if>,<if condition="{@value.CLS == '101'}">现金抵用券<elseif condition="{@value.CLS == '102'}"/>礼品券<elseif condition="{@value.CLS == '103'}"/>生日券</if></td>
-                              <td>{@value.USED}/{@value.COUNT}</td>
-                            </tr>                            
-                          </foreach>
-                        </tbody>
-                      </table>
-                    </td>                    
+                        {@ doc.QTY}
+                    </td>
                     <td>
-                        <a href="/lavico/activity/index:history?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">记录</a>
+                        <if condition="{@doc.TYPE == '01'}">现金抵用券<elseif condition="{@doc.TYPE == '02'}"/>礼品券</if>,<if condition="{@doc.CLS == '101'}">现金抵用券<elseif condition="{@doc.CLS == '102'}"/>礼品券<elseif condition="{@doc.CLS == '103'}"/>生日券</if>
+                    </td>
+                    <td>
+                        {@doc.USED}/{@doc.TOTAL}
                     </td>
                 </tr>
             </foreach>
