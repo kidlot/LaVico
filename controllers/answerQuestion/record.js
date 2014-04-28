@@ -3,7 +3,7 @@
 module.exports={
     layout:null,
     process:function(seed,nut){
-<<<<<<< HEAD
+
         var then=this;
     	var type=seed.type;//题目类型
         var optionId=seed.optionId;//选题ID
@@ -130,7 +130,7 @@ module.exports={
                                 this.res.end();
                             }
 
-=======
+
         var type=seed.type;
         var optionId=seed.optionId;
         var _id=_id;
@@ -148,7 +148,6 @@ module.exports={
                         if(doc){
                             helper.db.coll("lavico/custReceive").update({"themeId":_id, "custId":"cust101","optionId":optionId},
                                 {$set:{"getScore":score}},function(err,doc){});
->>>>>>> 1a1ed295cca06b09e127beeeb0b8336d5b395390
                         }else{
                             //session
                             this.req.session.scoreAll+=parseInt(scoreAll);
@@ -167,8 +166,6 @@ module.exports={
                                 },function(err,doc){
                             });
                         }
-
-<<<<<<< HEAD
 
                         console.log("wechatid:"+wechatid);
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
@@ -209,7 +206,6 @@ module.exports={
                     then.terminate();
                 }
 
-=======
                 });
             }
             /*
@@ -251,7 +247,7 @@ module.exports={
                     'Location': "/lavico/AnswerQuestion/RecordAnswer?optionId="+chooseNext+"&_id="+_id;
                 });
                 this.res.end();
->>>>>>> 1a1ed295cca06b09e127beeeb0b8336d5b395390
+
             }
 
         }else(type==2){
