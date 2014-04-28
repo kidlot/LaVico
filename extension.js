@@ -13,8 +13,6 @@ var util = require("welab/controllers/summary/util.js") ;
 var summary = require("welab/controllers/user/summary.js") ;
 var search = require("welab/lib/search.js") ;
 
-
-
 exports.onload = function(application){
 
     // 我要侃价
@@ -32,14 +30,6 @@ exports.onload = function(application){
     lookbook.load()
 
 	//member_apply.load();
-    wechatapi.registerReply(9,function(msg,req,res,next){
-        if(msg.MsgType=="location"){
-            var x=msg.Location_X;
-            var y=msg.Location_Y;
-
-        }
-    }
-
 
 
     // 复写用户列表的导出
