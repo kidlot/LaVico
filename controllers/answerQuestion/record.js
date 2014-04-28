@@ -1,7 +1,9 @@
+//location.href="/lavico/AnswerQuestion/record?type=1&optionId="+valueArr[0]+"&_id="+_id+"
+// &chooseId="+valueArr[1]+"&score="+scoreAll+"&chooseNext="+valueArr[3];
 module.exports={
-	layout:null,
-    view:null,
+    layout:null,
     process:function(seed,nut){
+<<<<<<< HEAD
         var then=this;
     	var type=seed.type;//题目类型
         var optionId=seed.optionId;//选题ID
@@ -128,74 +130,45 @@ module.exports={
                                 this.res.end();
                             }
 
+=======
+        var type=seed.type;
+        var optionId=seed.optionId;
+        var _id=_id;
+        var chooseId=seed.chooseId;
+        var score=seed.score;
+        var chooseNext=seed.chooseNext;
+
+        if(type==1 or type==0){
+            //如果分值存在,记录积分
+            if(!isNaN(parseInt(score))){
+
+                helper.db.coll("lavico/custReceive").findOne({"themeId":_id, "custId":"cust101","optionId":optionId},function(err,doc){
+                    if(err)throw err;
+                        //存在更新
+                        if(doc){
+                            helper.db.coll("lavico/custReceive").update({"themeId":_id, "custId":"cust101","optionId":optionId},
+                                {$set:{"getScore":score}},function(err,doc){});
+>>>>>>> 1a1ed295cca06b09e127beeeb0b8336d5b395390
                         }else{
-                            console.log("fff");
-                            //停止标签不存在,判断是否是完成页面过来的
-                            if(finish!="true"){
-                                console.log("hhh")
-                                //下一题
-                                //先记录optionId和isFinish,为了让其能history.back后继续
-                                then.req.session.optionId=(parseInt(optionId)+1);
-                                then.req.session.isFinish=false;
-
-                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
-                                    wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
-                                this.res.end();
-                            }else{
-                                console.log("iii")
-                                //完成页面
-                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
-                                    wechatid+"&_id="+_id+"&optionId="+optionId});
-                                this.res.end();
-
-                            }
+                            //session
+                            this.req.session.scoreAll+=parseInt(scoreAll);
+                            //不存在录入
+                            helper.db.coll("lavico/custReceive").insert({
+                                "custId": "cust101",
+                                "themeId": _id,
+                                "isFinish": false,
+                                "optionId": optionID,
+                                "chooseId": chooseID,
+                                "getScore": parseInt(scoreAll),
+                                "getLabel": "",
+                                "getGift":  "",
+                                "compScore": "",
+                                "createTime": createTime()
+                                },function(err,doc){
+                            });
                         }
 
-                        /*
-                        //判断是否为完成（最后一页）
-                        if(finish!="true"){
-                            //跳转:下一题
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
-                                wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
-                            this.res.end();
-                        }
-                        else{
-                            //跳转:完成页面
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
-                                wechatid+"&_id="+_id+"&optionId="+optionId});
-                            this.res.end();
-                        }
-                         */
-                    }
-                }else if(type==1){
-                    //复选题,记录session
-                    then.req.session.scoreAll+=parseInt(score);
-                    //记录复选答案在chooseId中
-                    var selectChooseIdArr=seed.chooseId;
-                    var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
-                    var selId="["+selectChooseId.replace("_",",")+"]";
-
-                        helper.db.coll("lavico/custReceive").insert({
-                            "wechatid": wechatid,
-                            "themeId": helper.db.id(_id),
-                            "isFinish": false,
-                            "optionId": parseInt(optionId),
-                            "chooseId": selId,
-                            "getChooseScore": parseInt(score),
-                            "getChooseLabel":"",
-                            "getLabel": "",
-                            "getGift":  "",
-                            "compScore": "",
-                            "createTime": createTime()
-                        },function(err,doc){});
-                    //判断是否为最后一页
-                    if(finish!="true"){
-                        //下一题页
-
-                        //先记录optionId和isFinish,为了让其能history.back后继续
-                        then.req.session.optionId=(parseInt(optionId)+1);
-                        then.req.session.isFinish=false;
-
+<<<<<<< HEAD
 
                         console.log("wechatid:"+wechatid);
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
@@ -236,18 +209,67 @@ module.exports={
                     then.terminate();
                 }
 
+=======
+                });
             }
-        });
+            /*
+             *判断chooseNext是否为标签还是数字
+             *数字：跳转指定题号
+             *标签：跳转finish
+             */
+            if(isNaN(parseInt(chooseNext))){
+                //no number,to finish
+                /*
+                //记录标签和总分入表
+                helper.db.coll("lavico/custReceive").insert({
+                    "custId": "cust101",
+                    "themeId": _id,
+                    "isFinish": true,
+                    "optionId": optionID,
+                    "chooseId": chooseID,
+                    "getScore": this.req.session.scoreAll,
+                    "getLabel": "",
+                    "getGift":  "",
+                    "compScore": "",
+                    "createTime": createTime()
+                },function(err,doc){
+                });
 
-        function createTime(){
-            var d = new Date();
-            var vYear = d.getFullYear();
-            var vMon = d.getMonth() + 1;
-            var vDay = d.getDate();
-            s=vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay);
-            return s;
+                //to finish
+                this.res.writeHead(302, {
+                    'Location': "/lavico/AnswerQuestion/finish?&_id="+_id;
+                });
+                this.res.end();
+                 */
+                this.res.writeHead(302, {
+                    'Location': "/lavico/AnswerQuestion/finish?type=1&optionId="+optionId+"&_id="+_id+"&chooseId="+chooseId+"&score="+score+"&chooseNext="+chooseNext;
+                });
+                this.res.end();
+            }else{
+                //number,next option
+                this.res.writeHead(302, {
+                    'Location': "/lavico/AnswerQuestion/RecordAnswer?optionId="+chooseNext+"&_id="+_id;
+                });
+                this.res.end();
+>>>>>>> 1a1ed295cca06b09e127beeeb0b8336d5b395390
+            }
+
+        }else(type==2){
+
+            /*
+            helper.db.coll("lavico/custAnswerResult").insert({
+                "themeId":_id,
+                    "custId":'cust101',
+                    "optionId":optionId,
+                    "resultValue":receiveAnswer
+            },function(err,doc){});
+            this.res.writeHead(302, {
+                'Location': "/lavico/AnswerQuestion/Review?optionId="+(parseInt(optionId)+1)+"&_id="+_id;
+            });
+            this.res.end();
+            */
         }
 
-    }
 
+    }
 }
