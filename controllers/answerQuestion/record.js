@@ -101,6 +101,7 @@ module.exports={
                             console.log("ccc")
                             //记录停止标签
                             then.req.session.stopLabel=stopLabel;
+
                             //停止标签存在，同时查看是否有自定义标签(自定义标签记录到customer中) 跳转finish
                             if(customerLabel!=""){
                                 console.log("ddd")
@@ -212,6 +213,9 @@ module.exports={
                         this.res.end();
                     }
                 }
+
+
+
             }else{
                 if(then.req.session.optionId){
                     if(then.req.session.isFinish){

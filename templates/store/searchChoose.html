@@ -10,12 +10,24 @@
     #c a{font-size: 70px; height: 120px; text-decoration: none;color: #000000;padding: 20 0 0 10}
     #ci{display: block}
 </style>
+<script type="text/javascript">
+    window.onload=function(){
+        var i="";
+        $("h3").click(function(){
+            if(i!= $(this).text()){
+                i= $(this).text();
+                $("h3").next().slideUp("normal");
+            }
+            $(this).next().slideToggle("normal");
 
+
+        })
+    }
+</script>
 <div id="accordion">
   <foreach for="{@provinceArr}" var="province" >
     <div id="bcity">
         <h3><a href="#">{@province}</a></h3>
-
         <div id="citys">
             <ul>
                 <foreach for="{@cityArr}" var="city">
@@ -33,17 +45,4 @@
   </foreach>
 </div>
 
-<script type="text/javascript">
-window.onload=function(){
-    var i="";
-    $("h3").click(function(){
-        if(i!= $(this).text()){
-           i= $(this).text();
-            $("h3").next().slideUp("normal");
-        }
-           $(this).next().slideToggle("normal");
 
-
-    })
-}
-</script>

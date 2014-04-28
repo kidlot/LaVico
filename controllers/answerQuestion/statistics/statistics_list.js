@@ -3,9 +3,7 @@ module.exports={
     view:"lavico/templates/answerQuestion/statistics/statistics_list.html",
     process:function(seed,nut){
         var then=this;
-
         var themeArr=[];
-
 
         helper.db.coll("lavico/themeQuestion").find({}).toArray(this.hold(function(err,doc){
             if(err) throw err;
@@ -57,7 +55,6 @@ module.exports={
         }))
 
         then.step(function(){
-
             pageSize=20
             page={}
             page.lastPage=themeArr.length%pageSize==0 ? parseInt(themeArr.length/pageSize) : parseInt(themeArr.length/pageSize)+1;

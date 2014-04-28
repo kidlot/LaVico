@@ -208,15 +208,13 @@ module.exports={
             view:"lavico/templates/answerQuestion/statistics/statistics_true_3.html",
             process:function(seed,nut){
 
-
-
                 var then=this;
                 var docs_themeQuestion3;
                 var _id=seed._id;
                 var finishMan=[];
                 try{
                     then.step(function(){
-                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0})
+                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,getLabel:"",getGift:"",compScore:""})
                             .toArray(then.hold(function(err,doc){
                                 for(var i in doc){
                                     var manInfo={};
@@ -335,16 +333,22 @@ module.exports={
                 });
 
                 then.step(function(){
-                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0})
+                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,getLabel:"",getGift:"",compScore:""})
                         .toArray(function(err,doc){
+                            console.log("doc:"+doc)
                             if(err) throw err;
                             var xinArr=[];
                             var all=0;
                             for(var i in docs_themeQuestion.scoreMinMax){
                                 for(var j in doc){
+                                    console.log("docs_themeQuestion.scoreMinMax[i].conditionMinScore:"+docs_themeQuestion.scoreMinMax[i].conditionMinScore);
+                                    console.log("doc[j].getChooseScore:"+doc[j].getChooseScore)
+                                    console.log("docs_themeQuestion.scoreMinMax[i].conditionMaxScore:"+docs_themeQuestion.scoreMinMax[i].conditionMaxScore);
+
                                     if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=doc[j].getChooseScore &&
                                         doc[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore)
                                     {
+                                        console.log("ok");
                                         if(docs_themeQuestion.scoreMinMax[i].sinCount){
                                             docs_themeQuestion.scoreMinMax[i].sinCount++;
                                         }else{

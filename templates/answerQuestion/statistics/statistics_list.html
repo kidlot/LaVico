@@ -37,8 +37,10 @@
                     <td class="width50">完成率</td>
                     <td class="width150">操作</td>
                 </tr>
-            <foreach for="@docs" var="doc">
+            <foreach for="@docs" var="doc" key="key">
+
                 <tr class="borderBtm">
+
                     <td class="width250"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
                     <td class="width50" id="openClose">
                         <if condition="{@doc.isOpen}">

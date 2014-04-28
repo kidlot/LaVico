@@ -1,39 +1,45 @@
+/*
+  author:json
+  description:add reedem(添加公告)
+ */
 var middleware = require('../../lib/middleware.js');
 module.exports={
     layout: "welab/Layout",
     view:"lavico/templates/reedem/addReedem.html",
     process:function(seed,nut){
-        var perPage = 1000;
-        var pageNum = seed.page ? seed.page : 1;
-
         var then = this;
+        var list;
         //Coupon/Promotions:券表
         this.step(function(doc){
-            middleware.request('Coupon/Promotions',{
-                perPage:perPage,
-                pageNum:pageNum
-            },this.hold(function(err,doc){
-                console.log("doc:"+doc)
-                doc = doc.replace(/[\n\r\t]/,'');
-                var doc_json = eval('(' + doc + ')');
+            //从接口读取所有活动券和面值
+            var perPage = 1000;
+            var pageNum = seed.page ? seed.page : 1;
+            var jsonData={};
+            jsonData.perPage=10000;
+            jsonData.pageNum=seed.page ? seed.page : 1;
+            middleware.request('Coupon/Promotions',jsonData,
+                this.hold(function(err,doc){
+                    doc = doc.replace(/[\n\r\t]/,'');
+                    var doc_json = eval('(' + doc + ')');
 
-                var page = {};
-                page.lastPage = Math.ceil(doc_json.total/perPage);
-                page.currentPage = pageNum;
-                page.totalcount = doc_json.total;
-                nut.model.page = page;
+                    var page = {};
+                    page.lastPage = Math.ceil(doc_json.total/perPage);
+                    page.currentPage = pageNum;
+                    page.totalcount = doc_json.total;
+                    nut.model.page = page;
 
-                if(doc_json && doc_json.list){
-                    return doc_json.list;
-                }else{
-                    return {};
-                }
-            }))
+                    if(doc_json && doc_json.list){
+                        return doc_json.list;
+                    }else{
+                        return {};
+                    }
+                })
+            )
         });
-        //lavico/activity:接口：活动表
-        var list;
+
         this.step(function(doc){
             var count = 0;
+            //查找活动表对应的券图和描述
             for(var i=0;i<doc.length;i++){
                 (function(i){
                     helper.db.coll("lavico/activity").findOne({aid:doc[i].PROMOTION_CODE},then.hold(function(err,detail){
@@ -57,13 +63,13 @@ module.exports={
                 })(i);
             }
         });
+
         this.step(function(list){
-            //console.log(list)
-            //doc = JSON.stringify(list);
             nut.model.list = list;
         });
     },
     actions:{
+
         save:{
             layout: "welab/Layout",
             view:"lavico/templates/reedem/updateReedem.html",
@@ -184,6 +190,26 @@ module.exports={
             }
         },
         update:{
+            process:function(seed,nut){
+                nut.view.disable();
+                var postData = JSON.parse(seed.postData);
+                console.log(seed.postData)
+                if(postData.length == 0 ){
+                    nut.message("保存失败。数据不能为空",null,'error') ;
+                    return;
+                }
+
+                helper.db.coll("lavico/reddem").update({_id:helper.db.id(seed._id)},postData,{multi:false,upsert:true},this.hold(function(err,doc){
+                    if(err){
+                        throw err;
+                    }else{
+                        nut.message("保存成功",null,'success') ;
+                    }
+                }));
+            }
+        },
+
+        insert:{
 
             process:function(seed,nut){
                 nut.view.disable();
@@ -211,8 +237,7 @@ module.exports={
                         nut.message("保存成功",null,'success') ;
                     }
                 }));
-                 */
-
+                */
             }
         }
     },

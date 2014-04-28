@@ -1,0 +1,43 @@
+var middleware = require('../../lib/middleware.js');
+module.exports={
+    layout: null,
+    view:"lavico/templates/store/currentCustomerLocation.html",
+    process:function(seed,nut){
+    },
+    actions:{
+        currentCity:{
+            layout:null,
+            view:"lavico/templates/store/currentCustomerLocation2.html",
+            process:function(seed,nut){
+                //接口读取门店列表(设置1000代表每页条数，即一次性全部返回)
+                this.step(function(){
+                    var jsonData={}
+                    jsonData.perPage=1000;
+                    jsonData.pageNum=1;
+                    //接口返回的doc都是字符串
+                    middleware.request('Shops',jsonData,
+                        this.hold(function(err,doc){
+                            if(err) throw err;
+                            return JSON.parse(doc);//注意字符串和对象格式
+                        })
+                    )
+                })
+
+                var list1=[];
+                this.step(function(doc){
+                    console.log("doc.list.length1:"+doc.list.length);
+                    var cityName=seed.city;
+                    for(var i=0;i<doc.list.length;i++){
+                        if(doc.list[i].CITY==cityName){
+
+                            list1.push(doc.list[i]);
+
+                        }
+                    }
+                    nut.model.city_docs=list1;
+                    nut.model.currentCityName=seed.city;
+                })
+            }
+        }
+    }
+}

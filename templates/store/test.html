@@ -1,0 +1,25 @@
+<script>
+    window.onload=function(){
+        if(document.cookie==""){
+            var date=new Date();
+            //data.setTime(date.geTime()+24*3600*1000);
+            //document.cookie="flag=true; expires="+date.toGMTString();
+            document.cookie="option=1";
+            document.cookie="themem=2";
+            alert(document.cookie);
+        }else{
+            document.cookie="chooseId=3";
+            alert(document.cookie);
+            $("input").attr("disabled","disabled")
+        }
+
+
+        $("input").click(function(){
+            $("input").attr("disabled","disabled")
+        })
+    }
+
+</script>
+<a href="/lavico/store/test1">go</a>
+<input type="radio" name="username" value="1">11
+<input type="radio" name="username" value="2">22

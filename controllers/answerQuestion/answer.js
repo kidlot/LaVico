@@ -10,7 +10,6 @@ module.exports={
 
     	this.step(function(){
         //判断活动是否开启或到期1-1
-            console.log(_id);
 	        helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
 	            if(err)throw err;
 	            beginTime=doc.beginTime;

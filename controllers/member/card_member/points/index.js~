@@ -1,0 +1,116 @@
+/**
+ * Created by David Xu on 3/14/2014.
+ * 会员 - 我的会员卡 - 积分明细
+ * 进入页面调用接口获取属于该用户的积分信息，含每笔明细，年度数据前台计算
+ * controllers/member/card_member/points/index.js
+ */
+
+var middleware = require('lavico/lib/middleware.js');//引入中间件
+
+module.exports = {
+    layout:null,
+    view:'lavico/templates/member/card_member/points/index.html',
+    process:function(seed, nut){
+
+        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
+        var member_id;
+        this.step(function(){
+            helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID ){
+                  member_id =  doc.HaiLanMemberInfo.memberID;
+                }
+            }));
+
+        });
+
+        //接口处理-个人积分接口
+        this.step(function(){
+        
+            
+              nut.model.wxid = wxid ;
+              nut.model.member_ID = member_id;
+
+           
+        
+              middleware.request( "Point/"+member_id,{
+
+               
+
+            },this.hold(function(err,doc){
+
+                var dataJson = JSON.parse(doc)
+                console.log(dataJson.point);
+                nut.model.remaining = dataJson.point;
+                //nut.model.remaining = dataJson.remaining;//当前积分
+                //nut.model.level = dataJson.level;//当前会员卡类型
+                //nut.model.log = dataJson.log;//当前会员的积分记录
+                //return dataJson;
+            }));
+        });
+
+      this.step(function(){
+            middleware.request( "Point/Log/"+member_id,{
+
+            
+
+            },this.hold(function(err,doc){
+
+                var dataJson = JSON.parse(doc);
+                /* {
+                      "log":[
+                          {
+                              "value":"1207",
+                              "time":"2014-03-06 00:00:00.0",
+                              "memo":"每满500减200"
+                          },
+                          {
+                              "value":"1207",
+                              "time":"2014-03-06 00:00:00.0",
+                              "memo":"每满500减200"
+                          },
+                          ... ...
+                      ],
+                      "total": 30,
+                      "perPage": 20,
+                      "pageNum": 20
+                  }
+                */
+                console.log(dataJson);
+
+                nut.model.log = dataJson.log;//当前会员的积分记录
+               
+            }));
+        });
+
+      
+
+
+    },
+    viewIn:function(){
+        //先判断是否存在微信ID参数
+        var wxid = $('#wxid').val();
+        if(wxid =='undefined'){
+            alert('请登陆微信后，查看本页面');
+            jQuery('.ocview').hide();
+        }
+        /*返回的个人积分的dataJson
+         {
+             "remaining":699,
+             "level":01,
+             "log":
+             [
+                 {"value":"-10","time":"2014-03-18 13:52:42.0","memo":""},
+                 {"value":"281","time":"2014-03-18 14:30:20.0","memo":""},
+                 {"value":"398","time":"2014-03-18 09:48:20.0","memo":"审核会员申请时自动插入"},
+                 {"value":"318","time":"2014-03-18 11:33:59.0","memo":""},
+                 {"value":"-318","time":"2014-03-18 13:06:24.0","memo":""},
+                 {"value":"10","time":"2014-03-18 22:16:38.0","memo":""},
+                 {"value":"20","time":"2014-03-18 22:25:24.0","memo":""}
+             ]
+         }
+         或
+         {"error":"指定的会员不存在"}
+         */
+
+    }
+}

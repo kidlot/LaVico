@@ -1,4 +1,8 @@
-var middleware = require('../../lib/middleware.js');
+/*
+  author json
+  description:(测试阶段-添加账户积分)
+ */
+var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
     layout: "welab/Layout",
     view:"lavico/templates/reedem/addCoin_Test.html",
@@ -6,42 +10,52 @@ module.exports={
 
     },
     actions:{
+        //提交加分
         submit:{
             layout: "welab/Layout",
             view:"lavico/templates/reedem/addCoin_Test.html",
-
             process:function(seed,nut){
-                nut.view.disable();
-                postDate=JSON.parse(seed.postDate)
-                console.log(seed.postDate)
                 this.step(function(){
-                    helper.db.coll("welab/customers").findOne({realname:postData.realName,mobile:postData.mobile},
+                    //根据姓名和电话查memberId
+                    helper.db.coll("welab/customers").findOne({realname:seed.realName,mobile:seed.mobile},
                         this.hold(function(err,result){
                             if(err) throw err;
                             if(result){
                                 return result.HaiLanMemberInfo.memberID
                             }
-                        }))
+                        })
+                    )
                 })
 
                 this.step(function(memberId){
-                    console.log(memberId)
-                    middleware.request('Point/Change',{
-                        memberId:memberId,
-                        qty:postDate.qty
-                    },this.hold(function(err,doc){
-                        write_info(this,"ok!");
-                    }))
+                    //根据memberId调用接口给账户加分
+                    var jsonData={};
+                    jsonData.memberId=memberId;
+                    jsonData.qty=seed.qty;
+                    middleware.request('Point/Change',jsonData,
+                        this.hold(function(err,doc){
+                            if(err) throw err;
+                            nut.message("添加完成",null,"success")
+                        })
+                    )
                 })
-
-
             }
         }
+    },
+    viewIn:function(){
+        $("#addCoin").click(function(){
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'realName',value:$("#realName").val()},
+                                 {name:'qty',value:$('#qty').val()},
+                                 {name:'mobile',value:$("#mobile").val()}];
+            alert(JSON.stringify(oLinkOptions.data));
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/reedem/addCoin_Test:submit";
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup();//调用welab前台提示控件
+            }) ;
+
+        })
     }
-}
-function write_info(then,info){
-    then.res.writeHead(200,{"Content-Type":"application/json"});
-    then.res.write(info);
-    then.res.end();
-    then.terminate();
 }

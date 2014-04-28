@@ -6,13 +6,15 @@
             <td class="width50">获得率</td>
         </tr>
         <foreach for="@docs_1.scoreMinMax" var="doc">
-            <tr class="borderBtm">
-                <td class="width250">{@doc.getLabel}</td>
-                <td class="width50">{@doc.sinCount}</td>
-                <td class="width50" name="alltd">
-                    {@parseInt(doc.sinCount/all*100)}%
-                </td>
-            </tr>
+            <if condition="@doc.getLabel!=''">
+                <tr class="borderBtm">
+                    <td class="width250">{@doc.getLabel}</td>
+                    <td class="width50">{@doc.sinCount}</td>
+                    <td class="width50" name="alltd">
+                        {@parseInt(doc.sinCount/all*100)}%
+                    </td>
+                </tr>
+            </if>
         </foreach>
     </table>
 </div>

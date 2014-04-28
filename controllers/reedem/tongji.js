@@ -12,12 +12,15 @@ module.exports={
                 if(doc){
                     tongJ.name=doc.name;
                     tongJ.needScore=doc.needScore;
+                    return doc.aid
                 }
             }))
         })
 
-        this.step(function(){
-            helper.db.coll("lavico/exchangeRecord").count({reddem_id:reedem_id},this.hold(function(err,result){
+        this.step(function(aid){
+            console.log("aid:"+aid);
+            console.log("reedem_id:"+reedem_id);
+            helper.db.coll("lavico/exchangeRecord").count({reddem_id:reedem_id,aid:aid},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
                     tongJ.count=result;

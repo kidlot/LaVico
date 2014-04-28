@@ -1,48 +1,93 @@
+<style>
+    *{padding: 0px;margin: 0px;}
+    #contit{width: 100%;background-color: lightgoldenrodyellow; height: 100px;line-height: 100px; font-size: 40px;}
+    #menu{width: 100%;overflow: hidden; border-bottom: 1px solid #e8e8e8;list-style: none;}
+    #canExchange{width: 50%;background-color: #e8e8e8;height: 150px;}
+    #cannotExchange{width: 50%;height: 150px;}
+    #canExchange,#cannotExchange{float: left;text-align: center;line-height: 150px; font-size: 40px;}
+    #canExchange a,#cannotExchange a{text-decoration: none;color:#808080;display: block;width: 100%;height: 100%}
+    #content{width: 100%;}
+    #can,#notcan{width: 100%;}
+    #notcan{display: none;}
+</style>
+<script>
+window.onload=function(){
+     $("#canExchange").click(function(){
+         $("#can").show();
+         $("#notcan").hide();
+         $(this).css("backgroundColor","#e8e8e8");
+         $("#cannotExchange").css("backgroundColor","white")
+     })
+    $("#cannotExchange").click(function(){
+        $("#can").hide();
+        $("#notcan").show();
+        $("#canExchange").css("backgroundColor","white");
+        $(this).css("backgroundColor","#e8e8e8")
+    })
+}
+</script>
+<div id="contit">
 目前可用积分：
 <if condition="{@$helper.gt(reedemJson.point,0)}">
 +{@reedemJson.point}
 <else/>
 -{@reedemJson.point}
 </if>
-<br/>
+</div>
 
-<strong>可兑换</strong>
-<ul style="list-style: none">
-    <foreach for="@reedemJson.canUse" var="canUseOne">
-    <li>
-        <div style="width: 250px; overflow: hidden;border: 1px solid gray">
-            <div style="width: 80px; float: left;height: 80; border: 1px solid red"><img src="{@canUseOne.smallPic}" name="smallPic" width="80" height="80"></div>
-            <div style="width: 160px; float: left;height: 80px;border:1px solid blue">{@canUseOne.name}<br/>
-                {@canUseOne.introduction}<br/>
-                所需积分：{@canUseOne.needScore}<br/>
-                剩余数量：{@canUseOne.stillUse}
-            </div>
-            <div style="clear: both;width: 300px; height: 100">
-                <a href="#"  name="se">礼品介绍及兑换细则</a>
-                <a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"  name="nowGet">立即兑换</a>
-            </div>
-        </div>
-    </li>
-    </foreach>
-</ul>
 
-<strong>暂不可兑换</strong>
-<ul style="list-style: none">
-    <foreach for="@reedemJson.noCanUse" var="canUseOne">
-        <li>
-            <div style="width: 250px; overflow: hidden;border: 1px solid gray">
-                <div style="width: 80px; float: left;height: 80; border: 1px solid red"><img src="{@canUseOne.smallPic}" name="smallPic" width="80" height="80"></div>
-                <div style="width: 160px; float: left;height: 80px;border:1px solid blue">{@canUseOne.name}<br/>
-                    {@canUseOne.introduction}<br/>
-                    所需积分：{@canUseOne.needScore}<br/>
-                    剩余数量：{@canUseOne.stillUse}
-                </div>
-                <div style="clear: both;width: 300px; height: 100">
-                    <a href="#" name="se">礼品介绍及兑换细则</a>
-                    <a href="#"  name="nowGet">立即兑换</a>
-                </div>
-            </div>
-        </li>
-    </foreach>
+<ul id="menu">
+    <li id="canExchange"><a href="javascript:" id="cana">可兑换</a></li>
+    <li id="cannotExchange"><a href="javascript:">不可兑换</a></li>
 </ul>
+<div id="content">
+    <div id="can">
+        <ul style="list-style: none">
+            <foreach for="@reedemJson.canUse" var="canUseOne">
+                <li>
+                    <div style="overflow: hidden;border: 1px solid gray">
+                        <div style="width: 180px; float: left;height: 180; border: 1px solid #808080;margin: 30 0 0 30; border: 1px solid grey"><img src="{@canUseOne.smallPic}" name="smallPic" width="180" height="180"></div>
+                        <div style="width: 500px; float: left;font-size: 30px;margin: 30 0 0 20">
+                            {@canUseOne.name}<br/>
+                            {@canUseOne.introduction}<br/>
+                            所需积分：{@canUseOne.needScore}<br/>
+                            剩余数量：{@canUseOne.stillUse}
+                        </div>
+                        <div style="clear: both;width:100%; height: 100px;padding: 20 0 0 30; ">
+                            <a href="#"  name="se" style="color: #000000;font-size: 30px">礼品介绍及兑换细则</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a style="color: #000000;font-size: 30px" href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"  name="nowGet">立即兑换</a>
+                        </div>
+                    </div>
+                </li>
+            </foreach>
+        </ul>
+    </div>
+    <div id="notcan">
+        <ul style="list-style: none">
+            <foreach for="@reedemJson.noCanUse" var="canUseOne">
+                <li>
+                    <div style="overflow: hidden;border: 1px solid gray">
+                        <div style="width: 180px; float: left;height: 180; border: 1px solid #808080;margin: 30 0 0 30; border: 1px solid grey"><img src="{@canUseOne.smallPic}" name="smallPic" width="180" height="180"></div>
+                        <div style="width: 500px; float: left;font-size: 30px;margin: 30 0 0 20">
+                            {@canUseOne.name}<br/>
+                            {@canUseOne.introduction}<br/>
+                            所需积分：{@canUseOne.needScore}<br/>
+                            剩余数量：{@canUseOne.stillUse}
+                        </div>
+                        <div style="clear: both;width:100%; height: 100px;padding: 20 0 0 30; ">
+                            <a href="#"  name="se" style="color: #000000;font-size: 30px">礼品介绍及兑换细则</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        </div>
+                    </div>
+                </li>
+            </foreach>
+        </ul>
+
+    </div>
+</div>
+
+
+
+
+
 

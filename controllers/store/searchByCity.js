@@ -1,3 +1,7 @@
+/*
+   author:json
+   desciption:show store list by appoint city(按指定城市选择门店列表)
+ */
 var middleware = require('../../lib/middleware.js');
 module.exports={
     layout: null,
@@ -41,7 +45,7 @@ module.exports={
         provinceArr[31] = ['台湾省'];
         provinceArr[32] = ['香港特别行政区'];
         provinceArr[33] = ['澳门特别行政区'];
-//市县,每个数组第一个元素为省份,其他的为这个省份下的市县
+        //市县,每个数组第一个元素为省份,其他的为这个省份下的市县
         var cityArr = [];
         cityArr[0] = ['北京市','北京市'];
         cityArr[1] = ['天津市','天津市'];
@@ -80,87 +84,73 @@ module.exports={
 
         nut.model.provinceArr=provinceArr;
         nut.model.cityArr=cityArr;
-
     },
     actions:{
+        //显示具体门店
         show:{
             layout: null,
             view:"lavico/templates/store/showStoreDetail.html",
             process:function(seed,nut){
+                //获取CODE-取消最后一个自添加1
                 var cityCode=seed.CODE.substring(0,seed.CODE.length-1);
 
-                var perPage=1000;
-                var pageNum=1;
+                //接口读取门店列表(设置1000代表每页条数，即一次性全部返回)
                 this.step(function(){
-                    middleware.request('Shops',
-                        {
-                            perPage:perPage,
-                            pageNum:pageNum,
-                        },
+                    var jsonData={}
+                    jsonData.perPage=1000;
+                    jsonData.pageNum=1;
+                    middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
-                            return doc
-                        }))
+                            if(err) throw err;
+                            return JSON.parse(doc);//接口返回的都是字符串式json
+                        })
+                    )
                 })
 
                 this.step(function(doc){
-
-                    doc=JSON.parse(doc);
-                    var searchCity;
+                    //在接口列表中查找seed传送过来的cityCode
                     for(var i=0;i<doc.list.length;i++){
                         if(doc.list[i].CODE==cityCode){
-                            searchCity=doc.list[i];
+                            //return searchCity=doc.list[i];//返回指定门店
+                            nut.model.searchCity=doc.list[i];
                             break;
                         }
                     }
-                    return searchCity;
                 })
 
-                this.step(function(searchCity){
-                    console.log("searchOne:"+JSON.stringify(searchCity));
-                     nut.model.searchCity=searchCity;
-                })
             }
         },
+        //搜索门店列表
         search:{
-            layout: null,
+            layout:null,
             view:"lavico/templates/store/showCity.html",
             process:function(seed,nut){
                 var then=this;
                 var cityName= seed.city.substring(0,seed.city.length-1);
 
-                    var perPage=1000;
-                    var pageNum=1;
-                    this.step(function(){
-                        middleware.request('Shops',
-                            {
-                                perPage:perPage,
-                                pageNum:pageNum,
-                            },
-                            then.hold(function(err,doc){
-                                return doc
-                            }))
-                    })
+                this.step(function(){
+                    var jsonData={};
+                    jsonData.perPage=1000;
+                    jsonData.pageNum=1;
+                    middleware.request('Shops',jsonData,
+                        then.hold(function(err,doc){
+                            if(err) throw err;
+                            return JSON.parse(doc);
+                        })
+                    )
+                })
 
-                    this.step(function(doc){
-
-                        doc=JSON.parse(doc);
-                        var searchCity=[]
-                        for(var i=0;i<doc.list.length;i++){
-                            if(doc.list[i].CITY==cityName){
-                                searchCity.push(doc.list[i]);
-                            }
+                this.step(function(doc){
+                    var searchCity=[]
+                    for(var i=0;i<doc.list.length;i++){
+                        if(doc.list[i].CITY==cityName){
+                            searchCity.push(doc.list[i]);
                         }
-                        return searchCity;
-                    })
-
-                    this.step(function(searchCity){
-                        console.log("searchCity:"+JSON.stringify(searchCity));
-                        if(searchCity.length>0){
-                            nut.model.city_docs=searchCity;
-                        }
-                    })
-
-
+                    }
+                    if(searchCity.length>0){
+                        nut.model.city_docs=searchCity;
+                    }
+                })
             }
         }
     }

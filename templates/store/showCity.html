@@ -1,8 +1,13 @@
-
-<ul style="list-style: none;">
-    <foreach for="{@city_docs}" var="docs">
-    <li style="border: 1px solid gray;width: 300px; height: 130px; cursor:hand;">
-        <a  style="display: block; text-decoration: none;color:#000000" href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@docs.CODE}1'">
+<style>
+    *{padding: 0px;margin: 0px;}
+    ul{list-style: none;width: 100%;}
+    ul li{border-bottom: 1px solid gray; width: 100%; padding: 20px;font-size: 40px;line-height: 50px;}
+    ul li a{display: block; width:99%; text-decoration: none;color:#000000;}
+</style>
+<ul>
+    <foreach for="{@city_docs}" var="docs" key="key">
+    <li style="background-color: {@key%2==0?'lightgoldenrodyellow':'white'}">
+        <a  href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@docs.CODE}1'">
             <strong>{@docs.NAME}</strong><br>
             商店名称:{@docs.ADDR}<br>
             商店电话:{@docs.TEL}<br>
