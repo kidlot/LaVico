@@ -75,55 +75,11 @@ function build(){
         var arr=arrCookie[i].split("=");
         if(arr[1]==jsonObject.optionId){
             $("h1").html("您已经答过此题!");
-            var arr2= arrCookie[0].split("+");
-            //alert(arr2)
-           // alert(arr2[1])
-            var chooseId=arr2[1];
-            //alert(chooseId);
-
-
-            if($("input[type=redio]")){
-                alert("true")
-            }else
-            {
-                alert("false")
-            }
-
-            $("input[type=redio]").eq(1).attr("checked",true);
-            //$("input").attr("disabled","disabled");
-        }
-
-    }
-
-
-    /*
-    alert(document.cookies);
-    if(document.cookies==""){
-        var date=new Date();
-        date.setTime(date.getTime()+24*3600*1000);
-        //document.cookie="title="+jsonObject.title+"; expires="+date.toGMTString();
-        document.cookie="A=B; expires="+date.toGMTString();
-
-    }else{
-        var strCookie=document.cookie;
-        var arrCookie=strCookie.split("; ");
-        var userId,title;
-        for(var i=0;i<arrCookie.length;i++){
-            var arr=arrCookie[i].split("=");
-            name=arr[0];
-            title=arr[1];
-            alert(title);
-            alert(jsonObject.title)
-                if(title==jsonObject.title){
-                    alert("ok")
-                    $("input").attr("disabled","disabled")
-                    break;
-                }
+            //var arr2= arrCookie[0].split("+");
+            //var chooseId=arr2[1];
+            //("input[type=redio]").eq(1).attr("checked",true);
         }
     }
-    */
-
-
 
 
     //当前显示编号是否已经至最后一题，显示“下一题”或“完成”
@@ -143,32 +99,9 @@ function showCorrent(){
     //追加cookie
     var date=new Date();
     date.setTime(date.getTime()+24*3600*1000);
-    //alert($("input").val());
-    //alert(jsonObject.optionId);
+
     var v=$("input").val();
     document.cookie="val="+escape(v)+",optionId="+escape(jsonObject.optionId)+",expires="+escape(date.toGMTString());
-
-    /*
-    var strCookie=document.cookie;
-    var arrCookie=strCookie.split("; ");
-    var userId,title,allTit="";
-    for(var i=0;i<arrCookie.length;i++){
-        var arr=arrCookie[i].split("=");
-        name=arr[0];
-        title=arr[1];
-
-        if(name!="expires")
-            allTit+=name+"="+title+"; ";
-
-        var date=new Date();
-        date.setTime(date.getTime()+24*3600*1000);
-        alert(allTit);
-        //var subTitle= strCookie.substring(0,strCookie.lastIndexOf("; "));
-        document.cookies=allTit+"title="+jsonObject.title+"; expires="+date.toGMTString();
-        //var aa=allTit+"title="+jsonObject.title+"; expires="+date.toGMTString();
-        alert("aa");
-        alert(document.cookie)
-    */
 
 }
 
@@ -184,7 +117,6 @@ function finish(){
         var content=$("textarea[name='descContent']").val();
 
         //跳转“答案记录题”
-
         location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&finish=true&score="+
                 jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content;
     }else{
@@ -228,7 +160,6 @@ function nextChoose(){
         //获取主观题内容
 		var content=$("textarea[name='descContent']").val();
         //跳转主观题记录页面--传送内容:积分&题组号&题目号&回复内容
-
 
 		location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&score="+jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+
                 "&receiveAnswer="+content;

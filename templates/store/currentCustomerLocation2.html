@@ -4,7 +4,7 @@
     ul li{border-bottom: 1px solid gray; width: 100%; padding: 20px;font-size: 40px;line-height: 50px;}
     ul li a{display: block; width:99%; text-decoration: none;color:#000000;}
 </style>
-<div>你所在城市：<span id="demo">{@currentCityName}</span>&nbsp;<a href="/lavico/store/searchByCity">查找其他城市</a></div>
+<div>看到的城市为：<span id="demo">上海</span>&nbsp;<a href="/lavico/store/searchByCity">查找其他城市</a></div>
 <ul>
     <foreach for="{@city_docs}" var="docs" key="key">
         <li style="background-color: {@key%2==0?'lightgoldenrodyellow':'white'}">

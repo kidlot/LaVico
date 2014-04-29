@@ -12,8 +12,7 @@ function showPosition(position){
     //获取城市
     var wd=position.coords.latitude
     var jd=position.coords.longitude
-    //alert(wd)
-    //alert(jd)
+
     $.get("http://maps.google.com/maps/api/geocode/xml?latlng="+position.coords.latitude+","+position.coords.longitude+"&language=zh-CN&sensor=false",
     function(result){
         city=result.substr(result.indexOf("<formatted_address>")+21,8);
