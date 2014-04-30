@@ -10,7 +10,9 @@ module.exports={
 
         var list = {};
         helper.db.coll("lavico/reddem").find({}).sort({createTime:-1}).page(perPage,pageNum,then.hold(function(err,page){
+            if(err) throw err;
             list = page
+
             for (var i=0;i<page.docs.length;i++)
             {
                 if(new Date().getTime() < list.docs[i].startDate){
@@ -32,14 +34,13 @@ module.exports={
                 for(var i=0;i<list.docs.length;i++){
                     (function(i){
                         middleware.request('Coupon/Promotions',{
-                            perPage:perPage,
-                            pageNum:pageNum,
+                            perPage:1000,
+                            pageNum:1,
                             code:list.docs[i].aid
                         },then.hold(function(err,doc){
                             doc = doc.replace(/[\n\r\t]/,'');
                             var doc_json = eval('(' + doc + ')');
                             for(var o in doc_json.list[0]){
-
                                 list.docs[i][o] = doc_json.list[0][o];
                             }
                         }))
@@ -53,7 +54,6 @@ module.exports={
                 (function(doc){
                     helper.db.coll("lavico/exchangeRecord").find({reddem_id:doc._id.toString()}).count(then.hold(function(err,result){
                         if(err) throw err;
-                        console.log("result:"+result)
                         if(result){
                             doc.allExchangeCount=result;
                         }else{

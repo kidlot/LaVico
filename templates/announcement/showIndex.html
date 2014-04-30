@@ -1,14 +1,16 @@
 <style>
+    *{margin: 0px; padding: 0px;}
+    div{width: 100%;}
     a{text-decoration: none;}
-    ul{list-style: none; width: 200px; display:}
-    ul li{border: 1px solid gray; padding: 8px;}
-    ul a{display: block; width:200px;color:black;font-size:14px;}
+    ul{list-style: none; width: 100%; display:}
+    ul li{border: 1px solid gray; padding: 8px; height: 150px; background-color: lightgoldenrodyellow;}
+    ul a{display: block; width:100%;color:black;font-size:45px;margin: 20 0 0 20;}
 </style>
 <div>
     <ul>
         <foreach for="@docs" var="doc">
             <li>
-               <a href="/lavico/announcement/showDetails?_id={@doc._id}"> {@doc.title}<br/>{@doc.createTime}</a>
+                <a href="/lavico/announcement/showIndex:show?_id={@doc._id}"> <strong> {@doc.title}<br/>{@doc.createTime}</strong></a>
             </li>
         </foreach>
     </ul>

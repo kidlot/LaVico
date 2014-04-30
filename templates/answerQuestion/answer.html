@@ -1,7 +1,8 @@
 <style>
     ul{list-style: none}
 </style>
-<script type="text/javascript">
+
+<script>
 var jsonObject=JSON.parse('{@option}');//获取此题
 var _id='{@_id}';//获取题ID
 var optionCount={@optionCount};//获取题组总题数
@@ -9,8 +10,10 @@ var wechatid='{@wechatid}';//获取微信ID
 
 //初始化事件
 function build(){
+
     //添加标题显示
     $(".title").append(jsonObject.title);
+
     //判断是否为“主观题”
     if(jsonObject.type==2){
         $(".content").append("<textarea cols='30' rows='5' name='descContent'></textarea>");
@@ -63,7 +66,23 @@ function build(){
             }
         }
 	}
-	//当前显示编号是否已经至最后一题，显示“下一题”或“完成”
+
+//判断开还关
+    //alert(document.cookie);
+    var strCookie=document.cookie;
+    var arrCookie=strCookie.split(",");
+    for(var i=0;i<arrCookie.length;i++){
+        var arr=arrCookie[i].split("=");
+        if(arr[1]==jsonObject.optionId){
+            $("h1").html("您已经答过此题!");
+            //var arr2= arrCookie[0].split("+");
+            //var chooseId=arr2[1];
+            //("input[type=redio]").eq(1).attr("checked",true);
+        }
+    }
+
+
+    //当前显示编号是否已经至最后一题，显示“下一题”或“完成”
     if(jsonObject.optionId<optionCount){
         $('.btn').append('<input type="button" name="next" value="下一题" onclick="nextChoose()">');
     }else{
@@ -76,6 +95,14 @@ function showCorrent(){
     //<span name='correntImg'>
     $("span[name='correntImg']").show();
     $("input[name='singleChooseInput']").attr("disabled",true);
+
+    //追加cookie
+    var date=new Date();
+    date.setTime(date.getTime()+24*3600*1000);
+
+    var v=$("input").val();
+    document.cookie="val="+escape(v)+",optionId="+escape(jsonObject.optionId)+",expires="+escape(date.toGMTString());
+
 }
 
 //finish完成按钮“触发"事件
@@ -88,6 +115,7 @@ function finish(){
     if(jsonObject.type==2){
         //获取填写值
         var content=$("textarea[name='descContent']").val();
+
         //跳转“答案记录题”
         location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&finish=true&score="+
                 jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content;
@@ -113,6 +141,7 @@ function finish(){
                 if(!isNaN(parseInt(valueArr[2])))
                     score+=parseInt(valueArr[2]);//累计选项积分
             });
+
             location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=1&optionId="+
                     valueArr[0]+"&_id="+_id+"&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3];
         }
@@ -131,6 +160,7 @@ function nextChoose(){
         //获取主观题内容
 		var content=$("textarea[name='descContent']").val();
         //跳转主观题记录页面--传送内容:积分&题组号&题目号&回复内容
+
 		location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&score="+jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+
                 "&receiveAnswer="+content;
     }else if($("input[name='singleChooseInput']").length>0){
@@ -164,7 +194,7 @@ function nextChoose(){
 
 window.onload=build;
 </script>
-
+<h3></h3>
 <div>
     题目名称:<span class="title">&nbsp;</span>
     <div class="content">

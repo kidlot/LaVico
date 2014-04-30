@@ -1,0 +1,37 @@
+<script>
+var city;
+window.onload=function(){
+    //获取坐标
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }else{
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+function showPosition(position){
+    //获取城市
+    var wd=position.coords.latitude
+    var jd=position.coords.longitude
+
+    $.get("http://maps.google.com/maps/api/geocode/xml?latlng="+position.coords.latitude+","+position.coords.longitude+"&language=zh-CN&sensor=false",
+    function(result){
+        city=result.substr(result.indexOf("<formatted_address>")+21,8);
+
+        if(parseInt(city.indexOf("省"))>0){
+            //直辖市
+            //浙江省宁波市象山29.557537|121.897874
+            city=city.substr(city.indexOf("市")+1,2)
+        }else{
+            //中国上海市
+            city=city.substr(city.indexOf("国")+1,2)
+        }
+        //$("#demo").html(city);
+        //alert(city)
+        location.href="/lavico/store/currentCustomerLocation:currentCity?city="+city
+
+    },"text")
+}
+
+</script>
+
+

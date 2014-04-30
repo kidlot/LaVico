@@ -204,12 +204,12 @@
                                 <div name="labTip" class="labTip">标注标签:<input value="{@dc.customerLabel}" type="text" name="txtLab" class="form-control input-sm" style="width: 100px"></div>
                                 <div class="pic">
                                     <br/><br/>
-                                        <span name="pic">
-                                             <input type="hidden" name="uploadFile" value="{@dc.uploadFile}"/>
-                                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
-                                        </span>
+                                    <span name="pic">
+                                         <input type="hidden" name="uploadFile" value="{@dc.uploadFile}"/>
+                                         <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                    </span>
                                 </div>
-                                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                <div style='float:left;width:90px;height:60px;display:{@dc.uploadFile==""?"none":"block"}' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="{@dc.uploadFile}">
                                             <span style="margin-top: 41px;float: right;">
@@ -225,7 +225,7 @@
                     </ul>
 
                     <div class="threeLine">
-                        <input type="button" name="btnAddChoose" class="addChoose" value="添加选项" onclick="addOptions(this)">
+                        <input type="button" name="btnAddChoose" class="btn btn-embossed btn-primary addChoose" value="添加选项" onclick="addOptions(this)">
                     </div>
                 </div>
                 <div name="mutilWDiv" id="hiddenContainer">
@@ -246,7 +246,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                 </div>
-                                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -272,7 +272,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                 </div>
-                                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -298,7 +298,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                 </div>
-                                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -324,7 +324,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                 </div>
-                                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -336,7 +336,7 @@
                         </li>
                     </ul>
                     <div class="threeLine">
-                        <input type="button" name="btnAddChoose" class="addChoose" value="添加选项" onclick="addMutilChoose(this)">
+                        <input type="button" name="btnAddChoose" class="btn btn-embossed btn-primary addChoose" value="添加选项" onclick="addMutilChoose(this)">
                     </div>
                 </div id="hiddenContainer">
                 <div name="simpleAnswer" id="hiddenContainer">
@@ -391,7 +391,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -420,7 +420,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -449,7 +449,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -478,7 +478,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -491,7 +491,7 @@
                         </ul>
 
                         <div class="threeLine">
-                            <input type="button" name="btnAddChoose" class="addChoose" value="添加选项" onclick="addOptions(this)">
+                            <input type="button" name="btnAddChoose" class="btn btn-embossed btn-primary addChoose" value="添加选项" onclick="addOptions(this)">
                         </div>
                     </div>
                     <div name="mutilWDiv" >
@@ -520,7 +520,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:{@dc.uploadFile==""?"none":"block"}' name='divImg'' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="@dc.uploadFile">
                                             <span style="margin-top: 41px;float: right;">
@@ -534,7 +534,7 @@
 
                         </ul>
                         <div class="threeLine">
-                            <input type="button" name="btnAddChoose" class="addChoose" value="添加选项" onclick="addMutilChoose(this)">
+                            <input type="button" name="btnAddChoose" class="btn btn-embossed btn-primary addChoose" value="添加选项" onclick="addMutilChoose(this)">
                         </div>
                     </div id="hiddenContainer">
                     <div name="simpleAnswer" id="hiddenContainer">
@@ -588,7 +588,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -617,7 +617,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -646,7 +646,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -675,7 +675,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -688,7 +688,7 @@
                         </ul>
 
                         <div class="threeLine">
-                            <input type="button" name="btnAddChoose" class="addChoose" value="添加选项" onclick="addOptions(this)">
+                            <input type="button" name="btnAddChoose" class="btn btn-embossed btn-primary addChoose" value="添加选项" onclick="addOptions(this)">
                         </div>
                     </div>
                     <div name="mutilWDiv" id="hiddenContainer">
@@ -709,7 +709,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -735,7 +735,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -761,7 +761,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -787,7 +787,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                                     </div>
-                                    <div style='float:left;width:90px;height:60px;' name='divImg' >
+                                    <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -799,7 +799,7 @@
                             </li>
                         </ul>
                         <div class="threeLine">
-                            <input type="button" name="btnAddChoose" class="addChoose" value="添加选项" onclick="addMutilChoose(this)">
+                            <input type="button" name="btnAddChoose" class="btn btn-embossed btn-primary addChoose" value="添加选项" onclick="addMutilChoose(this)">
                         </div>
                     </div id="hiddenContainer">
                     <div name="simpleAnswer" >
@@ -832,11 +832,16 @@
                         <div name="scoreMinMaxOne">
                             <strong>条件:</strong>低分值:<input value='{@doc.conditionMinScore}' type='text' name='conditionMinScore' class="form-control input-sm" style="width: 50px">
                             ~ 高分值:<input type='text' name='conditionMaxScore' value='{@doc.conditionMaxScore}' class="form-control input-sm" style="width: 50px">
-                            <strong>设置标签:</strong><input type='text' value='{@doc.conditionMaxScore}' name='conditionLabel'><br/>
+                            <strong>设置标签:</strong><input type='text' value='{@doc.conditionLabel}' name='conditionLabel'><br/>
                             <strong>结果:</strong>所获标签:<input type='text' value='{@doc.getLabel}' name='getLabel' class="form-control input-sm" style="width: 150px">
                             所获积分:<input type='text' name='getScore' value='{@doc.getScore}' class="form-control input-sm" style="width: 150px"> 所获奖券:
-                            <input type='text' name='getActivities' value='{@doc.getActivities}' class="form-control input-sm" style="width: 150px">
-                            <input type='button' value='delete'  name='delSetGift' onclick='setGiftDel(this)' class="btn btn-embossed btn-primary btnsearch">
+                            <select name="getActivities"  class="form-control input-sm" style="width: 150px">
+                                <foreach for="{@doc_json.list}" var="docListOne">
+                                    <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
+                                </foreach>
+                            </select>
+                            <!--<input type='text' name='getActivities' value='{@doc.getActivities}' class="form-control input-sm" style="width: 150px">-->
+                            <!--<input type='button' value='delete'  name='delSetGift' onclick='setGiftDel(this)' class="btn btn-embossed btn-primary btnsearch">-->
                         </div>
                     </div>
 
@@ -873,7 +878,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
             </div>
-            <div style='float:left;width:90px;height:60px;' name='divImg' >
+            <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -901,7 +906,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
             </div>
-            <div style='float:left;width:90px;height:60px;' name='divImg' >
+            <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -948,7 +953,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                 </div>
-                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -977,7 +982,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                 </div>
-                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -1006,7 +1011,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                 </div>
-                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -1035,7 +1040,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                 </div>
-                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -1069,7 +1074,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                 </div>
-                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -1095,7 +1100,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                 </div>
-                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -1121,7 +1126,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                 </div>
-                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -1147,7 +1152,7 @@
                                              <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
                                         </span>
                 </div>
-                <div style='float:left;width:90px;height:60px;' name='divImg' >
+                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
                                         <span name='upPic'>
                                             <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
                                             <span style="margin-top: 41px;float: right;">
@@ -1187,8 +1192,13 @@
             <strong>设置标签:</strong><input type='text' name='conditionLabel'><br/>
             <strong>结果:</strong>所获标签:<input type='text' name='getLabel' class="form-control input-sm" style="width: 150px">
             所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px"> 所获奖券:
-            <input type='text' name='getActivities' class="form-control input-sm" style="width: 150px">
-            <input type='button' value='delete' name='delSetGift' onclick='setGiftDel(this)' class="btn btn-embossed btn-primary btnsearch">
+            <select name="getActivities"  class="form-control input-sm" style="width: 150px">
+                <foreach for="{@doc_json.list}" var="docListOne">
+                    <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
+                </foreach>
+            </select>
+            <!--<input type='text' name='getActivities' class="form-control input-sm" style="width: 150px">-->
+            <!--<input type='button' value='delete' name='delSetGift' onclick='setGiftDel(this)' class="btn btn-embossed btn-primary btnsearch">-->
         </div>
     </div>
 </div>

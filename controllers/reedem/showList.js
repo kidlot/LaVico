@@ -7,8 +7,10 @@ module.exports={
         var then =this;
 
         this.step(function(){
+
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
+
                 if(result){
                     return result.HaiLanMemberInfo.memberID;
                 }else{
@@ -24,7 +26,7 @@ module.exports={
                 //memberId=9123084
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
                         if(err) throw err;
-                        //console.log(result);
+
                         var resultJson=JSON.parse(result)
                         if(resultJson.point){
                            return [resultJson.point,memberId]//json数组双传值，数组格式
@@ -38,8 +40,7 @@ module.exports={
         });
 
         this.step(function(resultPoint){
-            //console.log(resultPoint[0])
-            //console.log("memberId:"+resultPoint[1])
+
             reedemJson.point=resultPoint[0]
             helper.db.coll("lavico/reddem").find({}).toArray(this.hold(function(err,result){
                 if(err) throw err;
@@ -49,7 +50,7 @@ module.exports={
                     if(resultPoint[0]>result[i].needScore){
 
                         (function(i){
-                            //console.log("result[i].aid:"+result[i].aid)
+
                             middleware.request('Coupon/Promotions',{
                                 perPage:10000,
                                 pageNum:1,
@@ -79,6 +80,7 @@ module.exports={
                             },then.hold(function(err,doc){
                                 if(err) throw err;
                                 if(doc){
+                                    //console.log(doc)
                                     var resultJson=JSON.parse(doc)
                                     var stillUse=resultJson.list[0].coupons[0].COUNT-resultJson.list[0].coupons[0].USED;
                                     if(stillUse>0){
@@ -98,7 +100,7 @@ module.exports={
             }))
         })
         this.step(function(){
-            //console.log(reedemJson);
+
             nut.model.reedemJson=reedemJson;
         })
 
@@ -111,18 +113,20 @@ module.exports={
                 var wechatId=seed.wechatId;//微信ID
                 var memberId=seed.memberId;//会员ID
                 var point=seed.point;//你的总积分
-                var aid=seed.aid;//券ID
+                var aid=seed.aid;//券ID(PROMOTION_CODE)
                 var id=seed._id;//数据记录ID
                 var needScore=seed.needScore;//所需扣积分
 
                 var t_name,QTY;
+
+
 
                 //判断
                 //活动时间范围判断
                 this.step(function(){
                     helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(id)},this.hold(function(err,result){
                         if(err) throw err;
-                        //console.log("result:"+result)
+
                         if(result){
                             QTY=result.QTY
                             var currentTime=new Date().getTime();
@@ -153,6 +157,7 @@ module.exports={
                 })
 
                 var count=0;
+
                 this.step(function(lottery){
                     var start_time;
                     var now_timestamp = new Date().getTime();
@@ -167,7 +172,9 @@ module.exports={
                     }else{
                         write_info(then,'{"result":"something error"}');
                     }
-                    helper.db.coll('lavico/exchangeRecord').count({wechatId:wechatId,aid:aid,createTime:{$gte:start_time}},this.hold(function(err,doc){
+
+                    helper.db.coll('lavico/exchangeRecord').count({wechatId:wechatId,aid:aid,createDate:{$gte:start_time}},
+                        this.hold(function(err,doc){
                         count = doc;
                         return lottery;
                     }));
@@ -175,29 +182,68 @@ module.exports={
                 })
 
                 this.step(function(lottery){
-
                     if(count >=lottery[1]){
-                        write_info(this,'{"result":"<script>alert(很抱歉!此此周期的兑奖机会已经用完);history.back()</script>"}');
+                        nut.view.disable();
+                        write_info_text(this,"<h2 style='text-align: center;font-size: 40px'>sorry,you have not chance Please wait for the next<a href='#'>back</a></h2>");
+                        this.terminate();
                     }
                 })
 
                 this.step(function(){
                     //提交给接口
-                    middleware.request('Point/Change',{
-                        memberId:memberId,
-                        qty:0-needScore
-                    },this.hold(function(err,doc){
+                    console.log("wechatId:"+wechatId)//不删
+                    //拿优惠券
+                    var params={};
+                    params.meno='积分兑换-'+t_name;
+                    params.openid=wechatId;
+                    params.otherPromId=id;
+                    params.PROMOTION_CODE='CQL201312230001';//aid
+                    //params.qty=QTY;
+                    params.point=0-needScore;
+
+                    middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
                         if(err) throw err;
-                        if(doc.success){
-                            console.log("接口CRM扣分成功");
+                        console.log("doc:"+doc)//不删
+
+                        var docJson=JSON.parse(doc)
+                        if(docJson.success){
+
+                            return docJson
                         }else{
-                            console.log(doc.err);
+
+                            write_info_text(this,doc.err)
                         }
                     }))
+
                 });
 
+                /*
+                var coupon_no="";
+                this.step(function(docJson){
 
-                this.step(function(){
+                    if(docJson.success){
+                        //减积分
+                        middleware.request('Point/Change',{
+                            memberId:memberId,
+                            qty:0-needScore
+                        },this.hold(function(err,doc){
+
+                            if(err) throw err;
+
+                            var doc=JSON.parse(doc)
+                            if(doc.success){
+                                console.log("接口CRM扣分成功");
+                                coupon_no=docJson.coupon_no;
+                            }else{
+                                console.log(doc.err);
+                            }
+                        }))
+                    }
+                })
+                */
+
+
+                this.step(function(docJson){
                     //记录数据库
                     var record={};
                     record.wechatId=wechatId;
@@ -208,6 +254,7 @@ module.exports={
                     record.createDate=new Date().getTime();
                     record.name=t_name;
                     record.QTY=QTY
+                    record.codeByCRM=docJson.coupon_no
 
                     helper.db.coll('welab/customers').update({wechatid:wechatId},{$addToSet:{reedem:record}},function(err,doc){
                     })
@@ -243,7 +290,7 @@ module.exports={
                 })
 
                 this.step(function(record){
-                    console.log(record)
+
                     nut.model.record=record;
                 })
 
@@ -254,6 +301,13 @@ module.exports={
 }
 function write_info(then,info){
     then.res.writeHead(200,{"Content-Type":"application/json"});
+    then.res.write(info);
+    then.res.end();
+    then.terminate();
+}
+
+function write_info_text(then,info){
+    then.res.writeHead(200,{"Content-Type":"text/html"});
     then.res.write(info);
     then.res.end();
     then.terminate();

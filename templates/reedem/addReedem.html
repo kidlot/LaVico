@@ -87,7 +87,7 @@
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">券面值</label>
                                             <div class="col-sm-10">
-                                                <input type="text" id="QTY" readonly="readonly" value="{@coupons.QTY}" class="form-control postData" style="width:150px;display:inline-block">
+                                                <input type="text" id="QTY" readonly="readonly"  value="{@coupons.QTY}" class="form-control postData" style="width:150px;display:inline-block;color:#000000">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -109,7 +109,7 @@
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">礼品描述</label>
                                             <div class="col-sm-10">
-                                                <input id="introduction" type="text" readonly="readonly" val="{@coupons.introduction}" class="form-control postData" style="width:250px;height:80px;display:inline-block">
+                                                <input id="introduction" type="text" readonly="readonly" val="{@coupons.introduction}" class="form-control postData" style="width:250px;height:80px;display:inline-block;color:#000000">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -169,13 +169,12 @@
 <script>
 var aid=0;
 window.onload = function(){
-
     $('#activity_select').change(function(){
         aid = $(this).val();
         $(".promotion_detail").css('display','none');
         $("#"+$(this).val()).css('display','block');
-        ///lavico/activity/index:modify_html?aid={@doc.PROMOTION_CODE}
-        $("a[id=showDetails]").attr("href","/lavico/activity/index:modify_html?aid="+aid)
+//        $("a[id=showDetails]").attr("href","/lavico/activity/index:modify_html?aid="+aid)
+        $("a[id=showDetails]").attr("href","/lavico/reedem/addReedem:modify_html?aid="+aid)
     });
 }
 
@@ -326,7 +325,7 @@ function save ( ){
         var oLinkOptions = {} ;
         oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
         oLinkOptions.type = "POST";
-        oLinkOptions.url = "/lavico/reedem/addReedem:update";
+        oLinkOptions.url = "/lavico/reedem/addReedem:insert";
 
         $.request(oLinkOptions,function(err,nut){
             if(err) throw err ;

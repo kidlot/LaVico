@@ -1,0 +1,48 @@
+<style>
+    *{margin: 0px; padding: 0px;}
+    #accordion{width: 100%;}
+    #bcity{border: 1px solid #e8e8e8;width: 100%;}
+    h3{background-color:lightgoldenrodyellow;height: 120px; padding: 10 0 0 10}
+    h3 a{font-size: 80px; text-decoration: none;color: #000000}
+    #citys{width: 100%;display: none;}
+    #citys ul{list-style: none;}
+    #c{border: 1px solid darkgray;padding-left: 20px;}
+    #c a{font-size: 70px; height: 120px; text-decoration: none;color: #000000;padding: 20 0 0 10}
+    #ci{display: block}
+</style>
+<script type="text/javascript">
+    window.onload=function(){
+        var i="";
+        $("h3").click(function(){
+            if(i!= $(this).text()){
+                i= $(this).text();
+                $("h3").next().slideUp("normal");
+            }
+            $(this).next().slideToggle("normal");
+
+
+        })
+    }
+</script>
+<div id="accordion">
+  <foreach for="{@provinceArr}" var="province" >
+    <div id="bcity">
+        <h3><a href="#">{@province}</a></h3>
+        <div id="citys">
+            <ul>
+                <foreach for="{@cityArr}" var="city">
+                <if condition="{@city[0]==province}">
+                    <foreach for="{@city}" var="cityOne" key="key">
+                        <if condition="@key!=0">
+                            <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}" id="ci">{@cityOne}</a></li>
+                        </if>
+                    </foreach>
+                </if>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+  </foreach>
+</div>
+
+

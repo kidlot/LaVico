@@ -146,7 +146,7 @@ $(function () {
             //获得积分
             var getScore=$fcount.find("input[name='getScore']:eq("+v+")").val();
             //获得活动编号
-            var getActivities=$fcount.find("input[name='getActivities']:eq("+v+")").val();
+            var getActivities=$fcount.find("select[name='getActivities']:eq("+v+")").val();
 
             jsonData+="conditionMinScore:'"+conditionSmallScore+"',conditionMaxScore:'"+
                 conditionBigScore+"',conditionLabel:'"+conditionLabel+"',getLabel:'"+getLabel+"',getScore:'"+

@@ -22,7 +22,7 @@
     <div name="title" style="padding: 10px;">
         <div class="height35">
             <input type="button" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">所有问答测试</span>
-            <input type="button" value="新增题目" name="btnSave" class="btn btn-embossed btn-primary" style="float: right; margin-left: 300px;">        </div>
+            <a href="/lavico/answerQuestion/question/addQuestion"  name="btnSave" class="btn btn-embossed btn-primary" style="float: right; margin-left: 300px;">新增题目</a>
     </div>
     <div nam="main">
         <div name="getMember" class="maginTop20">
@@ -33,14 +33,16 @@
                     <td class="width50">开始时间</td>
                     <td class="width50">结束时间</td>
                     <td class="width50">类型</td>
-                    <td class="width100">完成/参与</td>
+                    <td class="width50">完/参</td>
                     <td class="width50">完成率</td>
                     <td class="width150">操作</td>
                 </tr>
-            <foreach for="@docs" var="doc">
+            <foreach for="@docs" var="doc" key="key">
+
                 <tr class="borderBtm">
-                    <td class="width250"><a href="statistics_true?_id=123">{@doc.theme}</a></td>
-                    <td class="width50">
+
+                    <td class="width250"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
+                    <td class="width50" id="openClose">
                         <if condition="{@doc.isOpen}">
                             进行中
                         <else/>
@@ -58,29 +60,77 @@
                             调查题
                         </if>
                     </td>
-                    <td class="width100">&nbsp;&nbsp;{@doc.finishCount}/{@doc.totalPop}</td>
-                    <td class="width50">50%</td>
+                    <td class="width50">&nbsp;&nbsp;{@doc.finishCount}/{@doc.totalPop}</td>
+                    <td style="width: 30px">
+                     <if condition="{@doc.totalPop==0}">
+                        0%
+                     <else/>
+                        {@(parseInt(doc.finishCount)/parseInt(doc.totalPop))*100}%
+                     </if>
+                    </td>
                     <td class="width150">
                         <input type="hidden" name="_id" value="{@doc.themeId}"/>
-                        <div style="float:left">
-                            <if condition="{@doc.isOpen==1}">
-                                <input type="button" name="btnOpenClose" value="开">
-                            <else/>
-                                <input type="button" name="btnOpenClose" value="关">
-                            </if>
-                            <input type="button" name="btnStatistics" value="统计">
+                        <div style="float:left; padding-top: 20px;">
+
+                            <div class="switch has-switch way">
+                                <if condition="{@doc.isOpen==1}">
+                                    <div class="switch-animate switch-off" data="{@ doc._id}" onclick="audioClick(this)">
+                                        <input type="checkbox" data-toggle="switch">
+                                        <span class="switch-left">关</span>
+                                        <label>&nbsp;</label>
+                                        <span class="switch-right">开</span>
+                                    </div>
+                                <else/>
+                                    <div class="switch-animate switch-on" data="{@ doc._id}" onclick="audioClick(this)">
+                                        <input type="checkbox" data-toggle="switch">
+                                        <span class="switch-left">关</span>
+                                        <label>&nbsp;</label>
+                                        <span class="switch-right">开</span>
+                                    </div>
+                                </if>
+                            </div>
+
+                            <input type="button"  class="btn btn-xs btn-primary mhm" style=" margin-top: -18px"  name="btnStatistics"  value="统计">
                             <input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}"
                         </div>
-                        <div style="float:left">
+                        <div style="float:left; padding-top: 25px;">
                             <input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
                         </div>
                     </td>
                 </tr>
             </foreach>
             </table>
-            <div>
-                <span>223条记录</span>
-            </div>
+            <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@docs" model.url="/lavico/answerQuestion/statistics/statistics_list?page=%pagenum%" /></div>
         </div>
     </div>
 </div>
+
+<script>
+    function audioClick(o){
+        var flag = '';
+        if ($(o).hasClass("switch-off")){
+            $(o).removeClass("switch-off")
+            $(o).addClass("switch-on")
+            flag = 'on'; //  开
+            $("#openClose").html("进行中")
+
+        }else{
+            $(o).addClass("switch-off")
+            $(o).removeClass("switch-on")
+            flag = 'off'; // 关
+            $("#openClose").html("已关闭")
+
+        }
+
+        if(flag){
+            var id=$("input[name=_id]").val()
+            $.get("/lavico/answerQuestion/statistics/statistics_list:close",{_id:id},function(result){
+                //location.href='/lavico/answerQuestion/statistics/statistics_list';
+            })
+
+        }
+
+
+
+    }
+</script>

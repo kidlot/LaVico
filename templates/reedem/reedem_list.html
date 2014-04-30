@@ -13,7 +13,7 @@
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th style="width: 350px;">名称</th>
+                <th style="width: 150px;">名称</th>
                 <th style="width: 80px;">状态</th>
                 <th style="width: 50px;">开始时间</th>
                 <th style="width: 50px;">结束时间</th>
@@ -21,15 +21,13 @@
                 <th style="width: 50px;">剩余/总数</th>
                 <th style="width: 30px;">所需积分</th>
                 <th style="width: 50px;">兑换人数</th>
-                <th></th>
-                <th>操作</th>
-                <th></th>
+                <th style="width: 100px;">操作</th>
             </tr>
             </thead>
             <tbody>
             <foreach for="@list.docs" var="doc">
                 <tr>
-                    <td><a href="/lavico/reedem/addReedem:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
+                    <td style="width: 150px;"><a href="/lavico/reedem/addReedem:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
                     <td id="docstatus">{@ doc.status}</td>
                     <td>{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}</td>
@@ -51,22 +49,19 @@
                     <td>
                         {@doc.allExchangeCount}
                     </td>
-                    <td>
+                    <td style="width: 100px;">
                         <div class="switch has-switch way">
                             <div class="switch-animate switch-{@ doc.switcher}" data="{@ doc._id}" onclick="audioClick(this)">
                                 <input type="checkbox" data-toggle="switch">
                                 <span class="switch-left">关</span>
                                 <label>&nbsp;</label>
-                                <span class="switch-right">开</span></div>
-
+                                <span class="switch-right">开</span>
+                            </div>
                         </div>
-                    </td>
-                    <td>
-                        <a href="tongji?reedem_id={@doc._id}" class="btn btn-xs btn-primary mhm">统计</a>
-                    </td>
-                    <td>
+                        <a href="tongji?reedem_id={@doc._id}" class="btn btn-xs btn-primary mhm" style="margin: 5 0 5 10">统计</a>
                         <a href="reedem_list:del?_id={@doc._id}" class="btn btn-xs btn-primary mhm ">删除</a>
                     </td>
+
                 </tr>
             </foreach>
             </tbody>

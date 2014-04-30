@@ -9,7 +9,11 @@
                 $(".wd").append("<li>恭喜你获得:"+receiveResult[i].getScore+"积分</li>");
             }
             if(receiveResult[i].getActivities!="" &&  typeof(receiveResult[i].getScore)!= "undefined"){
-                $(".wd").append("<li>恭喜你获得:"+receiveResult[i].getActivities+"奖券</li>");
+                if({@err}){
+                    $(".wd").append("<li>恭喜你获得:{@errString}奖券</li>");
+                }else{
+                    $(".wd").append("<li>{@errString}</li>")
+                }
             }
         }
     }

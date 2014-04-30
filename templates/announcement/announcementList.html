@@ -1,3 +1,34 @@
+<script>
+    function audioClick(o){
+        var flag = '';
+        if ($(o).hasClass("switch-off")){
+            $(o).removeClass("switch-off")
+            $(o).addClass("switch-on")
+            flag = 'on'; //  开
+            $("#openClose").html("进行中")
+
+        }else{
+            $(o).addClass("switch-off")
+            $(o).removeClass("switch-on")
+            flag = 'off'; // 关
+            $("#openClose").html("已关闭")
+        }
+
+        if(flag){
+            var id=$(o).attr("data")
+
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'_id',value:id}];
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/announcement/announcementIndex:close";
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup();//调用welab前台提示控件
+            }) ;
+
+        }
+    }
+</script>
 <table class="table table-hover" id="tagList">
     <tr>
         <th style="width:200px">名称</th>
@@ -9,18 +40,30 @@
         <td><input type="hidden" name="anno_id" value="{@doc._id}"><a href="/lavico/announcement/updateAnnouncement?id={@doc._id}" style="text-decoration: underline">{@doc.title}</a></td>
         <td>{@doc.createTime}</td>
         <td>
-            <div style="float:left">
-                <if condition="{@doc.isOpen}">
-                    <input type="button" name="btnOpenClose" value="开">
-                <else/>
-                    <input type="button" name="btnOpenClose" value="关">
+            <div class="switch has-switch way">
+                <if condition="{@doc.isOpen==1}">
+                    <div class="switch-animate switch-off" data="{@doc._id.toString()}" onclick="audioClick(this)">
+                        <input type="checkbox" data-toggle="switch">
+                        <span class="switch-left">关</span>
+                        <label>&nbsp;</label>
+                        <span class="switch-right">开</span>
+                    </div>
+                    <else/>
+                    <div class="switch-animate switch-on" data="{@doc._id.toString()}" onclick="audioClick(this)">
+                        <input type="checkbox" data-toggle="switch">
+                        <span class="switch-left">关</span>
+                        <label>&nbsp;</label>
+                        <span class="switch-right">开</span>
+                    </div>
                 </if>
             </div>
-            <div style="float:left">
-                <input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
+            <div style="float:right">
+                <input type="image" data="{@doc._id.toString()}" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
             </div>
         </td>
     </tr>
     </foreach>
 </table>
 <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/announcement/announcementIndex:page?page=%pagenum%" />
+
+

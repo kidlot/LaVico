@@ -136,7 +136,7 @@ $(function () {
             //获得积分
             var getScore=$fcount.find("input[name='getScore']:eq("+v+")").val();
             //获得活动编号
-            var getActivities=$fcount.find("input[name='getActivities']:eq("+v+")").val();
+            var getActivities=$fcount.find("select[name='getActivities']:eq("+v+")").val();
 
             jsonData+="conditionMinScore:'"+conditionSmallScore+"',conditionMaxScore:'"+
                 conditionBigScore+"',conditionLabel:'"+conditionLabel+"',getLabel:'"+getLabel+"',getScore:'"+
@@ -151,6 +151,7 @@ $(function () {
             data:{_id:$("input[name=_id]").val(),json:jsonData}
         }).done(function(msg){
                 alert("成功");
+                location.href="/lavico/answerQuestion/question/updateQuestion?_id="+$("input[name=_id]").val()
             });
     });
 });
@@ -206,16 +207,17 @@ function uploadCanceled(evt) {
 }
 //删除图片
 function delPic (then){
-
+    $(then).parent().parent().parent().hide();
+    $(then).parent().parent().parent().prev().find("input[name='uploadFile']").val("")
     var oLinkOptions = {} ;
     oLinkOptions.data = [];
-    //alert($(then).parent().prev().attr("src"));
+
     oLinkOptions.data.push({name:"pic",value:$(then).parent().prev().attr("src")});
     oLinkOptions.type = "POST";
     oLinkOptions.url = "/welab/Uploadify:delpic";
 
 
-    $(picShowDisc).parent().parent().find("div[name='divImg']").hide();
+
 
 
     $.request(oLinkOptions,function(err,nut){

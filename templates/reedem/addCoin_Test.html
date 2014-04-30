@@ -1,17 +1,5 @@
-<script>
-window.onload=function(){
-   $("#addCoin").click(function(){
-       var arr={};
-       arr["memberId"]=$("#memberId").val();
-       arr["qty"]=$('#qty').val();
-       $.get("/lavico/reedem/addCoin_Test:submit",{postDate:JSON.stringify(arr)},function(result){
-           $("span").html("OK");
-
-       })
-   })
-}
-</script>
-会员编号:<input type="text" id="memberId"><br/>
+会员姓名:<input type="text" id="realName"><br/>
+会员手机:<input type="text" id="mobile"><br/>
 添加积分:<input type="text" id="qty"><br/>
 <button id="addCoin">添加</button>
-<span></span>
+<span id="ok"></span>
