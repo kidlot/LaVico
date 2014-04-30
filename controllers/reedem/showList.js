@@ -1,4 +1,4 @@
-var middleware = require('../../lib/middleware.js');
+var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
     layout: null,
     view:"lavico/templates/reedem/showList.html",
@@ -7,32 +7,29 @@ module.exports={
         var then =this;
 
         this.step(function(){
-
+            //查找此会员是否存在
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
-
                 if(result){
-                    return result.HaiLanMemberInfo.memberID;
+                    return result.HaiLanMemberInfo.memberID;//获取会员ID
                 }else{
-                    write_info(then,"您的访问不对请和核查访问方式![缺少wechatId]")
-                    this.terminate();
+                    nut.disable();
+                    write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
                 }
             }))
         });
 
         this.step(function(memberId){
-            //nut.model.memberId=memberId;
+            //调用接口:获取会员积分
             if(memberId){
-                //memberId=9123084
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
                         if(err) throw err;
-
-                        var resultJson=JSON.parse(result)
-                        if(resultJson.point){
-                           return [resultJson.point,memberId]//json数组双传值，数组格式
+                        if(result){
+                            var resultJson=JSON.parse(result);
+                            return [resultJson.point,memberId]//json数组双传值，数组格式
                         }else{
-                           throw resultJson.err;
-                           this.terminate();
+                            nut.disable();
+                            write_info(then,"没有查到您的积分，请联系我们");
                         }
                     })
                 )
@@ -40,17 +37,16 @@ module.exports={
         });
 
         this.step(function(resultPoint){
-
+            //查找积分兑换表,获取所有所有兑换商品
             reedemJson.point=resultPoint[0]
             helper.db.coll("lavico/reddem").find({}).toArray(this.hold(function(err,result){
                 if(err) throw err;
-                reedemJson.canUse=[]
-                reedemJson.noCanUse=[]
+                reedemJson.canUse=[];//可兑换商品数组
+                reedemJson.noCanUse=[];//不可兑换商品数组
                 for(var i=0;i<result.length;i++){
                     if(resultPoint[0]>result[i].needScore){
-
+                        //调用接口：查找所有可兑换券
                         (function(i){
-
                             middleware.request('Coupon/Promotions',{
                                 perPage:10000,
                                 pageNum:1,
@@ -59,19 +55,22 @@ module.exports={
                                 if(err) throw err;
                                 if(doc){
                                     var resultJson=JSON.parse(doc)
-                                    //console.log("doc:"+doc)
-                                    var stillUse=resultJson.list[0].coupons[0].COUNT-resultJson.list[0].coupons[0].USED;
+                                    var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
+                                    //还有剩余票可用
                                     if(stillUse>0){
-                                        result[i].stillUse=stillUse
+                                        result[i].stillUse=stillUse;
                                         result[i].memberId=resultPoint[1];
-                                        result[i].wechatId=seed.wechatId
-                                        reedemJson.canUse.push(result[i])
+                                        result[i].wechatId=seed.wechatId;
+                                        reedemJson.canUse.push(result[i]);//追加数组
                                     }
+                                }else{
+                                    nut.disable();
+                                    write_info_text(then,"商家没有提供可兑换券");
                                 }
                             }))
                         })(i)
-
                     }else{
+                        //调用接口：查找所有券
                         (function(i){
                             middleware.request('Coupon/Promotions',{
                                 perPage:10000,
@@ -80,32 +79,29 @@ module.exports={
                             },then.hold(function(err,doc){
                                 if(err) throw err;
                                 if(doc){
-                                    //console.log(doc)
                                     var resultJson=JSON.parse(doc)
-                                    var stillUse=resultJson.list[0].coupons[0].COUNT-resultJson.list[0].coupons[0].USED;
+                                    var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;
                                     if(stillUse>0){
-                                        result[i].stillUse=stillUse
+                                        result[i].stillUse=stillUse;
                                         result[i].memberId=resultPoint[1];
-                                        result[i].wechatId=seed.wechatId
-                                        reedemJson.noCanUse.push(result[i])
+                                        result[i].wechatId=seed.wechatId;
+                                        reedemJson.noCanUse.push(result[i]);//分数过大的追加不可兑换数组
                                     }
                                 }
                             }))
                         })(i)
-
 
                     }
                 }
-
             }))
         })
         this.step(function(){
-
             nut.model.reedemJson=reedemJson;
         })
 
     },
     actions:{
+        //兑换
         exchange:{
             layout: null,
             view:"lavico/templates/reedem/exchangeOk.html",
@@ -116,77 +112,45 @@ module.exports={
                 var aid=seed.aid;//券ID(PROMOTION_CODE)
                 var id=seed._id;//数据记录ID
                 var needScore=seed.needScore;//所需扣积分
-
+                var then=this;
                 var t_name,QTY;
-
-
 
                 //判断
                 //活动时间范围判断
                 this.step(function(){
                     helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(id)},this.hold(function(err,result){
                         if(err) throw err;
-
                         if(result){
-                            QTY=result.QTY
+                            QTY=result.QTY;//面值
+                            t_name=result.name;//商品名
                             var currentTime=new Date().getTime();
                             if(currentTime<result.startDate || currentTime>result.endDate){
                                 //超出
-                                nut.write("<script>alert('很抱歉！此活动已经下架，请重新选择');history.back();</script>")
-                                this.ternimate();
+                                nut.disable();
+                                write_info_text(then,'sorry很抱歉！此活动已经下架');
                             }else{
                                 if(result.switcher=="Off" || result.switcher=="off"){
-                                    nut.write("<script>alert('很抱歉！此活动关闭中，请重新选择');history.back();</script>")
-                                    this.ternimate();
+                                    nut.disable();//不返回模板
+                                    write_info_text(then,'sorry很抱歉！此活动关闭中，请重新选择');
                                 }
                             }
                         }
                     }))
                 })
-
+                //是否已经兑换过
                 this.step(function(){
-                    helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(id)},this.hold(function(err,result){
-                        if(err)throw err;
-                        if(result){
-                            var lottery_cycle=result.lottery_cycle;
-                            var lottery_count=result.lottery_count;
-                            t_name=result.name;
-                            return [lottery_cycle,lottery_count];
-                        }
-                    }))
-                })
-
-                var count=0;
-
-                this.step(function(lottery){
-                    var start_time;
-                    var now_timestamp = new Date().getTime();
-                    if(lottery[0] == '1'){ // 自然天
-                        start_time = now_timestamp - ( now_timestamp % 86400000 );
-                    }else if(lottery[0] == '2'){// 自然周
-                        start_time = now_timestamp -86400000*(new Date().getDay()) - ( now_timestamp % 86400000 );
-                    }else if(lottery[0] == '3'){//自然月
-                        start_time = now_timestamp -86400000*(new Date().getDate()) - ( now_timestamp % 86400000 );
-                    }else if(lottery[0] == '100'){//永久
-                        start_time = 0;
-                    }else{
-                        write_info(then,'{"result":"something error"}');
-                    }
-
-                    helper.db.coll('lavico/exchangeRecord').count({wechatId:wechatId,aid:aid,createDate:{$gte:start_time}},
-                        this.hold(function(err,doc){
-                        count = doc;
-                        return lottery;
-                    }));
-
-                })
-
-                this.step(function(lottery){
-                    if(count >=lottery[1]){
-                        nut.view.disable();
-                        write_info_text(this,"<h2 style='text-align: center;font-size: 40px'>sorry,you have not chance Please wait for the next<a href='#'>back</a></h2>");
-                        this.terminate();
-                    }
+                    var jsonData={};
+                    jsonData.wechatId=wechatId;
+                    jsonData.aid=aid;
+                    helper.db.coll("lavico/exchangeRecord").findOne(jsonData,
+                        this.hold(function(err,result){
+                            if(err)throw err;
+                            if(result){
+                                nut.disable();//不返回模板
+                                write_info_text(then,'sorry很抱歉！很抱歉您已经兑换过此商品');
+                            }
+                        })
+                    )
                 })
 
                 this.step(function(){
@@ -197,76 +161,52 @@ module.exports={
                     params.meno='积分兑换-'+t_name;
                     params.openid=wechatId;
                     params.otherPromId=id;
-                    params.PROMOTION_CODE='CQL201312230001';//aid
-                    //params.qty=QTY;
+                    params.PROMOTION_CODE='CQL201404280005';//aid:测试号
                     params.point=0-needScore;
-
+                    //调用接口：提交扣除积分和兑换奖券
                     middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
                         if(err) throw err;
                         console.log("doc:"+doc)//不删
-
                         var docJson=JSON.parse(doc)
                         if(docJson.success){
-
+                            //返回true，表成功兑换，返回券值
                             return docJson
                         }else{
-
-                            write_info_text(this,doc.err)
+                            nut.disable();
+                            write_info_text(then,'sorry很抱歉！此商品暂停兑换');
                         }
                     }))
-
                 });
 
-                /*
-                var coupon_no="";
                 this.step(function(docJson){
-
-                    if(docJson.success){
-                        //减积分
-                        middleware.request('Point/Change',{
-                            memberId:memberId,
-                            qty:0-needScore
-                        },this.hold(function(err,doc){
-
+                    //把兑换记录，记录至数据库
+                    if(docJson){
+                        var record={};
+                        record.wechatId=wechatId;
+                        record.aid=aid;//p_code
+                        record.reddem_id=seed._id;
+                        record.needScore=needScore;
+                        record.memberId=memberId;
+                        record.createDate=new Date().getTime();
+                        record.name=t_name;
+                        record.QTY=QTY;
+                        record.codeByCRM=docJson.coupon_no;//接口返回的券号
+                        //记录会员表
+                        helper.db.coll('welab/customers').update({wechatid:wechatId},{$addToSet:{reedem:record}},function(err,doc){
+                        })
+                        //记录兑换表
+                        helper.db.coll("lavico/exchangeRecord").insert(record,this.hold(function(err,result){
                             if(err) throw err;
-
-                            var doc=JSON.parse(doc)
-                            if(doc.success){
-                                console.log("接口CRM扣分成功");
-                                coupon_no=docJson.coupon_no;
-                            }else{
-                                console.log(doc.err);
-                            }
+                            return record;//return只能放在hold
                         }))
+                    }else{
+                        nut.disable();
+                        write_info_text(then,'数据错误1');
                     }
-                })
-                */
-
-
-                this.step(function(docJson){
-                    //记录数据库
-                    var record={};
-                    record.wechatId=wechatId;
-                    record.aid=aid;
-                    record.reddem_id=seed._id;
-                    record.needScore=needScore;
-                    record.memberId=memberId;
-                    record.createDate=new Date().getTime();
-                    record.name=t_name;
-                    record.QTY=QTY
-                    record.codeByCRM=docJson.coupon_no
-
-                    helper.db.coll('welab/customers').update({wechatid:wechatId},{$addToSet:{reedem:record}},function(err,doc){
-                    })
-
-                    helper.db.coll("lavico/exchangeRecord").insert(record,this.hold(function(err,result){
-                        if(err) throw err;
-                        return record;//return只能放在hold
-                    }))
                 })
 
                 this.step(function(record){
-                    //券图 名称
+                    //根据券号，查找券名和大小图片
                     helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(record.reddem_id)},this.hold(function(err,result){
                         if(err) throw err;
                         if(result){
@@ -274,6 +214,9 @@ module.exports={
                             record.bigPic=result.bigPic;
                             record.name=result.name;
                             return record;
+                        }else{
+                            nut.disable();
+                            write_info_text(then,'数据错误2');
                         }
                     }))
                 })
@@ -290,7 +233,6 @@ module.exports={
                 })
 
                 this.step(function(record){
-
                     nut.model.record=record;
                 })
 
@@ -307,7 +249,7 @@ function write_info(then,info){
 }
 
 function write_info_text(then,info){
-    then.res.writeHead(200,{"Content-Type":"text/html"});
+    then.res.writeHead(200,{"Content-Type":"text/html;charset=utf-8"});
     then.res.write(info);
     then.res.end();
     then.terminate();

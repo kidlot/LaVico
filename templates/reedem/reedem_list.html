@@ -1,3 +1,4 @@
+
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
     <li class="b02"><a href="/lavico/reedem/addReedem" class="stay">新增内容</a> <em></em></li>
@@ -27,28 +28,14 @@
             <tbody>
             <foreach for="@list.docs" var="doc">
                 <tr>
-                    <td style="width: 150px;"><a href="/lavico/reedem/addReedem:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
-                    <td id="docstatus">{@ doc.status}</td>
+                    <td style="width: 150px;"><a href="/lavico/reedem/addReedem:modify_html?_id={@doc._id}" class='mhm stay'>{@doc.name}</a></td>
+                    <td id="docstatus">{@doc.status}</td>
                     <td>{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}</td>
-                    <td>
-                        <script type="template/script">
-                            var aList = []
-                            for(var i=0; i< doc.coupons.length ;i++){
-                                aList.push(doc.coupons[i].QTY)
-                            }
-                        </script>
-                        {@ aList}
-                    </td>
-                    <td>
-                        <foreach for='@doc.coupons' var='value' key="key">
-                             {@ value.COUNT-value.USED}/{@value.COUNT}
-                         </foreach>
-                    </td>
+                    <td>{@ doc.QTY}</td>
+                    <td>{@doc.TOTAL-doc.USED}/{@doc.TOTAL}</td>
                     <td>{@ doc.needScore}</td>
-                    <td>
-                        {@doc.allExchangeCount}
-                    </td>
+                    <td>{@doc.allExchangeCount}</td>
                     <td style="width: 100px;">
                         <div class="switch has-switch way">
                             <div class="switch-animate switch-{@ doc.switcher}" data="{@ doc._id}" onclick="audioClick(this)">
@@ -104,4 +91,5 @@
             });
         }
     }
+
 </script>

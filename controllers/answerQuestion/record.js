@@ -27,6 +27,7 @@ module.exports={
                 if(type==0){//单选
                    //积分在数字情况下记录
                    if(!isNaN(score)){
+                       console.log("AAA");
                        //session累加
                        then.req.session.scoreAll+=parseInt(score);
                        //记录积分
