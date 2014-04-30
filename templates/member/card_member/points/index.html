@@ -4,13 +4,21 @@
 
 <ul>
     <foreach for="@log" key="key">
-        <li style="list-style-type: none; border:1px solid #000; margin: 10px;padding:10px; max-width: 300px;">
-            <p>时间：{@log[key].time}</p>
-            <p>积分变动：{@log[key].value}</p>
-            <p>消费类型：{@log[key].MEMO}</p>
-            <p>source:{@log[key].source}</p>
-            <p>备注：{@log[key].meta}</p>
-        </li>
+        <if condition="{@log[key].type == 'data'}">
+            <li style="list-style-type: none; border:1px solid #000; margin: 10px;padding:10px; max-width: 300px;">
+                <p>时间：{@log[key].time}</p>
+                <p>积分变动：{@log[key].value}</p>
+                <p>消费类型：{@log[key].MEMO}</p>
+                <p>source:{@log[key].source}</p>
+                <p>备注：{@log[key].meta}</p>
+            </li>
+        <else/>
+            <li style="list-style-type: none; border:1px solid #000; margin: 10px;padding:10px; max-width: 300px; background:#ccc;">
+                <p>时间：{@log[key].time}</p>
+                <p>获得积分：{@log[key].sumGetPoint}</p>
+                <p>使用积分：{@log[key].sumUsedPoint}</p>
+            </li>
+        </if>
     </foreach>
 </ul>
 <br/>

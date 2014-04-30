@@ -81,7 +81,7 @@ module.exports = {
 
                 var newLog = new Array();
                 var dataJson = JSON.parse(doc);
-                console.log(dataJson);
+                //console.log(dataJson);
                 for(var i=0; i<dataJson.log.length; i++){
 
                     var _temp = dataJson.log[i];
@@ -103,46 +103,88 @@ module.exports = {
 
                     var _json = {
                         'MEMO' : _MEMO,
+                        'timestamp': dataJson.log[i].time,
                         'value' : _value,
                         'time'  : _time,
                         'source' : _source,
                         'meta' : dataJson.log[i].MEMO,
                         'year':_year,
                         'month':_month,
-                        'yearmonth':_year+'&'+_month,
-                        'type':'normal'
+                        'yearmonth':_year+'-'+_month,
+                        'type':'data'
                     };
                     newLog.push(_json);
 
                 }
-                console.log(newLog);
+                var _yearMonthLog = new Array();//标记年月，保存记录
 
-                var _sumGetPoint;
-                var _sumUsedPoint;
                 var _temp = newLog[0].yearmonth;
+                var _i = 0;
+
+                /*手机年月*/
                 for(var i=0; i < newLog.length; i++){
 
                     if(i == 0){
-                        _sumGetPoint = 0;
-                        _sumUsedPoint = 0;
+                        _yearMonthLog.push(newLog[i].yearmonth);
                     }else{
+                        if(!contains(_yearMonthLog,newLog[i].yearmonth)){
+                            _yearMonthLog.push(newLog[i].yearmonth);
+                        }
+                    }
+                }
 
-                        if(_temp == newLog[i].yearmonth){
+                /*数组排序*/
+                newLog.sort(function(a,b){return a['timestamp']<b['timestamp']?1:-1});
 
-                            if(){
+                /*产生数据*/
+                var yearMonthLog = new Array();
+                var _sumGetPoint = 0;//获得积分总计
+                var _sumUsedPoint = 0;//使用积分总计
+                for(var i=0; i < _yearMonthLog.length; i++){
 
+                    for(var j=0; j < newLog.length; j++){
+                        if(_yearMonthLog[i] == newLog[j].yearmonth){
+                            var _int = parseInt(newLog[j].value);
+                            //console.log('_int:'+_int);
+                            if(_int > 0 ){
+                                _sumGetPoint = _sumGetPoint + _int;
                             }else{
-
+                                _sumUsedPoint = _sumUsedPoint + _int;
                             }
-                            _sumGetPoint = eval(_sumGetPoint + newLog[i].value);
-
-                        }else{
-
-                            _temp = newLog[i].yearmonth;
-
                         }
                     }
 
+                    var _json = {
+                        'time':_yearMonthLog[i],
+                        'sumGetPoint':_sumGetPoint,
+                        'sumUsedPoint':-_sumUsedPoint,
+                        'type':'sum'
+                    };
+                    yearMonthLog.push(_json);
+
+                    _sumGetPoint = 0;
+                    _sumUsedPoint = 0;
+                }
+
+                /*合并两个数组*/
+                for(var i=0; i< newLog.length; i++){
+                    if(i==0){
+                        //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
+                        //console.log('newLog[i].yearmonth:'+newLog[i].yearmonth);
+                        if(yearMonthLog[0].time == newLog[i].yearmonth){
+                            newLog.splice(i,0,yearMonthLog[0]);
+                            yearMonthLog.shift();//删除已合并的元素
+                        }
+                    }else{
+                        if(yearMonthLog.length > 0){
+                            //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
+                            //console.log('newLog['+i+'].yearmonth:'+newLog[i].yearmonth);
+                            if(yearMonthLog[0].time == newLog[i].yearmonth){
+                                newLog.splice(i,0,yearMonthLog[0]);
+                                yearMonthLog.shift();//删除已合并的元素
+                            }
+                        }
+                    }
                 }
 
                 nut.model.dataJson = JSON.stringify(dataJson);
@@ -191,3 +233,13 @@ function   formatDate(now){
     var   second=now.getSeconds();
     return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
 }
+function contains(arr, obj) {
+    var i = arr.length;
+    while(i--){
+        if(arr[i] == obj){
+            return true;
+        }
+    }
+    return false;
+}
+

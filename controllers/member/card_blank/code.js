@@ -1,3 +1,4 @@
+var middleware = require('lavico/lib/middleware.js');//引入中间件
 module.exports = {
 	actions:{		
 		id_code:{
@@ -14,10 +15,29 @@ module.exports = {
             var id_code  =get_id_code();
             this.req.session.id_code = id_code;
             this.req.session.set_id_code_time = new Date().getTime();
+            //var userTel = seed.userTel;
+            //var userTel = '13964081593';
+            var userTel = '13816900290';
+            var userTelArray = ['13964081593'];
             console.log(id_code);
             then.res.writeHead(200, { 'Content-Type': 'text/plain' });
             then.res.write('{"result":"ok","id_code":"'+id_code+'"}');
-            then.res.end(); 
+
+            /*验证码发送到手机号码*/
+              /*
+              /System/SendSMS?mobile=13964081593&content=hi~~【郎维高LaVico】
+              * */
+            var _content = "您好，验证码为"+id_code+"，请在两分钟内填写，过期失效。";
+            for(var i=0;i<userTelArray.length;i++){
+                middleware.request( "System/SendSMS",{
+                        'mobile':userTelArray[i],
+                        'content':_content+"【郎维高LaVico】"
+                    },this.hold(
+                    function(err,doc){
+                        then.res.end();
+                    })
+                );
+            }
           }
 		    });
 		  }
