@@ -113,7 +113,7 @@
         <script>
 
             function search(){
-                window.location.href = "/lavico/reedem/tongji?reedem_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
+                window.location.href = "/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
             }
                 function btnsearch(obj){
                     var conditions = $(obj).searchConditions() ;
