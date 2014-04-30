@@ -93,7 +93,7 @@ module.exports = {
                 this.step(function(){
 
                     if(seed._id){
-                        conditions[seed.unwind+".aid"] = seed._id;
+                        conditions[seed.unwind+".reddem_id"] = seed._id;
                     }
 
                     var arrregateParams = [

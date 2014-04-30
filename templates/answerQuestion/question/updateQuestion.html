@@ -834,14 +834,17 @@
                             ~ 高分值:<input type='text' name='conditionMaxScore' value='{@doc.conditionMaxScore}' class="form-control input-sm" style="width: 50px">
                             <strong>设置标签:</strong><input type='text' value='{@doc.conditionLabel}' name='conditionLabel'><br/>
                             <strong>结果:</strong>所获标签:<input type='text' value='{@doc.getLabel}' name='getLabel' class="form-control input-sm" style="width: 150px">
-                            所获积分:<input type='text' name='getScore' value='{@doc.getScore}' class="form-control input-sm" style="width: 150px"> 所获奖券:
+                            所获积分:<input type='text' name='getScore' value='{@doc.getScore}' class="form-control input-sm" style="width: 150px">
+                            所获奖券:
                             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
                                 <foreach for="{@doc_json.list}" var="docListOne">
                                     <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
                                 </foreach>
                             </select>
-                            <!--<input type='text' name='getActivities' value='{@doc.getActivities}' class="form-control input-sm" style="width: 150px">-->
-                            <!--<input type='button' value='delete'  name='delSetGift' onclick='setGiftDel(this)' class="btn btn-embossed btn-primary btnsearch">-->
+                            <br>标签文本设置:
+                            <textarea rows="5" cols="80" name="tipContent" id="tipContent" class="form-control input-sm" style="width: 550px">
+                                {@doc.tipContent}
+                            </textarea>
                         </div>
                     </div>
 
@@ -1191,14 +1194,17 @@
             ~ 高分值:<input type='text' name='conditionMaxScore' class="form-control input-sm" style="width: 50px">
             <strong>设置标签:</strong><input type='text' name='conditionLabel'><br/>
             <strong>结果:</strong>所获标签:<input type='text' name='getLabel' class="form-control input-sm" style="width: 150px">
-            所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px"> 所获奖券:
+            所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px">
+            所获奖券:
             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
                 <foreach for="{@doc_json.list}" var="docListOne">
                     <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
                 </foreach>
             </select>
-            <!--<input type='text' name='getActivities' class="form-control input-sm" style="width: 150px">-->
-            <!--<input type='button' value='delete' name='delSetGift' onclick='setGiftDel(this)' class="btn btn-embossed btn-primary btnsearch">-->
+            <br>标签文本设置:
+            <textarea rows="5" cols="80" name="tipContent" id="tipContent" class="form-control input-sm" style="width: 550px">
+
+            </textarea>
         </div>
     </div>
 </div>

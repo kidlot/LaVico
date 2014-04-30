@@ -56,6 +56,7 @@
                         <div style="float: left; padding-top: 30px;"><a href="" id="showDetails" TARGET="_blank">查看详情</a></div>
                     </div>
                 </div>
+                <!--
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">抽奖频率</label>
                     <div class="col-sm-10">
@@ -77,28 +78,28 @@
 
                     </div>
                 </div>
-
+                -->
                 <br>
                 <h6>内容设置</h6>
                 <br>
 
                 <foreach for="@list" var="doc">
                     <div id='{@doc.PROMOTION_CODE}' class="promotion_detail" style='display:none;'>
-                        <foreach for="@doc.coupons" var="coupons">
+
                             <div class="panel panel-default formText pagePanel">
                                 <div class="panel-body">
                                     <div class="col-md-9">
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">券面值</label>
                                             <div class="col-sm-10">
-                                                <input type="text" id="QTY" readonly="readonly" value="{@coupons.QTY}" class="form-control postData" style="width:150px;display:inline-block">
+                                                <input type="text" id="QTY" readonly="readonly" value="{@doc.QTY}" class="form-control postData" style="width:150px;display:inline-block">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">券图</label>
                                             <div class="col-sm-10">
-                                                <if condition="{@coupons.pic==''}">
-                                                    <img src="{@coupons.pic}" style="width: 150px;height: 60"/>
+                                                <if condition="{@doc.pic==''}">
+                                                    <img src="{@doc.pic}" style="width: 150px;height: 60"/>
                                                     <else/>
                                                     无图
                                                 </if>
@@ -107,13 +108,13 @@
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">剩余/总数</label>
                                             <div class="col-sm-10">
-                                                <span>{@ coupons.COUNT-coupons.USED}/{@coupons.COUNT}</span>
+                                                <span>{@ doc.TOTAL-doc.USED}/{@doc.TOTAL}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">礼品描述</label>
                                             <div class="col-sm-10">
-                                                <input id="introduction" type="text" readonly="readonly" val="{@coupons.introduction}" class="form-control postData" style="width:250px;height:80px;display:inline-block">
+                                                <input id="introduction" type="text" readonly="readonly" val="{@doc.introduction}" class="form-control postData" style="width:250px;height:80px;display:inline-block">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -159,7 +160,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </foreach>
+
                     </div>
                 </foreach>
 
@@ -295,20 +296,6 @@
         }
 
 
-        if(!$('#lottery_cycle').val()){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "请选择抽奖频率！",
-                type: 'error',
-                showCloseButton: true})
-        }
-        if(!$('#lottery_count').val()){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "请填写抽奖次数！",
-                type: 'error',
-                showCloseButton: true})
-        }
         if(!_inputCheck){
             return false;
         }
@@ -319,9 +306,9 @@
         aFormInput['endDate'] = new Date($("#endDate").val()).getTime();//结束时间
         aFormInput['aid'] = aid;//券号
         aFormInput['name'] = $("#name").val();//名称
-        aFormInput['lottery_cycle'] = $("#lottery_cycle").val();//抽奖频率
+        //aFormInput['lottery_cycle'] = $("#lottery_cycle").val();//抽奖频率
         aFormInput['introduction'] = $("#introduction").val();//描述
-        aFormInput['lottery_count'] = $("#lottery_count").val();//频率中的次数
+        //aFormInput['lottery_count'] = $("#lottery_count").val();//频率中的次数
         aFormInput['switcher'] = 'on';//
         aFormInput['createTime'] = new Date().getTime();//创建时间
         aFormInput['QTY']=$("#"+aid).first().find("#QTY").val();//面值

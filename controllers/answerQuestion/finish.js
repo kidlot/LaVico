@@ -1,9 +1,9 @@
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 module.exports={
     layout:null,
-    view:"lavico/templates/AnswerQuestion/finish.html",
+    view:"lavico/templates/answerQuestion/finish.html",
     process:function(seed,nut){
-<<<<<<< HEAD
+
         var then=this;
     	var _id=seed._id;
     	var opptionId=seed.optionId;
@@ -30,10 +30,13 @@ module.exports={
 
         //查找单题组,获取分值范围数组
     	var scoreRange;
+        var docTheme;
         this.step(function(){
+            console.log(_id);
     		helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
 	    		if(err) throw err;
     			scoreRange=doc.scoreMinMax;
+                docTheme=doc;
     		}));
         });
         //查找全部券
@@ -63,13 +66,15 @@ module.exports={
                     var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
                     var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
                     var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
-
+                    var getTipContent= scoreRange[i].tipContent==""?0:scoreRange[i].tipContent;
                     var nowPromotion;
                     for(var j=0;j<doc_json.list.length;j++){
                         if(doc_json.list[j].PROMOTION_CODE==getActivities){
                             nowPromotion=doc_json.list[j]
                         }
                     }
+
+
 
                     var newActivity//服务器返回的券
                     //调用接口开始
@@ -79,6 +84,7 @@ module.exports={
                         //PROMOTION_CODE:getActivities,
                         PROMOTION_CODE:'CQL201312230001',
                         //qty:nowPromotion.coupons[0].QTY,
+                        memo:"答题抢积分_型男测试-"+docTheme.theme,
                         point:getScore
                     }
                     console.log(JSON.stringify(jsonData))
@@ -87,7 +93,7 @@ module.exports={
                     then.step(function(){
                         middleware.request("Coupon/FetchCoupon",jsonData,this.hold(function(err,doc){
                             if(err) throw err;
-                            console.log("doc:"+doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
+                            //console.log("doc:"+doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
                             var docJson=JSON.parse(doc)
                             if(docJson.success){
                                 newActivity= docJson.coupon_no
@@ -117,6 +123,7 @@ module.exports={
                             "getLabel": getLabel,
                             "getGift":  newActivity,
                             "compScore": getScore,
+                            "getTipContent":getTipContent,
                             "createTime": new Date().getTime()
                         },function(err,doc){});
 
@@ -124,7 +131,8 @@ module.exports={
                         resultList+="{"
                             +"getLabel:'"+getLabel
                             +"',getScore:"+getScore
-                            +",getActivities:'"+newActivity+"'}";
+                            +",getTipContent:'"+getTipContent
+                            +"',getActivities:'"+newActivity+"'}";
 
                         if(dot>=2){
                             resultList+=",";
@@ -162,10 +170,12 @@ module.exports={
 
             //查找单题组,获取分值范围数组
             var scoreRange;
+            var docTheme;
             this.step(function(){
                 helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
                     if(err) throw err;
                     scoreRange=doc.scoreMinMax;
+                    docTheme=doc;
                 }));
             });
 
@@ -194,7 +204,7 @@ module.exports={
                         var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
                         var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
                         var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
-
+                        var getTipContent= scoreRange[i].tipContent==""?0:scoreRange[i].getTipContent;
                         var nowPromotion;
                         for(var j=0;j<doc_json.list.length;j++){
                             if(doc_json.list[j].PROMOTION_CODE==getActivities){
@@ -205,6 +215,7 @@ module.exports={
                         var newActivity//服务器返回的券
                         //调用接口开始
                         var jsonData={
+                            memo:"答题抢积分_型男测试-"+docTheme.theme,
                             openid:wechatid,
                             otherPromId:_id,
                             //PROMOTION_CODE:getActivities,
@@ -247,6 +258,7 @@ module.exports={
                                 "getLabel": getLabel,
                                 "getGift":  newActivity,
                                 "compScore": getScore,
+                                "getTipContent":getTipContent,
                                 "createTime": new Date().getTime()
                             },function(err,doc){});
 
@@ -254,6 +266,7 @@ module.exports={
                             resultList+="{"
                                 +"getLabel:'"+getLabel
                                 +"',getScore:"+getScore
+                                +",getTipContent:'"+getTipContent
                                 +",getActivities:'"+newActivity+"'}";
 
                             /*
@@ -294,6 +307,7 @@ module.exports={
             this.step(function(){
                 resultList+="]";
                 then.req.session.optionId=""
+                console.log(resultList);
                 nut.model.result=resultList;
             })
 
@@ -321,137 +335,3 @@ module.exports={
         }
  	}
 }
-=======
-        var type=seed.type;
-        var optionId=seed.optionId;
-        var _id=_id;
-        var chooseId=seed.chooseId;
-        var score=seed.score;
-        var chooseNext=seed.chooseNext;
-
-        if(type==1 or type==0){
-            //如果分值存在,记录积分
-            if(!isNaN(parseInt(score))){
-
-                helper.db.coll("lavico/custReceive").findOne({"themeId":_id, "custId":"cust101","optionId":optionId},function(err,doc){
-                    if(err)throw err;
-                    //存在更新
-                    if(doc){
-                        helper.db.coll("lavico/custReceive").update({"themeId":_id, "custId":"cust101","optionId":optionId},
-                            {$set:{"getScore":score}},function(err,doc){});
-                    }else{
-                        //session
-                        this.req.session.scoreAll+=parseInt(scoreAll);
-                        //不存在录入
-                        helper.db.coll("lavico/custReceive").insert({
-                            "custId": "cust101",
-                            "themeId": _id,
-                            "isFinish": false,
-                            "optionId": optionID,
-                            "chooseId": chooseID,
-                            "getScore": parseInt(scoreAll),
-                            "getLabel": "",
-                            "getGift":  "",
-                            "compScore": "",
-                            "createTime": createTime()
-                        },function(err,doc){
-                        });
-                    }
-                });
-        }else(type==2){
-            //
-            helper.db.coll("lavico/custAnswerResult").insert({
-                "themeId":_id,
-                "custId":'cust101',
-                "optionId":optionId,
-                "resultValue":receiveAnswer
-            },function(err,doc){});
-        }
-    }
-
-        helper.db.coll("lavico/custReceive").insert({
-            "custId": "cust101",
-            "themeId": _id,
-            "isFinish": true,
-            "optionId": optionId,
-            "chooseId": chooseId,
-            "getScore": this.req.session.scoreAll,
-            "getLabel": "",
-            "getGift":  "",
-            "compScore": "",
-            "createTime": createTime()
-        },function(err,doc){});
-
-    //查结果
-    /*
-     根据总分是否在题目指定的范围内
-     根据标签获取值
-     */
-     var scoreAll= this.req.session.scoreAll;
-     helper.db.coll("lavico/themeQuestion").find({"_id":_id}).toArray(function(err,doc){
-         for(var i=0;i<doc.scoreMinMax.length;i++){
-             var minScore= doc.scoreMinMax[i].conditionMinScore;
-             var maxScore= doc.scoreMinMax[i].conditionMaxScore;
-             if(scoreAll>minScore && scoreAll<maxScore && doc.scoreMinMax[i].getLabel==""){
-                //helper.db.coll("lavico/custReceive").findOne({"custId": "cust101","themeId": _id,"isFinish":true},function(err,cur){
-                    //insert
-                    helper.db.coll("lavico/custReceive").insert(
-                        {   "custId": "cust101",
-                            "themeId": _id,
-                            "isFinish": true,
-                            "optionId": 0
-                            "chooseId": 0
-                            "getScore": this.req.session.scoreAll,
-                            "getLabel": doc.scoreMinMax[i].getLabel,
-                            "getGift":  doc.scoreMinMax[i].getActivities,
-                            "compScore": doc.scoreMinMax[i].getScore,
-                            "createTime": createTime()
-                        },function(err,cdoc){});
-             }else if(doc.scoreMinMax[i].getLabel!="" && scoreAll>minScore && scoreAll<maxScore){
-                 helper.db.coll("lavico/custReceive").insert(
-                     {   "custId": "cust101",
-                         "themeId": _id,
-                         "isFinish": true,
-                         "optionId": 0
-                         "chooseId": 0
-                         "getScore": this.req.session.scoreAll,
-                         "getLabel": doc.scoreMinMax[i].getLabel,
-                         "getGift":  doc.scoreMinMax[i].getActivities,
-                         "compScore": doc.scoreMinMax[i].getScore,
-                         "createTime": createTime()
-                     },function(err,cdoc){});
-             }else if(doc.scoreMinMax[i].getLabel!="" && (minScore=="" || maxScore=="")){
-                 helper.db.coll("lavico/custReceive").insert(
-                     {   "custId": "cust101",
-                         "themeId": _id,
-                         "isFinish": true,
-                         "optionId": 0
-                         "chooseId": 0
-                         "getScore": this.req.session.scoreAll,
-                         "getLabel": doc.scoreMinMax[i].getLabel,
-                         "getGift":  doc.scoreMinMax[i].getActivities,
-                         "compScore": doc.scoreMinMax[i].getScore,
-                         "createTime": createTime()
-                     },function(err,cdoc){});
-             }
-         }
-
-        }
-     });
-
-        //显示结果
-        helper.db.coll("lavico/custReceive").find({"custId": "cust101", "themeId": _id,"isFinish": true}).toArray(function(err,doc){
-                num.model.result=JSON.stringify(doc);
-        });
-}
-
-
-function createTime(){
-    var d = new Date();
-    var vYear = d.getFullYear();
-    var vMon = d.getMonth() + 1;
-    var vDay = d.getDate();
-    s=vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay);
-    return s;
-}
->>>>>>> 1a1ed295cca06b09e127beeeb0b8336d5b395390

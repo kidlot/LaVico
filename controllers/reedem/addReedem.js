@@ -19,6 +19,7 @@ module.exports={
             jsonData.pageNum=seed.page ? seed.page : 1;
             middleware.request('Coupon/Promotions',jsonData,
                 this.hold(function(err,doc){
+                    console.log("doc:"+doc);
                     doc = doc.replace(/[\n\r\t]/,'');
                     var doc_json = eval('(' + doc + ')');
 
@@ -38,21 +39,19 @@ module.exports={
         });
 
         this.step(function(doc){
+            console.log("doc11:"+JSON.stringify(doc));
+            console.log("doc22:"+doc.length)
             var count = 0;
             //查找活动表对应的券图和描述
             for(var i=0;i<doc.length;i++){
                 (function(i){
                     helper.db.coll("lavico/activity").findOne({aid:doc[i].PROMOTION_CODE},then.hold(function(err,detail){
                         count ++ ;
+                        console.log("detail:"+detail);
                         if(detail){
-                            for(var j=0;j<doc[i].coupons.length;j++){
-                                for(var k=0;k<detail.coupons.length;k++){
-                                    if(doc[i].coupons[j].QTY == detail.coupons[k].QTY && detail.coupons[k].pic){
-                                        doc[i].coupons[j].pic = detail.coupons[k].pic;
-                                        doc[i].coupons[j].introduction=detail.coupons[k].introduction
-                                    }
-                                }
-                            }
+                            doc[i].pic = detail.pic;
+                            doc[i].introduction=detail.introduction
+
                         }
                         if(count == doc.length){
                             list = doc
@@ -118,18 +117,14 @@ module.exports={
                 this.step(function(doc){
                     var count = 0;
                     for(var i=0;i<doc.length;i++){
+
                         (function(i){
                             helper.db.coll("lavico/activity").findOne({aid:doc[i].PROMOTION_CODE},then.hold(function(err,detail){
                                 count ++ ;
                                 if(detail){
-                                    for(var j=0;j<doc[i].coupons.length;j++){
-                                        for(var k=0;k<detail.coupons.length;k++){
-                                            if(doc[i].coupons[j].QTY == detail.coupons[k].QTY && detail.coupons[k].pic){
-                                                doc[i].coupons[j].pic = detail.coupons[k].pic;
-                                                doc[i].coupons[j].introduction=detail.coupons[k].introduction
-                                            }
-                                        }
-                                    }
+                                    console.log("detail:"+detail)
+                                    doc[i].pic = detail.pic;
+                                    doc[i].introduction=detail.introduction
                                 }
                                 if(count == doc.length){
                                     list = doc
@@ -152,7 +147,9 @@ module.exports={
                 })
 
                 this.step(function(){
+                    console.log("list:"+list);
                     nut.model.list = list;//全部券名
+                    console.log("reedem:"+redem);
                     nut.model.reedem = redem;//
                 });
             },
