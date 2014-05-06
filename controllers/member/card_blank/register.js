@@ -183,9 +183,9 @@ module.exports = {
 
 
                         }else if(returnJson.error == 'network_error'){
-                            alert('网络接口不稳定，请稍后再尝试');
+                            alert('网络不稳定，请稍后再尝试');
                         }else{
-                            alert('网络接口不稳定，请稍后再尝试');
+                            alert('网络不稳定，请稍后再尝试');
                         }
 
                     }else{

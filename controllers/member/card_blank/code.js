@@ -34,14 +34,14 @@ module.exports = {
 
                 if(userTel){
 
-                    middleware.request( "System/SendSMS",{
-                            'mobile':userTel,
-                            'content':_content+"【郎维高LaVico】"
-                        },this.hold(
-                        function(err,doc){
-                            then.res.end();
-                        })
-                    );
+//                    middleware.request( "System/SendSMS",{
+//                            'mobile':userTel,
+//                            'content':_content+"【郎维高LaVico】"
+//                        },this.hold(
+//                        function(err,doc){
+//                            then.res.end();
+//                        })
+//                    );
 
                 }else{
 

@@ -394,11 +394,17 @@ module.exports = {
                         re_get_code();
                     }else{
                         $("#get_id_code").html('('+time+')重新获取');
+                        var _imgSrc = $("#get_id_code").css('background');
+                        var _reg = /verify_bg\.png/;
+
+                        if(!_reg.test(_imgSrc)){
+                            $("#get_id_code").css("background","url(/lavico/public/images/verify_bg.png)");
+                        }
                     }
                 },1000);
             }
             function re_get_code(){
-                $("#get_id_code").html('获取验证码');
+                $("#get_id_code").html('获取验证码').css("background","url(/lavico/public/images/verify_bg_01.png)");;
                 flag = 0;
             }
             /*验证码-结束*/
