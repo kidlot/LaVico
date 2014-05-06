@@ -6,7 +6,7 @@ var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
 
-    layout:null
+    layout:'lavico/member/layout'
     ,view: 'lavico/templates/member/card_blank/bind.html'
     ,process:function(seed, nut){
         //nut.disabled = true ;
@@ -35,9 +35,37 @@ module.exports = {
             nut.model.wxid = wxid ;
         });
 
+
     }
     ,viewIn:function(){
 
+            /*前端设计JS*/
+            $(document).ready(function(e) {
+
+                $(".subbtn").click(function(){
+                    $(".fade3").css("display","block");
+                });
+                $(".applybtn").click(function(){
+                    window.location.href="member_num24.html";
+                });
+                $(".gonhome_btn").click(function(){
+                    window.location.href="member_num4.html";
+                });
+                $(".bangding_btn").click(function(){
+                    $(".fade1").css("display","block");
+                    $(".fade3").css("display","none");
+                });
+
+                $(".bangding_btn").click(function(){
+                    $(".fade1").css("display","block");
+                    $(".fade3").css("display","none");
+                });
+                $(".cancel").click(function(){
+                    $(this).parents('.popup').hide();
+                });
+
+            });
+            /*后端编程JS*/
             /*验证码-开始*/
             var timer60Seconds;
             var flag = 0;
@@ -81,12 +109,13 @@ module.exports = {
             }
             /*第一步：判断手机号码的状态*/
             $("#submit_1").click(function(){
+
                 if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
                     alert("请输入正确的手机号码");
                     return	false;
                 }
                 /*判断手机号码是否存在*/
-                $('.loading').show();//显示正在加载
+                $('#loading').show();//显示正在加载
                 var userTel = $("#userTel").val();
                 var wxid = $("#wxid").val();
                 $.ajax({
@@ -95,7 +124,7 @@ module.exports = {
                     data:{
                         'userTel':userTel,
                     }}).done(function(data){
-                        $('.loading').hide();//显示正在加载
+                        $('#loading').hide();//显示正在加载
                         var returnJson = data || {};
                         if(returnJson.success == true){
                             if(returnJson.info == 'tel_checked_true'){
@@ -124,7 +153,8 @@ module.exports = {
                             }
                         }else if(returnJson.success == false){
                             if(returnJson.error == 'tel_exists_false'){
-                                alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线4001008866');
+                                //alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线4001008866');
+                                $('#no_member_telephone').show();
                             }else if(returnJson.error == 'network_error'){
                                 alert('网络接口不稳定，请稍后再尝试');
                             }else{

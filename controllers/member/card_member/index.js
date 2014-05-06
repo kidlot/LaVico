@@ -10,6 +10,7 @@ module.exports = {
     view:'lavico/templates/member/card_member/index.html',
     process:function(seed,nut){
 
+
         var defaultTestID = 'oBf_qJTu0Vn5nFlXFSVpCIbKIk8o';//设置默认测试微信ID
         var wxid = seed.wxid ? seed.wxid : defaultTestID;//预先定义微信ID
         this.req.session.wxid = wxid;//默认是30分钟失效期 SESSION

@@ -1,20 +1,98 @@
-<meta name="viewport" content="width=360,user-scalable=no" />
-<!--<a href="http://www.baidu.com">点击绑定实体卡</a><br/><br/>-->
-	<span>姓名</span><input id='name' value='' /><br/>
-	<span>性别</span>
-	<select id='sex'>
-		<option value='1'>男</option>
-		<option value='0'>女</option>
-	</select><br/>
-	<span>生日</span>
-		<select id="year"></select>年  
-		<select id="month"></select>月  
-		<select id="day"></select>日  <br/>
-	<span>手机</span><input AutoComplete='on' id='mobile' />
-    <input type='button' value='获取验证码' id='get_id_code' /><br/>
-	<span>验证码</span><input id='id_code' value='' /><br/>
-	<br/>
-<input type='button' id='submit' value='提交' />
-<input type='hidden' id='uid' value='{@ uid}'>
-<div id="loading" class="loading" style="display: none;">正在发送数据......</div>
+<style type="text/css">
+    #sex {
+        width: 120px;
+        height: 65px;
+        opacity: 0;
+        -moz-opacity: 0;
+        position: relative;
+        left: -123px;
+    }
+    #year {
+        width: 160px;
+        height: 65px;
+        opacity: 0;
+        -moz-opacity: 0;
+        position: relative;
+        top: -65px;
+    }
+    #month, #day {
+        width: 120px;
+        height: 65px;
+        opacity: 0;
+        -moz-opacity: 0;
+        position: relative;
+        top: -65px;
+    }
+</style>
+<div class="wrapper">
+
+    <!--用户微信ID-->
+    <input type='hidden' id='uid' value='{@uid}'>
+
+    <div class="store-title">
+        <p><span class="title1"><a id="memberUrl" href="javascript:void(0);">会员</a></span><span class="title5" id="registerUrl">申领会员卡 - 资料填写</span></p>
+    </div>
+    <div class="apply">
+        <div class="title">
+            <p class="text">如果您已有实体会员卡，请<a id="bindUrl" href="javascript:void(0);">绑定会员卡</a></p>
+        </div>
+        <div class="form clear">
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>姓名</div>
+                <div class="name-right fl"><input id='name' border="0" type="text" value="" /></div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>性别</div>
+                <div class="sex-right fl"><div class="input_select_div">
+                    <input type="text" name="brand" class="input_select_sex" value="请选择" id="model_sex_input"/>
+                    <select id="sex">
+                        <option value='1'>男</option>
+                        <option value='0'>女</option>
+                    </select>
+                </div> </div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>生日</div>
+                <div class="birth-right fl"><div class="input_select_div_fys">
+                    <input type="text" name="brand" class="input_select_year" value="年" id="model_sex_input"/>
+                    <select id="year"  class="select1">
+                    </select>
+                </div>
+                </div>
+                <div class="sex-right fl">
+                    <div class="input_select_div_f">
+                        <input type="text" name="brand" class="input_select_sex" value="月" id="model_sex_input"/>
+                        <select id="month"  class="select2">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="sex-right fl">
+                    <div class="input_select_div_f">
+                        <input type="text" name="brand" class="input_select_sex" value="日" id="model_sex_input"/>
+                        <select id="day"  class="select3">
+
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>手机</div>
+                <div class="tel-right fl"><input AutoComplete='on' id='mobile' border="0" type="text" value="" /><div class="verify" id="get_id_code">获取验证码</div></div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>验证码</div>
+                <div class="tel-right fl"><input id="id_code" border="0" type="text" value="" /></div>
+            </div>
+            <div class="note">如申领时遇到问题<br />
+                请拨打 400-1008-886 联系</div>
+            <div class="submit_btn"><input type="button" value="提交" class="subbtn" id='submit'/></div>
+        </div>
+    </div>
+</div>
+<!--正在加载框-->
+<div id="loading" style="position: fixed; z-index: 1000; left: 791px; top: 129px; display: none;"><img src="/opencomb/public/style/images/github-loading.gif"></div>
+
+
 

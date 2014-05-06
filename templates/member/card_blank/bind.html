@@ -1,5 +1,119 @@
-<!--如果您没有实体会员卡，请申领会员卡-->
+<!--发送验证码状态-->
+<input id="id_code" type="hidden" value=""/>
+<!--用户手机号码验证状态-->
+<input id="tel_checked_status" type="hidden" value=""/>
 
+<input type="hidden" id="wxid" name="wxid" value="{@wxid}" />
+<input type="hidden" id="memberId"  value="" />
+<style>
+    .cancel{cursor:pointer;}
+    .step{display:none;}
+    #step_1{display:block;}
+    .input-tel .text {
+        width: 115px;
+        height: 65px;
+        text-align: right;
+        line-height: 65px;
+        font-size: 25px;
+        color: #2d2d2d;
+    }
+</style>
+<!--页面-->
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a href="member_num4.html">会员</a></span><span class="title3">绑定会员卡 - 资料验证</span></p>
+    </div>
+    <div class="link-cardContent">
+
+        <div class="title">如果您没有实体会员卡，请<a href="member_num24.html">申领会员卡</a></div>
+
+        <!--第一步-->
+        <div id="step_1" class="input-tel step">
+            <p>
+                <span class="fl text"><strong class="star-sign">*</strong>手机</span><span class="fl"><input id="userTel" name="userTel" type="text" value="13816900290" /></span>
+                <span class="verify" id="submit_1">下一步</span>
+            </p>
+            <div class="clear"></div>
+            <p class="mt10" style="display:none;"><span class="fl text"><strong class="star-sign">*</strong>验证码</span><span class="fl"><input type="text" value="5917" /></span></p>
+            <div class="clear"></div>
+            <p class="note">如申领时遇到问题<br />
+                请拨打 400-1008-886 联系</p>
+            <p class="submit" style="display:none"><input type="submit" class="subbtn" border="0" value="下一步" /></p>
+            <div class="blank"></div>
+        </div>
+
+        <!--第二步-->
+        <div id="step_2" class="input-tel step">
+            <p><span class="fl text"><strong class="star-sign">*</strong>会员卡号</span>
+                <span class="fl"><input id="userCardNumber" name="userCardNumber" type="text" value="" /></span>
+                <span class="verify" id="submit_2">下一步</span></p>
+            <div class="clear"></div>
+            <p class="note">如申领时遇到问题<br />
+                请拨打 400-1008-886 联系</p>
+            <div class="blank"></div>
+        </div>
+
+        <!--第三步-->
+        <div id="step_3" class="input-tel step">
+            <p><span class="fl text"><strong class="star-sign">*</strong>手机</span><span class="fl"><input id="userTel" name="userTel" type="text" value="13816900290" /></span><span class="verify" id="submit_1">下一步</span></p>
+            <div class="clear"></div>
+            <p class="mt10" style="display:none;"><span class="fl text"><strong class="star-sign">*</strong>验证码</span><span class="fl"><input type="text" value="5917" /></span></p>
+            <div class="clear"></div>
+            <p class="note">如申领时遇到问题<br />
+                请拨打 400-1008-886 联系</p>
+            <p class="submit" style="display:none"><input type="submit" class="subbtn" border="0" value="下一步" /></p>
+            <div class="blank"></div>
+        </div>
+
+    </div>
+
+    <div class="fade popup" id="no_member_telephone">
+        <div class="input-member">
+            <p class="msg">抱歉，此号码绑定不成功<br />
+                可能您尚未成为LaVico会员<br />
+                点击此处 或 <span class="cancel">取消</span></p>
+            <p class="confirm"><input type="submit" class="applybtn" border="0" value="申领会员卡" /></p>
+            <p class="msg msg1">如有疑问，欢迎咨询客服热线：<br />
+                400-1008-886</p>
+        </div>
+    </div>
+    <div class="fade1 popup">
+        <div class="input-member">
+            <p class="msg">恭喜您绑定成功<br />
+                点击此处</p>
+            <p class="confirm"><input type="submit" class="gonhome_btn" border="0" value="进入会员中心" /></p>
+
+        </div>
+    </div>
+    <div class="fade2 popup">
+        <div class="input-member">
+            <p class="msg">抱歉，此号码绑定不成功<br />
+                可能您的卡号已被注销<br />
+                您可以点击此处</p>
+            <p class="confirm"><input type="submit"  class="applybtn" border="0" value="申领会员卡" /></p>
+            <p class="msg msg1">如您变更了手机号码，无法获取短信验证码，<br />
+                或有其他问题，请联系客服：400-1008-886</p>
+        </div>
+    </div>
+    <div class="fade3">
+        <div class="input-member">
+            <p class="msg">请输入您的实体会员卡号</p>
+            <p class="input-card"><input type="text" value="6226 0458 3697 4321" /></p>
+            <p class="confirm"><input type="submit" class="bangding_btn" border="0" value="提交" /></p>
+
+        </div>
+    </div>
+</div>
+
+
+<!--正在加载-->
+<div id="loading" class="loading" style="position: fixed; z-index: 1000; left: 791px; top: 129px; display: none;"><img src="/opencomb/public/style/images/github-loading.gif"></div>
+
+
+
+
+
+<!--
 <div id="step_1" class="step">
     <h2>第一步</h2>
     手机：<input type="text" id="userTel" name="userTel" value=""/>
@@ -22,16 +136,26 @@
     <input type="button"  id="previous_step_3" value="上一步"/>
     <input type="button" id="submit_3" value="提交"/>
 </div>
+-->
 
 
 
-<div id="loading" class="loading" style="display: none;">正在发送数据......</div>
 
-<!--发送验证码状态-->
-<input id="id_code" type="hidden" value=""/>
-<!--用户手机号码验证状态-->
-<input id="tel_checked_status" type="hidden" value=""/>
 
-<input type="hidden" id="wxid" name="wxid" value="{@wxid}" />
-<input type="hidden" id="memberId"  value="" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,6 +1,6 @@
 var middleware = require('../../../lib/middleware.js');
 module.exports = {
-	layout: null,
+    layout:'lavico/member/layout',
 	view: "lavico/templates/member/card_blank/register.html",
 	process: function(seed,nut)
 	{
@@ -32,8 +32,48 @@ module.exports = {
 	},
     viewIn:function(){
 
-        /*前端JS*/
+
+        /*前端设计JS*/
+        $(function() {
+
+            $("#year").click(function(){
+                $(this).parent().find("input").val($(this).val()+'年');
+            });
+
+            $("#month").click(function(){
+                $(this).parent().find("input").val($(this).val()+'月');
+            });
+
+            $("#day").click(function(){
+                $(this).parent().find("input").val($(this).val()+'日');
+            });
+            $("#sex").click(function(){
+                var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
+                $(this).parent().find("input").val(_v);
+            });
+        });
+
+        /*后端开发JS*/
         $(function () {
+
+            var wxid = $('#uid').val();
+            /*申请会员卡*/
+            $("#registerUrl").click(function(){
+                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+            });
+
+            /*绑定会员卡*/
+            $("#bindUrl").click(function(){
+                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+            });
+
+            /*会员管理*/
+            $('#memberUrl').click(function(){
+                window.location.href="/lavico/member/index?wxid="+wxid;
+            });
+
+
+
             var $day = $("#day"),
                 $month = $("#month"),
                 $year = $("#year");
@@ -43,9 +83,9 @@ module.exports = {
                 str = "";
             for (var i = dCurYear - 100; i < dCurYear + 1; i++) {
                 if (i == dCurYear) {
-                    str = "<option value=" + i + " selected=true>" + i + "</option>";
+                    str = "<option value=" + i + " selected=true>" + i + "年</option>";
                 } else {
-                    str = "<option value=" + i + ">" + i + "</option>";
+                    str = "<option value=" + i + ">" + i + "年</option>";
                 }
                 $year.append(str);
             }
@@ -53,9 +93,9 @@ module.exports = {
             for (var i = 1; i <= 12; i++) {
 
                 if (i == (dDate.getMonth() + 1)) {
-                    str = "<option value=" + i + " selected=true>" + i + "</option>";
+                    str = "<option value=" + i + " selected=true>" + i + "月</option>";
                 } else {
-                    str = "<option value=" + i + ">" + i + "</option>";
+                    str = "<option value=" + i + ">" + i + "月</option>";
                 }
                 $month.append(str);
             }
@@ -80,9 +120,9 @@ module.exports = {
             for (var d = 1; d <= parseInt(daysInMonth); d++) {
 
                 if (d == dDate.getDate()) {
-                    str = "<option value=" + d + " selected=true>" + d + "</option>";
+                    str = "<option value=" + d + " selected=true>" + d + "日</option>";
                 } else {
-                    str = "<option value=" + d + ">" + d + "</option>";
+                    str = "<option value=" + d + ">" + d + "日</option>";
                 }
                 $("#day").append(str);
             }
@@ -103,6 +143,8 @@ module.exports = {
             /*获得验证码之前：判断手机号码的状态*/
             /*判断手机号码是否存在*/
             $('#loading').show();//显示正在加载
+
+
             var userTel = $("#mobile").val();
             var wxid = $("#uid").val();
             $.ajax({
@@ -112,6 +154,7 @@ module.exports = {
                     'userTel':userTel,
                 }}).done(function(data){
                     $('#loading').hide();//掩藏正在加载
+
                     var returnJson = data || {};
                     if(returnJson.success == true){
                         if(returnJson.info == 'tel_checked_true'){
@@ -137,6 +180,7 @@ module.exports = {
                             //Lavico远端系统不存在此手机号码
                             //正常获取验证码
                             getCaptcha();
+
 
                         }else if(returnJson.error == 'network_error'){
                             alert('网络接口不稳定，请稍后再尝试');
@@ -173,20 +217,27 @@ module.exports = {
         }
         function set_interval(){
             clearInterval(timer60Seconds);
-            var time = 60;
-            $("#get_id_code").val('请'+time+'秒稍后再获取');
+            var time = 60;//
+            $("#get_id_code").html('('+time+')重新获取');
             timer60Seconds = setInterval(function(){
                 time--;
                 if(time == 0){
                     clearInterval(timer60Seconds);
                     re_get_code();
                 }else{
-                    $("#get_id_code").val('请'+time+'秒稍后再获取');
+                    $("#get_id_code").html('('+time+')重新获取');
+                    var _imgSrc = $("#get_id_code").css('background');
+                    var _reg = /verify_bg\.png/;
+
+                    if(!_reg.test(_imgSrc)){
+                        $("#get_id_code").css("background","url(/lavico/public/images/verify_bg.png)");
+                    }
                 }
             },1000);
         }
         function re_get_code(){
-            $("#get_id_code").val('获取验证码');
+
+            $("#get_id_code").html('获取验证码').css("background","url(/lavico/public/images/verify_bg_01.png)");
             flag = 0;
         }
 

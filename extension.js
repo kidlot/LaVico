@@ -507,7 +507,7 @@ exports.onload = function(application){
              //req.write(post_data);
              console.log(req.end());
          },_time);
-    //clearInterval(timer);
+    clearInterval(timer);
 
 }
 
