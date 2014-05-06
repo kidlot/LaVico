@@ -9,19 +9,23 @@ module.exports={
         //get a announcement by id(根据ID获取公告)
         helper.db.coll("lavico/announcement").findOne({_id:helper.db.id(seed.id)},function(err,doc){
             if(err) throw err;
-            if(doc) nut.model.doc=doc;
+            if(doc){
+                console.log(doc);
+                nut.model.doc=doc;
+            };
         });
     },
     actions:{
         //change title and content by id(根据ID修改标题和内容)
         save:{
-            var doc={};
-            doc._id=seed._id;
-            doc.title=seed.title;
-            doc.content=seed.content;
-            nut.model.doc=doc;
-
             process:function(seed,nut){
+
+                var doc={};
+                doc._id=seed._id;
+                doc.title=seed.title;
+                doc.content=seed.content;
+                nut.model.doc=doc;
+
                 helper.db.coll("lavico/announcement").update({_id:helper.db.id(seed._id)},{$set:{title:seed.title,content:seed.content}},
                     this.hold(function(err,doc){
                         nut.message("数据修改成功",null,"success");

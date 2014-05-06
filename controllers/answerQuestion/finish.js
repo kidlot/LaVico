@@ -1,7 +1,8 @@
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 module.exports={
-    layout:null,
-    view:"lavico/templates/answerQuestion/finish.html",
+    layout:"lavico/layout",
+    //view:"lavico/templates/answerQuestion/finish.html",
+    view:"lavico/templates/answerQuestion/answer_num4.html",
     process:function(seed,nut){
 
         var then=this;
@@ -29,14 +30,17 @@ module.exports={
             });
 
         //查找单题组,获取分值范围数组
-    	var scoreRange;
+    	var scoreRange
         var docTheme;
+        var themeType;
         this.step(function(){
             console.log(_id);
     		helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
 	    		if(err) throw err;
     			scoreRange=doc.scoreMinMax;
                 docTheme=doc;
+                themeType=doc.themeType;
+                nut.model.themeType=themeType;
     		}));
         });
         //查找全部券
@@ -66,52 +70,54 @@ module.exports={
                     var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
                     var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
                     var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
-                    var getTipContent= scoreRange[i].tipContent==""?0:scoreRange[i].tipContent;
+                    var getTipContent= scoreRange[i].tipContent==""?"":scoreRange[i].tipContent;
                     var nowPromotion;
                     for(var j=0;j<doc_json.list.length;j++){
                         if(doc_json.list[j].PROMOTION_CODE==getActivities){
                             nowPromotion=doc_json.list[j]
                         }
                     }
+                    if(typeof(getActivities)!="undefined" || getActivities!="") {
+                        var newActivity=""//服务器返回的券
+                        //调用接口开始
+                        var memoString = "主观题-" + docTheme.theme;
+                        if (themeType == 0) {
+                            memoString = "答题抢积分-" + docTheme.theme;
+                        } else if (themeType == 1) {
+                            memoString = "型男测试-" + docTheme.theme;
+                        }
+                        var jsonData = {
+                            openid: wechatid,
+                            otherPromId: _id,
+                            PROMOTION_CODE: 'CQL201312230001',
+                            memo: memoString,
+                            point: getScore
+                        }
 
+                        then.step(function () {
+                            middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
+                                if (err) throw err;
+                                //console.log("doc:"+doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
+                                var docJson = JSON.parse(doc)
+                                if (docJson.success) {
+                                    newActivity = docJson.coupon_no
+                                    nut.model.err = docJson.success
+                                    if(docJson.coupon_no) {
+                                        nut.model.errString ="无";
+                                    }
+                                    return docJson.coupon_no
+                                } else {
 
+                                    nut.model.err = docJson.success;
+                                    nut.model.errString = docJson.error;
+                                    console.log("err:" + doc)
 
-                    var newActivity//服务器返回的券
-                    //调用接口开始
-                    var jsonData={
-                        openid:wechatid,
-                        otherPromId:_id,
-                        //PROMOTION_CODE:getActivities,
-                        PROMOTION_CODE:'CQL201312230001',
-                        //qty:nowPromotion.coupons[0].QTY,
-                        memo:"答题抢积分_型男测试-"+docTheme.theme,
-                        point:getScore
+                                }
+                            }));
+                        })
                     }
-                    console.log(JSON.stringify(jsonData))
-
 
                     then.step(function(){
-                        middleware.request("Coupon/FetchCoupon",jsonData,this.hold(function(err,doc){
-                            if(err) throw err;
-                            //console.log("doc:"+doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
-                            var docJson=JSON.parse(doc)
-                            if(docJson.success){
-                                newActivity= docJson.coupon_no
-                                nut.model.err=docJson.success
-                                nut.model.errString=docJson.coupon_no;
-                                return docJson.coupon_no
-                            }else{
-                                nut.model.err=docJson.success;
-                                nut.model.errString=docJson.error;
-                                console.log("err:"+doc)
-
-                            }
-                        }));
-                    })
-
-
-                    then.step(function(){
-
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
@@ -149,6 +155,8 @@ module.exports={
             //返回显示
             then.req.session.optionId=""
             nut.model.result=resultList;
+            nut.model.jsonResult=eval('('+resultList+')');
+            console.log("resultList:"+nut.model.jsonResult);
         })
 
       }else{
@@ -212,76 +220,85 @@ module.exports={
                             }
                         }
 
-                        var newActivity//服务器返回的券
-                        //调用接口开始
-                        var jsonData={
-                            memo:"答题抢积分_型男测试-"+docTheme.theme,
-                            openid:wechatid,
-                            otherPromId:_id,
-                            //PROMOTION_CODE:getActivities,
-                            PROMOTION_CODE:'CQL201312230001',
-                            //qty:nowPromotion.coupons[0].QTY,
-                            point:getScore
-                        }
-                        console.log(JSON.stringify(jsonData))
+                        if(typeof(getActivities)!="undefined" || getActivities!="") {
+                            var newActivity//服务器返回的券
+                            //调用接口开始
+                            var memoString = "主观题-" + docTheme.theme;
+                            if (themeType == 0) {
+                                memoString = "答题抢积分-" + docTheme.theme;
+                            } else if (themeType == 1) {
+                                memoString = "型男测试-" + docTheme.theme;
+                            }
+                            //调用接口开始
+                            var jsonData = {
+                                memo: memoString,
+                                openid: wechatid,
+                                otherPromId: _id,
+                                //PROMOTION_CODE:getActivities,
+                                PROMOTION_CODE: 'CQL201312230001',
+                                //qty:nowPromotion.coupons[0].QTY,
+                                point: getScore
+                            }
+                            console.log(JSON.stringify(jsonData))
 
 
-                        then.step(function(){
-                            middleware.request("Coupon/FetchCoupon",jsonData,this.hold(function(err,doc){
-                                if(err) throw err;
-                                console.log("doc:"+doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
-                                var docJson=JSON.parse(doc)
-                                if(docJson.success){
-                                    newActivity= docJson.coupon_no
-                                    nut.model.err=docJson.success
-                                    nut.model.errString=docJson.coupon_no;
-                                    return docJson.coupon_no
-                                }else{
-                                    nut.model.err=docJson.success;
-                                    nut.model.errString=docJson.error;
-                                    console.log("err:"+doc)
+                            then.step(function () {
+                                middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
+                                    if (err) throw err;
+                                    console.log("doc:" + doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
+                                    var docJson = JSON.parse(doc)
+                                    if (docJson.success) {
+                                        newActivity = docJson.coupon_no
+                                        nut.model.err = docJson.success
+                                        nut.model.errString = docJson.coupon_no;
+                                        return docJson.coupon_no
+                                    } else {
+                                        nut.model.err = docJson.success;
+                                        nut.model.errString = docJson.error;
+                                        console.log("err:" + doc)
 
+                                    }
+                                }));
+                            })
+
+                            then.step(function () {
+
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(then.req.session.scoreAll),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getGift": newActivity,
+                                    "compScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime()
+                                }, function (err, doc) {
+                                });
+
+                                //记录json准备显示
+                                resultList += "{"
+                                    + "getLabel:'" + getLabel
+                                    + "',getScore:" + getScore
+                                    + ",getTipContent:'" + getTipContent
+                                    + ",getActivities:'" + newActivity + "'}";
+
+                                /*
+                                 if(dot>=2){
+                                 resultList+=",";
+                                 }
+                                 dot++;
+                                 */
+                                if (i < scoreRange.length - 1) {
+                                    resultList += ",";
                                 }
-                            }));
-                        })
 
-                        then.step(function(){
-
-                            helper.db.coll("lavico/custReceive").insert({
-                                "wechatid": wechatid,
-                                "themeId": helper.db.id(_id),
-                                "isFinish": true,
-                                "optionId": 0,
-                                "chooseId": 0,
-                                "getChooseScore": parseInt(then.req.session.scoreAll),
-                                "getChooseLabel":"",
-                                "getLabel": getLabel,
-                                "getGift":  newActivity,
-                                "compScore": getScore,
-                                "getTipContent":getTipContent,
-                                "createTime": new Date().getTime()
-                            },function(err,doc){});
-
-                            //记录json准备显示
-                            resultList+="{"
-                                +"getLabel:'"+getLabel
-                                +"',getScore:"+getScore
-                                +",getTipContent:'"+getTipContent
-                                +",getActivities:'"+newActivity+"'}";
-
-                            /*
-                            if(dot>=2){
-                                resultList+=",";
-                            }
-                            dot++;
-                            */
-                            if(i<scoreRange.length-1){
-                                resultList+=",";
-                            }
-
-                        })
-                        //调用接口结束
-
+                            })
+                            //调用接口结束
+                        }
                     }
                     //判断是否有session自定义标签
                     var custLabel=then.req.session.customerLabel
@@ -309,29 +326,9 @@ module.exports={
                 then.req.session.optionId=""
                 console.log(resultList);
                 nut.model.result=resultList;
+                nut.model.jsonResult=JSON.parse(resultList);
             })
 
-            /*
-            var resultList="[";
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,"isFinish":true})
-                    .toArray(then.hold(function(err,scoreRange){
-                for(var i=0;i<scoreRange.length;i++){
-                    var getLabel= scoreRange[i].getLabel=="undefined"?"":scoreRange[i].getLabel;
-                    var getActivities= scoreRange[i].getActivities=="undefined"?0:scoreRange[i].getActivities;
-                    var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
-                    if(typeof(getScore)=="undefined"){
-                        getScore=0;
-                    }
-                    resultList+="{"
-                        +"getLabel:'"+getLabel
-                        +"',getScore:"+getScore
-                        +",getActivities:'"+getActivities+"'}";
-                    if(i<scoreRange.length-1){resultList+=",";}
-                }
-            resultList+="]";
-            nut.model.getResult=resultList;
-            }));
-            */
         }
  	}
 }

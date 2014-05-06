@@ -1,5 +1,5 @@
 module.exports={
-	layout:null,
+	layout:"lavico/layout",
     view:"lavico/templates/answerQuestion/answer.html",
     process:function(seed,nut){
         var beginTime="",endTime="",isOpen="";
@@ -31,6 +31,7 @@ module.exports={
                             if(optionId==cursor.options[i].optionId){
                             //传入题号和当前题号相同,记录题目
                               nut.model.option=JSON.stringify(cursor.options[i]);//以json字符串格式记录,当前此题
+                              nut.model.optionId=i+1;
                               nut.model._id=_id;
                               nut.model.optionCount=cursor.options.length;//此题目总共有题数
                               nut.model.wechatid=wechatid;

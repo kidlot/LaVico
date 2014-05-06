@@ -1,6 +1,6 @@
 var middleware = require('../../lib/middleware.js');
 module.exports={
-    layout: null,
+    layout: "lavico/layout",
     view:"lavico/templates/store/jwSearch.html",
     process:function(seed,nut){
         //获取用户的位置

@@ -1,0 +1,30 @@
+
+<if condition="{@themeType==0}">
+<!--答题抢积分-->
+    <div class="wrapper">
+      <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
+      <div class="coupon">
+        <div class="points-content"><img src="/lavico/public/images/points_banner.jpg" /></div>
+      </div>
+    <foreach for="{@jsonResult}" var="resultString">
+      <div class="look-text">
+        <p class="get">恭喜您获得{@resultString.getScore}积分<br />
+          可在“积分明细”内查询</p>
+        <p class="click-look"><a href="#">点击查看</a></p>
+      </div>
+    </foreach>
+    </div>
+<elseif condition="{@themeType==1}"/>
+<!--型男测试-->
+    <div class="wrapper">
+        <div class="mobile">
+            <div class="mobile-pic"><img src="images/man_test_result.png" /></div>
+            <div class="man-test-content">
+                <div class="title1">{@resultString.getLabel}</div>
+                <div class="subtext">{@resultString.tipContent}</div>
+            </div>
+            <div class="line"></div>
+            <div class="mobile-btn linebottom"><a href="coupon_num3.html">领取优惠券</a></div>
+        </div>
+    </div>
+</if>
