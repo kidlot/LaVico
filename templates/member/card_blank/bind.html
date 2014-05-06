@@ -17,33 +17,35 @@
         font-size: 25px;
         color: #2d2d2d;
     }
+    #userTelClone{
+        color:#b2b1ad;
+    }
 </style>
 <!--页面-->
 <div class="wrapper">
     <div class="store-title">
-        <p><span class="title1"><a href="member_num4.html">会员</a></span><span class="title3">绑定会员卡 - 资料验证</span></p>
+        <p><span class="title1"><a id="memberUrl" href="javascript:void(0);">会员</a></span><span id="bindUrl" class="title3">绑定会员卡 - 资料验证</span></p>
     </div>
     <div class="link-cardContent">
 
-        <div class="title">如果您没有实体会员卡，请<a href="member_num24.html">申领会员卡</a></div>
+        <div class="title">如果您没有实体会员卡，请<a id="registerUrl" href="javascript:void(0);">申领会员卡</a></div>
 
         <!--第一步-->
         <div id="step_1" class="input-tel step">
+
             <p>
-                <span class="fl text"><strong class="star-sign">*</strong>手机</span><span class="fl"><input id="userTel" name="userTel" type="text" value="13816900290" /></span>
+                <span class="fl text"><strong class="star-sign">*</strong>手机</span><span class="fl"><input id="userTel" name="userTel" type="text" value="" /></span>
                 <span class="verify" id="submit_1">下一步</span>
             </p>
             <div class="clear"></div>
-            <p class="mt10" style="display:none;"><span class="fl text"><strong class="star-sign">*</strong>验证码</span><span class="fl"><input type="text" value="5917" /></span></p>
-            <div class="clear"></div>
             <p class="note">如申领时遇到问题<br />
                 请拨打 400-1008-886 联系</p>
-            <p class="submit" style="display:none"><input type="submit" class="subbtn" border="0" value="下一步" /></p>
             <div class="blank"></div>
         </div>
 
         <!--第二步-->
         <div id="step_2" class="input-tel step">
+
             <p><span class="fl text"><strong class="star-sign">*</strong>会员卡号</span>
                 <span class="fl"><input id="userCardNumber" name="userCardNumber" type="text" value="" /></span>
                 <span class="verify" id="submit_2">下一步</span></p>
@@ -55,13 +57,27 @@
 
         <!--第三步-->
         <div id="step_3" class="input-tel step">
-            <p><span class="fl text"><strong class="star-sign">*</strong>手机</span><span class="fl"><input id="userTel" name="userTel" type="text" value="13816900290" /></span><span class="verify" id="submit_1">下一步</span></p>
+
+            <p><span class="fl text">
+                <strong class="star-sign">*</strong>手机</span>
+                <span class="fl"><input id="userTelClone" name="userTel" type="text" value="" disabled/></span>
+                <span class="verify" id="get_id_code">获取验证码</span></p>
             <div class="clear"></div>
-            <p class="mt10" style="display:none;"><span class="fl text"><strong class="star-sign">*</strong>验证码</span><span class="fl"><input type="text" value="5917" /></span></p>
+            <p class="mt10">
+                <span class="fl text">
+                    <strong class="star-sign">*</strong>验证码</span>
+                <span class="fl"><input type="text" id="userCaptcha" name="userCaptcha" /></span>
+            </p>
+            <div class="clear"></div>
+            <p class="mt10">
+                 <span class="fl text">
+                    <strong class="star-sign">*</strong>真实姓名</span>
+                <span class="fl"><input type="text" id="userName" name="userName" /></span>
+            </p>
             <div class="clear"></div>
             <p class="note">如申领时遇到问题<br />
                 请拨打 400-1008-886 联系</p>
-            <p class="submit" style="display:none"><input type="submit" class="subbtn" border="0" value="下一步" /></p>
+            <p class="submit"><input id="submit_3" type="submit" class="subbtn" border="0" value="提交绑定" /></p>
             <div class="blank"></div>
         </div>
 
@@ -77,7 +93,7 @@
                 400-1008-886</p>
         </div>
     </div>
-    <div class="fade1 popup">
+    <div class="fade1 popup" id="member_manage">
         <div class="input-member">
             <p class="msg">恭喜您绑定成功<br />
                 点击此处</p>
@@ -95,12 +111,19 @@
                 或有其他问题，请联系客服：400-1008-886</p>
         </div>
     </div>
-    <div class="fade3">
+    <div class="fade3 popup">
         <div class="input-member">
             <p class="msg">请输入您的实体会员卡号</p>
             <p class="input-card"><input type="text" value="6226 0458 3697 4321" /></p>
             <p class="confirm"><input type="submit" class="bangding_btn" border="0" value="提交" /></p>
 
+        </div>
+    </div>
+    <div class="fade4 popup" id="telephone_cardnumber_no_match">
+        <div class="input-member">
+            <p class="msg">系统没有查找到此卡号<br />请核对后重新输入<br />可能由于此卡号绑定的<br />不是第一步的手机号码<br />
+                或 <span class="cancel">取消</span>
+            </p>
         </div>
     </div>
 </div>
