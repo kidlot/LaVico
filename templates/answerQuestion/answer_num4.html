@@ -10,7 +10,7 @@
       <div class="look-text">
         <p class="get">恭喜您获得{@resultString.getScore}积分<br />
           可在“积分明细”内查询</p>
-        <p class="click-look"><a href="#">点击查看</a></p>
+        <p class="click-look"><a href="javascript:">点击查看</a></p>
       </div>
     </foreach>
     </div>
@@ -18,13 +18,34 @@
 <!--型男测试-->
     <div class="wrapper">
         <div class="mobile">
-            <div class="mobile-pic"><img src="images/man_test_result.png" /></div>
-            <div class="man-test-content">
-                <div class="title1">{@resultString.getLabel}</div>
-                <div class="subtext">{@resultString.tipContent}</div>
-            </div>
+            <div class="mobile-pic"><img src="/lavico/public/images/man_test_result.png" /></div>
+            <foreach for="{@jsonResult}" var="resultString">
+                <div class="man-test-content">
+                    <div class="title1">{@resultString.getLabel}</div>
+                    <div class="subtext">{@resultString.getTipContent}</div>
+                </div>
+            </foreach>
             <div class="line"></div>
-            <div class="mobile-btn linebottom"><a href="coupon_num3.html">领取优惠券</a></div>
+            <if condition="{@resultString.getActivities!=''}"}
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}">领取优惠券</a></div>
+            <else/>
+            <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no">领取优惠券</a></div>
+            </if>
         </div>
     </div>
+<else/>
+<!--主观题-->
+<div class="wrapper">
+    <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
+    <div class="coupon">
+        <div class="points-content"><img src="/lavico/public/images/points_banner.jpg" /></div>
+    </div>
+    <foreach for="{@jsonResult}" var="resultString">
+        <div class="look-text">
+            <p class="get">恭喜您获得{@resultString.getScore}积分<br />
+                可在“积分明细”内查询</p>
+            <p class="click-look"><a href="javascript:">点击查看</a></p>
+        </div>
+    </foreach>
+</div>
 </if>

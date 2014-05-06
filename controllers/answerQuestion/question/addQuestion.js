@@ -3,7 +3,7 @@ module.exports={
     layout:"welab/Layout",
     view:"lavico/templates/answerQuestion/question/addQuestion.html",
     process:function(seed,nut){
-       var perPage = 4;
+       var perPage = 1000;
        var pageNum = seed.page ? seed.page : 1;
 
        this.step(function(){

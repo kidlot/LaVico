@@ -41,6 +41,7 @@ module.exports={
                 docTheme=doc;
                 themeType=doc.themeType;
                 nut.model.themeType=themeType;
+
     		}));
         });
         //查找全部券

@@ -29,7 +29,8 @@ function build(){
 
     //判断是否为“主观题”
     if(jsonObject.type==2){
-        $(".content").append("<textarea cols='30' rows='5' name='descContent'></textarea>");
+        $(".content").append("<div style='padding-top: 15px;'><textarea cols='27' rows='12' name='descContent' style='font-size: 35px;'></textarea></div>");
+
     }else{
         //非“主观题”判断是否有图片
         for(var i=0;i<jsonObject.choose.length;i++){
@@ -52,9 +53,9 @@ function build(){
 
                 }else if(jsonObject.type==1){
                     //多项选择题 value:'题号+选项编号+积分+下一题'
-                    $(".content ul").append("<li><input type='checkbox' name='mutilChooseInput' id='for"+i+"' value='"+jsonObject.optionId+
+                    $(".content ul").append("<li style='line-height: 80px;'><input type='checkbox'  style='display: none'  onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+jsonObject.optionId+
                             "+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'>"+jsonObject.choose[i].chooseName+"</label></li>");
+                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa' class='answer_check selects1'>"+jsonObject.choose[i].chooseName+"</span></label></li>");
                 }
             }else{
             //选项中存在照片
@@ -68,10 +69,10 @@ function build(){
                             jsonObject.choose[i].uploadFile+" id='picImg' name='radioimg' width='280' height='280'></li>");
                 }else if(jsonObject.type==1){
                     //多项选择题 value:'题号+选项编号+积分+下一题'
-                    $(".content ul").append("<li><input type='checkbox' name='mutilChooseInput' id='for"+i+"' value='"+
+                    $(".content ul").append("<li><input type='checkbox'  style='display: none' onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+
                             jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'>"+jsonObject.choose[i].chooseName+
-                            "</label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  src='"+jsonObject.choose[i].uploadFile+
+                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa' class='answer_check selects1'>"+jsonObject.choose[i].chooseName+
+                            "</span></label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  src='"+jsonObject.choose[i].uploadFile+
                             "' name='chkimg' width='180' height='180' id='picImg'></li>");
                 }
             }
@@ -97,7 +98,7 @@ function build(){
     }
 }
 
-//点击选项后“触发”显示正确答案事件
+//点击选项后“触发”显示正确答案事件(单选)
 function showCorrent(t){
     //<span name='correntImg'>
     //alert(t);
@@ -112,7 +113,23 @@ function showCorrent(t){
     date.setTime(date.getTime()+24*3600*1000);
     var v=$("input").val();
     document.cookie="val="+escape(v)+",optionId="+escape(jsonObject.optionId)+",expires="+escape(date.toGMTString());
+}
 
+//点击选项后“触发”显示正确答案事件(复选)
+function showCorrents(t){
+    //<span name='correntImg'>
+    //alert(t);
+    $(t).next().find("span").toggleClass("selects1");
+    $(t).next().find("span").toggleClass("selects");
+
+    //$("span[name='correntImg']").show();
+    $("span[name='correntImg']").css("visibility","visible");
+    $("input[name='singleChooseInput']").attr("disabled",true);
+    //追加cookie
+    var date=new Date();
+    date.setTime(date.getTime()+24*3600*1000);
+    var v=$("input").val();
+    document.cookie="val="+escape(v)+",optionId="+escape(jsonObject.optionId)+",expires="+escape(date.toGMTString());
 }
 
 //finish完成按钮“触发"事件
@@ -204,15 +221,6 @@ function nextChoose(){
 
 window.onload=build;
 </script>
-<!--
-<div>
-    题目名称:<span class="title">&nbsp;</span>
-    <div class="content">
-        <ul>
-
-    <span class="btn"></span>
-</div>
--->
 
 <link rel="stylesheet" href="/lavico/public/css/base.css" />
 <link rel="stylesheet" href="/lavico/public/css/main.css" />
@@ -224,7 +232,7 @@ window.onload=build;
     <div id="tip"></div>
     <div class="answer">
 
-        <div class='answer-content'><div class='title'></div>
+        <div class='answer-content'><div class='title' style="font-size: 50px;"></div>
             <div class="content">
                 <ul>
                 </ul>

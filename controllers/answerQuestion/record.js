@@ -23,13 +23,41 @@ module.exports={
         }))});
 
         this.step(function(){
+            //异常情况判断：是否填写的数值大于当前题目数
+            helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
+                if(err) throw err;
+                if(doc){
+                    if(optionId>doc.options.length){
+                        nut.view.disable();
+                        nut.write("<script>alert('无此题，请联系管理员')</script>");
+                    }
+                }
+
+            }));
+        })
+
+
+
+
+        this.step(function(){
             if(docvar==null){
                 if(type==0){//单选
                    //积分在数字情况下记录
                    if(!isNaN(score)){
 
                        //session累加
-                       then.req.session.scoreAll+=parseInt(score);
+
+
+                       var scores=0;
+                       if(isNaN(parseInt(score))){
+                           console.log("aa");
+                           scores=0
+                       }else{
+                           console.log("bb");
+                           scores=parseInt(score)
+                           then.req.session.scoreAll+=parseInt(score);
+                       }
+
                        //记录积分
                        helper.db.coll("lavico/custReceive").insert({
                            "wechatid": wechatid,
@@ -37,7 +65,7 @@ module.exports={
                            "isFinish": false,
                            "optionId": parseInt(optionId),
                            "chooseId": parseInt(chooseId),
-                           "getChooseScore": parseInt(score),
+                           "getChooseScore": scores,
                            "getChooseLabel":"",
                            "getLabel": "",
                            "getGift":  "",
