@@ -668,7 +668,7 @@ module.exports = {
                                         }));
                                 }else{
                                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                                    this.res.write('{"success":false,"error":"MEMBER_ID_level_no_found"}');
+                                    this.res.write('{"success":false,"error":"network_error"}');
                                     this.res.end();
                                 }
                                 return doc;
