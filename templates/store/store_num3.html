@@ -1,0 +1,36 @@
+
+<script>
+var log={@searchCity.LOG},lat={@searchCity.LAT};
+</script>
+
+<div class="wrapper">
+  <div class="store-title">
+    <p><span class="title1"><a href="/lavico/store/searchByCity">门店查询</a></span><span class="title2">门店详情</span></p>
+  </div>
+  <div class="look-map">
+<div class="map">
+<p class="store-name">{@searchCity.NAME}</p>
+<div class="baidu-map">
+    <if condition="{@searchCity.LOG==null}">
+        <img src="/lavico/public/images/lavico_default.png" width="556" height="336">
+    <else/>
+        <div id="allmap" style="width: 556px;height: 336px"></div>
+    </if>
+</div>
+<div class="way">
+<p class="text">地址：{@searchCity.ADDR}<br />
+电话：{@searchCity.TEL}<br />
+传真：021-64599833<br />
+电子邮件：dongfang@lavico.com.cn</p></div>
+<div class="activity-detail">
+<div class="title">促销活动进行中</div>
+<p class="text">{@searchCity.ACT}</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<div class="fl footer-left"><p>寻求客服帮助？<br />
+请拨打我们的热线电话</p></div>
+<div class="fl footer-right"><p><a href="tel:400-1008-886">400-1008-886</a></p></div>
+</div> 
+</div>

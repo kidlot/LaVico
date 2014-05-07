@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="/welab/public/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+<script type="text/javascript" src="/welab/public/fancybox/jquery.fancybox.pack.js"></script>
+
+<table class="table table-hover" id="tagList">
+    <thead>
+    <tr>
+        <th style="width:50px"><input type="checkbox" onclick="selectAllUser(this)"></th>
+        <th>时间</th>
+        <th>昵称</th>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>城市</th>
+        <th>行业</th>
+        <th>卡类型</th>
+        <th>类型</th>
+        <th>消息</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <foreach for="@page.docs" var="doc">
+
+        <tr class="middleTr msg" msg-id="@doc._id.toString()" reply-id="@doc.reply && doc.reply">
+
+            <td style="width:50px">
+                <input type="checkbox" _id = "{@ doc.customer ? doc.customer._id : '0'}">
+            </td>
+            <td>
+                {@doc.date}
+                <br />
+                <span class="messageTime">{@doc.time}</span>
+            </td>
+            <td>
+                <a href="/welab/user/detail?_id={@ doc.customer ? doc.customer._id : '0'}" class="stay">{@ doc.customer ? doc.customer.nickname : ''}</a>
+            </td>
+            <td>
+                <a href="/welab/user/detail?_id={@ doc.customer ? doc.customer._id : '0'}" class="stay">{@ doc.customer ? doc.customer.realname : ''}</a>
+            </td>
+            <td>
+                {@ doc.customer.gender }
+            </td>
+            <td>
+                {@ doc.customer.birthday }
+            </td>
+            <td>
+                {@ doc.customer.city }
+            </td>
+            <td>
+                {@ doc.customer.profession }
+            </td>
+            <td>
+                <script type="template/script">
+                    var cardtype = {1:"白金卡", 1:"VIP卡", 1:"白金VIP卡"}
+                    var typeName = doc.customer.HaiLanMemberInfo ? cardtype[doc.customer.HaiLanMemberInfo.type]||"" : "";
+                </script>
+                {@ typeName }
+            </td>
+            <td>
+                {@ doc.typeName }
+            </td>
+
+            <!-- 消息内容 -->
+            <td>
+                <if condition="@doc.type=='text'">
+                    {@doc.content}
+                    <elseif condition="@doc.type=='image'" />
+                    <a href="/{@doc.filename}" class="fancybox">
+                        <img src="/{@doc.filename}" width="70px" />
+                    </a>
+                    <elseif condition="@doc.type=='location'"/>
+                    <div>
+                        <a href="https://maps.google.com/maps?q={@doc.location && doc.location[0]},{@doc.location&&doc.location[1]}({@doc.label})&z={@doc.scale}&hl=zh" target="_blank"><i class="icon-map-marker icon-large"></i></a>
+                    </div>
+                    <elseif condition="@doc.type=='link'"/>
+                    <a href="{@doc.url}">链接</a>
+                    <elseif condition="@doc.type=='voice'"/>
+                    <audio src="/welab/{@doc.voice}" controls="controls" style="width:45px;height:30px;"></audio>
+                </if>
+            </td>
+
+        </tr>
+
+    </foreach>
+    </tbody>
+</table>
+<include file="welab/templates/paginator.html" model="@page" model.url="/welab/MessageList:page?page=%pagenum%" />
+
+
+
+<script>
+
+    function selectAllUser( oInput){
+
+        $("#tagList").find("tr").find("td:eq(0)").find("input").each(function(i,o){
+
+            if( oInput.checked){
+                o.checked = true;
+            }else{
+                o.checked = false;
+            }
+        })
+    }
+
+
+    function getUserList(){
+
+        var aList = [];
+        $("#tagList").find("tr").each(function(i,o){
+
+            var _oInput = jQuery(o).find("td:eq(0)").find("input")
+            var _id = _oInput.attr("_id");
+
+            if( _id && _oInput[0].checked){
+                aList.push(_id);
+            }
+        })
+
+        return aList;
+    }
+
+</script>

@@ -1,0 +1,28 @@
+
+<div class="wrapper">  
+	<div class="store-title">
+    <p><span class="title1"><a href="/lavico/reedem/showList?wechatId={@wechatId}">积分兑换</a></span><span class="title2">兑换结果</span></p>
+  </div>
+  <div class="gift_coupon">
+      <if condition="{@record.pic==null}">
+          <div class="coupon-content">
+              <img src="/lavico/public/images/coupon.jpg" width="568" height="330">
+          </div>
+          <else/>
+          <div class="coupon-content">
+              <img src="{@record.pic}" width="568" height="330">
+          </div>
+      </if>
+
+  </div>
+  <div class="gift_bg">
+
+  	<img src="/lavico/public/images/gift_bg.jpg"/>
+    <div class="gift_title">{@record.name}</div>
+  </div>
+  <div class="gift_text">
+    <p class="get">兑换成功<br />
+      已经存入您的“专属礼券”</p>
+    <p class="click-look"><a href="member_num29.html">点击查看</a></p>
+  </div>
+</div>
