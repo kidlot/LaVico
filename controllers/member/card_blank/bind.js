@@ -729,15 +729,17 @@ module.exports = {
                         data_request,
                         this.hold(function(err,doc){
                             var dataJson = JSON.parse(doc);
-                            helper.db.coll("lavico/user/logs").insert(
+                            /*记录用户行为*/
+                            helper.db.coll("welab/feeds").insert(
                                 {
                                     'createTime':new Date().getTime(),
                                     'wxid':seed.wxid,
                                     'action':"bind",
-                                    'data':dataJson,
-                                    'request':data_request
+                                    'request':data_request,
+                                    'reponse':dataJson
                                 },
                                 function(err,req_doc){
+                                    err&&console.log(req_doc);
                                 }
                             );
                             data_doc = doc;
@@ -763,6 +765,10 @@ module.exports = {
                                 }
                             }));
                     }else{
+                        this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                        this.res.write('{"success":false,"error":"MEMBER_ID_level_no_found"}');
+                        this.res.end();
+                        this.terminate();
                     }
                     return doc;
                 });
@@ -771,10 +777,26 @@ module.exports = {
                     var dataJson = JSON.parse(data_doc);
                     if(dataJson.success == true){
                         then.req.session.id_code = '';
+                        var _tempData = {
+                            'realname':userName,
+                            'mobile':userTel,
+                            'isRegister':true,
+                            'registerTime':new Date().getTime(),
+                            'HaiLanMemberInfo':{
+                                'memberID':dataJson.MEMBER_ID,
+                                'action':'bind',
+                                'lastModified':new Date().getTime(),
+                                'type':type
+                            }
+                        };
+                        console.log('_tempData:');
+                        console.log(_tempData);
                         helper.db.coll('welab/customers').update({wechatid:wxid},{
                             $set:{
                                 'realname':userName,
                                 'mobile':userTel,
+                                'isRegister':true,
+                                'registerTime':new Date().getTime(),
                                 'HaiLanMemberInfo':{
                                     'memberID':dataJson.MEMBER_ID,
                                     'action':'bind',
@@ -783,6 +805,7 @@ module.exports = {
                                 }
                             }
                         },function(err,doc){
+                            err&&console.log(doc);
                         });
                     }
                     then.res.writeHead(200, { 'Content-Type': 'application/json' });

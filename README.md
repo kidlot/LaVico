@@ -10,7 +10,7 @@
 
 registerTime 注册时间:绑定and注册时间写入 单位是毫秒
 unRegisterTime 注销绑定时间：取消时写入 单位是毫秒
-isRegister 是否注册：绑定、注册时写入true。解绑时false 单位是毫秒
+isRegister 是否注册：绑定、注册时写入true。解绑时false 单位是布尔值
 
 注册时间：registerTime 单位是毫秒<br/>
 姓名：realname<br/>
@@ -25,6 +25,7 @@ isRegister 是否注册：绑定、注册时写入true。解绑时false 单位�
 生日：birthday   单位是毫秒 getTime（）<br/>
 手机号码：mobile<br/>
 关注时间: followTime 单位是秒<br/>
+isFollow:true/false
 邮箱：email<br/>
 行业：profession<br/>
 所属省份：province<br/>
