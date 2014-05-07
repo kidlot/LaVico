@@ -12,18 +12,113 @@ module.exports = {
     layout:null
     ,view: 'lavico/templates/member/card_member/unbind.html'
     ,process:function(seed, nut){
-        var wxid = seed.wxid;
+        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
+        this.step(function(){
+            if(wxid == 'undefined'){
+                nut.disable();//不显示模版
+                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                this.res.write('{"error":"wxid_is_empty"}');
+                this.res.end();
+                this.terminate();
+            }
+        });
         this.step(function(){
           helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err,doc){
-            nut.model.MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "" ;
-            nut.model.wxid = doc.wechatid;
-            nut.model.mobile = doc.mobile;
+            if(doc){
+                nut.model.MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "undefined" ;
+                nut.model.bindStatus = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.action : "undefined" ;
+                nut.model.wxid = wxid;
+                nut.model.mobile = doc.mobile || 'undefined';
+                if(nut.model.mobile == 'undefined'){
+                    nut.disable();//不显示模版
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"error":"mobile_not_binded"}');
+                    this.res.end();
+                    this.terminate();
+                }
+                if(nut.model.MEMBER_ID == 'undefined'){
+                    nut.disable();//不显示模版
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"error":"memberid_not_binded"}');
+                    this.res.end();
+                    this.terminate();
+                }
+            }else{
+
+                nut.disable();//不显示模版
+                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                this.res.write('{"error":"wxid_no_found"}');
+                this.res.end();
+                this.terminate();
+            }
           }));
         });        
         // middleware.APPORBIND 申请，绑定
     }
     ,viewIn:function(){
+        /*验证码开始*/
+        var timer60Seconds;
+        var flag = 0;
+        var checkTel = function(){
 
+            var userTel = $('#userTel').val();
+            var wxid = $('#wxid').val();
+
+            $.ajax({
+                url:'/lavico/member/card_member/unbind:checkTel',
+                type:'POST',
+                data:{
+                    'wxid':wxid,
+                    'userTel':userTel
+                }}).done(function(data){
+
+                });
+        }
+        $("#get_id_code").click(function(){
+            if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
+                alert("请输入正确的手机号码");
+                return	false;
+            }
+            if(flag){
+                return false;
+            }
+            flag = 1;
+            $.get('/lavico/member/card_blank/code:id_code',{
+                    'mobile':$("#userTel").val()
+                },function(data){
+                    data = eval('('+data+')');
+                    if(data.result == 'ofen'){
+                        alert('请稍后再获取！');
+                        flag = 0;
+                    }else if(data.result == 'ok'){
+                        set_interval();
+                        $('#userCaptcha').val(data.id_code);
+                        alert('验证码发送成功，请在2分钟内输入');
+                    }else{
+                        alert('网络不稳定，请稍后再试')
+                    }
+                }
+            );
+        });
+        function set_interval(){
+            clearInterval(timer60Seconds);
+            var time = 60;
+            $("#get_id_code").val('请'+time+'秒稍后再获取');
+            timer60Seconds = setInterval(function(){
+                time--;
+                if(time == 0){
+                    clearInterval(timer60Seconds);
+                    re_get_code();
+                }else{
+                    $("#get_id_code").val('请'+time+'秒稍后再获取');
+                }
+            },1000);
+        }
+        function re_get_code(){
+            $("#get_id_code").val('获取验证码');
+            flag = 0;
+        }
+        /*验证码结束*/
         var wxid = jQuery('#wxid').val();
         if(wxid == 'undefined'){
             alert('请登陆微信后，查看本页面');
@@ -71,6 +166,40 @@ module.exports = {
         });
     }
     ,actions:{
+        checkTel:{
+            layout:null,
+            view:null,
+            process:function(seed,nut){
+                nut.disabled = true ;
+                var wxid = seed.wxid;
+                var mobile = seed.mobile;
+                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                    if(doc && doc.mobile && doc.HaiLanMemberInfo.memberID ){
+                        _mobile =  doc.mobile;
+                        if(mobile == _mobile){
+                            nut.disable();//不显示模版
+                            this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                            this.res.write('{"success":true,"info":""}');
+                            this.res.end();
+                            this.terminate();
+                        }else{
+                            nut.disable();//不显示模版
+                            this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                            this.res.write('{"success":false,"error":"mobile_not_correct"}');//发送过来的手机号码不正确
+                            this.res.end();
+                            this.terminate();
+                        }
+                    }else{
+                        _mobile = 'undefined';
+                        nut.disable();//不显示模版
+                        this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                        this.res.write('{"success":false,"error":"mobile_not_binded"}');
+                        this.res.end();
+                        this.terminate();
+                    }
+                }));
+            }
+        },
         unlock:{
             layout:null,
             view:null,
@@ -113,17 +242,14 @@ module.exports = {
                       return doc;
                   }));
                 });
-                
                 this.step(function(doc){
                   var dataJson = JSON.parse(doc);
                   if(dataJson.success == true){
 				            _this.req.session.id_code = '';
                     helper.db.coll('welab/customers').update({wechatid:wxid},{
                         $set:{
-                          'HaiLanMemberInfo':{
-                              'action':'unbind',
-                              'lastModified':new Date().getTime()
-                          }  
+                          'HaiLanMemberInfo.action':"unbind",
+                          'HaiLanMemberInfo.lastModified':new Date().getTime()
                         }
                     },this.hold(function(err, insert_doc) {
                       _this.res.writeHead(200, { 'Content-Type': 'application/json' });

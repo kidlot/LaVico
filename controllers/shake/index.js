@@ -72,6 +72,10 @@ module.exports = {
         })
         this.step(function () {
             nut.model.list = list;
+            console.log("*******");
+            console.log(list);
+            console.log("*******");
+
         });
 
     },
@@ -83,6 +87,7 @@ module.exports = {
                 var perPage = 1000;
                 var pageNum = seed.page ? seed.page : 1;
                 var then = this;
+
                 this.step(function (doc) {
                     middleware.request('Coupon/Promotions', {
                         perPage: perPage,
@@ -97,6 +102,7 @@ module.exports = {
                         page.totalcount = doc_json.total;
                         nut.model.page = page;
 
+                        //console.log(doc_json);
 
                         if (doc_json && doc_json.list) {
                             return doc_json.list;
@@ -108,18 +114,31 @@ module.exports = {
                 var list;
                 this.step(function (doc) {
                     var count = 0;
+                    console.log('doc');
+                    console.log(doc);
                     for (var i = 0; i < doc.length; i++) {
                         (function (i) {
                             helper.db.coll("lavico/activity").findOne({aid: doc[i].PROMOTION_CODE}, then.hold(function (err, detail) {
+                                console.log(doc[i]);
                                 count++;
+//                                console.log('++++++');
+//                                console.log(detail);
+//                                console.log('++++++');
+//                                console.log('______');
+//                                console.log(doc[i]);
+//                                console.log('______');
+
                                 if (detail) {
-                                    for (var j = 0; j < doc[i].coupons.length; j++) {
-                                        for (var k = 0; k < detail.coupons.length; k++) {
-                                            if (doc[i].coupons[j].QTY == detail.coupons[k].QTY && detail.coupons[k].pic) {
-                                                doc[i].coupons[j].pic = detail.coupons[k].pic;
-                                            }
-                                        }
-                                    }
+//                                    for (var j = 0; j < doc[i].coupons.length; j++) {
+//                                        for (var k = 0; k < detail.coupons.length; k++) {
+//                                            if (doc[i].coupons[j].QTY == detail.coupons[k].QTY && detail.coupons[k].pic) {
+//                                                doc[i].coupons[j].pic = detail.coupons[k].pic;
+//                                            }
+//                                        }
+//
+//                                    }
+                                      doc[i].pic = detail.pic;
+
                                 }
                                 if (count == doc.length) {
                                     list = doc
@@ -146,6 +165,10 @@ module.exports = {
                     shake = shake ? shake : {};
                     doc = JSON.stringify(list);
                     nut.model.list = list;
+                    console.log("!!!!!!!!!");
+                    console.log(list);
+                    console.log("!!!!!!!!!");
+
                     nut.model.shake = shake;
                     nut.model.doc = doc;
                 });
@@ -205,13 +228,31 @@ module.exports = {
                     nut.message("保存失败。数据不能为空", null, 'error');
                     return;
                 }
-                helper.db.coll("lavico/shake").update({_id: helper.db.id(seed._id)}, postData, {multi: false, upsert: true}, this.hold(function (err, doc) {
-                    if (err) {
-                        throw err;
-                    } else {
-                        nut.message("保存成功", null, 'success');
-                    }
-                }));
+                this.step(function(){
+                    helper.db.coll("lavico/shake").update({_id: helper.db.id(seed._id)}, postData,
+                        {multi: false, upsert: true},
+                        this.hold(function (err, doc) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                nut.message("保存成功", null, 'success');
+                            }
+                        }));
+                });
+                this.step(function(){
+                    helper.db.coll("lavico/shake").update(
+                        {_id: helper.db.id(seed._id)},
+                        {
+                            $set:{
+                                'memo':'摇一摇'
+                            }
+                        },
+                        function(err,doc){
+                            console.log(doc);
+                        }
+                    );
+                });
+
 
             }
         },

@@ -1,5 +1,5 @@
 <meta name="viewport" content="width=360,user-scalable=no" />
-<input type='button' onclick="shake(this)" value="don't click me" />
+<input type='button' onclick="shake(this)" value="点击我" />
 <input type='hidden' id='uid' value="{@uid}" />
 <input type='hidden' id='aid' value="{@aid}" />
 <script>
@@ -7,7 +7,7 @@
     if(!$("#uid").val() || !$("#aid").val()){
       alert('缺少信息')
     }
-    $.get('/lavico/activity/test:shake',{
+    $.get('/lavico/activity/shake:shakeit',{
         uid:$("#uid").val(),
         aid:$("#aid").val()
       },function(data){

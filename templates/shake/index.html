@@ -39,30 +39,8 @@
                     <td>{@ doc.status}</td>
                     <td>{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}</td>
-                    <td>
-                      <table class="children_table">
-                        <tbody>
-                          <foreach for='@doc.coupons' var='value'>
-                            <tr>
-                              <td>{@value.QTY}</td>
-                            </tr>
-                          </foreach>
-                        </tbody>
-                      </table>
-                    </td>
-                    <td>
-                      <table class="children_table">
-                        <tbody>
-                          <foreach for='@doc.coupons' var='value'>
-                            <tr>
-                              <td>
-                                {@ value.COUNT-value.USED}/{@value.COUNT}
-                              </td>
-                            </tr>
-                          </foreach>
-                        </tbody>
-                      </table>
-                    </td>
+                    <td>{@ doc.QTY}</td>
+                    <td>{@ doc.USED}/{@ doc.TOTAL}</td>
                     <td>
                         {@doc.total}
                     </td>   
