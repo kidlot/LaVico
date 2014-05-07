@@ -1,6 +1,6 @@
 /*
   author:json
-  description:add reedem(添加公告)
+  description:add reedem(添加积分兑换)
  */
 var middleware = require('../../lib/middleware.js');
 module.exports={
@@ -21,7 +21,6 @@ module.exports={
                 this.hold(function(err,doc){
                     doc = doc.replace(/[\n\r\t]/,'');
                     var doc_json = eval('(' + doc + ')');
-
                     var page = {};
                     page.lastPage = Math.ceil(doc_json.total/perPage);
                     page.currentPage = pageNum;
@@ -38,24 +37,18 @@ module.exports={
         });
 
         this.step(function(doc){
-            var count = 0;
             //查找活动表对应的券图和描述
+            var count = 0;
             for(var i=0;i<doc.length;i++){
                 (function(i){
                     helper.db.coll("lavico/activity").findOne({aid:doc[i].PROMOTION_CODE},then.hold(function(err,detail){
                         count ++ ;
                         if(detail){
-                            for(var j=0;j<doc[i].coupons.length;j++){
-                                for(var k=0;k<detail.coupons.length;k++){
-                                    if(doc[i].coupons[j].QTY == detail.coupons[k].QTY && detail.coupons[k].pic){
-                                        doc[i].coupons[j].pic = detail.coupons[k].pic;
-                                        doc[i].coupons[j].introduction=detail.coupons[k].introduction
-                                    }
-                                }
-                            }
+                            doc[i].pic = detail.pic;
+                            doc[i].introduction=detail.introduction;
                         }
                         if(count == doc.length){
-                            list = doc
+                            list = doc;
                             return doc;
                             then.terminate();
                         }
@@ -69,17 +62,14 @@ module.exports={
         });
     },
     actions:{
-
+        //保存公告
         save:{
             layout: "welab/Layout",
             view:"lavico/templates/reedem/updateReedem.html",
             process:function(seed,nut){
                 helper.db.coll("lavico/reddem").update({_id:helper.db.id(seed._id)},postData,{multi:false,upsert:true},this.hold(function(err,doc){
-                    if(err){
-                        throw err;
-                    }else{
-                        nut.message("保存成功",null,'success') ;
-                    }
+                    if(err) throw err;
+                    if(doc) nut.message("保存成功",null,'success') ;
                 }));
             }
         },
@@ -122,14 +112,8 @@ module.exports={
                             helper.db.coll("lavico/activity").findOne({aid:doc[i].PROMOTION_CODE},then.hold(function(err,detail){
                                 count ++ ;
                                 if(detail){
-                                    for(var j=0;j<doc[i].coupons.length;j++){
-                                        for(var k=0;k<detail.coupons.length;k++){
-                                            if(doc[i].coupons[j].QTY == detail.coupons[k].QTY && detail.coupons[k].pic){
-                                                doc[i].coupons[j].pic = detail.coupons[k].pic;
-                                                doc[i].coupons[j].introduction=detail.coupons[k].introduction
-                                            }
-                                        }
-                                    }
+                                    doc[i].pic = detail.pic;
+                                    doc[i].introduction=detail.introduction
                                 }
                                 if(count == doc.length){
                                     list = doc
@@ -153,16 +137,16 @@ module.exports={
 
                 this.step(function(){
                     nut.model.list = list;//全部券名
-                    nut.model.reedem = redem;//
+                    nut.model.reedem = redem;
                 });
             },
             viewIn:function(){
+                //日历控件
                 $('#startDate').datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
                     minView: 2
                 })
-
                 $('#endDate').datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
@@ -220,7 +204,6 @@ module.exports={
                     return;
                 }
 
-
                 helper.db.coll("lavico/reddem").insert(postData,this.hold(function(err,doc){
                     if(err){
                         throw err;
@@ -229,19 +212,11 @@ module.exports={
                     }
                 }))
 
-                /*
-                helper.db.coll("lavico/reddem").update({_id:helper.db.id(seed._id)},postData,{multi:false,upsert:true},this.hold(function(err,doc){
-                    if(err){
-                        throw err;
-                    }else{
-                        nut.message("保存成功",null,'success') ;
-                    }
-                }));
-                */
             }
         }
     },
     viewIn:function(){
+        //日历控件
         $('#startDate').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,

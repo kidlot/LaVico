@@ -1,9 +1,6 @@
 module.exports = {
-
-
     layout: null,
-    view: "jth/templates/layout.html", process: function (seed, nut) {
-
+    view: "lavico/templates/layout.html", process: function (seed, nut) {
 
     }
 }

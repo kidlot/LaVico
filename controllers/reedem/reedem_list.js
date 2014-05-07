@@ -50,6 +50,7 @@ module.exports={
         });
 
         this.step(function(){
+
             for(var i in list.docs){
                 (function(doc){
                     helper.db.coll("lavico/exchangeRecord").find({reddem_id:doc._id.toString()}).count(then.hold(function(err,result){
@@ -66,6 +67,7 @@ module.exports={
         });
 
         this.step(function(){
+            console.log("list:"+JSON.stringify(list));
             nut.model.list = list;
         });
 

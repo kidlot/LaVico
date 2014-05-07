@@ -112,14 +112,16 @@
             $(o).removeClass("switch-off")
             $(o).addClass("switch-on")
             flag = 'on'; //  开
-            $("#openClose").html("进行中")
+            //$("#openClose").html("进行中")
+            $(o).parent().parent().parent().parent().find("#openClose").html("进行中")
+
 
         }else{
             $(o).addClass("switch-off")
             $(o).removeClass("switch-on")
             flag = 'off'; // 关
-            $("#openClose").html("已关闭")
-
+            //$("#openClose").html("已关闭")
+            $(o).parent().parent().parent().parent().find("#openClose").html("已关闭")
         }
 
         if(flag){

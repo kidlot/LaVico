@@ -1,56 +1,75 @@
 /**
  * 会员 - 我的会员卡 (已开卡状态)
  * 接口查询：会员卡号、卡类型、未使用的礼券、信息完善与否
+ * url:/lavico/member/card_member/index
+ * template:/lavico/templates/member/card_member/index.html
  */
 
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
-    layout:null,
+    layout:'lavico/member/layout',
     view:'lavico/templates/member/card_member/index.html',
     process:function(seed,nut){
 
-        var defaultTestID = 'oBf_qJTu0Vn5nFlXFSVpCIbKIk8o';//设置默认测试微信ID
-        var wxid = seed.wxid ? seed.wxid : defaultTestID;//预先定义微信ID
-        this.req.session.wxid = wxid;//默认是30分钟失效期 SESSION
+        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
 
-        nut.model.wxid = wxid;//设置模版的微信ID变量值
+        this.step(function(){
+            if(wxid == 'undefined'){
+                nut.disable();//不显示模版
+                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                this.res.write('{"error":"wxid_is_empty"}');
+                this.res.end();
+                this.terminate();
+            }
+        });
+        this.step(function(){
+            helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                if(!doc){
+                    nut.disable();//不显示模版
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"error":"wxid_no_bind_to_welab"}');
+                    this.res.end();
+                    this.terminate();
+                }
+            }));
+        });
+        this.step(function(){
 
-        /*
-        * 其他会员页面WXID使用方法
-        *  var wxid = seed.wxid ? seed.wxid : this.req.session.wxid;//预先定义微信ID
-        *  if(wxid ==''){
-        *       this.res.writeHead(302, {'location':'/lavico/member/index})
-        *       this.res.end();
-        *  }
-        * */
+            nut.model.wxid = wxid ;
 
-        //根据WXID来判断会员的类型
-        //判断会员接口
-        //返回值 type = card_blank || card_member
+            /*会员公告*/
+            nut.model.announcement = "/lavico/member/card_member/announcement/index?wxid="+wxid;
+
+            /*专属礼券*/
+            nut.model.coupon = "/lavico/member/card_member/coupon/index?wxid="+wxid;
+
+            /*积分与兑换*/
+            nut.model.points = "/lavico/member/card_member/points/index?wxid="+wxid;
+
+            /*消费记录*/
+            nut.model.buy = "/lavico/member/card_member/buy?wxid="+wxid;
+
+            /*收藏清单*/
+            nut.model.fav = "/lavico/member/card_member/fav?wxid="+wxid;
+
+
+
+            /*会员特权*/
+
+            /*微会员尊享*/
+            /*VIP尊享*/
+            /*白金VIP卡尊享*/
+
+            /*个人资料*/
+            nut.model.info = "/lavico/member/card_member/info?wxid="+wxid;
+
+            /*解绑会员卡*/
+            nut.model.unbind = "/lavico/member/card_member/unbind?wxid="+wxid;
+        });
 
     },
     viewIn:function(){
-        var wxid = $('#wxid').val();
-        $('#announcement').click(function(){
-            window.location.href="/lavico/member/card_member/announcement/index?wxid="+wxid;//跳转到会员公告页面
-        });
-        $('#coupon').click(function(){
-            window.location.href="/lavico/member/card_member/coupon/index?wxid="+wxid;//跳转到会员公告页面
-        });
-        $('#points').click(function(){
-            window.location.href="/lavico/member/card_member/points/index?wxid="+wxid;//跳转到会员公告页面
-        });
-        $('#buy').click(function(){
-            window.location.href="/lavico/member/card_member/buy?wxid="+wxid;//跳转到会员公告页面
-        });
-        $('#fav').click(function(){
-            window.location.href="/lavico/member/card_member/fav?wxid="+wxid;//跳转到会员公告页面
-        });
-        $('#info').click(function(){
-            alert('hihi');
-            window.location.href="/lavico/member/card_member/info?wxid="+wxid;//跳转到会员公告页面
-        });
 
     }
 }

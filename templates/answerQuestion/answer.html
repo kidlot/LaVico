@@ -1,5 +1,10 @@
 <style>
     ul{list-style: none}
+    ul li{padding: 20 0 0 0;}
+    #chooseNa{font-size: 50px;}
+    #picImg{padding-top:  20px;}
+    #sed{padding: 20 0 0 0;}
+    #tip{font-size: 30px; text-align: center;}
 </style>
 
 <script>
@@ -10,13 +15,22 @@ var wechatid='{@wechatid}';//获取微信ID
 
 //初始化事件
 function build(){
-
+/*
+    $(".answer_check").click(function(){
+        alert("aa");
+        $(".answer_check").removeClass("select");
+        $(".answer_check").addClass("select1");
+        $(this).removeClass("select1");
+        $(this).addClass("select");
+    });
+*/
     //添加标题显示
     $(".title").append(jsonObject.title);
 
     //判断是否为“主观题”
     if(jsonObject.type==2){
-        $(".content").append("<textarea cols='30' rows='5' name='descContent'></textarea>");
+        $(".content").append("<div style='padding-top: 15px;'><textarea cols='27' rows='12' name='descContent' style='font-size: 35px;'></textarea></div>");
+
     }else{
         //非“主观题”判断是否有图片
         for(var i=0;i<jsonObject.choose.length;i++){
@@ -26,42 +40,40 @@ function build(){
                     //获取单选题“下一题字段”
                     var chooseNext=jsonObject.choose[i].chooseNext;
                     //判断第一个字母是否为#号
-                    if(chooseNext.substr(1,1)=="#")
-                        chooseNext=chooseNext.substr(2);//获取#后的数字
 
                     //组织显示项,value:'题号+选项编号+积分+下一题编号+停止标签+自定义标签'
                     //显示数据后跟是否正确图片
-                    $(".content ul").append("<li><input onclick='showCorrent()' type='radio' name='singleChooseInput' class='single' value='"+
-                            jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+
-                            "'>"+jsonObject.choose[i].chooseName+
-                            "<span name='correntImg' style='display:none'><img width='15px' height='15px' src=/lavico/public/images/"+
-                            jsonObject.choose[i].isCorrect+".png></span></li>");
+                    $(".content ul").append("<li style='height:100px;'><span name='correntImg' id='sed' style='visibility:hidden'><img width='32px' height='31px'  src=/lavico/public/images/"+
+                            jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
+                            + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
+                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
+                            "</span></label></li>");
 
+                    //$(".content ul").append("<li><div class='answer_check select1'>系上面两颗</div><div class='img'><img src='images/suit_pic01.jpg' /></div></li>");
 
                 }else if(jsonObject.type==1){
                     //多项选择题 value:'题号+选项编号+积分+下一题'
-                    $(".content ul").append("<li><input type='checkbox' name='mutilChooseInput' value='"+jsonObject.optionId+
+                    $(".content ul").append("<li style='line-height: 80px;'><input type='checkbox'  style='display: none'  onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+jsonObject.optionId+
                             "+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+"</li>");
+                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa' class='answer_check selects1'>"+jsonObject.choose[i].chooseName+"</span></label></li>");
                 }
             }else{
             //选项中存在照片
                 if(jsonObject.type==0){
                     //show  value:"题号+选项编号+积分+下一题编号+停止标签+自定义标签
-                    $(".content ul").append("<li><input onclick='showCorrent()' type='radio' name='singleChooseInput' class='single' value='"
+                    $(".content ul").append("<li><span name='correntImg' id='sed' style='visibility:hidden'><img width='32px' height='31px'  src=/lavico/public/images/"+
+                            jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
                             + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'>"+jsonObject.choose[i].chooseName+
-                            "<span name='correntImg' style='display:none'><img width='15px' height='15px'  src=/lavico/public/images/"+
-                            jsonObject.choose[i].isCorrect+".png></span><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="+
-                            jsonObject.choose[i].uploadFile+" name='radioimg' width='100' height='100'></li>");
+                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
+                            "</span></label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="+
+                            jsonObject.choose[i].uploadFile+" id='picImg' name='radioimg' width='280' height='280'></li>");
                 }else if(jsonObject.type==1){
                     //多项选择题 value:'题号+选项编号+积分+下一题'
-                    $(".content ul").append("<li><input type='checkbox' name='mutilChooseInput' value='"+
+                    $(".content ul").append("<li><input type='checkbox'  style='display: none' onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+
                             jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"'>"+jsonObject.choose[i].chooseName+
-                            "<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='"+jsonObject.choose[i].uploadFile+
-                            "' name='chkimg' width='100' height='100'></li>");
+                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa' class='answer_check selects1'>"+jsonObject.choose[i].chooseName+
+                            "</span></label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  src='"+jsonObject.choose[i].uploadFile+
+                            "' name='chkimg' width='180' height='180' id='picImg'></li>");
                 }
             }
         }
@@ -74,13 +86,9 @@ function build(){
     for(var i=0;i<arrCookie.length;i++){
         var arr=arrCookie[i].split("=");
         if(arr[1]==jsonObject.optionId){
-            $("h1").html("您已经答过此题!");
-            //var arr2= arrCookie[0].split("+");
-            //var chooseId=arr2[1];
-            //("input[type=redio]").eq(1).attr("checked",true);
+            $("#tip").html("您已经答过此题");
         }
     }
-
 
     //当前显示编号是否已经至最后一题，显示“下一题”或“完成”
     if(jsonObject.optionId<optionCount){
@@ -90,19 +98,38 @@ function build(){
     }
 }
 
-//点击选项后“触发”显示正确答案事件
-function showCorrent(){
+//点击选项后“触发”显示正确答案事件(单选)
+function showCorrent(t){
     //<span name='correntImg'>
-    $("span[name='correntImg']").show();
-    $("input[name='singleChooseInput']").attr("disabled",true);
+    //alert(t);
+    $(t).next().find("span").removeClass("select1");
+    $(t).next().find("span").addClass("select");
 
+    //$("span[name='correntImg']").show();
+    $("span[name='correntImg']").css("visibility","visible");
+    $("input[name='singleChooseInput']").attr("disabled",true);
     //追加cookie
     var date=new Date();
     date.setTime(date.getTime()+24*3600*1000);
-
     var v=$("input").val();
     document.cookie="val="+escape(v)+",optionId="+escape(jsonObject.optionId)+",expires="+escape(date.toGMTString());
+}
 
+//点击选项后“触发”显示正确答案事件(复选)
+function showCorrents(t){
+    //<span name='correntImg'>
+    //alert(t);
+    $(t).next().find("span").toggleClass("selects1");
+    $(t).next().find("span").toggleClass("selects");
+
+    //$("span[name='correntImg']").show();
+    $("span[name='correntImg']").css("visibility","visible");
+    $("input[name='singleChooseInput']").attr("disabled",true);
+    //追加cookie
+    var date=new Date();
+    date.setTime(date.getTime()+24*3600*1000);
+    var v=$("input").val();
+    document.cookie="val="+escape(v)+",optionId="+escape(jsonObject.optionId)+",expires="+escape(date.toGMTString());
 }
 
 //finish完成按钮“触发"事件
@@ -194,12 +221,39 @@ function nextChoose(){
 
 window.onload=build;
 </script>
-<h3></h3>
-<div>
-    题目名称:<span class="title">&nbsp;</span>
-    <div class="content">
-        <ul>
-        </ul>
+
+<link rel="stylesheet" href="/lavico/public/css/base.css" />
+<link rel="stylesheet" href="/lavico/public/css/main.css" />
+
+<div class="wrapper">
+    <div class="answer-title">
+        <p><span class="title2">本次共有 {@optionCount} 个问题，当前是第 {@optionId} 题</span></p>
     </div>
-    <span class="btn"></span>
+    <div id="tip"></div>
+    <div class="answer">
+
+        <div class='answer-content'><div class='title' style="font-size: 50px;"></div>
+            <div class="content">
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="pages">
+        <div class="pages-content">
+            <a class="fl pre" href="javascript:"> < 上一题</a>
+            <if condition="{@optionCount!=optionId}">
+                <a class="fr next" href="javascript:nextChoose()">下一题 > </a>
+            <else/>
+                <a class="fr next" href="javascript:finish()">完&nbsp;&nbsp;成 > </a>
+            </if>
+        </div>
+    </div>
 </div>
+
+<script type="text/javascript">
+
+
+
+</script>

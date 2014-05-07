@@ -23,12 +23,41 @@ module.exports={
         }))});
 
         this.step(function(){
+            //异常情况判断：是否填写的数值大于当前题目数
+            helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
+                if(err) throw err;
+                if(doc){
+                    if(optionId>doc.options.length){
+                        nut.view.disable();
+                        nut.write("<script>alert('无此题，请联系管理员')</script>");
+                    }
+                }
+
+            }));
+        })
+
+
+
+
+        this.step(function(){
             if(docvar==null){
                 if(type==0){//单选
                    //积分在数字情况下记录
                    if(!isNaN(score)){
+
                        //session累加
-                       then.req.session.scoreAll+=parseInt(score);
+
+
+                       var scores=0;
+                       if(isNaN(parseInt(score))){
+                           console.log("aa");
+                           scores=0
+                       }else{
+                           console.log("bb");
+                           scores=parseInt(score)
+                           then.req.session.scoreAll+=parseInt(score);
+                       }
+
                        //记录积分
                        helper.db.coll("lavico/custReceive").insert({
                            "wechatid": wechatid,
@@ -36,7 +65,7 @@ module.exports={
                            "isFinish": false,
                            "optionId": parseInt(optionId),
                            "chooseId": parseInt(chooseId),
-                           "getChooseScore": parseInt(score),
+                           "getChooseScore": scores,
                            "getChooseLabel":"",
                            "getLabel": "",
                            "getGift":  "",
@@ -47,63 +76,23 @@ module.exports={
                    }
 
                     if(chooseNext!=""){
-                        console.log("aaa");
                       //下一题不空，跳转指定题
                         //先记录optionId和isFinish,为了让其能history.back后继续
                         then.req.session.optionId=parseInt(chooseNext);
                         then.req.session.isFinish=false;
-
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+wechatid+"&_id="+_id
                             +"&optionId="+parseInt(chooseNext)});
                         this.res.end();
 
-                        /*
-                        var chooseNextB;
-                        var customerLab="{tags:[";
-                        //判断标签是否有“逗号”为
-                        chooseNextB=chooseNext.indexOf(',');
-                        if(chooseNextB<0){
-                            chooseNextB=chooseNext.indexOf(' ');
-                        }
-                        if(chooseNextB!=-1){
-                            //如果有逗号，不是数字，记录标签
-                            //注意：split如果在没有符号的情况下，返回1
-                            var choArr=chooseNext.split(',');
-                            if(choArr.length<=1){
-                                choArr=chooseNext.split(' ');
-                            }
-                            //记录至customers表
-                            for(var i=0;i<choArr.length;i++){
-                                customerLab+="'"+choArr[i]+"'"+",";
-                            }
-                            var jsonStr=customerLab.substring(0,customerLab.lastIndexOf(',')).replace(' ',',')+"]}";
-                            console.log(jsonStr);
-                            customerLab=eval('('+jsonStr+')');
-                            helper.db.coll("welab/customers").update({wechatid:wechatid},{$set:customerLab},function(err,doc){});
-
-
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+"&flag=false&_id="+_id+"&optionId="+optionId});
-                            this.res.end();
-                        }else{
-                            //如果没有逗号，表示是下一题
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?_id="+_id+"&optionId="+parseInt(chooseNext)});
-                            this.res.end();
-                        }
-                        */
-
                     }else{//下一题为空
-                        console.log("bbb");
                         //判断是否有停止标签
                         if(stopLabel!=""){
-                            console.log("ccc")
                             //记录停止标签
                             then.req.session.stopLabel=stopLabel;
                             //停止标签存在，同时查看是否有自定义标签(自定义标签记录到customer中) 跳转finish
                             if(customerLabel!=""){
-                                console.log("ddd")
                                 //自定义标签存在,自定义标签记录到customer中(session),跳转finish
                                 then.req.session.customerLabel=customerLabel;
-
                                 //先记录optionId和isFinish,为了让其能history.back后继续
                                 then.req.session.optionId=optionId;
                                 then.req.session.isFinish=true;
@@ -112,9 +101,7 @@ module.exports={
                                     wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId});
                                 this.res.end();
                             }else{
-                                console.log("eee")
                                 //自定义标签不存在,跳转finish
-
                                 //先记录optionId和isFinish,为了让其能history.back后继续
                                 then.req.session.optionId=optionId;
                                 then.req.session.isFinish=true;
@@ -123,12 +110,9 @@ module.exports={
                                     wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId});
                                 this.res.end();
                             }
-
                         }else{
-                            console.log("fff");
                             //停止标签不存在,判断是否是完成页面过来的
                             if(finish!="true"){
-                                console.log("hhh")
                                 //下一题
                                 //先记录optionId和isFinish,为了让其能history.back后继续
                                 then.req.session.optionId=(parseInt(optionId)+1);
@@ -138,7 +122,6 @@ module.exports={
                                     wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
                                 this.res.end();
                             }else{
-                                console.log("iii")
                                 //完成页面
                                 this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
                                     wechatid+"&_id="+_id+"&optionId="+optionId});
@@ -146,22 +129,6 @@ module.exports={
 
                             }
                         }
-
-                        /*
-                        //判断是否为完成（最后一页）
-                        if(finish!="true"){
-                            //跳转:下一题
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
-                                wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
-                            this.res.end();
-                        }
-                        else{
-                            //跳转:完成页面
-                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
-                                wechatid+"&_id="+_id+"&optionId="+optionId});
-                            this.res.end();
-                        }
-                         */
                     }
                 }else if(type==1){
                     //复选题,记录session
@@ -170,7 +137,6 @@ module.exports={
                     var selectChooseIdArr=seed.chooseId;
                     var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
                     var selId="["+selectChooseId.replace("_",",")+"]";
-
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
@@ -187,19 +153,15 @@ module.exports={
                     //判断是否为最后一页
                     if(finish!="true"){
                         //下一题页
-
                         //先记录optionId和isFinish,为了让其能history.back后继续
                         then.req.session.optionId=(parseInt(optionId)+1);
                         then.req.session.isFinish=false;
 
-
-                        console.log("wechatid:"+wechatid);
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
                             wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
                         this.res.end();
                     }else{
                         //完成页
-
                         //先记录optionId和isFinish,为了让其能history.back后继续
                         then.req.session.optionId=optionId;
                         then.req.session.isFinish=true;
@@ -215,10 +177,16 @@ module.exports={
                         "&_id="+_id+"&optionId="+then.req.session.optionId});
                     this.res.end();
                 }else{
-                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
-                        wechatid+"&_id="+_id+
-                        "&optionId="+then.req.session.optionId});
-                    this.res.end();
+                    if(finish!="true"){
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+                            wechatid+"&_id="+_id+
+                            "&optionId="+then.req.session.optionId});
+                        this.res.end();
+                    }else{
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                            "&_id="+_id+"&optionId="+then.req.session.optionId});
+                        this.res.end();
+                    }
                 }
 
             }

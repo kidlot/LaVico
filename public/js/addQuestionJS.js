@@ -143,6 +143,9 @@ $(function () {
             var conditionLabel=$fcount.find("input[name='conditionLabel']:eq("+v+")").val();
             //获得标签
             var getLabel=$fcount.find("input[name='getLabel']:eq("+v+")").val();
+            //获得标签内容
+            var tipContent=$fcount.find("textarea[name='tipContent']:eq("+v+")").val();
+            tipContent=tipContent.replace(/[\n\r\t]/,'');
             //获得积分
             var getScore=$fcount.find("input[name='getScore']:eq("+v+")").val();
             //获得活动编号
@@ -150,7 +153,7 @@ $(function () {
 
             jsonData+="conditionMinScore:'"+conditionSmallScore+"',conditionMaxScore:'"+
                 conditionBigScore+"',conditionLabel:'"+conditionLabel+"',getLabel:'"+getLabel+"',getScore:'"+
-                getScore+"',getActivities:'"+getActivities+"'}";
+                getScore+"',getActivities:'"+getActivities+"',tipContent:'"+tipContent+"'}";
             if (v < count - 1) {jsonData += ','}
         }
         jsonData+="]}";
