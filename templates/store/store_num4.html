@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=0">
+<meta name="mobileoptimized" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<link rel="stylesheet" href="/lavico/public/css/base.css" />
+<link rel="stylesheet" href="/lavico/public/css/main.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="store-title">
+    <p><span class="title1"><a href="member_num4.html">会员</a></span><span class="title2">门店切换</span></p>
+  </div>
+  <div class="inquiry">
+  <div class="city fm">选择城市</div> 
+  </div>
+  <div class="city-list">
+      <foreach for="{@provinceArr}" var="province">
+        <h3><a style="font-size: 25px; padding: 35 0 35 70;border-bottom: 1px solid darkgray;display: block;color: #cdb788">{@province}</a></h3>
+        <div class="city-listContent" style="display: none">
+          <ul>
+              <foreach for="{@cityArr}" var="city">
+                  <if condition="{@city[0]==province}">
+                      <foreach for="{@city}" var="cityOne" key="key">
+                          <if condition="@key!=0">
+                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}" id="ci" style="font-size: 25px;padding: 25 0 0 70;display: block; color: #cdb788">{@cityOne}</a></li>
+                          </if>
+                      </foreach>
+                  </if>
+              </foreach>
+
+          </ul>
+        </div>
+      </foreach>
+  </div>
+</div>
+<div class="fade2">
+<div class="second-price">
+<p class="msg"><span class="mt70">要使用您当前位置</p>
+<p class="confirm"><input type="submit" class="goon_btn" border="0" value="允许" /></p>
+<p class="msg"><span class="mt70">&nbsp;&nbsp;</p>
+<p class="confirm"><input type="submit" class="goon_btn" border="0" value="不允许" /></p>
+</div>
+</div>
+<script type="text/javascript">
+
+window.onload=function(){
+    var i="";
+    $("h3").click(function(){
+        if(i!= $(this).text()){
+            i= $(this).text();
+            $("h3").next().slideUp("normal");
+        }
+        $(this).next().slideToggle("normal");
+
+
+    })
+}
+
+
+$(document).ready(function(e) {	
+	$(".city_title").click(function(){
+		$(".fade2").css("display","block");
+	});
+	
+	$(".goon_btn").click(function(){
+		$(".fade2").css("display","none");
+	});
+});
+</script>
+</body>
+</html>

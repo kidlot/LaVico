@@ -1,7 +1,8 @@
 var middleware = require('../../lib/middleware.js');
 module.exports={
     layout:null,
-    view:"lavico/templates/store/currentCustomerLocation2.html",
+    //view:"lavico/templates/store/currentCustomerLocation2.html",
+    view:"lavico/templates/store/store_num2.html",
     process:function(seed,nut){
         //接口读取门店列表(设置1000代表每页条数，即一次性全部返回)
         this.step(function(){

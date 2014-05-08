@@ -1,12 +1,13 @@
 /*
-   author:json
-   desciption:show store list by appoint city(按指定城市选择门店列表)
+ author:json
+ desciption:show store list by appoint city(按指定城市选择门店列表)
  */
 var middleware = require('../../lib/middleware.js');
 module.exports={
     layout: null,
     //view:"lavico/templates/store/searchByCity.html",
-    view:"lavico/templates/store/searchChoose.html",
+    //view:"lavico/templates/store/searchChoose.html",
+    view:"lavico/templates/store/store_num4.html",
     process:function(seed,nut){
         nut.model.city_docs=[];
 
@@ -89,7 +90,8 @@ module.exports={
         //显示具体门店
         show:{
             layout: null,
-            view:"lavico/templates/store/showStoreDetail.html",
+            //view:"lavico/templates/store/showStoreDetail.html",
+            view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
                 //获取CODE-取消最后一个自添加1
                 var cityCode=seed.CODE.substring(0,seed.CODE.length-1);
@@ -111,7 +113,7 @@ module.exports={
                     //在接口列表中查找seed传送过来的cityCode
                     for(var i=0;i<doc.list.length;i++){
                         if(doc.list[i].CODE==cityCode){
-                            console.log(doc.list[i])
+                            //console.log(doc.list[i])
                             //return searchCity=doc.list[i];//返回指定门店
                             nut.model.searchCity=doc.list[i];
                             break;
@@ -119,16 +121,50 @@ module.exports={
                     }
                 })
 
+            },
+            viewIn:function(){
+                if(log!=""){
+                    var map = new BMap.Map("allmap");
+                    //var point = new BMap.Point(116.331398,39.897445);
+                    var point = new BMap.Point(log,lat);
+                    map.centerAndZoom(point,17);
+
+                    var geolocation = new BMap.Geolocation();
+                    geolocation.getCurrentPosition(function(r){
+                        r.point.lng=log;
+                        r.point.lat=lat;
+                        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                            var mk = new BMap.Marker(r.point);
+                            map.addOverlay(mk);
+                            map.panTo(r.point);
+                            //alert('您的位置：'+r.point.lng+','+r.point.lat);
+                        }
+                        else {
+                            alert('failed'+this.getStatus());
+                        }
+                    },{enableHighAccuracy: true})
+                    //关于状态码
+                    //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
+                    //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
+                    //BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
+                    //BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
+                    //BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
+                    //BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
+                    //BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+                    //BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
+                    //BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
+                }
             }
         },
         //搜索门店列表
         search:{
             layout:null,
-            view:"lavico/templates/store/showCity.html",
+            //view:"lavico/templates/store/showCity.html",
+            view:"lavico/templates/store/store_num21.html",
             process:function(seed,nut){
                 var then=this;
                 var cityName= seed.city.substring(0,seed.city.length-1);
-
+                nut.model.cityName=cityName;
                 this.step(function(){
                     var jsonData={};
                     jsonData.perPage=1000;
@@ -154,36 +190,6 @@ module.exports={
                 })
             }
         }
-    },
-    viewIn:function(){
-        if(log==""){
-        var map = new BMap.Map("allmap");
-        //var point = new BMap.Point(116.331398,39.897445);
-        var point = new BMap.Point(log,lat);
-        map.centerAndZoom(point,17);
-
-        var geolocation = new BMap.Geolocation();
-        geolocation.getCurrentPosition(function(r){
-            if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                var mk = new BMap.Marker(r.point);
-                map.addOverlay(mk);
-                map.panTo(r.point);
-                //alert('您的位置：'+r.point.lng+','+r.point.lat);
-            }
-            else {
-                alert('failed'+this.getStatus());
-            }
-        },{enableHighAccuracy: true})
-        //关于状态码
-        //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
-        //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
-        //BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
-        //BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
-        //BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
-        //BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
-        //BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
-        //BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
-        //BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
-        }
     }
+
 }

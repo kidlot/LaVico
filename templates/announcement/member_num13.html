@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=0">
+<meta name="mobileoptimized" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<link rel="stylesheet" href="/lavico/public/css/base.css" />
+<link rel="stylesheet" href="/lavico/public/css/main.css" />
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="store-title">
+    <p><span class="title1"><a href="/lavico/member/card_member/">会员</a></span><span class="title2">会员公告</span></p>
+  </div>
+  <div class="notice-list">
+    <div class="notice-listContent">
+      <ul>
+        <foreach for="@docs" var="doc">
+            <li><a href="/lavico/announcement/showIndex:show?_id={@doc._id}">
+              <p class="name">{@doc.title}</p>
+              <p>{@doc.createTime}</p>
+              </a>
+            </li>
+        </foreach>
+
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

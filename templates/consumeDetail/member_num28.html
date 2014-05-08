@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>会员</title>
+<meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=0">
+<meta name="mobileoptimized" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<link rel="stylesheet" href="/lavico/public/css/base.css" />
+<link rel="stylesheet" href="/lavico/public/css/main.css" />
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="store-title">
+    <p><span class="title1"><a href="member_num4.html">会员</a></span><span class="title2">消费记录</span></p>
+  </div>
+  <div class="points4">
+
+
+    <div class="title">
+      <p class="text"><span class="fl">消费总金额</span><span class="fr">￥{@saleAllMoney}</span></p>
+    </div>
+
+
+    <div class="points4-content">
+      <div class="point-box">
+
+       <foreach for="@arr" var="arrOne">
+            <div class="title2 clear">
+              <p><span class="fl">{@arrOne.year}年</span><span class="fr">￥{@arrOne.moneyAll}</span></p>
+            </div>
+            <ul>
+            <foreach for="@arrOne.val" var="oneYearInfo" key="key">
+              <li><span class="fl"><img src="/lavico/public/images/logo.png" /></span><span class="fl ml20 pt15">
+                <p>{@oneYearInfo.PRODUCT_NAME}</p>
+                <p class="c3">{@oneYearInfo.GOODSNO}<br />
+                    购买日期：
+                    <script type="template/script">
+                        var date=new Date(oneYearInfo.date).getFullYear()+"-"+new Date(oneYearInfo.date).getMonth()+"-"+new Date(oneYearInfo.date).getDate()+" "+new Date(oneYearInfo.date).getHours()+":"+new Date(oneYearInfo.date).getMinutes()+":"+new Date(oneYearInfo.date).getSeconds();
+                    </script>
+                    {@date}
+                </p>
+                </span><span class="fr c2 pt55">￥{@oneYearInfo.AMT}</span>
+              </li>
+                </foreach>
+            </ul>
+       </foreach>
+
+
+
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+</body>
+</html>

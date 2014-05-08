@@ -1,12 +1,13 @@
 /*
-  author:json
-  description:(显示会员消费记录详细信息表)
+ author:json
+ description:(显示会员消费记录详细信息表)
  */
 //引入中间件
 var middleware = require('lavico/lib/middleware.js');
 module.exports={
     layout:null,
-    view:"lavico/templates/consumeDetail/details.html",
+    //view:"lavico/templates/consumeDetail/details.html",
+    view:"lavico/templates/consumeDetail/member_num28.html",
     process:function(seed,nut){
         var data_request={};
         data_request.perPage=20;
@@ -30,7 +31,7 @@ module.exports={
         this.step(function(){
             middleware.request("Member/Spending/"+member,data_request,
                 this.hold(function(err,doc){
-                    console.log("doc:"+doc)
+                    //console.log("doc:"+doc)
                     if(err) throw err
                     var docsJson=JSON.parse(doc)
 
@@ -75,6 +76,8 @@ module.exports={
 
 
         this.step(function(){
+
+            console.log(JSON.stringify(arr));
             nut.model.arr=arr;
             nut.model.saleAllMoney=saleAllMoney;
         })

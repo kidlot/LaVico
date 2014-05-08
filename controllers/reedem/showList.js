@@ -1,7 +1,8 @@
 var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
     layout: null,
-    view:"lavico/templates/reedem/showList.html",
+    //view:"lavico/templates/reedem/showList.html",
+    view:"lavico/templates/reedem/member_num16.html",
     process:function(seed,nut){
         var reedemJson={};
         var then =this;
@@ -23,15 +24,15 @@ module.exports={
             //调用接口:获取会员积分
             if(memberId){
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result){
-                            var resultJson=JSON.parse(result);
-                            return [resultJson.point,memberId]//json数组双传值，数组格式
-                        }else{
-                            nut.disable();
-                            write_info(then,"没有查到您的积分，请联系我们");
-                        }
-                    })
+                    if(err) throw err;
+                    if(result){
+                        var resultJson=JSON.parse(result);
+                        return [resultJson.point,memberId]//json数组双传值，数组格式
+                    }else{
+                        nut.disable();
+                        write_info(then,"没有查到您的积分，请联系我们");
+                    }
+                })
                 )
             }
         });
@@ -96,7 +97,9 @@ module.exports={
             }))
         })
         this.step(function(){
+            console.log(reedemJson);
             nut.model.reedemJson=reedemJson;
+            nut.model.wechatId=seed.wechatId;
         })
 
     },
@@ -104,7 +107,8 @@ module.exports={
         //兑换
         exchange:{
             layout: null,
-            view:"lavico/templates/reedem/exchangeOk.html",
+            //view:"lavico/templates/reedem/exchangeOk.html",
+            view:"lavico/templates/reedem/member_num17.html",
             process:function(seed,nut){
                 var wechatId=seed.wechatId;//微信ID
                 var memberId=seed.memberId;//会员ID
@@ -142,12 +146,14 @@ module.exports={
                     var jsonData={};
                     jsonData.wechatId=wechatId;
                     jsonData.aid=aid;
+                    jsonData.reddem_id=seed._id;
                     helper.db.coll("lavico/exchangeRecord").findOne(jsonData,
                         this.hold(function(err,result){
                             if(err)throw err;
                             if(result){
                                 nut.disable();//不返回模板
-                                write_info_text(then,'sorry很抱歉！很抱歉您已经兑换过此商品');
+                                //write_info_text(then,'sorry很抱歉！很抱歉您已经兑换过此商品');
+                                write_info_txt(then,'sorry很抱歉！很抱歉您已经兑换过此商品');
                             }
                         })
                     )
@@ -166,7 +172,9 @@ module.exports={
                     //调用接口：提交扣除积分和兑换奖券
                     middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
                         if(err) throw err;
+
                         console.log("doc:"+doc)//不删
+
                         var docJson=JSON.parse(doc)
                         if(docJson.success){
                             //返回true，表成功兑换，返回券值
@@ -181,6 +189,7 @@ module.exports={
                 this.step(function(docJson){
                     //把兑换记录，记录至数据库
                     if(docJson){
+
                         var record={};
                         record.wechatId=wechatId;
                         record.aid=aid;//p_code
@@ -200,6 +209,7 @@ module.exports={
                             return record;//return只能放在hold
                         }))
                     }else{
+
                         nut.disable();
                         write_info_text(then,'数据错误1');
                     }
@@ -210,11 +220,13 @@ module.exports={
                     helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(record.reddem_id)},this.hold(function(err,result){
                         if(err) throw err;
                         if(result){
+
                             record.smallPic=result.smallPic;
                             record.bigPic=result.bigPic;
                             record.name=result.name;
                             return record;
                         }else{
+
                             nut.disable();
                             write_info_text(then,'数据错误2');
                         }
@@ -226,6 +238,7 @@ module.exports={
                     helper.db.coll("lavico/activity").findOne({aid:record.aid},this.hold(function(err,result){
                         if(err) throw err;
                         if(result){
+
                             record.pic=result.pic;
                         }
                         return record;
@@ -234,15 +247,22 @@ module.exports={
 
                 this.step(function(record){
                     nut.model.record=record;
+                    nut.model.wechatId=wechatId;
                 })
-
             }
         }
-
     }
 }
 function write_info(then,info){
     then.res.writeHead(200,{"Content-Type":"application/json"});
+    then.res.write(info);
+    then.res.end();
+    then.terminate();
+}
+
+function write_info_txt(then,info){
+    console.log(info)
+    then.res.writeHead(200,{"Content-Type":"text/plain;charset=utf-8"});
     then.res.write(info);
     then.res.end();
     then.terminate();
