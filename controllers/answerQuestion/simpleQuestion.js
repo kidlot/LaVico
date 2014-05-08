@@ -48,6 +48,7 @@ module.exports={
 
                         return doc.options[i];
                     }else{
+                        nut.view.disable();
                         nut.write("<script>alert('字数不符合要求，请重填');history.back()</script>");
                     }
                 }

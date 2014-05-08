@@ -25,7 +25,6 @@ module.exports={
         save:{
             process:function(seed,nut){
                     console.log(seed.json);
-                    console.log(eval('('+seed.json+')'));
                     helper.db.coll("lavico/themeQuestion").insert(eval('('+seed.json+')'),this.hold(function(err, doc) {
                             if(err) throw err;
                         }));

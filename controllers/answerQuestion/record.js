@@ -50,10 +50,8 @@ module.exports={
 
                        var scores=0;
                        if(isNaN(parseInt(score))){
-                           console.log("aa");
                            scores=0
                        }else{
-                           console.log("bb");
                            scores=parseInt(score)
                            then.req.session.scoreAll+=parseInt(score);
                        }
