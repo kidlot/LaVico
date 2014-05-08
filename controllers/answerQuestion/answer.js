@@ -1,5 +1,9 @@
 module.exports={
+<<<<<<< HEAD
     layout:null,
+=======
+	layout:"lavico/layout",
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
     view:"lavico/templates/answerQuestion/answer.html",
     process:function(seed,nut){
         var beginTime="",endTime="",isOpen="";
@@ -28,6 +32,7 @@ module.exports={
                         for(var i=0;i<cursor.options.length;i++){
                             //循环题数
                             if(optionId==cursor.options[i].optionId){
+<<<<<<< HEAD
                                 //传入题号和当前题号相同,记录题目
                                 nut.model.option=JSON.stringify(cursor.options[i]);//以json字符串格式记录,当前此题
                                 nut.model._id=_id;
@@ -37,7 +42,26 @@ module.exports={
                         }
                     }));
                 }
+=======
+
+                            //传入题号和当前题号相同,记录题目
+                              nut.model.option=JSON.stringify(cursor.options[i]);//以json字符串格式记录,当前此题
+                              nut.model.optionId=i+1;
+                              nut.model._id=_id;
+                              nut.model.optionCount=cursor.options.length;//此题目总共有题数
+                              nut.model.wechatid=wechatid;
+                            }
+                       }
+                      if(optionId>cursor.options.length){
+                          //异常情况：当optionId大于题数时
+                          nut.write("<script>alert('无此题，联系管理员');history.back();</script>");
+                          nut.view.disable();
+                      }
+                  }));
+               }
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
             }else{
+                nut.view.disable();
                 nut.write("<script>alert('很抱歉，活动已经停止');history.back();</script>");
             }
         });

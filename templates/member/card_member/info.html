@@ -1,23 +1,145 @@
-<meta name="viewport" content="width=360,user-scalable=no" />
-<div>
-<h2>会员 - 我的会员卡 - 个人资料</h2>
-        <p>请完善您的个人信息，审核通过后即获得50积分
-        </p>
-<form>
-    <label>姓名</label><input disabled="true"　readOnly="true" id="realname" name="realname" type="text" value='{@realname}' /><br/>
-    <label>性别</label><input disabled="true"　readOnly="true" id="gender" name="gender" type="text" value="{@gender}"/><br/>
-    <lable>生日</lable><input disabled="true"　readOnly="true" id="birthday_year" name="birthday_year" type="text" value="{@birthday_year}"/><input disabled="true"　readOnly="true" id="birthday_month" name="birthday_month" type="text" value="{@birthday_month}"/><input disabled="true"　readOnly="true" id="birthday_date" name="birthday_date" type="text" value="{@birthday_date}"/><br/>
-    <lable>手机号码</lable><input disabled="true"　readOnly="true" id="mobile" name="mobile" type="text" value="{@mobile}"/><br/>
-    <lable>电子邮件</lable><input id="email" name="email" type="text" value="zealair@gmail.com"/><br/>
-    <lable>行业</lable><input id="profession" name="profession" type="text" value="广告"/><br/>
-    <lable>所属省份</lable><input id="province" name="province" name="province" type="text" value="上海"/><br/>
-    <lable>所属城市</lable><input id="city"  name="city" name="city" type="text" value="上海"/><br/>
-    <lable>具体地址</lable><input id="address" name="address" type="text" value="天钥桥路909号3号楼606"/><br/>
-    <lable>喜好款式</lable><input id="favoriteStyle" name="favoriteStyle" type="text" value="修身、立体剪裁"/><br/>
-    <lable>喜好颜色</lable><input id="favoriteColor" name="favoriteColor" type="text" value="黑色、蓝色、白色"/><br/>
-    <input id='submit' name='submit' type="button" value="提交修改">
-    <input id='is_send' type='hidden' name='is_send' value='{@is_send}' >
-    <input id='wxid' type='hidden' name='wxid' value='{@wxid}' >
-</form>
+<div class="wrapper">
+<div class="store-title">
+    <p><span class="title1"><a id="member" href="{@memberUrl}">会员</a></span><span class="title3">修改个人资料</span></p>
 </div>
+<div class="apply">
+<div class="title">
+    <p class="text">请完善您的个人信息，审核通过后即获得50积分</p>
+</div>
+<div class="form clear">
+    <div class="input clear">
+        <div class="left fl"><span class="star-sign">*</span>姓名</div>
+        <div class="name-right fl"><input id="realname" name="realname" border="0" type="text" value="{@realname}" class="bg" disabled="disabled"/></div>
+    </div>
+    <div class="input clear">
+        <div class="left fl"><span class="star-sign">*</span>性别</div>
+        <div class="sex-right fl"><div class="input_select_div">
+            <input type="text" name="brand" class="input_select_sex" value="男" id="gender" name="gender" disabled="disabled" value="{@gender}"/>
+        </div>
+        </div>
+        <div class="input clear">
+            <div class="left fl"><span class="star-sign">*</span>生日</div>
+            <div class="birth-right fl">
+                <div class="sex-right fl">
+                    <div class="input_select_div_fy">
+                        <input type="text" id="birthday_year" name="birthday_year" class="input_select_year" value="1970年"  disabled="disabled" id="model_sex_input"/>
+                        <select id="select_year"  class="select1 bg" disabled="disabled">
+                            <option>2014年</option>
+                            <option>2013年</option>
+                            <option>2012年</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="sex-right fl">
+                    <div class="input_select_div_f">
+                        <input type="text" id="birthday_month" name="birthday_month" class="input_select_sex" value="1月" disabled="disabled" id="model_sex_input"/>
+                        <select id="select_month"  class="select2 bg" disabled="disabled">
+                            <option>1月</option>
+                            <option>2月</option>
+                            <option>3月</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="sex-right fl">
+                    <div class="input_select_div_f">
+                        <input type="text" id="birthday_date" name="birthday_date" class="input_select_sex" value="1日"  disabled="disabled" id="model_sex_input"/>
+                        <select id="select_day"  class="select3 bg" disabled="disabled">
+                            <option>1日</option>
+                            <option>2日</option>
+                            <option>3日</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>手机</div>
+                <div class="tel-right fl"><input id="mobile" name="mobile" border="0" type="text" value="{@mobile}" class="bg" /></div>
+            </div>
 
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>行业</div>
+                <div class="trade-right fl">
+                    <div class="input_select_div">
+                        <input type="text" name="brand" class="input_select" value="请选择行业" id="profession"/>
+                        <select id="select_profession">
+                            <option value="IT\通信\电子\互联网">IT\通信\电子\互联网</option>
+                            <option value="金融业">金融业</option>
+                            <option value="房地产\建筑业">房地产\建筑业</option>
+                            <option value="商业服务">商业服务</option>
+                            <option value="贸易\批发\零售\租赁业">贸易\批发\零售\租赁业</option>
+                            <option value="文体教育\工艺美术">文体教育\工艺美术</option>
+                            <option value="生产\加工\制造">生产\加工\制造</option>
+                            <option value="交通\运输\物流\仓储">交通\运输\物流\仓储</option>
+                            <option value="服务业">服务业</option>
+                            <option value="文化\传媒\娱乐\体育">文化\传媒\娱乐\体育</option>
+                            <option value="能源\矿产\环保">能源\矿产\环保</option>
+                            <option value="政府\非盈利机构">政府\非盈利机构</option>
+                            <option value="农\林\牧\渔\其他">农\林\牧\渔\其他</option>
+                            <option value="广告">广告</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>电子邮箱</div>
+                <div class="name-right fl"><input id="email" name="email" border="0" type="text" value="{@email}" /></div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>所在省份</div>
+                <div class="trade-right fl">
+                    <div class="input_select_div">
+                        <input type="text" id="province" name="province" class="input_select" value="请选择" />
+                        <select id="select_province">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>所在城市</div>
+                <div class="trade-right fl"><div class="input_select_div">
+                    <input type="text" id="city" name="city" class="input_select" value="请选择" />
+                    <select id="select_city">
+                    </select>
+                </div></div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>具体地址</div>
+                <div class="name-right fl"><input id="address" name="address"  border="0" type="text" value="{@address}" /></div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>喜好款式</div>
+                <div class="trade-right fl">
+                    <div class="input_select_div">
+                        <input type="text" id="favoriteStyle" name="favoriteStyle" class="input_select" value="请选择" />
+                        <select id="select_favoriteStyle">
+                            <option value="简约大方">简约大方</option>
+                            <option value="传统">传统</option>
+                            <option value="混搭时尚">混搭时尚</option>
+                            <option value="职业商务">职业商务</option>
+                            <option value="高端奢华">高端奢华</option>
+                            <option value="休闲">休闲</option>
+                        </select></div>
+                </div>
+            </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>喜好颜色</div>
+                <div class="name-right fl"><input id="favoriteColor" border="0" type="text" value="黑色" /></div>
+            </div>
+            <!--额外信息-->
+            <input id="memberID" type="hidden" name="memberID" value="{@memberID}"/>
+            <input id='wxid' type='hidden' name='wxid' value='{@wxid}' />
+            <!--额外信息-->
+            <div class="note">如需修改姓名、性别、生日、手机信息<br />
+                请拨打 400-1008-866 联系</div>
+            <div class="submit_btn"><input id='submit' name='submit' type="button" class="subbtn" value="提交修改" /></div>
+        </div>
+    </div>
+</div>
+<div class="fade2" id="check_popup">
+    <div class="second-price">
+        <p class="msg"><span class="mt70">提交成功，信息审核中</p>
+        <p class="confirm"><input type="submit" class="goon_btn" border="0" value="好的" /></p>
+    </div>
+</div>
+<!--正在加载-->
+<div id="loading" class="loading" style="position: fixed; z-index: 1000; left: 791px; top: 129px; display: none;"><img src="/opencomb/public/style/images/github-loading.gif"></div>

@@ -5,6 +5,7 @@ module.exports= {
     layout: "lavico/layout",
     view:"lavico/templates/answerQuestion/answer_num1.html",
     process:function(seed,nut){
+<<<<<<< HEAD
 
         nut.model.wechatId=seed.wechatId;
         nut.model._id=seed._id;
@@ -16,6 +17,8 @@ module.exports= {
        //http://{host}/lavico/answerQuestion/answer?_id=58172618&optionId=1&wechatId=asdfsf
         nut.model.wechatId=seed.wechatId;
         nut.model._id=seed._id;
+=======
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
        //http://{host}/lavico/answerQuestion/answer?_id=58172618&optionId=1&wechatId=asdfsf
         nut.model.wechatId=seed.wechatId;
         nut.model._id=seed._id;

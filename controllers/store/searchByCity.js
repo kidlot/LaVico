@@ -4,9 +4,13 @@
  */
 var middleware = require('../../lib/middleware.js');
 module.exports={
+<<<<<<< HEAD
     layout: null,
     //view:"lavico/templates/store/searchByCity.html",
     //view:"lavico/templates/store/searchChoose.html",
+=======
+    layout: "lavico/layout",
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
     view:"lavico/templates/store/store_num4.html",
     process:function(seed,nut){
         nut.model.city_docs=[];
@@ -89,8 +93,12 @@ module.exports={
     actions:{
         //显示具体门店
         show:{
+<<<<<<< HEAD
             layout: null,
             //view:"lavico/templates/store/showStoreDetail.html",
+=======
+            layout: "lavico/layout",
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
                 //获取CODE-取消最后一个自添加1

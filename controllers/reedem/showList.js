@@ -1,7 +1,11 @@
 var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
+<<<<<<< HEAD
     layout: null,
     //view:"lavico/templates/reedem/showList.html",
+=======
+    layout: "lavico/layout",
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
     view:"lavico/templates/reedem/member_num16.html",
     process:function(seed,nut){
         var reedemJson={};
@@ -12,7 +16,8 @@ module.exports={
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    return result.HaiLanMemberInfo.memberID;//获取会员ID
+                    //return result.HaiLanMemberInfo.memberID;//获取会员ID
+                    return 9123084;
                 }else{
                     nut.disable();
                     write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
@@ -23,6 +28,7 @@ module.exports={
         this.step(function(memberId){
             //调用接口:获取会员积分
             if(memberId){
+
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
                     if(err) throw err;
                     if(result){
@@ -106,8 +112,12 @@ module.exports={
     actions:{
         //兑换
         exchange:{
+<<<<<<< HEAD
             layout: null,
             //view:"lavico/templates/reedem/exchangeOk.html",
+=======
+            layout: "lavico/layout",
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
             view:"lavico/templates/reedem/member_num17.html",
             process:function(seed,nut){
                 var wechatId=seed.wechatId;//微信ID

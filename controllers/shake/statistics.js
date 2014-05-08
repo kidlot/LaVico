@@ -1,4 +1,4 @@
-module.exports = {
+    module.exports = {
 
     layout: "welab/Layout"
     , view: "lavico/templates/shake/info.html"

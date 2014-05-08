@@ -30,8 +30,8 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">图文URL</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control"  readonly value="http://dolphin.imagchina.com/lavico/activity/test?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
-                        <button type="button" class="btn btn-primary" style="float: left;margin-left: 6px">复制</button>
+                        <input type="text" class="form-control" id="host-url" readonly value="/lavico/activity/shake?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
+                        <button type="button"  id="copy" class="btn btn-primary" style="float: left;margin-left: 6px">复制</button>
                     </div>
                 </div>
 
@@ -54,9 +54,9 @@
                     <div class="col-sm-10">
                         <select class="form-control" style="width: 150px" id='activity_select' name="type">
                           <option value="0">请选择优惠券</option>
-                          <foreach for="@list" var="doc">  
+                          <foreach for="@list" var="doc">
                             <option value="{@doc.PROMOTION_CODE}">{@doc.PROMOTION_NAME}</option>
-                          </foreach>  
+                          </foreach>
                         </select>
                     </div>
                 </div>
@@ -74,48 +74,52 @@
                     <div class="col-sm-10">
                         
                     </div>
-                </div>                
+                </div>
 
 
 
                 <br>
-                <h6>内容设置</h6>
+                <h6>内容</h6>
                 <br>
 
                 <foreach for="@list" var="doc">
                   <div id='{@doc.PROMOTION_CODE}' class="promotion_detail" style='display:none;'>
-                    <foreach for="@doc.coupons" var="coupons">
+
                       <div class="panel panel-default formText pagePanel">
                           <div class="panel-body">
                               <div class="col-md-9">
                                   <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2 control-label">券名</label>
+                                      <label for="inputEmail3" class="col-sm-2">面值</label>
                                       <div class="col-sm-10">
-                                          <span>{@coupons.QTY}</span>
+                                          <span>{@doc.QTY}</span>
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2 control-label">券图</label>
+                                      <label for="inputEmail3" class="col-sm-2">券图</label>
                                       <div class="col-sm-10">
-                                          <img src="{@coupons.pic}" />
+                                          <if condition="@doc.pic">
+                                          <img src="{@doc.pic}" />
+                                          <else/>
+                                          空(请到应用管理中的“活动券”设置)
+                                          </if>
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2 control-label">剩余/总数</label>
+                                      <label for="inputEmail3" class="col-sm-2">剩余/总数</label>
                                       <div class="col-sm-10">
-                                          <span>{@ coupons.COUNT-coupons.USED}/{@coupons.COUNT}</span>
+                                          <span>{@ doc.USED}/{@doc.TOTAL}</span>
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2 control-label">抽奖概率</label>
+                                      <label for="inputEmail3" class="col-sm-2">抽奖概率</label>
                                       <div class="col-sm-10">
-                                          <input type="text" data="{@coupons.QTY}" value='' class="form-control postData lottery_chance" style="width:150px;display:inline-block">%
+                                          <input type="text" data="{@doc.QTY}" value='' class="form-control postData lottery_chance" style="width:150px;display:inline-block"/>%
                                       </div>
-                                  </div>                            
+                                  </div>
                               </div>
                           </div>
                       </div>
-                    </foreach>
+
                   </div>
                 </foreach>
                 <input type='hidden' id='lottery_input' value='{@shake.lottery_cycle}' />
@@ -132,16 +136,65 @@
 
 <script>
 
+/*修改当前hosturl*/
+var hosturl = window.location.host;
+var _object = document.getElementById('host-url');
+_object.value = 'http://'+hosturl+_object.value;
+
+/*点击复制按钮*/
+window.onload = function(){
+    $('#copy').click(function(){
 
 
+//        /startDate.setFullYear(_startDate);
+        //jQuery("#host-url").copy();
+        //_startDate.substring(0,4)+':'+startDate.substr(5,2)+':'+startDate.substr(8,2)
+    });
+}
 
-function save ( ){
+function save (){
 
     var aFormInput = {}
 
     var _inputCheck = true;
-    
-    
+
+    /*日期判断*/
+    var _startDate = $('#startDate').val();
+    var startDate = new Date();
+    var startDateTimeStamp;
+    startDate.setFullYear(_startDate.substring(0,4));
+    startDate.setMonth((parseInt(_startDate.substr(5,2))-1));
+    startDate.setDate((parseInt(_startDate.substr(8,2))));
+    startDate.setHours(0,0,0);
+    startDateTimeStamp = Date.parse(startDate);//毫秒级
+
+    var _endDate =$('#endDate').val();
+    var endDate = new Date();
+    var endDateTimeStamp;
+    endDate.setFullYear(_endDate.substring(0,4));
+    endDate.setMonth((parseInt(_endDate.substr(5,2))-1));
+    endDate.setDate((parseInt(_endDate.substr(8,2))));
+    endDate.setHours(0,0,0);
+    endDateTimeStamp = Date.parse(endDate);//毫秒级
+
+    if(startDateTimeStamp == endDateTimeStamp){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "开始时间不能与结束时间相同！",
+            type: 'error',
+            showCloseButton: true})
+    }
+
+    if(startDateTimeStamp > endDateTimeStamp){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "开始时间必须比结束时间早！",
+            type: 'error',
+            showCloseButton: true})
+    }
+
+
+
     if(!$("#startDate").val()){
       _inputCheck = false;
       $.globalMessenger().post({
@@ -185,13 +238,43 @@ function save ( ){
           showCloseButton: true})       
     }
     if(!$('#lottery_count').val()){
+
       _inputCheck = false;
       $.globalMessenger().post({
           message: "请填写抽奖次数！",
           type: 'error',
           showCloseButton: true})       
     }
-    
+
+    var reg = /^\d+$/;//数字正则
+
+    if(!$.isNumeric($('#lottery_count').val())){
+
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "抽奖次数的值必须是数字！",
+            type: 'error',
+            showCloseButton: true});
+    }else{
+        if(parseInt($('#lottery_count').val()) <= 0){
+            _inputCheck = false;
+            $.globalMessenger().post({
+                message: "抽奖次数的值必须是正整数！",
+                type: 'error',
+                showCloseButton: true});
+        }else{
+            if(parseInt($('#lottery_count').val()) != $('#lottery_count').val()){
+
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "抽奖次数的值必须是整数！",
+                    type: 'error',
+                    showCloseButton: true});
+
+            }
+        }
+    }
+
     if(!_inputCheck){
       return false;
     }
@@ -236,3 +319,4 @@ function save ( ){
     }
 }
 </script>
+

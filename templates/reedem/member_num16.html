@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -42,6 +43,36 @@
 </head>
 
 <body>
+=======
+<script>
+window.onload=function(){
+    $("#canExchange").css("backgroundColor","#ccc");
+    $("#canExchange").click(function(){
+        $("#can").show();
+        $("#notcan").hide();
+        $(this).css("backgroundColor","#ccc");
+        $("#cannotExchange").css("backgroundColor","white")
+    })
+    $("#cannotExchange").click(function(){
+        $("#can").hide();
+        $("#notcan").show();
+        $("#canExchange").css("backgroundColor","white");
+        $(this).css("backgroundColor","#ccc")
+    })
+}
+var exchange=function(memberId,needScore,wechatId,point,aid,_id){
+    $.get("/lavico/reedem/showList:exchange?memberId="+memberId+"&needScore="+needScore+"&wechatId="+wechatId+"&point="+point+"&aid="+aid+"&_id="+_id,function(result){
+        if(result!="sorry很抱歉！很抱歉您已经兑换过此商品"){
+            document.write(result);
+        }else{
+            alert(result);
+        }
+    })
+}
+</script>
+
+
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
 <div class="wrapper">
   <div class="store-title">
     <p><span class="title1"><a href="member_num20.html">积分明细</a></span><span class="title2">积分兑换</span><span class="title4"><a href="/lavico/consumeDetail/details?wechatId={@wechatId}">兑换记录</a></span></p>
@@ -116,5 +147,9 @@
 </div>
   </div>
 </div>
+<<<<<<< HEAD
 </body>
 </html>
+=======
+
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698

@@ -5,8 +5,12 @@
 //引入中间件
 var middleware = require('lavico/lib/middleware.js');
 module.exports={
+<<<<<<< HEAD
     layout:null,
     //view:"lavico/templates/consumeDetail/details.html",
+=======
+    layout:"lavico/layout",
+>>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
     view:"lavico/templates/consumeDetail/member_num28.html",
     process:function(seed,nut){
         var data_request={};

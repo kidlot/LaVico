@@ -1,61 +1,184 @@
-<meta name="viewport" content="width=360,user-scalable=no" />
-<!--如果您没有实体会员卡，请申领会员卡-->
-<form method="post">
-    会员卡号：<input type="text" id="userCardNumber" name="userCardNumber" value="L201403191126"/>例子：L201403191126<br/>
-    姓名：<input type="text" id="userName" name="userName" value="徐大卫"/><br/>
-    手机：<input type="text" id="userTel" name="userTel" value="18616845116"/><input type = 'button' id="get_id_code" value='获取验证码' /><br/>
-    验证码:<input type="text" id="userCaptcha" name="userCaptcha" value=""/><br/>
-    <span style="display:none;">微信ID:<input type="text" id="wxid" name="wxid" value="{@wxid}" /></span>
-          <input type="button" id="submit" value="提交"/>
-</form>
+<!--发送验证码状态-->
+<input id="id_code" type="hidden" value=""/>
+<!--用户手机号码验证状态-->
+<input id="tel_checked_status" type="hidden" value=""/>
 
-<script>
-
-window.onload = function(){
-  var timer60Seconds;
-  var flag = 0;
-  $("#get_id_code").click(function(){
-		if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
-			alert("请输入正确的手机号码");
-			return	false;
-		}  
-    if(flag){
-      return false;
+<input type="hidden" id="wxid" name="wxid" value="{@wxid}" />
+<input type="hidden" id="memberId"  value="" />
+<style>
+    .cancel{cursor:pointer;}
+    .step{display:none;}
+    #step_1{display:block;}
+    .input-tel .text {
+        width: 115px;
+        height: 65px;
+        text-align: right;
+        line-height: 65px;
+        font-size: 25px;
+        color: #2d2d2d;
     }
-    flag = 1;
-    $.get('/lavico/member/card_blank/code:id_code',{
-      },function(data){
-        data = eval('('+data+')');
-        if(data.result == 'ofen'){
-          alert('请稍后再获取！');
-          flag = 0;
-        }else if(data.result == 'ok'){ 
-          set_interval();
-          $('#userCaptcha').val(data.id_code);
-          //alert('验证码发送成功，请在2分钟内输入！');
-        }else{
-          alert('something error pelase refresh your browser!')
-        }
-      }
-    );
-  });
-  function set_interval(){
-    clearInterval(timer60Seconds);
-    var time = 60;
-    $("#get_id_code").val('请'+time+'秒稍后再获取');
-    timer60Seconds = setInterval(function(){
-      time--;
-      if(time == 0){
-          clearInterval(timer60Seconds);
-          re_get_code();
-      }else{
-          $("#get_id_code").val('请'+time+'秒稍后再获取');
-      }
-    },1000);
-  }
-  function re_get_code(){
-    $("#get_id_code").val('获取验证码');   
-    flag = 0;
-  }
-}  
-</script>
+    #userTelClone{
+        color:#b2b1ad;
+    }
+</style>
+<!--页面-->
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a id="memberUrl" href="javascript:void(0);">会员</a></span><span id="bindUrl" class="title3">绑定会员卡 - 资料验证</span></p>
+    </div>
+    <div class="link-cardContent">
+
+        <div class="title">如果您没有实体会员卡，请<a id="registerUrl" href="javascript:void(0);">申领会员卡</a></div>
+
+        <!--第一步-->
+        <div id="step_1" class="input-tel step">
+
+            <p>
+                <span class="fl text"><strong class="star-sign">*</strong>手机</span><span class="fl"><input id="userTel" name="userTel" type="text" value="" /></span>
+                <span class="verify" id="submit_1">下一步</span>
+            </p>
+            <div class="clear"></div>
+            <p class="note">如申领时遇到问题<br />
+                请拨打 400-1008-886 联系</p>
+            <div class="blank"></div>
+        </div>
+
+        <!--第二步-->
+        <div id="step_2" class="input-tel step">
+
+            <p><span class="fl text"><strong class="star-sign">*</strong>会员卡号</span>
+                <span class="fl"><input id="userCardNumber" name="userCardNumber" type="text" value="" /></span>
+                <span class="verify" id="submit_2">下一步</span></p>
+            <div class="clear"></div>
+            <p class="note">如申领时遇到问题<br />
+                请拨打 400-1008-886 联系</p>
+            <div class="blank"></div>
+        </div>
+
+        <!--第三步-->
+        <div id="step_3" class="input-tel step">
+
+            <p><span class="fl text">
+                <strong class="star-sign">*</strong>手机</span>
+                <span class="fl"><input id="userTelClone" name="userTel" type="text" value="" disabled/></span>
+                <span class="verify" id="get_id_code">获取验证码</span></p>
+            <div class="clear"></div>
+            <p class="mt10">
+                <span class="fl text">
+                    <strong class="star-sign">*</strong>验证码</span>
+                <span class="fl"><input type="text" id="userCaptcha" name="userCaptcha" /></span>
+            </p>
+            <div class="clear"></div>
+            <p class="mt10">
+                 <span class="fl text">
+                    <strong class="star-sign">*</strong>真实姓名</span>
+                <span class="fl"><input type="text" id="userName" name="userName" /></span>
+            </p>
+            <div class="clear"></div>
+            <p class="note">如申领时遇到问题<br />
+                请拨打 400-1008-886 联系</p>
+            <p class="submit"><input id="submit_3" type="submit" class="subbtn" border="0" value="提交绑定" /></p>
+            <div class="blank"></div>
+        </div>
+
+    </div>
+
+    <div class="fade popup" id="no_member_telephone">
+        <div class="input-member">
+            <p class="msg">抱歉，此号码绑定不成功<br />
+                可能您尚未成为LaVico会员<br />
+                点击此处 或 <span class="cancel">取消</span></p>
+            <p class="confirm"><input type="submit" class="applybtn" border="0" value="申领会员卡" /></p>
+            <p class="msg msg1">如有疑问，欢迎咨询客服热线：<br />
+                400-1008-886</p>
+        </div>
+    </div>
+    <div class="fade1 popup" id="member_manage">
+        <div class="input-member">
+            <p class="msg">恭喜您绑定成功<br />
+                点击此处</p>
+            <p class="confirm"><input type="submit" class="gonhome_btn" border="0" value="进入会员中心" /></p>
+
+        </div>
+    </div>
+    <div class="fade2 popup">
+        <div class="input-member">
+            <p class="msg">抱歉，此号码绑定不成功<br />
+                可能您的卡号已被注销<br />
+                您可以点击此处</p>
+            <p class="confirm"><input type="submit"  class="applybtn" border="0" value="申领会员卡" /></p>
+            <p class="msg msg1">如您变更了手机号码，无法获取短信验证码，<br />
+                或有其他问题，请联系客服：400-1008-886</p>
+        </div>
+    </div>
+    <div class="fade3 popup">
+        <div class="input-member">
+            <p class="msg">请输入您的实体会员卡号</p>
+            <p class="input-card"><input type="text" value="6226 0458 3697 4321" /></p>
+            <p class="confirm"><input type="submit" class="bangding_btn" border="0" value="提交" /></p>
+
+        </div>
+    </div>
+    <div class="fade4 popup" id="telephone_cardnumber_no_match">
+        <div class="input-member">
+            <p class="msg">系统没有查找到此卡号<br />请核对后重新输入<br />可能由于此卡号绑定的<br />不是第一步的手机号码<br />
+                或 <span class="cancel">取消</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<!--正在加载-->
+<div id="loading" class="loading" style="position: fixed; z-index: 1000; left: 791px; top: 129px; display: none;"><img src="/opencomb/public/style/images/github-loading.gif"></div>
+
+
+
+
+
+<!--
+<div id="step_1" class="step">
+    <h2>第一步</h2>
+    手机：<input type="text" id="userTel" name="userTel" value=""/>
+
+    <input type="button" id="submit_1" value="下一步"/>
+</div>
+
+<div id="step_2" class="step" style="display: none;">
+    <h2>第二步</h2>
+    会员卡号：<input type="text" id="userCardNumber" name="userCardNumber" value=""/>例子：L201403191126<br/>
+    <input type="button"  id="previous_step_2" value="上一步"/>
+    <input type="button" id="submit_2" value="下一步"/>
+</div>
+
+<div id="step_3" class="step" style="display: none;">
+    <h2>第三步</h2>
+    <input type = 'button' id="get_id_code" value='获取验证码' /><br/>
+    验证码:<input type="text" id="userCaptcha" name="userCaptcha" value=""/><br/>
+    姓名：<input type="text" id="userName" name="userName" value=""/>
+    <input type="button"  id="previous_step_3" value="上一步"/>
+    <input type="button" id="submit_3" value="提交"/>
+</div>
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
