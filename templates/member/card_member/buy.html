@@ -1,49 +1,44 @@
-<div class="wrapper">   
+<div class="wrapper">
     <div class="store-title">
-        <p><span class="title1"><a href="member_num4.html">会员</a></span><span class="title2">消费记录</span></p>
+        <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">消费记录</span></p>
     </div>
     <div class="points4">
+        <if condition="@info=='return_data_true'">
+
         <div class="title">
-            <p class="text"><span class="fl">目前已兑换积分</span><span class="fr">-1200</span></p>
+            <p class="text"><span class="fl">目前已兑换积分</span><span class="fr">{@remaining}</span></p>
         </div>
-        <div class="points4-content">
-            <div class="gift_point-box">
-                <div class="title2 clear">
-                    <p><span class="fl">2014年</span></p>
+            <if condition="@remaining !=0">
+                <div class="points4-content">
+                    <div class="gift_point-box">
+                        <foreach for="@log" key="key">
+                            <if condition="{@log[key].type == 'sum'}">
+                                <div class="{@log[key].class} clear">
+                                    <p><span class="fl">{@log[key].time}</span></p>
+                                </div>
+                                <else/>
+                                <ul>
+                                    <li>
+                                    <span class="fl ml20 pt15">
+                                    <p>{@log[key].MEMO}</p>
+                                    <p class="c3">{@log[key].time}</p>
+                                    </span>
+                                        <span class="fr c2 pt55">{@log[key].value}</span>
+                                    </li>
+                                </ul>
+                            </if>
+                        </foreach>
+
+                    </div>
+                <p>&nbsp;</p>
                 </div>
-                <ul>
-                    <li><span class="fl ml20 pt15">
-            <p>男士秋冬大衣×1</p>
-            <p class="c3">
-                2014-2-21</p>
-            </span><span class="fr c2 pt55">+1200</span></li>
-                    <li><span class="fl ml20 pt15">
-            <p>男士秋冬大衣×1</p>
-            <p class="c3">
-                2014-2-21</p>
-            </span><span class="fr c2 pt55">+1200</span></li>
-                </ul>
-                <div class="title3 clear">
-                    <p><span class="fl">2013年</span></p>
-                </div>
-                <ul>
-                    <li><span class="fl ml20 pt15">
-            <p>男士秋冬大衣×1</p>
-            <p class="c3">
-                2014-2-21</p>
-            </span><span class="fr c2 pt55">+1200</span></li>
-                    <li><span class="fl ml20 pt15">
-            <p>男士秋冬大衣×1</p>
-            <p class="c3">
-                2014-2-21</p>
-            </span><span class="fr c2 pt55">+1200</span></li>
-                    <li><span class="fl ml20 pt15">
-            <p>男士秋冬大衣×1</p>
-            <p class="c3">
-                2014-2-21</p>
-            </span><span class="fr c2 pt55">+1200</span></li>
-                </ul>
-            </div>
-        </div>
+            <else/>
+
+                    <span>您好，您还没有消费记录。</span>
+
+            </if>
+        <else/>
+
+        </if>
     </div>
 </div>
