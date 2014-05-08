@@ -282,8 +282,10 @@ module.exports = {
                     id_code : $("#id_code").val()
                 },
                 function(data){
+                    console.log(data);
                     data = eval("("+data+")");
-                    if(data.success){
+                    var _error = data.error;
+                    if(data.success == true){
                         if(data.error){
                             //alert(data.error);
                             console.log(data.error);
@@ -292,9 +294,19 @@ module.exports = {
                             alert("恭喜你，注册成功");
                         }
                         return false;
-                    }else if(data.code_error){
-                        alert("验证码错误");
-                        return false;
+
+                    }else if(data.success == false){
+                        if(data.error == "id_code_error"){
+                            alert("验证码错误");
+                            return false;
+                        }else{
+                            var _info = unescape(data.error);
+                            if(_info == "该微信ID已是本品牌会员，请检查！"){
+                                alert("您已经绑定会员卡，请先解绑，再申领新卡");
+                            }else{
+                                alert("网络不稳定，请稍后再尝试");
+                            }
+                        }
                     }else{
                         alert("网络不稳定，请稍后再尝试");
                         console.log(data.error);
@@ -400,11 +412,12 @@ module.exports = {
                 var member_type;
                 var memberID;
                 var sex = '';
+                var data_request;
 
 				this.step(function(){
 				  if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 300000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
-                    then.res.writeHead(200, { 'Content-Type': 'text/plain' });
-                    then.res.write("{code_error:'id_code_error'}");
+                    then.res.writeHead(200, { 'Content-Type': 'text/plain' });;
+                    then.res.write('{"success":false,"error":"id_code_error"}');
                     then.res.end();
                     then.terminate();
                   }
@@ -412,7 +425,7 @@ module.exports = {
 
                 this.step(function(){
 
-                    var data_request = {
+                    data_request = {
                         openid:seed.uid, //微信账号ID
                         MEM_PSN_CNAME:seed.name, //会员姓名
                         MEM_PSN_SEX:seed.sex, //性别 0：女，1：男
@@ -423,6 +436,8 @@ module.exports = {
                     middleware.request('Member/Apply', data_request,this.hold(function(err,doc){
 
                         data_return_middleware = JSON.parse(doc);
+                        console.log(doc);
+                        console.log(data_return_middleware.success);
                         /*记录用户行为*/
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -430,7 +445,7 @@ module.exports = {
                                 'wxid':seed.uid,
                                 'action':"apply",
                                 'request':data_request,
-                                'reponse':doc_json,
+                                'reponse':data_return_middleware,
                             },
                             function(err, doc){
                                 err&&console.log(doc);
@@ -440,6 +455,7 @@ module.exports = {
                 });
 
                 this.step(function(){
+
 
                     if(data_return_middleware.success == true){
 
@@ -468,10 +484,12 @@ module.exports = {
 
                     }else if(data_return_middleware.success == false){
 
-                        var _error = data_return_middleware.error;
+                        var _error = escape(data_return_middleware.error);//汉字编码
+
                         then.res.writeHead(200, { 'Content-Type': 'text/plain' });
                         then.res.write('{"success":false,"error":"'+_error+'"}');
                         then.res.end();
+                        then.terminate();
 
                     }else{
 

@@ -8,12 +8,13 @@
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
-    layout:null,
+    layout:'lavico/member/layout',
     view:'lavico/templates/member/card_member/points/index.html',
     process:function(seed, nut){
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         var member_id;
+        var total;
         this.step(function(){
 
 
@@ -51,37 +52,63 @@ module.exports = {
             }else{
                 nut.model.wxid = wxid ;
                 nut.model.member_ID = member_id;
-                middleware.request( "Point/"+member_id,{
-                    'pageNum':1,
-                    'perPage':100000
+                middleware.request( "Point/"+member_id,{},this.hold(function(err,doc){
 
-                },this.hold(function(err,doc){
+                    var dataJson = JSON.parse(doc);
+                    if(dataJson.hasOwnProperty('point')){
+                        //当前积分
+                        if(parseInt(dataJson.point) === 0){
 
-                    var dataJson = JSON.parse(doc)
+                            nut.model.remaining = 0;
 
+                        }else if(parseInt(dataJson.point) < 0){
+                            nut.model.remaining = dataJson.point;
+                        }else{
+                            nut.model.remaining = '+' + dataJson.point;
+                        }
 
-                    //当前积分
-                    if(parseInt(dataJson.point) < 0){
-                        nut.model.remaining = dataJson.point;
+                        nut.model.info = 'return_data_true';
+
+                    }else if(dataJson.hasOwnProperty('error')){
+
+                        nut.model.info = 'return_data_error';
+                        this.res.end();
+
                     }else{
-                        nut.model.remaining = '+' + dataJson.point;
-                    }
+                        nut.model.info = 'network_error';
 
+                        this.res.end();
+                    }
 
                 }));
             }
 
         });
 
-      this.step(function(){
-            middleware.request( "Point/Log/"+member_id,{
+        this.step(function(){
+                middleware.request( "Point/Log/"+member_id,{
+                    'pageNum':1,
+                    'perPage':100000
+                },this.hold(function(err,doc){
+
+                    var dataJson = JSON.parse(doc);
+                    console.log(dataJson);
+
+                    if(parseInt(dataJson.total) == 0){
+                        total = 0;
+                    }
+                }));
+        });
+
+        this.step(function(){
+           middleware.request( "Point/Log/"+member_id,{
                 'pageNum':1,
                 'perPage':100000
             },this.hold(function(err,doc){
 
                 var newLog = new Array();
                 var dataJson = JSON.parse(doc);
-                //console.log(dataJson);
+
                 for(var i=0; i<dataJson.log.length; i++){
 
                     var _temp = dataJson.log[i];
@@ -172,7 +199,10 @@ module.exports = {
                         //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
                         //console.log('newLog[i].yearmonth:'+newLog[i].yearmonth);
                         if(yearMonthLog[0].time == newLog[i].yearmonth){
+                            yearMonthLog[0].rank = 1;//表明它是第一行，因为第一行小计和其他小计，样式不一样。
+                            yearMonthLog[0].class = 'title2';
                             newLog.splice(i,0,yearMonthLog[0]);
+                            console.log(yearMonthLog[0]);
                             yearMonthLog.shift();//删除已合并的元素
                         }
                     }else{
@@ -180,6 +210,7 @@ module.exports = {
                             //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
                             //console.log('newLog['+i+'].yearmonth:'+newLog[i].yearmonth);
                             if(yearMonthLog[0].time == newLog[i].yearmonth){
+                                yearMonthLog[0].class = 'title3';
                                 newLog.splice(i,0,yearMonthLog[0]);
                                 yearMonthLog.shift();//删除已合并的元素
                             }
@@ -189,37 +220,14 @@ module.exports = {
 
                 nut.model.dataJson = JSON.stringify(dataJson);
                 nut.model.log = newLog;//当前会员的积分记录
-               
+
             }));
         });
 
 
     },
     viewIn:function(){
-        //先判断是否存在微信ID参数
-        var wxid = $('#wxid').val();
-        if(wxid =='undefined'){
-            alert('请登陆微信后，查看本页面');
-            jQuery('.ocview').hide();
-        }
-        /*返回的个人积分的dataJson
-         {
-             "remaining":699,
-             "level":01,
-             "log":
-             [
-                 {"value":"-10","time":"2014-03-18 13:52:42.0","memo":""},
-                 {"value":"281","time":"2014-03-18 14:30:20.0","memo":""},
-                 {"value":"398","time":"2014-03-18 09:48:20.0","memo":"审核会员申请时自动插入"},
-                 {"value":"318","time":"2014-03-18 11:33:59.0","memo":""},
-                 {"value":"-318","time":"2014-03-18 13:06:24.0","memo":""},
-                 {"value":"10","time":"2014-03-18 22:16:38.0","memo":""},
-                 {"value":"20","time":"2014-03-18 22:25:24.0","memo":""}
-             ]
-         }
-         或
-         {"error":"指定的会员不存在"}
-         */
+
 
     }
 }

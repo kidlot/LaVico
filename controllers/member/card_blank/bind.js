@@ -286,7 +286,12 @@ module.exports = {
                             }else if(returnJson.error == 'network_error'){
                                 alert('网络接口不稳定，请稍后再尝试');
                             }else{
-                                alert(returnJson.error);
+                                var _info = returnJson.error;
+                                if(_info == "该微信ID已是本品牌会员，请检查！"){
+                                    alert("您已经绑定会员卡，请先解绑，再绑定");
+                                }else{
+                                    alert("网络不稳定，请稍后再尝试");
+                                }
                             }
                         }else{
                             alert('网络不稳定，请稍后再尝试');
@@ -341,9 +346,9 @@ module.exports = {
                             if(returnJson.error == 'tel_exists_false'){
                                 alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线4001008866');
                             }else if(returnJson.error == 'network_error'){
-                                alert('网络接口不稳定，请稍后再尝试');
+                                alert('不稳定，请稍后再尝试');
                             }else{
-                                alert('网络接口不稳定，请稍后再尝试');
+                                alert("网络不稳定，请稍后再尝试");
                             }
                         }else{
                             alert('网络不稳定，请稍后再尝试');
@@ -630,13 +635,13 @@ module.exports = {
                                     data_request,
                                     this.hold(function(err,doc){
                                         var dataJson = JSON.parse(doc);
-                                        helper.db.coll("lavico/user/logs").insert(
+                                        helper.db.coll("lavico/feeds").insert(
                                             {
                                                 'createTime':new Date().getTime(),
                                                 'wxid':seed.wxid,
                                                 'action':"bind",
-                                                'data':dataJson,
-                                                'request':data_request
+                                                'request':data_request,
+                                                'reponse':dataJson
                                             },
                                             function(err,req_doc){
                                                 err&console.log(req_doc);
@@ -657,15 +662,22 @@ module.exports = {
                                         ,then.hold(function(err,req_doc){
                                             var member_level = JSON.parse(req_doc);
                                             if(member_level.level == '01'){
-                                                type = 1;
+                                                type = 1;//01: 白卡
                                             }else if(member_level.level == '02'){
-                                                type = 2;
+                                                type = 2;//02:普通VIP卡
                                             }else if(member_level.level == '03'){
-                                                type = 3;
+                                                type = 3;//03：白金VIP卡
                                             }else{
-                                                type = 0;
+                                                type = 0;//不确定卡类型
                                             }
                                         }));
+                                }else if(dataJson.success == false){
+                                    //该微信ID已是本品牌会员，请检查！
+                                    var _error = dataJson.error;
+                                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                                    this.res.write('{"success":false,"error":"'+_error+'"}');
+                                    this.res.end();
+
                                 }else{
                                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
                                     this.res.write('{"success":false,"error":"network_error"}');
