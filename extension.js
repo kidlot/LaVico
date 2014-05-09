@@ -97,10 +97,10 @@ exports.onload = function(application){
                         reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
                         reply.description=storeList[i].ADDR;
                         if(storeList[i].PICURL==null)
-                            reply.picurl="http://json.imagchina.com/lavico/public/images/lavico_default.png";
+                            reply.picurl="http://zy.imagchina.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
-                        reply.url="http://json.imagchina.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
+                        reply.url="http://zy.imagchina.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
                         replyArr.push(reply);
                     }
                 },
