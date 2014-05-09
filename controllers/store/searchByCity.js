@@ -1,6 +1,6 @@
 /*
-   author:json
-   desciption:show store list by appoint city(按指定城市选择门店列表)
+ author:json
+ desciption:show store list by appoint city(按指定城市选择门店列表)
  */
 var middleware = require('../../lib/middleware.js');
 module.exports={
@@ -87,6 +87,8 @@ module.exports={
     actions:{
         //显示具体门店
         show:{
+            //layout: null,
+            //view:"lavico/templates/store/showStoreDetail.html",
             layout: "lavico/layout",
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
@@ -121,13 +123,17 @@ module.exports={
             },
             viewIn:function(){
                 if(log!=""){
+
                     var map = new BMap.Map("allmap");
                     //var point = new BMap.Point(116.331398,39.897445);
                     var point = new BMap.Point(log,lat);
+
                     map.centerAndZoom(point,17);
 
                     var geolocation = new BMap.Geolocation();
+
                     geolocation.getCurrentPosition(function(r){
+
                         r.point.lng=log;
                         r.point.lat=lat;
                         if(this.getStatus() == BMAP_STATUS_SUCCESS){

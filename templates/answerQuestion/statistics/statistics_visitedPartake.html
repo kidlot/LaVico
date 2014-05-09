@@ -15,8 +15,13 @@
 <div name="getMember" class="maginTop20">
     <div style="margin-left: 17px;">
         <div>参与过的人</div>
-        <div><a href="/lavico/answerQuestion/statistics/statistics_oneDetail:exportXsl?_id={@_id}" target="_blank">全部导出</a>&nbsp;
-            <a href="/lavico/answerQuestion/statistics/statistics_simpleList?themeId={@_id}&optionId={@optionId}" target="_blank">显示用户答案</a>
+        <div>
+            <a href="/lavico/answerQuestion/statistics/statistics_oneDetail:exportXsl?_id={@_id}" target="_blank">全部导出</a>&nbsp;
+            <foreach for="{@theme}" var="docc">
+                <if condition="{@docc.themeType==2}">
+                <a href="/lavico/answerQuestion/statistics/statistics_simpleList?themeId={@_id}&optionId={@optionId}" target="_blank">显示用户答案</a>
+                </if>
+            </foreach>
         </div>
     </div>
     <table class="tableSty">
@@ -37,7 +42,7 @@
                 <td class="width50">{@people.mobile}</td>
                 <td class="width50">{@people.email}</td>
                 <td class="width50">{@people.profession}</td>
-                <td class="width50">{@people.city}</td>
+                <td class="width50">{@people.city},{}</td>
             </tr>
         </foreach>
     </table>
