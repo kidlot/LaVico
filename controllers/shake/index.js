@@ -72,10 +72,8 @@ module.exports = {
         })
         this.step(function () {
             nut.model.list = list;
-            console.log("*******");
+            console.log('~~~~~~~~');
             console.log(list);
-            console.log("*******");
-
         });
 
     },
@@ -114,19 +112,12 @@ module.exports = {
                 var list;
                 this.step(function (doc) {
                     var count = 0;
-                    console.log('doc');
                     console.log(doc);
                     for (var i = 0; i < doc.length; i++) {
                         (function (i) {
                             helper.db.coll("lavico/activity").findOne({aid: doc[i].PROMOTION_CODE}, then.hold(function (err, detail) {
                                 console.log(doc[i]);
                                 count++;
-//                                console.log('++++++');
-//                                console.log(detail);
-//                                console.log('++++++');
-//                                console.log('______');
-//                                console.log(doc[i]);
-//                                console.log('______');
 
                                 if (detail) {
 //                                    for (var j = 0; j < doc[i].coupons.length; j++) {
@@ -165,10 +156,6 @@ module.exports = {
                     shake = shake ? shake : {};
                     doc = JSON.stringify(list);
                     nut.model.list = list;
-                    console.log("!!!!!!!!!");
-                    console.log(list);
-                    console.log("!!!!!!!!!");
-
                     nut.model.shake = shake;
                     nut.model.doc = doc;
                 });
@@ -219,11 +206,11 @@ module.exports = {
             layout: "welab/Layout",
             view: "lavico/templates/shake/info.html",
             process: function (seed, nut) {
-
+                //console.log(seed);
                 nut.view.disable();
 
                 var postData = JSON.parse(seed.postData);
-
+                console.log(seed.postData);
                 if (postData.length == 0) {
                     nut.message("保存失败。数据不能为空", null, 'error');
                     return;

@@ -1,36 +1,115 @@
-会员 - 我的会员卡 - 专属礼券
-<!--
-• 进入页面调用接口获取属于该用户的券的信息
-• 调用后台显示当季活动KV
--->
+<style>
+    .points5-content .pre-bottom{
+        padding-bottom:20px;
+    }
+</style>
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">专属礼券</span></p>
+    </div>
+    <div class="points5">
+        <div class="points5-content">
+            <div class="banner"><img src="/lavico/public/images/point_banner.jpg" /></div>
+            <div class="tab new_tab">
+                <ul>
+                    <li><a id="overdueCoupons" class="couponBtn" href="javascript:void(0);">已过期 ({@overdueCouponsLength})</a></li>
+                    <li><a id="effectiveCoupons" class="couponBtn on" href="javascript:void(0);">可使用({@effectiveCouponsLength})</a></li>
+                    <li><a id="usedCoupons" class="couponBtn" href="javascript:void(0);">已使用 ({@usedCouponsLength})</a></li>
+                </ul>
+            </div>
+            <div class="pre-box" id="overdueCouponsContent" style="display:none">
+
+                    <foreach for="@usedCoupons" key="key">
+                        <div class="pre-box-content">
+                        <div class="pre-top clear">
+                            <div class="fl"><img src="/lavico/public/images/suit_pic02.jpg" /></div>
+                            <div class="fl pre-top-right">
+                                <div class="intro"><span class="c4">[积分兑换] </span>男士秋冬服装买一赠一<br />
+                                    有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</div>
+                            </div>
+                        </div>
+                        <div class="pre-bottom">
+                            活动代号:{@effectiveCoupons[key].PROMOTION_CODE}
+                            <div class="fl left">礼券号：{@effectiveCoupons[key].COUPON_NO}</div>
+                            <div class="fr right"><a href="#">使用细则 > </a></div>
+                        </div>
+                        </div>
+                    </foreach>
+
+            </div>
+            <div class="pre-box" id="effectiveCouponsContent">
+
+                    <foreach for="@effectiveCoupons" key="key">
+                        <div class="pre-box-content">
+                        <div class="pre-top clear">
+                            <div class="fl"><img src="/lavico/public/images/suit_pic02.jpg" /></div>
+                            <div class="fl pre-top-right">
+                                <div class="intro"><span class="c4">[积分兑换] </span>男士秋冬服装买一赠一<br />
+                                    有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</div>
+                            </div>
+                        </div>
+                        <div class="pre-bottom">
+                            <div class="fl left">礼券号：{@effectiveCoupons[key].COUPON_NO}</div>
+                            <div class="fr right"><a href="#">使用细则 > </a></div>
+                        </div>
+                        </div>
+                    </foreach>
+
+            </div >
+            <div class="pre-box" id="usedCouponsContent" style="display:none">
+                <foreach for="@usedCoupons" key="key">
+                    <div class="pre-box-content">
+                        <div class="pre-top clear">
+                            <div class="fl"><img src="/lavico/public/images/suit_pic02.jpg" /></div>
+                            <div class="fl pre-top-right">
+                                <div class="intro"><span class="c4">[积分兑换] </span>男士秋冬服装买一赠一<br />
+                                    有效期：{@usedCoupons[key]. BEGIN_DATE} 至 {@usedCoupons[key].END_DATE}</div>
+                            </div>
+                        </div>
+                        <div class="pre-bottom">
+                            <div class="fl left">礼券号：{@usedCoupons[key].COUPON_NO}</div>
+                            <div class="fr right"><a href="#">使用细则 > </a></div>
+                        </div>
+                    </div>
+                </foreach>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <input id="wxid" type="hidden" value="{@wxid}"/>
 
-    <h3>可使用({@effectiveCouponsLength})</h3>
-    <ul>
-    <foreach for="@effectiveCoupons" key="key">
+    <div style="display: none;">
+        <h3>可使用({@effectiveCouponsLength})</h3>
+        <ul>
+        <foreach for="@effectiveCoupons" key="key">
 
-        <li>有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}--活动代号:{@effectiveCoupons[key].PROMOTION_CODE}-优惠券券号:{@effectiveCoupons[key].COUPON_NO}</li>
-        </if>
-
-    </foreach>
-    </ul>
-
-
-    <h3>已使用({@usedCouponsLength})</h3>
-    <ul>
-        <foreach for="@usedCoupons" key="key">
-
-        <li>有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}--活动代号:{@effectiveCoupons[key].PROMOTION_CODE}-优惠券券号:{@effectiveCoupons[key].COUPON_NO}</li>
+            <li>有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}--活动代号:{@effectiveCoupons[key].PROMOTION_CODE}-优惠券券号:{@effectiveCoupons[key].COUPON_NO}</li>
             </if>
 
         </foreach>
-    </ul>
+        </ul>
 
-    <h3>已过期({@overdueCouponsLength})</h3>
-    <ul>
-        <foreach for="@overdueCoupons" key="key">
 
-        <li>有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}--活动代号:{@effectiveCoupons[key].PROMOTION_CODE}-优惠券券号:{@effectiveCoupons[key].COUPON_NO}</li>            </if>
+        <h3>已使用({@usedCouponsLength})</h3>
+        <ul>
+            <foreach for="@usedCoupons" key="key">
 
-        </foreach>
-    </ul>
+            <li>有效期：{@usedCoupons[key].BEGIN_DATE} 至 {@usedCoupons[key].END_DATE}--活动代号:{@usedCoupons[key].PROMOTION_CODE}-优惠券券号:{@usedCoupons[key].COUPON_NO}</li>
+                </if>
+
+            </foreach>
+        </ul>
+
+
+
+        <h3>已过期({@overdueCouponsLength})</h3>
+        <ul>
+            <foreach for="@overdueCoupons" key="key">
+
+            <li>有效期：{@overdueCoupons[key]. BEGIN_DATE} 至 {@overdueCoupons[key].END_DATE}--活动代号:{@overdueCoupons[key].PROMOTION_CODE}-优惠券券号:{@overdueCoupons[key].COUPON_NO}</li>            </if>
+
+            </foreach>
+        </ul>
+    </div>

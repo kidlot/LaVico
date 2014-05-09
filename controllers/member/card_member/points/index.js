@@ -201,6 +201,7 @@ module.exports = {
                         if(yearMonthLog[0].time == newLog[i].yearmonth){
                             yearMonthLog[0].rank = 1;//表明它是第一行，因为第一行小计和其他小计，样式不一样。
                             yearMonthLog[0].class = 'title2';
+                            yearMonthLog[0].time = newLog[0].time;
                             newLog.splice(i,0,yearMonthLog[0]);
                             console.log(yearMonthLog[0]);
                             yearMonthLog.shift();//删除已合并的元素
@@ -211,6 +212,7 @@ module.exports = {
                             //console.log('newLog['+i+'].yearmonth:'+newLog[i].yearmonth);
                             if(yearMonthLog[0].time == newLog[i].yearmonth){
                                 yearMonthLog[0].class = 'title3';
+                                yearMonthLog[0].time = newLog[i].time;
                                 newLog.splice(i,0,yearMonthLog[0]);
                                 yearMonthLog.shift();//删除已合并的元素
                             }
@@ -239,7 +241,7 @@ function   formatDate(now){
     var   hour=now.getHours();
     var   minute=now.getMinutes();
     var   second=now.getSeconds();
-    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
+    return   year+"年"+month+"月";
 }
 function contains(arr, obj) {
     var i = arr.length;
