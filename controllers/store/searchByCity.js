@@ -126,13 +126,17 @@ module.exports={
             },
             viewIn:function(){
                 if(log!=""){
+
                     var map = new BMap.Map("allmap");
                     //var point = new BMap.Point(116.331398,39.897445);
                     var point = new BMap.Point(log,lat);
+
                     map.centerAndZoom(point,17);
 
                     var geolocation = new BMap.Geolocation();
+
                     geolocation.getCurrentPosition(function(r){
+                        alert(r);
                         r.point.lng=log;
                         r.point.lat=lat;
                         if(this.getStatus() == BMAP_STATUS_SUCCESS){
