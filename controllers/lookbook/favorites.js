@@ -1,14 +1,100 @@
 module.exports = {
 
-    layout: "welab/Layout"
+    layout: "lavico/layout"
     , view: "lavico/templates/lookbook/favorites.html"
 
     , process: function(seed,nut)
     {
+        if(seed.wxid){
+
+            var docs = [];
+            helper.db.coll("lavico/favorites").find({wxid:seed.wxid}).toArray(this.hold(function(err,_doc){
+
+                if(err) console.log(err);
+                var then = this;
+                docs = _doc
+                if(_doc){
+                    for(var i=0 ; i<_doc.length ; i++){
+
+                        (function(i){
+
+                            helper.db.coll("lavico/lookbook").findOne({_id:_doc[i].lookbookid},then.hold(function(err,_docLookBook){
+
+                                if(err) console.log(err)
+
+                                if(_docLookBook){
+
+                                    for(var ii=0 ; ii < _docLookBook.page.length ; ii++){
+                                        if(_docLookBook.page[ii]._id == _doc[i].pageid){
+                                            for(var iii=0 ; iii < _docLookBook.page[ii].product.length ; iii++){
+                                                if(_docLookBook.page[ii].product[iii]._id == _doc[i].productId){
+                                                    _doc[i].pageNum = ii+1
+                                                    _doc[i].product = _docLookBook.page[ii].product[iii]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }))
+                        })(i)
+                    }
+                }
+            }))
+
+            this.step(function(){
+
+                console.log(docs)
+                nut.model.wxid = seed.wxid
+                nut.model.docs = docs||[]
+            })
+
+        }else{
+            var data = JSON.stringify({err:1,msg:"没有微信ID"});
+            this.res.writeHead(200, { 'Content-Type': 'application/json' });
+            this.res.write(data);
+            this.res.end();
+        }
     }
     , actions: {
 
-        save:{
+        cancelFav:{
+            process: function(seed,nut)
+            {
+                nut.disable();
+
+                try{
+
+                    this.step(function(){
+
+                        if(seed._id){
+                            helper.db.coll("lavico/favorites").remove({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
+
+                                if(err) console.log(err)
+
+                                if(_doc){
+
+                                    var data = JSON.stringify({err:0});
+                                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                                    this.res.write(data);
+                                    this.res.end();
+                                }
+                            }))
+
+                        }else{
+                            var data = JSON.stringify({err:1,msg:"参数不正确"});
+                            this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                            this.res.write(data);
+                            this.res.end();
+                        }
+                    })
+
+                }catch(e){
+                    if (e) console.log(e)
+                }
+
+            }
+        }
+        , save:{
             process: function(seed,nut)
             {
                 nut.disable();

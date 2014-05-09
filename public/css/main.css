@@ -1,9 +1,5 @@
 @charset "utf-8";
-<<<<<<< HEAD
-body{ background:#dcdcdc;;}
-=======
 body{ background:#dcdcdc;}
->>>>>>> e13741edd49fa1547a0e9256ee5b79a45080d60b
 /*活动规则*/
 .wrapper{width:640px; margin:0 auto; position:relative;}
 .coupon-banner{width:100%; height:323px; padding-top:20px; padding-bottom:20px;}

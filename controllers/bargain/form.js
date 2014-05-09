@@ -166,7 +166,7 @@ module.exports = {
                         console.log(err)
                     }
                 })) ;
-
+                this.req.session._bargain_step = 1;
                 this.step(function(){
                     nut.disable();
                     var data = JSON.stringify({err:0});
@@ -179,7 +179,7 @@ module.exports = {
         , giveup:{
             process: function(seed,nut){
 
-                var bargain = {price:seed.price,productID:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:false}
+                var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:false}
                 helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
                     if(err ){
                         throw err;
@@ -188,6 +188,7 @@ module.exports = {
 
 
                 _log(seed.wxid,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:false})
+                this.req.session._bargain_step = 1;
                 this.step(function(){
                     nut.disable();
                     var data = JSON.stringify({err:0});
