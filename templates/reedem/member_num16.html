@@ -1,0 +1,135 @@
+
+<link rel="stylesheet" href="/lavico/public/css/base.css" />
+<link rel="stylesheet" href="/lavico/public/css/main.css" />
+    <script>
+        window.onload=function(){
+            $("#canExchange").css("backgroundColor","#ccc");
+            $("#canExchange").click(function(){
+                $("#can").show();
+                $("#notcan").hide();
+                $(this).css("backgroundColor","#ccc");
+                $("#cannotExchange").css("backgroundColor","white")
+            })
+            $("#cannotExchange").click(function(){
+                $("#can").hide();
+                $("#notcan").show();
+                $("#canExchange").css("backgroundColor","white");
+                $(this).css("backgroundColor","#ccc")
+            })
+
+
+        }
+        var exchange=function(memberId,needScore,wechatId,point,aid,_id){
+            $.get("/lavico/reedem/showList:exchange?memberId="+memberId+"&needScore="+needScore+"&wechatId="+wechatId+"&point="+point+"&aid="+aid+"&_id="+_id,function(result){
+                if(result!="sorry很抱歉！很抱歉您已经兑换过此商品"){
+                    document.write(result);
+                }else{
+                    alert(result);
+                }
+
+            })
+        }
+    </script>
+
+<script>
+window.onload=function(){
+    $("#canExchange").css("backgroundColor","#ccc");
+    $("#canExchange").click(function(){
+        $("#can").show();
+        $("#notcan").hide();
+        $(this).css("backgroundColor","#ccc");
+        $("#cannotExchange").css("backgroundColor","white")
+    })
+    $("#cannotExchange").click(function(){
+        $("#can").hide();
+        $("#notcan").show();
+        $("#canExchange").css("backgroundColor","white");
+        $(this).css("backgroundColor","#ccc")
+    })
+}
+var exchange=function(memberId,needScore,wechatId,point,aid,_id){
+    $.get("/lavico/reedem/showList:exchange?memberId="+memberId+"&needScore="+needScore+"&wechatId="+wechatId+"&point="+point+"&aid="+aid+"&_id="+_id,function(result){
+        if(result!="sorry很抱歉！很抱歉您已经兑换过此商品"){
+            document.write(result);
+        }else{
+            alert(result);
+        }
+    })
+}
+</script>
+
+
+<div class="wrapper">
+  <div class="store-title">
+    <!--<p><span class="title1"><a href="member_num20.html">积分明细</a></span><span class="title2">积分兑换</span><span class="title4"><a href="/lavico/consumeDetail/details?wechatId={@wechatId}">兑换记录</a></span></p>-->
+  </div>
+  <div class="points1">
+  <div class="title"><p class="text"><span class="fl">目前可用积分</span><span class="fr">
+      <if condition="{@$helper.gt(reedemJson.point,0)}">
+          +{@reedemJson.point}
+          <else/>
+          -{@reedemJson.point}
+      </if>
+  </span></p></div>
+  <div class="tab">
+  <ul><li id="canExchange"><a href="#">可兑换({@reedemJson.canUse.length})</a></li>
+      <li id="cannotExchange"><a href="#">暂不可兑换({@reedemJson.noCanUse.length})</a></li>
+  </ul>
+  </div>
+
+<div id="content">
+  <div id="can">
+      <ul style="list-style: none">
+          <foreach for="@reedemJson.canUse" var="canUseOne">
+              <li>
+                  <div class="gift-box">
+                  <div class="gift-box-content">
+                  <div class="gift-top clear">
+                  <div class="fl"><img src="{@canUseOne.smallPic}"  width="289px" height="315px"/></div>
+                  <div class="fl gift-top-right">
+                  <div class="name">{@canUseOne.name}</div>
+                  <div class="intro">{@canUseOne.introduction}</div>
+                  <div class="term"><p>所需积分：{@canUseOne.needScore}</p><p>剩余数量：{@canUseOne.stillUse}</p></div>
+                  </div>
+                  </div>
+                  <div class="gift-bottom">
+                  <div class="fl left"><a href="member_num19.html">礼品介绍及兑换细则</a> > </div>
+                  <div class="fr right">
+                      <!--<a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"   name="nowGet">立即兑换</a>-->
+                      <a href="#" name="nowGet" onclick="exchange('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">立即兑换</a>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+              </li>
+          </foreach>
+      </ul>
+  </div>
+
+  <div id="notcan">
+      <ul style="list-style: none">
+          <foreach for="@reedemJson.noCanUse" var="canUseOne">
+              <li>
+                  <div class="gift-box">
+                      <div class="gift-box-content">
+                          <div class="gift-top clear">
+                              <div class="fl"><img src="{@canUseOne.smallPic}"  width="289px" height="315px"/></div>
+                              <div class="fl gift-top-right">
+                                  <div class="name">{@canUseOne.name}</div>
+                                  <div class="intro">{@canUseOne.introduction}</div>
+                                  <div class="term"><p>所需积分：{@canUseOne.needScore}</p><p>剩余数量：{@canUseOne.stillUse}</p></div>
+                              </div>
+                          </div>
+                          <div class="gift-bottom">
+                              <div class="fl left"><a href="member_num19.html">礼品介绍及兑换细则</a> > </div>
+
+                          </div>
+                      </div>
+                  </div>
+              </li>
+          </foreach>
+      </ul>
+  </div>
+</div>
+  </div>
+</div>

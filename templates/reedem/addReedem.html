@@ -1,0 +1,324 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b02"><a href="/lavico/reedem/reedem_list" class="stay">积分兑换</a> <em></em></li>
+    <li class="active"><span>编辑</span></li>
+</ul>
+
+<div class="panel panel-default formText" >
+    <div class="panel-heading clearfix">
+    </div>
+    <div class="panel-body" style="background:#f9fafb;">
+        <div class="col-md-12">
+            <br>
+            <div style="min-height: 70px;">
+                <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
+            </div>
+
+            <form class="form-horizontal" role="form">
+                <h6>基础设置</h6>
+                <br>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="name" name="name" class="form-control" style="width: 150px;display:inline-block;" value="">
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">开始/结束</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="startDate" name="startDate" class="form-control" style="width: 150px;display:inline-block;" value="">
+                        <input type="text" id="endDate" name="endDate" class="form-control" style="width: 150px;display:inline-block;" value="">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">券</label>
+                    <div class="col-sm-10">
+                        <div style="float: left">
+                        <select class="form-control" style="width: 150px" id='activity_select' name="type">
+                            <option value="0">请选择优惠券</option>
+                            <foreach for="@list" var="doc">
+                                <option value="{@doc.PROMOTION_CODE}">{@doc.PROMOTION_NAME}</option>
+                            </foreach>
+                        </select>
+                        </div >
+                        <div style="float: left; padding-top: 30px;"><a href="" id="showDetails" TARGET="_blank">查看详情</a></div>
+                    </div>
+                </div>
+                <!--
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">抽奖频率</label>
+                    <div class="col-sm-10">
+
+                        <select class="form-control" id='lottery_cycle' style="width: 150px;display:inline-block;" name="type">
+                            <option value="1">1天</option>
+                            <option value="2">1周</option>
+                            <option value="3">2周</option>
+                            <option value="4">1月</option>
+                            <option value="100">永久</option>
+                        </select>
+                        <input type="text" id='lottery_count' class="form-control" name="name" placeholder="抽奖次数" style="width: 300px;display:inline-block;" value="" oninput="$('#pagename').text(this.value)">
+                    </div>
+                    <div class="col-sm-10">
+
+                    </div>
+                </div>
+                -->
+                <br>
+                <h6>内容设置</h6>
+                <br>
+
+                <foreach for="@list" var="doc">
+                    <div id='{@doc.PROMOTION_CODE}' class="promotion_detail" style='display:none;'>
+
+                            <div class="panel panel-default formText pagePanel">
+                                <div class="panel-body">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label">券面值</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="QTY" readonly="readonly"  value="{@doc.QTY}" class="form-control postData" style="width:150px;display:inline-block;color:#000000">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label">券图</label>
+                                            <div class="col-sm-10">
+                                                <if condition="{@doc.pic==''}">
+                                                        <img src="{@doc.pic}" style="width: 150px;height: 60"/>
+                                                <else/>
+                                                        无图
+                                                </if>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label">剩余/总数</label>
+                                            <div class="col-sm-10">
+                                                <span>{@ doc.TOTAL-doc.USED}/{@doc.TOTAL}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品描述</label>
+                                            <div class="col-sm-10">
+                                                <input id="introduction" type="text" readonly="readonly" val="{@doc.introduction}" class="form-control postData" style="width:250px;height:80px;display:inline-block;color:#000000">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label">所需积分</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" value="" name="needScore" id="needScore" class="form-control postData" style="width:150px;display:inline-block" >分
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品小图400*400</label>
+                                            <div class="col-sm-10">
+                                                <div style="float:left;width:150px;height: 60px;padding-top: 30px">
+                                                    <input type="hidden" id="smallPic" value="" name="uploadFile"/>
+                                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                                </div>
+                                               <span name='upPic' style="float: left;display: none">
+                                                    <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
+                                                    <span style="margin-top: 41px;float: right;">
+                                                        <a href="javascript:" onclick="delPic(this)">删除</a>
+                                                    </span>
+                                               </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品详细图400*</label>
+                                            <div class="col-sm-10">
+                                                <div class="col-sm-10">
+                                                    <div style="float:left;width:150px;height: 60px;padding-top: 30px">
+                                                        <input type="hidden" id="bigPic" value="" name="uploadFile"/>
+                                                        <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                                    </div>
+                                                    <span name='upPic' style="float: left;display: none">
+                                                        <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
+                                                        <span style="margin-top: 41px;float: right;">
+                                                            <a href="javascript:" onclick="delPic(this)">删除</a>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                 </foreach>
+
+                <input type='hidden' id='aid' value='{@doc.PROMOTION_CODE}' />
+                <input type='hidden' id='_id' value='{@doc._id}' />
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+var aid=0;
+window.onload = function(){
+    $('#activity_select').change(function(){
+        aid = $(this).val();
+        $(".promotion_detail").css('display','none');
+        $("#"+$(this).val()).css('display','block');
+//        $("a[id=showDetails]").attr("href","/lavico/activity/index:modify_html?aid="+aid)
+        $("a[id=showDetails]").attr("href","/lavico/reedem/addReedem:modify_html?aid="+aid)
+    });
+}
+
+
+/*
+ * 图片上传开始
+ */
+function fileSelected(pic) {
+    uploadFile(pic);
+}
+
+function uploadFile(pic) {
+    picShowDisc=pic;
+    var fd = new FormData();
+    fd.append("pic",pic.files[0]);
+    var xhr = new XMLHttpRequest();
+    xhr.upload.addEventListener("progress", uploadProgress, false);
+    xhr.addEventListener("load", uploadComplete, false);
+    xhr.addEventListener("error", uploadFailed, false);
+    xhr.addEventListener("abort", uploadCanceled, false);
+    xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
+    xhr.send(fd);
+}
+
+function uploadProgress(evt) {
+    if (evt.lengthComputable) {
+        var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+        //document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
+    }
+    else {
+        //document.getElementById('progressNumber').innerHTML = 'unable to compute';
+    }
+}
+
+function uploadComplete(evt) {
+    var json = eval('(' + evt.target.responseText + ')');
+    //隐藏域
+    $(picShowDisc).parent().next().show()
+    $(picShowDisc).prev("input[name=uploadFile]").val(json.model.fileName)
+    $(picShowDisc).parent().next().find("img[name='picimg']").attr("src",json.model.fileName)
+    //setVal( nowLineNum, {pic:json.model.fileName});
+    //$("#pic").val("")
+    //$(".rightRow").height( (parseInt($(".settingView").height()) + parseInt($(".settingView").position().top)) +30);
+}
+
+function uploadFailed(evt) {
+    alert("There was an error attempting to upload the file.");
+}
+
+function uploadCanceled(evt) {
+    alert("The upload has been canceled by the user or the browser dropped the connection.");
+}
+//删除图片
+function delPic (then){
+
+    var oLinkOptions = {} ;
+    oLinkOptions.data = [];
+    //alert($(then).parent().prev().attr("src"));
+    oLinkOptions.data.push({name:"pic",value:$(then).parent().prev().attr("src")});
+    oLinkOptions.type = "POST";
+    oLinkOptions.url = "/welab/Uploadify:delpic";
+
+
+    $(picShowDisc).parent().parent().find("div[name='divImg']").hide();
+
+
+    $.request(oLinkOptions,function(err,nut){
+        if(err) throw err ;
+        $(then).parent().parent().prev().val();
+        $(then).parent().prev().attr("src","");
+
+    })
+}
+/*
+ *图片上传结束
+ */
+
+
+function save ( ){
+
+    var aFormInput = {}
+    var _inputCheck = true;
+
+    if(!$("#startDate").val()){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "请选择开始时间！",
+            type: 'error',
+            showCloseButton: true})
+
+    }
+    if(!$("#endDate").val()){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "请选择结束时间！",
+            type: 'error',
+            showCloseButton: true})
+
+    }
+
+
+    if(!aid){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "请选择券！",
+            type: 'error',
+            showCloseButton: true})
+    }
+
+
+    if(!_inputCheck){
+        return false;
+    }
+    //alert($("#"+aid).find("#needScore").val())
+    //aFormInput['coupons'] = new Array();//
+
+    aFormInput['startDate'] = new Date($("#startDate").val()).getTime();//开始时间
+    aFormInput['endDate'] = new Date($("#endDate").val()).getTime();//结束时间
+    aFormInput['aid'] = aid;//券号
+    aFormInput['name'] = $("#name").val();//名称
+    //aFormInput['lottery_cycle'] = $("#lottery_cycle").val();//抽奖频率
+    aFormInput['introduction'] = $("#introduction").val();//描述
+    //aFormInput['lottery_count'] = $("#lottery_count").val();//频率中的次数
+    aFormInput['switcher'] = 'on';//
+    aFormInput['createTime'] = new Date().getTime();//创建时间
+    aFormInput['QTY']=$("#"+aid).first().find("#QTY").val();//面值
+    aFormInput['needScore']=$("#"+aid).first().find("#needScore").val();//所需积分
+    aFormInput['smallPic']=$("#"+aid).first().find("#smallPic").val();//小图片
+    aFormInput['bigPic']=$("#"+aid).first().find("#bigPic").val();//大图片
+
+
+    if(_inputCheck){
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+        oLinkOptions.type = "POST";
+        oLinkOptions.url = "/lavico/reedem/addReedem:insert";
+
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+            nut.msgqueue.popup() ;
+            $.controller("/lavico/reedem/reedem_list",null,"lazy");
+        });
+
+    }
+}
+</script>

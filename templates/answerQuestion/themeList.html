@@ -1,0 +1,56 @@
+
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/question/addQuestion" class="stay">添加题目</a> <em></em></li>
+    <li class="active"><span>列表管理</span></li>
+</ul>
+<!--
+<table border="1" name="showList" class="lineDef">
+	<tbody>
+		<tr><td>试卷名称</td><td>创建时间</td><td>题目数</td><td>参与人数</td><td>完成人数</td><td>操作</td></tr>
+</tbody>
+</table>
+-->
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="childview">
+
+            <div class="panel-body">
+                <div class="childview">
+                    <table class="table table-hover" id="tagList">
+                        <thead>
+                        <tr>
+                            <th>绑定URL</th>
+                            <th>名称</th>
+                            <th>创建时间</th>
+                            <th>题目数</th>
+                            <th>参与人数</th>
+                            <th>完成人数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <foreach for="@jsonReply" var="doc">
+                            <tr><td style='width:100px'> http://{host}/lavico/answerQuestion/answer?_id={@doc._id}&optionId=1&wechatid={wxid}</td>
+                                <td style='width:110px'>{@doc.theme}</td>
+                                <td style='width:100px'>{@doc.createTime}</td>
+                                <td style='width:50px'>{@doc.themeCount}</td>
+                                <td style='width:50px'>{@doc.partakeCount}</td>
+                                <td style='width:50px'>{@doc.finishCount}</td>
+                                <td style='width:100px'>
+                                    <a href=question/updateQuestion?_id={@doc._id}&optionId=1>修改</a>
+                                    <a href=RuleDescription?_id={@doc._id}>规则说明</a>
+                                </td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                    </table>
+                    <include file="welab/templates/paginator.html" model="@jsonReply" model.url="/lavico/answerQuestion/themeList?page=%pagenum%" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

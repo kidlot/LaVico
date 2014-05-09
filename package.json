@@ -1,0 +1,10 @@
+{
+  "name": "lavico",
+  "version": "0.1.0",
+  "description": "lavico",
+  "main": "index.js",
+  "dependencies": {
+    "opencomb": "*",
+    "welab": "*"
+  }
+}

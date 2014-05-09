@@ -1,0 +1,82 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/shake/index" >摇一摇</a></li>
+    <li class="b03"><a href="#" class="stay">统计</a></li>
+    <li class="pull-right"><a href="/lavico/shake/index"><i class="fui-arrow-left"></i>返回</a></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+
+        <div class="btn-group" style="float: left; margin-top: 6px">
+            <a href="/lavico/shake/index"><i class="fui-arrow-left"></i>返回</a>
+        </div>
+        <div class="btn-group" style="float: left; margin-left: 15px">
+            <h6 style="margin-top: 2px; color: #1ABC9C">摇一摇</h6>
+            <input type="hidden" id="_id" value="{@ _id}">
+        </div>
+        <div style="float: right;">
+            <div style="float: right; width: 306px;">
+                <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}">
+                <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}">
+                <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>面值</th>
+                <th>参与人数</th>
+                <th>获得人数</th>
+                <th>设定中奖率</th>
+                <th>实际中奖率</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{@ doc.name}</td>
+                <td>{@ doc.QTY}</td>
+                <td>{@ doc.total}</td>
+                <td>{@ doc.sumFavorites}</td>
+                <td>{@ doc.lottery_chance}%</td>
+                <td>{@ doc.reality_chance}%</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+        <include file="lavico/templates/searchForm.html" />
+        <div class="panel-body" style="padding: 0px">
+            <div class="childview">
+                <View name="userList" />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
+<script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
+
+<script src="/welab/public/js/searchbox.js"></script>
+<link href="/welab/public/css/searchbox.css" rel="stylesheet">
+
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+

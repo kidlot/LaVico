@@ -1,0 +1,41 @@
+<meta name="viewport" content="width=360,user-scalable=no" />
+
+
+<table class="table" id="tagList">
+    <thead>
+    <tr>
+        <th>名称</th>
+        <th>收藏</th>
+    </tr>
+    </thead>
+    <tbody>
+    <foreach for="@doc.page" var="doc">
+
+        <foreach for="@doc.product" var="doc2">
+            <tr>
+                <td>{@ doc2.name}</td>
+                <td><a target="_blank" href="javascript:;" onclick="favorites('{@ wxid}','{@ doc2._id}')">收藏</a></td>
+            </tr>
+        </foreach>
+    </foreach>
+    </tbody>
+</table>
+
+<script>
+    function favorites(wxid,pid){
+        $.ajax({
+            url:'/lavico/lookbook/favorites:save',
+            type:'POST',
+            data:{
+                'wxid':wxid,
+                'pid':pid
+            },
+            success:function(data){
+                alert(data.msg)
+            },
+            error:function(msg){
+                console.log(msg);
+            }
+        });
+    }
+</script>

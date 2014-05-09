@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=0">
+<meta name="mobileoptimized" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/main.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<style>
+ .box_rotate {
+    -moz-transform: rotate(30deg); /* FF3.5+ */
+    -o-transform: rotate(30deg); /* Opera 10.5 */
+    -webkit-transform: rotate(30deg); /* Saf3.1+, Chrome */
+    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.8660,M12=-0.5,M21=0.5,M22=0.8660,SizingMethod=’auto expand’);
+    -ms-filter: “progid:DXImageTransform.Microsoft.Matrix(M11=0.8660,M12=-0.5,M21=0.5,M22=0.8660,SizingMethod=’auto expand’)”; /* IE8 */
+    }	
+ .box_rotate2 {
+    -moz-transform: rotate(-30deg); /* FF3.5+ */
+    -o-transform: rotate(-30deg); /* Opera 10.5 */
+    -webkit-transform: rotate(-30deg); /* Saf3.1+, Chrome */
+    filter: progid:DXImageTransform.Microsoft.Matrix(M11=-0.8660,M12=0.5,M21=-0.5,M22=-0.8660,SizingMethod=’auto expand’);
+    -ms-filter: “progid:DXImageTransform.Microsoft.Matrix(M11=-0.8660,M12=0.5,M21=-0.5,M22=-0.8660,SizingMethod=’auto expand’)”; /* IE8 */
+    }
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="header"><img src="images/head_bg.jpg" /></div>
+  <div class="mobile">
+  <div class="mobile-pic"><img src="images/mobile.png" /></div>
+  <div class="mobile-btn"><a href="javascript:;" class="mobileBtnClick">你的手机没法摇？那就直接点这里</a></div>
+  </div>
+  
+</div>
+<script type="text/javascript">
+	$(document).ready(function(e) {	
+		if (window.DeviceMotionEvent) {   
+			window.addEventListener('devicemotion',deviceMotionHandler, false);    
+		} else{			  
+			alert('not support mobile event');  
+		} 
+	});	
+	$(".mobileBtnClick").click(function(){
+		mobileClickRight();		
+		setTimeout('mobileClickLeft()',500);
+		setTimeout('mobileClick()',1000);
+		setTimeout('loading()',2000);
+	});   
+	
+	function loading(){
+		window.location.href="coupon_num3.html";	
+	}
+	function mobileClickRight(){
+		$(".mobile-pic").addClass("box_rotate");
+	}
+	function mobileClick(){
+		$(".mobile-pic").removeClass("box_rotate");
+		$(".mobile-pic").removeClass("box_rotate2");
+	}
+	function mobileClickLeft(){
+		$(".mobile-pic").addClass("box_rotate2");
+	}
+	
+	var SHAKE_THRESHOLD = 3000;      
+    var last_update = 0;      
+    var x=y=z=last_x=last_y=last_z=0;
+	  
+	function deviceMotionHandler(eventData) {      
+		  
+		var acceleration =eventData.accelerationIncludingGravity;    
+		   
+		var curTime = new Date().getTime();   
+		if ((curTime - last_update)> 100) {    
+			var diffTime = curTime -last_update;      
+			last_update = curTime;          
+			x = acceleration.x;   
+			y = acceleration.y;     
+			z = acceleration.z;     
+			var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;     
+			  
+			if (speed > SHAKE_THRESHOLD) {      
+					mobileClickRight();		
+					setTimeout('mobileClickLeft()',500);
+					setTimeout('mobileClick()',1000);
+					setTimeout('loading()',2000); 
+			}      
+			last_x = x;      
+			last_y = y;      
+			last_z = z;
+		}
+		}      
+</script>
+</body>
+</html>

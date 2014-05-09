@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=0">
+<meta name="mobileoptimized" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/main.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="store-title">
+    <p><span class="title1"><a href="member_num4.html">会员</a></span><span class="title5">申领会员卡 - 资料填写</span></p>
+  </div>
+  <div class="apply">
+  <div class="title">
+      <p class="text">如果您已有实体会员卡，请<a href="member_num6.html">绑定会员卡</a></p>
+    </div>
+  <div class="form clear">
+  <div class="input clear">
+  <div class="left fl"><span class="star-sign">*</span>姓名</div>
+  <div class="name-right fl"><input border="0" type="text" value="张三" /></div>
+  </div>
+  <div class="input clear">
+  <div class="left fl"><span class="star-sign">*</span>性别</div>
+  <div class="sex-right fl"><div class="input_select_div">
+    <input type="text" name="brand" class="input_select_sex" value="请选择" id="model_sex_input"/>
+  	<select id="select_sex">    	
+    	<option>男</option>
+        <option>女</option>      
+    </select>
+    </div> </div>
+  </div>
+  <div class="input clear">
+  <div class="left fl"><span class="star-sign">*</span>生日</div>
+  <div class="birth-right fl"><div class="input_select_div_fys">
+    <input type="text" name="brand" class="input_select_year" value="年" id="model_sex_input"/>
+  	<select id="select_year"  class="select1">    	
+    	<option>2014年</option>
+        <option>2013年</option>   
+        <option>2012年</option>      
+    </select>
+    </div> 
+    </div> 
+    <div class="sex-right fl">
+    <div class="input_select_div_f">
+    <input type="text" name="brand" class="input_select_sex" value="月" id="model_sex_input"/>
+  	<select id="select_month"  class="select2">    	
+    	<option>1月</option>
+        <option>2月</option>   
+        <option>3月</option>      
+    </select>
+    </div> 
+    </div> 
+    <div class="sex-right fl">
+    <div class="input_select_div_f">
+    <input type="text" name="brand" class="input_select_sex" value="日" id="model_sex_input"/>
+  	<select id="select_day"  class="select3">    	
+    	<option>1日</option>
+        <option>2日</option>
+        <option>3日</option>      
+    </select>
+    </div> 
+    </div> 
+    
+  </div>
+  <div class="input clear">
+  <div class="left fl"><span class="star-sign">*</span>手机</div>
+  <div class="tel-right fl"><input border="0" type="text" value="13816900290" /><div class="verify" id="verifybtn">获取验证码</div></div>
+  </div>
+  <div class="input clear">
+  <div class="left fl"><span class="star-sign">*</span>验证码</div>
+  <div class="tel-right fl"><input border="0" type="text" value="5987" /></div>
+  </div>
+  <div class="note">如申领时遇到问题<br />
+请拨打 400-1008-886 联系</div>
+<div class="submit_btn"><input type="button" value="提交" class="subbtn"/></div>
+  </div>
+  </div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(e) {
+        $(".subbtn").click(function(){
+			window.location.href="member_num4.html";		
+		});
+		$("#select_year").change(function(){
+			$(this).parent().find("input").val($(this).val());
+		});
+		
+		$("#select_month").change(function(){
+			$(this).parent().find("input").val($(this).val());
+		});
+		
+		$("#select_day").change(function(){
+			$(this).parent().find("input").val($(this).val());
+		});
+		$("#select_sex").change(function(){
+			$(this).parent().find("input").val($(this).val());
+		});
+		$("#verifybtn").click(function(){
+			time(this);
+			$(this).css("background","url(images/verify_bg.png)");
+		});
+		
+    });
+	
+	var wait=30;
+	function time(o) {
+        if (wait == 0) {                     
+            o.innerHTML ="获取验证码";
+            wait = 30;
+        } else {	     
+            o.innerHTML ="(" + wait + ")重新获取";
+            wait--;
+            setTimeout(function() {
+                time(o)
+            },
+            1000)
+        }
+    }
+	
+</script>
+</body>
+</html>

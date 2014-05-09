@@ -1,0 +1,121 @@
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/lookbook/index" >精英搭配</a></li>
+    <li class="pull-right"><a href="/lavico/lookbook/index"><i class="fui-arrow-left"></i>返回</a></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+
+        <div style="width: 300px;">
+            <a href="/lavico/lookbook/form" class="btn btn-xs btn-primary mhm">新增手册</a>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>状态</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>类型</th>
+                <th>页数</th>
+                <th>单品数</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@page.docs" var="doc">
+                <tr>
+                    <td>{@ doc.name}</td>
+                    <td>{@ doc.stat}</td>
+                    <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ doc.type}</td>
+                    <td>{@ doc.page.length}</td>
+                    <td>{@ doc.sumProduct}</td>
+                    <td>
+                        <a href="/lavico/lookbook/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm">修改</a>
+                        <a href="/lavico/lookbook/statistics?_id={@ doc._id}" class="btn btn-xs btn-primary mhm">统计</a>
+                        <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/lookbook/index?page=%pagenum%" />
+        <!--  /pagination  -->
+
+    </div>
+</div>
+
+        <script>
+            function func_remove(_id,event){
+
+                if (confirm("真的要删除吗？")){
+
+                    $.ajax({
+                        url: "/lavico/lookbook/form:remove?_id="+_id,
+                        cache: false
+                    }).done(function( json ) {
+                                if(json.err == 0){
+                                    $(event).parents("tr").fadeOut();
+                                }else{
+                                    $.globalMessenger().post({
+                                        message: json.msg,
+                                        type: 'error',
+                                        showCloseButton: true})
+                                }
+                            });
+
+                }else{
+                    return false;
+                }
+            }
+
+            function copyToClipboard(txt) {
+
+                if (window.clipboardData) {
+                    window.clipboardData.clearData();
+                    window.clipboardData.setData("Text", txt);
+                    alert("复制成功！")
+                } else if (navigator.userAgent.indexOf("Opera") != -1) {
+                    window.location = txt;
+                    alert("复制成功！");
+                } else if (window.netscape) {
+                    try {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    } catch (e) {
+                        alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将 'signed.applets.codebase_principal_support'设置为'true'");
+                    }
+                    var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+                    if (!clip)
+                        return;
+                    var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+                    if (!trans)
+                        return;
+                    trans.addDataFlavor('text/unicode');
+                    var str = new Object();
+                    var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+                    var copytext = txt;
+                    str.data = copytext;
+                    trans.setTransferData("text/unicode", str, copytext.length * 2);
+                    var clipid = Components.interfaces.nsIClipboard;
+                    if (!clip)
+                        return false;
+                    clip.setData(trans, null, clipid.kGlobalClipboard);
+                    alert("复制成功！")
+                }else if(typeof(copy) == "function"){
+                    copy(txt);
+                    alert("复制成功！")
+                }else{
+                    alert("浏览器不支持,请手动复制。"+txt)
+                }
+            }
+        </script>

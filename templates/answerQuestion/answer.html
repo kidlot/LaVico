@@ -1,0 +1,260 @@
+<style>
+    ul{list-style: none}
+    ul li{padding: 20 0 0 0;}
+    #chooseNa{font-size: 50px;}
+    #picImg{padding-top:  20px;}
+    #sed{padding: 20 0 0 0;}
+    #tip{font-size: 30px; text-align: center;}
+</style>
+
+<script>
+var jsonObject=JSON.parse('{@option}');//获取此题
+var _id='{@_id}';//获取题ID
+var optionCount={@optionCount};//获取题组总题数
+var wechatid='{@wechatid}';//获取微信ID
+
+//初始化事件
+function build(){
+    /*
+     $(".answer_check").click(function(){
+     alert("aa");
+     $(".answer_check").removeClass("select");
+     $(".answer_check").addClass("select1");
+     $(this).removeClass("select1");
+     $(this).addClass("select");
+     });
+     */
+    //添加标题显示
+    $(".title").append(jsonObject.title);
+
+    //判断是否为“主观题”
+    if(jsonObject.type==2){
+        $(".content").append("<div style='padding-top: 15px;'><textarea cols='27' rows='12' name='descContent' style='font-size: 35px;'></textarea></div>");
+
+    }else{
+        //非“主观题”判断是否有图片
+        for(var i=0;i<jsonObject.choose.length;i++){
+            if(jsonObject.choose[i].uploadFile=="" || jsonObject.choose[i].uploadFile=="undefined"){
+                //无图片,判断是否为单选题
+                if(jsonObject.type==0){
+                    //获取单选题“下一题字段”
+                    var chooseNext=jsonObject.choose[i].chooseNext;
+                    //判断第一个字母是否为#号
+
+                    //组织显示项,value:'题号+选项编号+积分+下一题编号+停止标签+自定义标签'
+                    //显示数据后跟是否正确图片
+                    $(".content ul").append("<li style='height:100px;'><span name='correntImg' id='sed' style='visibility:hidden'><img width='32px' height='31px'  src=/lavico/public/images/"+
+                            jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
+                            + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
+                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
+                            "</span></label></li>");
+
+                    //$(".content ul").append("<li><div class='answer_check select1'>系上面两颗</div><div class='img'><img src='images/suit_pic01.jpg' /></div></li>");
+
+                }else if(jsonObject.type==1){
+                    //多项选择题 value:'题号+选项编号+积分+下一题'
+                    $(".content ul").append("<li style='line-height: 80px;'><input type='checkbox'  style='display: none'  onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+jsonObject.optionId+
+                            "+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
+                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa' class='answer_check selects1'>"+jsonObject.choose[i].chooseName+"</span></label></li>");
+                }
+            }else{
+                //选项中存在照片
+                if(jsonObject.type==0){
+                    //show  value:"题号+选项编号+积分+下一题编号+停止标签+自定义标签
+                    $(".content ul").append("<li><span name='correntImg' id='sed' style='visibility:hidden'><img width='32px' height='31px'  src=/lavico/public/images/"+
+                            jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
+                            + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
+                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
+                            "</span></label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="+
+                            jsonObject.choose[i].uploadFile+" id='picImg' name='radioimg' width='280' height='280'></li>");
+                }else if(jsonObject.type==1){
+                    //多项选择题 value:'题号+选项编号+积分+下一题'
+                    $(".content ul").append("<li><input type='checkbox'  style='display: none' onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+
+                            jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
+                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa' class='answer_check selects1'>"+jsonObject.choose[i].chooseName+
+                            "</span></label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  src='"+jsonObject.choose[i].uploadFile+
+                            "' name='chkimg' width='180' height='180' id='picImg'></li>");
+                }
+            }
+        }
+    }
+
+//判断开还关
+    //alert(document.cookie);
+    var strCookie=document.cookie;
+    var arrCookie=strCookie.split(",");
+    for(var i=0;i<arrCookie.length;i++){
+        var arr=arrCookie[i].split("=");
+        if(arr[1]==jsonObject.optionId){
+            $("#tip").html("您已经答过此题");
+        }
+    }
+
+    //当前显示编号是否已经至最后一题，显示“下一题”或“完成”
+    if(jsonObject.optionId<optionCount){
+        $('.btn').append('<input type="button" name="next" value="下一题" onclick="nextChoose()">');
+    }else{
+        $('.btn').append('<input type="button" name="next" value="完成" onclick="finish()">');
+    }
+}
+
+//点击选项后“触发”显示正确答案事件(单选)
+function showCorrent(t){
+    //<span name='correntImg'>
+    //alert(t);
+    $(t).next().find("span").removeClass("select1");
+    $(t).next().find("span").addClass("select");
+
+    //$("span[name='correntImg']").show();
+    $("span[name='correntImg']").css("visibility","visible");
+    $("input[name='singleChooseInput']").attr("disabled",true);
+    //追加cookie
+    var date=new Date();
+    date.setTime(date.getTime()+24*3600*1000);
+    var v=$("input").val();
+    document.cookie="val="+escape(v)+",optionId="+escape(jsonObject.optionId)+",expires="+escape(date.toGMTString());
+}
+
+//点击选项后“触发”显示正确答案事件(复选)
+function showCorrents(t){
+    //<span name='correntImg'>
+    //alert(t);
+    $(t).next().find("span").toggleClass("selects1");
+    $(t).next().find("span").toggleClass("selects");
+
+    //$("span[name='correntImg']").show();
+    $("span[name='correntImg']").css("visibility","visible");
+    $("input[name='singleChooseInput']").attr("disabled",true);
+    //追加cookie
+    var date=new Date();
+    date.setTime(date.getTime()+24*3600*1000);
+    var v=$("input").val();
+    document.cookie="val="+escape(v)+",optionId="+escape(jsonObject.optionId)+",expires="+escape(date.toGMTString());
+}
+
+//finish完成按钮“触发"事件
+function finish(){
+
+    var value=0;
+    var valueArr="";
+    var score=0;
+    var valueSelect="";
+    //判断是否为主观题
+    if(jsonObject.type==2){
+        //获取填写值
+        var content=$("textarea[name='descContent']").val();
+
+        //跳转“答案记录题”
+        location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&finish=true&score="+
+                jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content;
+    }else{
+        //单选
+        if($("input[name='singleChooseInput']").length>0){
+            //获取单选值
+            value=$("input[name='singleChooseInput']:checked").val();
+            valueArr=value.split('+');
+            //跳转“记录页”
+            location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=0&optionId="+valueArr[0]+
+                    "&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+
+                    "&customerLabel="+valueArr[5];
+        }else if($("input[name='mutilChooseInput']:checked").length>0){
+            //多选
+            var selectChooseIdArr="";
+
+            $("input[name='mutilChooseInput']:checked").each(function(){
+                value=$(this).val();
+                valueArr=value.split('+');
+
+                selectChooseIdArr+=valueArr[1]+"_";//点击的所有选项ID
+                if(!isNaN(parseInt(valueArr[2])))
+                    score+=parseInt(valueArr[2]);//累计选项积分
+            });
+
+            location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=1&optionId="+
+                    valueArr[0]+"&_id="+_id+"&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3];
+        }
+
+    }
+}
+
+//next下一题按钮“触发”事件
+function nextChoose(){
+    var value=0;
+    var valueArr="";
+    var score=0;
+    var valueSelect="";
+    //判断-是否主观题
+    if($(".content").find("textarea").length>0){
+        //获取主观题内容
+        var content=$("textarea[name='descContent']").val();
+        //跳转主观题记录页面--传送内容:积分&题组号&题目号&回复内容
+
+        location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&score="+jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+
+                "&receiveAnswer="+content;
+    }else if($("input[name='singleChooseInput']").length>0){
+        //单选，获取选择的值
+        value=$("input[name='singleChooseInput']:checked").val();
+        //拆分value数组
+        valueArr=value.split('+');
+        //跳转“记录结果页” 传值：微信id&单选类型&当前题号&题组号&选项号&积分&下一题题号&停止标签&自定义标签
+        location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=0&optionId="+valueArr[0]+"&_id="+_id+
+                "&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5];
+    }else if($("input[name='mutilChooseInput']:checked").length>0){
+        //多选
+        var selectChooseIdArr="";
+        //循环被选中的所有数据
+        $("input[name='mutilChooseInput']:checked").each(function(){
+            //获取当项值
+            value=$(this).val();
+            //拆分alue
+            valueArr=value.split('+');
+            //拼接,点击的所有选项ID
+            selectChooseIdArr+=valueArr[1]+"_";
+            //累计选项积分
+            if(!isNaN(parseInt(valueArr[2])))
+                score+=parseInt(valueArr[2]);
+        });
+        //跳转“记录结果页”，传值：微信ID&单选类型&当前题号&题组号&选项号&积分&下一题
+        location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=1&optionId="+valueArr[0]+"&_id="+_id+
+                "&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5];
+    }
+}
+
+window.onload=build;
+</script>
+
+<link rel="stylesheet" href="/lavico/public/css/base.css" />
+<link rel="stylesheet" href="/lavico/public/css/main.css" />
+
+<div class="wrapper">
+    <div class="answer-title">
+        <p><span class="title2">本次共有 {@optionCount} 个问题，当前是第 {@optionId} 题</span></p>
+    </div>
+    <div id="tip"></div>
+    <div class="answer">
+
+        <div class='answer-content'><div class='title' style="font-size: 50px;"></div>
+            <div class="content">
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="pages">
+        <div class="pages-content">
+            <a class="fl pre" href="javascript:"> < 上一题</a>
+            <if condition="{@optionCount!=optionId}">
+                <a class="fr next" href="javascript:nextChoose()">下一题 > </a>
+                <else/>
+                <a class="fr next" href="javascript:finish()">完&nbsp;&nbsp;成 > </a>
+            </if>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+
+</script>

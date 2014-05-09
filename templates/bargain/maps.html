@@ -1,0 +1,17 @@
+<meta name="viewport" content="width=360,user-scalable=no" />
+
+
+<table class="table" id="tagList">
+    <thead>
+    <tr>
+        <th>门店名称</th>
+    </tr>
+    </thead>
+    <tbody>
+    <foreach for="@doc.shops2" var="doc">
+        <tr>
+            <td>{@ doc}</td>
+        </tr>
+    </foreach>
+    </tbody>
+</table>

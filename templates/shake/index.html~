@@ -1,0 +1,146 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div style="width: 300px;">
+            <a href="/lavico/shake/index:modify_html" class="btn btn-xs btn-primary mhm stay">新增摇一摇</a>
+        </div>        
+    </div>
+    <div class="panel-body">
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>状态</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>面值</th>
+                <th>剩余/总数</th>
+                <th>参与人数</th>
+                <th>获得人数</th>
+                <th></th>
+                <th>操作</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@list.docs" var="doc">
+                <tr>
+                    <td><a href="/lavico/shake/index:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
+                    <td>{@ doc.status}</td>
+                    <td>{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}</td>
+                    <td>
+                      <table class="children_table">
+                        <tbody>
+                          <foreach for='@doc.coupons' var='value'>
+                            <tr>
+                              <td>{@value.QTY}</td>
+                            </tr>
+                          </foreach>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td>
+                      <table class="children_table">
+                        <tbody>
+                          <foreach for='@doc.coupons' var='value'>
+                            <tr>
+                              <td>
+                                {@ value.COUNT-value.USED}/{@value.COUNT}
+                              </td>
+                            </tr>
+                          </foreach>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td>
+                        {@doc.count}
+                    </td>   
+                    <td>
+                        {@doc.count}
+                    </td>                                     
+                    <td>
+                        <div class="switch has-switch way">
+                            <div class="switch-animate switch-{@ doc.switcher}" data="{@ doc._id}" onclick="audioClick(this)">
+                                <input type="checkbox" data-toggle="switch">
+                                <span class="switch-left">关</span>
+                                <label>&nbsp;</label>
+                                <span class="switch-right">开</span></div>
+
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/lavico/shake/statistics?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">记录</a>
+                    </td>
+                    <td>
+                        <div onclick="remove_a(this,'{@doc._id}');" class="btn btn-xs btn-primary mhm stay">删除</div>                  
+                    </td> 
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <include file="welab/templates/paginator.html" model="@list" model.url="/lavico/shake/index?page=%pagenum%" />
+    </div>
+</div>
+<style>
+#tagList tr td .children_table tr td{
+  #background:white;
+} 
+#tagList tr td .children_table tr td{
+  border-bottom: 5px #edeff0 solid;
+  border-top: 5px #edeff0 solid;
+}  
+</style>
+<script>
+function audioClick(o){
+  var flag = '';
+  if ($(o).hasClass("switch-off")){
+      $(o).removeClass("switch-off")
+      $(o).addClass("switch-on")
+      flag = 'on'; //  开
+  }else{
+      $(o).addClass("switch-off")
+      $(o).removeClass("switch-on")
+      flag = 'off'; // 关
+  }
+  if(flag){
+      var oLinkOptions = {} ;
+      oLinkOptions.data = [{name:'switcher',value:flag},{name:'_id',value:$(o).attr('data')}];
+      oLinkOptions.type = "POST";
+      oLinkOptions.url = "/lavico/shake/index:switcher";
+      $.request(oLinkOptions,function(err,nut){
+          if(err) throw err ;
+          nut.msgqueue.popup() ;
+          //$.controller("/lavico/shake",null,"lazy");
+      });
+  }
+}
+function remove_a(o,_id){
+  if(_id){
+      var oLinkOptions = {} ;
+      oLinkOptions.data = [{name:'_id',value:_id}];
+      oLinkOptions.type = "POST";
+      oLinkOptions.url = "/lavico/shake/index:remove";
+      $.request(oLinkOptions,function(err,nut){
+          if(err) throw err ;
+          nut.msgqueue.popup() ;
+          $.controller("/lavico/shake",null,"lazy");
+      });
+  }else{
+      $.globalMessenger().post({
+          message: "缺少信息！",
+          type: 'error',
+          showCloseButton: true})    
+  }
+}
+</script>

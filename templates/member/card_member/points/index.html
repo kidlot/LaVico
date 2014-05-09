@@ -1,0 +1,60 @@
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">积分明细</span><span class="title4"><a href="member_num16.html">积分兑换</a></span></p>
+    </div>
+    <div class="points2">
+        <div class="title">
+            <p class="text">公告：年度积分即将清零，<a href="javascript:void(0);">查看详情 > </a></p>
+        </div>
+        <if condition="@info=='return_data_true'">
+
+            <if condition="@remaining != 0">
+                <div class="points2-content">
+                    <div class="banner"><img src="/lavico/public/images/point_banner.jpg" /></div>
+                    <p class="title1 clear"><span class="fl">目前可用积分</span><span class="fr">+1200</span></p>
+                    <div class="point-box">
+
+                        <!--循环-->
+                        <foreach for="@log" key="key">
+
+                            <if condition="{@log[key].type == 'sum'}">
+
+                                <div class='{@log[key].class} clear' id="title-{@key}" ">
+                                    <p><span class="fl">{@log[key].time}</span><span class="fr">获得{@log[key].sumGetPoint}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用{@log[key].sumUsedPoint}</span></p>
+                                </div>
+
+                            <else/>
+                                <ul>
+                                <li>
+                                     <span class="fl c1">{@log[key].MEMO}<br />
+                                        {@log[key].time}</span>
+                                     <span class="fr c2 pt15">{@log[key].value}</span></li>
+                                </li>
+                                </ul>
+                            </if>
+
+                        </foreach>
+                        <!--循环-->
+                        <p>&nbsp;</p>
+                    </div>
+                </div>
+            <else/>
+
+                <div class="points2-content">
+                    <div class="banner"><img src="/lavico/public/images/point_banner.jpg" /></div>
+                    <p class="title1 clear"><span class="fl">目前可用积分</span><span class="fr">0</span></p>
+
+                </div>
+                <p>&nbsp;</p>
+
+
+            </if>
+
+        <elseif condition="@info=='return_data_error'"/>
+        网络不稳定，请稍后再尝试刷新此页面
+        <else/>
+        网络不稳定，请稍后再尝试刷新此页面
+        </if>
+    </div>
+</div>
+<input type="hidden" id="wxid" name="wxid" value="{@wxid}"/>
