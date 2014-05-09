@@ -184,6 +184,7 @@ module.exports={
             this.step(function(){
                 helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
                     if(err) throw err;
+                    console.log("doc:"+JSON.stringify(doc.scoreMinMax));
                     scoreRange=doc.scoreMinMax;
                     docTheme=doc;
                     themeType=doc.themeType;
@@ -208,7 +209,6 @@ module.exports={
 
             var resultList="[";
             this.step(function(){
-                console.log("scoreRange:"+JSON.stringify(scoreRange));
                 for(var i=0;i<scoreRange.length;i++){
                     var dot=1;
                     //session上的停止标签和db中的设置标签一致
@@ -216,7 +216,7 @@ module.exports={
                         var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
                         var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
                         var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
-                        var getTipContent= scoreRange[i].tipContent==""?0:scoreRange[i].getTipContent;
+                        var getTipContent= scoreRange[i].tipContent==""?0:scoreRange[i].tipContent;
                         var nowPromotion;
                         for(var j=0;j<doc_json.list.length;j++){
                             if(doc_json.list[j].PROMOTION_CODE==getActivities){
@@ -243,7 +243,7 @@ module.exports={
                                 //qty:nowPromotion.coupons[0].QTY,
                                 point: getScore
                             }
-                            console.log(JSON.stringify(jsonData))
+                            //console.log(JSON.stringify(jsonData))
 
 
                             then.step(function () {
@@ -266,7 +266,6 @@ module.exports={
                             })
 
                             then.step(function () {
-
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),

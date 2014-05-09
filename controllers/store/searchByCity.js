@@ -4,9 +4,6 @@
  */
 var middleware = require('../../lib/middleware.js');
 module.exports={
-    layout: null,
-    //view:"lavico/templates/store/searchByCity.html",
-    //view:"lavico/templates/store/searchChoose.html",
     layout: "lavico/layout",
     view:"lavico/templates/store/store_num4.html",
     process:function(seed,nut){
