@@ -1,0 +1,23 @@
+<style>
+    *{margin: 0px;padding: 0px;}
+    #container{width: 100%;}
+    #imgSty{width:100%;height: 200px;border: 1px solid grey; text-align: center;padding: 20px;line-height: 40px;}
+    #fontSty{width:100%;font-size: 30px;text-align: center;}
+</style>
+<div id="container">
+    <div id="imgSty">
+
+         <if condition="{@record.pic==null}">
+             <img src="/lavico/public/images/lavico_default.png" width="400" height="200">
+         <else/>
+            <img src="{@record.pic}" width="200" height="100">
+         </if>
+        </div>
+        <div id="fontSty">
+        积分兑换礼券
+        成功兑换 {@record.name} <br/>
+        可在 "专属礼券" 内查询<br/>
+        <a href="#?wechatId={@record.wechatId}">点击查看</a>
+        </div>
+
+</div>

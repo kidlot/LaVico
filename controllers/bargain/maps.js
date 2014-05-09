@@ -2,7 +2,7 @@ var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
 
-	layout: null
+    layout: "lavico/layout"
 	, view: "lavico/templates/bargain/maps.html"
 
     , process: function(seed,nut)
@@ -30,7 +30,7 @@ module.exports = {
                             for(var i=0 ; i< _shops.list.length ;i ++){
                                 for(var ii=0 ; ii< doc.maps.length ;ii ++){
                                     if(_shops.list[i].CODE.replace(/\s*/g, '') == doc.maps[ii]){
-                                        doc.shops2.push(_shops.list[i].NAME)
+                                        doc.shops2.push({name:_shops.list[i].NAME,address:_shops.list[i].ADDR,tel:_shops.list[i].TEL})
                                     }
                                 }
                             }
@@ -40,6 +40,7 @@ module.exports = {
 
             this.step(function(){
 
+                console.log(doc)
                 nut.model.doc = doc
             })
 

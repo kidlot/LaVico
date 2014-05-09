@@ -1,27 +1,153 @@
-<meta name="viewport" content="width=360,user-scalable=no" />
+<input type="hidden" id="pageNum" value={@pageNum}>
+<input type="hidden" id="sumPageNum" value={@sumPageNum}>
 
 
-<table class="table" id="tagList">
-    <thead>
-    <tr>
-        <th>名称</th>
-        <th>收藏</th>
-    </tr>
-    </thead>
-    <tbody>
-    <foreach for="@doc.page" var="doc">
+<if condition="@lookbookType == '整图型'">
+    <div class="wrapper">
+        <div class="store-title">
+            <p class="title6">精英搭配</p>
+        </div>
+        <div class="match">
+            <div class="banner"><img src="{@doc.pic||'/lavico/public/images/elite_home_top.gif'}" width="608px" height="400px"></div>
+            <div class="roll-banner">
+                <div class="viewport">
+                    <div class="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
+                        <foreach for="@doc.product" var="doc2">
+                            <div class="item">
+                                <div class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}" width="188px" height="244px"></a></div>
+                            </div>
+                        </foreach>
+                    </div>
+                </div>
+            </div>
+            <div class="intro-text" id="exchangebtn">
+                <div class="text"><a href="javascript:;" class="elite_intro">{@doc.detail}</a></div>
+                <div class="arrow">
+                    <div class="arrow-left" onclick="leftPage()"></div>
+                    <div class="arrow-right" onclick="rightPage()"></div>
+                </div>
+                <div class="number">
+                    <p><span class="f25">{@pageNum}</span><span class="f22">/{@ sumPageNum}</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</if>
 
-        <foreach for="@doc.product" var="doc2">
-            <tr>
-                <td>{@ doc2.name}</td>
-                <td><a target="_blank" href="javascript:;" onclick="favorites('{@ wxid}','{@ doc2._id}')">收藏</a></td>
-            </tr>
-        </foreach>
-    </foreach>
-    </tbody>
-</table>
+<if condition="@lookbookType == '列表型'">
+    <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num2.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
+        <div class="wrapper">
+
+            <foreach for="@allPage.page" var="page" key="key">
+                <div class="elite_list">
+                    <div class="small_list_top">
+                        <img src="{@page.pic||'/lavico/public/images/small_list_top.jpg'}" width="606px" height="380px">
+                        <span class="content_up"><a href="javascript:;" onclick="showContent('{@key}');" class="ui-link"><img class="img_1" src="/lavico/public/images/up.png"></a></span>
+                        <div class="small_content num_{@key}" style="display: none;">
+                            {@ page.detail}
+                        </div>
+                    </div>
+
+                    <div class="small_list">
+                        <foreach for="@page.product" var="product">
+                            <div class="small_image">
+                                <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}">
+                                    <img src="{@ product.pic}" class="exchangebtn" width="198px" height="200px">
+                                </a>
+                            </div>
+                        </foreach>
+
+                    </div>
+
+                </div>
+                <div class="clear"></div>
+                <div class="small_middle"><img src="/lavico/public/images/small_list_middle.png" class="exchangebtn"></div>
+            </foreach>
+
+        </div>
+
+    </div>
+</if>
+
+
+<if condition="@lookbookType == '瀑布流型'">
+
+    <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num3.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
+        <div class="wrapper">
+            <div class="elite_list">
+                <div class="list_left">
+
+                    <foreach for="@allPage.page" var="page" key="key">
+                        <if condition="@key%2 == 0">
+                            <div class="list">
+                                <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
+                                    <div class="boxcontent">
+                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
+                                        <img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" class="exchangebtn" width="293px">
+                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png"></div>
+                                        <div class="elite_list_title">{@page.name}</div>
+                                    </div>
+                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
+                            </div>
+                        </if>
+                    </foreach>
+                </div>
+                <div class="list_right">
+                    <foreach for="@allPage.page" var="page" key="key">
+                        <if condition="@key%2 != 0">
+                            <div class="list">
+                                <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
+                                    <div class="boxcontent">
+                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
+                                        <img src="{@page.pic}" class="exchangebtn" width="293px"><div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png"></div>
+                                        <div class="elite_list_title">{@page.name}</div> </div>
+                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
+                            </div>
+                        </if>
+                    </foreach>
+                </div>
+            </div>
+        </div>
+    </div>
+</if>
 
 <script>
+
+    var n = 0;
+    function showContent(m){
+        if(n==0){
+            $(".num_"+m).show();
+            $(".img_"+m).attr("src","/lavico/public/images/down.png");
+            n = 1;
+        }else{
+            $(".num_"+m).hide();
+            $(".img_"+m).attr("src","/lavico/public/images/up.png");
+            n = 0;
+        }
+
+    }
+    
+    function leftPage(){
+
+        var pageNum = parseInt($("#pageNum").val())
+        var sumPageNum = parseInt($("#sumPageNum").val())
+        if(pageNum <= 1){
+            alert("已经是第一页")
+            return;
+        }
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum -1)
+    }
+
+    function rightPage(){
+
+        var pageNum = parseInt($("#pageNum").val())
+        var sumPageNum = parseInt($("#sumPageNum").val())
+        if(pageNum >= sumPageNum){
+            alert("已经是最后一页")
+            return;
+        }
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum +1)
+    }
     function favorites(wxid,pid){
         $.ajax({
             url:'/lavico/lookbook/favorites:save',

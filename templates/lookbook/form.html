@@ -92,7 +92,7 @@
 
                         <div class="panel-heading clearfix" style="padding: 6px 15px; height: 40px">
                             <p class="h7 pull-left" style="margin-bottom: 0px;">第 <code class="page">1</code> 页</p>
-                            <span class="glyphicon glyphicon-remove pull-right" style="padding: 6px;color: #919191;margin-left: 5px;cursor: pointer;"></span>
+                            <span class="glyphicon glyphicon-remove removeButton pull-right" style="padding: 6px;color: #919191;margin-left: 5px;cursor: pointer;"></span>
                             <span class="glyphicon glyphicon-chevron-down pull-right" style="padding: 6px;color: #919191;cursor: pointer;"></span>
                             <span class="glyphicon glyphicon-chevron-up pull-right" style="padding: 6px;color: #919191;cursor: pointer;"></span>
                         </div>
@@ -121,7 +121,7 @@
 
                                         <div class="panel-heading clearfix" style="padding: 3px 15px; height: 30px;">
                                             <p class="pull-left" style="margin-bottom: 0px;font-size: 16px">单品 <code class="product">1</code></p>
-                                            <span class="glyphicon glyphicon-remove pull-right" style="padding: 3px;color: #919191;margin-left: 5px;cursor: pointer;"></span>
+                                            <span class="glyphicon glyphicon-remove removeButton pull-right" style="padding: 3px;color: #919191;margin-left: 5px;cursor: pointer;"></span>
                                             <span class="glyphicon glyphicon-chevron-down pull-right" style="padding: 3px;color: #919191;cursor: pointer;"></span>
                                             <span class="glyphicon glyphicon-chevron-up pull-right" style="padding: 3px;color: #919191;cursor: pointer;"></span>
                                         </div>
@@ -137,6 +137,17 @@
 
                                                 <input type="text" class="form-control" name="page.product.name" placeholder="单品名称 (10字以内)" style="width: 300px"><br>
                                                 <textarea class="form-control" rows="3" placeholder="单品说明 (50字以内)" name="page.product.detail"></textarea>
+
+                                                <span class="glyphicon glyphicon-plus" style="color: #919191;padding: 5px;cursor: pointer;" onclick="lookbook.createProductBigPic(this)">增加特写图</span>
+
+                                                <div class="productBigPic">
+                                                    <div style="padding: 5px;display: none" class="rowProductBigPic">
+                                                        <input type="file" class="input-xlarge pull-left"  style="width:235px" placeholder="请输入...." onchange="fileSelected(this);">
+                                                        &nbsp;<span class="progressNumber"></span>
+                                                        <span class="glyphicon glyphicon-remove pull-right" style="color: #919191;margin-left: 5px;cursor: pointer;margin-top: 1px;" onclick="lookbook.removeProductBigPic(this)"></span>
+                                                        <img style="width: 25px; " src="" class="pull-right" >
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -201,19 +212,31 @@
     }
 
     function uploadComplete(evt) {
-        var json = eval('(' + evt.target.responseText + ')');
 
+        var json = eval('(' + evt.target.responseText + ')');
         var filename = json.model.fileName;
 
-        $(window.oLastInput).prev().attr("src",filename)
+        var parent = $(window.oLastInput).parent();
 
-        // update model
-        var _id = lookbook._getPageProductID($(window.oLastInput))
+        if(parent.attr("class")=="rowProductBigPic"){
 
-        if(!isNaN(_id.productId)){
-            window.lookbook.page[parseInt(_id.pageId)].product[parseInt(_id.productId)].pic = filename
+            parent.find("img").attr("src",filename)
+
+            var _id = lookbook._getPageProductID($(window.oLastInput))
+            window.lookbook.page[parseInt(_id.pageId)].product[parseInt(_id.productId)].bigPic[parseInt(parent.attr("_num"))-1].pic = filename
+
         }else{
-            window.lookbook.page[parseInt(_id.pageId)].pic = filename
+
+            $(window.oLastInput).prev().attr("src",filename)
+
+            // update model
+            var _id = lookbook._getPageProductID($(window.oLastInput))
+
+            if(!isNaN(_id.productId)){
+                window.lookbook.page[parseInt(_id.pageId)].product[parseInt(_id.productId)].pic = filename
+            }else{
+                window.lookbook.page[parseInt(_id.pageId)].pic = filename
+            }
         }
     }
 

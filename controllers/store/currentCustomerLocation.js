@@ -1,5 +1,7 @@
 var middleware = require('../../lib/middleware.js');
 module.exports={
+    //layout:null,
+    //view:"lavico/templates/store/currentCustomerLocation2.html",
     layout:"lavico/layout",
     view:"lavico/templates/store/store_num2.html",
     process:function(seed,nut){

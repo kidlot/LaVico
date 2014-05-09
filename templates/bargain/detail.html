@@ -1,102 +1,144 @@
-<meta name="viewport" content="width=360,user-scalable=no" />
+<div class="wrapper">
+    <div class="bargin">
+        <div class="bargin-content">
+            <div class="fl bargin-left"><img src="{@ doc.pic}" width="224px" height="338px"/></div>
+            <div class="fl bargin-right">
 
 
-<div style="position: relative">
+                <input type="hidden" value="{@ doc._id}" id="_id">
+                <input type="hidden" value="{@ wxid}" id="wxid">
+                <input type="hidden" value="{@ doc.promotionsCode}" id="promotionsCode">
+                <input type="hidden" value="{@ doc.deductionIntegral}" id="point">
 
-    <div style="position: absolute;">
 
-        <div class="name">{@ doc.name}</div>
-        <div>颜色：{@ doc.colors}</div>
-        <div>尺码：{@ doc.sizes}</div>
-        <div><img src="{@ doc.pic}" width="100px"/></div>
-        <div>市场零售价：{@ doc.price}</div>
-        <div>
-            <input type="hidden" value="{@ doc._id}" id="_id">
-            <input type="hidden" value="{@ wxid}" id="wxid">
-            <input type="hidden" value="{@ doc.promotionsCode}" id="promotionsCode">
-            <input type="hidden" value="{@ doc.deductionIntegral}" id="point">
+                <p class="title name" >{@ doc.name}</p>
+
+                <p class="color">
+                    <span class="color-title">颜色：</span><span class="color-con">{@ doc.colors}</span>
+                </p>
+
+                <p class="rules">
+                    <span class="rules-title fl">尺码：</span><span
+                        class="rules-con fl">{@ doc.sizes}</span>
+                </p>
+
+                <p class="color">
+                    <span class="color-title">剩余：</span><span class="color-con">{@ doc.surplus}件</span>
+                </p>
+
+                <p class="color">
+                    <span class="color-title">市场零售价：</span><span class="color-con"><span
+                        class="pice">{@ doc.price}</span>元</span>
+                </p>
+
+                <p class="look_store"><a href="/lavico/bargain/maps?_id={@doc._id}&wxid={@wxid}">查看活动参与门店 > </a></p>
+            </div>
         </div>
+        <div class="border"></div>
+        <div class="bargin_content">
+            <p class="wei_name">商品描述：</p>
 
-        <div>
+            <p class="wei_text">{@ doc.introduction}</p>
+        </div>
+        <div class="bargin-mod"><img src="{@doc.pic_big}" width="579px" height="786px"/></div>
+        <div class="foot">
             <if condition="@res.err==1">
 
                 <if condition="@res.url">
-                    <input type="button" value="{@res.msg}" onclick="location.href='{@res.url}'">
-                    <else/>
-                    <input type="button" value="{@res.msg}" >
+                    <a href="{@res.url}" class="bargainBtn" id="fixed" >{@res.msg}</a>
+                <else/>
+                    <a href="javascript:;" class="bargainBtn" id="fixed" >{@res.msg}</a>
                 </if>
             <else/>
-                <input type="button" value="立即侃价" id="bargainButton" onclick="_step('bargain')">
+                <a href="javascript:;" class="bargainBtn" id="fixed" onclick="_step('bargain')">立即侃价</a>
             </if>
         </div>
-
-        <input type="button" value="查看门店" onclick="location.href='/lavico/bargain/maps?_id={@doc._id}'">
     </div>
-    <div style="position: absolute; width: 400px; height:400px; top: 0px; left: 0px; background-color: #000000; color: #ffffff; display: none" id="_alert">
 
-        <div id="_win_bargain" class="channel">
+    <div id="_alert">
+        <div class="fade channel" id="_win_bargain">
+            <div class="input-price">
+                <p class="msg">请在下方输入您的心理价位<br/>
+                    (精确到元，例如1200)</p>
 
-            <div>请在下方输入您的心理价位(精确到元，例如1200)</div>
-            <div><input type="text" value="" id="price"></div>
-            <div><input type="button" value="确定" onclick="bargain()"></div>
+                <p class="input"><input id="price" type="text" border="0" value="10"/></p>
+
+                <p class="confirm"><input class="confirmBtn" type="submit" border="0" value="确认" onclick="bargain()"/></p>
+            </div>
         </div>
 
-        <div id="_win_success" class="channel">
 
-            <div>恭喜你成交
-                已经存入您的“专属礼券”
-                点击查看</div>
-            <div><input type="button" value="关闭" onclick="_close()" ></div>
+        <div class="fade4 channel" id="_win_success">
+            <div class="first-price">
+                <p class="msg">您已成功砍价，请查看您的“专属礼券”</p>
+
+                <p class="confirm"><input class="goconfirmBtn" style="background:url('/lavico/public/images/click_btn_go.jpg')"
+                                          type="submit" border="0" value="" onclick="location.href='/lavico/member/card_member/coupon/index?wxid='+$('#wxid').val()"/></p>
+            </div>
         </div>
 
         <!-- STEP1 -->
-        <div id="_win_step1_high" class="channel">
+        <div class="fade2 channel" id="_win_step1_high">
+            <div class="second-price">
+                <p class="msg"><span class="f45 stepPrice">4900</span>元<br/>就喜欢和您这种爽气的买家做生意<br/>
+                    成交</p>
 
-            <div><span class="stepPrice" style="font-size: 24">999</span>元</div>
-            <div>就喜欢和您这种爽气的买家做生意
-                成交</div>
-            <div><input type="button" value="我确认价格，成交" onclick="_step('success')"></div>
-            <div>如果您觉得出价高了
-                可以再重新出价一次
-                不过只有最后一次机会哦</div>
-            <div><input type="button" value="重新出价" onclick="_step('bargain')" ></div>
+                <p class="confirm"><input type="submit" class="okconfirmBtn" border="0" value="我确认价格，成交" onclick="_step('success')"/></p>
+
+                <p class="msg mt70">如果您觉得出价高了<br/>可以再重新出价一次<br/>
+                    不过只有最后一次机会哦</p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="重新出价" onclick="_step('bargain')"/></p>
+            </div>
         </div>
 
-        <div id="_win_step1_low" class="channel">
 
-            <div><span class="stepPrice" style="font-size: 24">999</span>元</div>
-            <div>您的价格让小朗吐血
-                再加点儿呗
-                不过只有最后一次机会哦</div>
-            <div><input type="button" value="重新出价" onclick="_step('bargain')"></div>
+        <div class="fade1 channel" id="_win_step1_low">
+            <div class="first-price">
+                <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗吐血<br/>
+                    再加点儿呗<br/>
+                    不过只有最后一次机会哦</p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="重新出价" onclick="_step('bargain')"/></p>
+            </div>
         </div>
-
 
         <!-- STEP2 -->
-        <div id="_win_step2_high" class="channel">
+        <div class="fade2 channel" id="_win_step2_high">
+            <div class="second-price">
+                <p class="msg"><span class="f45 stepPrice">4900</span>元<br/>就喜欢和您这种爽气的买家做生意<br/>
+                    成交</p>
 
-            <div><span class="stepPrice" style="font-size: 24">999</span>元</div>
-            <div>就喜欢和您这种爽气的买家做生意
-                成交</div>
-            <div><input type="button" value="我确认价格，成交" onclick="_step('success')"></div>
-            <div>如果您觉得出价高了
-                可以放弃此次机会
-                十分钟以后再来和我侃价</div>
-            <div><input type="button" value="放弃" onclick="giveup()"></div>
+                <p class="confirm"><input type="submit" class="okconfirmBtn" border="0" value="我确认价格，成交" onclick="_step('success')"/></p>
+
+                <p class="msg mt70">如果您觉得出价高了<br/>可以放弃此次机会<br/>
+                    十分钟以后再来和我侃价</p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="放弃" onclick="giveup()"/></p>
+            </div>
         </div>
 
-        <div id="_win_step2_low" class="channel">
+        <div class="fade1 channel" id="_win_step2_low">
+            <div class="first-price">
+                <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗心寒的吐血<br/>
+                    休息一下，有心想买的话10分钟后再来<br/>
+                    好好出个价</p>
 
-            <div><span class="stepPrice" style="font-size: 24">999</span>元</div>
-            <div>您的价格让小朗心寒的吐血
-                休息一下，有心想买的话10分钟后再来
-                好好出个价</div>
-            <div><input type="button" value="我去休息下" onclick="giveup()"></div>
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="我去休息下" onclick="giveup()"/></p>
+            </div>
         </div>
 
+
+        <div class="fade3">
+            <div class="first-price">
+                <p class="msg">休息休息，10分钟后才能再砍价</p>
+
+                <p class="confirm"><input class="restconfirmBtn" type="submit" border="0" value="好吧"/></p>
+            </div>
+        </div>
     </div>
-
 </div>
+
 <script>
 function giveup(){
 
@@ -113,8 +155,8 @@ function giveup(){
         success:function(data){
             if(data.err == 0){
 
-                $("#bargainButton").val("休息休息，10分钟后才能再侃价")
-                $("#bargainButton").attr('onclick',"return false;");
+                $("#fixed").text("休息休息，10分钟后才能再侃价")
+                $("#fixed").attr('href',"javascript:;");
                 _close()
             }else{
                 alert(data.msg)
@@ -140,8 +182,8 @@ function _step(channelName){
     }
     if(channelName == "success"){
         deal(function(){
-            $("#bargainButton").val("您已成功侃价，请查看您的“专属礼券”")
-            $("#bargainButton").attr('onclick',"location.replace(this.href); event.returnValue=false;location.href='http://www.baidu.com'");
+            $("#fixed").text("您已成功侃价，请查看您的“专属礼券”")
+            $("#fixed").attr('href',"/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
             _func()
         })
     }else{
@@ -209,7 +251,7 @@ function bargain(){
     });
 }
 window.onload = function(){
-    if($("#bargainButton").val() == "我要侃价"){
+    if($("#fixed").text() == "我要侃价"){
 
     }
 }

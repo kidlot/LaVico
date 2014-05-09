@@ -9,7 +9,7 @@ var domain = require('domain');
 
 module.exports={
     layout:null,
-    view:"lavico/templates/AnswerQuestion/Review.html",
+    view:null,
     process:function(seed,nut){
         nut.view.disable();
         var then=this;
@@ -23,6 +23,7 @@ module.exports={
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
                 if(err) throw err;
+                console.log("!!!!:"+doc)
                 if(doc)
                     return doc;
             }))
@@ -31,6 +32,7 @@ module.exports={
         this.step(function(doc){
             for(var i=0;i<doc.options.length;i++){
                 if(doc.options[i].type==2 && doc.options[i].optionId==optionId){
+                    console.log("22222:"+doc)
                     var minCount=doc.options[i].answerRange.minCount;
                     var maxCount=doc.options[i].answerRange.maxCount;
                     var receiveAnswerCount=receiveAnswer.length;
@@ -48,7 +50,9 @@ module.exports={
 
                         return doc.options[i];
                     }else{
+                        nut.view.disable();
                         nut.write("<script>alert('字数不符合要求，请重填');history.back()</script>");
+                        then.terminate();
                     }
                 }
             }
@@ -81,6 +85,7 @@ module.exports={
                 });
                 this.res.end();
             }else{
+                console.log(wechatId)
                 this.res.writeHead(302, {
                     'Location': "/lavico/answerQuestion/finish?wechatid="+wechatId+"&_id="+_id+"&optionId="+optionId});
                 this.res.end();

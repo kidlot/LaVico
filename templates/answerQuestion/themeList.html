@@ -34,12 +34,15 @@
                         <tbody>
                         <foreach for="@jsonReply" var="doc">
                             <tr><td style='width:100px'> http://{host}/lavico/answerQuestion/answer?_id={@doc._id}&optionId=1&wechatid={wxid}</td>
-                                <td style='width:150px'>{@doc.theme}</td>
+                                <td style='width:110px'>{@doc.theme}</td>
                                 <td style='width:100px'>{@doc.createTime}</td>
                                 <td style='width:50px'>{@doc.themeCount}</td>
                                 <td style='width:50px'>{@doc.partakeCount}</td>
                                 <td style='width:50px'>{@doc.finishCount}</td>
-                                <td style='width:50px'><a href=question/updateQuestion?_id={@doc._id}&optionId=1>Update</a></td>
+                                <td style='width:100px'>
+                                    <a href=question/updateQuestion?_id={@doc._id}&optionId=1>修改</a>
+                                    <a href=RuleDescription?_id={@doc._id}>规则说明</a>
+                                </td>
                             </tr>
                         </foreach>
                         </tbody>
