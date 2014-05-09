@@ -172,7 +172,6 @@ var aid=0;
 window.onload = function(){
     $('#activity_select').change(function(){
         aid = $(this).val();
-        alert(aid);
         $(".promotion_detail").css('display','none');
         $("#"+$(this).val()).css('display','block');
 //        $("a[id=showDetails]").attr("href","/lavico/activity/index:modify_html?aid="+aid)
