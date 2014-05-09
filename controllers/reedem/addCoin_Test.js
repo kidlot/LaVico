@@ -1,6 +1,6 @@
 /*
-  author json
-  description:(测试阶段-添加账户积分)
+ author json
+ description:(测试阶段-添加账户积分)
  */
 var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
@@ -46,8 +46,8 @@ module.exports={
         $("#addCoin").click(function(){
             var oLinkOptions = {} ;
             oLinkOptions.data = [{name:'realName',value:$("#realName").val()},
-                                 {name:'qty',value:$('#qty').val()},
-                                 {name:'mobile',value:$("#mobile").val()}];
+                {name:'qty',value:$('#qty').val()},
+                {name:'mobile',value:$("#mobile").val()}];
             oLinkOptions.type = "POST";
             oLinkOptions.url = "/lavico/reedem/addCoin_Test:submit";
             $.request(oLinkOptions,function(err,nut){
