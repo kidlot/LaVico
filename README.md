@@ -68,3 +68,8 @@ http://127.0.0.1:8080/lavico.middleware/Points?MEMBER_ID=9121535
 必填字段 createTime,wxid,action,data(对象)
 
 helper.db.coll("lavico/user/logs").insert({createTime:new Date().getTime(),wxid:seed.wxid,action:"侃价交易成功",data:{prodoctID:seed._id}}, (err, doc)->)
+
+
+数据库：
+
+lavico/activity： 记录所有的优惠券的信息，需要从远端拉取出。

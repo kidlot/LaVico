@@ -51,8 +51,7 @@ module.exports = {
             nut.model.buy = "/lavico/member/card_member/buy?wxid="+wxid;
 
             /*收藏清单*/
-            nut.model.fav = "/lavico/member/card_member/fav?wxid="+wxid;
-
+            nut.model.fav = "/lavico/lookbook/favorites?wxid="+wxid;
 
 
             /*会员特权*/
@@ -66,10 +65,123 @@ module.exports = {
 
             /*解绑会员卡*/
             nut.model.unbind = "/lavico/member/card_member/unbind?wxid="+wxid;
+
+            /*门店地址*/
+            nut.model.store = "/lavico/store/currentCustomerLocation?wxid="+wxid;
+
         });
 
     },
-    viewIn:function(){
+    actions:{
+        getUserEffectiveCouponsNum:{
+            layout:null,
+            view:null,
+            process:function(seed,nut){
+                nut.disable();
+                var wxid = seed.wxid || 'undefined';
+                var couponData;
+
+                this.step(function(){
+                    if(wxid == 'undefined'){
+                        nut.disable();//不显示模版
+                        this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                        this.res.write('{"error":"wxid_is_empty"}');
+                        this.res.end();
+                        this.terminate();
+                    }
+                });
+
+                this.step(function(){
+                    helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                        if(!doc){
+                            nut.disable();//不显示模版
+                            this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                            this.res.write('{"error":"wxid_no_bind_to_welab"}');
+                            this.res.end();
+                            this.terminate();
+                        }
+                    }));
+                });
+
+                this.step(function(){
+                    helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                        if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID ){
+                            member_id =  doc.HaiLanMemberInfo.memberID;
+                        }else{
+                            nut.disable();//不显示模版
+                            this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                            this.res.write('{"error":"member_id_is_empty"}');
+                            this.res.end();
+                            this.terminate();
+                        }
+                    }));
+                });
+                this.step(function(){
+
+                    var requestData = {
+                        'memberId' : member_id,
+                        'perPage':10000,
+                        'pageNum':1
+                    };
+
+                    middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+
+                        couponData = JSON.parse(doc);
+
+                        helper.db.coll("welab/feeds").insert(
+                            {
+                                'createTime':new Date().getTime(),
+                                'wxid':seed.wxid,
+                                'action':"check_effective_coupon_num",
+                                'request':requestData,
+                                'reponse':couponData
+                            },this.hold( function(err, doc){
+                                err&console.log(doc);
+                            })
+                        );
+                        //记录用户动作
+                    }));
+
+                });
+                this.step(function(){
+
+                    var coupons = couponData.list;
+                    var effectiveCouponsCount = 0;
+                    console.log(couponData.list);
+
+                    /*
+                     优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02
+                     */
+                    for(var _i in coupons){
+                        if(coupons[_i].COUPON_STATUS == '02'){
+                            effectiveCouponsCount ++;
+                        }
+                    }
+
+                    nut.disable();//不显示模版
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"error":"false","count:"'+effectiveCouponsCount+'}');
+                    this.res.end();
+                });
+
+
+            }
+        }
 
     }
+    ,viewIn:function(){
+
+        var wxid = $('#wxid').val();
+        $.ajax({
+            type: "GET",
+            url: "/lavico/member/card_member/index:getUserEffectiveCouponsNum",
+            data: {"wxid":wxid},
+            dataType: "json",
+            success: function(data){
+                console.log(data);
+            }
+        });
+
+    },
+
 }

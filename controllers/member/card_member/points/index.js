@@ -60,6 +60,7 @@ module.exports = {
                         if(parseInt(dataJson.point) === 0){
 
                             nut.model.remaining = 0;
+                            //this.terminate();
 
                         }else if(parseInt(dataJson.point) < 0){
                             nut.model.remaining = dataJson.point;
