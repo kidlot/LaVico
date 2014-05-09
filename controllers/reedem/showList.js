@@ -1,11 +1,7 @@
 var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
-<<<<<<< HEAD
-    layout: null,
     //view:"lavico/templates/reedem/showList.html",
-=======
     layout: "lavico/layout",
->>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
     view:"lavico/templates/reedem/member_num16.html",
     process:function(seed,nut){
         var reedemJson={};
@@ -112,12 +108,8 @@ module.exports={
     actions:{
         //兑换
         exchange:{
-<<<<<<< HEAD
-            layout: null,
             //view:"lavico/templates/reedem/exchangeOk.html",
-=======
             layout: "lavico/layout",
->>>>>>> 18f127958bc0295bac132db7e8734f74b365e698
             view:"lavico/templates/reedem/member_num17.html",
             process:function(seed,nut){
                 var wechatId=seed.wechatId;//微信ID
