@@ -184,15 +184,15 @@ module.exports = {
     ,viewIn:function(){
 
         var wxid = $('#wxid').val();
-//        $.ajax({
-//            type: "GET",
-//            url: "/lavico/member/card_member/index:getUserEffectiveCouponsNum",
-//            data: {"wxid":wxid},
-//            dataType: "json",
-//            success: function(data){
-//                console.log(data);
-//            }
-//        });
+        $.ajax({
+            type: "GET",
+            url: "/lavico/member/card_member/index:getUserEffectiveCouponsNum",
+            data: {"wxid":wxid},
+            dataType: "json",
+            success: function(data){
+                console.log(data);
+            }
+        });
 
     },
 

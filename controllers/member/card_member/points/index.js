@@ -15,6 +15,7 @@ module.exports = {
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         var member_id;
         var total;
+        var remaining;//用户积分
         this.step(function(){
 
 
@@ -86,145 +87,149 @@ module.exports = {
 
         });
 
+
         this.step(function(){
+            middleware.request( "Point/Log/"+member_id,{
+                'pageNum':1,
+                'perPage':100000
+            },this.hold(function(err,doc){
+
+                var dataJson = JSON.parse(doc);
+                console.log(dataJson);
+
+                if(parseInt(dataJson.total) == 0){
+                    total = 0;
+                }
+            }));
+        });
+
+        this.step(function(){
+            if(total > 0){
                 middleware.request( "Point/Log/"+member_id,{
                     'pageNum':1,
                     'perPage':100000
                 },this.hold(function(err,doc){
 
+                    var newLog = new Array();
                     var dataJson = JSON.parse(doc);
-                    console.log(dataJson);
 
-                    if(parseInt(dataJson.total) == 0){
-                        total = 0;
-                    }
-                }));
-        });
+                    for(var i=0; i<dataJson.log.length; i++){
 
-        this.step(function(){
-           middleware.request( "Point/Log/"+member_id,{
-                'pageNum':1,
-                'perPage':100000
-            },this.hold(function(err,doc){
+                        var _temp = dataJson.log[i];
+                        var _time = formatDate(new Date(dataJson.log[i].time));//消费时间
+                        var _year = (new Date(dataJson.log[i].time)).getFullYear();
+                        var _month = (new Date(dataJson.log[i].time)).getMonth()+ 1;
+                        var _value = (dataJson.log[i].value < 0) ? dataJson.log[i].value: ('+'+dataJson.log[i].value);
+                        var _source = String(dataJson.log[i].source);
 
-                var newLog = new Array();
-                var dataJson = JSON.parse(doc);
-
-                for(var i=0; i<dataJson.log.length; i++){
-
-                    var _temp = dataJson.log[i];
-                    var _time = formatDate(new Date(dataJson.log[i].time));//消费时间
-                    var _year = (new Date(dataJson.log[i].time)).getFullYear();
-                    var _month = (new Date(dataJson.log[i].time)).getMonth()+ 1;
-                    var _value = (dataJson.log[i].value < 0) ? dataJson.log[i].value: ('+'+dataJson.log[i].value);
-                    var _source = String(dataJson.log[i].source);
-
-                    if(_source == '01'){
-                        _MEMO = '用户消费';
-                    }else if(_source == '02'){
-                        _MEMO = dataJson.log[i].MEMO;
-                    }else if(_source == '03'){
-                        _MEMO = '客服调整积分';
-                    }else{
-                        _MEMO = '';
-                    }
-
-                    var _json = {
-                        'MEMO' : _MEMO,
-                        'timestamp': dataJson.log[i].time,
-                        'value' : _value,
-                        'time'  : _time,
-                        'source' : _source,
-                        'meta' : dataJson.log[i].MEMO,
-                        'year':_year,
-                        'month':_month,
-                        'yearmonth':_year+'-'+_month,
-                        'type':'data'
-                    };
-                    newLog.push(_json);
-
-                }
-                var _yearMonthLog = new Array();//标记年月，保存记录
-
-                var _temp = newLog[0].yearmonth;
-                var _i = 0;
-
-                /*手机年月*/
-                for(var i=0; i < newLog.length; i++){
-
-                    if(i == 0){
-                        _yearMonthLog.push(newLog[i].yearmonth);
-                    }else{
-                        if(!contains(_yearMonthLog,newLog[i].yearmonth)){
-                            _yearMonthLog.push(newLog[i].yearmonth);
+                        if(_source == '01'){
+                            _MEMO = '用户消费';
+                        }else if(_source == '02'){
+                            _MEMO = dataJson.log[i].MEMO;
+                        }else if(_source == '03'){
+                            _MEMO = '客服调整积分';
+                        }else{
+                            _MEMO = '';
                         }
+
+                        var _json = {
+                            'MEMO' : _MEMO,
+                            'timestamp': dataJson.log[i].time,
+                            'value' : _value,
+                            'time'  : _time,
+                            'source' : _source,
+                            'meta' : dataJson.log[i].MEMO,
+                            'year':_year,
+                            'month':_month,
+                            'yearmonth':_year+'-'+_month,
+                            'type':'data'
+                        };
+                        newLog.push(_json);
+
                     }
-                }
+                    var _yearMonthLog = new Array();//标记年月，保存记录
 
-                /*数组排序*/
-                newLog.sort(function(a,b){return a['timestamp']<b['timestamp']?1:-1});
+                    var _temp = newLog[0].yearmonth;
+                    var _i = 0;
 
-                /*产生数据*/
-                var yearMonthLog = new Array();
-                var _sumGetPoint = 0;//获得积分总计
-                var _sumUsedPoint = 0;//使用积分总计
-                for(var i=0; i < _yearMonthLog.length; i++){
+                    /*手机年月*/
+                    for(var i=0; i < newLog.length; i++){
 
-                    for(var j=0; j < newLog.length; j++){
-                        if(_yearMonthLog[i] == newLog[j].yearmonth){
-                            var _int = parseInt(newLog[j].value);
-                            //console.log('_int:'+_int);
-                            if(_int > 0 ){
-                                _sumGetPoint = _sumGetPoint + _int;
-                            }else{
-                                _sumUsedPoint = _sumUsedPoint + _int;
+                        if(i == 0){
+                            _yearMonthLog.push(newLog[i].yearmonth);
+                        }else{
+                            if(!contains(_yearMonthLog,newLog[i].yearmonth)){
+                                _yearMonthLog.push(newLog[i].yearmonth);
                             }
                         }
                     }
 
-                    var _json = {
-                        'time':_yearMonthLog[i],
-                        'sumGetPoint':_sumGetPoint,
-                        'sumUsedPoint':-_sumUsedPoint,
-                        'type':'sum'
-                    };
-                    yearMonthLog.push(_json);
+                    /*数组排序*/
+                    newLog.sort(function(a,b){return a['timestamp']<b['timestamp']?1:-1});
 
-                    _sumGetPoint = 0;
-                    _sumUsedPoint = 0;
-                }
+                    /*产生数据*/
+                    var yearMonthLog = new Array();
+                    var _sumGetPoint = 0;//获得积分总计
+                    var _sumUsedPoint = 0;//使用积分总计
+                    for(var i=0; i < _yearMonthLog.length; i++){
 
-                /*合并两个数组*/
-                for(var i=0; i< newLog.length; i++){
-                    if(i==0){
-                        //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
-                        //console.log('newLog[i].yearmonth:'+newLog[i].yearmonth);
-                        if(yearMonthLog[0].time == newLog[i].yearmonth){
-                            yearMonthLog[0].rank = 1;//表明它是第一行，因为第一行小计和其他小计，样式不一样。
-                            yearMonthLog[0].class = 'title2';
-                            yearMonthLog[0].time = newLog[0].time;
-                            newLog.splice(i,0,yearMonthLog[0]);
-                            console.log(yearMonthLog[0]);
-                            yearMonthLog.shift();//删除已合并的元素
+                        for(var j=0; j < newLog.length; j++){
+                            if(_yearMonthLog[i] == newLog[j].yearmonth){
+                                var _int = parseInt(newLog[j].value);
+                                //console.log('_int:'+_int);
+                                if(_int > 0 ){
+                                    _sumGetPoint = _sumGetPoint + _int;
+                                }else{
+                                    _sumUsedPoint = _sumUsedPoint + _int;
+                                }
+                            }
                         }
-                    }else{
-                        if(yearMonthLog.length > 0){
+
+                        var _json = {
+                            'time':_yearMonthLog[i],
+                            'sumGetPoint':_sumGetPoint,
+                            'sumUsedPoint':-_sumUsedPoint,
+                            'type':'sum'
+                        };
+                        yearMonthLog.push(_json);
+
+                        _sumGetPoint = 0;
+                        _sumUsedPoint = 0;
+                    }
+
+                    /*合并两个数组*/
+                    for(var i=0; i< newLog.length; i++){
+                        if(i==0){
                             //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
-                            //console.log('newLog['+i+'].yearmonth:'+newLog[i].yearmonth);
+                            //console.log('newLog[i].yearmonth:'+newLog[i].yearmonth);
                             if(yearMonthLog[0].time == newLog[i].yearmonth){
-                                yearMonthLog[0].class = 'title3';
-                                yearMonthLog[0].time = newLog[i].time;
+                                yearMonthLog[0].rank = 1;//表明它是第一行，因为第一行小计和其他小计，样式不一样。
+                                yearMonthLog[0].class = 'title2';
+                                yearMonthLog[0].time = newLog[0].time;
                                 newLog.splice(i,0,yearMonthLog[0]);
+                                console.log(yearMonthLog[0]);
                                 yearMonthLog.shift();//删除已合并的元素
                             }
+                        }else{
+                            if(yearMonthLog.length > 0){
+                                //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
+                                //console.log('newLog['+i+'].yearmonth:'+newLog[i].yearmonth);
+                                if(yearMonthLog[0].time == newLog[i].yearmonth){
+                                    yearMonthLog[0].class = 'title3';
+                                    yearMonthLog[0].time = newLog[i].time;
+                                    newLog.splice(i,0,yearMonthLog[0]);
+                                    yearMonthLog.shift();//删除已合并的元素
+                                }
+                            }
                         }
                     }
-                }
 
-                nut.model.dataJson = JSON.stringify(dataJson);
-                nut.model.log = newLog;//当前会员的积分记录
+                    nut.model.dataJson = JSON.stringify(dataJson);
+                    nut.model.log = newLog;//当前会员的积分记录
 
-            }));
+                }));
+            }
+
         });
 
 
