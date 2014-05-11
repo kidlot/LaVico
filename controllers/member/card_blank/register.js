@@ -34,7 +34,6 @@ module.exports = {
 
 
         /*前端设计JS*/
-        $(function() {
 
             $("#year").click(function(){
                 $(this).parent().find("input").val($(this).val()+'年');
@@ -51,10 +50,10 @@ module.exports = {
                 var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
                 $(this).parent().find("input").val(_v);
             });
-        });
+
 
         /*后端开发JS*/
-        $(function () {
+
 
             var wxid = $('#uid').val();
             /*申请会员卡*/
@@ -103,7 +102,6 @@ module.exports = {
             $("#year,#month").bind("change", function(){
                 TUpdateCal($year.val(),$month.val());
             });
-        });
 
         function TGetDaysInMonth(iMonth, iYear) {
             var dPrevDate = new Date(iYear, iMonth, 0);
