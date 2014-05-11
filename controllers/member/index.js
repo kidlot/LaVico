@@ -73,6 +73,7 @@ module.exports = {
 
             /*积分与兑换*/
             nut.model.points = "/lavico/member/card_member/points/index?wxid="+wxid;
+            nut.model.reedem = "/lavico/reedem/showList?wechatId="+wxid;
 
             /*消费记录*/
             nut.model.buy = "/lavico/member/card_member/buy?wxid="+wxid;
