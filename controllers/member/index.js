@@ -47,8 +47,7 @@ module.exports = {
                 if(bindStatus == 'bind'){
                     nut.model.bindStatus = 'bind';
                     /*自动跳转到card_member主页*/
-                    this.res.writeHead(302, {'location':'/lavico/member/card_member/index?wxid='+wxid});
-                    this.res.end();
+
                 }else if(bindStatus == 'unbind'){
                     nut.model.bindStatus = 'unbind';
                     /*自动跳转到card_member主页*/
@@ -65,21 +64,26 @@ module.exports = {
 
     },
     viewIn:function(){
-        jQuery(document).ready(function($) {
 
-            var wxid = $('#wxid').val();
-            $(".fade").css("display","block");
 
-            /*申请会员卡*/
-            $(".applybtn").click(function(){
-                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
-            });
+        var wxid = $('#wxid').val();
+        $(".fade").css("display","block");
 
-            /*绑定会员卡*/
-            $(".bangdingbtn").click(function(){
-                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
-            });
-
+        /*申请会员卡*/
+        $(".applybtn").click(function(){
+            window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
         });
+
+        /*绑定会员卡*/
+        $(".bangdingbtn").click(function(){
+            window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+        });
+
+        /*bind*/
+        if($('#bindStatus').val() == 'bind'){
+            window.location.href="/lavico/member/card_member/index?wxid="+wxid;
+        }
+
+
     }
 }
