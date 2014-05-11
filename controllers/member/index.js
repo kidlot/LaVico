@@ -79,7 +79,8 @@ module.exports = {
             nut.model.reedem = "/lavico/reedem/showList?wechatId="+wxid;
 
             /*消费记录*/
-            nut.model.buy = "/lavico/member/card_member/buy?wxid="+wxid;
+            //nut.model.buy = "/lavico/member/card_member/buy?wxid="+wxid;
+            nut.model.buy = "/lavico/consumeDetail/details?wechatId="+wxid;
 
             /*收藏清单*/
             nut.model.fav = "/lavico/lookbook/favorites?wxid="+wxid;
