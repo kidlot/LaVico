@@ -144,7 +144,7 @@ exports.onload = function(application){
     /*
     * 更新个人信息资料
     * */
-    var _time = 1000*10*10;
+    var _time = 1000*60;
     var timer = setInterval(function(){
              http = require('http');
              options = {
@@ -164,7 +164,7 @@ exports.onload = function(application){
              //req.write(post_data);
              console.log(req.end());
          },_time);
-    clearInterval(timer);
+    //clearInterval(timer);
 
 }
 
