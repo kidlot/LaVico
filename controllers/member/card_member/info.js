@@ -52,7 +52,7 @@ module.exports = {
               nut.model.realname = doc.realname ? doc.realname : '';
               var date =  new Date(parseInt(doc.birthday));
               nut.model.birthday_year = date.getFullYear() + '年';
-              nut.model.birthday_month = date.getMonth() + '月';
+              nut.model.birthday_month = (date.getMonth() + 1) + '月';
               nut.model.birthday_date = date.getDate() +'日';
               if(doc.gender){
                  nut.model.gender = (doc.gender && doc.gender == 'male') ? '男' : ((doc.gender && doc.gender == 'female') ? '女' : '' );
