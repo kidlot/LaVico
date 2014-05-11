@@ -72,7 +72,10 @@ module.exports = {
             nut.model.coupon = "/lavico/member/card_member/coupon/index?wxid="+wxid;
 
             /*积分与兑换*/
+
+            /*积分明细*/
             nut.model.points = "/lavico/member/card_member/points/index?wxid="+wxid;
+            /*积分兑换*/
             nut.model.reedem = "/lavico/reedem/showList?wechatId="+wxid;
 
             /*消费记录*/
