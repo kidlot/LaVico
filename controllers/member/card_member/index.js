@@ -39,7 +39,7 @@ module.exports = {
             nut.model.wxid = wxid ;
 
             /*会员公告*/
-            nut.model.announcement = "/lavico/member/card_member/announcement/index?wxid="+wxid;
+            nut.model.announcement = "/lavico/announcement/showIndex?wxid="+wxid;
 
             /*专属礼券*/
             nut.model.coupon = "/lavico/member/card_member/coupon/index?wxid="+wxid;
@@ -57,8 +57,11 @@ module.exports = {
             /*会员特权*/
 
             /*微会员尊享*/
+            nut.model.weiCard = "/lavico/member/benefit/index:weiCard?wxid="+wxid;
             /*VIP尊享*/
+            nut.model.vipCard = "/lavico/member/benefit/index:vipCard?wxid="+wxid;
             /*白金VIP卡尊享*/
+            nut.model.goldCard = "/lavico/member/benefit/index:goldCard?wxid="+wxid;
 
             /*个人资料*/
             nut.model.info = "/lavico/member/card_member/info?wxid="+wxid;
@@ -172,15 +175,15 @@ module.exports = {
     ,viewIn:function(){
 
         var wxid = $('#wxid').val();
-        $.ajax({
-            type: "GET",
-            url: "/lavico/member/card_member/index:getUserEffectiveCouponsNum",
-            data: {"wxid":wxid},
-            dataType: "json",
-            success: function(data){
-                console.log(data);
-            }
-        });
+//        $.ajax({
+//            type: "GET",
+//            url: "/lavico/member/card_member/index:getUserEffectiveCouponsNum",
+//            data: {"wxid":wxid},
+//            dataType: "json",
+//            success: function(data){
+//                console.log(data);
+//            }
+//        });
 
     },
 
