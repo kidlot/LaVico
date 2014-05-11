@@ -235,10 +235,8 @@ module.exports = {
 
 
     },
-    viewIn:function(){
+    viewIn:function(){}
 
-
-    }
 }
 
 function   formatDate(now){
