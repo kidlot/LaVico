@@ -97,14 +97,15 @@ module.exports = {
                 var dataJson = JSON.parse(doc);
                 console.log(dataJson);
 
-                if(parseInt(dataJson.total) == 0){
-                    total = 0;
-                }
+                total = parseInt(dataJson.total);
+
             }));
         });
 
         this.step(function(){
+
             if(total > 0){
+
                 middleware.request( "Point/Log/"+member_id,{
                     'pageNum':1,
                     'perPage':100000
@@ -207,7 +208,7 @@ module.exports = {
                                 yearMonthLog[0].class = 'title2';
                                 yearMonthLog[0].time = newLog[0].time;
                                 newLog.splice(i,0,yearMonthLog[0]);
-                                console.log(yearMonthLog[0]);
+                                //console.log(yearMonthLog[0]);
                                 yearMonthLog.shift();//删除已合并的元素
                             }
                         }else{
@@ -234,10 +235,8 @@ module.exports = {
 
 
     },
-    viewIn:function(){
+    viewIn:function(){}
 
-
-    }
 }
 
 function   formatDate(now){
