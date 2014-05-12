@@ -40,6 +40,8 @@ exports.onload = function(application){
 	//member_apply.load();
     //门店查询
     wechatapi.registerReply(9,function(msg,req,res,next){
+    	
+    	console.log("123门店查询开始!!!");
         if(msg.MsgType=="location"){
             console.log("门店查询开始!!!");
             var lat=msg.Location_X;
