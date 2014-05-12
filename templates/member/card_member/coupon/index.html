@@ -22,16 +22,16 @@
                     <foreach for="@usedCoupons" key="key">
                         <div class="pre-box-content">
                         <div class="pre-top clear">
-                            <div class="fl"><img src="/lavico/public/images/suit_pic02.jpg" /></div>
+                            <div class="fl"><img width="147" height="154" src="{@overdueCoupons[key].PIC}" /></div>
                             <div class="fl pre-top-right">
-                                <div class="intro"><span class="c4">[积分兑换] </span>男士秋冬服装买一赠一<br />
-                                    有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</div>
+                                <div class="intro"><span class="c4">[{@overdueCoupons[key].COUPON_TYPE}] </span>{@overdueCoupons[key].COUPON_NAME}<br />
+                                    有效期：{@overdueCoupons[key]. BEGIN_DATE} 至 {@overdueCoupons[key].END_DATE}</div>
                             </div>
                         </div>
                         <div class="pre-bottom">
-                            活动代号:{@effectiveCoupons[key].PROMOTION_CODE}
-                            <div class="fl left">礼券号：{@effectiveCoupons[key].COUPON_NO}</div>
-                            <div class="fr right"><a href="#">使用细则 > </a></div>
+                            活动代号:{@overdueCoupons[key].PROMOTION_CODE}
+                            <div class="fl left">礼券号：{@overdueCoupons[key].COUPON_NO}</div>
+                            <div class="fr right"><a href="/lavico/templates/member/card_member/coupon/rule?wxid={@wxid}">使用细则 > </a></div>
                         </div>
                         </div>
                     </foreach>
@@ -42,15 +42,15 @@
                     <foreach for="@effectiveCoupons" key="key">
                         <div class="pre-box-content">
                         <div class="pre-top clear">
-                            <div class="fl"><img src="/lavico/public/images/suit_pic02.jpg" /></div>
+                            <div class="fl"><img width="147" height="154" src="{@effectiveCoupons[key].PIC}" /></div>
                             <div class="fl pre-top-right">
-                                <div class="intro"><span class="c4">[积分兑换] </span>男士秋冬服装买一赠一<br />
+                                <div class="intro"><span class="c4">[{@effectiveCoupons[key].COUPON_TYPE}]</span>{@effectiveCoupons[key].COUPON_NAME}<br />
                                     有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</div>
                             </div>
                         </div>
                         <div class="pre-bottom">
                             <div class="fl left">礼券号：{@effectiveCoupons[key].COUPON_NO}</div>
-                            <div class="fr right"><a href="#">使用细则 > </a></div>
+                            <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则 > </a></div>
                         </div>
                         </div>
                     </foreach>
@@ -60,15 +60,15 @@
                 <foreach for="@usedCoupons" key="key">
                     <div class="pre-box-content">
                         <div class="pre-top clear">
-                            <div class="fl"><img src="/lavico/public/images/suit_pic02.jpg" /></div>
+                            <div class="fl"><img width="147" height="154" src="{@usedCoupons[key].PIC}" /></div>
                             <div class="fl pre-top-right">
-                                <div class="intro"><span class="c4">[积分兑换] </span>男士秋冬服装买一赠一<br />
+                                <div class="intro"><span class="c4">[{@usedCoupons[key].COUPON_TYPE}] </span>{@usedCoupons[key].COUPON_NAME}<br />
                                     有效期：{@usedCoupons[key]. BEGIN_DATE} 至 {@usedCoupons[key].END_DATE}</div>
                             </div>
                         </div>
                         <div class="pre-bottom">
                             <div class="fl left">礼券号：{@usedCoupons[key].COUPON_NO}</div>
-                            <div class="fr right"><a href="#">使用细则 > </a></div>
+                            <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则 > </a></div>
                         </div>
                     </div>
                 </foreach>

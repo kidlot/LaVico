@@ -39,37 +39,49 @@ module.exports = {
             nut.model.wxid = wxid ;
 
             /*会员公告*/
-            nut.model.announcement = "/lavico/member/card_member/announcement/index?wxid="+wxid;
+            nut.model.announcement = "/lavico/announcement/showIndex?wxid="+wxid;
 
             /*专属礼券*/
             nut.model.coupon = "/lavico/member/card_member/coupon/index?wxid="+wxid;
 
             /*积分与兑换*/
+
+            /*积分明细*/
             nut.model.points = "/lavico/member/card_member/points/index?wxid="+wxid;
+            /*积分兑换*/
+            nut.model.reedem = "/lavico/reedem/showList?wechatId="+wxid;
+
 
             /*消费记录*/
-            nut.model.buy = "/lavico/member/card_member/buy?wxid="+wxid;
+            //nut.model.buy = "/lavico/member/card_member/buy?wxid="+wxid;
+            nut.model.buy = "/lavico/consumeDetail/details?wechatId="+wxid;
 
             /*收藏清单*/
-            nut.model.fav = "/lavico/member/card_member/fav?wxid="+wxid;
-
+            nut.model.fav = "/lavico/lookbook/favorites?wxid="+wxid;
 
 
             /*会员特权*/
 
             /*微会员尊享*/
+            nut.model.weiCard = "/lavico/member/benefit/index:weiCard?wxid="+wxid;
             /*VIP尊享*/
+            nut.model.vipCard = "/lavico/member/benefit/index:vipCard?wxid="+wxid;
             /*白金VIP卡尊享*/
+            nut.model.goldCard = "/lavico/member/benefit/index:goldCard?wxid="+wxid;
+
+
+
 
             /*个人资料*/
             nut.model.info = "/lavico/member/card_member/info?wxid="+wxid;
 
             /*解绑会员卡*/
             nut.model.unbind = "/lavico/member/card_member/unbind?wxid="+wxid;
-        });
 
-    },
-    viewIn:function(){
+            /*门店地址*/
+            nut.model.store = "/lavico/store/currentCustomerLocation?wxid="+wxid;
+
+        });
 
     }
 }

@@ -1,1 +1,47 @@
-<meta name="viewport" content="width=360,user-scalable=no" />
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">收藏清单</span></p>
+    </div>
+    <div class="points3">
+
+
+        <foreach for="@docs" var="fav" key="key">
+        <div class="points3-box">
+            <div class="points3-content clear">
+                <div class="fl"><a href="/lavico/lookbook/product?_id={@ fav.lookbookid}&wxid={@ wxid}&pageNum={@fav.pageNum}&productId={@fav.product._id}"><img src="{@fav.product.pic}" width="213px" height="314px"></a></div>
+                <div class="fl text">
+                    <div class="title3"><a href="member_num27.html">{@fav.product.name}</a></div>
+                    <div class="con"><a href="member_num27.html">{@fav.product.detail}</a></div>
+                    <div class="btn subbtn" onclick="$('.fade2').find('input').attr('_id','{@ fav._id}');$('.fade2').show()" >取消收藏</div>
+                </div>
+            </div>
+        </div>
+        </foreach>
+
+    </div>
+</div>
+
+<div class="fade2">
+    <div class="second-price">
+        <p class="msg"><span class="mt70">取消收藏成功</span></p>
+        <p class="confirm"><input type="submit" class="goon_btn" border="0" value="好的" onclick="cancelFav(this)"></p>
+    </div>
+</div>
+
+        <script>
+            function cancelFav(button){
+                $.ajax({
+                    url:'/lavico/lookbook/favorites:cancelFav',
+                    type:'POST',
+                    data:{
+                        '_id':$(button).attr("_id")
+                    },
+                    success:function(data){
+                        location.reload()
+                    },
+                    error:function(msg){
+                        console.log(msg);
+                    }
+                });
+            }
+        </script>

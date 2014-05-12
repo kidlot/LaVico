@@ -1,17 +1,18 @@
-<meta name="viewport" content="width=360,user-scalable=no" />
-
-
-<table class="table" id="tagList">
-    <thead>
-    <tr>
-        <th>门店名称</th>
-    </tr>
-    </thead>
-    <tbody>
-    <foreach for="@doc.shops2" var="doc">
-        <tr>
-            <td>{@ doc}</td>
-        </tr>
-    </foreach>
-    </tbody>
-</table>
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a href="/lavico/bargain/detail?_id={@_id}&wxid={@wxid}">侃价商店</a></span><span class="title2">参与门店</span></p>
+    </div>
+    <div class="store-list">
+        <div class="store-listContent">
+            <ul>
+                <foreach for="@doc.shops2" var="doc">
+                <li><a href="store_num3.html">
+                    <p class="name">{@ doc.name}</p>
+                    <p class="adree" style="max-width: 500px;">地址：{@ doc.address}</p>
+                    <p class="tel">电话：{@ doc.tel}</p>
+                </a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+</div>

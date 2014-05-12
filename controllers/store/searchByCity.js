@@ -90,8 +90,6 @@ module.exports={
     actions:{
         //显示具体门店
         show:{
-            //layout: null,
-            //view:"lavico/templates/store/showStoreDetail.html",
             layout: "lavico/layout",
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
@@ -170,6 +168,7 @@ module.exports={
                 var then=this;
                 var cityName= seed.city.substring(0,seed.city.length-1);
                 nut.model.cityName=cityName;
+                nut.model.wxid = seed.wxid;
                 this.step(function(){
                     var jsonData={};
                     jsonData.perPage=1000;

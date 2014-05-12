@@ -17,6 +17,15 @@ module.exports = {
         nut.model.wxid = wxid;
         var member_id;
         var then = this;
+        var ineffectiveCoupons = [];//未生效的 01
+        var effectiveCoupons = [];//已生效的02
+        var usedCoupons = [];//已使用的03
+        var overdueCoupons = [];//已到期失效 04
+        var errorCoupons = [];//错误
+        var couponData;
+
+
+
         this.step(function(){
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
                 if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID ){
@@ -25,12 +34,10 @@ module.exports = {
             }));
 
         });
+
+
         this.step(function(){
-            var ineffectiveCoupons = [];//未生效的 01
-            var effectiveCoupons = [];//已生效的02
-            var usedCoupons = [];//已使用的03
-            var overdueCoupons = [];//已到期失效 04
-            var errorCoupons = [];//错误                   
+
             if(!member_id){
                 nut.model.ineffectiveCoupons = ineffectiveCoupons;
                 nut.model.ineffectiveCouponsLength = 0;
@@ -40,8 +47,8 @@ module.exports = {
                 nut.model.usedCouponsLength = 0;
                 nut.model.overdueCoupons = overdueCoupons;//已过期
                 nut.model.overdueCouponsLength = 0;
-                
-                
+
+
                 helper.db.coll("lavico/feeds").insert(
                     {
                         'createTime':new Date().getTime(),
@@ -52,19 +59,23 @@ module.exports = {
                     function(err, doc){
                         err&console.log(doc);
                     }
-                );                 
-                then.terminate();            
+                );
+                then.terminate();
             }
+        });
+
+        this.step(function(){
+
             var requestData = {
                 'memberId' : member_id,
                 'perPage':10000,
                 'pageNum':1
             };
+
             middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
 
-                var couponData = JSON.parse(doc);
-                var _coupons = couponData.list;
-                var coupons = [];
+                couponData = JSON.parse(doc);
+
                 helper.db.coll("welab/feeds").insert(
                     {
                         'createTime':new Date().getTime(),
@@ -72,101 +83,157 @@ module.exports = {
                         'action':"check_coupon",
                         'request':requestData,
                         'reponse':couponData
-                    },
-                    function(err, doc){
+                    },this.hold( function(err, doc){
                         err&console.log(doc);
-                    }
+                    })
                 );
+               //记录用户动作
+            }));
+
+        });
+
+        this.step(function(){
+            //console.log(couponData);
+            var _coupons = couponData.list;
+
+            for(var _i=0;_i<_coupons.length;_i++){
+
+                var _PROMOTION_CODE = _coupons[_i].PROMOTION_CODE;
+
+                (function(_i){
+                    helper.db.coll("lavico/activity").findOne({aid: _PROMOTION_CODE},
+                        then.hold(function (err, doc) {
+
+                                if(doc&&doc.pic){
+                                    var _PIC = doc.pic;
+                                }else{
+                                    var _PIC = "/lavico/public/images/suit_pic02.jpg";
+                                }
+
+                                if(doc&&doc.promotion_name){
+                                    var _PROMOTION_NAME = doc.promotion_name;
+                                }else{
+                                    var _PROMOTION_NAME = "";
+                                }
+                                couponData.list[_i].PIC = _PIC;
+
+                                couponData.list[_i].COUPON_NAME = _PROMOTION_NAME;//活动和优惠券一一对应
+                        }));
+                })(_i);
+
+            }
+
+        });
+
+        this.step(function(){
+
+            var coupons = [];
+            var _coupons = couponData.list;
+            console.log(couponData.list);
+            /*
+             优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02
+             */
+
+            for(var _i=0;_i<_coupons.length;_i++){
 
                 /*
-                优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02
-                */
+                 *  "BEGIN_DATE"▼: 1398096000000,
+                 "END_DATE": 1401551999000,
+                 "COUPON_STATUS": "02",
+                 "COUPON_TYPE": "01",
+                 "COUPON_CLASS": "103",
+                 "COUPON_QTY": NumberInt(300),
+                 "CREAT_DATE": 1398307157000,
+                 "BIND_DATE": 1398307157000,
+                 "USED_DATE": null,
+                 "PROMOTION_CODE": "L2013112709",
+                 "COUPON_NO": "AVL1404240060",
+                 "MEMO": " 手机号 : 18651125967",
+                 "SYS_MEMBER_ID": NumberInt(9121535),
+                 "row_number": NumberInt(20) */
 
-                for(var _i=0;_i<_coupons.length;_i++){
-                    /*
-                     *  "BEGIN_DATE"▼: 1398096000000,
-                     "END_DATE": 1401551999000,
-                     "COUPON_STATUS": "02",
-                     "COUPON_TYPE": "01",
-                     "COUPON_CLASS": "103",
-                     "COUPON_QTY": NumberInt(300),
-                     "CREAT_DATE": 1398307157000,
-                     "BIND_DATE": 1398307157000,
-                     "USED_DATE": null,
-                     "PROMOTION_CODE": "L2013112709",
-                     "COUPON_NO": "AVL1404240060",
-                     "MEMO": " 手机号 : 18651125967",
-                     "SYS_MEMBER_ID": NumberInt(9121535),
-                     "row_number": NumberInt(20) */
-                    var _BEGIN_DATE = formatDate(_coupons[_i].BEGIN_DATE);
-                    var _END_DATE = formatDate(_coupons[_i].END_DATE);
-                    var _CREAT_DATE  = formatDate(_coupons[_i].CREAT_DATE);
-                    var _BIND_DATE  = formatDate(_coupons[_i].BIND_DATE);
-                    var _USED_DATE = _coupons[_i].USED_DATE;
-                    var _PROMOTION_CODE = _coupons[_i].PROMOTION_CODE;
-                    var _COUPON_NO = _coupons[_i].COUPON_NO;
-                    var _COUPON_QTY = _coupons[_i].COUPON_QTY;
-                    var _data = {
-                        "BEGIN_DATE":_BEGIN_DATE,
-                        "END_DATE": _END_DATE,
-                        "COUPON_STATUS": _coupons[_i].COUPON_STATUS,
-                        "COUPON_TYPE": _coupons[_i].COUPON_TYPE,
-                        "COUPON_CLASS": _coupons[_i].COUPON_CLASS,
-                        "COUPON_QTY": _coupons[_i].COUPON_QTY,
-                        "CREAT_DATE": _CREAT_DATE,
-                        "BIND_DATE": _BIND_DATE,
-                        "USED_DATE": _USED_DATE,
-                        "PROMOTION_CODE": _PROMOTION_CODE,
-                        "COUPON_NO": _COUPON_NO,
-                    };
-                    coupons.push(_data);
+                var _BEGIN_DATE = formatDate(_coupons[_i].BEGIN_DATE);
+                var _END_DATE = formatDate(_coupons[_i].END_DATE);
+                var _CREAT_DATE  = formatDate(_coupons[_i].CREAT_DATE);
+                var _BIND_DATE  = formatDate(_coupons[_i].BIND_DATE);
+                var _USED_DATE = _coupons[_i].USED_DATE;
+                var _PROMOTION_CODE = _coupons[_i].PROMOTION_CODE;
+                var _COUPON_NO = _coupons[_i].COUPON_NO;
+                var _COUPON_QTY = _coupons[_i].COUPON_QTY;
+                var _COUPON_TYPE;
+                var _COUPON_NAME = _coupons[_i].COUPON_NAME;
+
+
+                if(_coupons[_i].COUPON_TYPE =='01'){
+                    _COUPON_TYPE ="现金抵用券";
+                }else if(_coupons[_i].COUPON_TYPE =='02'){
+                    _COUPON_TYPE ="礼品券";
+                }else{
+                    _COUPON_TYPE ="未识别";
                 }
 
-                console.log(coupons);
-                for(var _i in coupons){
+                var _data = {
+                    "BEGIN_DATE":_BEGIN_DATE,
+                    "END_DATE": _END_DATE,
+                    "COUPON_STATUS": _coupons[_i].COUPON_STATUS,
+                    "COUPON_TYPE": _COUPON_TYPE,
+                    "COUPON_CLASS": _coupons[_i].COUPON_CLASS,
+                    "COUPON_QTY": _coupons[_i].COUPON_QTY,
+                    "CREAT_DATE": _CREAT_DATE,
+                    "BIND_DATE": _BIND_DATE,
+                    "USED_DATE": _USED_DATE,
+                    "PROMOTION_CODE": _PROMOTION_CODE,
+                    "COUPON_NO": _COUPON_NO,
+                    "PIC":_coupons[_i].PIC,
+                    "COUPON_NAME":_COUPON_NAME
+                };
 
-                    if(coupons[_i].COUPON_STATUS == '01'){
+                coupons.push(_data);
+            }
 
-                        ineffectiveCoupons.push(coupons[_i]);
+            //console.log(coupons);
+            for(var _i in coupons){
 
-                    }else if(coupons[_i].COUPON_STATUS == '02'){
+                if(coupons[_i].COUPON_STATUS == '01'){
 
-                        effectiveCoupons.push(coupons[_i]);
+                    ineffectiveCoupons.push(coupons[_i]);
 
-                    }else if(coupons[_i].COUPON_STATUS == '03'){
+                }else if(coupons[_i].COUPON_STATUS == '02'){
 
-                        usedCoupons.push(coupons[_i]);
+                    effectiveCoupons.push(coupons[_i]);
 
-                    }else if(coupons[_i].COUPON_STATUS == '04'){
+                }else if(coupons[_i].COUPON_STATUS == '03'){
 
-                        overdueCoupons.push(coupons[_i]);
+                    usedCoupons.push(coupons[_i]);
 
-                    }else{
-                        errorCoupons.push(coupons[_i]);
-                    }
+                }else if(coupons[_i].COUPON_STATUS == '04'){
+
+                    overdueCoupons.push(coupons[_i]);
+
+                }else{
+                    errorCoupons.push(coupons[_i]);
                 }
+            }
 
-                nut.model.ineffectiveCoupons = ineffectiveCoupons;
-                nut.model.ineffectiveCouponsLength = ineffectiveCoupons.length;
+            nut.model.ineffectiveCoupons = ineffectiveCoupons;
+            nut.model.ineffectiveCouponsLength = ineffectiveCoupons.length;
 
-                //可使用
-                nut.model.effectiveCoupons = effectiveCoupons;
-                nut.model.effectiveCouponsLength = effectiveCoupons.length;
+            //可使用
+            nut.model.effectiveCoupons = effectiveCoupons;
+            nut.model.effectiveCouponsLength = effectiveCoupons.length;
 
-                console.log("effectiveCoupons:");
-                console.log(effectiveCoupons);
+            //console.log("effectiveCoupons:");
+            //console.log(effectiveCoupons);
 
-                //已使用
-                nut.model.usedCoupons = usedCoupons;
-                nut.model.usedCouponsLength = usedCoupons.length;
+            //已使用
+            nut.model.usedCoupons = usedCoupons;
+            nut.model.usedCouponsLength = usedCoupons.length;
 
-                //已过期
-                nut.model.overdueCoupons = overdueCoupons;
-                nut.model.overdueCouponsLength = overdueCoupons.length;
+            //已过期
+            nut.model.overdueCoupons = overdueCoupons;
+            nut.model.overdueCouponsLength = overdueCoupons.length;
 
-                //记录用户动作
 
-            }));
 
         });
     },

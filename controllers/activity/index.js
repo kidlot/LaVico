@@ -138,6 +138,8 @@ module.exports = {
                         activity['QTY'] = o;
                         activity['pic'] = postData[o].pic;
                         activity['introduction'] = postData[o].introduction;
+                        activity['promotion_name'] = postData[o].promotion_name;
+                        activity['promotion_desc'] = postData[o].promotion_desc;
                     }
                     helper.db.coll("lavico/activity").update({aid: seed.aid}, {$set: activity}, {multi: false, upsert: true}, this.hold(function (err, doc) {
                         if (err) {

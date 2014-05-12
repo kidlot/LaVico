@@ -19,7 +19,7 @@ module.exports = {
         console.log("userList")
 
         $("#userList").flexigrid({
-            url: '/lavico/userList:jsonData?unwind='+$(".unwind").val()+'&_id='+$("._id").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
+            url: '/lavico/lookbook/userList:jsonData?unwind='+$(".unwind").val()+'&_id='+$("._id").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
@@ -91,7 +91,6 @@ module.exports = {
 
                 var sort = {_id:-1};
                 if(seed.sortname){
-
                     var order = seed.sortorder == "asc" ? 1 : -1;
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
@@ -221,15 +220,23 @@ module.exports = {
 
                 this.step(function(){
 
+
                     var arrregateParams = [
-                        {$match:conditions}
+
                     ]
 
                     if(seed.unwind){
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
 
+                    if(seed._id){
+                        conditions[seed.unwind+"._id"] = seed._id
+                    }
+
+                    arrregateParams.push({$match:conditions})
                     arrregateParams.push({$sort:sort})
+
+                    console.log(arrregateParams)
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
@@ -238,26 +245,10 @@ module.exports = {
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
-                                    docs[i].realname = docs[i].realname || '未注册用户';
-                                    docs[i].city = docs[i].province + docs[i].city;
-                                    docs[i].followCount = docs[i].followCount || '1';
-                                    docs[i].messageCount = docs[i].messageCount;
-                                    docs[i].isRegister = docs[i].registerTime ? "是" : "否"
-                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
-                                    docs[i].birthday = docs[i].birthday ? parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365)) : "未知"
-
-                                    var tags = [];
-                                    if( docs[i].tags){
-                                        for (var ii=0; ii<docs[i].tags.length; ii++)
-                                        {
-                                            tags.push(docs[i].tags[ii])
-                                        }
-                                    }
-                                    docs[i].tags = tags.join(",")
-                                    docs[i].followTimebak = docs[i].followTime;
-                                    docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
-                                    docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
-                                    docs[i].lastMessageTime = docs[i].lastMessageTime ? new Date(docs[i].lastMessageTime).toISOString().substr(0,10) : "未知"
+                                    docs[i].realname = docs[i].realname || '';
+                                    docs[i].city = docs[i].city||'';
+                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '')
+                                    docs[i].createDate = docs[i].lookbook.createDate ? new Date(docs[i].lookbook.createDate + 60*60*8*1000).toISOString().substr(0,10) : ""
                                     _rows.push(docs[i])
                                 }
                             }catch(e){
@@ -282,72 +273,40 @@ module.exports = {
                         var conf = {};
                         conf.cols = [
                             {
+                                caption: '收藏时间',
+                                type: 'string'
+                            }, {
                                 caption: '姓名',
-                                type: 'string'
-                            }, {
-                                caption: '城市',
-                                type: 'string'
-                            }, {
-                                caption: '关注次数',
-                                type: 'string'
-                            }, {
-                                caption: '消息总数',
                                 type: 'string'
                             }, {
                                 caption: '性别',
                                 type: 'string'
                             }, {
-                                caption: '生日',
+                                caption: '城市',
                                 type: 'string'
                             }, {
-                                caption: '关注时间',
+                                caption: '手机号',
                                 type: 'string'
                             }, {
-                                caption: '注册时间',
+                                caption: '名称',
                                 type: 'string'
                             }
                         ];
 
-                        if(seed.unwind && seed.data){
-                            var data = JSON.parse(seed.data)
-                            for(var ii in data){
-                                conf.cols.push({
-                                    caption: data[ii],
-                                    type: 'string'
-                                })
-                            }
-                        }
                         conf.rows = [];
 
                         for(var i=0 ;i < _data.length ;i++){
 
                             var rows;
                             rows = [
+                                _data[i].createDate,
                                 _data[i].realname,
-                                _data[i].city,
-                                _data[i].followCount,
-                                _data[i].messageCount,
                                 _data[i].gender,
-                                _data[i].birthday,
-                                _data[i].followTime,
-                                _data[i].registerTime
+                                _data[i].city,
+                                _data[i].mobile||"",
+                                _data[i].lookbook.name
                             ]
 
-                            if(seed.unwind && seed.data){
-                                var data = JSON.parse(seed.data)
-                                for(var ii in data){
-                                    if(ii == "createDate"){
-                                        var val = new Date(_data[i][seed.unwind][ii] + 60*60*8*1000).toISOString().substr(0,10)
-                                    }else{
-                                        var val = _data[i][seed.unwind][ii]
-                                    }
-
-                                    rows.push(
-                                        val
-                                    )
-
-                                }
-                            }
                             conf.rows.push(rows)
 
                         }

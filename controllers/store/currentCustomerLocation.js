@@ -1,7 +1,5 @@
 var middleware = require('../../lib/middleware.js');
 module.exports={
-    //layout:null,
-    //view:"lavico/templates/store/currentCustomerLocation2.html",
     layout:"lavico/layout",
     view:"lavico/templates/store/store_num2.html",
     process:function(seed,nut){
@@ -15,6 +13,7 @@ module.exports={
             //接口返回的doc都是字符串
             middleware.request('Shops',jsonData,
                 this.hold(function(err,doc){
+                    console.log("doc:"+doc);
                     if(err) throw err;
                     return JSON.parse(doc);//注意字符串和对象格式
                 })

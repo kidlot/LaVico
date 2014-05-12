@@ -11,6 +11,7 @@ module.exports={
     process:function(seed,nut){
         var data_request={};
         data_request.perPage=20;
+        nut.model.wechatId = seed.wechatId;
         var num=typeof(seed.pageNum) == "undefined"?1:seed.pageNum;
         data_request.pageNum=num;
         var arr=[];//返回数组
