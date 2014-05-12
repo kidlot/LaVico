@@ -83,6 +83,9 @@ module.exports={
 
         nut.model.provinceArr=provinceArr;
         nut.model.cityArr=cityArr;
+
+        nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
+        console.log(nut.model.wxid);
     },
     actions:{
         //显示具体门店
@@ -161,8 +164,7 @@ module.exports={
         },
         //搜索门店列表
         search:{
-            layout:null,
-            //view:"lavico/templates/store/showCity.html",
+            layout:"lavico/layout",
             view:"lavico/templates/store/store_num21.html",
             process:function(seed,nut){
                 var then=this;
