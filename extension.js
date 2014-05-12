@@ -113,9 +113,8 @@ exports.onload = function(application){
                 }
             )()
         }
-    });
-
-
+    })
+    wechatapi.makeQueue();
 
 
     /**

@@ -6,6 +6,6 @@ module.exports={
     view:"lavico/templates/answerQuestion/mantest_getGift.html",
     process:function(seed,nut){
                 nut.model.getActivities=seed.getActivities;
-
+        nut.model.wxid = seed.wxid
     }
 }
