@@ -116,7 +116,7 @@ module.exports = {
                         console.log("摇一摇领取优惠券");
                         middleware.request('Coupon/FetchCoupon',{
                             openid:seed.uid,
-                            PROMOTION_CODE:_aid, //海澜CRM 活动代码，由 Promotions 接口返回
+                            PROMOTION_CODE:shake.aid, //海澜CRM 活动代码，由 Promotions 接口返回
                             point:0,
                             otherPromId:seed.aid, //微信活动识别ID
                             memo:'摇一摇'
