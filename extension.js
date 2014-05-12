@@ -41,6 +41,7 @@ exports.onload = function(application){
     //门店查询
     wechatapi.registerReply(9,function(msg,req,res,next){
         if(msg.MsgType=="location"){
+            console.log("门店查询开始!!!");
             var lat=msg.Location_X;
             var lng=msg.Location_Y;
 
@@ -57,6 +58,7 @@ exports.onload = function(application){
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
+                            console.log("所有门店返回")
                             if(err) throw err;
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式

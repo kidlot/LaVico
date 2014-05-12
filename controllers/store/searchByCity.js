@@ -83,15 +83,17 @@ module.exports={
 
         nut.model.provinceArr=provinceArr;
         nut.model.cityArr=cityArr;
+
+        nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
+        console.log(nut.model.wxid);
     },
     actions:{
         //显示具体门店
         show:{
-            //layout: null,
-            //view:"lavico/templates/store/showStoreDetail.html",
             layout: "lavico/layout",
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
+                nut.model.wxid = seed.wxid;
                 //获取CODE-取消最后一个自添加1
                 var cityCode=seed.CODE.substring(0,seed.CODE.length-1);
 
@@ -161,13 +163,13 @@ module.exports={
         },
         //搜索门店列表
         search:{
-            layout:null,
-            //view:"lavico/templates/store/showCity.html",
+            layout:"lavico/layout",
             view:"lavico/templates/store/store_num21.html",
             process:function(seed,nut){
                 var then=this;
                 var cityName= seed.city.substring(0,seed.city.length-1);
                 nut.model.cityName=cityName;
+                nut.model.wxid = seed.wxid;
                 this.step(function(){
                     var jsonData={};
                     jsonData.perPage=1000;

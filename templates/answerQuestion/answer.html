@@ -153,6 +153,7 @@ function finish(){
             //获取单选值
             value=$("input[name='singleChooseInput']:checked").val();
             valueArr=value.split('+');
+            alert(value)
             //跳转“记录页”
             location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=0&optionId="+valueArr[0]+
                     "&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+
