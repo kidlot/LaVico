@@ -93,6 +93,7 @@ module.exports={
             layout: "lavico/layout",
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
+                nut.model.wxid = seed.wxid;
                 //获取CODE-取消最后一个自添加1
                 var cityCode=seed.CODE.substring(0,seed.CODE.length-1);
 
