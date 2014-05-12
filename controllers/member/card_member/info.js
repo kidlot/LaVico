@@ -226,6 +226,7 @@ module.exports = {
             var provinceOption = document.createElement('option');
             provinceOption.value = provinceOption.text = provinceArr[key];
             province.options.add(provinceOption);
+
         }
 
         //省份改变市'
