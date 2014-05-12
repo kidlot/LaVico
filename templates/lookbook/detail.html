@@ -24,7 +24,7 @@
                 <div class="text"><a href="javascript:;" class="elite_intro">{@doc.detail}</a></div>
                 <div class="arrow">
                     <div class="arrow-left" onclick="leftPage()"></div>
-                    <div class="arrow-right" onclick="rightPage()"></div>
+                    <a href="javascript:;" onclick="rightPage()"><div class="arrow-right" ></div></a>
                 </div>
                 <div class="number">
                     <p><span class="f25">{@pageNum}</span><span class="f22">/{@ sumPageNum}</span></p>
@@ -135,7 +135,8 @@
             alert("已经是第一页")
             return;
         }
-        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum -1)
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum -1);
+        return false;
     }
 
     function rightPage(){
@@ -146,7 +147,8 @@
             alert("已经是最后一页")
             return;
         }
-        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum +1)
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum +1);
+        return false;
     }
     function favorites(wxid,pid){
         $.ajax({
