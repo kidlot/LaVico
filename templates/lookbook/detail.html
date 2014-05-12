@@ -135,7 +135,8 @@
             alert("已经是第一页")
             return;
         }
-        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum -1)
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum -1);
+        return false;
     }
 
     function rightPage(){
@@ -146,7 +147,8 @@
             alert("已经是最后一页")
             return;
         }
-        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum +1)
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum +1);
+        return false;
     }
     function favorites(wxid,pid){
         $.ajax({
