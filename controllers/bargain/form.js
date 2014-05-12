@@ -147,7 +147,7 @@ module.exports = {
             process: function(seed,nut){
 
                 middleware.request("Coupon/FetchCoupon",
-                    {openid: seed.wxid, otherPromId: "111", PROMOTION_CODE: seed.promotionsCode, qty: seed.price, point: 0},
+                    {openid: seed.wxid, otherPromId: seed.promotionsCode, PROMOTION_CODE: seed.promotionsCode, qty: seed.price, point: 0, memo:"侃价"},
                     this.hold(function (err, doc) {
                         console.log(doc)
                     }));
