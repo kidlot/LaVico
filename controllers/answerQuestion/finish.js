@@ -9,6 +9,7 @@ module.exports={
         var opptionId=seed.optionId;
         var wechatid=seed.wechatid;
         var scoreAll=this.req.session.scoreAll;
+        nut.model.wechatid = wechatid;
         var stopLab=seed.stopLab;
         //非停止标签过来
         if(stopLab!="true"){
