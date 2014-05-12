@@ -11,6 +11,7 @@ module.exports={
         var scoreAll=this.req.session.scoreAll;
         nut.model.wechatid = wechatid;
         var stopLab=seed.stopLab;
+        nut.model.wxid = wechatid;
         //非停止标签过来
         if(stopLab!="true"){
             //插入总积分
@@ -91,7 +92,7 @@ module.exports={
                             var jsonData = {
                                 openid: wechatid,
                                 otherPromId: _id,
-                                PROMOTION_CODE: 'CQL201312230001',
+                                PROMOTION_CODE: 'L2013112709',
                                 memo: memoString,
                                 point: getScore
                             }
