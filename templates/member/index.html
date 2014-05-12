@@ -3,22 +3,31 @@
     <div class="member">
         <div class="member-content">
             <div class="radius">
+                <ul class="list">
+                    <li><a id="announcement" href="{@announcement}">会员公告</a></li>
+                    <li><a id="coupon" href="{@coupon}">专属礼券<span id="count" class="suba">(正加载)</span></a></li>
+                    <li><a id="points" href="{@reedem}">积分/兑换</a></li>
+                    <li><a id="buy" href="{@buy}">消费记录</a></li>
+                    <li class="border-none"><a id="fav" href="{@fav}">收藏清单</a></li>
+                </ul>
+            </div>
+            <div class="radius radius1">
                 <div class="title">会员特权</div>
                 <ul class="list">
-                    <li><a href="member_num15.html">微会员尊享<span class="suba">(享受积分回馈)</span></a></li>
-                    <li><a href="member_num5.html">VIP尊享<span class="suba">(享受九折优惠和积分)</span></a></li>
-                    <li class="border-none"><a href="member_num5.html">白金VIP卡尊享<span class="suba">(享受八五折优惠和积分)</span></a></li>
+                    <li id="weiCard"><a href="{@weiCard}">微会员尊享<span class="suba">(享受积分回馈)</span></a></li>
+                    <li id="vipCard"><a href="{@vipCard}">VIP尊享<span class="suba">(享受九折优惠和积分)</span></a></li>
+                    <li id="goldCard" class="border-none"><a href="{@goldCard}">白金VIP卡尊享<span class="suba">(享受八五折优惠和积分)</span></a></li>
                 </ul>
             </div>
             <div class="radius radius1">
                 <ul class="list">
-                    <li><a href="member_num12.html">个人资料<span class="suba">(完善资料可获50积分)</span></a></li>
-                    <li class="border-none"><a href="member_num22.html">解绑会员卡</a></li>
+                    <li><a id="info" href="{@info}">个人资料<span class="suba">(完善资料可获50积分)</span></a></li>
+                    <li class="border-none"><a id="unbind" href="{@unbind}">解绑会员卡</a></li>
                 </ul>
             </div>
             <div class="radius radius1">
                 <ul class="list">
-                    <li class="border-none"><a href="store_num2.html">门店查询</a></li>
+                    <li class="border-none"><a id="store" href="{@store}">门店查询</a></li>
                 </ul>
             </div>
             <div class="blank"></div>
@@ -36,3 +45,4 @@
     </div>
 </div>
 <input type="hidden" id="wxid" name="wxid" value="{@wxid}" />
+<input type="hidden" id="bindStatus" name="bindStatus" value="{@bindStatus}" />

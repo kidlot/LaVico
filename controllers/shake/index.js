@@ -112,11 +112,11 @@ module.exports = {
                 var list;
                 this.step(function (doc) {
                     var count = 0;
-                    console.log(doc);
+                    //console.log(doc);
                     for (var i = 0; i < doc.length; i++) {
                         (function (i) {
                             helper.db.coll("lavico/activity").findOne({aid: doc[i].PROMOTION_CODE}, then.hold(function (err, detail) {
-                                console.log(doc[i]);
+                                //console.log(doc[i]);
                                 count++;
 
                                 if (detail) {
