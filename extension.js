@@ -19,6 +19,16 @@ var Steps = require("opencomb/node_modules/ocsteps");
 
 exports.onload = function(application){
 
+
+
+    wechatapi.registerReply(9,function(msg,req,res,next){
+
+        console.log("111111111")
+    })
+    wechatapi.makeQueue() ;
+
+
+
     // 我要侃价
     bargain.load()
     //答题抢积分
@@ -32,7 +42,6 @@ exports.onload = function(application){
 	shake.load();
     // 精英搭配
     lookbook.load();
-
 
     // 重写welab功能
     rewriteWelab.load();
