@@ -1,3 +1,9 @@
+/**
+ * 摇一摇统计页面
+ * URL：/lavico/shake/statistics?_id=536c72da6c637d35587c87b9
+ * */
+
+
     module.exports = {
 
     layout: "welab/Layout"
