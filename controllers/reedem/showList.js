@@ -231,6 +231,8 @@ module.exports={
 
                             nut.disable();
                             write_info_text(then,'数据错误2');
+
+
                         }
                     }))
                 })
@@ -248,6 +250,7 @@ module.exports={
                 })
 
                 this.step(function(record){
+
                     nut.model.record=record;
                     nut.model.wechatId=wechatId;
                 })

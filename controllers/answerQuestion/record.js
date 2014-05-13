@@ -155,7 +155,7 @@ module.exports={
                         //先记录optionId和isFinish,为了让其能history.back后继续
                         then.req.session.optionId=(parseInt(optionId)+1);
                         then.req.session.isFinish=false;
-                         console.log("wechatid+"+wechatid);
+                        console.log("wechatid+"+wechatid);
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
                             wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
                         this.res.end();
@@ -168,21 +168,21 @@ module.exports={
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                             "&_id="+_id+"&optionId="+optionId});
                         this.res.end(); if(then.req.session.isFinish){
-                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
-                        "&_id="+_id+"&optionId="+then.req.session.optionId});
-                    this.res.end();
-                }else{
-                    if(finish!="true"){
-                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
-                            wechatid+"&_id="+_id+
-                            "&optionId="+then.req.session.optionId});
-                        this.res.end();
-                    }else{
-                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
-                            "&_id="+_id+"&optionId="+then.req.session.optionId});
-                        this.res.end();
-                    }
-                }
+                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                                "&_id="+_id+"&optionId="+then.req.session.optionId});
+                            this.res.end();
+                        }else{
+                            if(finish!="true"){
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+                                    wechatid+"&_id="+_id+
+                                    "&optionId="+then.req.session.optionId});
+                                this.res.end();
+                            }else{
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                                    "&_id="+_id+"&optionId="+then.req.session.optionId});
+                                this.res.end();
+                            }
+                        }
                     }
                 }
             }else{

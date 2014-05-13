@@ -8,11 +8,11 @@ module.exports={
 
         this.step(function(){
             middleware.request('Coupon/Promotions',{perPage:perPage,pageNum:pageNum},this.hold(function(err,doc){
-                console.log("doc:"+doc);
-                doc=doc.replace(/[\n\r\t]/,'');
-                var doc_json = eval('(' + doc + ')');
-                nut.model.doc_json=doc_json;
-            })
+                    console.log("doc:"+doc);
+                    doc=doc.replace(/[\n\r\t]/,'');
+                    var doc_json = eval('(' + doc + ')');
+                    nut.model.doc_json=doc_json;
+                })
             )
         })
 
@@ -45,23 +45,23 @@ module.exports={
             autoclose: true,
             minView: 2
         }).on('changeDate', function(ev)
-            {
-                $.controller("/welab/summary/addQuestion",{
-                    start: $("#datetimepicker_s").val() ,
-                    end: $("#datetimepicker_t").val()
-                },'.childview:last()>.ocview') ;
-            });
+        {
+            $.controller("/welab/summary/addQuestion",{
+                start: $("#datetimepicker_s").val() ,
+                end: $("#datetimepicker_t").val()
+            },'.childview:last()>.ocview') ;
+        });
 
         $('#datetimepicker_t').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
             minView: 2,
         }).on('changeDate', function(ev)
-            {
-                $.controller("/welab/summary/addQuestion",{
-                    start: $("#datetimepicker_s").val() ,
-                    end: $("#datetimepicker_t").val()
-                },'.childview:last()>.ocview') ;
-            });
+        {
+            $.controller("/welab/summary/addQuestion",{
+                start: $("#datetimepicker_s").val() ,
+                end: $("#datetimepicker_t").val()
+            },'.childview:last()>.ocview') ;
+        });
     }
 }
