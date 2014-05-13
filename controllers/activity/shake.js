@@ -11,6 +11,7 @@ module.exports = {
 
         var wxid = seed.uid ? seed.uid : 'undefined';//uid是用户的wechatid
         var aid = seed.aid ? seed.aid : 'undefined';//摇一摇活动ID
+        var member_id;
         this.step(function(){
             if(wxid == 'undefined' || wxid == '{wxid}'){
                 nut.disable();//不显示模版
@@ -34,10 +35,49 @@ module.exports = {
         });
 
         this.step(function(){
-            if(aid == 'undefined'){
+
+            if(wxid == 'undefined'){
+                //缺少微信ID参数，强制中断
                 nut.disable();//不显示模版
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                this.res.write('{"error":"aid_is_empty"}');
+                this.res.write('{"error":"wxid_is_empty"}');
+                this.res.end();
+                this.terminate();
+
+            }else{
+
+                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                    if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID ){
+                        member_id =  doc.HaiLanMemberInfo.memberID;
+                    }else{
+                        member_id = 'undefined';
+                    }
+                }));
+
+            }
+
+        });
+
+        this.step(function(){
+
+            if(member_id == "undefined"){
+                //缺少微信ID参数，强制中断
+
+                //直接跳转
+                nut.disable();//不显示模版
+                this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
+                this.res.end();
+                this.terminate();
+            }
+        }
+
+        this.step(function(){
+            if(aid == 'undefined'){
+                nut.disable();//不显示模版
+//                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+//                this.res.write('{"error":"aid_is_empty"}');
+                this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
+                this.res.end();
                 this.res.end();
                 this.terminate();
             }
