@@ -13,29 +13,29 @@
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th>活动名称</th>
-                <th>活动CODE</th>
-                <th>面值</th>
-                <th>类型</th>
-                <th>已发/总数</th>
+                <th width="20%">活动名称</th>
+                <th width="20%">活动CODE</th>
+                <th width="20%">面值</th>
+                <th width="20%">类型</th>
+                <th width="20%">已发/总数</th>
             </tr>
             </thead>
             <tbody>
             <foreach for="@list" var="doc">
                 <tr>
-                    <td><a href="/lavico/activity/index:modify_html?aid={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_NAME}</a></td>
-                    <td>{@ doc.PROMOTION_CODE}</td>
-                    <td>
+                    <td style="text-align: center;"><a href="/lavico/activity/index:modify_html?aid={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_NAME}</a></td>
+                    <td style="text-align: center;">{@ doc.PROMOTION_CODE}</td>
+                    <td style="text-align: center;">
                         {@ doc.QTY}
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         <if condition="{@doc.TYPE == '01'}">现金抵用券
-                            <elseif condition="{@doc.TYPE == '02'}"/>礼品券</if>,
+                            <elseif condition="{@doc.TYPE == '02'}"/>礼品券</if>&nbsp;
                         <if condition="{@doc.CLS == '101'}">现金抵用券
                             <elseif condition="{@doc.CLS == '102'}"/>礼品券
                             <elseif condition="{@doc.CLS == '103'}"/>生日券</if>
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         {@doc.USED}/{@doc.TOTAL}
                     </td>
                 </tr>
