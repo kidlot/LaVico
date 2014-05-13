@@ -10,12 +10,12 @@ module.exports={
         var score=seed.score;//所获分值
         var chooseNext=seed.chooseNext;//下一题/标签
         var wechatid=seed.wechatid;//微信ID
-        console.log("wechatId:"+wechatid);
         var finish=seed.finish;//是否为“完成”按钮 true
         var stopLabel=seed.stopLabel;//停止标签
         var customerLabel=seed.customerLabel;//自定义标签
 
         var docvar=null;//是否已经有存储,即，是否已经做过此题
+
         this.step(function(){
             //判断是否已经记录
             helper.db.coll("lavico/custReceive").findOne({"themeId":helper.db.id(_id),
@@ -32,15 +32,12 @@ module.exports={
                         nut.view.disable();
                         nut.write("<script>alert('无此题，请联系管理员')</script>");
                     }
+                    return doc.options;
                 }
-
             }));
         })
 
-
-
-
-        this.step(function(){
+        this.step(function(docOptions){
             if(docvar==null){
                 if(type==0){//单选
                     //积分在数字情况下记录
@@ -191,11 +188,51 @@ module.exports={
                         "&_id="+_id+"&optionId="+then.req.session.optionId});
                     this.res.end();
                 }else{
+                    var themeQuestionoptionId;
+                    var themeQuestionstopLabel
+                    var themeQuestionchooseNext
+                    console.log(docOptions)
+                    for(var i=0;i<docOptions.length;i++){
+                        if(optionId==docOptions[i].optionId){
+                            themeQuestionoptionId=docOptions[i].optionId
+                            for(var j=0;j<docOptions[i].choose.length;j++){
+                                if(chooseId==docOptions[i].choose[j].chooseID){
+                                    themeQuestionstopLabel = docOptions[i].choose[j].stopLabel;
+                                    themeQuestionchooseNext = docOptions[i].choose[j].chooseNext
+                                }
+                            }
+                        }
+                    }
+
                     if(finish!="true"){
-                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
-                            wechatid+"&_id="+_id+
-                            "&optionId="+then.req.session.optionId});
-                        this.res.end();
+                        var next = (parseInt(optionId)+1)
+                        console.log(themeQuestionchooseNext)
+                        console.log(parseInt(themeQuestionchooseNext));
+                        console.log("option:"+optionId)
+                        if(themeQuestionstopLabel==''||typeof(themeQuestionstopLabel)=='undefined'){
+                            if(themeQuestionchooseNext==''||typeof(themeQuestionstopLabel)=='undefined'){
+                                if(next >docOptions.length){
+                                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                                        "&_id="+_id+"&optionId="+docOptions.length});
+                                    this.res.end();
+                                }else{
+                                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+                                        wechatid+"&_id="+_id+
+                                        "&optionId="+next});
+                                    this.res.end();
+                                }
+                                
+                            }else{
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+                                    wechatid+"&_id="+_id+
+                                    "&optionId="+parseInt(themeQuestionchooseNext)});
+                                this.res.end();
+                            }
+                        }else{
+                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                                "&_id="+_id+"&optionId="+optionId});
+                            this.res.end();
+                        }
                     }else{
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                             "&_id="+_id+"&optionId="+then.req.session.optionId});
