@@ -56,7 +56,7 @@ module.exports = {
     }
     , children: {
 
-        userList: "lavico/userList.js"
+        userList: "lavico/lookbook/userList.js"
 
     }
     , viewIn : function(){
@@ -78,7 +78,7 @@ module.exports = {
             hiddenTagListName: 'tagsVal'
         });
 
-        $("#exportssd").attr("href","/lavico/userList:exports?unwind=lookbook&data=%7B%22name%22%3A%22%E5%90%8D%E7%A7%B0%22%2C%22createDate%22%3A%22%E6%94%B6%E8%97%8F%E6%97%B6%E9%97%B4%22%7D")
+        $("#exportssd").attr("href","/lavico/lookbook/userList:exports?_id="+$("#_id").val()+"&unwind=lookbook&data=%7B%22name%22%3A%22%E5%90%8D%E7%A7%B0%22%2C%22createDate%22%3A%22%E6%94%B6%E8%97%8F%E6%97%B6%E9%97%B4%22%7D")
     }
 
 

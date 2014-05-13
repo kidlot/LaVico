@@ -30,17 +30,17 @@ module.exports={
                         "optionId":resultJson.optionId,
                         "chooseId":parseInt(i)
                     },then.hold(function(err,doc){
-                            if(err) throw err
-                            allPartakeNum+=doc
-                            resultJsonChoose.selectCount=doc
-                        }))
+                        if(err) throw err
+                        allPartakeNum+=doc
+                        resultJsonChoose.selectCount=doc
+                    }))
                 })(i,resultJson.choose[i])
             }
         })
 
         then.step(function(){
-                nut.model.resultJson=resultJson
-                nut.model.allPartakeNum=allPartakeNum
+            nut.model.resultJson=resultJson
+            nut.model.allPartakeNum=allPartakeNum
         })
     },
     children:{
@@ -50,6 +50,7 @@ module.exports={
 
                 var then = this
                 var visitedPeople
+                var themeQuestionList = []
                 var visitePeopleList=[]
                 this.step(function(){
                     helper.db.coll("lavico/custReceive").aggregate(
@@ -66,6 +67,18 @@ module.exports={
                             }
                         })
                     )
+                })
+
+                this.step(function(){
+                    helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
+                        if(err){
+                            throw err
+                        }
+                        var themeQuestion = {}
+                        themeQuestion.themeType = doc.themeType
+                        themeQuestionList.push(themeQuestion)
+                        nut.model.theme = themeQuestionList
+                    }))
                 })
 
                 this.step(function(){
@@ -101,7 +114,7 @@ module.exports={
                     }
                     nut.model.visitedPeopleList=page.docs
                     nut.model._id=seed._id
-                    console.log(seed.optionId)
+                    //console.log(seed.optionId)
                     nut.model.optionId=seed.optionId
                     //nut.model.visitedPeopleList=visitePeopleList
                 })

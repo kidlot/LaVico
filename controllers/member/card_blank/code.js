@@ -17,10 +17,10 @@ module.exports = {
                 this.req.session.id_code = id_code;
                 this.req.session.set_id_code_time = new Date().getTime();
 
-                var userTel = '13964081593';
+                //var userTel = '13964081593';
                 //var userTel = '13816900290';
                 var userTelArray = ['13964081593'];
-                //var userTel = seed.userTel;
+                var userTel = seed.userTel;
                 console.log(id_code);
                 then.res.writeHead(200, { 'Content-Type': 'text/plain' });
                 then.res.write('{"result":"ok","id_code":"'+id_code+'"}');
@@ -34,14 +34,14 @@ module.exports = {
 
                 if(userTel){
 
-//                    middleware.request( "System/SendSMS",{
-//                            'mobile':userTel,
-//                            'content':_content+"【郎维高LaVico】"
-//                        },this.hold(
-//                        function(err,doc){
-//                            then.res.end();
-//                        })
-//                    );
+                    middleware.request( "System/SendSMS",{
+                            'mobile':userTel,
+                            'content':_content+"【郎维高LaVico】"
+                        },this.hold(
+                        function(err,doc){
+                            then.res.end();
+                        })
+                    );
 
                 }else{
 

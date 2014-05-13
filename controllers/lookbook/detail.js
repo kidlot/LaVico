@@ -1,6 +1,6 @@
 module.exports = {
 
-	layout: null
+	layout: "lavico/layout"
 	, view: "lavico/templates/lookbook/detail.html"
 
     , process: function(seed,nut)
@@ -15,10 +15,15 @@ module.exports = {
 
             nut.model.wxid = seed.wxid
             nut.model._id = seed._id
+            nut.model.pageNum = parseInt(seed.pageNum) || 1
 
-            helper.db.coll("lavico/lookbook").findOne({startDate:{$lte:new Date().getTime()},stopDate:{$gte:new Date().getTime()},_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
+            helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
-                nut.model.doc = doc
+                nut.model.allPage = doc
+                nut.model.doc = doc.page[nut.model.pageNum-1]
+                nut.model.lookbookType = doc.type
+                nut.model.sumPageNum = doc.page.length
+                console.log(nut.model.doc)
             }))
         }else{
             nut.disable();

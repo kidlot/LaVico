@@ -1,15 +1,17 @@
 /*
-  author:json
-  description:(显示会员消费记录详细信息表)
+ author:json
+ description:(显示会员消费记录详细信息表)
  */
 //引入中间件
 var middleware = require('lavico/lib/middleware.js');
 module.exports={
+    //view:"lavico/templates/consumeDetail/details.html",
     layout:"lavico/layout",
     view:"lavico/templates/consumeDetail/member_num28.html",
     process:function(seed,nut){
         var data_request={};
         data_request.perPage=20;
+        nut.model.wechatId = seed.wechatId;
         var num=typeof(seed.pageNum) == "undefined"?1:seed.pageNum;
         data_request.pageNum=num;
         var arr=[];//返回数组

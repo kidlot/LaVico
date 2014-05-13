@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="store-title">
-    <p><span class="title1"><a href="member_num4.html">会员</a></span><span class="title2">门店查询</span></p>
+    <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">门店查询</span></p>
   </div>
   <div class="inquiry">
   <div class="city fl">上海</div>
@@ -27,8 +27,7 @@
 <script type="text/javascript">
 window.onload=function(){
 	$(".chengeCity").click(function(){
-		window.location.href = "/lavico/store/searchByCity";
+		window.location.href = "/lavico/store/searchByCity?wxid={@wxid}";
 	});	
 }
 </script>
-

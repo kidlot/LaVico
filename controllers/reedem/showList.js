@@ -1,5 +1,6 @@
 var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
+    //view:"lavico/templates/reedem/showList.html",
     layout: "lavico/layout",
     view:"lavico/templates/reedem/member_num16.html",
     process:function(seed,nut){
@@ -11,8 +12,8 @@ module.exports={
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    //return result.HaiLanMemberInfo.memberID;//获取会员ID
-                    return 9123084;
+                    return result.HaiLanMemberInfo.memberID;//获取会员ID
+                    //return 9123084;
                 }else{
                     nut.disable();
                     write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
@@ -25,15 +26,15 @@ module.exports={
             if(memberId){
 
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result){
-                            var resultJson=JSON.parse(result);
-                            return [resultJson.point,memberId]//json数组双传值，数组格式
-                        }else{
-                            nut.disable();
-                            write_info(then,"没有查到您的积分，请联系我们");
-                        }
-                    })
+                    if(err) throw err;
+                    if(result){
+                        var resultJson=JSON.parse(result);
+                        return [resultJson.point,memberId]//json数组双传值，数组格式
+                    }else{
+                        nut.disable();
+                        write_info(then,"没有查到您的积分，请联系我们");
+                    }
+                })
                 )
             }
         });
@@ -107,6 +108,7 @@ module.exports={
     actions:{
         //兑换
         exchange:{
+            //view:"lavico/templates/reedem/exchangeOk.html",
             layout: "lavico/layout",
             view:"lavico/templates/reedem/member_num17.html",
             process:function(seed,nut){

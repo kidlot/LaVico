@@ -8,49 +8,49 @@ module.exports={
         helper.db.coll("lavico/themeQuestion").find({}).toArray(this.hold(function(err,doc){
             if(err) throw err;
             then.step(function(){
-             for(var e in doc){
-                 var jsonOne={};
-                 jsonOne.beginTime=doc[e].beginTime;
-                 jsonOne.endTime=doc[e].endTime;
-                 jsonOne.isOpen=doc[e].isOpen;
-                 jsonOne.theme=doc[e].theme;
-                 jsonOne.themeType=doc[e].themeType;
-                 jsonOne.themeId=doc[e]._id;
+                for(var e in doc){
+                    var jsonOne={};
+                    jsonOne.beginTime=doc[e].beginTime;
+                    jsonOne.endTime=doc[e].endTime;
+                    jsonOne.isOpen=doc[e].isOpen;
+                    jsonOne.theme=doc[e].theme;
+                    jsonOne.themeType=doc[e].themeType;
+                    jsonOne.themeId=doc[e]._id;
 
-                  //参与人数
-                 (function(i,jsonOne){
-                     helper.db.coll("lavico/custReceive").aggregate(
-                         [
-                             {$group:{_id:"$themeId",count:{$addToSet:"$wechatid"}}},
-                             {$match:{_id:helper.db.id(i)}}
-                         ],then.hold(function(err,doc){
-                             if(err) throw err;
-                             try{
-                                 jsonOne.totalPop=doc[0].count.length;
-                             }catch(e){
-                                 jsonOne.totalPop=0;
-                             }
-                         }));
+                    //参与人数
+                    (function(i,jsonOne){
+                        helper.db.coll("lavico/custReceive").aggregate(
+                            [
+                                {$group:{_id:"$themeId",count:{$addToSet:"$wechatid"}}},
+                                {$match:{_id:helper.db.id(i)}}
+                            ],then.hold(function(err,doc){
+                                if(err) throw err;
+                                try{
+                                    jsonOne.totalPop=doc[0].count.length;
+                                }catch(e){
+                                    jsonOne.totalPop=0;
+                                }
+                            }));
 
-                 })(doc[e]._id,jsonOne);
+                    })(doc[e]._id,jsonOne);
 
-                 //完成人数
-                 (function(i,jsonOne){
-                     helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(doc[e]._id),"isFinish":true,"optionId":0,"getLabel":"","getGift":"","compScore":""})
-                         .count(
-                             then.hold(function(err,doc){
-                                 if(err)throw err;
-                                 if(doc==0){
-                                     jsonOne.finishCount=0;
-                                 }
-                                 else{
-                                     jsonOne.finishCount=doc;
-                                 }
-                             })
-                         )
-                     themeArr.push(jsonOne);
-                 })(doc[e]._id,jsonOne);
-             }
+                    //完成人数
+                    (function(i,jsonOne){
+                        helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(doc[e]._id),"isFinish":true,"optionId":0,"getLabel":"","getGift":"","compScore":""})
+                            .count(
+                                then.hold(function(err,doc){
+                                    if(err)throw err;
+                                    if(doc==0){
+                                        jsonOne.finishCount=0;
+                                    }
+                                    else{
+                                        jsonOne.finishCount=doc;
+                                    }
+                                })
+                            )
+                        themeArr.push(jsonOne);
+                    })(doc[e]._id,jsonOne);
+                }
             });
         }))
 
@@ -78,10 +78,10 @@ module.exports={
                     function(err,doc){
                         if(err) throw err
                         if(doc){
-                            console.log(doc.isOpen);
                             var iOpen=doc.isOpen==0?'1':'0';
                             helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(seed._id)},{$set:{isOpen:iOpen}},
                                 this.hold(function(err,doc){
+                                    if(err) throw  err;
                                 }));
                         }
                     })

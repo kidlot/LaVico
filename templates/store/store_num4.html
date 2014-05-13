@@ -1,7 +1,6 @@
-
 <div class="wrapper">
   <div class="store-title">
-    <p><span class="title1"><a href="member_num4.html">会员</a></span><span class="title2">门店切换</span></p>
+    <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">门店切换</span></p>
   </div>
   <div class="inquiry">
   <div class="city fm">选择城市</div> 
@@ -15,7 +14,7 @@
                   <if condition="{@city[0]==province}">
                       <foreach for="{@city}" var="cityOne" key="key">
                           <if condition="@key!=0">
-                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}" id="ci" style="font-size: 25px;padding: 25 0 0 70;display: block; color: #cdb788">{@cityOne}</a></li>
+                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}&wxid={@wxid}" id="ci" style="font-size: 25px;padding: 25 0 0 70;display: block; color: #cdb788">{@cityOne}</a></li>
                           </if>
                       </foreach>
                   </if>
@@ -47,13 +46,17 @@ window.onload=function(){
     })
 }
 
-$(document).ready(function(e) {	
-	$(".city_title").click(function(){
-		$(".fade2").css("display","block");
-	});
-	
-	$(".goon_btn").click(function(){
-		$(".fade2").css("display","none");
-	});
-});
+//
+//    })
+//}
+//
+//$(document).ready(function(e) {
+//	$(".city_title").click(function(){
+//		$(".fade2").css("display","block");
+//	});
+//
+//	$(".goon_btn").click(function(){
+//		$(".fade2").css("display","none");
+//	});
+//});
 </script>

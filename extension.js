@@ -40,7 +40,10 @@ exports.onload = function(application){
 	//member_apply.load();
     //门店查询
     wechatapi.registerReply(9,function(msg,req,res,next){
+    	
+    	console.log("123门店查询开始!!!");
         if(msg.MsgType=="location"){
+            console.log("门店查询开始!!!");
             var lat=msg.Location_X;
             var lng=msg.Location_Y;
 
@@ -57,6 +60,7 @@ exports.onload = function(application){
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
+                            console.log("所有门店返回")
                             if(err) throw err;
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
@@ -97,10 +101,10 @@ exports.onload = function(application){
                         reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
                         reply.description=storeList[i].ADDR;
                         if(storeList[i].PICURL==null)
-                            reply.picurl="http://json.imagchina.com/lavico/public/images/lavico_default.png";
+                            reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
-                        reply.url="http://json.imagchina.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
+                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
                         replyArr.push(reply);
                     }
                 },
@@ -109,9 +113,8 @@ exports.onload = function(application){
                 }
             )()
         }
-    });
-
-
+    })
+    wechatapi.makeQueue();
 
 
     /**
@@ -144,7 +147,7 @@ exports.onload = function(application){
     /*
     * 更新个人信息资料
     * */
-    var _time = 1000*10*10;
+    var _time = 1000*60;
     var timer = setInterval(function(){
              http = require('http');
              options = {
@@ -164,7 +167,7 @@ exports.onload = function(application){
              //req.write(post_data);
              console.log(req.end());
          },_time);
-    clearInterval(timer);
+    //clearInterval(timer);
 
 }
 

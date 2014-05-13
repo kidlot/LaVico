@@ -1,9 +1,5 @@
 @charset "utf-8";
-<<<<<<< HEAD
-body{ background:#dcdcdc;;}
-=======
 body{ background:#dcdcdc;}
->>>>>>> e13741edd49fa1547a0e9256ee5b79a45080d60b
 /*活动规则*/
 .wrapper{width:640px; margin:0 auto; position:relative;}
 .coupon-banner{width:100%; height:323px; padding-top:20px; padding-bottom:20px;}
@@ -409,7 +405,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input_select_div{ width:380px; height:65px;}
 .input_select{background:url('../images/input_select_bg.jpg') no-repeat;padding:4px 34px 4px 4px;width:380px;height:65px;border:0;padding:4px;font-size:25px;line-height:30px;position:relative;}
 #model-name{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
-#select_province,#select_city,#kuanshi{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
+#select_province,#select_city,#select_profession,#select_favoriteStyle{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-45px;}
 .input_select_sex{/*background:url('../images/input_select_sex_bg.png') no-repeat;*/padding:4px 34px 4px 4px;width:110px;height:65px;border:0;padding:4px;font-size:25px;line-height:30px;position:relative; border:1px #999 solid;}
 #select_sex{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;left:-123px;}
 #select_month,#select_day{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}

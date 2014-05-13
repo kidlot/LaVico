@@ -38,7 +38,7 @@
     <foreach for="@page.docs" var="doc">
     <tr>
         <td><input type="hidden" name="anno_id" value="{@doc._id}"><a href="/lavico/announcement/updateAnnouncement?id={@doc._id}" style="text-decoration: underline">{@doc.title}</a></td>
-        <td>{@doc.createTime}</td>
+        <td>{@(new Date(doc.createTime)).getFullYear()}-{@(new Date(doc.createTime)).getMonth()}-{@(new Date(doc.createTime)).getDate()}</td>
         <td>
             <div class="switch has-switch way">
                 <if condition="{@doc.isOpen==1}">

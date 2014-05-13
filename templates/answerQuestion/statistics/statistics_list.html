@@ -13,8 +13,8 @@
     .borderBtm{border-bottom:1px solid darkgray;}
 </style>
 <ul class="breadcrumb clearfix">
-    <li class="b01"><a href="#" class="stay">应用管理</a> <em></em></li>
-    <li class="b02"><a href="#" class="stay">问答测试</a> <em></em></li>
+    <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/themeList" class="stay">问答测试</a> <em></em></li>
     <li class="active"><span>统计</span></li>
 </ul>
 
@@ -28,7 +28,7 @@
         <div name="getMember" class="maginTop20">
             <table class="tableSty">
                 <tr class="staCount borderBtm">
-                    <td class="width250">名称</td>
+                    <td class="width150">名称</td>
                     <td class="width50">状态</td>
                     <td class="width50">开始时间</td>
                     <td class="width50">结束时间</td>
@@ -38,12 +38,10 @@
                     <td class="width150">操作</td>
                 </tr>
             <foreach for="@docs" var="doc" key="key">
-
                 <tr class="borderBtm">
-
-                    <td class="width250"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
+                    <td class="width150"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
                     <td class="width50" id="openClose">
-                        <if condition="{@doc.isOpen}">
+                        <if condition="{@doc.isOpen==0}">
                             进行中
                         <else/>
                             已关闭
@@ -74,7 +72,7 @@
 
                             <div class="switch has-switch way">
                                 <if condition="{@doc.isOpen==1}">
-                                    <div class="switch-animate switch-off" data="{@ doc._id}" onclick="audioClick(this)">
+                                    <div class="switch-animate switch-off" data="{@doc._id}" onclick="audioClick(this)">
                                         <input type="checkbox" data-toggle="switch">
                                         <span class="switch-left">关</span>
                                         <label>&nbsp;</label>

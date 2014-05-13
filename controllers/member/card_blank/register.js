@@ -34,7 +34,6 @@ module.exports = {
 
 
         /*前端设计JS*/
-        $(function() {
 
             $("#year").click(function(){
                 $(this).parent().find("input").val($(this).val()+'年');
@@ -51,10 +50,10 @@ module.exports = {
                 var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
                 $(this).parent().find("input").val(_v);
             });
-        });
+
 
         /*后端开发JS*/
-        $(function () {
+
 
             var wxid = $('#uid').val();
             /*申请会员卡*/
@@ -103,7 +102,6 @@ module.exports = {
             $("#year,#month").bind("change", function(){
                 TUpdateCal($year.val(),$month.val());
             });
-        });
 
         function TGetDaysInMonth(iMonth, iYear) {
             var dPrevDate = new Date(iYear, iMonth, 0);
@@ -282,19 +280,35 @@ module.exports = {
                     id_code : $("#id_code").val()
                 },
                 function(data){
+                    console.log(data);
                     data = eval("("+data+")");
-                    if(data.success){
+                    var _error = data.error;
+                    if(data.success == true){
                         if(data.error){
-                            alert(data.error);
+                            //alert(data.error);
+                            console.log(data.error);
+                            alert("网络不稳定，请稍后再尝试");
                         }else{
                             alert("恭喜你，注册成功");
+                            window.location.href="/lavico/member/index?wxid="+$("#uid").val();
                         }
                         return false;
-                    }else if(data.code_error){
-                        alert("验证码错误");
-                        return false;
+
+                    }else if(data.success == false){
+                        if(data.error == "id_code_error"){
+                            alert("验证码错误");
+                            return false;
+                        }else{
+                            var _info = unescape(data.error);
+                            if(_info == "该微信ID已是本品牌会员，请检查！"){
+                                alert("您已经绑定会员卡，请先解绑，再申领新卡");
+                            }else{
+                                alert("网络不稳定，请稍后再尝试");
+                            }
+                        }
                     }else{
-                        alert(data.error);
+                        alert("网络不稳定，请稍后再尝试");
+                        console.log(data.error);
                         return false;
                     }
                 }
@@ -389,76 +403,132 @@ module.exports = {
         },
 		apply_card:{
 			process:function(seed,nut){
+
 				nut.disabled = true ;
 				var then = this;
+                var data_request;
+                var data_return_middleware;
+                var member_type;
+                var memberID;
+                var sex = '';
+                var data_request;
+
 				this.step(function(){
 				  if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 300000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
-                    then.res.writeHead(200, { 'Content-Type': 'text/plain' });
-                    then.res.write("{code_error:'id_code_error'}");
+                    then.res.writeHead(200, { 'Content-Type': 'text/plain' });;
+                    then.res.write('{"success":false,"error":"id_code_error"}');
                     then.res.end();
                     then.terminate();
                   }
 				});
-				
-				
-				this.step(function(){
-				  var data_request = {
-						openid:seed.uid, //微信账号ID
-						MEM_PSN_CNAME:seed.name, //会员姓名
-						MEM_PSN_SEX:seed.sex, //性别 0：女，1：男
-						MEM_PSN_BIRTHDAY:seed.birthday, //生日
-						MOBILE_TELEPHONE_NO:seed.mobile, //手机号				  
-				  };
 
-                  middleware.request('Member/Apply',
-                         data_request
-					  ,this.hold(function(err,doc){
-					  doc_json = JSON.parse(doc);
+                this.step(function(){
 
-                        helper.db.coll("lavico/user/logs").insert(
+                    data_request = {
+                        openid:seed.uid, //微信账号ID
+                        MEM_PSN_CNAME:seed.name, //会员姓名
+                        MEM_PSN_SEX:seed.sex, //性别 0：女，1：男
+                        MEM_PSN_BIRTHDAY:seed.birthday, //生日
+                        MOBILE_TELEPHONE_NO:seed.mobile, //手机号
+                    };
+
+                    middleware.request('Member/Apply', data_request,this.hold(function(err,doc){
+
+                        data_return_middleware = JSON.parse(doc);
+                        console.log(doc);
+                        console.log(data_return_middleware.success);
+                        /*记录用户行为*/
+                        helper.db.coll("welab/feeds").insert(
                             {
                                 'createTime':new Date().getTime(),
                                 'wxid':seed.uid,
                                 'action':"apply",
-                                'data':doc_json,
-                                'request':data_request
+                                'request':data_request,
+                                'reponse':data_return_middleware,
                             },
-                            function(err, doc){});
+                            function(err, doc){
+                                err&&console.log(doc);
+                            }
+                        );
+                    }));
+                });
+
+                this.step(function(){
 
 
-					  if(doc_json.success == true){
-					    then.req.session.id_code = '';
-					    var sex = '';
-					    if(seed.sex == '1'){
-					      sex = 'male';
-					    }else if(seed.sex === '0'){
-					      sex = 'female';
-					    }
-                          helper.db.coll('welab/customers').update({wechatid:seed.uid},{
-                              $set:{
-                                'realname':seed.name,
-                                'mobile':seed.mobile,
-                                'birthday':new Date(seed.birthday).getTime(),
-                                'gender':sex,
-                                'HaiLanMemberInfo':{
-                                    'memberID':doc_json.MEMBER_ID,
-                                    'action':'bind',
-                                    'lastModified':new Date().getTime(),
-                                    'type':1
+                    if(data_return_middleware.success == true){
+
+                        then.req.session.id_code = '';
+
+                        if(seed.sex == '1'){
+                            sex = 'male';
+                        }else if(seed.sex === '0'){
+                            sex = 'female';
+                        }
+                        //获取member的用户类型
+                        middleware.request( "Member/Level/"+data_return_middleware.MEMBER_ID,{
+                            }
+                            ,then.hold(function(err,req_doc){
+                                var member_level = JSON.parse(req_doc);
+                                if(member_level.level == '01'){
+                                    type = 1;
+                                }else if(member_level.level == '02'){
+                                    type = 2;
+                                }else if(member_level.level == '03'){
+                                    type = 3;
+                                }else{
+                                    type = 0;
                                 }
-                              }
-                          },this.hold(function(err, insert_doc) {
-                            then.res.writeHead(200, { 'Content-Type': 'text/plain' });
-                            then.res.write(doc);
-                            then.res.end();
-                          }));
-					    }else if(doc_json.success == false){
-                          then.res.writeHead(200, { 'Content-Type': 'text/plain' });
-                          then.res.write(doc);
-                          then.res.end();
-					  }
-					  }))
-				});									
+                            }));
+
+                    }else if(data_return_middleware.success == false){
+
+                        var _error = escape(data_return_middleware.error);//汉字编码
+
+                        then.res.writeHead(200, { 'Content-Type': 'text/plain' });
+                        then.res.write('{"success":false,"error":"'+_error+'"}');
+                        then.res.end();
+                        then.terminate();
+
+                    }else{
+
+                        then.res.writeHead(200, { 'Content-Type': 'text/plain' });
+                        then.res.write('{"success":false,"error":"network_error"}');
+                        then.res.end();
+
+                    }
+
+                });
+
+                this.step(function(){
+
+                    helper.db.coll('welab/customers').update({wechatid:seed.uid},{
+                        $set:{
+                            'realname':seed.name,
+                            'mobile':seed.mobile,
+                            'isRegister':true,
+                            'registerTime':new Date().getTime(),
+                            'birthday':new Date(seed.birthday).getTime(),
+                            'gender':sex,
+                            'HaiLanMemberInfo':{
+                                'memberID':data_return_middleware.MEMBER_ID,
+                                'action':'bind',
+                                'lastModified':new Date().getTime(),
+                                'type':type
+                            }
+                        }
+                    },this.hold(function(err, insert_doc) {
+                        err&console.log(insert_doc);
+                    }));
+                });
+
+                this.step(function(){
+
+                    then.res.writeHead(200, { 'Content-Type': 'text/plain' });
+                    then.res.write('{"success":true,"error":""}');
+                    then.res.end();
+
+                });
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 /*
-   author:json
-   desciption:show store list by appoint city(按指定城市选择门店列表)
+ author:json
+ desciption:show store list by appoint city(按指定城市选择门店列表)
  */
 var middleware = require('../../lib/middleware.js');
 module.exports={
@@ -83,6 +83,9 @@ module.exports={
 
         nut.model.provinceArr=provinceArr;
         nut.model.cityArr=cityArr;
+
+        nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
+        console.log(nut.model.wxid);
     },
     actions:{
         //显示具体门店
@@ -90,6 +93,7 @@ module.exports={
             layout: "lavico/layout",
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
+                nut.model.wxid = seed.wxid;
                 //获取CODE-取消最后一个自添加1
                 var cityCode=seed.CODE.substring(0,seed.CODE.length-1);
 
@@ -121,13 +125,17 @@ module.exports={
             },
             viewIn:function(){
                 if(log!=""){
+
                     var map = new BMap.Map("allmap");
                     //var point = new BMap.Point(116.331398,39.897445);
                     var point = new BMap.Point(log,lat);
+
                     map.centerAndZoom(point,17);
 
                     var geolocation = new BMap.Geolocation();
+
                     geolocation.getCurrentPosition(function(r){
+
                         r.point.lng=log;
                         r.point.lat=lat;
                         if(this.getStatus() == BMAP_STATUS_SUCCESS){
@@ -155,13 +163,13 @@ module.exports={
         },
         //搜索门店列表
         search:{
-            layout:null,
-            //view:"lavico/templates/store/showCity.html",
+            layout:"lavico/layout",
             view:"lavico/templates/store/store_num21.html",
             process:function(seed,nut){
                 var then=this;
                 var cityName= seed.city.substring(0,seed.city.length-1);
                 nut.model.cityName=cityName;
+                nut.model.wxid = seed.wxid;
                 this.step(function(){
                     var jsonData={};
                     jsonData.perPage=1000;

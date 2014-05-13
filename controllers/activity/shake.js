@@ -1,6 +1,6 @@
 var middleware = require('../../lib/middleware.js');
 module.exports = {
-    layout: null,
+    layout: "lavico/member/layout",
     view: "lavico/templates/activity/shake.html",
     process:function(seed,nut){
 
@@ -57,7 +57,9 @@ module.exports = {
               this.step(function(){
                 helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
                    shake = doc;
-
+                   console.log('~~~~~~~~~~~~~~~~~');
+                   console.log(doc);
+                   console.log('~~~~~~~~~~~~~~~~~');
                 }));
               });
               
@@ -84,6 +86,8 @@ module.exports = {
                  }
                  helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
                     count = doc;
+                    console.log(doc);
+                    console.log('+++++++++++++++++');
                  }));
               })
               this.step(function(){
@@ -101,29 +105,40 @@ module.exports = {
                   activity.QTY = shake.QTY;
                   activity.createDate = new Date().getTime();
 
-                  if(Math.floor(Math.random()*100+1) <= shake.lottery_chance){
+                  var _aid = 'CQL201404280005';//临时测试用的活动代码，实际为：shake.aid
+                  console.log(Math.floor(Math.random()*100+1));
+                  console.log(shake);
+                  console.log(shake.lottery);
+                  if(Math.floor(Math.random()*100+1) <= shake.lottery[0].lottery_chance){
+                      console.log("摇一摇领取优惠券");
 		                middleware.request('Coupon/FetchCoupon',{
 		                    openid:seed.uid,
-                            PROMOTION_CODE:shake.aid,
+                            PROMOTION_CODE:_aid, //海澜CRM 活动代码，由 Promotions 接口返回
                             point:0,
-                            otherPromId:seed.aid
+                            otherPromId:seed.aid, //微信活动识别ID
+                            memo:'摇一摇'
 		                },this.hold(function(err,doc){
+                            //console.log("摇一摇领取优惠券");
+                            err&&console.log(doc);
+                            doc = JSON.parse(doc);
+                            console.log(doc);
+                            if(doc.success == true){
 
-		                  doc = eval("("+doc+")");
-		                  if(doc.success == true){
-		                    helper.db.coll('welab/customers').update({wechatid:seed.uid},{$addToSet:{shake:activity}},function(err,doc){
-		                    })	                    
-		                    helper.db.coll("shake/shake").insert(activity,function(err,doc){});		                  
-		                    write_info(then,'{"result":"win"}');
-		                  }else{
-		                    write_info(then,'{"result":"'+doc.error+'"}');
-		                  }
+                                activity.coupon_no = doc.coupon_no;//优惠券号码
+
+                                helper.db.coll('welab/customers').update({wechatid:seed.uid},{$addToSet:{shake:activity}},function(err,doc){err&&console.log(doc);});
+
+                                helper.db.coll("shake/shake").insert(activity,function(err,doc){err&&console.log(doc);});
+                                write_info(then,'{"result":"win"}');
+                            }else{
+                                write_info(then,'{"result":"'+doc.error+'"}');
+                            }
+
 		                })) 
                         
                   }else{
                     helper.db.coll('shake/shake').insert(activity,function(err,doc){
-                      console.log(doc)
-                      console.log(err)
+                        err&&console.log(doc);
                     });
                     write_info(then,'{"result":"unwin"}');
                   }

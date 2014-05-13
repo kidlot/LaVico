@@ -51,12 +51,12 @@ window.lookbook = {
         if(oPage){
             o.find("input[name='page.name']").val(oPage.name)
             o.find("textarea").val(oPage.detail)
-            o.find("img").attr("src",oPage.pic)
+            o.find("img").eq(0).attr("src",oPage.pic)
 
             this.page.push({pic:oPage.pic,name:oPage.name,detail:oPage.detail,_id:oPage._id,product:[]})
         }else{
             o.find("input[type='text'],textarea").val("")
-            o.find("img").attr("src","/lavico/public/images/u6.jpg")
+            o.find("img").eq(0).attr("src","/lavico/public/images/u6.jpg")
 
             this.page.push({pic:undefined,name:undefined,detail:undefined,_id:this.__id(),product:[]})
         }
@@ -90,7 +90,13 @@ window.lookbook = {
 
             o.find("input[name='page.product.name']").val(arguments[2].name)
             o.find("textarea").val(arguments[2].detail)
-            o.find("img").attr("src",arguments[2].pic)
+            o.find("img").eq(0).attr("src",arguments[2].pic)
+
+            if(arguments[2].bigPic){
+                for(var i=0 ; i<arguments[2].bigPic.length;i++){
+                    lookbook.createProductBigPic(o,arguments[2].bigPic[i])
+                }
+            }
         }else{
             var o = params.prev().find(".panel").eq(0).clone()
             var _id = lookbook._getPageProductID(params)
@@ -98,7 +104,7 @@ window.lookbook = {
             var productDiv = params.prev()
 
             o.find("input[type='text']").val("")
-            o.find("img").attr("src","/lavico/public/images/u6.jpg")
+            o.find("img").eq(0).attr("src","/lavico/public/images/u6.jpg")
         }
 
         o.hide()
@@ -107,6 +113,51 @@ window.lookbook = {
         this.updateEvent(o)
 
         this.refreshCode();
+
+
+    }
+
+    , createProductBigPic: function(button){
+
+        if(arguments.length == 1){
+            var oPanel = $(button).next().find(".rowProductBigPic").eq(0).clone()
+            oPanel.show()
+            oPanel.attr("_num",$(button).next().find(".rowProductBigPic").length)
+            $(button).next().append(oPanel)
+//
+            var _id = lookbook._getPageProductID($(button))
+            lookbook.page[_id.pageId].product[_id.productId].bigPic = lookbook.page[_id.pageId].product[_id.productId].bigPic || []
+            lookbook.page[_id.pageId].product[_id.productId].bigPic.push({"pic":""})
+        }else{
+
+            var oProduct = button
+            var oPanel = oProduct.find(".rowProductBigPic").eq(0).clone()
+            oPanel.show()
+            oPanel.attr("_num",oProduct.find(".rowProductBigPic").length)
+            oPanel.find("img").attr("src",arguments[1].pic)
+            oProduct.find(".productBigPic").append(oPanel)
+        }
+
+    }
+
+    , removeProductBigPic: function(button){
+
+        var oPanel = $(button).parents(".rowProductBigPic")
+        oPanel.fadeOut('normal', function() {
+
+            var _id = lookbook._getPageProductID($(button))
+            lookbook.page[_id.pageId].product[_id.productId].bigPic.splice(parseInt(oPanel.attr("_num"))-1,1)
+
+            var productBigPic = $(button).parents(".productBigPic")
+            oPanel.remove()
+
+            productBigPic.find(".rowProductBigPic").each(function(i,o){
+
+                $(o).attr("_num",i)
+            })
+
+
+        });
 
     }
 
@@ -142,7 +193,7 @@ window.lookbook = {
             }
         })
 
-        $(o).find(".glyphicon-remove").click(function(){
+        $(o).find(".removeButton").click(function(){
 
             var oPanel = $(this).parents(".panel").eq(0)
             oPanel.fadeOut('normal', function() {

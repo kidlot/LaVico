@@ -1,6 +1,6 @@
 module.exports = {
 
-	layout: null
+	layout: "lavico/layout"
 	, view: "lavico/templates/bargain/kv.html"
 
     , process: function(seed,nut)
