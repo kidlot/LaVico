@@ -40,9 +40,9 @@ module.exports = {
             nut.model.wxid = wxid;
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err,doc){
 
-                var MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "undefined" ;
+                var MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "" ;
                 var bindStatus = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.action : "undefined" ;
-
+                var type = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.type : "undefined";
 
                 if(bindStatus == 'bind'){
                     nut.model.bindStatus = 'bind';
@@ -56,6 +56,18 @@ module.exports = {
                     nut.model.bindStatus = 'unbind';
                     /*自动跳转到card_member主页*/
                 }
+
+                if(type >= 1 && type <=3){
+                    nut.model.type = String(type);
+
+                }else{
+                    //undefined;
+                    nut.model.type = 0;
+                }
+
+
+                nut.model.MEMBER_ID = MEMBER_ID;
+
 
 
             }));

@@ -50,10 +50,17 @@ module.exports = {
               }
               nut.model.mobile = doc.mobile ? doc.mobile : '';
               nut.model.realname = doc.realname ? doc.realname : '';
-              var date =  new Date(parseInt(doc.birthday));
-              nut.model.birthday_year = date.getFullYear() + '年';
-              nut.model.birthday_month = (date.getMonth() + 1) + '月';
-              nut.model.birthday_date = date.getDate() +'日';
+              if(doc.birthday){
+                  var date =  new Date(parseInt(doc.birthday));
+                  nut.model.birthday_year = date.getFullYear() + '年';
+                  nut.model.birthday_month = (date.getMonth() + 1) + '月';
+                  nut.model.birthday_date = date.getDate() +'日';
+              }else{
+                  nut.model.birthday_year = '1970年';
+                  nut.model.birthday_month = '1月';
+                  nut.model.birthday_date = '1日';
+              }
+
               if(doc.gender){
                  nut.model.gender = (doc.gender && doc.gender == 'male') ? '男' : ((doc.gender && doc.gender == 'female') ? '女' : '' );
               }else{
@@ -131,16 +138,28 @@ module.exports = {
 
         /*设计前端JS*/
 
-        $("#select_profession").click(function(){
+        $("#select_profession").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
-        $("#select_favoriteStyle").click(function(){
+        $("#select_favoriteStyle").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
         $(".goon_btn").click(function(){
             $(".fade2").css("display","none");
+        });
+
+        $("#email").blur(function(){
+            var email = $(this).val();
+            if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
+                alert('邮箱格式错误');
+                return false;
+            }
+        });
+
+        $('#goon_btn').click(function(){
+            window.location.href ="/lavico/member/index?wxid="+$('#wxid').val();
         });
 
         /*省市联动效果*/
@@ -230,7 +249,7 @@ module.exports = {
         }
 
         //省份改变市'
-        $("#select_province").click(function(){
+        $("#select_province").change(function(){
             $(this).parent().find("input").val($(this).val());
             $('#select_city').empty();
             $('#city').val("请选择");
@@ -245,7 +264,7 @@ module.exports = {
             }
         });
 
-        $("#select_city").click(function(){
+        $("#select_city").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
@@ -306,7 +325,13 @@ module.exports = {
                 if(data.success == true){
                   $("#check_popup").show();
                 }else if(data.result == false){
-                  alert('网络不稳定，请稍后再尝试');
+                   if((/[\u4e00-\u9fa5]+/).test(data.error)){
+                       //如果输出的是汉字
+                      alert(data.error);
+                   }else{
+                      alert('网络不稳定，请稍后再尝试');
+                   }
+
                 }else{
                   alert('网络不稳定，请稍后再尝试');
                 }

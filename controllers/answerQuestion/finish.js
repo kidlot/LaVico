@@ -10,7 +10,7 @@ module.exports={
         var wechatid=seed.wechatid;
         var scoreAll=this.req.session.scoreAll;
         var stopLab=seed.stopLab;
-        nut.model.wxid = seed.wechatid
+        nut.model.wechatid = seed.wechatid
         //非停止标签过来
         if(stopLab!="true"){
             //插入总积分
