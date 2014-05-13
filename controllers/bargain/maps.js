@@ -30,7 +30,7 @@ module.exports = {
                             for(var i=0 ; i< _shops.list.length ;i ++){
                                 for(var ii=0 ; ii< doc.maps.length ;ii ++){
                                     if(_shops.list[i].CODE.replace(/\s*/g, '') == doc.maps[ii]){
-                                        doc.shops2.push({name:_shops.list[i].NAME,address:_shops.list[i].ADDR,tel:_shops.list[i].TEL})
+                                        doc.shops2.push({name:_shops.list[i].NAME,address:_shops.list[i].ADDR,tel:_shops.list[i].TEL,CODE:_shops.list[i].CODE})
                                     }
                                 }
                             }
