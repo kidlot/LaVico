@@ -1,3 +1,10 @@
+/*
+* 应用：活动券
+* URL：{host}/lavico/activity
+* */
+
+
+
 var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "welab/Layout",

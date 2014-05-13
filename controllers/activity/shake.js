@@ -1,3 +1,8 @@
+/*
+* 摇一摇后台管理页面
+* URL：{host}/lavico/shake
+* */
+
 var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "lavico/member/layout",
