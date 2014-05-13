@@ -19,7 +19,7 @@ module.exports = {
 
 
                 var userTelArray = ['13964081593'];
-                var userTel = seed.userTel;
+                var mobile = seed.mobile;
                 console.log(id_code);
                 then.res.writeHead(200, { 'Content-Type': 'text/plain' });
                 then.res.write('{"result":"ok","id_code":"'+id_code+'"}');
@@ -30,17 +30,17 @@ module.exports = {
                   * */
 
                 var _content = "您好，验证码为"+id_code+"，请在两分钟内填写，过期失效。";
-
+                console.log(seed.mobile);
                 if(userTel){
 
-                    middleware.request( "System/SendSMS",{
-                            'mobile':userTel,
-                            'content':_content+"【郎维高LaVico】"
-                        },this.hold(
-                        function(err,doc){
-                            then.res.end();
-                        })
-                    );
+//                    middleware.request( "System/SendSMS",{
+//                            'mobile':userTel,
+//                            'content':_content+"【郎维高LaVico】"
+//                        },this.hold(
+//                        function(err,doc){
+//                            then.res.end();
+//                        })
+//                    );
 
                 }else{
 
