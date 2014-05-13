@@ -1,6 +1,25 @@
 <div class="wrapper">
-    <div class="vip-card"><img src="/lavico/public/images/vip_card.jpg" /></div>
-    <div class="member">
+
+        <if condition="{@bindStatus=='bind'}"
+            <if condition="{@type=='0'}">
+                   <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
+            <elseif condition="{@type == '1'}"/>
+                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /></div>
+                    <div class="vip-card-num">{@MEMBER_ID}</div>
+            <elseif condition="{@type=='2'}"/>
+                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /></div>
+                    <div>{@MEMBER_ID}</div>
+            <elseif condition="{@type=='3'}"/>
+                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /></div>
+                     <div>{@MEMBER_ID}</div>
+            <else/>
+                <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
+            </if>
+        <else/>
+            <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
+        </if>
+
+        <div class="member">
         <div class="member-content">
             <if condition="@bindStatus == 'bind'">
                 <div class="radius">
