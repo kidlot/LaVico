@@ -7,7 +7,7 @@ module.exports={
     layout:"lavico/layout",
     view:"lavico/templates/announcement/member_num13.html",
     process:function(seed,nut){
-        nut.model.wxid = seed.wechatid ? seed.wechatid : 'undefined'
+        nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
         console.log(seed.wechatid);
         helper.db.coll("lavico/announcement").find({isOpen:true}).toArray(this.hold(function(err,doc){
             if(err) throw err;
