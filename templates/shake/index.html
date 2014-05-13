@@ -4,6 +4,7 @@
         margin-bottom: 5px;
         font-weight: bold;
     }
+    th,td{text-align: center;}
 </style>
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
@@ -45,15 +46,15 @@
                         {@doc.total}
                     </td>   
                     <td>
-                        {@doc.count}
+                        {@doc.count}-{@ doc.switcher}
                     </td>                                     
                     <td>
                         <div class="switch has-switch way">
                             <div class="switch-animate switch-{@ doc.switcher}" data="{@ doc._id}" onclick="audioClick(this)">
                                 <input type="checkbox" data-toggle="switch">
-                                <span class="switch-left">关</span>
+                                <span class="switch-left">开</span>
                                 <label>&nbsp;</label>
-                                <span class="switch-right">开</span></div>
+                                <span class="switch-right">关</span></div>
 
                         </div>
                     </td>

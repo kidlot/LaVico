@@ -1,4 +1,4 @@
-var middleware = require('../../lib/middleware.js');
+    var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "welab/Layout",
     view: "lavico/templates/shake/index.html",

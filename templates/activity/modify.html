@@ -36,13 +36,13 @@
                               <div class="col-md-9">
                                   <div class="form-group">
                                       <label for="inputEmail3" class="col-sm-2 control-label">面值</label>
-                                      <div class="col-sm-10">
+                                      <div class="col-sm-10" style="padding-top: 8px;">
                                           <span>{@activity.QTY}</span>
                                       </div>
                                   </div>
                                   <div class="form-group">
                                       <label for="inputEmail3" class="col-sm-2 control-label">券图<span>(400×400)</span></label>
-                                      <div class="col-sm-10">
+                                      <div class="col-sm-10" style="padding-top: 8px;">
                                         <input type="file" class="input-xlarge"  style="width:206px" data="{@activity.QTY}" name="{@activity.QTY}" placeholder="请输入...." id="{@activity.QTY}" onchange="fileSelected(this.id);">
                                         &nbsp;<span calss="progressNumber"></span>
 
@@ -52,8 +52,8 @@
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2 control-label">使用说明</label>
-                                      <div class="col-sm-10">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">详细介绍</label>
+                                      <div class="col-sm-10" style="padding-top: 8px;">
                                           <textarea class="form-control input-sm postData" rows="3" data="{@activity.QTY}" id="{@activity.QTY}_introduction" name="{@activity.QTY}_introduction" promotion_name="{@activity.PROMOTION_NAME}"  promotion_desc="{@activity.PROMOTION_DESC}"  placeholder="请输入...">{@activity.introduction}</textarea>
                                       </div>
                                   </div>                           
