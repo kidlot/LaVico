@@ -4,19 +4,32 @@
     </div>
     <div class="points3">
 
+        <if condition="@ $helper.gt(docs.length,0)">
 
-        <foreach for="@docs" var="fav" key="key">
-        <div class="points3-box">
-            <div class="points3-content clear">
-                <div class="fl"><a href="/lavico/lookbook/product?_id={@ fav.lookbookid}&wxid={@ wxid}&pageNum={@fav.pageNum}&productId={@fav.product._id}"><img src="{@fav.product.pic}" width="213px" height="314px"></a></div>
-                <div class="fl text">
-                    <div class="title3"><a href="member_num27.html">{@fav.product.name}</a></div>
-                    <div class="con"><a href="member_num27.html">{@fav.product.detail}</a></div>
-                    <div class="btn subbtn" onclick="$('.fade2').find('input').attr('_id','{@ fav._id}');$('.fade2').show()" >取消收藏</div>
+            <foreach for="@docs" var="fav" key="key">
+            <div class="points3-box">
+                <div class="points3-content clear">
+                    <div class="fl"><a href="/lavico/lookbook/product?_id={@ fav.lookbookid}&wxid={@ wxid}&pageNum={@fav.pageNum}&productId={@fav.product._id}"><img src="{@fav.product.pic}" width="213px" height="314px"></a></div>
+                    <div class="fl text">
+                        <div class="title3"><a href="member_num27.html">{@fav.product.name}</a></div>
+                        <div class="con"><a href="member_num27.html">{@fav.product.detail}</a></div>
+                        <div class="btn subbtn" onclick="$('.fade2').find('input').attr('_id','{@ fav._id}');$('.fade2').show()" >取消收藏</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        </foreach>
+            </foreach>
+
+        <else/>
+            <div class="points3-box">
+                <div class="points3-content clear">
+                    <div class="fl text">
+                        <div class="title3"><a href="javascript:;">您还没有收藏商品</a></div>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </if>
 
     </div>
 </div>
