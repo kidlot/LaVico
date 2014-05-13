@@ -41,9 +41,9 @@
             </foreach>
             <div class="line"></div>
             <if condition="{@resultString.getActivities!=''}">
-                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wxid}">领取优惠券</a></div>
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wechatid}">领取优惠券</a></div>
                 <else/>
-                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&wxid={@wxid}">领取优惠券</a></div>
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&wxid={@wechatid}">领取优惠券</a></div>
             </if>
         </div>
     </div>
