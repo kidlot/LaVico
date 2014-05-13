@@ -235,7 +235,7 @@ module.exports={
                         }
                     }else{
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
-                            "&_id="+_id+"&optionId="+then.req.session.optionId});
+                            "&_id="+_id+"&optionId="+optionId});
                         this.res.end();
                     }
                 }
