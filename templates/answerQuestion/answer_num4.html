@@ -52,7 +52,13 @@
     <div class="wrapper">
         <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
         <div class="coupon">
-            <div class="points-content"><img src="/lavico/public/images/points_banner.jpg" /></div>
+            <div class="points-content" style="background-image: url('/lavico/public/images/points_banner-604X319.jpg');">
+                <div style="padding-top: 120px;padding-left: 348px; text-align: left">
+                    <foreach for="{@jsonResult}" var="resultString">
+                        <label style="font-size: 36px">{@resultString.getScore}积分</label>
+                    </foreach>
+                </div>
+            </div>
         </div>
         <foreach for="{@jsonResult}" var="resultString">
             <div class="look-text">
