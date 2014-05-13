@@ -10,6 +10,8 @@ body{ background:#dcdcdc;}
 .activity-rules .text .title{text-align:center; color:#000; font-size:30px;}
 .activity-rules .text .title1{color:#bda172; font-size:25px; padding-top:50px;}
 .subtext{ color:#646464; font-size:25px; padding-top:30px;}
+/*Member*/
+.vip-card-num{text-align: center; color:#999; font-size: 16px; position: relative; top:-78px;}
 /*礼品券*/
 .header{width:100%;}
 .coupon{width:100%; margin-top:20px;}

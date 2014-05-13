@@ -17,8 +17,7 @@ module.exports = {
                 this.req.session.id_code = id_code;
                 this.req.session.set_id_code_time = new Date().getTime();
 
-                //var userTel = '13964081593';
-                //var userTel = '13816900290';
+
                 var userTelArray = ['13964081593'];
                 var userTel = seed.userTel;
                 console.log(id_code);

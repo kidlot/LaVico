@@ -143,6 +143,14 @@ module.exports = {
             $(".fade2").css("display","none");
         });
 
+        $("#email").blur(function(){
+            var email = $(this).val();
+            if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
+                alert('邮箱格式错误');
+                return false;
+            }
+        });
+
         /*省市联动效果*/
         var province = document.getElementById('select_province');
         var province_input = document.getElementById('province');
