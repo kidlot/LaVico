@@ -47,7 +47,7 @@ module.exports = {
             }else{
 
                 helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
-                    if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID ){
+                    if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind' ){
                         member_id =  doc.HaiLanMemberInfo.memberID;
                     }else{
                         member_id = 'undefined';
