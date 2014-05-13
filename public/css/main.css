@@ -129,6 +129,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .radius .title{width:100%; height:65px; line-height:65px; text-align:center; background:url(../images/meber_bg.jpg) center center no-repeat; font-size:25px; color:#3C3C3C;}
 .radius .list li{width:580px; line-height:80px; font-size:25px; padding-left:20px; height:80px; border-bottom:1px #e2e2e2 solid;}
 .radius .list li a{width:560px; display:inline-block; background:url(../images/right_jt.jpg) right center no-repeat; color:#000;}
+.radius .list li a.yellow{color:#B49870;}
 .suba{color:#B49870;}
 .radius .list .border-none{border-bottom:0;}
 .radius1{ margin-top:30px;}

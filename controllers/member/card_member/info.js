@@ -382,7 +382,7 @@ module.exports = {
                     if(lastid == 0){
                         //初始化数据
                         var data_request = {};
-                        middleware.request("System/FieldChange",
+                            middleware.request("System/FieldChange",
                             data_request,
                             this.hold(function(err,doc){
                                 dataJson = JSON.parse(doc);

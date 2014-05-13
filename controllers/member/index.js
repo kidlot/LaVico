@@ -104,6 +104,12 @@ module.exports = {
             /*门店地址*/
             nut.model.store = "/lavico/store/currentCustomerLocation?wxid="+wxid;
 
+            /*申领会员卡*/
+            nut.model.register = "/lavico/member/card_blank/register?wxid="+wxid;;
+
+            /*绑定会员卡*/
+            nut.model.bind = "/lavico/member/card_blank/bind?wxid="+wxid;
+
         });
 
 
@@ -112,22 +118,8 @@ module.exports = {
 
 
         var wxid = $('#wxid').val();
-        $(".fade").css("display","block");
-
-        /*申请会员卡*/
-        $(".applybtn").click(function(){
-            window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
-        });
-
-        /*绑定会员卡*/
-        $(".bangdingbtn").click(function(){
-            window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
-        });
-
         /*bind*/
         if($('#bindStatus').val() == 'bind'){
-
-            $(".fade").css("display","none");
             /*计算当前用户可用的优惠券数*/
             $.ajax({
                 type: "GET",
@@ -139,10 +131,14 @@ module.exports = {
                         var _count = data.count;
                         var _html = "("+_count+"张未使用)";
                         $('#count').html(_html);
+                    }else{
+                        $('#count').html('');
                     }
                 }
             });
 
+        }else{
+            $('#count').html('');
         }
 
     },
