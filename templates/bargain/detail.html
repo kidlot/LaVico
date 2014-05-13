@@ -9,6 +9,7 @@
                 <input type="hidden" value="{@ wxid}" id="wxid">
                 <input type="hidden" value="{@ doc.promotionsCode}" id="promotionsCode">
                 <input type="hidden" value="{@ doc.deductionIntegral}" id="point">
+                <input type="hidden" value="{@ isVip}" id="isVip">
 
 
                 <p class="title name" >{@ doc.name}</p>
@@ -251,8 +252,10 @@ function bargain(){
     });
 }
 window.onload = function(){
-    if($("#fixed").text() == "我要侃价"){
+    if($("#isVip").val() == "false"){
 
+        alert("请先注册或绑定会员卡");
+        location.href="/lavico/member/index?wxid="+$("#wxid").val()
     }
 }
 

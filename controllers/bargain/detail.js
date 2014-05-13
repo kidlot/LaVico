@@ -16,6 +16,17 @@ module.exports = {
             nut.model.wxid = seed.wxid
             nut.model._id = seed._id
 
+
+            helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
+                var customers = customers || {}
+
+                nut.model.isVip = false
+                if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID){
+                    nut.model.isVip = true
+                }
+            }))
+
+
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
                 nut.model.doc = doc
