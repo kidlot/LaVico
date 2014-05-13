@@ -9,9 +9,8 @@ module.exports={
         var opptionId=seed.optionId;
         var wechatid=seed.wechatid;
         var scoreAll=this.req.session.scoreAll;
-        nut.model.wechatid = wechatid;
         var stopLab=seed.stopLab;
-        nut.model.wxid = wechatid;
+        nut.model.wxid = seed.wechatid
         //非停止标签过来
         if(stopLab!="true"){
             //插入总积分
@@ -38,12 +37,12 @@ module.exports={
                 console.log(_id);
                 helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
                     if(err) throw err;
-                    console.log(doc);
+                    //console.log(doc);
                     scoreRange=doc.scoreMinMax;
                     docTheme=doc;
                     themeType=doc.themeType;
                     nut.model.themeType=themeType;
-                    console.log("sasa:"+nut.model.themeType)
+                    //console.log("sasa:"+nut.model.themeType)
                 }));
             });
             //查找全部券
@@ -92,7 +91,7 @@ module.exports={
                             var jsonData = {
                                 openid: wechatid,
                                 otherPromId: _id,
-                                PROMOTION_CODE: 'L2013112709',
+                                PROMOTION_CODE: 'CQL201312230001',
                                 memo: memoString,
                                 point: getScore
                             }

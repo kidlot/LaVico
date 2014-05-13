@@ -12,7 +12,13 @@ module.exports={
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    return result.HaiLanMemberInfo.memberID;//获取会员ID
+                    if(result.HaiLanMemberInfo){
+                        return result.HaiLanMemberInfo.memberID;//获取会员ID
+                    }else
+                    {
+                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+seed.wechatId});
+                        this.res.end();
+                    }
                     //return 9123084;
                 }else{
                     nut.disable();
@@ -24,7 +30,6 @@ module.exports={
         this.step(function(memberId){
             //调用接口:获取会员积分
             if(memberId){
-
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
                     if(err) throw err;
                     if(result){
@@ -175,7 +180,7 @@ module.exports={
                     middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
                         if(err) throw err;
 
-                        console.log("doc:"+doc)//不删
+                        //console.log("doc:"+doc)//不删
 
                         var docJson=JSON.parse(doc)
                         if(docJson.success){

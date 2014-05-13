@@ -2,15 +2,17 @@
     <div class="vip-card"><img src="/lavico/public/images/vip_card.jpg" /></div>
     <div class="member">
         <div class="member-content">
-            <div class="radius">
-                <ul class="list">
-                    <li><a id="announcement" href="{@announcement}">会员公告</a></li>
-                    <li><a id="coupon" href="{@coupon}">专属礼券<span id="count" class="suba">(正加载)</span></a></li>
-                    <li><a id="points" href="{@reedem}">积分/兑换</a></li>
-                    <li><a id="buy" href="{@buy}">消费记录</a></li>
-                    <li class="border-none"><a id="fav" href="{@fav}">收藏清单</a></li>
-                </ul>
-            </div>
+            <if condition="@bindStatus == 'bind'">
+                <div class="radius">
+                    <ul class="list">
+                        <li><a id="announcement" href="{@announcement}">会员公告</a></li>
+                        <li><a id="coupon" href="{@coupon}">专属礼券<span id="count" class="suba">(正加载)</span></a></li>
+                        <li><a id="points" href="{@reedem}">积分/兑换</a></li>
+                        <li><a id="buy" href="{@buy}">消费记录</a></li>
+                        <li class="border-none"><a id="fav" href="{@fav}">收藏清单</a></li>
+                    </ul>
+                </div>
+            </if>
             <div class="radius radius1">
                 <div class="title">会员特权</div>
                 <ul class="list">
@@ -19,28 +21,29 @@
                     <li id="goldCard" class="border-none"><a href="{@goldCard}">白金VIP卡尊享<span class="suba">(享受八五折优惠和积分)</span></a></li>
                 </ul>
             </div>
-            <div class="radius radius1">
-                <ul class="list">
-                    <li><a id="info" href="{@info}">个人资料<span class="suba">(完善资料可获50积分)</span></a></li>
-                    <li class="border-none"><a id="unbind" href="{@unbind}">解绑会员卡</a></li>
-                </ul>
-            </div>
+
+            <if condition="@bindStatus == 'bind'">
+                <div class="radius radius1">
+                    <ul class="list">
+                        <li><a id="info" href="{@info}">个人资料<span class="suba">(完善资料可获50积分)</span></a></li>
+                        <li class="border-none"><a id="unbind" href="{@unbind}">解绑会员卡</a></li>
+                    </ul>
+                </div>
+            <else/>
+                <div class="radius radius1">
+                    <ul class="list">
+                        <li><a id="info"  class="yellow" href="{@register}">申领会员卡</a></li>
+                        <li class="border-none"><a id="unbind" class="yellow" href="{@bind}">绑定会员卡</a></li>
+                    </ul>
+                </div>
+            </if>
+
             <div class="radius radius1">
                 <ul class="list">
                     <li class="border-none"><a id="store" href="{@store}">门店查询</a></li>
                 </ul>
             </div>
             <div class="blank"></div>
-        </div>
-    </div>
-    <div class="fade">
-        <div id='registerUser' class="input-member">
-            <p class="msg">如果您没有实体会员卡，请申领会员卡</p>
-            <p class="confirm"><input type="submit" class="applybtn" border="0" value="申领会员卡" /></p>
-        </div>
-        <div id='bindUser' class="input-member input-member1">
-            <p class="msg">如果您已有实体会员卡，请绑定会员卡</p>
-            <p class="confirm"><input type="submit" class="bangdingbtn" border="0" value="绑定会员卡" /></p>
         </div>
     </div>
 </div>
