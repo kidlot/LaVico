@@ -221,7 +221,7 @@ module.exports={
                                         "&optionId="+next});
                                     this.res.end();
                                 }
-                                
+
                             }else{
                                 this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
                                     wechatid+"&_id="+_id+
