@@ -57,7 +57,6 @@ module.exports = {
             }
 
         });
-
         this.step(function(){
 
             if(member_id == "undefined"){
@@ -69,7 +68,7 @@ module.exports = {
                 this.res.end();
                 this.terminate();
             }
-        }
+        });
 
         this.step(function(){
             if(aid == 'undefined'){
@@ -78,10 +77,11 @@ module.exports = {
 //                this.res.write('{"error":"aid_is_empty"}');
                 this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
                 this.res.end();
-                this.res.end();
                 this.terminate();
             }
         });
+
+
         this.step(function(){
             nut.model.uid = seed.uid;//uid是用户的wechatid
             nut.model.aid = seed.aid;//摇一摇活动ID
