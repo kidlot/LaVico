@@ -20,7 +20,7 @@ module.exports={
                             {$group:{_id:"$themeId",count:{$addToSet:"$wechatid"}}},
                             {$match:{_id:helper.db.id(cursor[i]._id)}}
                         ],then.hold(function(err,doc){
-                            console.log(doc);
+                            //console.log(doc);
                             if(err) throw err;
                             try{
                                 //console.log("1:"+doc[0].count.length)

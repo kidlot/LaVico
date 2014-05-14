@@ -13,11 +13,11 @@ module.exports={
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    if(result.HaiLanMemberInfo){
-                        return result.HaiLanMemberInfo.memberID;//获取会员ID
+                    if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
+                        //return result.HaiLanMemberInfo.memberID;//获取会员ID
                     }else
                     {
-                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
+                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
                         this.res.end();
                     }
                     //return 9123084;
@@ -55,7 +55,7 @@ module.exports={
                                 nut.model.optionId=i+1;
                                 nut.model._id=_id;
                                 nut.model.optionCount=cursor.options.length;//此题目总共有题数
-                                console.log(wechatid)
+                                //console.log(wechatid)
                                 nut.model.wechatid=wechatid;
                             }
                         }

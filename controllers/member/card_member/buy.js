@@ -92,7 +92,7 @@ module.exports = {
         });
 
         this.step(function(){
-            console.log(info);
+            //console.log(info);
             if(info == 'return_data_true'){
                 for(var _i = 0;_i<log.length;_i++){
                     var _tmpLog = log[_i];
@@ -105,7 +105,7 @@ module.exports = {
                     var _month = _time.getMonth()+ 1;
 
 
-                    console.log(_formatTime);
+                    //console.log(_formatTime);
 
                     var _point = _tmpLog.POINT > 0 ? ('+'+_tmpLog.POINT): _tmpLog.POINT;
                     userSumPoints = eval(userSumPoints + _point);//用户消费总积分
@@ -135,8 +135,8 @@ module.exports = {
 
 
                 }
-                console.log(newLogArr);
-                console.log(yearMonthArr);
+                //console.log(newLogArr);
+                //console.log(yearMonthArr);
             }
 
         });
@@ -148,7 +148,7 @@ module.exports = {
                 var _tmpGetSumPoints = 0;
 
                 for(var _j=0;_j<newLogArr.length;_j++){
-                    console.log(newLogArr[_j]);
+                    //console.log(newLogArr[_j]);
                     if(yearMonthArr[_i] == newLogArr[_j].yearmonth){
                         _tmpGetSumPoints = _tmpGetSumPoints + newLogArr[_j].value;
                     }
@@ -187,7 +187,7 @@ module.exports = {
 
             }
 
-            console.log(newLogArr);
+            //console.log(newLogArr);
 
             nut.model.log = newLogArr;
             nut.model.info = "return_data_true";

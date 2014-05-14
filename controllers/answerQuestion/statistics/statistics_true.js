@@ -335,20 +335,20 @@ module.exports={
                 then.step(function(){
                     helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,getLabel:"",getGift:"",compScore:""})
                         .toArray(function(err,doc){
-                            console.log("doc:"+doc)
+                            //console.log("doc:"+doc)
                             if(err) throw err;
                             var xinArr=[];
                             var all=0;
                             for(var i in docs_themeQuestion.scoreMinMax){
                                 for(var j in doc){
-                                    console.log("docs_themeQuestion.scoreMinMax[i].conditionMinScore:"+docs_themeQuestion.scoreMinMax[i].conditionMinScore);
-                                    console.log("doc[j].getChooseScore:"+doc[j].getChooseScore)
-                                    console.log("docs_themeQuestion.scoreMinMax[i].conditionMaxScore:"+docs_themeQuestion.scoreMinMax[i].conditionMaxScore);
+                                    //console.log("docs_themeQuestion.scoreMinMax[i].conditionMinScore:"+docs_themeQuestion.scoreMinMax[i].conditionMinScore);
+                                    //console.log("doc[j].getChooseScore:"+doc[j].getChooseScore)
+                                    //console.log("docs_themeQuestion.scoreMinMax[i].conditionMaxScore:"+docs_themeQuestion.scoreMinMax[i].conditionMaxScore);
 
                                     if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=doc[j].getChooseScore &&
                                         doc[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore)
                                     {
-                                        console.log("ok");
+                                        //console.log("ok");
                                         if(docs_themeQuestion.scoreMinMax[i].sinCount){
                                             docs_themeQuestion.scoreMinMax[i].sinCount++;
                                         }else{

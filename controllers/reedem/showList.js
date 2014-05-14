@@ -6,17 +6,18 @@ module.exports={
     process:function(seed,nut){
         var reedemJson={};
         var then =this;
-
+        var wxid = seed.wechatId ? seed.wechatId : 'undefined';
+        nut.model.wxid = wxid;
         this.step(function(){
             //查找此会员是否存在
-            helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
+            helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
                     if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
                         return result.HaiLanMemberInfo.memberID;//获取会员ID
                     }else
                     {
-                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+seed.wechatId});
+                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
                         this.res.end();
                     }
                     //return 9123084;
@@ -52,7 +53,7 @@ module.exports={
                 reedemJson.canUse=[];//可兑换商品数组
                 reedemJson.noCanUse=[];//不可兑换商品数组
                 for(var i=0;i<result.length;i++){
-                    if(resultPoint[0]>result[i].needScore){
+                    if(resultPoint[0]>=result[i].needScore){
                         //调用接口：查找所有可兑换券
                         (function(i){
                             middleware.request('Coupon/Promotions',{
@@ -66,7 +67,7 @@ module.exports={
                                     var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
                                     //还有剩余票可用
                                     if(stillUse>0){
-                                        console.log("asdasdsa:"+resultPoint);
+                                        //console.log("asdasdsa:"+resultPoint);
                                         result[i].stillUse=stillUse;
                                         result[i].memberId=resultPoint[1];
                                         result[i].wechatId=seed.wechatId;
@@ -105,7 +106,7 @@ module.exports={
             }))
         })
         this.step(function(){
-            console.log(reedemJson);
+            //console.log(reedemJson);
             nut.model.reedemJson=reedemJson;
             nut.model.wechatId=seed.wechatId;
         })
@@ -169,7 +170,7 @@ module.exports={
 
                 this.step(function(){
                     //提交给接口
-                    console.log("wechatId:"+wechatId)//不删
+                    //console.log("wechatId:"+wechatId)//不删
                     //拿优惠券
                     var params={};
                     params.meno='积分兑换-'+t_name;
@@ -272,7 +273,7 @@ function write_info(then,info){
 }
 
 function write_info_txt(then,info){
-    console.log(info)
+    //console.log(info)
     then.res.writeHead(200,{"Content-Type":"text/plain;charset=utf-8"});
     then.res.write(info);
     then.res.end();

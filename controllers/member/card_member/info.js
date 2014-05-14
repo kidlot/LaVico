@@ -551,10 +551,10 @@ module.exports = {
 
 
                             if(memberIDArr[_i] == _member_id){
-                                console.log('memberIDArr['+_i+']:'+memberIDArr[_i]);
-                                console.log('_member_id:'+_member_id);
-                                console.log('_field_name:'+_field_name);
-                                console.log('_new_value:'+_new_value);
+                                //console.log('memberIDArr['+_i+']:'+memberIDArr[_i]);
+                                //console.log('_member_id:'+_member_id);
+                                //console.log('_field_name:'+_field_name);
+                                //console.log('_new_value:'+_new_value);
 
                                 //FIELD_NAME 字段名字 : MEM_PSN_CNAME -->会员姓名（中文）
                                 /*
@@ -845,11 +845,11 @@ module.exports = {
                     'color':seed.favoriteColor
                 }
                 /*提交审核*/
-                console.log(data_submit_checekd);
+                //console.log(data_submit_checekd);
                 middleware.request("Member/SaveInfo/"+memberID,
                   data_submit_checekd,
                   this.hold(function(err,doc){
-                      console.log(doc);
+                      //console.log(doc);
                       dataJson = JSON.parse(doc);
 
                       /*记录用户操作行为*/
