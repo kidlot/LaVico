@@ -127,6 +127,7 @@ module.exports = {
 
                         var _temp = dataJson.log[i];
                         var _time = formatDate(new Date(dataJson.log[i].time));//消费时间
+                        var _formateTime = formatTime(new Date(dataJson.log[i].time));//消费时间
                         var _year = (new Date(dataJson.log[i].time)).getFullYear();
                         var _month = (new Date(dataJson.log[i].time)).getMonth()+ 1;
                         var _value = (dataJson.log[i].value < 0) ? dataJson.log[i].value: ('+'+dataJson.log[i].value);
@@ -147,6 +148,7 @@ module.exports = {
                             'timestamp': dataJson.log[i].time,
                             'value' : _value,
                             'time'  : _time,
+                            'formatetime':_formateTime,
                             'source' : _source,
                             'meta' : dataJson.log[i].MEMO,
                             'year':_year,
@@ -157,6 +159,7 @@ module.exports = {
                         newLog.push(_json);
 
                     }
+                    console.log(newLog);
                     var _yearMonthLog = new Array();//标记年月，保存记录
 
                     var _temp = newLog[0].yearmonth;
@@ -197,6 +200,7 @@ module.exports = {
 
                         var _json = {
                             'time':_yearMonthLog[i],
+                            'formateTime':_yearMonthLog[i],
                             'sumGetPoint':_sumGetPoint,
                             'sumUsedPoint':-_sumUsedPoint,
                             'type':'sum'
@@ -216,6 +220,7 @@ module.exports = {
                                 yearMonthLog[0].rank = 1;//表明它是第一行，因为第一行小计和其他小计，样式不一样。
                                 yearMonthLog[0].class = 'title2';
                                 yearMonthLog[0].time = newLog[0].time;
+
                                 newLog.splice(i,0,yearMonthLog[0]);
                                 //console.log(yearMonthLog[0]);
                                 yearMonthLog.shift();//删除已合并的元素
@@ -255,7 +260,16 @@ function   formatDate(now){
     var   hour=now.getHours();
     var   minute=now.getMinutes();
     var   second=now.getSeconds();
-    return   year+"年"+month+"月"+date+"日"+'&nbsp;'+hour+':'+minute+':'+second;
+    return   year+"年"+month+"月";
+}
+function   formatTime(now){
+    var   year=now.getFullYear();
+    var   month=now.getMonth()+1;
+    var   date=now.getDate();
+    var   hour=now.getHours();
+    var   minute=now.getMinutes();
+    var   second=now.getSeconds();
+    return   year+"年"+month+"月"+date+"日 "+hour+":"+minute+':'+second;
 }
 function contains(arr, obj) {
     var i = arr.length;
