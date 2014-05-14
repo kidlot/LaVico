@@ -197,6 +197,7 @@ module.exports = {
 
                 $('#activity_select').change(function () {
                     aid = $(this).val();
+
                     $(".promotion_detail").css('display', 'none');
                     $("#" + $(this).val()).css('display', 'block');
                 });

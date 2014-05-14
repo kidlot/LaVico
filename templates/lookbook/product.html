@@ -7,7 +7,12 @@
 <div class="wrapper" id="exchangebtn">
     <div class="elite_title">
         <p>
+
+            <if condition="@ source!='view'">
             <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}">{@ lookbookName}</a></span>
+            <else/>
+                <span class="title5"><a href="/lavico/lookbook/favorites?wxid={@ wxid}">返回列表</a></span>
+            </if>
             <span class="title2">单品</span>
             <span class="title6">
 

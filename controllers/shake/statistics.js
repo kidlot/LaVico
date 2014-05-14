@@ -24,6 +24,7 @@
             var count = 0;
             helper.db.coll("lavico/shake").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 docs = _doc
+
                 helper.db.coll("welab/customers").find({"shake.aid":docs._id.toString()}).toArray(then.hold(function(err,_doc2){
                     docs.sumFavorites = _doc2.length;
                     for(var i=0;i<_doc2.length;i++){
@@ -62,6 +63,7 @@
         this.step(function(){
             docs.reality_chance = Math.round(real_count/real_total*100);
             nut.model.doc = docs
+            console.log(docs);
         })
 
 
