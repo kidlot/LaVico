@@ -1,3 +1,7 @@
+var search = require("welab/lib/search.js") ;
+var summary = require("welab/controllers/user/summary.js") ;
+var util = require("welab/controllers/summary/util.js") ;
+
 exports.load = function () {
 
 
@@ -385,8 +389,10 @@ exports.load = function () {
 
         // 总人数
         var otherData = {};
+
         // 总消息数
         var count = util.countor(this) ;
+
         count("customers","totalUser",{},otherData) ;
         count("messages","totaMessages",{replyFor:{$exists:false}},otherData) ;
         count("replyViewLog","totalView",{action:"view"},otherData) ;
