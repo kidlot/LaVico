@@ -228,7 +228,7 @@ module.exports = {
 
                     var coupons = couponData.list;
                     var effectiveCouponsCount = 0;
-                    console.log(couponData.list);
+                    //console.log(couponData.list);
 
                     /*
                      优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02

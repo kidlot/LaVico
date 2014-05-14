@@ -280,13 +280,13 @@ module.exports = {
                     id_code : $("#id_code").val()
                 },
                 function(data){
-                    console.log(data);
+                    //console.log(data);
                     data = eval("("+data+")");
                     var _error = data.error;
                     if(data.success == true){
                         if(data.error){
                             //alert(data.error);
-                            console.log(data.error);
+                            //console.log(data.error);
                             alert("网络不稳定，请稍后再尝试");
                         }else{
                             alert("恭喜你，注册成功");
@@ -308,7 +308,7 @@ module.exports = {
                         }
                     }else{
                         alert("网络不稳定，请稍后再尝试");
-                        console.log(data.error);
+                        //console.log(data.error);
                         return false;
                     }
                 }
@@ -435,8 +435,8 @@ module.exports = {
                     middleware.request('Member/Apply', data_request,this.hold(function(err,doc){
 
                         data_return_middleware = JSON.parse(doc);
-                        console.log(doc);
-                        console.log(data_return_middleware.success);
+                        //console.log(doc);
+                        //console.log(data_return_middleware.success);
                         /*记录用户行为*/
                         helper.db.coll("welab/feeds").insert(
                             {

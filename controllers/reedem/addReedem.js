@@ -60,7 +60,7 @@ module.exports={
 
         this.step(function(list){
             nut.model.list = list;
-            console.log(nut.model.list)
+            //console.log(nut.model.list)
         });
     },
     actions:{
@@ -179,7 +179,7 @@ module.exports={
             process:function(seed,nut){
                 nut.view.disable();
                 var postData = JSON.parse(seed.postData);
-                console.log(seed.postData)
+                //console.log(seed.postData)
                 if(postData.length == 0 ){
                     nut.message("保存失败。数据不能为空",null,'error') ;
                     return;
@@ -200,7 +200,7 @@ module.exports={
             process:function(seed,nut){
                 nut.view.disable();
                 var postData = JSON.parse(seed.postData);
-                console.log(seed.postData)
+                //console.log(seed.postData)
                 if(postData.length == 0 ){
                     nut.message("保存失败。数据不能为空",null,'error') ;
                     return;

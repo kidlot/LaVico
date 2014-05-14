@@ -15,7 +15,7 @@ module.exports={
                 nut.disabled = true;//stop to view back停止视图模板的返回
                 var inputTitle=seed.title;
                 var inputContent=seed.content;
-                console.log("ok")
+                //console.log("ok")
                 //insert database
                 helper.db.coll("lavico/announcement").insert({isOpen:true,title:inputTitle,content:inputContent,createTime:new Date().getTime()},
                     function(err,doc){

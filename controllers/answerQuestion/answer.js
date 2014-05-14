@@ -55,7 +55,7 @@ module.exports={
                                 nut.model.optionId=i+1;
                                 nut.model._id=_id;
                                 nut.model.optionCount=cursor.options.length;//此题目总共有题数
-                                console.log(wechatid)
+                                //console.log(wechatid)
                                 nut.model.wechatid=wechatid;
                             }
                         }

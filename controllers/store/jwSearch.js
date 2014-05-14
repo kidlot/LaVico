@@ -51,7 +51,7 @@ module.exports={
             }
 
             for(var i=0;i<storeList.length;i++){
-                console.log(storeList[i]);
+                //console.log(storeList[i]);
             }
             }catch(e){
                 if(e) throw e;
