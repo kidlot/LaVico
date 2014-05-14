@@ -17,7 +17,7 @@ module.exports={
                         //return result.HaiLanMemberInfo.memberID;//获取会员ID
                     }else
                     {
-                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
+                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
                         this.res.end();
                     }
                     //return 9123084;
@@ -27,6 +27,20 @@ module.exports={
                 }
             }))
         });
+
+
+        this.step(function(){
+            helper.db.coll("lavico/custReceive").count({"wechatid":wechatid,"themeId":helper.db.id(_id)},this.hold(function(err,doc){
+                if(err) throw err;
+                if(doc>0){
+                    this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
+                    this.res.end();
+                }
+            }))
+        })
+
+
+
 
         this.step(function(){
             //判断活动是否开启或到期1-1
