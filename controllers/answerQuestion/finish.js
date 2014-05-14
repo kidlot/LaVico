@@ -34,7 +34,7 @@ module.exports={
             var docTheme;
             var themeType;
             this.step(function(){
-                console.log(_id);
+                //console.log(_id);
                 helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
                     if(err) throw err;
                     //console.log(doc);
@@ -112,7 +112,7 @@ module.exports={
 
                                         nut.model.err = docJson.success;
                                         nut.model.errString = docJson.error;
-                                        console.log("err:" + doc)
+                                        //console.log("err:" + doc)
 
                                     }
                                 }));
@@ -158,7 +158,7 @@ module.exports={
                 then.req.session.optionId=""
                 nut.model.result=resultList;
                 nut.model.jsonResult=eval('('+resultList+')');
-                console.log("resultList:"+nut.model.jsonResult);
+                //console.log("resultList:"+nut.model.jsonResult);
             })
 
         }else{
@@ -185,7 +185,7 @@ module.exports={
             this.step(function(){
                 helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
                     if(err) throw err;
-                    console.log("doc:"+JSON.stringify(doc.scoreMinMax));
+                    //console.log("doc:"+JSON.stringify(doc.scoreMinMax));
                     scoreRange=doc.scoreMinMax;
                     docTheme=doc;
                     themeType=doc.themeType;
@@ -250,7 +250,7 @@ module.exports={
                             then.step(function () {
                                 middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                     if (err) throw err;
-                                    console.log("doc:" + doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
+                                    //console.log("doc:" + doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
                                     var docJson = JSON.parse(doc)
                                     if (docJson.success) {
                                         newActivity = docJson.coupon_no
@@ -260,7 +260,7 @@ module.exports={
                                     } else {
                                         nut.model.err = docJson.success;
                                         nut.model.errString = docJson.error;
-                                        console.log("err:" + doc)
+                                        //console.log("err:" + doc)
 
                                     }
                                 }));
@@ -328,7 +328,7 @@ module.exports={
             this.step(function(){
                 resultList+="]";
                 then.req.session.optionId=""
-                console.log(resultList);
+                //console.log(resultList);
                 nut.model.result=resultList;
                 nut.model.jsonResult=eval('('+resultList+')');
             })

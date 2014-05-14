@@ -85,7 +85,7 @@ module.exports={
         nut.model.cityArr=cityArr;
 
         nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
-        console.log(nut.model.wxid);
+        //console.log(nut.model.wxid);
     },
     actions:{
         //显示具体门店

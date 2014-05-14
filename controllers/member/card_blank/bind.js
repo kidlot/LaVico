@@ -203,7 +203,7 @@ module.exports = {
                         $('#loading').hide();
 
                         var returnJson = data || {};
-                        console.log(returnJson);
+                        //console.log(returnJson);
                         if(returnJson.success == true){
                             if(returnJson.error == 'please_enter_next_step'){
                                 //alert('验证码已发送，请查收');
@@ -519,8 +519,8 @@ module.exports = {
                                         /*
                                         * { valid: true }
                                         * */
-                                        console.log(dataJson);
-                                        console.log(dataJson.valid);
+                                        //console.log(dataJson);
+                                        //console.log(dataJson.valid);
                                         if(dataJson.valid == true){
 
                                             this.res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -648,7 +648,7 @@ module.exports = {
                                             }
                                         );
                                         data_doc = doc;
-                                        console.log(doc);
+                                        //console.log(doc);
                                         return doc;
                                     }));
                             });
