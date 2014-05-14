@@ -138,17 +138,17 @@ module.exports = {
 
         /*设计前端JS*/
 
-        $("#select_profession").change(function(){
-            $(this).parent().find("input").val($(this).val());
-        });
+//        $("#select_profession").change(function(){
+//            $(this).parent().find("input").val($(this).val());
+//        });
 
         $("#select_profession").click(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
-        $("#select_favoriteStyle").change(function(){
-            $(this).parent().find("input").val($(this).val());
-        });
+//        $("#select_favoriteStyle").change(function(){
+//            $(this).parent().find("input").val($(this).val());
+//        });
 
         $("#select_favoriteStyle").click(function(){
             $(this).parent().find("input").val($(this).val());
@@ -257,20 +257,20 @@ module.exports = {
         }
 
         //省份改变市'
-        $("#select_province").change(function(){
-            $(this).parent().find("input").val($(this).val());
-            $('#select_city').empty();
-            $('#city').val("请选择");
-            var _value = $(this).val();
-            for(var _i = 0;_i < cityArr.length; _i ++){
-                if(_value == cityArr[_i][0]){
-                    var _cityArr = cityArr[_i];
-                    for(var _j = 1; _j < _cityArr.length;_j++){
-                        $("#select_city").prepend("<option value='"+_cityArr[_j]+"'>"+_cityArr[_j]+"</option>")
-                    }
-                }
-            }
-        });
+//        $("#select_province").change(function(){
+//            $(this).parent().find("input").val($(this).val());
+//            $('#select_city').empty();
+//            $('#city').val("请选择");
+//            var _value = $(this).val();
+//            for(var _i = 0;_i < cityArr.length; _i ++){
+//                if(_value == cityArr[_i][0]){
+//                    var _cityArr = cityArr[_i];
+//                    for(var _j = 1; _j < _cityArr.length;_j++){
+//                        $("#select_city").prepend("<option value='"+_cityArr[_j]+"'>"+_cityArr[_j]+"</option>")
+//                    }
+//                }
+//            }
+//        });
 
         //省份改变市'
         $("#select_province").click(function(){
@@ -288,9 +288,9 @@ module.exports = {
             }
         });
 
-        $("#select_city").change(function(){
-            $(this).parent().find("input").val($(this).val());
-        });
+//        $("#select_city").change(function(){
+//            $(this).parent().find("input").val($(this).val());
+//        });
 
         $("#select_city").click(function(){
             $(this).parent().find("input").val($(this).val());
