@@ -36,6 +36,7 @@ module.exports={
             )
         });
 
+        var activitypic = []
         this.step(function(doc){
             //查找活动表对应的券图和描述
             var count = 0;
@@ -59,6 +60,7 @@ module.exports={
 
         this.step(function(list){
             nut.model.list = list;
+            console.log(nut.model.list)
         });
     },
     actions:{
@@ -89,7 +91,6 @@ module.exports={
                     },this.hold(function(err,doc){
                         doc = doc.replace(/[\n\r\t]/,'');
                         var doc_json = eval('(' + doc + ')');
-
                         var page = {};
                         page.lastPage = Math.ceil(doc_json.total/perPage);
                         page.currentPage = pageNum;
@@ -114,6 +115,7 @@ module.exports={
                                 if(detail){
                                     doc[i].pic = detail.pic;
                                     doc[i].introduction=detail.introduction
+                                    nut.model.introduction=detail.introduction
                                 }
                                 if(count == doc.length){
                                     list = doc

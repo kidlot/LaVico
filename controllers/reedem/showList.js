@@ -12,7 +12,7 @@ module.exports={
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    if(result.HaiLanMemberInfo){
+                    if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
                         return result.HaiLanMemberInfo.memberID;//获取会员ID
                     }else
                     {
@@ -66,6 +66,7 @@ module.exports={
                                     var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
                                     //还有剩余票可用
                                     if(stillUse>0){
+                                        console.log("asdasdsa:"+resultPoint);
                                         result[i].stillUse=stillUse;
                                         result[i].memberId=resultPoint[1];
                                         result[i].wechatId=seed.wechatId;

@@ -45,6 +45,11 @@ module.exports = {
 
             if(member_id == "undefined"){
                 //缺少微信ID参数，强制中断
+
+                //直接跳转
+                this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
+                this.res.end();
+
                 nut.disable();//不显示模版
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
                 this.res.write('{"error":"memberid_not_found"}');
