@@ -37,7 +37,8 @@
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th>名称</th>
+                <th>活动名称</th>
+                <th>优惠券名称</th>
                 <th>面值</th>
                 <th>参与人数</th>
                 <th>获得人数</th>
@@ -48,10 +49,11 @@
             <tbody>
             <tr>
                 <td>{@ doc.name}</td>
-                <td>{@ doc.QTY}</td>
+                <td>{@ doc.lottery[0].coupon_name}</td>
+                <td>{@ doc.lottery[0].QTY}</td>
                 <td>{@ doc.total}</td>
                 <td>{@ doc.sumFavorites}</td>
-                <td>{@ doc.lottery_chance}%</td>
+                <td>{@ doc.lottery[0].lottery_chance}%</td>
                 <td>{@ doc.reality_chance}%</td>
             </tr>
             </tbody>
