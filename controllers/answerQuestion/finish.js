@@ -239,8 +239,8 @@ module.exports={
                                 memo: memoString,
                                 openid: wechatid,
                                 otherPromId: _id,
-                                //PROMOTION_CODE:getActivities,
-                                PROMOTION_CODE: 'CQL201312230001',
+                                PROMOTION_CODE:getActivities,
+                                //PROMOTION_CODE: 'CQL201312230001',
                                 //qty:nowPromotion.coupons[0].QTY,
                                 point: getScore
                             }
