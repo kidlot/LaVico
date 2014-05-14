@@ -121,6 +121,25 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">商品描述</label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control postData" rows="3"  id="description" style="width: 300px" placeholder="商品描述">{@doc.description}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">活动说明</label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control postData" rows="3"  id="explanation" style="width: 300px" placeholder="活动说明">{@doc.explanation}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">免责声明</label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control postData" rows="3"  id="relief" style="width: 300px" placeholder="免责声明">{@doc.relief}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">礼品小图400*400</label>
                                             <div class="col-sm-10">
                                                 <div style="float:left;width:150px;height: 60px;padding-top: 30px">
@@ -305,7 +324,9 @@ function save ( ){
     aFormInput['needScore']=$("#"+aid).first().find("#needScore").val();//所需积分
     aFormInput['smallPic']=$("#"+aid).first().find("#smallPic").val();//小图片
     aFormInput['bigPic']=$("#"+aid).first().find("#bigPic").val();//大图片
-
+    aFormInput['description'] = $("#description").val().replace(/[\n\r\t]/,'<br/>');
+    aFormInput['relief'] = $("#relief").val().replace(/[\n\r\t]/,'<br/>');
+    aFormInput['explanation'] = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');
 
     if(_inputCheck){
         var oLinkOptions = {} ;
