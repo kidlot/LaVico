@@ -67,13 +67,12 @@ module.exports={
             }
 
             nut.model.docs=page.docs;
-
-            //nut.model.docs=themeArr;
         })
     },
     actions:{
         close:{
             process:function(seed,nut){
+                console.log("id:"+seed._id)
                 helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(seed._id)},this.hold(
                     function(err,doc){
                         if(err) throw err
