@@ -340,22 +340,25 @@ module.exports = {
               {
                 'wxid':$('#wxid').val(),
                 'email':email,
-                'profession':encodeURI(profession),
-                'province':encodeURI(province),
-                'city':encodeURI(city),
-                'address':encodeURI(address),
-                'favoriteStyle':encodeURI(favoriteStyle),
-                'favoriteColor':encodeURI(favoriteColor),
+                'profession':profession,
+                'province':province,
+                'city':city,
+                'address':address,
+                'favoriteStyle':favoriteStyle,
+                'favoriteColor':favoriteColor,
                 'memberID':$('#memberID').val()
               },
               function(data){
                 $("#loading").hide();
+
                 if(data.success == true){
                   $("#check_popup").show();
-                }else if(data.result == false){
-                   if((/[\u4e00-\u9fa5]+/).test(data.error)){
+                }else if(data.success == false){
+                   if((/[\u4e00-\u9fa5]+/).test(data.info)){
                        //如果输出的是汉字
-                      alert(data.error);
+                      alert(data.info);
+                   }else if(data.info == 'missing_parameter'){
+                      alert('提交失败，请稍后再尝试');
                    }else{
                       alert('网络不稳定，请稍后再尝试');
                    }
@@ -874,8 +877,14 @@ module.exports = {
                           this.res.end();
                           this.terminate();
                       }else if(dataJson.success == false){
+
+                          if((/[\u4e00-\u9fa5]+/).test(dataJson.error)){
+                              var _error = dataJson.error;
+                          }else{
+                              var _error = 'missing_parameter';
+                          }
                           this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                          this.res.write('{"success":false,"info":"missing_parameter"}');
+                          this.res.write('{"success":false,"info":"'+_error+'"}');
                           this.res.end();
                           this.terminate();
                       }else{

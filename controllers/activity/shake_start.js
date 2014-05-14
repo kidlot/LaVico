@@ -155,22 +155,21 @@ module.exports = {
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
         } else{
-            alert('not support mobile event');
+            alert('您的手机没法摇？那就直接点这里');
         }
 
         $(".mobile-btn").click(function(){
 
             mobileClickRight();
             setTimeout(function(){mobileClickLeft()},500);
-            setTimeout(function(){mobileClick()},1000);
-            shake();
+            setTimeout(function(){
+                mobileClick();
+                $('#loading').show();
+                setTimeout(function(){shake()},1000);
+            },1000);
 
         });
 
-
-        function loading(){
-            window.location.href="coupon_num3.html";
-        }
         function mobileClickRight(){
 
             $(".mobile-pic").addClass("box_rotate");
@@ -203,11 +202,12 @@ module.exports = {
 
                 if (speed > SHAKE_THRESHOLD) {
                     mobileClickRight();
-                    setTimeout(mobileClickLeft(),500);
-                    setTimeout(mobileClick(),1000);
-                    setTimeout(shake(),1500);
-                    //setTimeout(loading(),2000);
-
+                    setTimeout(function(){mobileClickLeft()},500);
+                    setTimeout(function(){
+                        mobileClick();
+                        $('#loading').show();
+                        setTimeout(function(){shake()},1000);
+                    },1000);
                 }
                 last_x = x;
                 last_y = y;

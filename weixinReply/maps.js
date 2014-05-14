@@ -25,7 +25,7 @@ exports.load = function () {
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
-                            console.log("所有门店返回")
+                            console.log("所有门店返回123")
                             if(err) throw err;
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
@@ -69,12 +69,15 @@ exports.load = function () {
                             reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
-                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";       
- 			replyArr.push(reply);
+
+                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
+                        if(i<10)
+                            replyArr.push(reply);
                     }
                 },
                 function(){
                     console.log(JSON.stringify(replyArr));
+                    console.log(res);
                     res.reply(replyArr);
                 }
             )()
