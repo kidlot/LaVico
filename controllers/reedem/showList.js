@@ -13,7 +13,7 @@ module.exports={
             helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    if(result.HaiLanMemberInfo){
+                    if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
                         return result.HaiLanMemberInfo.memberID;//获取会员ID
                     }else
                     {

@@ -15,6 +15,7 @@ module.exports = {
 
             nut.model.wxid = seed.wxid
             nut.model._id = seed._id
+            nut.model.source = seed.source||""
             nut.model.pageNum = parseInt(seed.pageNum) || 1
             nut.model.bigPicIndex = parseInt(seed.bigPicIndex) || 1
 

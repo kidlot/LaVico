@@ -9,7 +9,12 @@
         <p>
             <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}">{@ lookbookName}</a></span>
             <span class="title2">单品</span>
-            <span class="title6"><a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}','{@ product._id}')">收藏</a></span>
+            <span class="title6">
+
+                <if condition="@ source!='view'">
+                    <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}','{@ product._id}')">收藏</a>
+                </if>
+            </span>
         </p>
     </div>
     <div class="elite_img"><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" width="640px" height="869px"></div>
