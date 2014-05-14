@@ -69,79 +69,14 @@ exports.load = function () {
                             reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
+
                         reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
                         if(i<10)
-                        replyArr.push(reply);
+                            replyArr.push(reply);
                     }
                 },
                 function(){
                     console.log(JSON.stringify(replyArr));
-/*
-                    replyArr=[
-                        {
-                            "title": "上海东方商厦有限公司店距离:2.35公里",
-                            "description": "上海市曹溪北路8号东方商厦3楼男装部朗维高专柜",
-                            "picurl": "http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=HL11L     1"
-                        },
-                        {
-                            "title": "上海新世界店距离:7.67公里",
-                            "description": "上海市南京西路2-88号上海新世界4楼精品柜朗维高",
-                            "picurl": "http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=HL11M     1"
-                        },
-                        {
-                            "title": "上海八佰伴店距离:9.67公里",
-                            "description": "上海市浦东张扬路501号",
-                            "picurl": "http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=HL111     1"
-                        },
-                        {
-                            "title": "HARRODS LTD店距离:11966.38公里",
-                            "description": null,
-                            "picurl": "1",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=H0001     1"
-                        },
-                        {
-                            "title": "镇江百盛店距离:12969.69公里",
-                            "description": "镇江市中山东路214号3楼",
-                            "picurl": "http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=HL127     1"
-                        },
-                        {
-                            "title": "南京金鹰店距离:12969.69公里",
-                            "description": "南京市汉中路89号金鹰国际购物中心4F ",
-                            "picurl": "http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=HL12E     1"
-                        },
-                        {
-                            "title": "上海金鹰店距离:12969.69公里",
-                            "description": "上海市陕西北路278号5楼朗维高专柜",
-                            "picurl": "http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=HL101     1"
-                        }
-                        ,
-                        {
-                            "title": "上海友谊店距离:12969.69公里",
-                            "description": "上海长寿路1188号2楼",
-                            "picurl": "http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=HL011     1"
-                        },
-                        {
-                            "title": "上海友谊店距离:12969.69公里",
-                            "description": "上海长寿路1188号2楼",
-                            "picurl": "http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=HL011     1"
-                        },
-                        {
-                            "title": "HARRODS LTD店距离:11966.38公里",
-                            "description": null,
-                            "picurl": "1",
-                            "url": "http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE=H0001     1"
-                        }
-
-                    ]
-*/
                     res.reply(replyArr);
                 }
             )()

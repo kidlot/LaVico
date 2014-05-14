@@ -340,12 +340,12 @@ module.exports = {
               {
                 'wxid':$('#wxid').val(),
                 'email':email,
-                'profession':profession,
-                'province':province,
-                'city':city,
-                'address':address,
-                'favoriteStyle':favoriteStyle,
-                'favoriteColor':favoriteColor,
+                'profession':encodeURI(profession),
+                'province':encodeURI(province),
+                'city':encodeURI(city),
+                'address':encodeURI(address),
+                'favoriteStyle':encodeURI(favoriteStyle),
+                'favoriteColor':encodeURI(favoriteColor),
                 'memberID':$('#memberID').val()
               },
               function(data){

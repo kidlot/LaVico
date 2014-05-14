@@ -205,7 +205,9 @@ module.exports = {
                     mobileClickRight();
                     setTimeout(mobileClickLeft(),500);
                     setTimeout(mobileClick(),1000);
+                    setTimeout(shake(),1500);
                     //setTimeout(loading(),2000);
+
                 }
                 last_x = x;
                 last_y = y;
@@ -213,6 +215,7 @@ module.exports = {
             }
         }
         /*后端JS*/
+
         function shake(){
             if(!$("#uid").val() || !$("#aid").val()){
                 alert('请登陆微信后，参加我们的摇一摇活动');
@@ -233,13 +236,23 @@ module.exports = {
                     window.location.href="/lavico/activity/shake_end?uid="+$("#uid").val()+"&_id="+$("#aid").val()+"&coupon_no="+_coupon_no;
 
                 }else if(data.result == 'has-no-chance'){
-                    alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
+
+                    alert('今天的机会用完了，明天再来参加活动吧！');
+                    //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
+
+                }else if(data.result == 'cannot'){
+
+                    alert('活动到期关闭了，下次再来参加活动吧！');
+
+                }else if(data.result == 'something-error'){
+
+                    alert('活动到期关闭了，下次再来参加活动吧！');
+
                 }else{
                     alert('这次没摇到，要不再试一试？');
                 }
             })
         }
-
     }
 }
 function write_info(then,info){
