@@ -69,11 +69,12 @@ exports.load = function () {
                             reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
-                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
-                        replyArr.push(reply);
+                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";       
+ 			replyArr.push(reply);
                     }
                 },
                 function(){
+		    console.log(JSON.stringify(reply));
                     res.reply(replyArr);
                 }
             )()
