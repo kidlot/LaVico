@@ -29,15 +29,15 @@ module.exports={
         });
 
 
-        this.step(function(){
-            helper.db.coll("lavico/custReceive").count({"wechatid":wechatid,"themeId":helper.db.id(_id)},this.hold(function(err,doc){
-                if(err) throw err;
-                if(doc>0){
-                    this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
-                    this.res.end();
-                }
-            }))
-        })
+//        this.step(function(){
+//            helper.db.coll("lavico/custReceive").count({"wechatid":wechatid,"themeId":helper.db.id(_id)},this.hold(function(err,doc){
+//                if(err) throw err;
+//                if(doc>0){
+//                    this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
+//                    this.res.end();
+//                }
+//            }))
+//        })
 
 
 
