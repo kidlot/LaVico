@@ -214,7 +214,7 @@ module.exports = {
             }
         }
         /*后端JS*/
-,
+
         function shake(){
             if(!$("#uid").val() || !$("#aid").val()){
                 alert('请登陆微信后，参加我们的摇一摇活动');
@@ -237,9 +237,11 @@ module.exports = {
                 }else if(data.result == 'has-no-chance'){
 
                     alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
+
                 }else if(data.result == 'cannot'){
 
                     alert('活动到期关闭了，下次再参加活动吧！');
+
                 }else if(data.result == 'something-error'){
 
                     alert('活动到期关闭了，下次再参加活动吧！');
