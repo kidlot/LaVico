@@ -8,7 +8,7 @@ var shake = require("./weixinReply/shake.js") ;
 var lookbook = require("./weixinReply/lookbook.js") ;
 var maps = require("./weixinReply/maps.js") ;
 var rewriteWelab = require("./rewriteWelab.js") ;
-
+var sportsman = require("./weixinReply/sportsman.js")
 exports.onload = function(application){
 
 
@@ -31,6 +31,9 @@ exports.onload = function(application){
 
     //门店查询
     maps.load();
+
+    //型男测试
+    sportsman.load();
 
 
 
