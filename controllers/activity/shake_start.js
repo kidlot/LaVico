@@ -163,7 +163,8 @@ module.exports = {
             mobileClickRight();
             setTimeout(function(){mobileClickLeft()},500);
             setTimeout(function(){mobileClick()},1000);
-            shake();
+            setTimeout(shake(),1500);
+
 
         });
 
