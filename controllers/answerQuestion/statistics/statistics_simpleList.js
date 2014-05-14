@@ -56,8 +56,8 @@ module.exports={
     actions:{
         exportXsl:{
             process:function(seed,nut){
-                console.log(seed.themeId)
-                console.log(seed.optionId)
+                //console.log(seed.themeId)
+                //console.log(seed.optionId)
 
                 var then=this
                 var themeId=seed.themeId

@@ -4,7 +4,7 @@ module.exports={
     view:"lavico/templates/store/store_num2.html",
     process:function(seed,nut){
         //接口读取门店列表(设置1000代表每页条数，即一次性全部返回)
-        console.log(seed.wxid);
+        //console.log(seed.wxid);
         nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
         this.step(function(){
             var jsonData={}
@@ -13,7 +13,7 @@ module.exports={
             //接口返回的doc都是字符串
             middleware.request('Shops',jsonData,
                 this.hold(function(err,doc){
-                    console.log("doc:"+doc);
+                    //console.log("doc:"+doc);
                     if(err) throw err;
                     return JSON.parse(doc);//注意字符串和对象格式
                 })

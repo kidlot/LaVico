@@ -106,7 +106,7 @@ module.exports={
             }))
         })
         this.step(function(){
-            console.log(reedemJson);
+            //console.log(reedemJson);
             nut.model.reedemJson=reedemJson;
             nut.model.wechatId=seed.wechatId;
         })
@@ -170,13 +170,14 @@ module.exports={
 
                 this.step(function(){
                     //提交给接口
-                    console.log("wechatId:"+wechatId)//不删
+                    //console.log("wechatId:"+wechatId)//不删
                     //拿优惠券
                     var params={};
                     params.meno='积分兑换-'+t_name;
                     params.openid=wechatId;
                     params.otherPromId=id;
-                    params.PROMOTION_CODE='CQL201404280005';//aid:测试号
+                    params.PROMOTION_CODE=aid;
+                    //params.PROMOTION_CODE='CQL201404280005';//aid:测试号
                     params.point=0-needScore;
                     //调用接口：提交扣除积分和兑换奖券
                     middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
@@ -273,7 +274,7 @@ function write_info(then,info){
 }
 
 function write_info_txt(then,info){
-    console.log(info)
+    //console.log(info)
     then.res.writeHead(200,{"Content-Type":"text/plain;charset=utf-8"});
     then.res.write(info);
     then.res.end();

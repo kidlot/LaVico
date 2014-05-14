@@ -13,8 +13,8 @@ module.exports={
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    if(result.HaiLanMemberInfo){
-                        return result.HaiLanMemberInfo.memberID;//获取会员ID
+                    if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
+                        //return result.HaiLanMemberInfo.memberID;//获取会员ID
                     }else
                     {
                         this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
@@ -27,6 +27,20 @@ module.exports={
                 }
             }))
         });
+
+
+        this.step(function(){
+            helper.db.coll("lavico/custReceive").count({"wechatid":wechatid,"themeId":helper.db.id(_id)},this.hold(function(err,doc){
+                if(err) throw err;
+                if(doc>0){
+                    this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
+                    this.res.end();
+                }
+            }))
+        })
+
+
+
 
         this.step(function(){
             //判断活动是否开启或到期1-1
@@ -55,7 +69,7 @@ module.exports={
                                 nut.model.optionId=i+1;
                                 nut.model._id=_id;
                                 nut.model.optionCount=cursor.options.length;//此题目总共有题数
-                                console.log(wechatid)
+                                //console.log(wechatid)
                                 nut.model.wechatid=wechatid;
                             }
                         }

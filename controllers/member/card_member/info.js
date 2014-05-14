@@ -138,11 +138,19 @@ module.exports = {
 
         /*设计前端JS*/
 
-        $("#select_profession").change(function(){
+//        $("#select_profession").change(function(){
+//            $(this).parent().find("input").val($(this).val());
+//        });
+
+        $("#select_profession").click(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
-        $("#select_favoriteStyle").change(function(){
+//        $("#select_favoriteStyle").change(function(){
+//            $(this).parent().find("input").val($(this).val());
+//        });
+
+        $("#select_favoriteStyle").click(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
@@ -249,7 +257,23 @@ module.exports = {
         }
 
         //省份改变市'
-        $("#select_province").change(function(){
+//        $("#select_province").change(function(){
+//            $(this).parent().find("input").val($(this).val());
+//            $('#select_city').empty();
+//            $('#city').val("请选择");
+//            var _value = $(this).val();
+//            for(var _i = 0;_i < cityArr.length; _i ++){
+//                if(_value == cityArr[_i][0]){
+//                    var _cityArr = cityArr[_i];
+//                    for(var _j = 1; _j < _cityArr.length;_j++){
+//                        $("#select_city").prepend("<option value='"+_cityArr[_j]+"'>"+_cityArr[_j]+"</option>")
+//                    }
+//                }
+//            }
+//        });
+
+        //省份改变市'
+        $("#select_province").click(function(){
             $(this).parent().find("input").val($(this).val());
             $('#select_city').empty();
             $('#city').val("请选择");
@@ -264,7 +288,11 @@ module.exports = {
             }
         });
 
-        $("#select_city").change(function(){
+//        $("#select_city").change(function(){
+//            $(this).parent().find("input").val($(this).val());
+//        });
+
+        $("#select_city").click(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
@@ -523,10 +551,10 @@ module.exports = {
 
 
                             if(memberIDArr[_i] == _member_id){
-                                console.log('memberIDArr['+_i+']:'+memberIDArr[_i]);
-                                console.log('_member_id:'+_member_id);
-                                console.log('_field_name:'+_field_name);
-                                console.log('_new_value:'+_new_value);
+                                //console.log('memberIDArr['+_i+']:'+memberIDArr[_i]);
+                                //console.log('_member_id:'+_member_id);
+                                //console.log('_field_name:'+_field_name);
+                                //console.log('_new_value:'+_new_value);
 
                                 //FIELD_NAME 字段名字 : MEM_PSN_CNAME -->会员姓名（中文）
                                 /*
@@ -817,11 +845,11 @@ module.exports = {
                     'color':seed.favoriteColor
                 }
                 /*提交审核*/
-                console.log(data_submit_checekd);
+                //console.log(data_submit_checekd);
                 middleware.request("Member/SaveInfo/"+memberID,
                   data_submit_checekd,
                   this.hold(function(err,doc){
-                      console.log(doc);
+                      //console.log(doc);
                       dataJson = JSON.parse(doc);
 
                       /*记录用户操作行为*/
