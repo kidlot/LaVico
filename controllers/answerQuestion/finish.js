@@ -71,6 +71,7 @@ module.exports={
                         //获取三个奖励
                         var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
                         var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
+                        //console.log("getScore:"+getScore)
                         var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
                         var getTipContent= scoreRange[i].tipContent==""?"":scoreRange[i].tipContent;
                         var nowPromotion;
@@ -91,16 +92,19 @@ module.exports={
                             var jsonData = {
                                 openid: wechatid,
                                 otherPromId: _id,
-                                PROMOTION_CODE: 'CQL201312230001',
+                                PROMOTION_CODE: getActivities,
+                                //PROMOTION_CODE:"L2013112709",
                                 memo: memoString,
                                 point: getScore
                             }
-
+                            //console.log("jsonData:"+jsonData.openid,jsonData.otherPromId,jsonData.memo,jsonData.point)
                             then.step(function () {
                                 middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                     if (err) throw err;
                                     //console.log("doc:"+doc);//doc:{"success":true,"coupon_no":"AVL1220403200016"}
                                     var docJson = JSON.parse(doc)
+                                    //console.log("doc:"+docJson.success);
+                                    //console.log("sss:"+doc);
                                     if (docJson.success) {
                                         newActivity = docJson.coupon_no
                                         nut.model.err = docJson.success
