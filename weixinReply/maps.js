@@ -77,6 +77,7 @@ exports.load = function () {
                 },
                 function(){
                     console.log(JSON.stringify(replyArr));
+                    console.log(res);
                     res.reply(replyArr);
                 }
             )()
