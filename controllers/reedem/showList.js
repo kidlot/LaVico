@@ -176,7 +176,8 @@ module.exports={
                     params.meno='积分兑换-'+t_name;
                     params.openid=wechatId;
                     params.otherPromId=id;
-                    params.PROMOTION_CODE='CQL201404280005';//aid:测试号
+                    params.PROMOTION_CODE=aid;
+                    //params.PROMOTION_CODE='CQL201404280005';//aid:测试号
                     params.point=0-needScore;
                     //调用接口：提交扣除积分和兑换奖券
                     middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
