@@ -11,7 +11,7 @@
         <div class="col-md-12">
             <br>
             <div style="min-height: 70px;">
-                <input type="button" value="保存" name="btnSave" class="btn btn-embossed btn-primary"  style="float: right; margin-left: 300px;">
+                <input type="button" value="保存" name="btnSave" class="btn btn-embossed btn-primary" onclick="save()" style="float: right; margin-left: 300px;">
             </div>
             <form class="form-horizontal" role="form">
                 <div class="form-group">
@@ -36,3 +36,21 @@
         </div>
     </div>
 </div>
+        <script>
+            function save(){
+                var oLinkOptions = {};
+                var description = $("#description").val().replace(/[\n\r\t]/,'<br/>');
+                var relief = $("#relief").val().replace(/[\n\r\t]/,'<br/>');
+                var explanation = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');
+                oLinkOptions.data = [{name:'description',value:description},
+                    {name:"relief",value:relief},
+                    {name:"explanation",value:explanation}];
+                oLinkOptions.type = "POST";
+                oLinkOptions.url = "/lavico/answerQuestion/RuleDescription:save";
+                $.request(oLinkOptions,function(err,nut){
+                    if(err) throw err ;
+                    nut.msgqueue.popup();
+                    $.controller("/lavico/answerQuestion/themeList",null,"lazy");
+                });
+            }
+        </script>

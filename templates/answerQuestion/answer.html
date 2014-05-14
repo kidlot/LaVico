@@ -1,7 +1,7 @@
 <style>
     ul{list-style: none}
     ul li{padding: 20 0 0 0;}
-    #chooseNa{font-size: 50px;}
+    #chooseNa{font-size: 25px;}
     #picImg{padding-top:  20px;}
     #sed{padding: 20 0 0 0;}
     #tip{font-size: 30px; text-align: center;}
@@ -233,7 +233,7 @@ window.onload=build;
     <div id="tip"></div>
     <div class="answer">
 
-        <div class='answer-content'><div class='title' style="font-size: 50px;"></div>
+        <div class='answer-content'><div class='title' style="font-size: 26px;"></div>
             <div class="content">
                 <ul>
                 </ul>
@@ -243,7 +243,8 @@ window.onload=build;
 
     <div class="pages">
         <div class="pages-content">
-            <a class="fl pre" href="javascript:"> < 上一题</a>
+            <input type="button" onclick="history.back()" name="btnBack" value=" 上一题" class="fl pre"/>
+            <!--<a class="fl pre" href="history.back()"> < 上一题</a>-->
             <if condition="{@optionCount!=optionId}">
                 <a class="fr next" href="javascript:nextChoose()">下一题 > </a>
                 <else/>
