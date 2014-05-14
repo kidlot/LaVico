@@ -837,14 +837,16 @@
                             所获积分:<input type='text' name='getScore' value='{@doc.getScore}' class="form-control input-sm" style="width: 150px">
                             所获奖券:
                             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
+                                <option value="-1">无卷</option>
                                 <foreach for="{@doc_json.list}" var="docListOne">
                                     <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
                                 </foreach>
                             </select>
                             <br>标签文本设置:
-                            <textarea rows="5" cols="80" name="tipContent" id="tipContent" class="form-control input-sm" style="width: 550px">
-                                {@doc.tipContent}
-                            </textarea>
+                            <textarea  rows="5" cols="80" class="form-control input-sm"  name="tipContent" rows="3"  id="tipContent" style="width: 550px">{@doc.tipContent}</textarea>
+                            <!--<textarea rows="5" cols="80" name="tipContent" id="tipContent" class="form-control input-sm" style="width: 550px">-->
+                                <!--{@doc.tipContent}-->
+                            <!--</textarea>-->
                         </div>
                     </div>
 
@@ -1197,14 +1199,13 @@
             所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px">
             所获奖券:
             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
+                <option value="-1">无卷</option>
                 <foreach for="{@doc_json.list}" var="docListOne">
                     <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
                 </foreach>
             </select>
             <br>标签文本设置:
-            <textarea rows="5" cols="80" name="tipContent" id="tipContent" class="form-control input-sm" style="width: 550px">
-
-            </textarea>
+            <textarea  rows="5" cols="80" class="form-control input-sm"  name="tipContent" rows="3"  id="tipContent" style="width: 550px"></textarea>
         </div>
     </div>
 </div>
