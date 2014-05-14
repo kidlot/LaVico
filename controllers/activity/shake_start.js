@@ -57,6 +57,7 @@ module.exports = {
                     return;
                 }
                 var shake;
+                var returnCount;//返回多少次机会
                 this.step(function(){
                     helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
                         shake = doc;
@@ -89,12 +90,17 @@ module.exports = {
                     }
                     helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
                         count = doc;
+                        console.log('+++++++++++++++++');
                         console.log(doc);
                         console.log('+++++++++++++++++');
                     }));
                 })
                 this.step(function(){
+
+                    returnCount = shake.lottery_count - count;
+
                     if(count >= shake.lottery_count){
+
                         write_info(then,'{"result":"has-no-chance"}');
                     }
                 })
@@ -108,7 +114,6 @@ module.exports = {
                     activity.QTY = shake.QTY;
                     activity.createDate = new Date().getTime();
 
-                    var _aid = 'CQL201404280005';//临时测试用的活动代码，实际为：shake.aid
                     console.log(Math.floor(Math.random()*100+1));
                     console.log(shake);
                     console.log(shake.lottery);
@@ -143,7 +148,7 @@ module.exports = {
                         helper.db.coll('shake/shake').insert(activity,function(err,doc){
                             err&&console.log(doc);
                         });
-                        write_info(then,'{"result":"unwin"}');
+                        write_info(then,'{"result":"unwin","count":"'+returnCount+'"}');
                     }
                 })
             }
@@ -247,6 +252,11 @@ module.exports = {
                 }else if(data.result == 'something-error'){
 
                     alert('活动到期关闭了，下次再来参加活动吧！');
+
+                }else if(data.result == 'unwin'){
+
+                    var _i = data.count;
+                    alert('这次没摇到，要不再试一试？还有'+_i+'次机会！');
 
                 }else{
                     alert('这次没摇到，要不再试一试？');
