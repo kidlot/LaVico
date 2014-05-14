@@ -18,18 +18,18 @@
     <foreach for="@page" var="onef">
         <tr class="borderBtm">
             <td class="width50"><input type="checkbox" name="all"></input></td>
-            <td class="width50">{@onef.createTime}</td>
+            <td class="width50">{@(new Date(onef.createTime)).getFullYear()}-{@(new Date(onef.createTime)).getMonth()}-{@(new Date(onef.createTime)).getDate()}</td>
             <td class="width100">{@onef.realname}</td>
             <td class="width50">{@onef.gender=="male"?"男":"女"}</td>
             <td class="width50">
             <script>
-                document.write(new Date().getFullYear()-new Date({@onef.birthday}).getFullYear())
+                document.write(new Date().getFullYear()-{@(new Date(onef.birthday)).getFullYear()})
             </script>
             </td>
             <td class="width50">{@onef.city}</td>
             <td class="width50">{@onef.getGift}</td>
             <td class="width50">{@onef.getLabel}</td>
-            <td class="width50">{@onef.realname}</td>
+            <td class="width50">{@onef.compScore}</td>
         </tr>
     </foreach>
     </table>
