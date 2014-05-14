@@ -61,6 +61,8 @@ module.exports = {
                 middleware.request( "Point/"+member_id,{},this.hold(function(err,doc){
 
                     var dataJson = JSON.parse(doc);
+                    console.log(dataJson);
+
                     if(dataJson.hasOwnProperty('point')){
                         //当前积分
                         if(parseInt(dataJson.point) === 0){
@@ -69,8 +71,10 @@ module.exports = {
                             //this.terminate();
 
                         }else if(parseInt(dataJson.point) < 0){
+
                             nut.model.remaining = dataJson.point;
                         }else{
+
                             nut.model.remaining = '+' + dataJson.point;
                         }
 
@@ -251,7 +255,7 @@ function   formatDate(now){
     var   hour=now.getHours();
     var   minute=now.getMinutes();
     var   second=now.getSeconds();
-    return   year+"年"+month+"月";
+    return   year+"年"+month+"月"+date+"日"+'&nbsp;'+hour+':'+minute+':'+second;
 }
 function contains(arr, obj) {
     var i = arr.length;
