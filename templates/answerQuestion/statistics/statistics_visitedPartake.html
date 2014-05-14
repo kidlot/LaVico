@@ -38,11 +38,11 @@
             <tr class="borderBtm">
                 <td class="width50"><input type="checkbox" name="all"></input></td>
                 <td class="width50">{@people.realname}</td>
-                <td class="width100">{@people.gender}</td>
+                <td class="width100">{@people.gender=="male"?"男":"女"}</td>
                 <td class="width50">{@people.mobile}</td>
                 <td class="width50">{@people.email}</td>
                 <td class="width50">{@people.profession}</td>
-                <td class="width50">{@people.city},{}</td>
+                <td class="width50">{@people.city}</td>
             </tr>
         </foreach>
     </table>
