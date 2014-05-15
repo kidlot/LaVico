@@ -17,8 +17,8 @@
         <div>参与过的人</div>
         <div>
             <a href="/lavico/answerQuestion/statistics/statistics_oneDetail:exportXsl?_id={@_id}" target="_blank">全部导出</a>&nbsp;
-            <foreach for="{@theme}" var="docc">
-                <if condition="{@docc.options.type} ==2">
+            <foreach for="{@theme.type}" var="docc">
+                <if condition="{@docc==2}">
                     <a href="/lavico/answerQuestion/statistics/statistics_simpleList?themeId={@_id}&optionId={@optionId}" target="_blank">显示用户答案</a>
                 </if>
             </foreach>

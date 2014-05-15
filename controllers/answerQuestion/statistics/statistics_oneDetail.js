@@ -77,7 +77,8 @@ module.exports={
                         var themeQuestion = {}
                         themeQuestion.themeType = doc.themeType
                         themeQuestionList.push(themeQuestion)
-                        nut.model.theme = themeQuestionList
+                        nut.model.theme = doc.options
+                        console.log(nut.model.theme)
                     }))
                 })
 
