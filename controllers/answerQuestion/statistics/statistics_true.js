@@ -183,10 +183,16 @@ module.exports={
                         conf.rows = [];
                         for(var i in finishMan){
                            var rows
+                            var createtime = new Date(finishMan[i].createTime)).getFullYear()}-(new Date(finishMan[i].createTime)).getMonth()-(new Date(finishMan[i].createTime)).getDate();
+                        var birthday = new Date().getFullYear()-(new Date(finishMan[i].birthday)).getFullYear();
                            rows = [
-                                finishMan[i].createTime=new Date(finishMan[i].createTime)).getFullYear()}-(new Date(finishMan[i].createTime)).getMonth()-(new Date(finishMan[i].createTime)).getDate(),
+                               //=new Date(finishMan[i].createTime)).getFullYear()}-(new Date(finishMan[i].createTime)).getMonth()-(new Date(finishMan[i].createTime)).getDate()
+                               //=new Date().getFullYear()-(new Date(finishMan[i].birthday)).getFullYear()
+                                //finishMan[i].createTime,
+                               createtime,
                                 finishMan[i].realname,
-                                finishMan[i].birthday=new Date().getFullYear()-(new Date(finishMan[i].birthday)).getFullYear(),
+                                //finishMan[i].birthday,
+                               birthday,
                                 if((typeof(finishMan[i].city)=="undefined"){
                                     finishMan[i].city,
                                 }else{
