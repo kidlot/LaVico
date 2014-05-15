@@ -80,6 +80,34 @@ module.exports={
                         var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
                         var getTipContent= scoreRange[i].tipContent==""?"":scoreRange[i].tipContent;
                         var nowPromotion;
+
+                        if(themeType==1){
+                            then.step(function(){
+                                //根据姓名和电话查memberId
+                                helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
+                                    this.hold(function(err,result){
+                                        if(err) throw err;
+                                        if(result){
+                                            return result.HaiLanMemberInfo.memberID
+                                        }
+                                    })
+                                )
+                            })
+
+                            then.step(function(memberId){
+                                //根据memberId调用接口给账户加分
+                                var jsonData={};
+                                jsonData.memberId=memberId;
+                                jsonData.qty=compScore;
+                                console.log("jsonData:"+jsonData.memberId,jsonData.qty)
+                                middleware.request('Point/Change',jsonData,
+                                    this.hold(function(err,doc){
+                                        if(err) throw err;
+                                        console.log("doc:"+doc);
+                                    })
+                                )
+                            })
+                        }else{
                         for(var j=0;j<doc_json.list.length;j++){
                             if(doc_json.list[j].PROMOTION_CODE==getActivities){
                                 nowPromotion=doc_json.list[j]
@@ -127,6 +155,7 @@ module.exports={
                                 }));
                             })
                         }
+                        }
 
                         then.step(function(){
                             helper.db.coll("lavico/custReceive").insert({
@@ -172,31 +201,7 @@ module.exports={
 
             /*quest add points by david.xu*/
 
-            this.step(function(){
-                //根据姓名和电话查memberId
-                helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
-                    this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result){
-                            return result.HaiLanMemberInfo.memberID
-                        }
-                    })
-                )
-            })
 
-            this.step(function(memberId){
-                //根据memberId调用接口给账户加分
-                var jsonData={};
-                jsonData.memberId=memberId;
-                jsonData.qty=compScore;
-                console.log("jsonData:"+jsonData.memberId,jsonData.qty)
-                middleware.request('Point/Change',jsonData,
-                    this.hold(function(err,doc){
-                        if(err) throw err;
-                        console.log("doc:"+doc);
-                    })
-                )
-            })
 
         }else{
             //停止标签过来
@@ -261,6 +266,38 @@ module.exports={
                                 nowPromotion=doc_json.list[j]
                             }
                         }
+
+                        if(themeType==1){
+                            then.step(function(){
+                                //根据姓名和电话查memberId
+                                helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
+                                    this.hold(function(err,result){
+                                        if(err) throw err;
+                                        if(result){
+                                            return result.HaiLanMemberInfo.memberID
+                                        }
+                                    })
+                                )
+                            })
+
+                            then.step(function(memberId){
+                                //根据memberId调用接口给账户加分
+                                var jsonData={};
+                                jsonData.memberId=memberId;
+                                jsonData.qty=compScore;
+                                console.log("jsonData:"+jsonData.memberId,jsonData.qty)
+                                middleware.request('Point/Change',jsonData,
+                                    this.hold(function(err,doc){
+                                        if(err) throw err;
+                                        console.log("doc:"+doc);
+                                    })
+                                )
+                            })
+                        }else{
+
+
+
+
 
                         if(typeof(getActivities)!="undefined" || getActivities!="") {
                             var newActivity//服务器返回的券
@@ -340,6 +377,7 @@ module.exports={
 
                             })
                             //调用接口结束
+                        }
                         }
                     }
                     //判断是否有session自定义标签
