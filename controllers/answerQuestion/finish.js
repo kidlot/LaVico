@@ -172,31 +172,31 @@ module.exports={
 
             /*quest add points by david.xu*/
 
-            this.step(function(){
-                //根据姓名和电话查memberId
-                helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
-                    this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result){
-                            return result.HaiLanMemberInfo.memberID
-                        }
-                    })
-                )
-            })
-
-            this.step(function(memberId){
-                //根据memberId调用接口给账户加分
-                var jsonData={};
-                jsonData.memberId=memberId;
-                jsonData.qty=compScore;
-                console.log("jsonData:"+jsonData.memberId,jsonData.qty)
-                middleware.request('Point/Change',jsonData,
-                    this.hold(function(err,doc){
-                        if(err) throw err;
-                        console.log("doc:"+doc);
-                    })
-                )
-            })
+//            this.step(function(){
+//                //根据姓名和电话查memberId
+//                helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
+//                    this.hold(function(err,result){
+//                        if(err) throw err;
+//                        if(result){
+//                            return result.HaiLanMemberInfo.memberID
+//                        }
+//                    })
+//                )
+//            })
+//
+//            this.step(function(memberId){
+//                //根据memberId调用接口给账户加分
+//                var jsonData={};
+//                jsonData.memberId=memberId;
+//                jsonData.qty=compScore;
+//                console.log("jsonData:"+jsonData.memberId,jsonData.qty)
+//                middleware.request('Point/Change',jsonData,
+//                    this.hold(function(err,doc){
+//                        if(err) throw err;
+//                        console.log("doc:"+doc);
+//                    })
+//                )
+//            })
 
         }else{
             //停止标签过来
