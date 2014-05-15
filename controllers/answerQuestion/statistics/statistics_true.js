@@ -186,7 +186,7 @@ module.exports={
                            rows = [
                                 finishMan[i].createTime=new Date(finishMan[i].createTime)).getFullYear()}-(new Date(finishMan[i].createTime)).getMonth()-(new Date(finishMan[i].createTime)).getDate(),
                                 finishMan[i].realname,
-                                finishMan[i].birthday=,
+                                finishMan[i].birthday=new Date().getFullYear()-(new Date(finishMan[i].birthday)).getFullYear(),
                                 if((typeof(finishMan[i].city)=="undefined"){
                                     finishMan[i].city,
                                 }else{
