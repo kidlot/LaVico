@@ -9,6 +9,7 @@
 
 <script>
 var jsonObject=JSON.parse('{@option}');//获取此题
+var themeType = '{@themeType}';
 var _id='{@_id}';//获取题ID
 var optionCount={@optionCount};//获取题组总题数
 var wechatid='{@wechatid}';//获取微信ID
@@ -105,7 +106,11 @@ function showCorrent(t){
     $(t).next().find("span").addClass("select");
 
     //$("span[name='correntImg']").show();
-    $("span[name='correntImg']").css("visibility","visible");
+    if(themeType==1){
+        $("span[name='correntImg']").css("visibility","hidden");
+    }else{
+        $("span[name='correntImg']").css("visibility","visible");
+    }
     $("input[name='singleChooseInput']").attr("disabled",true);
     //追加cookie
     var date=new Date();
@@ -233,7 +238,7 @@ window.onload=build;
     <div id="tip"></div>
     <div class="answer">
 
-        <div class='answer-content'><div class='title' style="font-size: 26px;"></div>
+        <div class='answer-content'><div class='title' style="font-size: 35px;"></div>
             <div class="content">
                 <ul>
                 </ul>

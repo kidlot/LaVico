@@ -49,6 +49,7 @@ module.exports={
                 beginTime=doc.beginTime;
                 endTime=doc.endTime;
                 isOpen=doc.isOpen;
+                nut.model.themeType = doc.themeType;
             }));
         });
         this.step(function(){
