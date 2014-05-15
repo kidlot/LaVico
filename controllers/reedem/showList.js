@@ -30,12 +30,15 @@ module.exports={
 
         this.step(function(memberId){
             //调用接口:获取会员积分
-            console.log("memberId:"+memberId);
+            //console.log("memberId:"+memberId);
             if(memberId){
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
-                    if(err) throw err;
-                    console.log("会员积分err:"+err);
-                    console.log("会员积分:"+result);
+                    if(err){
+                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
+                        this.res.end();
+                    }
+                    //console.log("会员积分err:"+err);
+                    //console.log("会员积分:"+result);
                     if(result){
                         var resultJson=JSON.parse(result);
                         return [resultJson.point,memberId]//json数组双传值，数组格式
