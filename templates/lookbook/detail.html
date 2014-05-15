@@ -14,7 +14,7 @@
                     <div class="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
                         <foreach for="@doc.product" var="doc2">
                             <div class="item">
-                                <div class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}" width="188px" height="244px"></a></div>
+                                <div class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></div>
                             </div>
                         </foreach>
                     </div>
@@ -41,7 +41,7 @@
             <foreach for="@allPage.page" var="page" key="key">
                 <div class="elite_list">
                     <div class="small_list_top">
-                        <img src="{@page.pic||'/lavico/public/images/small_list_top.jpg'}" width="606px" height="380px">
+                        <img src="{@page.pic||'/lavico/public/images/small_list_top.jpg'}" width="606" height="380">
                         <span class="content_up"><a href="javascript:;" onclick="showContent('{@key}');" class="ui-link"><img class="img_1" src="/lavico/public/images/up.png"></a></span>
                         <div class="small_content num_{@key}" style="display: none;">
                             {@ page.detail}
@@ -52,7 +52,7 @@
                         <foreach for="@page.product" var="product">
                             <div class="small_image">
                                 <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}">
-                                    <img src="{@ product.pic}" class="exchangebtn" width="180px" height="230px">
+                                    <img src="{@ product.pic}" class="exchangebtn">
                                 </a>
                             </div>
                         </foreach>
@@ -83,7 +83,7 @@
                                 <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
                                     <div class="boxcontent">
                                         <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
-                                        <img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" class="exchangebtn" width="293px">
+                                        <img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" class="exchangebtn" width="293">
                                         <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png"></div>
                                         <div class="elite_list_title">{@page.name}</div>
                                     </div>
@@ -99,7 +99,7 @@
                                 <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
                                     <div class="boxcontent">
                                         <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
-                                        <img src="{@page.pic}" class="exchangebtn" width="293px"><div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png"></div>
+                                        <img src="{@page.pic}" class="exchangebtn" width="293"><div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png"></div>
                                         <div class="elite_list_title">{@page.name}</div> </div>
                                     <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
                             </div>
