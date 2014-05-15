@@ -190,12 +190,31 @@ module.exports={
 
                     for(var i in visitePeopleList){
                         var rows
+                        var email
+                        if(typeof (visitePeopleList[i].email)=="undefined"){
+                            email=""
+                        }else{
+                            email= visitePeopleList[i].email
+                        }
+                        var profession
+                        if(typeof (visitePeopleList[i].profession)=="undefined"){
+                            profession=""
+                        }else{
+                            profession= visitePeopleList[i].profession
+                        }
+                        var gender
+                        if(typeof (visitePeopleList[i].gender)=="female"){
+                            gender="女"
+                        }else{
+                            gender= "男"
+                        }
+
                         rows = [
                             visitePeopleList[i].realname,
-                            visitePeopleList[i].gender,
+                            gender,
                             visitePeopleList[i].mobile,
-                            visitePeopleList[i].email,
-                            visitePeopleList[i].profession,
+                            email,
+                            profession,
                             visitePeopleList[i].city
                         ]
                         conf.rows.push(rows)

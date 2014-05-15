@@ -184,25 +184,16 @@ module.exports={
                         for(var i in finishMan){
                             var rows
                             var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+new Date(finishMan[i].createTime).getMonth()+"-"+new Date(finishMan[i].createTime).getDate();
-                        var birthday = new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear();
+                        var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
                             var city
                             if(typeof (finishMan[i].city)=="undefined"){
-                                city=finishMan[i].city
+                                city=""
                             }else{
                                 city= finishMan[i].city
                             }
-//                            if(typeof(finishMan[i].city)=="undefined"){
-//                                city=finishMan[i].city
-//                            }else{
-//                                city= finishMan[i].city
-//                            }
                            rows = [
-                               //=new Date(finishMan[i].createTime)).getFullYear()}-(new Date(finishMan[i].createTime)).getMonth()-(new Date(finishMan[i].createTime)).getDate()
-                               //=new Date().getFullYear()-(new Date(finishMan[i].birthday)).getFullYear()
-                                //finishMan[i].createTime,
                                createtime,
                                 finishMan[i].realname,
-                                //finishMan[i].birthday,
                                birthday,
                                city,
                                 finishMan[i].getGift,
