@@ -61,7 +61,6 @@ module.exports = {
 
             if(member_id == "undefined"){
                 //缺少微信ID参数，强制中断
-
                 //直接跳转
                 nut.disable();//不显示模版
                 //this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
