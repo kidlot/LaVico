@@ -1,5 +1,7 @@
 ﻿@charset "utf-8";
 body{ background:#dcdcdc;}
+/*个人中心*/
+a.tel{color:#2d2d2d;}
 /*活动规则*/
 .wrapper{width:640px; margin:0 auto; position:relative;}
 .coupon-banner{width:100%; height:323px; padding-top:20px; padding-bottom:20px;}
