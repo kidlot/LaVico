@@ -103,6 +103,7 @@ module.exports = {
                         dataArr[_i].formatTime = formatDate(new Date(dataArr[_i].createDate));
                         dataArr[_i].year = new Date(dataArr[_i].createDate).getFullYear();
                         dataArr[_i].month = new Date(dataArr[_i].createDate).getMonth() + 1;
+                        dataArr[_i].day = new Date(dataArr[_i].createDate).getDate();
                         dataArr[_i].yearmonth = dataArr[_i].year+'-'+dataArr[_i].month;
                         dataArr[_i].type = 'data';
                     }
