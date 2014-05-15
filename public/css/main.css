@@ -315,7 +315,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite_title .title5 a{width:135px;padding-left:25px; display:inline-block;color:#fff; font-size:16px;  height:20px; line-height:20px; background:url(../images/store_jt.jpg) left center no-repeat; margin-left:25px;}
 .elite_title .title6 a{ float:right;width:135px; margin-top:0; margin-right:25px; vertical-align:middle; text-align:right; padding-right:25px; display:inline-block;color:#fff; font-size:16px;  height:20px; line-height:20px; background:url(../images/store_rt.jpg) right center no-repeat;}
 
-.intros{ position:absolute; bottom:0; z-index:100; margin:0 auto; text-align:left; height:125px; width:540px; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding: 40px 50px;}
+.intros{ position:fixed; bottom:0; z-index:100; margin:0 auto; text-align:left; height:125px; width:540px; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding: 40px 50px;}
 .intros .title{font-size: 25px;color: #B9954D;line-height: 45px;}
 .intros .content{font-size: 20px;color: #B9954D;}
 .elite_img img{ width:100%; margin-top:60px;}
