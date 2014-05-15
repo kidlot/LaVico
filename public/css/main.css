@@ -293,7 +293,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .match .banner{width:608px; height:400px; margin:0 auto;}
 .match .roll-banner{padding-left:16px;width:610px; height:auto; overflow:hidden; position:relative; margin-top:30px;}
 .match .roll-banner .img{width:100%;height:auto; background:url(../images/elite_home_j.png) bottom center no-repeat; padding-bottom:13px; }
-.match .roll-banner .img{ width:100% ;}
+.match .roll-banner img{ width:100% ;}
 .match .intro-text{width:100%; height:218px; background:url(../images/match_bg.jpg) no-repeat; margin-top:20px; padding-top:40px; position:relative;}
 .match .intro-text .text{width:430px; margin:0 auto; font-size:25px; color:#BA9E70;}
 .match .intro-text .arrow-left,.match .intro-text .arrow-right{width:15px; height:28px;position:absolute; top:100px; cursor:pointer;}
