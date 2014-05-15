@@ -182,9 +182,20 @@ module.exports={
                         ];
                         conf.rows = [];
                         for(var i in finishMan){
-                           var rows
-                            var createtime = new Date(finishMan[i].createTime)).getFullYear()}-(new Date(finishMan[i].createTime)).getMonth()-(new Date(finishMan[i].createTime)).getDate();
-                        var birthday = new Date().getFullYear()-(new Date(finishMan[i].birthday)).getFullYear();
+                            var rows
+                            var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+new Date(finishMan[i].createTime).getMonth()+"-"+new Date(finishMan[i].createTime).getDate();
+                        var birthday = new Date().getFullYear()+"-"+new Date(finishMan[i].birthday).getFullYear();
+                            var city
+                            if(typeof (finishMan[i].city)=="undefined"){
+                                city=finishMan[i].city
+                            }else{
+                                city= finishMan[i].city
+                            }
+//                            if(typeof(finishMan[i].city)=="undefined"){
+//                                city=finishMan[i].city
+//                            }else{
+//                                city= finishMan[i].city
+//                            }
                            rows = [
                                //=new Date(finishMan[i].createTime)).getFullYear()}-(new Date(finishMan[i].createTime)).getMonth()-(new Date(finishMan[i].createTime)).getDate()
                                //=new Date().getFullYear()-(new Date(finishMan[i].birthday)).getFullYear()
@@ -193,11 +204,7 @@ module.exports={
                                 finishMan[i].realname,
                                 //finishMan[i].birthday,
                                birthday,
-                                if((typeof(finishMan[i].city)=="undefined"){
-                                    finishMan[i].city,
-                                }else{
-                                    finishMan[i].city,
-                                }
+                               city,
                                 finishMan[i].getGift,
                                 finishMan[i].getLabel,
                                 finishMan[i].compScore
