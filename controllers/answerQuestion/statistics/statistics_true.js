@@ -94,6 +94,8 @@ module.exports={
         then.step(function(){
             nut.model.allRight=allRight
             nut.model.docs=docOne;
+            console.log("docs:"+nut.model.docs._id)
+            console.log("allRight:"+nut.model.allRight.themeId)
         })
 
     },
@@ -185,7 +187,11 @@ module.exports={
                                 finishMan[i].createTime,
                                 finishMan[i].realname,
                                 finishMan[i].birthday,
-                                finishMan[i].city,
+                                if((typeof(finishMan[i].city)=="undefined"){
+                                    finishMan[i].city,
+                                }else{
+                                    finishMan[i].city,
+                                }
                                 finishMan[i].getGift,
                                 finishMan[i].getLabel,
                                 finishMan[i].compScore

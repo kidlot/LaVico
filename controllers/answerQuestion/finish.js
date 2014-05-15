@@ -280,8 +280,8 @@ module.exports={
                                     })
                                 )
                             })
-                            if((typeof(getLabel)!="undefined" || getLabel!="") && (typeof(getScore)!="undefined" || getScore!="") &&
-                                (typeof(getTipContent)!="undefined" || getTipContent!="") && (typeof(newActivity)!="undefined" || newActivity!="")){
+                            if((typeof(getLabel)=="undefined" || getLabel=="") && (typeof(getScore)=="undefined" || getScore=="") &&
+                                (typeof(getTipContent)=="undefined" || getTipContent=="") && (typeof(newActivity)=="undefined" || newActivity=="")){
                                 resultList+="{"
                                     +"getLabel:'"+"null"
                                     +"',getScore:"+0
@@ -350,8 +350,8 @@ module.exports={
                                         "createTime": new Date().getTime()
                                     }, function (err, doc) {
                                 });
-                                    if((typeof(getLabel)!="undefined" || getLabel!="") && (typeof(getScore)!="undefined" || getScore!="") &&
-                                        (typeof(getTipContent)!="undefined" || getTipContent!="") && (typeof(newActivity)!="undefined" || newActivity!="")){
+                                    if((typeof(getLabel)=="undefined" || getLabel=="") && (typeof(getScore)=="undefined" || getScore=="") &&
+                                        (typeof(getTipContent)=="undefined" || getTipContent=="") && (typeof(newActivity)=="undefined" || newActivity=="")){
                                         resultList+="{"
                                             +"getLabel:'"+"null"
                                             +"',getScore:"+0
