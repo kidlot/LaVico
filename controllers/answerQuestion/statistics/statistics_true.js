@@ -184,9 +184,9 @@ module.exports={
                         for(var i in finishMan){
                            var rows
                            rows = [
-                                finishMan[i].createTime,
+                                finishMan[i].createTime=new Date(finishMan[i].createTime)).getFullYear()}-(new Date(finishMan[i].createTime)).getMonth()-(new Date(finishMan[i].createTime)).getDate(),
                                 finishMan[i].realname,
-                                finishMan[i].birthday,
+                                finishMan[i].birthday=,
                                 if((typeof(finishMan[i].city)=="undefined"){
                                     finishMan[i].city,
                                 }else{
