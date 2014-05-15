@@ -81,7 +81,7 @@ module.exports={
                         var getTipContent= scoreRange[i].tipContent==""?"":scoreRange[i].tipContent;
                         var nowPromotion;
 
-                        if(themeType==1){
+                        if(themeType!=1){
                             then.step(function(){
                                 //根据姓名和电话查memberId
                                 helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
@@ -292,7 +292,7 @@ module.exports={
                             }
                         }
 
-                        if(themeType==1){
+                        if(themeType!=1){
                             then.step(function(){
                                 //根据姓名和电话查memberId
                                 helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
