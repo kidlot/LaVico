@@ -11,6 +11,8 @@ module.exports={
         var scoreAll=this.req.session.scoreAll;
         var stopLab=seed.stopLab;
         nut.model.wechatid = seed.wechatid
+
+        var compScore
         //非停止标签过来
         if(stopLab!="true"){
             //插入总积分
@@ -28,6 +30,8 @@ module.exports={
                 "createTime": new Date().getTime()
             },function(err,doc){
             });
+
+
 
             //查找单题组,获取分值范围数组
             var scoreRange
@@ -71,6 +75,7 @@ module.exports={
                         //获取三个奖励
                         var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
                         var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
+                        compScore= getScore;
                         //console.log("getScore:"+getScore)
                         var getActivities= scoreRange[i].getActivities==""?0:scoreRange[i].getActivities;
                         var getTipContent= scoreRange[i].tipContent==""?"":scoreRange[i].tipContent;
@@ -337,6 +342,30 @@ module.exports={
                 nut.model.jsonResult=eval('('+resultList+')');
             })
 
+            this.step(function(){
+                //根据姓名和电话查memberId
+                helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
+                    this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            return result.HaiLanMemberInfo.memberID
+                        }
+                    })
+                )
+            })
+
+            this.step(function(memberId){
+                //根据memberId调用接口给账户加分
+                var jsonData={};
+                jsonData.memberId=memberId;
+                jsonData.qty=compScore;
+                middleware.request('Point/Change',jsonData,
+                    this.hold(function(err,doc){
+                        if(err) throw err;
+                        nut.message("添加完成",null,"success")
+                    })
+                )
+            })
         }
     }
 }
