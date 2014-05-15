@@ -359,10 +359,11 @@ module.exports={
                 var jsonData={};
                 jsonData.memberId=memberId;
                 jsonData.qty=compScore;
+                console.log("jsonData:"+jsonData)
                 middleware.request('Point/Change',jsonData,
                     this.hold(function(err,doc){
                         if(err) throw err;
-                        nut.message("添加完成",null,"success")
+                        console.log("doc:"+doc);
                     })
                 )
             })
