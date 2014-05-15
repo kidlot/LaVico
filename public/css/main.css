@@ -291,8 +291,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 /*精英搭配*/
 .match{width:100%; background-color:#F1F1F1;}
 .match .banner{width:608px; height:400px; margin:0 auto;}
-.match .roll-banner{padding-left:16px;width:610px; height:260px; overflow:hidden; position:relative; margin-top:30px;}
-.match .roll-banner .img{width:100%;height:260px; background:url(../images/elite_home_j.png) bottom center no-repeat;}
+.match .roll-banner{padding-left:16px;width:610px; height:auto; overflow:hidden; position:relative; margin-top:30px;}
+.match .roll-banner .img{width:100%;height:auto; background:url(../images/elite_home_j.png) bottom center no-repeat; padding-bottom:13px; }
+.match .roll-banner .img{ width:100% ;}
 .match .intro-text{width:100%; height:218px; background:url(../images/match_bg.jpg) no-repeat; margin-top:20px; padding-top:40px; position:relative;}
 .match .intro-text .text{width:430px; margin:0 auto; font-size:25px; color:#BA9E70;}
 .match .intro-text .arrow-left,.match .intro-text .arrow-right{width:15px; height:28px;position:absolute; top:100px; cursor:pointer;}
@@ -354,6 +355,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .content_up{ position:relative; margin:0 auto; width:54px; height:54px; bottom:53px; z-index:100;}
 .small_list{ width:620px; padding:0 10px; height:auto; margin-top:20px;}
 .small_image{ float:left; width:195px; height:auto; margin:5px;}
+.small_image img { width:100%; }
 .small_middle{ margin:10px; 0;}
 
 .shoucang_foot{ position:absolute; bottom:0; z-index:100; margin:0 auto; text-align:left; height:100px; width:540px; padding: 40px 50px; background:url(../images/member_shoucang_foot.jpg) no-repeat;}
@@ -396,11 +398,12 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 .item {
     float: left;
-    width: 32%;
+    width: 195px;
     font-size: 50px;
     text-align: center;
     padding: 0;
 	border: 0;
+    margin:5px;
     /*background: #EFEFEF;    
     color: #666;*/
 }
