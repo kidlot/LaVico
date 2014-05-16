@@ -326,7 +326,12 @@ module.exports = {
             if(!address){
               alert('请输入地址');
               return false;
-            } 
+            }
+            if(!(/[\u4e00-\u9fa5]{3,}/).test(address)){
+                //判断是否为汉字
+                alert('请输入有效的地址');
+                return false;
+            }
             if(!favoriteStyle){
               alert('请输入喜好款式');
               return false;
@@ -335,6 +340,13 @@ module.exports = {
               alert('请输入喜欢颜色');
               return false;
             }
+
+            if(!(/[\u4e00-\u9fa5]+/).test(favoriteColor)){
+                //判断是否为汉字
+                alert('请输入有效的颜色');
+                return false;
+            }
+
             $("#loading").show();
             $.get('/lavico/member/card_member/info:Modified',
               {
