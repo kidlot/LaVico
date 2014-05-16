@@ -91,21 +91,21 @@ module.exports = {
                 //行业
                 nut.model.profession = doc.profession;
             }else{
-                nut.model.profession = '';
+                nut.model.profession = '请选择行业';
             }
 
             if(doc.hasOwnProperty('province')){
                 //所属省份
                 nut.model.province = doc.province;
             }else{
-                nut.model.province = '';
+                nut.model.province = '请选择';
             }
 
             if(doc.hasOwnProperty('city')){
                 //所属城市
                 nut.model.city = doc.city;
             }else{
-                nut.model.city = '';
+                nut.model.city = '请选择';
             }
 
             if(doc.hasOwnProperty('address')){
@@ -119,7 +119,7 @@ module.exports = {
                 //喜好款式
                 nut.model.favoriteStyle = doc.favoriteStyle;
             }else{
-                nut.model.favoriteStyle = '';
+                nut.model.favoriteStyle = '请选择';
             }
 
             if(doc.hasOwnProperty('favoriteColor')){
@@ -326,7 +326,12 @@ module.exports = {
             if(!address){
               alert('请输入地址');
               return false;
-            } 
+            }
+            if(!(/[\u4e00-\u9fa5]{3,}/).test(address)){
+                //判断是否为汉字
+                alert('请输入有效的地址');
+                return false;
+            }
             if(!favoriteStyle){
               alert('请输入喜好款式');
               return false;
@@ -335,6 +340,13 @@ module.exports = {
               alert('请输入喜欢颜色');
               return false;
             }
+
+            if(!(/[\u4e00-\u9fa5]+/).test(favoriteColor)){
+                //判断是否为汉字
+                alert('请输入有效的颜色');
+                return false;
+            }
+
             $("#loading").show();
             $.get('/lavico/member/card_member/info:Modified',
               {
@@ -847,6 +859,15 @@ module.exports = {
                     'hoppy':seed.favoriteStyle,
                     'color':seed.favoriteColor
                 }
+                var data_submit_inserted = {
+                    'email':'',
+                    'profession':'',//行业
+                    'province':'',
+                    'city':'',
+                    'address':'',
+                    'favoriteStyle':'',
+                    'favoriteColor':''
+                 }
                 /*提交审核*/
                 //console.log(data_submit_checekd);
                 middleware.request("Member/SaveInfo/"+memberID,
@@ -870,6 +891,7 @@ module.exports = {
                               err&&console.log(err);
                           }
                       );
+
 
                       if(dataJson.success == true){
                           this.res.writeHead(200, { 'Content-Type': 'application/json' });
