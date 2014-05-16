@@ -317,6 +317,10 @@ module.exports = {
                     var _i = data.count;
                     alert('这次没摇到，要不再试一试？还有'+_i+'次机会！');
 
+                }else if(/[\u4e00-\u9fa5]+/).test(data.result)){
+
+                    alert(data.result);
+                    
                 }else{
 
                     alert('今天的机会被其他伙伴抢光了，明天再来试一试吧！');
