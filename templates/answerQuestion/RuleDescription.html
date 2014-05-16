@@ -48,7 +48,7 @@
                 oLinkOptions.type = "POST";
                 oLinkOptions.url = "/lavico/answerQuestion/RuleDescription:save";
                 $.request(oLinkOptions,function(err,nut){
-                    if(err) throw err ;
+                    if(err) throw err;
                     nut.msgqueue.popup();
                     $.controller("/lavico/answerQuestion/themeList",null,"lazy");
                 });

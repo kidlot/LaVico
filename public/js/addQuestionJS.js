@@ -145,7 +145,7 @@ $(function () {
             var getLabel=$fcount.find("input[name='getLabel']:eq("+v+")").val();
             //获得标签内容
             var tipContent=$fcount.find("textarea[name='tipContent']:eq("+v+")").val();
-            tipContent=tipContent.replace(/[\n\r\t]/,'');
+            tipContent=tipContent.replace(/[\n\r\t]/,'<br/>');
             //获得积分
             var getScore=$fcount.find("input[name='getScore']:eq("+v+")").val();
             //获得活动编号
