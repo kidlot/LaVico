@@ -15,9 +15,8 @@ module.exports={
                     this.hold(function(err,doc){
                         if(err){
                             throw err;
-                        }else{
-                            nut.message("添加完成",null,"success")
                         }
+                        nut.message("添加完成",null,"success");
                     })
                 );
             }
