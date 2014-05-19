@@ -13,6 +13,8 @@ var themeType = '{@themeType}';
 var _id='{@_id}';//获取题ID
 var optionCount={@optionCount};//获取题组总题数
 var wechatid='{@wechatid}';//获取微信ID
+var member_id = '{@member_id}';
+var wxid = '{@wxid}';
 //初始化事件
 function build(){
     /*
@@ -24,16 +26,20 @@ function build(){
      $(this).addClass("select");
      });
      */
-    //添加标题显示
-    $(".title").append(jsonObject.title);
+    if(member_id=='undefined'){
+        alert('请先申请会员卡或者绑定会员,然后参加活动!');
+        window.location.href='/lavico/member/index?wxid='+wxid
+    }else{
+        //添加标题显示
+        $(".title").append(jsonObject.title);
 
-    //判断是否为“主观题”
-    if(jsonObject.type==2){
+        //判断是否为“主观题”
+        if(jsonObject.type==2){
         $(".content").append("<div style='padding-top: 15px;'><textarea cols='20' rows='12' name='descContent' style='font-size: 35px;'></textarea></div>");
 
     }else{
-        //非“主观题”判断是否有图片
-        for(var i=0;i<jsonObject.choose.length;i++){
+            //非“主观题”判断是否有图片
+            for(var i=0;i<jsonObject.choose.length;i++){
             if(jsonObject.choose[i].uploadFile=="" || jsonObject.choose[i].uploadFile=="undefined"){
                 //无图片,判断是否为单选题
                 if(jsonObject.type==0){
@@ -76,6 +82,7 @@ function build(){
                             "' name='chkimg' width='180' height='180' id='picImg'></li>");
                 }
             }
+        }
         }
     }
 
