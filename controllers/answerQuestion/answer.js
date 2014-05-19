@@ -10,6 +10,7 @@ module.exports={
         var member_id;
         nut.model.wxid = wechatid;
 
+        console.log("1:"+optionId)
         this.step(function(){
             //查找此会员是否存在
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
@@ -18,11 +19,6 @@ module.exports={
                     if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
                     }else{
                         member_id ="undefined";
-//                        nut.disable();//不显示模版
-//                        this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-//                        this.res.write("<script>alert('请先申请会员卡或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
-//                        this.res.end();
-//                        this.terminate();
                     }
                 }else{
                     nut.disable();
@@ -31,20 +27,6 @@ module.exports={
                 nut.model.member_id =member_id;
             }))
         });
-
-
-//        this.step(function(){
-//            helper.db.coll("lavico/custReceive").count({"wechatid":wechatid,"themeId":helper.db.id(_id)},this.hold(function(err,doc){
-//                if(err) throw err;
-//                if(doc>0){
-//                    this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
-//                    this.res.end();
-//                }
-//            }))
-//        })
-
-
-
 
         this.step(function(){
             //判断活动是否开启或到期1-1
