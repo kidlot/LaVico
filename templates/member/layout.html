@@ -14,14 +14,22 @@
 
 <script>
     window.onload = function () {
-        var userAgent = navigator.userAgent;
-        var index = userAgent.indexOf("Android")
-        if (index >= 0) {
-            var androidVersion = parseFloat(userAgent.slice(index + 8));
-            if (androidVersion < 3) {
-                // 版本小于3的事情
-                alert('版本小于3');
+        var ua = navigator.userAgent.toLowerCase();
+        var isAndroid = ua.indexOf("android") > -1;
+        if (isAndroid) {
+            var bo = lowerAndroid(4.0);
+            if (bo) {
+               alert("版本小于3")
             }
+        }
+        function lowerAndroid(n) {
+            var bo = false;
+            var ua = navigator.userAgent.toLowerCase();
+            var version = ua.substr(ua.indexOf('android') + 8, 3);
+            if (ua.indexOf("android"))
+                if (parseFloat(version) < n)
+                    bo = true;
+            return bo;
         }
     }
 </script>
