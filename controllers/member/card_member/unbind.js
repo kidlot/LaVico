@@ -77,7 +77,7 @@ module.exports = {
             $('#loading').show();
 
             $.get('/lavico/member/card_blank/code:id_code',{
-                    'mobile':$("#userTel").val()
+                    'userTel':$("#userTel").val()
                 },function(data){
 
                     $('#loading').hide();

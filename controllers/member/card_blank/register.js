@@ -205,6 +205,7 @@ module.exports = {
         var getCaptcha = function(){
             flag = 1;
             $.get('/lavico/member/card_blank/code:id_code',{
+                    'userTel':$("#mobile").val()
                 },function(data){
                     data = eval('('+data+')');
                     if(data.result == 'ofen'){
