@@ -36,6 +36,9 @@ module.exports = {
         /*前端设计JS*/
 
         $('#loading').hide();//隐藏加载框
+
+        $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
+
         $("#year").change(function(){
             $(this).parent().find("input").val($(this).val()+'年');
         });
@@ -101,6 +104,11 @@ module.exports = {
         $("#year,#month").bind("change", function(){
             TUpdateCal($year.val(),$month.val());
         });
+
+        /*设置默认年月日数值*/
+        $("#year").parent().find("input").val($("#year").val()+'年');
+        $("#month").parent().find("input").val($("#month").val()+'月');
+        $("#day").parent().find("input").val($("#day").val()+'日');
 
         function TGetDaysInMonth(iMonth, iYear) {
             var dPrevDate = new Date(iYear, iMonth, 0);
