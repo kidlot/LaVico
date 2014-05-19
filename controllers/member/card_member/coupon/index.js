@@ -48,7 +48,7 @@ module.exports = {
 //                this.res.end();
 //                this.terminate();
                 this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先申请会员卡或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                 this.res.end();
                 this.terminate();
             }
