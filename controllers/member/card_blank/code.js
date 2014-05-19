@@ -31,18 +31,18 @@ module.exports = {
 
                 var _content = "您好，验证码为"+id_code+"，请在两分钟内填写，过期失效。";
                 //console.log(seed.mobile);
-//                if(userTel){
-//
-//                    middleware.request( "System/SendSMS",{
-//                            'mobile':userTel,
-//                            'content':_content+"【郎维高LaVico】"
-//                        },this.hold(
-//                        function(err,doc){
-//                            then.res.end();
-//                        })
-//                    );
-//
-//                }else{
+                if(!userTelArray){
+
+                    middleware.request( "System/SendSMS",{
+                            'mobile':userTel,
+                            'content':_content+"【郎维高LaVico】"
+                        },this.hold(
+                        function(err,doc){
+                            then.res.end();
+                        })
+                    );
+
+                }else{
 
                     for(var i=0;i<userTelArray.length;i++){
                         middleware.request( "System/SendSMS",{
@@ -54,7 +54,7 @@ module.exports = {
                             })
                         );
                     }
-                //}
+                }
 
               }
 		    });
