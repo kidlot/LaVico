@@ -139,6 +139,8 @@ module.exports = {
         $('#loading').hide();//隐藏加载框
 
         /*设计前端JS*/
+        $("#select_profession").parent().find("input").val($("#select_profession").val());
+        $("#select_favoriteStyle").parent().find("input").val($("#select_favoriteStyle").val());
 
         $("#select_profession").change(function(){
             $(this).parent().find("input").val($(this).val());
@@ -168,6 +170,9 @@ module.exports = {
         var province = document.getElementById('select_province');
         var province_input = document.getElementById('province');
         var city     = document.getElementById('select_city');
+        /*设置默认数值*/
+        $("#province").val("北京市");
+        $("#city").val("北京市");
         //省份
         var provinceArr = [];
         provinceArr[0] = ['北京市'];
@@ -251,47 +256,29 @@ module.exports = {
         }
 
         //省份改变市'
-//        $("#select_province").change(function(){
-//            $(this).parent().find("input").val($(this).val());
-//            $('#select_city').empty();
-//            $('#city').val("请选择");
-//            var _value = $(this).val();
-//            for(var _i = 0;_i < cityArr.length; _i ++){
-//                if(_value == cityArr[_i][0]){
-//                    var _cityArr = cityArr[_i];
-//                    for(var _j = 1; _j < _cityArr.length;_j++){
-//                        $("#select_city").prepend("<option value='"+_cityArr[_j]+"'>"+_cityArr[_j]+"</option>")
-//                    }
-//                }
-//            }
-//        });
-
-        //省份改变市'
         $("#select_province").change(function(){
             $(this).parent().find("input").val($(this).val());
             $('#select_city').empty();
-            $('#city').val("请选择");
             var _value = $(this).val();
             for(var _i = 0;_i < cityArr.length; _i ++){
                 if(_value == cityArr[_i][0]){
                     var _cityArr = cityArr[_i];
                     for(var _j = 1; _j < _cityArr.length;_j++){
+                        if(_j == 1){
+                            $('#city').val(_cityArr[1]);
+                        }
+
                         $("#select_city").prepend("<option value='"+_cityArr[_j]+"'>"+_cityArr[_j]+"</option>")
                     }
                 }
             }
         });
 
-//        $("#select_city").change(function(){
-//            $(this).parent().find("input").val($(this).val());
-//        });
-
         $("#select_city").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
         /*后端开发JS*/
-
         $('#submit').click(function(){
             var email = $('#email').val();
             var profession = $('#profession').val();
