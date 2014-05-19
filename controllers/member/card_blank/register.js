@@ -297,7 +297,7 @@ module.exports = {
                             //console.log(data.error);
                             alert("网络不稳定，请稍后再尝试");
                         }else{
-                            alert("恭喜你，注册成功");
+                            alert("恭喜你，申领成功");
                             window.location.href="/lavico/member/index?wxid="+$("#uid").val();
                         }
                         return false;
