@@ -6,56 +6,31 @@ module.exports={
         var _id=seed._id;//获取题目ID
         var optionId=seed.optionId;//获取题号
         var wechatid=seed.wechatid;//获取微信ID
-        var member_id;
         if(optionId==1)this.req.session.scoreAll=0;//初始化session
-
-
-        this.step(function(){
-            helper.db.coll('welab/customers').findOne({wechatid:wechatid},this.hold(function(err, doc){
-                if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind'){
-                    member_id =  doc.HaiLanMemberInfo.memberID;
-                }else{
-                    member_id ="undefined";
-                }
-            }));
-        });
+        var member_id;
+        nut.model.wxid = wechatid;
 
         this.step(function(){
-
-            if(member_id == "undefined"){
-                //缺少微信ID参数，强制中断
-
-                //直接跳转
-                nut.disable();//不显示模版
-//                this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
-//                this.res.end();
-//                this.terminate();
-                this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先申请会员卡或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
-                this.res.end();
-                this.terminate();
-            }
-        });
-
-//        this.step(function(){
-//            //查找此会员是否存在
-//            helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
-//                if(err) throw err;
-//                if(result){
-//                    if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
-//                        //return result.HaiLanMemberInfo.memberID;//获取会员ID
-//                    }else
-//                    {
-//                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
+            //查找此会员是否存在
+            helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
+                if(err) throw err;
+                if(result){
+                    if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
+                    }else{
+                        member_id ="undefined";
+//                        nut.disable();//不显示模版
+//                        this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
+//                        this.res.write("<script>alert('请先申请会员卡或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
 //                        this.res.end();
-//                    }
-//                    //return 9123084;
-//                }else{
-//                    nut.disable();
-//                    write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
-//                }
-//            }))
-//        });
+//                        this.terminate();
+                    }
+                }else{
+                    nut.disable();
+                    write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
+                }
+                nut.model.member_id =member_id;
+            }))
+        });
 
 
 //        this.step(function(){
@@ -127,3 +102,4 @@ function createTime(){
     s=vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay);
     return s;
 }
+
