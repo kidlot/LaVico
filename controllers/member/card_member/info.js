@@ -139,8 +139,13 @@ module.exports = {
         $('#loading').hide();//隐藏加载框
 
         /*设计前端JS*/
-        $("#select_profession").parent().find("input").val($("#select_profession").val());
-        $("#select_favoriteStyle").parent().find("input").val($("#select_favoriteStyle").val());
+        if($("#profession").val()=='请选择行业'){
+            $("#select_profession").parent().find("input").val($("#select_profession").val());
+        }
+
+        if($("#select_favoriteStyle").val()=='请选择'){
+            $("#select_favoriteStyle").parent().find("input").val($("#select_favoriteStyle").val());
+        }
 
         $("#select_profession").change(function(){
             $(this).parent().find("input").val($(this).val());
@@ -171,8 +176,15 @@ module.exports = {
         var province_input = document.getElementById('province');
         var city     = document.getElementById('select_city');
         /*设置默认数值*/
-        $("#province").val("北京市");
-        $("#city").val("北京市");
+        if($("#province").val()=='请选择'){
+            //请选择
+            $("#province").val("北京市");
+        }
+        if($("#city").val()=='请选择'){
+            //请选择
+            $("#city").val("北京市");
+        }
+
         //省份
         var provinceArr = [];
         provinceArr[0] = ['北京市'];
@@ -280,6 +292,7 @@ module.exports = {
 
         /*后端开发JS*/
         $('#submit').click(function(){
+
             var email = $('#email').val();
             var profession = $('#profession').val();
             var province = $('#province').val();
@@ -287,6 +300,8 @@ module.exports = {
             var address = $('#address').val();
             var favoriteStyle = $('#favoriteStyle').val();
             var favoriteColor = $('#favoriteColor').val();
+            var wxid = $("#wxid").val();
+
             if(!email || !/^.+@.+\..+$/.test(email)){
               alert('邮箱格式错误');
               return false;
@@ -331,7 +346,7 @@ module.exports = {
             $("#loading").show();
             $.get('/lavico/member/card_member/info:Modified',
               {
-                'wxid':$('#wxid').val(),
+                'wxid':wxid,
                 'email':email,
                 'profession':profession,
                 'province':province,
@@ -364,6 +379,7 @@ module.exports = {
     },
 
     actions:{
+        /*自动更新个人资料*/
         updateUserInfo:{
             layout:null,
             view:null,
@@ -400,9 +416,7 @@ module.exports = {
 
                 this.step(function(){
                     helper.db.coll('lavico/user/lastId').find({}).sort({lastModified:-1}).limit(1).toArray(this.hold(function(err, doc){
-                        //console.log(doc);
                         lastid = doc[0].lastid;
-                        //console.log(lastid);
 
                     }));
                 });
@@ -807,6 +821,7 @@ module.exports = {
               var address = seed.address || 'undefined';
               var favoriteStyle = seed.favoriteStyle || 'undefined';
               var favoriteColor = seed.favoriteColor || 'undefined';
+              var wxid = seed.wxid || 'undefined';
 
               this.step(function(){
 
@@ -841,13 +856,13 @@ module.exports = {
                     'color':seed.favoriteColor
                 }
                 var data_submit_inserted = {
-                    'email':'',
-                    'profession':'',//行业
-                    'province':'',
-                    'city':'',
-                    'address':'',
-                    'favoriteStyle':'',
-                    'favoriteColor':''
+                    'email':seed.email,
+                    'profession':seed.profession,//行业
+                    'province':seed.province,
+                    'city':seed.city,
+                    'address':seed.address,
+                    'favoriteStyle':seed.favoriteStyle,
+                    'favoriteColor':seed.favoriteColor
                  }
                 /*提交审核*/
                 //console.log(data_submit_checekd);
@@ -875,10 +890,19 @@ module.exports = {
 
 
                       if(dataJson.success == true){
+
+                          /*更新个人资料*/
+                          helper.db.coll('welab/customers').update({wechatid:seed.wxid},{
+                              $set:data_submit_inserted
+                          },this.hold(function(err, insert_doc) {
+                              err&console.log(insert_doc);
+                          }));
+
                           this.res.writeHead(200, { 'Content-Type': 'application/json' });
                           this.res.write('{"success":true,"info":""}');
                           this.res.end();
                           this.terminate();
+
                       }else if(dataJson.success == false){
 
                           if((/[\u4e00-\u9fa5]+/).test(dataJson.error)){
@@ -890,11 +914,14 @@ module.exports = {
                           this.res.write('{"success":false,"info":"'+_error+'"}');
                           this.res.end();
                           this.terminate();
+
                       }else{
+
                           this.res.writeHead(200, { 'Content-Type': 'application/json' });
                           this.res.write('{"success":false,"info":"network_error"}');
                           this.res.end();
                           this.terminate();
+
                       }
 
                   }));
