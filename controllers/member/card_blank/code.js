@@ -31,10 +31,10 @@ module.exports = {
 
                 var _content = "您好，验证码为"+id_code+"，请在两分钟内填写，过期失效。";
                 //console.log(seed.mobile);
-                if(!userTelArray){
+                if(mobile){
 
                     middleware.request( "System/SendSMS",{
-                            'mobile':userTel,
+                            'mobile':mobile,
                             'content':_content+"【郎维高LaVico】"
                         },this.hold(
                         function(err,doc){
@@ -44,16 +44,16 @@ module.exports = {
 
                 }else{
 
-                    for(var i=0;i<userTelArray.length;i++){
-                        middleware.request( "System/SendSMS",{
-                                'mobile':userTelArray[i],
-                                'content':_content+"【郎维高LaVico】"
-                            },this.hold(
-                            function(err,doc){
-                                then.res.end();
-                            })
-                        );
-                    }
+//                    for(var i=0;i<userTelArray.length;i++){
+//                        middleware.request( "System/SendSMS",{
+//                                'mobile':userTelArray[i],
+//                                'content':_content+"【郎维高LaVico】"
+//                            },this.hold(
+//                            function(err,doc){
+//                                then.res.end();
+//                            })
+//                        );
+//                    }
                 }
 
               }
