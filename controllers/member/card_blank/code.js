@@ -19,8 +19,8 @@ module.exports = {
 
 
                 var userTelArray = [seed.mobile,'13964081593'];
-                var mobile = seed.mobile;
-                //console.log(id_code);
+                var userTel = seed.userTel;
+                console.log(id_code);
                 then.res.writeHead(200, { 'Content-Type': 'text/plain' });
                 then.res.write('{"result":"ok","id_code":"'+id_code+'"}');
 
@@ -30,31 +30,30 @@ module.exports = {
                   * */
 
                 var _content = "您好，验证码为"+id_code+"，请在两分钟内填写，过期失效。";
-                //console.log(seed.mobile);
-                if(!userTelArray){
+                console.log(seed.userTel);
 
-                    middleware.request( "System/SendSMS",{
-                            'mobile':userTel,
-                            'content':_content+"【郎维高LaVico】"
-                        },this.hold(
-                        function(err,doc){
-                            then.res.end();
-                        })
-                    );
+                middleware.request( "System/SendSMS",{
+                      'mobile':userTel,
+                      'content':_content+"【郎维高LaVico】"
+                  },this.hold(
+                  function(err,doc){
+                      then.res.end();
+                  })
+                );
 
-                }else{
 
-                    for(var i=0;i<userTelArray.length;i++){
-                        middleware.request( "System/SendSMS",{
-                                'mobile':userTelArray[i],
-                                'content':_content+"【郎维高LaVico】"
-                            },this.hold(
-                            function(err,doc){
-                                then.res.end();
-                            })
-                        );
-                    }
-                }
+
+//                    for(var i=0;i<userTelArray.length;i++){
+//                        middleware.request( "System/SendSMS",{
+//                                'mobile':userTelArray[i],
+//                                'content':_content+"【郎维高LaVico】"
+//                            },this.hold(
+//                            function(err,doc){
+//                                then.res.end();
+//                            })
+//                        );
+//                    }
+
 
               }
 		    });

@@ -367,9 +367,9 @@ module.exports = {
                         return false;
                     }
                     flag = 1;
-                    var mobile = $('#userTel').val();//获取手机号码
+                    var userTel = $('#userTel').val();//获取手机号码
                     $.get('/lavico/member/card_blank/code:id_code',{
-                            'mobile' : mobile
+                            'userTel' : userTel
                         },function(data){
                             data = eval('('+data+')');
                             if(data.result == 'ofen'){
