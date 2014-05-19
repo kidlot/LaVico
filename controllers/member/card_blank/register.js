@@ -34,19 +34,19 @@ module.exports = {
 
 
         /*前端设计JS*/
-
-            $("#year").click(function(){
+            $('#loading').hide();
+            $("#year").change(function(){
                 $(this).parent().find("input").val($(this).val()+'年');
             });
 
-            $("#month").click(function(){
+            $("#month").change(function(){
                 $(this).parent().find("input").val($(this).val()+'月');
             });
 
-            $("#day").click(function(){
+            $("#day").change(function(){
                 $(this).parent().find("input").val($(this).val()+'日');
             });
-            $("#sex").click(function(){
+            $("#sex").change(function(){
                 var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
                 $(this).parent().find("input").val(_v);
             });
