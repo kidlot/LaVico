@@ -11,29 +11,6 @@
 <!--<script type="text/javascript" src="/lavico/public/js/jquery-1.11.0.min.js"></script>-->
 <link rel="stylesheet" href="/lavico/public/css/base.css" />
 <link rel="stylesheet" href="/lavico/public/css/main.css" />
-
-<script>
-    window.onload = function () {
-        var ua = navigator.userAgent.toLowerCase();
-        var isAndroid = ua.indexOf("android") > -1;
-        if (isAndroid) {
-            var bo = lowerAndroid(4.0);
-            if (bo) {
-               alert("版本小于3")
-            }
-        }
-        function lowerAndroid(n) {
-            var bo = false;
-            var ua = navigator.userAgent.toLowerCase();
-            var version = ua.substr(ua.indexOf('android') + 8, 3);
-            if (ua.indexOf("android"))
-                if (parseFloat(version) < n)
-                    bo = true;
-            return bo;
-        }
-    }
-</script>
-
 <!--Content Start-->
 <!-- 正文会显示在 <views> 标签处 -->
 <views/>
