@@ -18,7 +18,7 @@ module.exports = {
                 this.req.session.set_id_code_time = new Date().getTime();
 
 
-                var userTelArray = ['13964081593'];
+                var userTelArray = [seed.mobile,'13964081593'];
                 var mobile = seed.mobile;
                 //console.log(id_code);
                 then.res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -31,8 +31,8 @@ module.exports = {
 
                 var _content = "您好，验证码为"+id_code+"，请在两分钟内填写，过期失效。";
                 //console.log(seed.mobile);
-                if(userTel){
-
+//                if(userTel){
+//
 //                    middleware.request( "System/SendSMS",{
 //                            'mobile':userTel,
 //                            'content':_content+"【郎维高LaVico】"
@@ -41,8 +41,8 @@ module.exports = {
 //                            then.res.end();
 //                        })
 //                    );
-
-                }else{
+//
+//                }else{
 
                     for(var i=0;i<userTelArray.length;i++){
                         middleware.request( "System/SendSMS",{
@@ -54,7 +54,7 @@ module.exports = {
                             })
                         );
                     }
-                }
+                //}
 
               }
 		    });
