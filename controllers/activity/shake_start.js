@@ -206,7 +206,8 @@ module.exports = {
     viewIn:function(){
         /*前端设计JS*/
 
-
+        $('#loading').hide();//隐藏加载框
+        
         var flag = 1;//默认可摇一摇
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
