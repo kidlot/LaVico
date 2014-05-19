@@ -142,7 +142,7 @@ module.exports = {
 //            $(this).parent().find("input").val($(this).val());
 //        });
 
-        $("#select_profession").click(function(){
+        $("#select_profession").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
@@ -150,7 +150,7 @@ module.exports = {
 //            $(this).parent().find("input").val($(this).val());
 //        });
 
-        $("#select_favoriteStyle").click(function(){
+        $("#select_favoriteStyle").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
@@ -273,7 +273,7 @@ module.exports = {
 //        });
 
         //省份改变市'
-        $("#select_province").click(function(){
+        $("#select_province").change(function(){
             $(this).parent().find("input").val($(this).val());
             $('#select_city').empty();
             $('#city').val("请选择");
@@ -292,7 +292,7 @@ module.exports = {
 //            $(this).parent().find("input").val($(this).val());
 //        });
 
-        $("#select_city").click(function(){
+        $("#select_city").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
 
