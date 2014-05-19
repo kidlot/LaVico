@@ -170,7 +170,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 /*解绑会员卡*/
 .remo-card{width:100%; background-color:#dadada;}
 .remo-card .input-tel{width:550px; margin:0 auto; padding-top:50px;}
-.remo-card .input-tel .text{width:115px; height:65px; text-align:right; line-height:65px; font-size:25px; color:#2d2d2d;}
+.remo-card .input-tel .text{width:120px; height:65px; text-align:right; line-height:65px; font-size:25px; color:#2d2d2d;}
 .remo-card .input-tel .input input{ border:0; background-color:#fff; border:1px #b2b1ad solid; padding-left:10px;font-size:22px; color:#000; line-height:65px; height:65px;width:190px; margin-left:20px;}
 .remo-card .input-tel .input1 input{ border:0; background-color:#dadada; border:1px #b2b1ad solid; padding-left:10px;font-size:22px; color:#000; line-height:65px; height:65px;width:370px; margin-left:20px;}
 .remo-card .verify{ display:inline-block;margin-left:20px; width:185px; height:65px; background:url(../images/verify_bg_01.png) center center no-repeat; line-height:65px; font-size:25px; color:#fff; text-align:center; cursor:pointer;}
