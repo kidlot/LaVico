@@ -34,7 +34,8 @@ module.exports = {
 
 
         /*前端设计JS*/
-            $('#loading').hide();
+
+            $('#loading').hide();//隐藏加载框
             $("#year").change(function(){
                 $(this).parent().find("input").val($(this).val()+'年');
             });

@@ -6,6 +6,8 @@ module.exports = {
         nut.model.wxid = seed.wxid;
     },
     viewIn:function(){
+        $('#loading').hide();//隐藏加载框
+
         var wxid = $('#wxid').val();
         $('#register').click(function(){
             window.location.href='/lavico/member/card_blank/register?wxid='+wxid;

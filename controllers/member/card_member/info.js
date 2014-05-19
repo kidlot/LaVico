@@ -136,6 +136,8 @@ module.exports = {
 
     viewIn:function(){
 
+        $('#loading').hide();//隐藏加载框
+
         /*设计前端JS*/
 
 //        $("#select_profession").change(function(){

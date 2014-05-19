@@ -195,7 +195,11 @@ module.exports = {
 
         });
     },
-    viewIn:function(){}
+    viewIn:function(){
+
+        $('#loading').hide();//隐藏加载框
+
+    }
 }
 function   formatDate(now){
     var   year=now.getFullYear();

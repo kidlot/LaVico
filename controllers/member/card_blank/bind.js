@@ -40,10 +40,10 @@ module.exports = {
     ,viewIn:function(){
 
             /*前端设计JS*/
-            $(document).ready(function(e) {
+             $('#loading').hide();//隐藏加载框
 
 
-                var wxid = $('#wxid').val();
+             var wxid = $('#wxid').val();
                 /*申请会员卡*/
                 $("#registerUrl").click(function(){
                     window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
@@ -69,7 +69,7 @@ module.exports = {
                     $(this).parents('.popup').hide();
                 });
 
-            });
+
             /*后端编程JS*/
             /*验证码-开始*/
             var timer60Seconds;

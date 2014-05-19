@@ -59,6 +59,7 @@ module.exports = {
     ,viewIn:function(){
 
         /*验证码开始*/
+        $('#loading').hide();//隐藏加载框
 
         var timer60Seconds;
         var flag = 0;

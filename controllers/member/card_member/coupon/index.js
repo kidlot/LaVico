@@ -256,6 +256,8 @@ module.exports = {
         });
     },
     viewIn:function(){
+        $('#loading').hide();//隐藏加载框
+
         $('.couponBtn').each(function(){
             $(this).bind('click',function(){
                 $('.couponBtn').removeClass('on');

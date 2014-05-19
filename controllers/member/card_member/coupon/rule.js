@@ -10,6 +10,9 @@ module.exports = {
     layout: "lavico/member/layout",
     view: "lavico/templates/member/card_member/coupon/rule.html",
     process: function (seed, nut) {
+
+        $('#loading').hide();//隐藏加载框
+
         var wxid = seed.wxid;
         nut.model.wxid = wxid;
     }
