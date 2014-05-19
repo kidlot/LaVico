@@ -12,25 +12,26 @@
 <link rel="stylesheet" href="/lavico/public/css/base.css" />
 <link rel="stylesheet" href="/lavico/public/css/main.css" />
 
-<!--Content Start-->
-<!-- 正文会显示在 <views> 标签处 -->
-<views/>
-<!--footer start-->
-
-<!--<script>
-    $(function () {
+<script>
+    window.onload = function () {
         var userAgent = navigator.userAgent;
-        alert(userAgent)
         var index = userAgent.indexOf("Android")
         if (index >= 0) {
             var androidVersion = parseFloat(userAgent.slice(index + 8));
             if (androidVersion < 3) {
-                // 版本小于3的事情  
+                // 版本小于3的事情
                 alert('版本小于3');
             } else {
                 alert('版本大于3');
             }
         }
-    });
-</script>-->
+    }
+</script>
+
+<!--Content Start-->
+<!-- 正文会显示在 <views> 标签处 -->
+<views/>
+<!--footer start-->
+
+
 
