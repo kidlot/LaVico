@@ -207,7 +207,7 @@ module.exports = {
         /*前端设计JS*/
 
         $('#loading').hide();//隐藏加载框
-        
+
         var flag = 1;//默认可摇一摇
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
@@ -244,7 +244,7 @@ module.exports = {
             $(".mobile-pic").addClass("box_rotate2");
         }
 
-        var SHAKE_THRESHOLD = 3000;
+        var SHAKE_THRESHOLD = 1500;
         var last_update = 0;
         var x=y=z=last_x=last_y=last_z=0;
 
