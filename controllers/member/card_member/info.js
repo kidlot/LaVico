@@ -140,17 +140,9 @@ module.exports = {
 
         /*设计前端JS*/
 
-//        $("#select_profession").change(function(){
-//            $(this).parent().find("input").val($(this).val());
-//        });
-
         $("#select_profession").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
-
-//        $("#select_favoriteStyle").change(function(){
-//            $(this).parent().find("input").val($(this).val());
-//        });
 
         $("#select_favoriteStyle").change(function(){
             $(this).parent().find("input").val($(this).val());

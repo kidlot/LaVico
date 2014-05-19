@@ -42,10 +42,13 @@ module.exports = {
             /*前端设计JS*/
              $('#loading').hide();//隐藏加载框
 
-
              var wxid = $('#wxid').val();
                 /*申请会员卡*/
                 $("#registerUrl").click(function(){
+                    window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+                });
+
+                $("#no_member_telephone .confirm .applybtn").click(function(){
                     window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
                 });
 
