@@ -1,0 +1,49 @@
+<script>
+var cityArr = JSON.parse('{@cityArr}');
+    function getCity(){
+        $("#city").empty();
+        $("#city").append("<OPTION VALUE='0'>专柜名称</OPTION>");
+        $("#label").html("")
+        var options = $("#province option:selected").text();
+        for(var i=0;i<cityArr.length;i++){
+            var arr = cityArr[i];
+            for(var j=0;j<arr.length;j++){
+                if(arr[j]==options){
+                    $("#city").append("<OPTION VALUE="+arr[j+1]+">"+arr[j+1]+" </OPTION>");
+                    //$("#label").html(arr[j+2])
+                }
+            }
+        }
+    }
+
+    function getdian(){
+        var city = $("#city").find("option:selected").text();
+        var options = $("#city option:selected").text()
+        for(var i=0;i<cityArr.length;i++){
+            var arr = cityArr[i];
+            for(var j=0;j<arr.length;j++){
+                if(arr[j+1]==$.trim(options)){
+                    $("#label").html(arr[j+2])
+                }
+            }
+        }
+    }
+</script>
+<SELECT NAME="province" id="province" onChange="getCity()">
+    <OPTION VALUE="0">城市 </OPTION>
+    <foreach for="{@provinceArr}" var="province">
+        <OPTION VALUE="">{@province}</OPTION>
+    </foreach>
+</SELECT>
+<SELECT NAME="city" id="city" onchange="getdian()">
+    <OPTION VALUE="0">专柜名称 </OPTION>
+</SELECT>
+        <label id="label"></label>
+
+
+
+
+
+
+
+

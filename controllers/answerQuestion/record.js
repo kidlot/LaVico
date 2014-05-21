@@ -66,6 +66,7 @@ module.exports={
                             "getLabel": "",
                             "getGift":  "",
                             "compScore": "",
+                            "type":type,
                             "createTime": createTime()
                         },function(err,doc){
                         });
@@ -144,7 +145,8 @@ module.exports={
                         "getLabel": "",
                         "getGift":  "",
                         "compScore": "",
-                        "createTime": createTime()
+                        "createTime": createTime(),
+                        "type":type
                     },function(err,doc){});
                     //判断是否为最后一页
                     if(finish!="true"){

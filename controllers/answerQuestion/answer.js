@@ -9,8 +9,8 @@ module.exports={
         if(optionId==1)this.req.session.scoreAll=0;//初始化session
         var member_id;
         nut.model.wxid = wechatid;
+        nut.model.optionId = optionId;
 
-        console.log("1:"+optionId)
         this.step(function(){
             //查找此会员是否存在
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
@@ -36,6 +36,7 @@ module.exports={
                 endTime=doc.endTime;
                 isOpen=doc.isOpen;
                 nut.model.themeType = doc.themeType;
+                nut.model.themequestion = JSON.stringify(doc.options);
             }));
         });
         this.step(function(){
@@ -50,13 +51,11 @@ module.exports={
                         for(var i=0;i<cursor.options.length;i++){
                             //循环题数
                             if(optionId==cursor.options[i].optionId){
-
                                 //传入题号和当前题号相同,记录题目
                                 nut.model.option=JSON.stringify(cursor.options[i]);//以json字符串格式记录,当前此题
                                 nut.model.optionId=i+1;
                                 nut.model._id=_id;
                                 nut.model.optionCount=cursor.options.length;//此题目总共有题数
-                                //console.log(wechatid)
                                 nut.model.wechatid=wechatid;
                             }
                         }
@@ -73,9 +72,54 @@ module.exports={
             }
         });
 
+        this.step(function(){
+            helper.db.coll("lavico/custReceive").find({"wechatid":wechatid,"themeId":helper.db.id(_id)}).toArray(this.hold(function(err,doc){
+                if(err) throw err;
+                nut.model.custReceive = JSON.stringify(doc);
+            }));
+        })
+
         //nut.model.wechatid=wechatid;
-    }
+    },
+    viewIn:function(){
+        $('#loading').hide();//隐藏加载框
+//        $.ajax({
+//            type: "GET",
+//            url: "/lavico/answerQuestion/answer:detail",
+//            data: {"id":_id},
+//            dataType: "json",
+//            success: function(data){
+//                if(data.error == "false"){
+//                    var dates = data.dates;
+//                    console.log(dates)
+//                }else{
+//                    $('#count').html('');
+//                }
+//            }
+//        });
+    },
+//    actions:{
+//        detail:{
+//            layout:null,
+//            view:null,
+//            process:function(seed,nut){
+//                var id = seed._id;
+//                this.step(function(){
+//                    //判断活动是否开启或到期1-1
+//                    helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(id)},this.hold(function(err,doc){
+//                        if(err)throw err;
+//                        nut.disable();//不显示模版
+//                        this.res.writeHead(200, { 'Content-Type': 'application/json' });
+//                        this.res.write('{"error":"false","dates":"'+JSON.stringify(doc.options)+'"}');
+//                        this.res.end();
+//                        //nut.model.themequestion = JSON.stringify(doc.options);
+//                    }));
+//                });
+//            }
+//        }
+//    }
 }
+
 function createTime(){
     var d = new Date();
     var vYear = d.getFullYear();
