@@ -5,6 +5,7 @@ a, button, input { -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highl
 a.tel{color:#2d2d2d;}
 /*活动规则*/
 .wrapper{width:100%; height:100%;  max-width:640px; margin:0 auto; position:relative;}
+.wrapper .vip-card { position:relative; }
 .wrapper .vip-card img { width:100%; }
 .coupon-banner{width:100%; height:323px; padding-top:20px; padding-bottom:20px;}
 .activity-rules{width:100%; background-color:#e4e4e4;}
@@ -15,7 +16,7 @@ a.tel{color:#2d2d2d;}
 .activity-rules .text .title1{color:#bda172; font-size:25px; padding-top:50px;}
 .subtext{ color:#646464; font-size:25px; padding-top:30px;}
 /*Member*/
-.vip-card-num{text-align: center; color:#999; font-size: 16px; position: relative; top:-78px;}
+.vip-card-num{text-align: center; color:#999; font-size: 16px; position: relative; }
 /*礼品券*/
 .header{width:100%;}
 .coupon{width:100%; margin-top:20px;}
