@@ -1,4 +1,9 @@
-    var middleware = require('../../lib/middleware.js');
+/**
+ * 摇一摇管理首页
+ *
+ * */
+
+var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "welab/Layout",
     view: "lavico/templates/shake/index.html",

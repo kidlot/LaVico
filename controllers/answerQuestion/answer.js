@@ -7,6 +7,9 @@ module.exports={
         var optionId=seed.optionId;//获取题号
         var wechatid=seed.wechatid;//获取微信ID
         if(optionId==1)this.req.session.scoreAll=0;//初始化session
+        var member_id;
+        nut.model.wxid = wechatid;
+        nut.model.optionId = optionId;
 
         this.step(function(){
             //查找此会员是否存在
@@ -14,33 +17,16 @@ module.exports={
                 if(err) throw err;
                 if(result){
                     if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
-                        //return result.HaiLanMemberInfo.memberID;//获取会员ID
-                    }else
-                    {
-                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
-                        this.res.end();
+                    }else{
+                        member_id ="undefined";
                     }
-                    //return 9123084;
                 }else{
                     nut.disable();
                     write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
                 }
+                nut.model.member_id =member_id;
             }))
         });
-
-
-        this.step(function(){
-            helper.db.coll("lavico/custReceive").count({"wechatid":wechatid,"themeId":helper.db.id(_id)},this.hold(function(err,doc){
-                if(err) throw err;
-                if(doc>0){
-                    this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wechatid});
-                    this.res.end();
-                }
-            }))
-        })
-
-
-
 
         this.step(function(){
             //判断活动是否开启或到期1-1
@@ -49,6 +35,8 @@ module.exports={
                 beginTime=doc.beginTime;
                 endTime=doc.endTime;
                 isOpen=doc.isOpen;
+                nut.model.themeType = doc.themeType;
+                nut.model.themequestion = JSON.stringify(doc.options);
             }));
         });
         this.step(function(){
@@ -63,13 +51,11 @@ module.exports={
                         for(var i=0;i<cursor.options.length;i++){
                             //循环题数
                             if(optionId==cursor.options[i].optionId){
-
                                 //传入题号和当前题号相同,记录题目
                                 nut.model.option=JSON.stringify(cursor.options[i]);//以json字符串格式记录,当前此题
                                 nut.model.optionId=i+1;
                                 nut.model._id=_id;
                                 nut.model.optionCount=cursor.options.length;//此题目总共有题数
-                                //console.log(wechatid)
                                 nut.model.wechatid=wechatid;
                             }
                         }
@@ -86,9 +72,54 @@ module.exports={
             }
         });
 
+        this.step(function(){
+            helper.db.coll("lavico/custReceive").find({"wechatid":wechatid,"themeId":helper.db.id(_id)}).toArray(this.hold(function(err,doc){
+                if(err) throw err;
+                nut.model.custReceive = JSON.stringify(doc);
+            }));
+        })
+
         //nut.model.wechatid=wechatid;
-    }
+    },
+    viewIn:function(){
+        $('#loading').hide();//隐藏加载框
+//        $.ajax({
+//            type: "GET",
+//            url: "/lavico/answerQuestion/answer:detail",
+//            data: {"id":_id},
+//            dataType: "json",
+//            success: function(data){
+//                if(data.error == "false"){
+//                    var dates = data.dates;
+//                    console.log(dates)
+//                }else{
+//                    $('#count').html('');
+//                }
+//            }
+//        });
+    },
+//    actions:{
+//        detail:{
+//            layout:null,
+//            view:null,
+//            process:function(seed,nut){
+//                var id = seed._id;
+//                this.step(function(){
+//                    //判断活动是否开启或到期1-1
+//                    helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(id)},this.hold(function(err,doc){
+//                        if(err)throw err;
+//                        nut.disable();//不显示模版
+//                        this.res.writeHead(200, { 'Content-Type': 'application/json' });
+//                        this.res.write('{"error":"false","dates":"'+JSON.stringify(doc.options)+'"}');
+//                        this.res.end();
+//                        //nut.model.themequestion = JSON.stringify(doc.options);
+//                    }));
+//                });
+//            }
+//        }
+//    }
 }
+
 function createTime(){
     var d = new Date();
     var vYear = d.getFullYear();
@@ -97,3 +128,4 @@ function createTime(){
     s=vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay);
     return s;
 }
+

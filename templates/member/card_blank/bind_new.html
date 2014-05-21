@@ -1,0 +1,96 @@
+<input type="hidden" id="wxid" name="wxid" value="{@wxid}" />
+<input type="hidden" id="error" name="error" value="{@error}" />
+<!--发送验证码状态-->
+<input id="id_code" type="hidden" value=""/>
+<!--用户手机号码验证状态-->
+<input id="tel_checked_status" type="hidden" value=""/>
+<input type="hidden" id="memberId"  value="" />
+<div class="wrapper">
+
+    <div class="store-title">
+        <p><span class="title1"><a id="memberUrl">会员</a></span><span class="title3">绑定会员卡 - 资料验证</span></p>
+    </div>
+    <div class="link-cardContent">
+        <div class="title">如果您还不是我们的会员，请<a id="registerUrl">申请</div>
+        <div class="input-tel">
+            <p><span class="fl text"><strong class="star-sign">*</strong>手机</span><span class="fl"><input id="userTel" type="text" value="" /></span><span class="verify get_id_code" id="submit_1">获取验证码</span></p>
+            <div class="clear"></div>
+            <p class="mt10"><span class="fl text"><strong class="star-sign">*</strong>验证码</span><span class="fl"><input type="text"  id="userCaptcha" name="userCaptcha" value="" /></span></p>
+            <div class="clear"></div>
+            <p class="mt10">
+                 <span class="fl text">
+                    <strong class="star-sign">*</strong>姓名</span>
+                <span class="fl"><input type="text" id="userName" name="userName" /></span>
+            </p>
+            <div class="clear"></div>
+            <p class="note">如申领时遇到问题<br />
+                请拨打 400-1008-886 联系</p>
+            <p class="submit"><input type="submit" id="submit_3" class="subbtn" border="0" value="提交" /></p>
+            <div class="blank"></div>
+        </div>
+    </div>
+
+    <!--弹出框-->
+
+    <div class="fade popup">
+        <div class="input-member">
+            <p class="msg">恭喜您绑定成功<br />
+                点击此处</p>
+            <p class="confirm"><input type="submit" class="gonhome_btn" border="0" value="进入会员中心" /></p>
+
+        </div>
+    </div>
+
+    <div class="fade popup" id="no_member_telephone">
+        <div class="input-member">
+            <p class="msg">抱歉，此号码绑定不成功<br />
+                可能您尚未成为LaVico会员<br />
+                点击此处 或 <span class="cancel">取消</span></p>
+            <p class="confirm"><input type="submit" class="applybtn" border="0" value="申领会员卡" /></p>
+            <p class="msg msg1">如有疑问，欢迎咨询客服热线：<br />
+                <a class="tel" style="color:#fff;" href="tel:4001008866">400-100-8866</a></p>
+        </div>
+    </div>
+
+    <div class="fade1 popup" id="member_manage">
+        <div class="input-member">
+            <p class="msg">恭喜您绑定成功<br />
+                点击此处</p>
+            <p class="confirm"><input type="submit" class="gonhome_btn" border="0" value="进入会员中心" /></p>
+
+        </div>
+    </div>
+
+    <div class="fade2 popup" id="no_member_telephone">
+        <div class="input-member">
+            <p class="msg">抱歉，此号码绑定不成功<br />
+                可能您的卡号已被注销<br />
+                您可以点击此处</p>
+            <p class="confirm"><input type="submit"  class="applybtn" border="0" value="申领会员卡" /></p>
+            <p class="msg msg1">如您变更了手机号码，无法获取短信验证码，<br />
+                或有其他问题，请联系客服：<a style="color:#fff;" href="tel:4001008866">400-100-8866</a></p>
+        </div>
+    </div>
+
+    <div class="fade3 popup" id="true_card_number">
+        <div class="input-member">
+            <p class="msg">请输入您的实体会员卡号</p>
+            <p class="input-card"><input type="text" id="userCardNumber" name="userCardNumber" value="" /></p>
+            <p class="confirm"><input type="submit" id="submit_2" class="bangding_btn" border="0" value="提交" /></p>
+
+        </div>
+    </div>
+
+    <div class="fade4 popup" id="telephone_cardnumber_no_match">
+        <div class="input-member">
+            <p class="msg">系统没有查找到此卡号<br />请核对后重新输入<br />可能由于此卡号绑定的<br />不是第一步的手机号码<br />
+                或 <span class="cancel">取消</span>
+            </p>
+        </div>
+    </div>
+
+    <!--弹出框-->
+
+</div>
+<!--正在加载-->
+<div id="loading" class="loading" style="position: fixed; z-index: 10000; left: 40%; top: 40%;"><img src="/lavico/public/images/loading.gif"></div>

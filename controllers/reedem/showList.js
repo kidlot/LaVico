@@ -1,6 +1,5 @@
 var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
-    //view:"lavico/templates/reedem/showList.html",
     layout: "lavico/layout",
     view:"lavico/templates/reedem/member_num16.html",
     process:function(seed,nut){
@@ -8,31 +7,33 @@ module.exports={
         var then =this;
         var wxid = seed.wechatId ? seed.wechatId : 'undefined';
         nut.model.wxid = wxid;
+
         this.step(function(){
-            //查找此会员是否存在
-            helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,result){
-                if(err) throw err;
-                if(result){
-                    if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
-                        return result.HaiLanMemberInfo.memberID;//获取会员ID
-                    }else
-                    {
-                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
-                        this.res.end();
-                    }
-                    //return 9123084;
+            helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind'){
+                    return doc.HaiLanMemberInfo.memberID;//获取会员ID
                 }else{
-                    nut.disable();
-                    write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
+                    nut.disable();//不显示模版
+                    this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
+                    this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                    this.res.end();
+                    this.terminate();
                 }
-            }))
+            }));
+
         });
 
         this.step(function(memberId){
             //调用接口:获取会员积分
+            //console.log("memberId:"+memberId);
             if(memberId){
                 middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,result){
-                    if(err) throw err;
+                    if(err){
+                        this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
+                        this.res.end();
+                    }
+                    //console.log("会员积分err:"+err);
+                    //console.log("会员积分:"+result);
                     if(result){
                         var resultJson=JSON.parse(result);
                         return [resultJson.point,memberId]//json数组双传值，数组格式

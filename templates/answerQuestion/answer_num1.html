@@ -3,9 +3,15 @@
 
 
 <div class="wrapper">
-    <div class="coupon-banner"><img src="/lavico/public/images/answer_banner.jpg" /></div>
+    <div class="coupon-banner">
+        <if condition="@docs.themeType=='1'">
+            <img src="/lavico/public/images/man_test_banner.jpg" style="text-align:center;" />
+            <else/>
+            <img src="/lavico/public/images/answer_banner.jpg" />
+        </if>
+    </div>
     <div class="activity-rules">
-        <div class="begin"><a href="/lavico/answerQuestion/answer?_id={@docs._id}&optionId=1&wechatid={@wechatId}">立即开始</a></div>
+        <div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}">立即开始</a></div>
         <div class="text">
             <div class="title">活动及使用规则</div>
             <div class="title1">活动说明：</div>

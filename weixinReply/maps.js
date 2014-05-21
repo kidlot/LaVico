@@ -7,7 +7,8 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
 
-        if(msg.MsgType=="location"){
+
+        if(msg.EventKey === "shop"){
             console.log("门店查询开始!!!");
             var lat=msg.Location_X;
             var lng=msg.Location_Y;
@@ -25,7 +26,7 @@ exports.load = function () {
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
-                            console.log("所有门店返回")
+
                             if(err) throw err;
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
@@ -69,12 +70,15 @@ exports.load = function () {
                             reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
+
                         reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
-                        replyArr.push(reply);
+                        if(i<10)
+                            replyArr.push(reply);
                     }
                 },
                 function(){
                     console.log(JSON.stringify(replyArr));
+                    console.log(res);
                     res.reply(replyArr);
                 }
             )()
@@ -82,6 +86,18 @@ exports.load = function () {
             next()
         }
     })
+
+
+    wechatapi.registerReply(9,function(msg,req,res,next){
+        console.log("msg.MsgType:"+msg.MsgType);
+        console.log("msg.Event:"+msg.Event);
+        if(msg.MsgType=="event" && msg.Event=="LOCATION" || msg.Content=="hb"){
+            console.log("ok");
+//            helper.db.coll("lavico/locationPosition").insert(msg);
+
+        }
+    })
+
     wechatapi.makeQueue();
 };
 

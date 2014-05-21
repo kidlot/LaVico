@@ -59,6 +59,7 @@ module.exports = {
     ,viewIn:function(){
 
         /*验证码开始*/
+        $('#loading').hide();//隐藏加载框
 
         var timer60Seconds;
         var flag = 0;
@@ -76,7 +77,7 @@ module.exports = {
             $('#loading').show();
 
             $.get('/lavico/member/card_blank/code:id_code',{
-                    'mobile':$("#userTel").val()
+                    'userTel':$("#userTel").val()
                 },function(data){
 
                     $('#loading').hide();

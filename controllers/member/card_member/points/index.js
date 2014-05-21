@@ -61,8 +61,9 @@ module.exports = {
                 middleware.request( "Point/"+member_id,{},this.hold(function(err,doc){
 
                     var dataJson = JSON.parse(doc);
-                    console.log(dataJson);
-
+                    //console.log("aaa"+dataJson);
+                    //console.log("doc"+doc);
+                    console.log("adasd:"+parseInt(dataJson.point))
                     if(dataJson.hasOwnProperty('point')){
                         //当前积分
                         if(parseInt(dataJson.point) === 0){
@@ -249,7 +250,10 @@ module.exports = {
 
 
     },
-    viewIn:function(){}
+    viewIn:function(){
+        $('#loading').hide();//隐藏加载框
+
+    }
 
 }
 

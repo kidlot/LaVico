@@ -12,5 +12,8 @@ module.exports = {
     process: function (seed, nut) {
         var wxid = seed.wxid;
         nut.model.wxid = wxid;
+    },
+    viewIn:function(){
+        $('#loading').hide();//隐藏加载框
     }
 }

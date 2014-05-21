@@ -94,6 +94,8 @@ module.exports={
         then.step(function(){
             nut.model.allRight=allRight
             nut.model.docs=docOne;
+            console.log("docs:"+nut.model.docs._id)
+            console.log("allRight:"+nut.model.allRight.themeId)
         })
 
     },
@@ -180,12 +182,20 @@ module.exports={
                         ];
                         conf.rows = [];
                         for(var i in finishMan){
-                           var rows
+                            var rows
+                            var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+new Date(finishMan[i].createTime).getMonth()+"-"+new Date(finishMan[i].createTime).getDate();
+                        var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
+                            var city
+                            if(typeof (finishMan[i].city)=="undefined"){
+                                city=""
+                            }else{
+                                city= finishMan[i].city
+                            }
                            rows = [
-                                finishMan[i].createTime,
+                               createtime,
                                 finishMan[i].realname,
-                                finishMan[i].birthday,
-                                finishMan[i].city,
+                               birthday,
+                               city,
                                 finishMan[i].getGift,
                                 finishMan[i].getLabel,
                                 finishMan[i].compScore

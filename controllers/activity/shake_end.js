@@ -8,7 +8,8 @@ module.exports = {
     process:function(seed,nut){
 
         var uid = seed.uid || 'undefined';//用户微信ID
-        var _id = seed._id || 'undefined';//活动ID
+        var _id = seed._id || 'undefined';//表lavico/shake，唯一确定shake的活动
+        var aid;//在表lavico/activity唯一确定活动ID
         var coupon_no = seed.coupon_no || 'undefined';//优惠券
 
         this.step(function(){
@@ -59,7 +60,23 @@ module.exports = {
                     this.terminate();
                 }else{
                     nut.model.doc = doc;
+                    aid = doc.aid;//数据格式：L2013112709，在lavico/activity中唯一确定活动
                     console.log(doc);
+                }
+            }));
+        });
+
+        this.step(function(){
+
+            helper.db.coll('lavico/activity').findOne({aid:aid},this.hold(function(err, doc){
+                if(!doc){
+                    nut.disable();//不显示模版
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"error":"aid_no_bind_to_welab"}');
+                    this.res.end();
+                    this.terminate();
+                }else{
+                    nut.model.picUrl = doc.pic || '/lavico/public/images/coupon.jpg';
                 }
             }));
         });

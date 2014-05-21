@@ -72,7 +72,8 @@ module.exports={
                     "getLabel": "",
                     "getGift":  "",
                     "compScore": "",
-                    "createTime": new Date().getTime()
+                    "createTime": new Date().getTime(),
+                    "resultValue":receiveAnswer
                 },function(err,doc){});
             }
         })

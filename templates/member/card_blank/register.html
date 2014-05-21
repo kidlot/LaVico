@@ -19,7 +19,7 @@
         opacity: 0;
         -moz-opacity: 0;
         position: relative;
-        top: -45px;
+        top: -65px;
         z-index:10;
     }
     #month, #day {
@@ -28,7 +28,7 @@
         opacity: 0;
         -moz-opacity: 0;
         position: relative;
-        top: -45px;
+        top: -65px;
         z-index:10;
     }
 </style>
@@ -36,13 +36,14 @@
 
     <!--用户微信ID-->
     <input type='hidden' id='uid' value='{@uid}'>
+    <input type="hidden" id="error" name="error" value="{@error}" />
 
     <div class="store-title">
         <p><span class="title1"><a id="memberUrl" href="javascript:void(0);">会员</a></span><span class="title5" id="registerUrl">申领会员卡 - 资料填写</span></p>
     </div>
     <div class="apply">
         <div class="title">
-            <p class="text">如果您已有实体会员卡，请<a id="bindUrl" href="javascript:void(0);">绑定会员卡</a></p>
+            <p class="text">如果您是我们的会员，请<a id="bindUrl" href="javascript:void(0);">绑定</a></p>
         </div>
         <div class="form clear">
             <div class="input clear">
@@ -64,6 +65,7 @@
                 <div class="birth-right fl"><div class="input_select_div_fys">
                     <input type="text" name="brand" class="input_select_year" value="年" id="model_sex_input" readonly/>
                     <select id="year"  class="select1">
+
                     </select>
                 </div>
                 </div>
@@ -72,6 +74,7 @@
                         <input type="text" name="brand" class="input_select_sex" value="月" id="model_sex_input" readonly/>
                         <select id="month"  class="select2">
 
+
                         </select>
                     </div>
                 </div>
@@ -79,7 +82,6 @@
                     <div class="input_select_div_f">
                         <input type="text" name="brand" class="input_select_sex" value="日" id="model_sex_input" readonly/>
                         <select id="day"  class="select3">
-
                         </select>
                     </div>
                 </div>
@@ -94,13 +96,13 @@
                 <div class="tel-right fl"><input id="id_code" border="0" type="text" value="" /></div>
             </div>
             <div class="note">如申领时遇到问题<br />
-                请拨打 400-1008-886 联系</div>
+                请拨打 <a class="tel" href="tel:4001008866">400-100-8866</a> 联系</div>
             <div class="submit_btn"><input type="button" value="提交" class="subbtn" id='submit'/></div>
         </div>
     </div>
 </div>
-<!--正在加载框-->
-<div id="loading" style="position: fixed; z-index: 1000; left: 791px; top: 129px; display: none;"><img src="/opencomb/public/style/images/github-loading.gif"></div>
+<!--正在加载-->
+<div id="loading" class="loading" style="position: fixed; z-index: 1000; left: 40%; top: 40%;"><img src="/lavico/public/images/loading.gif"></div>
 
 
 

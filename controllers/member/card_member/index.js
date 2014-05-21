@@ -128,8 +128,10 @@ module.exports = {
     },
     viewIn:function(){
 
+        $('#loading').hide();//隐藏加载框
 
         var wxid = $('#wxid').val();
+
         /*bind*/
         if($('#bindStatus').val() == 'bind'){
             /*计算当前用户可用的优惠券数*/

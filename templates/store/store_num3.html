@@ -4,7 +4,14 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
 </script>
 <div class="wrapper">
   <div class="store-title">
-    <p><span class="title1"><a href="/lavico/store/searchByCity?wxid={@wxid}">门店查询</a></span><span class="title2">门店详情</span></p>
+    <p><span class="title1">
+    <if condition="{@_id!=null}">
+        <a href="/lavico/bargain/maps?_id={@_id}&wxid={@wxid}">返回</a>
+    <else/>
+        <a href="/lavico/store/currentCustomerLocation?wxid={@wxid}">返回</a>
+        <!--<a href="/lavico/store/searchByCity?wxid={@wxid}">返回</a>-->
+    </if>
+    </span><span class="title2">门店详情</span></p>
   </div>
   <div class="look-map">
 <div class="map">
@@ -17,7 +24,7 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
     </if>
 </div>
 <div class="way">
-<p class="text">地址：{@searchCity.ADDR}<br />
+<p class="text">地址：{@searchCity.ADDR}<a href="/lavico/store/baiduCar?shopLng={@searchCity.LOG}&shopLat={@searchCity.LAT}">行车线路</a><br />
 电话：{@searchCity.TEL}<br />
 
 </p></div>
@@ -30,6 +37,6 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
 <div class="footer">
 <div class="fl footer-left"><p>寻求客服帮助？<br />
 请拨打我们的热线电话</p></div>
-<div class="fl footer-right"><p><a href="tel:400-1008-886">400-1008-886</a></p></div>
+<div class="fl footer-right"><p><a href="tel:4001008866">400-100-8866</a></p></div>
 </div> 
 </div>

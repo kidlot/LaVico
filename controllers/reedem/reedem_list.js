@@ -53,7 +53,7 @@ module.exports={
 
             for(var i in list.docs){
                 (function(doc){
-                    helper.db.coll("lavico/exchangeRecord").find({reddem_id:doc._id.toString()}).count(then.hold(function(err,result){
+                    helper.db.coll("lavico/exchangeRecord").find({reddem_id:doc._id}).count(then.hold(function(err,result){
                         if(err) throw err;
                         if(result){
                             doc.allExchangeCount=result;
