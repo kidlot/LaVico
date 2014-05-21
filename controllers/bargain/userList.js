@@ -137,7 +137,7 @@ module.exports = {
                             for (var i=0; i<docs.length; i++)
                             {
                                 docs[i].input = '<input type="checkbox" userid="'+docs[i]._id+'" onclick="checkUser(this)" >';
-                                docs[i].realname = docs[i].realname || '未注册用户';
+                                docs[i].realname = docs[i].realname || '未   注册用户';
                                 docs[i].city = docs[i].city || '';
                                 docs[i].followCount = docs[i].followCount || '1';
                                 docs[i].messageCount = docs[i].messageCount && otherData.totaMessages ? (docs[i].messageCount) + " <span style='color: #1ABC9C'>" + (parseInt((docs[i].messageCount / otherData.totaMessages)*100)) + "%</span>" : "0";
