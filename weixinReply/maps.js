@@ -8,7 +8,7 @@ exports.load = function () {
     wechatapi.registerReply(9,function(msg,req,res,next){
 
        // if(msg.MsgType=="location"){
-        if(msg.Event=="shop"){
+        if(msg.EventKey === "shop"){
             console.log("门店查询开始!!!");
             var lat=msg.Location_X;
             var lng=msg.Location_Y;
