@@ -35,74 +35,80 @@ module.exports = {
 
         /*前端设计JS*/
 
-            $('#loading').hide();//隐藏加载框
-            $("#year").change(function(){
-                $(this).parent().find("input").val($(this).val()+'年');
-            });
+        $('#loading').hide();//隐藏加载框
 
-            $("#month").change(function(){
-                $(this).parent().find("input").val($(this).val()+'月');
-            });
+        $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
 
-            $("#day").change(function(){
-                $(this).parent().find("input").val($(this).val()+'日');
-            });
-            $("#sex").change(function(){
-                var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
-                $(this).parent().find("input").val(_v);
-            });
+        $("#year").change(function(){
+            $(this).parent().find("input").val($(this).val()+'年');
+        });
+
+        $("#month").change(function(){
+            $(this).parent().find("input").val($(this).val()+'月');
+        });
+
+        $("#day").change(function(){
+            $(this).parent().find("input").val($(this).val()+'日');
+        });
+        $("#sex").change(function(){
+            var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
+            $(this).parent().find("input").val(_v);
+        });
 
 
         /*后端开发JS*/
+        var wxid = $('#uid').val();
+        /*申请会员卡*/
+        $("#registerUrl").click(function(){
+            window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+        });
 
+        /*绑定会员卡*/
+        $("#bindUrl").click(function(){
+            window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+        });
 
-            var wxid = $('#uid').val();
-            /*申请会员卡*/
-            $("#registerUrl").click(function(){
-                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
-            });
-
-            /*绑定会员卡*/
-            $("#bindUrl").click(function(){
-                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
-            });
-
-            /*会员管理*/
-            $('#memberUrl').click(function(){
-                window.location.href="/lavico/member/index?wxid="+wxid;
-            });
+        /*会员管理*/
+        $('#memberUrl').click(function(){
+            window.location.href="/lavico/member/index?wxid="+wxid;
+        });
 
 
 
-            var $day = $("#day"),
-                $month = $("#month"),
-                $year = $("#year");
+        var $day = $("#day"),
+            $month = $("#month"),
+            $year = $("#year");
 
-            var dDate = new Date(),
-                dCurYear = dDate.getFullYear(),
-                str = "";
-            for (var i = dCurYear - 100; i < dCurYear + 1; i++) {
-                if (i == dCurYear) {
-                    str = "<option value=" + i + " selected=true>" + i + "年</option>";
-                } else {
-                    str = "<option value=" + i + ">" + i + "年</option>";
-                }
-                $year.append(str);
+        var dDate = new Date(),
+            dCurYear = dDate.getFullYear(),
+            str = "";
+        for (var i = dCurYear - 100; i < dCurYear + 1; i++) {
+            if (i == dCurYear) {
+                str = "<option value=" + i + " selected=true>" + i + "年</option>";
+            } else {
+                str = "<option value=" + i + ">" + i + "年</option>";
             }
+            $year.append(str);
+        }
 
-            for (var i = 1; i <= 12; i++) {
+        for (var i = 1; i <= 12; i++) {
 
-                if (i == (dDate.getMonth() + 1)) {
-                    str = "<option value=" + i + " selected=true>" + i + "月</option>";
-                } else {
-                    str = "<option value=" + i + ">" + i + "月</option>";
-                }
-                $month.append(str);
+            if (i == (dDate.getMonth() + 1)) {
+                str = "<option value=" + i + " selected=true>" + i + "月</option>";
+            } else {
+                str = "<option value=" + i + ">" + i + "月</option>";
             }
-            TUpdateCal($year.val(), $month.val());
-            $("#year,#month").bind("change", function(){
-                TUpdateCal($year.val(),$month.val());
-            });
+            $month.append(str);
+        }
+        TUpdateCal($year.val(), $month.val());
+        $("#year,#month").bind("change", function(){
+            TUpdateCal($year.val(),$month.val());
+        });
+
+        /*设置默认年月日数值*/
+        $("#year").parent().find("input").val($("#year").val()+'年');
+        $("#month").parent().find("input").val($("#month").val()+'月');
+        $("#day").parent().find("input").val($("#day").val()+'日');
 
         function TGetDaysInMonth(iMonth, iYear) {
             var dPrevDate = new Date(iYear, iMonth, 0);
@@ -199,6 +205,7 @@ module.exports = {
         var getCaptcha = function(){
             flag = 1;
             $.get('/lavico/member/card_blank/code:id_code',{
+                    'userTel':$("#mobile").val()
                 },function(data){
                     data = eval('('+data+')');
                     if(data.result == 'ofen'){
@@ -290,7 +297,7 @@ module.exports = {
                             //console.log(data.error);
                             alert("网络不稳定，请稍后再尝试");
                         }else{
-                            alert("恭喜你，注册成功");
+                            alert("恭喜你，申领成功");
                             window.location.href="/lavico/member/index?wxid="+$("#uid").val();
                         }
                         return false;

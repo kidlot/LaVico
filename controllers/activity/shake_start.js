@@ -66,7 +66,7 @@ module.exports = {
                 nut.disable();//不显示模版
                 //this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
                 this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先申请会员卡或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                 this.res.end();
                 this.terminate();
             }
@@ -78,7 +78,7 @@ module.exports = {
 //              this.res.writeHead(200, { 'Content-Type': 'application/json' });
 //              this.res.write('{"error":"aid_is_empty"}');
                 this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先申请会员卡或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                 this.res.end();
                 this.terminate();
             }
@@ -206,6 +206,7 @@ module.exports = {
     viewIn:function(){
         /*前端设计JS*/
 
+        $('#loading').hide();//隐藏加载框
 
         var flag = 1;//默认可摇一摇
         if (window.DeviceMotionEvent) {
@@ -243,7 +244,7 @@ module.exports = {
             $(".mobile-pic").addClass("box_rotate2");
         }
 
-        var SHAKE_THRESHOLD = 3000;
+        var SHAKE_THRESHOLD = 1500;
         var last_update = 0;
         var x=y=z=last_x=last_y=last_z=0;
 
