@@ -12,6 +12,7 @@ module.exports={
         var stopLab=seed.stopLab;
         nut.model.wechatid = seed.wechatid
 
+
         var compScore
         //非停止标签过来
         if(stopLab!="true"){
@@ -79,18 +80,21 @@ module.exports={
                                     this.hold(function(err,result){
                                         if(err) throw err;
                                         if(result){
+                                            nut.model.memberID= result.HaiLanMemberInfo.memberID;
                                             return result.HaiLanMemberInfo.memberID
                                         }
                                     })
                                 )
                             })
 
+
                             then.step(function(memberId){
+
                                 //根据memberId调用接口给账户加分
                                 var jsonData={};
                                 jsonData.memberId=memberId;
                                 jsonData.qty=compScore;
-                                console.log("jsonData:"+jsonData.memberId,jsonData.qty)
+
                                 middleware.request('Point/Change',jsonData,
                                     this.hold(function(err,doc){
                                         if(err) throw err;
@@ -142,8 +146,7 @@ module.exports={
                         }
 
                         then.step(function(){
-                            console.log("1")
-                            console.log(parseInt(then.req.session.scoreAll))
+                            //console.log(parseInt(then.req.session.scoreAll))
                             helper.db.coll("lavico/custReceive").insert({
                                 "wechatid": wechatid,
                                 "themeId": helper.db.id(_id),
@@ -158,16 +161,24 @@ module.exports={
                                 "getTipContent":getTipContent,
                                 "createTime": new Date().getTime()
                             },function(err,doc){});
-                            console.log("getLabel:"+getLabel)
-                            console.log("getScore:"+getScore)
-                            console.log("getTipContent:"+getTipContent)
-                            console.log("newActivity:"+newActivity)
                             //记录json准备显示
                             resultList+="{"
                                 +"getLabel:'"+getLabel
                                 +"',getScore:"+getScore
                                 +",getTipContent:'"+getTipContent
                                 +"',getActivities:'"+newActivity+"'}";
+
+                            if(getLabel!="" || getLabel!=null){
+                                //发送标签至CRM
+                                jsonData={};
+                                jsonData.memberId= nut.model.memberID;
+                                jsonData.tag=getLabel;
+                                middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                                    if(err) throw err;
+                                    console.log("tag record:"+doc.success);
+                                }))
+                            }
+
                             if(dot>=2){
                                 resultList+=",";
                             }
@@ -185,6 +196,10 @@ module.exports={
                 }
 
             })
+
+
+
+
             this.step(function(){
                 resultList+="]";
                 //返回显示
@@ -334,6 +349,9 @@ module.exports={
                                     }));
                                 })
 
+
+
+
                                 then.step(function () {
                                     helper.db.coll("lavico/custReceive").insert({
                                         "wechatid": wechatid,
@@ -364,9 +382,22 @@ module.exports={
                                             + "',getScore:" + getScore
                                             + ",getTipContent:'" + getTipContent
                                             + "',getActivities:'" + newActivity + "'}";
+
+                                        if(getLabel!="" || getLabel!=null){
+                                            //发送标签至CRM
+                                            jsonData={};
+                                            jsonData.memberId= nut.model.memberID;
+                                            jsonData.tag=getLabel;
+                                            middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                                                if(err) throw err;
+                                                console.log("tag record:"+doc.success);
+                                            }))
+                                        }
+
                                         if (i < scoreRange.length - 1) {
                                             resultList += ",";
                                         }
+
                                     }
                                 })
                                 //调用接口结束
