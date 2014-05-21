@@ -89,7 +89,10 @@ exports.load = function () {
 
 
     wechatapi.registerReply(9,function(msg,req,res,next){
-        if(msg.MsgType=="location"){
+        console.log("msg.MsgType:"+msg.MsgType);
+        console.log("msg.Event:"+msg.Event);
+        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
+
             this.req.session.userLat = msg.Latitude;
             this.req.session.userLng =msg.Longitude;
         }
