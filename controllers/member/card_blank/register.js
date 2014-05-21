@@ -28,6 +28,13 @@ module.exports = {
                     this.res.write('{"error":"wxid_no_bind_to_welab"}');
                     this.res.end();
                     this.terminate();
+                }else{
+                    if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
+                        nut.model.error = "you_has_bound_already" ;
+                    }else{
+                        nut.model.error = "null"
+                    }
+
                 }
             }));
         });
@@ -41,6 +48,12 @@ module.exports = {
         /*前端设计JS*/
 
         $('#loading').hide();//隐藏加载框
+
+        /*判断是否会员已经绑定*/
+        if($("#error").val()=="you_has_bound_already"){
+            alert("请先解绑后，再申请会员");
+            window.location.href="/lavico/member/card_member/unbind?wxid="+wxid;
+        }
 
         $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
 
@@ -284,6 +297,8 @@ module.exports = {
                 alert("验证码错误");
                 return	false;
             }
+            $('#loading').show();//显示加载框
+
             $.get('/lavico/member/card_blank/register:apply_card',{
                     uid : $("#uid").val(),
                     name : $("#name").val(),
@@ -294,6 +309,8 @@ module.exports = {
                 },
                 function(data){
                     //console.log(data);
+                    $('#loading').hide();//隐藏加载框
+
                     data = eval("("+data+")");
                     var _error = data.error;
                     if(data.success == true){
