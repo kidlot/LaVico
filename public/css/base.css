@@ -17,6 +17,7 @@ th, td /* table elements 表格元素 */ {
     padding: 0;
 }
 
+html { font-size: 62.5%; /*10 ÷ 16 × 100% = 62.5%*/}
 
 /** 设置默认字体 **/
 * {
