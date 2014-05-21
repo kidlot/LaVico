@@ -8,6 +8,7 @@ var shake = require("./weixinReply/shake.js") ;
 var lookbook = require("./weixinReply/lookbook.js") ;
 var maps = require("./weixinReply/maps.js") ;
 var rewriteWelab = require("./rewriteWelab.js") ;
+var wechatapi = require("welab/lib/wechat-api.js");
 
 exports.onload = function(application){
 
@@ -32,6 +33,19 @@ exports.onload = function(application){
     //门店查询
     maps.load();
 
+
+    wechatapi.registerReply(9, function (params, req, res, next) {
+        if (params.MsgType === "event" && params.Event === "CLICK" && params.EventKey === "registerbutton") {
+
+            params.Content = "registerbutton"
+            var register = require("welab/apps/register/controllers/register.js");
+            register.reply(params,req,res,next)
+        } else {
+            next();
+        }
+    });
+
+    wechatapi.makeQueue();
 
 
     /**
