@@ -87,16 +87,15 @@ exports.load = function () {
         }
     })
 
-
-    wechatapi.registerReply(9,function(msg,req,res,next){
-        console.log("msg.MsgType:"+msg.MsgType);
-        console.log("msg.Event:"+msg.Event);
-        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
-
-            this.req.session.userLat = msg.Latitude;
-            this.req.session.userLng =msg.Longitude;
-        }
-    })
+//
+//    wechatapi.registerReply(9,function(msg,req,res,next){
+//        console.log("msg.MsgType:"+msg.MsgType);
+//        console.log("msg.Event:"+msg.Event);
+//        if(msg.MsgType=="event" && msg.Event=="LOCATION" || msg.Content=="hb"){
+//            helper.db.coll("lavico/locationPosition").insert(msg);
+//
+//        }
+//    })
 
     wechatapi.makeQueue();
 };
