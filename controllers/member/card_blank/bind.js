@@ -49,41 +49,41 @@ module.exports = {
             /*前端设计JS*/
             $('#loading').hide();//隐藏加载框
 
+            var wxid = $('#wxid').val();
+
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
-                alert("请将解绑后，再绑定");
+                alert("请先解绑后，再绑定会员");
+                window.location.href="/lavico/member/card_member/unbind?wxid="+wxid;
             }
+            /*申请会员卡*/
+            $("#registerUrl").click(function(){
+                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+            });
 
+            $("#no_member_telephone .confirm .applybtn").click(function(){
+                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+            });
 
-             var wxid = $('#wxid').val();
-                /*申请会员卡*/
-                $("#registerUrl").click(function(){
-                    window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
-                });
+            /*绑定会员卡*/
+            $("#bindUrl").click(function(){
+                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+            });
 
-                $("#no_member_telephone .confirm .applybtn").click(function(){
-                    window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
-                });
+            /*会员管理*/
+            $('#memberUrl').click(function(){
+                window.location.href="/lavico/member/index?wxid="+wxid;
+            });
 
-                /*绑定会员卡*/
-                $("#bindUrl").click(function(){
-                    window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
-                });
+            /*会员管理*/
+            $('#member_manage').click(function(){
+                window.location.href="/lavico/member/index?wxid="+wxid;
+            });
 
-                /*会员管理*/
-                $('#memberUrl').click(function(){
-                    window.location.href="/lavico/member/index?wxid="+wxid;
-                });
-
-                /*会员管理*/
-                $('#member_manage').click(function(){
-                    window.location.href="/lavico/member/index?wxid="+wxid;
-                });
-
-                /*取消绑定*/
-                $(".cancel").click(function(){
-                    $(this).parents('.popup').hide();
-                });
+            /*取消绑定*/
+            $(".cancel").click(function(){
+                $(this).parents('.popup').hide();
+            });
 
 
             /*后端编程JS*/
