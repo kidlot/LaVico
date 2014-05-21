@@ -18,7 +18,15 @@
         <else/>
             <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
         </if>
-
+        <script>
+            $(function () {
+                function vip_card() {
+                    var vip_Win = $(window).height() / 4;
+                    $(".vip-card-num").css("top", vip_Win);
+                }
+            })
+                
+        </script>
         <div class="member">
         <div class="member-content">
             <if condition="@bindStatus == 'bind'">
