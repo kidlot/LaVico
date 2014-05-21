@@ -47,7 +47,7 @@ a.tel{color:#2d2d2d;}
 .store-title{width:96%; /*height:50px;*/ background-color:#010417; padding-top:15px; padding-bottom:15px; padding-left:4%; color:#fff;}
 .store-title .title1 { display:block; }
 .store-title .title1 a{width:135px;padding-left:25px; display:block;color:#fff; font-size:18px; height:22px; line-height:22px; background:url(../images/store_jt.jpg) left center no-repeat;}
-.store-title .title2{ font-size:20px; display:block;width:100%;text-align:center;position:absolute;top:12px;left:0px;}
+.store-title .title2{ font-size:20px; display:block;width:100%;text-align:center;position:absolute;top:2.4%;left:0px;}
 .store-title .title3{font-size:20px; display:block;width:400px;text-align:center;position:absolute;top:24px;left:120px;}
 .store-title .title4 a{width:115px;display:inline-block;color:#fff; font-size:22px;  height:20px; line-height:20px; background:url(../images/store_jtr.jpg) right center no-repeat; margin-left:318px;}
 .store-title .title6{color:#fff; font-size:25px;width:615px;text-align:center;  height:20px; line-height:20px;}
@@ -253,19 +253,19 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5-content .banner img{ width:100%; }
 .points5 .tab{width:100%; height:54px;}
 .points5 .tab ul {  }
-.points5 .tab ul li{ width:32%; float:left; line-height:40px; font-size:20px;text-align:center;}
-.points5 .tab ul li a{width:100%;height:54px;display:inline-block; color:#B9954D;background:url(../images/tab1_bg.jpg) center center no-repeat; }
+.points5 .tab ul li{ width:32%; float:left; line-height:46px; font-size:18px;text-align:center;}
+.points5 .tab ul li a{width:100%;height:54px;display:inline-block; color:#B9954D;background:url(../images/tab1_bg.jpg) no-repeat; }
 .points5 .tab ul li a:hover,.points5 .tab ul li a.on{color:#000; background:url(../images/tab1_bgOn.jpg) center center no-repeat;}
 .points5-content .pre-box{ margin-top:20px; padding-bottom:20px; border-bottom:1px #ababab solid;}
 .points5-content .pre-box1{ border:0; padding-bottom:40px;}
 .points5-content .pre-box-content{width:95%; margin:0 auto;}
 .points5-content .pre-top{ background-color:#fff;}
-.points5-content .pre-top-right{ width:56%; }
-.points5-content .pre-top-right .intro{font-size:16px; color:#646464; }
-.points5-content .pre-bottom{ height:65px; padding-top:20px;}
+.points5-content .pre-top-right{ width:56%; padding:4%; }
+.points5-content .pre-top-right .intro{font-size:1.4rem; color:#646464; }
+.points5-content .pre-bottom{ height:65px; padding-top:8px;}
 .points5-content .pre-bottom .left,.pre-bottom .right{font-size:18px; text-align:left; cursor:pointer;}
 .points5-content .pre-bottom .left{width:100%;color:#646464; border:1px #dedede solid; box-sizing: border-box; }
-.points5-content .pre-bottom .right{width:40%; line-height:34px; text-align:center; color:#291b00; background:url(../images/next.png) no-repeat; background-size:contain; }
+.points5-content .pre-bottom .right{width:140px; line-height:34px; text-align:center; color:#291b00; background:url(../images/next.png) no-repeat; background-size:contain; margin-top:10px; }
 .points5-content .pre-bottom .right a{ color:#291b00; font-size:18px; }
 .c4{ color:#B9954D;}
 /*申领会员卡*/
