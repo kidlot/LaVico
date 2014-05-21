@@ -232,7 +232,7 @@ module.exports = {
                     }else if(data.result == 'ok'){
                         set_interval();
                         $('#id_code').val(data.id_code);
-                        alert('验证码发送成功，请在2分钟内输入');
+                        console.log('验证码发送成功，请在2分钟内输入');
                     }else{
                         alert('网络不稳定，请稍后再尝试')
                     }

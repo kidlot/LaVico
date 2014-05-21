@@ -356,7 +356,7 @@ module.exports = {
                                 set_interval();
                                 $('#userCaptcha').val(data.id_code);
                                 $('#id_code').val('send_captcha_success');
-                                alert('验证码发送成功，请在2分钟内输入！');
+                                console.log('验证码发送成功，请在2分钟内输入！');
                                 $(".popup").hide();
                             }else{
                                 alert('网络接口不稳定，请稍后再尝试');
@@ -680,7 +680,7 @@ module.exports = {
                                             'HaiLanMemberInfo':{
                                                 'memberID':dataJson.MEMBER_ID,
                                                 'action':'bind',
-                                                'userCardNumber':userCardNumber,
+                                                //'userCardNumber':userCardNumber,
                                                 'lastModified':new Date().getTime(),
                                                 'type':type
                                             }
