@@ -99,7 +99,8 @@ q:before, q:after {
 /* inline block */
 .inline-block { display: inline-block; *display: inline; }
 
-.fl{float:left; display:inline;}
+.fl{float:left; display:inline; width:30%; }
+.fl img{ width:100%; }
 .fr{float:right; display:inline;}
 /* Clearfix */
 .clearfix:after{content:"."; display:block; height:0; clear:both; visibility:hidden;}
