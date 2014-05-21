@@ -24,7 +24,14 @@
                     var vip_Win = $(window).height() / 4;
                     $(".vip-card-num").css("top", vip_Win);
                 }
-            })
+
+                window.onload = function () {
+                    vip_card();
+                }
+                window.onresize = function () {
+                    vip_card();
+                }
+            });
                 
         </script>
         <div class="member">
