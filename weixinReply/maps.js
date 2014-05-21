@@ -7,7 +7,7 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
 
-       // if(msg.MsgType=="location"){
+
         if(msg.EventKey === "shop"){
             console.log("门店查询开始!!!");
             var lat=msg.Location_X;
@@ -86,6 +86,15 @@ exports.load = function () {
             next()
         }
     })
+
+
+    wechatapi.registerReply(9,function(msg,req,res,next){
+        if(msg.MsgType=="location"){
+            this.req.session.userLat = msg.Latitude;
+            this.req.session.userLng =msg.Longitude;
+        }
+    })
+
     wechatapi.makeQueue();
 };
 
