@@ -18,7 +18,7 @@ module.exports = {
                 nut.model._id = "";
             else
                 nut.model._id=seed._id;
-            
+
             var doc
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
