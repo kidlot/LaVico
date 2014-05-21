@@ -5,6 +5,7 @@ a, button, input { -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highl
 a.tel{color:#2d2d2d;}
 /*活动规则*/
 .wrapper{width:100%; height:100%;  max-width:640px; margin:0 auto; position:relative;}
+.wrapper .vip-card img { width:100%; }
 .coupon-banner{width:100%; height:323px; padding-top:20px; padding-bottom:20px;}
 .activity-rules{width:100%; background-color:#e4e4e4;}
 .begin{width:486px; height:67px; padding-top:20px; margin:0 auto;}
@@ -134,7 +135,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .member-content{width:96%; margin:0 auto; padding:0 2%}
 .radius{width:100%; height:auto; border:1px #dadada solid; background-color:#efefef;-moz-border-radius:15px;border-radius: 15px; -webkit-border-radius: 15px; box-sizing:border-box; }
 .radius .title{width:100%; height:65px; line-height:65px; text-align:center; background:url(../images/meber_bg.jpg) center center no-repeat; font-size:25px; color:#3C3C3C;}
-.radius .list li{width:96%; line-height:80px; font-size:18rem; padding:0 2%; height:80px; border-bottom:1px #e2e2e2 solid; box-sizing:border-box; }
+.radius .list li{width:96%; line-height:80px; font-size:1.8rem; padding:0 2%; height:80px; border-bottom:1px #e2e2e2 solid; box-sizing:border-box; }
 .radius .list li a{width:100%; display:inline-block; background:url(../images/right_jt.jpg) right center no-repeat; color:#000;}
 .radius .list li a.yellow{color:#B49870;}
 .suba{color:#B49870;}
