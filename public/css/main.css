@@ -253,8 +253,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5-content .banner img{ width:100%; }
 .points5 .tab{width:100%; height:54px;}
 .points5 .tab ul {  }
-.points5 .tab ul li{ width:31.9%; float:left; line-height:46px; font-size:18px;text-align:center;}
-.points5 .tab ul li a{width:100%;height:54px;display:inline-block; color:#B9954D;background:url(../images/tab1_bg.jpg) no-repeat; }
+.points5 .tab ul li{ width:32%; float:left; line-height:46px; font-size:18px;text-align:center;}
+.points5 .tab ul li a{width:100%;height:54px;display:inline-block; color:#B9954D;background:url(../images/tab1_bg.jpg) no-repeat; vertical-align:top; }
 .points5 .tab ul li a:hover,.points5 .tab ul li a.on{color:#000; background:url(../images/tab1_bgOn.jpg) center center no-repeat;}
 .points5-content .pre-box{ margin-top:20px; padding-bottom:20px; border-bottom:1px #ababab solid;}
 .points5-content .pre-box1{ border:0; padding-bottom:40px;}
