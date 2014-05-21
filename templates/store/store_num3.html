@@ -4,7 +4,13 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
 </script>
 <div class="wrapper">
   <div class="store-title">
-    <p><span class="title1"><a href="/lavico/store/searchByCity?wxid={@wxid}">门店查询</a></span><span class="title2">门店详情</span></p>
+    <p><span class="title1">
+    <if condition="{@_id!=''}">
+        <a href="/lavico/bargain/maps?_id={@_id}&wxid={@wxid}">返回</a>
+    <else/>
+        <a href="/lavico/store/searchByCity?wxid={@wxid}">返回</a>
+    </if>
+    </span><span class="title2">门店详情</span></p>
   </div>
   <div class="look-map">
 <div class="map">

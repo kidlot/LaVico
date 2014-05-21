@@ -12,7 +12,13 @@ module.exports = {
         if(seed._id){
 
             nut.model.wxid = seed.wxid
-            nut.model._id = seed._id
+
+            var id=seed._id;
+            if(id=="")
+                nut.model._id = "";
+            else
+                nut.model._id=seed._id;
+            
             var doc
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
