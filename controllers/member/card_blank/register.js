@@ -284,6 +284,8 @@ module.exports = {
                 alert("验证码错误");
                 return	false;
             }
+            $('#loading').show();//显示加载框
+
             $.get('/lavico/member/card_blank/register:apply_card',{
                     uid : $("#uid").val(),
                     name : $("#name").val(),
@@ -294,6 +296,8 @@ module.exports = {
                 },
                 function(data){
                     //console.log(data);
+                    $('#loading').hide();//隐藏加载框
+
                     data = eval("("+data+")");
                     var _error = data.error;
                     if(data.success == true){
