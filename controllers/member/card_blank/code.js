@@ -1,3 +1,8 @@
+/**
+ * Created by David Xu on 3/12/14.
+ * 产生与发送验证码
+ */
+
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 module.exports = {
 	actions:{		
