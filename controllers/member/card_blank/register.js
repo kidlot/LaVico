@@ -1,3 +1,8 @@
+/**
+ * Created by David Xu on 3/12/14.
+ * 会员注册
+ */
+
 var middleware = require('../../../lib/middleware.js');
 module.exports = {
     layout:'lavico/member/layout',
