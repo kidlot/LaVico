@@ -140,8 +140,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 /*会员特权*/
 .member{width:100%;background-color:#dadada;}
 .member-content{width:96%; margin:0 auto; padding:0 2%}
-.radius{width:100%; height:auto; border:1px #dadada solid; background-color:#efefef;-moz-border-radius:15px;border-radius: 15px; -webkit-border-radius: 15px; box-sizing:border-box; }
-.radius .title{width:100%; height:50px; line-height:50px; text-align:center; background:url(../images/meber_bg.jpg) no-repeat; font-size:2.0rem; color:#3C3C3C; background-size:100% 100%; }
+.radius{width:100%; height:auto; border:1px #dadada solid; background-color:#efefef;-moz-border-radius:8px;border-radius: 8px; -webkit-border-radius: 8px; box-sizing:border-box; }
+.radius .title{width:100%; height:50px; line-height:50px; text-align:center; background:url(../images/meber_bg.jpg) no-repeat; font-size:108rem; color:#3C3C3C; background-size:100% 100%; }
 .radius .list li{width:96%; line-height:50px; font-size:1.4rem; padding:0 2%; height:50px; border-bottom:1px #e2e2e2 solid; box-sizing:border-box; }
 .radius .list li a{width:100%; display:inline-block; background:url(../images/right_jt.jpg) right center no-repeat; color:#000;}
 .radius .list li a.yellow{color:#B49870;}
@@ -155,7 +155,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input-member .confirm input{text-align:center;width:486px; height:67px;border:0; outline:none; line-height:67px; font-size:25px; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;}
 .my-card{ font-size:25px; line-height:35px; color:#646464; padding-top:30px;}
 .link-cardContent{width:100%; background-color:#dadada;}
-.link-cardContent .title{width:100%; height:81px; line-height:81px; text-align:center; font-size:25px; color:#000; background:url(../images/head_bg.jpg) center center no-repeat;}
+.link-cardContent .title{width:100%; height:50px; line-height:50px; text-align:center; font-size:1.6rem; color:#000; background:url(../images/head_bg.jpg) center center no-repeat;}
 .link-cardContent .title a{ text-decoration:underline;color:#7d4900;}
 .input-tel{width:530px; margin:0 auto; padding-top:50px;}
 .input-tel .text{width:95px; height:65px; text-align:right; line-height:65px; font-size:25px; color:#2d2d2d; float:left;}
@@ -192,8 +192,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .remo-card .submit input{text-align:center;width:80%; height:50px;border:0; outline:none; line-height:50px; font-size:1.6rem; color:#3C3C3C; 
                          background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer; background-size:100% 100%; margin:4% 10% 0 10%; }
 .wei_title{ font-size:25px; color:#000; text-align:center; padding-top:10px;}
-.wei_name{ color:#ba954f; font-size:1.6rem; padding-top:10px;}
-.wei_text{ color:#646464; font-size:1.6rem; padding-top:10px;}
+.wei_name{ color:#ba954f; font-size:1.4rem; padding-top:10px;}
+.wei_text{ color:#646464; font-size:1.4rem; padding-top:10px;}
 
 /*积分兑换*/
 .points1{ background-color:#eeeeee;}
@@ -309,7 +309,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                                 background:url(../images/click_btn.jpg) center center no-repeat; background-size:100% 100%; }
 .apply .form .bg{ background-color:#dadada; border:1px #b2b1ad solid;  }
 .apply .form .input .trade-right{width:62%; padding-left:3%; color:#000;}
-.apply .form .input .trade-right select{width:100%; height:50px; line-height:50px; padding-left:10px; font-size:1.6rem;}
+.apply .form .input .trade-right select{width:100%; height:40px; line-height:40px; padding-left:10px; font-size:1.4rem;}
 /*精英搭配*/
 .match{width:100%; background-color:#F1F1F1;}
 .match .banner{width:608px; height:400px; margin:0 auto;}
@@ -440,7 +440,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input_select_div{ width:100%; height:50px;}
 .input_select{background:url('../images/input_select_bg.jpg') no-repeat;padding:4px 34px 4px 4px;width:100%;height:50px;border:0;padding:4px;font-size:1.6rem;line-height:50%;position:relative; background-size:100% 100%;}
 #model-name{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
-#select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:50px;opacity:0;-moz-opacity:0;position:relative;top:-50px;}
+#select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:40px;opacity:0;-moz-opacity:0;position:relative;top:-40px;}
 .input_select_sex{width:100%;height:40px;border:0;padding:0 2%;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
 #select_sex{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;left:-123px;}
 #select_month,#select_day{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
