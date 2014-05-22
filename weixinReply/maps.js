@@ -28,7 +28,7 @@ exports.load = function () {
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
-                            cosole.log("Shops:":doc);
+                            cosole.log("Shops:"+doc);
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
                         })
