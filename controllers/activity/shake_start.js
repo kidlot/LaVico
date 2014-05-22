@@ -352,7 +352,7 @@ module.exports = {
             $(".mobile-pic").addClass("box_rotate2");
         }
 
-        var SHAKE_THRESHOLD = 100;
+        var SHAKE_THRESHOLD = 1500;
         var last_update = 0;
         var x=y=z=last_x=last_y=last_z=0;
 
