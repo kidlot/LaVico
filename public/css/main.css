@@ -30,11 +30,11 @@ a.tel{color:#2d2d2d;}
 .mobile{width:100%; background-color:#e5e5e5; padding-top:60px; text-align:center;}
 .mobile-btn{ padding-top:70px; padding-bottom:40px;}
 /*我要侃价详细页*/
-.bargin{width:100%;background-color:#ededed; padding-top:20px;}
-.bargin-content{width:580px; height:410px; background-color:#fff; margin:0 auto; padding-top:35px;}
-.bargin-left{ padding-left:20px;}
-.bargin-right{width:300px; padding-left:20px;}
-.bargin-right .title{ height:25px; line-height:25px; font-size:25px; color:#af8b4d; padding-left:20px; background:url(../images/title_bg.jpg) left center no-repeat;}
+.bargin{width:100%;background-color:#ededed; padding-top:2%;}
+.bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:1% 4%; overflow:hidden;}
+.bargin-left{ }
+.bargin-right{width:58%; padding-left:2%;}
+.bargin-right .title{ height:25px; line-height:25px; font-size:1.8rem; color:#af8b4d; padding-left:20px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .bargin-right .color{padding-top:30px;}
 .bargin-right .color .color-title{font-size:20px; color:#404040;}
 .bargin-right .color .color-con{font-size:18px; color:#646464;}
