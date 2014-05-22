@@ -325,22 +325,20 @@ module.exports = {
             alert('您的手机没法摇？那就直接点这里');
         }
 
-        $(".mobile-btn").click(function(){
+        var shakeIt = function(){
 
             if(flag == 1){
                 mobileClickRight();
                 setTimeout(function(){mobileClickLeft()},500);
                 setTimeout(function(){
                     mobileClick();
-                    $('#loading').show();
-                    setTimeout(function(){shake()},1000);
                 },1000);
             }
 
             flag = 0;
+        }
 
-        });
-
+        shakeIt();
         function mobileClickRight(){
 
             $(".mobile-pic").addClass("box_rotate");
@@ -374,13 +372,9 @@ module.exports = {
                 if (speed > SHAKE_THRESHOLD) {
 
                     if(flag == 1){
-                        mobileClickRight();
-                        setTimeout(function(){mobileClickLeft()},500);
-                        setTimeout(function(){
-                            mobileClick();
-                            $('#loading').show();
-                            setTimeout(function(){shake()},1000);
-                        },1000);
+
+                      shake();
+
                     }
 
                     flag = 0;
@@ -390,6 +384,10 @@ module.exports = {
                 last_z = z;
             }
         }
+
+        $('.mobile-btn').click(function(){
+            shake();
+        });
         /*后端JS*/
 
         function shake(){
