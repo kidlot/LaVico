@@ -183,14 +183,14 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 /*解绑会员卡*/
 .remo-card{width:100%; background-color:#dadada;}
 .remo-card .input-tel{width:90%; margin:0 auto; padding:5% 5% 0;}
-.remo-card .input-tel .text{width:20%; height:50px; text-align:right; line-height:50px; font-size:1.6rem; color:#2d2d2d;}
-.remo-card .input-tel .input input{ border:0; background-color:#fff; border:1px #b2b1ad solid; padding:0 2%;font-size:1.6rem; color:#000; line-height:50px; height:50px;width:100%; margin-left:3%;}
+.remo-card .input-tel .text{width:20%; height:40px; text-align:right; line-height:40px; font-size:1.4rem; color:#2d2d2d;}
+.remo-card .input-tel .input input{ border:0; background-color:#fff; border:1px #b2b1ad solid; padding:0 2%;font-size:1.4rem; color:#000; line-height:40px; height:40px;width:100%; margin-left:3%;}
 .remo-card .input-tel .input1 input{ border:0; background-color:#dadada; border:1px #b2b1ad solid; padding-left:10px;font-size:22px; color:#000; line-height:65px; height:65px;width:370px; margin-left:20px;}
-.remo-card .verify{ display:inline-block;margin-left:3%; width:34%; height:50px; background:url(../images/verify_bg_01.png) center center no-repeat; 
-                    line-height:50px; font-size:1.6rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%;}
+.remo-card .verify{ display:inline-block;margin-left:3%; width:34%; height:40px; background:url(../images/verify_bg_01.png) center center no-repeat; 
+                    line-height:50px; font-size:1.4rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%;}
 .remo-card .star-sign{ color:#a00100;}
-.remo-card .input-tel .note{ padding-top:6%; font-size:1.6rem; line-height:2em; color:#2d2d2d; text-align:center;}
-.remo-card .submit input{text-align:center;width:80%; height:50px;border:0; outline:none; line-height:50px; font-size:1.6rem; color:#3C3C3C; 
+.remo-card .input-tel .note{ padding-top:6%; font-size:1.4rem; line-height:2em; color:#2d2d2d; text-align:center;}
+.remo-card .submit input{text-align:center;width:80%; height:40px;border:0; outline:none; line-height:40px; font-size:1.4rem; color:#3C3C3C; 
                          background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer; background-size:100% 100%; margin:4% 10% 0 10%; }
 .wei_title{ font-size:25px; color:#000; text-align:center; padding-top:10px;}
 .wei_name{ color:#ba954f; font-size:1.4rem; padding-top:10px;}
