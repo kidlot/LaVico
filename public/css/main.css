@@ -121,8 +121,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .inquiry .city{ font-size:1.8rem; color:#010000; padding-left:40px;}
 .inquiry .input{ padding-top:10px; margin-left:80px;}
 .inquiry .input input{width:220px; border:1px #b0a18e solid; height:60px; font-size:25px; color:#000; line-height:60px; padding-left:20px;}
-.inquiry .change{ margin-right:40px; margin-top:10px;}
-.inquiry .change input{width:159px; height:59px; font-size:25px; color:#fff; line-height:59px; border:0; text-align:center; background:url(../images/change_btn.png) center center no-repeat;}
+.inquiry .change{}
+.inquiry .change input{width:140px; height:50px; font-size:1.8rem; color:#fff; line-height:50px; border:0; text-align:center; background:url(../images/change_btn.png) center center no-repeat; background-size:100% 100%; margin:5px 40px 0 0;}
 .store-name{ font-size:30px; color:#000; text-align:center; padding-bottom:30px;}
 .activity-detail{ border-top:1px #a9a9a9 solid; margin-top:30px; padding-top:30px;}
 .activity-detail .title{ font-size:25px; color:#B9954D; text-align:center;}
