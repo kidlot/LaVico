@@ -17,7 +17,7 @@ exports.load = function () {
                 function(){
                     lat=msg.Location_X;
                     lng=msg.Location_Y;
-                    console.log("lat1:"+msg.location[0]);
+                    //console.log("lat1:"+msg.location[0]);
                     console.log("lat2:"+lat);
                 },
 
