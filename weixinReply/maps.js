@@ -87,16 +87,26 @@ exports.load = function () {
         }
     })
 
+    //菜单事件
 
+
+
+    //上报地理位置(进入服务号时)
     wechatapi.registerReply(9,function(msg,req,res,next){
-        console.log("msg.MsgType:"+msg.MsgType);
-        console.log("msg.Event:"+msg.Event);
-        if(msg.MsgType=="event" && msg.Event=="LOCATION" || msg.Content=="hb"){
-            console.log("ok");
-//            helper.db.coll("lavico/locationPosition").insert(msg);
+        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
+            console.log("******get location******");
+            postData={"location":[msg.Latitude,msg.Longitude]};
+            console.log("******"+msg.FromUserName+"*********8")
+            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, postData,
+                {multi: false, upsert: true},function(err,doc){
+                    if(err)throw err;
+                    console.log("**********insert db***********")
+            });
 
         }
     })
+
+
 
     wechatapi.makeQueue();
 };
