@@ -54,7 +54,7 @@ function build(){
                         $(".content ul").append("<li style='height:100px;'><span name='correntImg' id='sed' style='visibility:hidden'><img width='32px' height='31px'  src=/lavico/public/images/"+
                             jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
                             + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
+                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
                             "</span></label></li>");
 
                         //$(".content ul").append("<li><div class='answer_check select1'>系上面两颗</div><div class='img'><img src='images/suit_pic01.jpg' /></div></li>");
@@ -72,7 +72,7 @@ function build(){
                         $(".content ul").append("<li><span name='correntImg' id='sed' style='visibility:hidden'><img width='32px' height='31px'  src=/lavico/public/images/"+
                             jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
                             + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
+                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
                             "</span></label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="+
                             jsonObject.choose[i].uploadFile+" id='picImg' name='radioimg' width='280' height='280'></li>");
                     }else if(jsonObject.type==1){
@@ -106,8 +106,8 @@ function build(){
                     $("#for"+h).attr('disabled',true);
                 }
                 $("span[name='correntImg']").css("visibility","visible");
-                $("#chooseNa").removeClass("select1");
-                $("#chooseNa").addClass("select");
+                $("#chooseNa"+custReceive[i].chooseId).removeClass("select1");
+                $("#chooseNa"+custReceive[i].chooseId).addClass("select");
             }else if(custReceive[i].type==1){
                 var chooseid=custReceive[i].chooseId;
                 var arry=chooseid.split(",");
@@ -291,7 +291,7 @@ function nextChoose(){
 
     }else if($("input[name='mutilChooseInput']:checked").length>0){
         //
-        if($("input[name='singleChooseInput']:checked").length==0) {
+        if($("input[name='mutilChooseInput']:checked").length==0) {
             alert("您忘记选择了～");
             return;
         }

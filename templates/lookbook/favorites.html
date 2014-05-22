@@ -9,12 +9,14 @@
             <foreach for="@docs" var="fav" key="key">
             <div class="points3-box">
                 <div class="points3-content clear">
-                    <div class="fl"><a href="/lavico/lookbook/product?_id={@ fav.lookbookid}&wxid={@ wxid}&pageNum={@fav.pageNum}&productId={@fav.product._id}&source=view"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" width="213px" height="314px"></a></div>
+                    <div class="fl"><a href="/lavico/lookbook/product?_id={@ fav.lookbookid}&wxid={@ wxid}&pageNum={@fav.pageNum}&productId={@fav.product._id}&source=view"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" ></a></div>
                     <div class="fl text">
                         <div class="title3"><a href="member_num27.html">{@fav.product.name}</a></div>
-                        <div class="con"><a href="member_num27.html">{@fav.product.detail}</a></div>
-                        <div class="btn subbtn" onclick="$('.fade2').find('input').attr('_id','{@ fav._id}');$('.fade2').show()" >取消收藏</div>
+                        <div class="btn subbtn" onclick="$('.fade2').find('input').attr('_id','{@ fav._id}');$('.fade2').show()">取消收藏</div>
                     </div>
+                </div>
+                <div class="points3-content clear">
+                    <div class="con"><a href="member_num27.html">{@fav.product.detail}</a></div>
                 </div>
             </div>
             </foreach>
