@@ -7,12 +7,18 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
         //手动发送地址
+        var lat,lng;
         if(msg.MsgType=="location"){
             console.log("********location*********8");
-            var lat=msg.Location_X;
-            var lng=msg.Location_Y;
+
+
 
             Steps(
+                function(){
+                    lat=msg.Location_X;
+                    lng=msg.Location_Y;
+                }
+
                 function(){
                     jsonData.perPage=1000;
                     jsonData.pageNum=1;
