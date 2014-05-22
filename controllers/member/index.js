@@ -13,14 +13,21 @@ module.exports = {
         // 通过oauth获取OPENID
         if(process.wxOauth){
 
-            process.wxOauth.getAccessToken(seed.code,function(err,doc){
+            if(!seed.code){
 
-                console.log(doc)
-            })
-            seed.wxid = "ssssss"
+                this.res.writeHeader(302, {'location': process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")})  ;
+            }else{
+
+                process.wxOauth.getAccessToken(seed.code,function(err,doc){
+
+                    console.log(doc)
+                })
+            }
 
         }
 
+
+        return;
 
 
 
