@@ -344,7 +344,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .intros .content{font-size: 20px;color: #B9954D;}
 .elite_img img{ width:100%; margin-top:60px;}
 .prev_btn,
-.next_btn { width:22px; height:40px; position:absolute; top:50%;margin-top:-20px; }
+.next_btn { width:22px; height:40px; position:absolute; top:50%;margin-top:-0px; }
 .prev_btn{ background:url(../images/elite_prev_btn.png) no-repeat; background-size:100% 100%; left:35px; }
 .next_btn{ background:url(../images/elite_next_btn.png) no-repeat;background-size:100% 100%; right:35px; }
 .prev_btn:hover{ cursor:pointer;}
