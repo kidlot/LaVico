@@ -35,6 +35,7 @@ exports.load = function () {
                         if(doc){
 
                             if(doc.location){
+                                console.log("111");
                                 //当时取消获取账户
                                 //单图文回复
                                 res.reply([{
@@ -44,6 +45,7 @@ exports.load = function () {
                                     url: 'http://test.welab.lavicouomo.com/lavico/store/currentCustomerLocation?wxid='+msg.FromUserName
                                 }])
                             }else{
+                                console.log("222");
                                 lat=doc.location[0];
                                 lng=doc.location[1];
                                 console.log("lat:"+lat);
