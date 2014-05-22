@@ -13,7 +13,17 @@
 <div class="popup popupStyle1">
     <p>提交提交提交提交提交提交</p>
     <div class="popup_but">
-        <a href="javascript:">提交</a>
-        <a href="javascript:">取消</a>
+        <a href="javascript:" onclick="$('.popupStyle1').trigger('save', []);">提交</a>
+        <a href="javascript:" onclick="$('.popupStyle1').trigger('cancel', []);">取消</a>
     </div>
 </div>
+
+
+        <script>
+            window.popupStyle1 = {}
+            window.popupStyle1.on = function(){
+                $('.popupStyle1').on('custom', function(event, param1, param2) {
+                    alert(param1 + "\n" + param2);
+                });
+            }
+        </script>
