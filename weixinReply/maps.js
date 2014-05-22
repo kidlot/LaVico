@@ -7,6 +7,10 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
 
+
+
+
+        //点击“附近门店”
         if(msg.EventKey == "shop"){
             console.log("*******shop search start********");
 
@@ -23,18 +27,35 @@ exports.load = function () {
             var storeList=[];
             var replyArr=[];
 
-            Steps(
 
+            Steps(
                 function(){
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
                         if(doc){
-                            lat=doc.location[0];
-                            lng=doc.location[1];
-                            console.log("lat1:"+lat);
-                            console.log("lng1:"+lng);
+
+                            if(doc.location){
+                                //当时取消获取账户
+                                //单图文回复
+                                res.reply([{
+                                    title: '门店查询',
+                                    description: '请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。',
+                                    picurl: 'http://test.welab.lavicouomo.com/public/files/2014/5/12/~!77a37b225d61a40f84fb32468c81ba00!map.jpg',
+                                    url: 'http://test.welab.lavicouomo.com/lavico/store/currentCustomerLocation?wxid='+msg.FromUserName
+                                }])
+                            }else{
+                                lat=doc.location[0];
+                                lng=doc.location[1];
+                                console.log("lat:"+lat);
+                                console.log("lng:"+lng);
+                                next();
+                            }
+
                         }
-                    })},
+                    })}
+            )()
+
+            Steps(
 
             function(){
 
@@ -94,8 +115,6 @@ exports.load = function () {
                     }
                 },
                 function(){
-                    console.log(JSON.stringify(replyArr));
-                    console.log(res);
                     res.reply(replyArr);
                 }
             )()
