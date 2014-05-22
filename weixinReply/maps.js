@@ -5,81 +5,108 @@ var Steps = require("opencomb/node_modules/ocsteps");
 
 exports.load = function () {
 
-//    wechatapi.registerReply(9,function(msg,req,res,next){
-//        //手动发送地址
-//        if(msg.MsgType=="location"){
-//            console.log("********location*********8");
-//            var lat=msg.Location_X;
-//            var lng=msg.Location_Y;
-//
-//            Steps(
-//                function(){
-//                    jsonData.perPage=1000;
-//                    jsonData.pageNum=1;
-//                    //接口返回的doc都是字符串
-//                    middleware.request('Shops',jsonData,
-//                        this.hold(function(err,doc){
-//                            if(err) throw err;
-//                            console.log("******Shops*********")
-//                            docJson=JSON.parse(doc);
-//                            //return docJson;//注意字符串和对象格式
-//                        })
-//                    )
-//                },
-//                //计算两点之间距离
-//                function(){
-//                    if(docJson){
-//                        for(var i=0;i<docJson.list.length;i++){
-//                            if(docJson.list[i].LOG!=null && docJson.list[i].LAT!=null){
-//                                var kgmeter=getGreatCircleDistance(lng,lat,docJson.list[i].LOG,docJson.list[i].LAT)/1000;
-//                                docJson.list[i].distance=changeTwoDecimal(kgmeter)
-//                                storeDistance.push(changeTwoDecimal(kgmeter))
-//                            }
-//                        }
-//                        storeDistance=storeDistance.sort(function(a,b){return a>b?1:-1});
-//                    }
-//                },
-//
-//                function(){
-//                    try{
-//                        for(var i=0;i<storeDistance.length;i++){
-//                            for(var j=0;j<docJson.list.length;j++){
-//                                if(storeDistance[i]==docJson.list[j].distance){
-//                                    storeList.push(docJson.list[j]);
-//                                }
-//                            }
-//                        }
-//                    }catch(e){
-//                        if(e) throw e;
-//                    }
-//                },
-//
-//                function(){
-//                    for(var i=0;i<storeList.length;i++){
-//                        reply={};
-//                        reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
-//                        reply.description=storeList[i].ADDR;
-//                        if(storeList[i].PICURL==null)
-//                            reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
-//                        else
-//                            reply.picurl=storeList[i].PICURL;
-//
-//                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
-//                        if(i<10)
-//                            replyArr.push(reply);
-//                    }
-//                },
-//                function(){
-//                    res.reply(replyArr);
-//                }
-//            )()
-//
-//        }
-//    })
+    wechatapi.registerReply(9,function(msg,req,res,next){
+        var docJson;
+        var jsonData={};
+        var storeDistance=[];
+        var storeList=[];
+        var replyArr=[];
+        //手动发送地址
+        var lat,lng;
+        console.log("msg.MsgType:"+msg.MsgType);
+        if(msg.MsgType=="location"){
+            console.log("********location*********8");
+
+
+            Steps(
+                function(){
+                    lat=msg.Location_X;
+                    lng=msg.Location_Y;
+                    //console.log("lat1:"+msg.location[0]);
+                    console.log("lat2:"+lat);
+                },
+
+                function(){
+                    jsonData.perPage=1000;
+                    jsonData.pageNum=1;
+                    //接口返回的doc都是字符串
+                    middleware.request('Shops',jsonData,
+                        this.hold(function(err,doc){
+                            if(err) throw err;
+                            console.log("******Shops*********")
+                            docJson=JSON.parse(doc);
+                            //return docJson;//注意字符串和对象格式
+                        })
+                    )
+                },
+                //计算两点之间距离
+                function(){
+                    if(docJson){
+                        for(var i=0;i<docJson.list.length;i++){
+                            if(docJson.list[i].LOG!=null && docJson.list[i].LAT!=null){
+                                var kgmeter=getGreatCircleDistance(lng,lat,docJson.list[i].LOG,docJson.list[i].LAT)/1000;
+                                docJson.list[i].distance=changeTwoDecimal(kgmeter)
+                                storeDistance.push(changeTwoDecimal(kgmeter))
+                            }
+                        }
+                        storeDistance=storeDistance.sort(function(a,b){return a>b?1:-1});
+                    }
+                },
+
+                function(){
+                    try{
+                        for(var i=0;i<storeDistance.length;i++){
+                            for(var j=0;j<docJson.list.length;j++){
+                                if(storeDistance[i]==docJson.list[j].distance){
+                                    storeList.push(docJson.list[j]);
+                                }
+                            }
+                        }
+                    }catch(e){
+                        if(e) throw e;
+                    }
+                },
+
+                function(){
+                    for(var i=0;i<storeList.length;i++){
+                        reply={};
+                        reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
+                        reply.description=storeList[i].ADDR;
+                        if(storeList[i].PICURL==null)
+                            reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
+                        else
+                            reply.picurl=storeList[i].PICURL;
+
+                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1";
+                        if(i<10)
+                            replyArr.push(reply);
+                    }
+                },
+                function(){
+                    res.reply(replyArr);
+                }
+            )()
+
+        }
+    })
+    //上报地理位置(进入服务号时)
+    wechatapi.registerReply(9,function(msg,req,res,next){
+        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
+            console.log("******get user position******");
+            postData={"location":[msg.Latitude,msg.Longitude]};
+            console.log("******"+msg.FromUserName+"*******");
+            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
+                {multi: false, upsert: true},function(err,doc){
+                    if(err)throw err;
+                    console.log("*******update db*******");
+                });
+
+        }
+    })
 
     wechatapi.registerReply(9,function(msg,req,res,next){
         //点击“附近门店”
-        if(msg.EventKey == "shop"){
+        if(msg.EventKey == "shop" && msg.Event=="CLICK"){
             console.log("*******shop search start********");
             var lat,lng;
 
@@ -93,8 +120,9 @@ exports.load = function () {
                 function(){
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
+                        console.log("-1-1");
                         if(doc){
-                            console.log(doc.location);
+                            console.log("0000");
                             if(doc.location==null){
                                 console.log("111");
                                 //当时取消获取账户
@@ -181,26 +209,11 @@ exports.load = function () {
                 }
             )()
 
-        }else{
-            next()
         }
     })
 
 
-    //上报地理位置(进入服务号时)
-    wechatapi.registerReply(9,function(msg,req,res,next){
-        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
-            console.log("******get user position******");
-            postData={"location":[msg.Latitude,msg.Longitude]};
-            console.log("******"+msg.FromUserName+"*******");
-            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
-                {multi: false, upsert: true},function(err,doc){
-                    if(err)throw err;
-                    console.log("*******update db*******");
-            });
 
-        }
-    })
 
     wechatapi.makeQueue();
 };
