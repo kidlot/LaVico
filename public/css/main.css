@@ -247,8 +247,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points4-content .point-box ul { border-left:1px #dedede solid;border-right:1px #dedede solid; overflow:hidden; margin-bottom:20px; }
 .points4-content .point-box ul li{width:100%; height:auto; background-color:#efefef; border-bottom:1px #dedede solid; padding:6px; font-size:1.4rem; box-sizing:border-box; overflow:hidden;}
 .points4-content .gift_point-box{width:100%; margin-top:20px;}
-.points4-content .gift_point-box .title2{width:560px; height:65px; background:url(../images/point_bg1.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
-.points4-content .gift_point-box ul li{width:573px; height:80px; background-color:#efefef; border-bottom:1px #dedede solid;border-left:1px #dedede solid;border-right:1px #dedede solid; padding-left:5px; padding-right:20px; font-size:22px; padding-top:10px;}
+.points4-content .gift_point-box .title2{width:96%; height:50px; background:url(../images/point_bg1.png) no-repeat; font-size:1.8rem; color:#fff; line-height:50px; padding:0 2%;}
+.points4-content .gift_point-box ul li{width:100%; height:auto; background-color:#efefef; border-bottom:1px #dedede solid;border-left:1px #dedede solid;border-right:1px #dedede solid; 
+                                       padding:4%; font-size:1.6rem; }
 .c3{ color:#646464;}
 .ml20{ margin-left:2%; width:68%; }
 .pt55{ padding-top:20px;}
