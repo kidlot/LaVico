@@ -174,7 +174,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .notice-listContent ul li{width:100%; height:auto; border-bottom:1px #a9a9a9 solid; box-sizing:border-box; padding:5% 0; }
 .notice-listContent ul li a{width:100%;color:#646464; font-size:1.8rem; height:auto;display:inline-block;background:url(../images/elite_list_title.png) right center no-repeat; vertical-align:top; }
 .notice-listContent ul li .name{ }
-.sc_ticket{width:100%; height:auto; text-align:center; padding:0 2% }
+.sc_ticket{width:96%; height:auto; text-align:center; padding:2% }
 .sc_ticket img { width:100%; }
 .use-rulesContent .text .title2{color:#bda172; font-size:1.8rem; padding-top:4%;}
 
@@ -450,7 +450,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input_select_div_fys{ float:left; width:150px; height:65px; margin-left:0;}
 .new_tab{ margin-top:20px;}
 .eli{ line-height:}
-.new_title{ margin-top:-50px;}
+.new_title{ }
 .fm{ text-align:center; padding-left:0px; }
 
 
