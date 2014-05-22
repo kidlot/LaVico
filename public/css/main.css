@@ -239,7 +239,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                             background:url(../images/next.png) center center no-repeat; background-size:100% 100%;}
 /*消费记录*/
 .points4{ background-color:#eee;}
-.points4 .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.8rem; color:#000;}
+.points4 .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.6rem; color:#000;}
 .points4 .title .text{width:92%; padding:0 4%; margin:0 auto; line-height:50px;}
 .points4-content{width:96%; padding:0 2%; margin:0 auto;}
 .points4-content .point-box{width:100%; margin-top:10px;}
@@ -249,7 +249,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points4-content .gift_point-box{width:100%; margin-top:20px;}
 .points4-content .gift_point-box .title2{width:96%; height:50px; background:url(../images/point_bg1.png) no-repeat; font-size:1.8rem; color:#fff; line-height:50px; padding:0 2%; background-size:100% 100%;}
 .points4-content .gift_point-box ul li{width:100%; height:auto; background-color:#efefef; border-bottom:1px #dedede solid;border-left:1px #dedede solid;border-right:1px #dedede solid; 
-                                       padding:4%; font-size:1.6rem; }
+                                       font-size:1.6rem; box-sizing:border-box; overflow:hidden; padding:2% 0; }
 .c3{ color:#646464;}
 .ml20{ margin-left:2%; width:68%; }
 .pt55{ padding-top:20px;}
