@@ -33,12 +33,8 @@ exports.load = function () {
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
                         if(doc){
-                            lat=doc.location[0];
-                            lng=doc.location[1];
-                            console.log("lat:"+lat);
-                            console.log("lng:"+lng);
 
-                            if(lat==null){
+                            if(doc.location){
                                 //当时取消获取账户
                                 //单图文回复
                                 res.reply([{
@@ -48,6 +44,10 @@ exports.load = function () {
                                     url: 'http://test.welab.lavicouomo.com/lavico/store/currentCustomerLocation?wxid='+msg.FromUserName
                                 }])
                             }else{
+                                lat=doc.location[0];
+                                lng=doc.location[1];
+                                console.log("lat:"+lat);
+                                console.log("lng:"+lng);
                                 next();
                             }
 
