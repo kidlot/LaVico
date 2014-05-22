@@ -6,6 +6,11 @@ var Steps = require("opencomb/node_modules/ocsteps");
 exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
+        var docJson;
+        var jsonData={};
+        var storeDistance=[];
+        var storeList=[];
+        var replyArr=[];
         //手动发送地址
         var lat,lng;
         console.log("msg.MsgType:"+msg.MsgType);
