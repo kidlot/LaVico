@@ -11,9 +11,13 @@ module.exports= {
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wxid},this.hold(function(err,doc){
                 if(err) throw err;
                 if(doc){
-                    nut.model.userLng =  doc.location[0];
-                    nut.model.userLat = doc.location[1];
-
+                    if(doc.location!=null) {
+                        nut.model.userLng = doc.location[0];
+                        nut.model.userLat = doc.location[1];
+                    }else{
+                        nut.model.userLng="";
+                        nut.model.userLat="";
+                    }
                 }
             }));
         })
