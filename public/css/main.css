@@ -227,7 +227,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .pt15{ }
 .points2-content .point-box .title2,
 .points2-content .point-box .title3{width:96%; height:50px;  background:url(../images/point_bg1.png) no-repeat; font-size:1.4rem; color:#fff; line-height:50px; padding:0 2%;background-size:100% 100%; }
-.points2-content .point-box .title3 { background:url(../images/point_bg2.png) no-repeat; }
+.points2-content .point-box .title3 { background:url(../images/point_bg2.png) no-repeat;background-size:100% 100%; }
 /*积分兑换*/
 .points3{ background-color:#eee;}
 .points3-box{width:100%;padding:10px 0; border-bottom:1px #dedede solid;}
