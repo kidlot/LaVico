@@ -17,7 +17,7 @@ exports.load = function () {
                 function(){
                     lat=msg.Location_X;
                     lng=msg.Location_Y;
-                }
+                },
 
                 function(){
                     jsonData.perPage=1000;
