@@ -181,8 +181,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .remo-card .verify{ display:inline-block;margin-left:3%; width:34%; height:50px; background:url(../images/verify_bg_01.png) center center no-repeat; 
                     line-height:50px; font-size:1.8rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%;}
 .remo-card .star-sign{ color:#a00100;}
-.remo-card .input-tel .note{ padding-top:50px; font-size:25px; line-height:35px; color:#2d2d2d; text-align:center;}
-.remo-card .submit input{margin-top:30px;text-align:center;width:486px; height:67px;border:0; outline:none; line-height:67px; font-size:25px; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;}
+.remo-card .input-tel .note{ padding-top:10%; font-size:1.8rem; line-height:2em; color:#2d2d2d; text-align:center;}
+.remo-card .submit input{margin-top:8%;text-align:center;width:80%; height:50px;border:0; outline:none; line-height:50px; font-size:1.8rem; color:#3C3C3C; 
+                         background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer; background-size:100% 100%; margin:0 auto; }
 .wei_title{ font-size:25px; color:#000; text-align:center; padding-top:10px;}
 .wei_name{ color:#ba954f; font-size:1.8rem; padding-top:10px;}
 .wei_text{ color:#646464; font-size:1.8rem; padding-top:10px;}
