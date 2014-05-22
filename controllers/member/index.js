@@ -10,7 +10,7 @@ module.exports = {
     view:'lavico/templates/member/index.html',
     process:function(seed,nut){
 
-        var wxid;
+        var wxid = undefined;
 
         // 通过oauth获取OPENID
         if(process.wxOauth){
@@ -19,7 +19,6 @@ module.exports = {
 
                 console.log("通过oauth获得CODE")
                 this.res.writeHeader(302, {'location': process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")})  ;
-                return;
             }else{
 
                 process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
@@ -29,7 +28,7 @@ module.exports = {
                         wxid = openid || undefined;
                         console.log("通过oauth获得ID",wxid)
                     }else{
-                        console.log("通过oauth获得ID超时。")
+                        console.log("通过oauth获得ID超时。",err)
                         this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+"/lavico/member/index"})  ;
                     }
                 }))
