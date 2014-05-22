@@ -438,7 +438,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite_intro{ text-decoration:none; color:#BA9E70;}
 
 .input_select_div{ width:100%; height:50px;}
-.input_select{background:url('../images/input_select_bg.jpg') no-repeat;padding:4px 34px 4px 4px;width:100%;height:50px;border:0;padding:4px;font-size:1.6rem;line-height:50%;position:relative; background-size:100% 100%;}
+.input_select{background:url('../images/input_select_bg.jpg') no-repeat;width:100%;height:40px;border:0;font-size:1.4rem;line-height:40px;position:relative; background-size:100% 100%;}
 #model-name{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
 #select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:40px;opacity:0;-moz-opacity:0;position:relative;top:-40px;}
 .input_select_sex{width:100%;height:40px;border:0;padding:0 2%;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
