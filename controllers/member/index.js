@@ -20,6 +20,7 @@ module.exports = {
 
                 process.wxOauth.getAccessToken(seed.code,function(err,doc){
 
+                    console.log(err)
                     console.log("323232323232232323",doc)
                 })
             }
