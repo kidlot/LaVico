@@ -175,6 +175,16 @@ function _close(){
 
 function _step(channelName){
 
+
+    if($("#isVip").val() == "false"){
+
+        $("#fixed").hide()
+        alert("请先申领或绑定会员卡");
+        location.href="/lavico/member/index?wxid="+$("#wxid").val()
+        return false;
+    }
+
+
     var _func = function(){
 
         $("#_alert .channel").hide()
@@ -250,14 +260,6 @@ function bargain(){
             console.log(msg);
         }
     });
-}
-window.onload = function(){
-    if($("#isVip").val() == "false"){
-
-        $("#fixed").hide()
-        alert("请先申领或绑定会员卡");
-        location.href="/lavico/member/index?wxid="+$("#wxid").val()
-    }
 }
 
 </script>
