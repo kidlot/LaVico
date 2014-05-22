@@ -7,12 +7,15 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
 
-        if(msg.EventKey === "shop"){
+        if(msg.EventKey == "shop"){
             console.log("*******shop search start********");
-            var lat=msg.Location_X;
-            var lng=msg.Location_Y;
-            console.log("lat:"+msg.lat);
-            console.log("lng:"+msg.lng);
+
+            var lat,lng;
+
+
+//            var lat=msg.Location_X;
+//            var lng=msg.Location_Y;
+
 
             var docJson;
             var jsonData={};
@@ -21,14 +24,33 @@ exports.load = function () {
             var replyArr=[];
 
             Steps(
+
                 function(){
+                    helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            lat=doc.location[0];
+                            lng=doc.location[1];
+
+                            console.log("lat1:"+lat);
+                            console.log("lng2:"+lng);
+                        }
+                    })},
+
+
+
+
+            function(){
+
+                console.log("lat3:"+lat);
+                console.log("lng4:"+lng);
                     jsonData.perPage=1000;
                     jsonData.pageNum=1;
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
-                            cosole.log("Shops:"+doc);
+                            console.log("Shops:"+doc);
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
                         })
@@ -83,6 +105,7 @@ exports.load = function () {
                     res.reply(replyArr);
                 }
             )()
+
         }else{
             next()
         }
