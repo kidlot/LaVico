@@ -53,8 +53,8 @@ module.exports = {
 
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
-                alert("请先解绑后，再绑定会员");
-                window.location.href="/lavico/member/card_member/unbind?wxid="+wxid;
+                alert("您已经是lavico的会员");
+                window.location.href="/lavico/member/index?wxid="+wxid;
             }
             /*申请会员卡*/
             $("#registerUrl").click(function(){
@@ -192,7 +192,8 @@ module.exports = {
                         }else if(returnJson.success == false){
                             if(returnJson.error == 'cardnum_no_found'){
                                 //$('#telephone_cardnumber_no_match').show();
-                                alert('系统没有查找到此卡号，请核对后重新输入,可能由于此卡号绑定的不是第一步的手机号码');
+                                console.log('系统没有查找到此卡号，请核对后重新输入,可能由于此卡号绑定的不是第一步的手机号码');
+                                $('#telephone_cardnumber_no_match').show();
 
                             }else if(returnJson.error == 'network_error'){
                                 alert('网络接口不稳定，请稍后再尝试');
