@@ -339,7 +339,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite_title .title6 a{ float:right;width:135px; margin-top:0; margin-right:25px; vertical-align:middle; text-align:right; padding-right:25px; display:inline-block;
                         color:#fff; font-size:1.6rem;  height:50px; line-height:50px; background:url(../images/store_rt.jpg) right center no-repeat;}
 
-.intros{ position:fixed; bottom:0; z-index:100; margin:0 auto; text-align:left; height:60px; width:100%; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding:10px 20px;}
+.intros{ position:fixed; bottom:0; z-index:100; margin:0 auto; text-align:left; height:110px; width:100%; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding:10px 20px; left:0px;}
 .intros .title{font-size: 25px;color: #B9954D;line-height: 45px;}
 .intros .content{font-size: 20px;color: #B9954D;}
 .elite_img img{ width:100%; margin-top:60px;}
