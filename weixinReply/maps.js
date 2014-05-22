@@ -6,21 +6,34 @@ var Steps = require("opencomb/node_modules/ocsteps");
 exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
+        var docJson;
+        var jsonData={};
+        var storeDistance=[];
+        var storeList=[];
+        var replyArr=[];
         //手动发送地址
+        var lat,lng;
+        console.log("msg.MsgType:"+msg.MsgType);
         if(msg.MsgType=="location"){
-            var lat=msg.Location_X;
-            var lng=msg.Location_Y;
+            console.log("********location*********8");
+
 
             Steps(
                 function(){
+                    lat=msg.Location_X;
+                    lng=msg.Location_Y;
+                    //console.log("lat1:"+msg.location[0]);
+                    console.log("lat2:"+lat);
+                },
 
+                function(){
                     jsonData.perPage=1000;
                     jsonData.pageNum=1;
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
-
+                            console.log("******Shops*********")
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
                         })
@@ -76,10 +89,24 @@ exports.load = function () {
 
         }
     })
+    //上报地理位置(进入服务号时)
+    wechatapi.registerReply(9,function(msg,req,res,next){
+        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
+            console.log("******get user position******");
+            postData={"location":[msg.Latitude,msg.Longitude]};
+            console.log("******"+msg.FromUserName+"*******");
+            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
+                {multi: false, upsert: true},function(err,doc){
+                    if(err)throw err;
+                    console.log("*******update db*******");
+                });
+
+        }
+    })
 
     wechatapi.registerReply(9,function(msg,req,res,next){
         //点击“附近门店”
-        if(msg.EventKey == "shop"){
+        if(msg.EventKey == "shop" && msg.Event="CLICK"){
             console.log("*******shop search start********");
             var lat,lng;
 
@@ -93,8 +120,9 @@ exports.load = function () {
                 function(){
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
+                        console.log("-1-1");
                         if(doc){
-                            console.log(doc.location);
+                            console.log("0000");
                             if(doc.location==null){
                                 console.log("111");
                                 //当时取消获取账户
@@ -187,20 +215,7 @@ exports.load = function () {
     })
 
 
-    //上报地理位置(进入服务号时)
-    wechatapi.registerReply(9,function(msg,req,res,next){
-        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
-            console.log("******get user position******");
-            postData={"location":[msg.Latitude,msg.Longitude]};
-            console.log("******"+msg.FromUserName+"*******");
-            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
-                {multi: false, upsert: true},function(err,doc){
-                    if(err)throw err;
-                    console.log("*******update db*******");
-            });
 
-        }
-    })
 
     wechatapi.makeQueue();
 };

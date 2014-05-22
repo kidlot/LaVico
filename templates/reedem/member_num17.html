@@ -6,18 +6,16 @@
   <div class="gift_coupon">
       <if condition="{@record.pic==null}">
           <div class="coupon-content">
-              <img src="/lavico/public/images/coupon.jpg" width="568" height="330">
+              <img src="/lavico/public/images/coupon.jpg">
           </div>
           <else/>
           <div class="coupon-content">
-              <img src="{@record.pic}" width="568" height="330">
+              <img src="{@record.pic}" >
           </div>
       </if>
 
   </div>
   <div class="gift_bg">
-
-  	<img src="/lavico/public/images/gift_bg.jpg"/>
     <div class="gift_title">{@record.name}</div>
   </div>
   <div class="gift_text">
