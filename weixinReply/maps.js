@@ -106,7 +106,7 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
         //点击“附近门店”
-        if(msg.EventKey == "shop"){
+        if(msg.EventKey == "shop" && msg.Event="CLICK"){
             console.log("*******shop search start********");
             var lat,lng;
 
@@ -120,8 +120,9 @@ exports.load = function () {
                 function(){
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
+                        console.log("-1-1");
                         if(doc){
-                            console.log(doc.location);
+                            console.log("0000");
                             if(doc.location==null){
                                 console.log("111");
                                 //当时取消获取账户
