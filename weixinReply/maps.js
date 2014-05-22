@@ -8,15 +8,17 @@ exports.load = function () {
     wechatapi.registerReply(9,function(msg,req,res,next){
         //手动发送地址
         var lat,lng;
+        console.log("msg.MsgType:"+msg.MsgType);
         if(msg.MsgType=="location"){
             console.log("********location*********8");
-
 
 
             Steps(
                 function(){
                     lat=msg.Location_X;
                     lng=msg.Location_Y;
+                    console.log("lat1:"+msg.location[0]);
+                    console.log("lat2:"+lat);
                 },
 
                 function(){
