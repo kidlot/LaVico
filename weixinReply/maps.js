@@ -88,9 +88,7 @@ exports.load = function () {
     })
 
     //菜单事件
-    wechatapi.registerReply(9,function(msg,req,res,next){
-        if(msg.)
-    }
+
 
 
     //上报地理位置(进入服务号时)
