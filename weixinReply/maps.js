@@ -7,9 +7,8 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
 
-
         if(msg.EventKey === "shop"){
-            console.log("门店查询开始!!!");
+            console.log("*******shop search start********");
             var lat=msg.Location_X;
             var lng=msg.Location_Y;
 
@@ -87,20 +86,15 @@ exports.load = function () {
         }
     })
 
-    //菜单事件
-
-
 
     //上报地理位置(进入服务号时)
     wechatapi.registerReply(9,function(msg,req,res,next){
         if(msg.MsgType=="event" && msg.Event=="LOCATION"){
-            console.log("******get location******");
+            console.log("******get user position******");
             postData={"location":[msg.Latitude,msg.Longitude]};
-            console.log("******"+msg.FromUserName+"*********")
             helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
                 {multi: false, upsert: true},function(err,doc){
                     if(err)throw err;
-                    console.log("**********insert db***********")
             });
 
         }
