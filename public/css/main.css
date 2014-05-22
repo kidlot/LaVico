@@ -343,8 +343,11 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .intros .title{font-size: 25px;color: #B9954D;line-height: 45px;}
 .intros .content{font-size: 20px;color: #B9954D;}
 .elite_img img{ width:100%; margin-top:60px;}
-.prev_btn{ width:22px; height:40px; position:absolute; top:50%; left:35px; background:url(../images/elite_prev_btn.png) no-repeat; background-size:100% 100%;}
-.next_btn{ width:22px; height:40px; position:absolute; top:50%; right:35px; background:url(../images/elite_next_btn.png) no-repeat;background-size:100% 100%;}
+.prev_btn,
+.next_btn { width:22px; height:40px; position:absolute; top:50%; left:35px; margin-top:20px; }
+.prev_btn{ background:url(../images/elite_prev_btn.png) no-repeat; background-size:100% 100%;}
+.next_btn{ background:url(../images/elite_next_btn.png) no-repeat;background-size:100% 100%;}
+
 .prev_btn:hover{ cursor:pointer;}
 .next_btn:hover{ cursor:pointer;}
 .elite_list{width:100%; height:auto; background:#E5E5E5; position:relative; overflow:hidden; padding-bottom:10px;}
