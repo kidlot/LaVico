@@ -33,7 +33,7 @@ exports.load = function () {
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
                         if(doc){
-
+                            console.log(doc.location);
                             if(doc.location){
                                 console.log("111");
                                 //当时取消获取账户
