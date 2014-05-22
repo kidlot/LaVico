@@ -69,8 +69,9 @@ store-title .store-title p{position:relative;}
 .use-rules{width:96%; background-color:#eee; padding: 2% 2% 0; }
 .use-rulesContent{margin:0 auto;width:100%;}
 .price_ticket{background-color:#fff;width:96%; height:auto; margin:0 auto; border:1px #bebebe solid; padding:2%;}
+.price_ticket img { width:100% }
 .use-rulesContent .title{ width:590px; height:53px; margin-top:1px; text-indent:-999em; background:url(../images/price_title.jpg) center center no-repeat;}
-.use-rulesContent .text{font-size:25px; /*padding-top:50px;*/ padding-bottom:80px; line-height:40px; color:#646464;}
+.use-rulesContent .text{font-size:1.8rem; padding:2%; line-height:30px; color:#646464;}
 .use-rules .border{border-top:1px #a9a9a9 solid; padding-top:80px;}
 /*弹窗*/
 .fade,.fade1,.fade2,.fade3,.fade4{display:none;background:#000;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0, 0, 0, 0.8) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/
@@ -381,7 +382,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .m_prev_btn{ width:45px; height:82px; position:absolute; top:400px; left:35px; background:url(../images/member_shoucang_prebtn.png) no-repeat;}
 .m_next_btn{ width:45px; height:82px; position:absolute; top:400px; right:35px; background:url(../images/member_shoucang_nextbtn.png) no-repeat;}
 .m_prev_btn,.m_next_btn{ cursor:pointer;}
-.gift_bg{ width:96%; margin:0 auto; height:50px; text-align:center; background-color:#e5e5e5; padding:2% 2% 0;background:url(../images/gift_bg.jpg) no-repeat; background-size:100% 100%;}
+.gift_bg{ width:100%; margin:0 auto; height:50px; text-align:center; background-color:#e5e5e5;background:url(../images/gift_bg.jpg) no-repeat; background-size:100% 100%;}
 .gift_text{width:100%; background-color:#e5e5e5;padding-top:10%; padding-bottom:10%;}
 .gift_text .get{text-align:center; color:#2d2d2d; font-size:1.8rem;}
 .gift_text .click-look{text-align:center; font-size:1.8rem;}
@@ -389,8 +390,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift_coupon{width:96%;margin: 2% 2% 0; background-color:#e5e5e5;}
 .gift_coupon .coupon-content{width:96%; height:auto; margin:0 auto; border:1px #bebebe solid; padding:2%;}
 .gift_coupon .coupon-content img { width:100%; }
-.gift_title{ text-align:right; padding-right:10px; font-size:1.8rem; color:#fff; line-height:50px }
-.gift_content{ width:580px; padding:0 30px;}
+.gift_title{ text-align:right; padding-right:10px; font-size:1.8rem; color:#fff; line-height:50px ; margin-top:10px;}
+.gift_content{ width:94%; padding:0 3%;}
 .gift_content .title1{color:#bda172; font-size:25px; padding-top:30px;}
 .gift_content .subtext{ color:#646464; font-size:25px; padding:30px 0;}
 .gift_border{ width:600px; margin:0 auto;border-bottom:1px #c1c1c1 solid;}
