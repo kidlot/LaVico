@@ -21,8 +21,9 @@
 
         <script>
             window.popupStyle1 = {}
-            window.popupStyle1.on = function(){
-                $('.popupStyle1').on('custom', function(event, param1, param2) {
+            window.popupStyle1.on = function(eventName,title){
+                $(".popupStyle1").find("p").text(title)
+                $('.popupStyle1').on(eventName, function(event, param1, param2) {
                     alert(param1 + "\n" + param2);
                 });
             }
