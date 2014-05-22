@@ -51,8 +51,8 @@ module.exports = {
 
         /*判断是否会员已经绑定*/
         if($("#error").val()=="you_has_bound_already"){
-            alert("请先解绑后，再申请会员");
-            window.location.href="/lavico/member/card_member/unbind?wxid="+wxid;
+            alert("您已经是lavico的会员");
+            window.location.href="/lavico/member/index?wxid="+wxid;
         }
 
         $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
@@ -232,7 +232,7 @@ module.exports = {
                     }else if(data.result == 'ok'){
                         set_interval();
                         $('#id_code').val(data.id_code);
-                        alert('验证码发送成功，请在2分钟内输入');
+                        console.log('验证码发送成功，请在2分钟内输入');
                     }else{
                         alert('网络不稳定，请稍后再尝试')
                     }
@@ -319,7 +319,7 @@ module.exports = {
                             //console.log(data.error);
                             alert("网络不稳定，请稍后再尝试");
                         }else{
-                            alert("恭喜你，申领成功");
+                            alert("恭喜你，注册成功");
                             window.location.href="/lavico/member/index?wxid="+$("#uid").val();
                         }
                         return false;
@@ -331,7 +331,7 @@ module.exports = {
                         }else{
                             var _info = unescape(data.error);
                             if(_info == "该微信ID已是本品牌会员，请检查！"){
-                                alert("您已经绑定会员卡，请先解绑，再申领新卡");
+                                alert("您已经绑定会员，请先解绑，再申领新卡");
                             }else{
                                 alert("网络不稳定，请稍后再尝试");
                             }

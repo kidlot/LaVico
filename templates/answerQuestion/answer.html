@@ -98,8 +98,13 @@ function build(){
         if(custReceive[i].optionId==value){
             if(custReceive[i].chooseId == "主观题"){
                 $("textarea[name='descContent']").val(custReceive[i].resultValue);
+                $("textarea[name='descContent']").attr("readonly","readonly");
             }else if(custReceive[i].type==0){
                 $("#for"+custReceive[i].chooseId).attr('checked','checked');
+                var leng = $("input[name='singleChooseInput']").length;
+                for(var h = 0;h<leng;h++){
+                    $("#for"+h).attr('disabled',true);
+                }
                 $("span[name='correntImg']").css("visibility","visible");
                 $("#chooseNa").removeClass("select1");
                 $("#chooseNa").addClass("select");
@@ -118,6 +123,10 @@ function build(){
                 }
                 for(var s=0;s<str.length;s++){
                     $("#for"+str[s]).attr('checked','checked');
+                    var length = $("input[name='mutilChooseInput']").length;
+                    for(var h=0;h<length;h++){
+                        $("#for"+h).attr('disabled',true);
+                    }
                     $("#chooseNa"+str[s]).removeClass("selects1");
                     $("#chooseNa"+str[s]).addClass("selects");
                 }
@@ -315,7 +324,6 @@ window.onload =function() {
 
 <link rel="stylesheet" href="/lavico/public/css/base.css" />
 <link rel="stylesheet" href="/lavico/public/css/main.css" />
-
 <div class="wrapper">
     <div class="answer-title">
         <p><span class="title2">本次共有 {@optionCount} 个问题，当前是第 {@optionId} 题</span></p>
