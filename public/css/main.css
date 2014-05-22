@@ -11,7 +11,7 @@ a.tel{color:#2d2d2d;}
 .coupon-banner img {width:100%;}
 .activity-rules{width:100%; background-color:#e4e4e4;}
 .begin{width:80%; height:40px; padding:3% 10% 0;}
-.begin a,.mobile-btn a{text-align:center; display:inline-block;width:100%; height:40px; line-height:40px; font-size:1.4rem; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat;}
+.begin a,.mobile-btn a{text-align:center; display:inline-block;width:100%; height:40px; line-height:40px; font-size:1.4rem; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; background-size:100% 100%;}
 .activity-rules .text{width:92%; margin:0 auto;padding:4%;}
 .activity-rules .text .title{text-align:center; color:#000; font-size:1.4rem;}
 .activity-rules .text .title1{color:#bda172; font-size:1.4rem; padding-top:4%;}
