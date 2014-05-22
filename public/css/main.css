@@ -187,7 +187,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .remo-card .input-tel .input input{ border:0; background-color:#fff; border:1px #b2b1ad solid; padding:0 2%;font-size:1.4rem; color:#000; line-height:40px; height:40px;width:100%; margin-left:3%;}
 .remo-card .input-tel .input1 input{ border:0; background-color:#dadada; border:1px #b2b1ad solid; padding-left:10px;font-size:22px; color:#000; line-height:65px; height:65px;width:370px; margin-left:20px;}
 .remo-card .verify{ display:inline-block;margin-left:3%; width:34%; height:40px; background:url(../images/verify_bg_01.png) center center no-repeat; 
-                    line-height:50px; font-size:1.4rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%;}
+                    line-height:40px; font-size:1.4rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%;}
 .remo-card .star-sign{ color:#a00100;}
 .remo-card .input-tel .note{ padding-top:6%; font-size:1.4rem; line-height:2em; color:#2d2d2d; text-align:center;}
 .remo-card .submit input{text-align:center;width:80%; height:40px;border:0; outline:none; line-height:40px; font-size:1.4rem; color:#3C3C3C; 
