@@ -93,12 +93,14 @@ exports.load = function () {
 
     //上报地理位置(进入服务号时)
     wechatapi.registerReply(9,function(msg,req,res,next){
-        console.log("******get location******");
         if(msg.MsgType=="event" && msg.Event=="LOCATION"){
+            console.log("******get location******");
             postData={"location":[msg.Latitude,msg.Longitude]};
+            console.log("******"+msg.FromUserName+"*********8")
             helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, postData,
                 {multi: false, upsert: true},function(err,doc){
                     if(err)throw err;
+                    console.log("**********insert db***********")
             });
 
         }
