@@ -89,6 +89,20 @@ exports.load = function () {
 
         }
     })
+    //上报地理位置(进入服务号时)
+    wechatapi.registerReply(9,function(msg,req,res,next){
+        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
+            console.log("******get user position******");
+            postData={"location":[msg.Latitude,msg.Longitude]};
+            console.log("******"+msg.FromUserName+"*******");
+            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
+                {multi: false, upsert: true},function(err,doc){
+                    if(err)throw err;
+                    console.log("*******update db*******");
+                });
+
+        }
+    })
 
     wechatapi.registerReply(9,function(msg,req,res,next){
         //点击“附近门店”
@@ -200,20 +214,7 @@ exports.load = function () {
     })
 
 
-    //上报地理位置(进入服务号时)
-    wechatapi.registerReply(9,function(msg,req,res,next){
-        if(msg.MsgType=="event" && msg.Event=="LOCATION"){
-            console.log("******get user position******");
-            postData={"location":[msg.Latitude,msg.Longitude]};
-            console.log("******"+msg.FromUserName+"*******");
-            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
-                {multi: false, upsert: true},function(err,doc){
-                    if(err)throw err;
-                    console.log("*******update db*******");
-            });
 
-        }
-    })
 
     wechatapi.makeQueue();
 };
