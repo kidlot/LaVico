@@ -174,8 +174,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .notice-listContent ul li{width:100%; height:auto; border-bottom:1px #a9a9a9 solid; box-sizing:border-box; padding:5% 0; }
 .notice-listContent ul li a{width:100%;color:#646464; font-size:1.8rem; height:auto;display:inline-block;background:url(../images/elite_list_title.png) right center no-repeat; vertical-align:top; }
 .notice-listContent ul li .name{ }
-.sc_ticket{/*background-color:#fff;*/width:100%; height:330px; text-align:center; padding-top:20px; padding-bottom:20px; }
-.use-rulesContent .text .title2{color:#bda172; font-size:25px; padding-top:50px;}
+.sc_ticket{width:100%; height:auto; text-align:center; padding:0 2% }
+.sc_ticket img { width:100%; }
+.use-rulesContent .text .title2{color:#bda172; font-size:1.8rem; padding-top:4%;}
 
 /*解绑会员卡*/
 .remo-card{width:100%; background-color:#dadada;}
