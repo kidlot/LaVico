@@ -12,13 +12,16 @@ exports.load = function () {
 
 
             var lat,lng;
-            helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
+            helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},this.hold(function(err,doc){
                 if(err) throw err;
                 if(doc){
                     lat=doc.location[0];
                     lng=doc.location[1];
+
+                    console.log("lat1:"+lat);
+                    console.log("lng2:"+lng);
                 }
-            })
+            }))
 
 
             console.log("lat:"+lat);
@@ -41,7 +44,7 @@ exports.load = function () {
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
-                            cosole.log("Shops:"+doc);
+                            console.log("Shops:"+doc);
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
                         })
