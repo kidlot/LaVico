@@ -10,37 +10,34 @@ module.exports = {
     view:'lavico/templates/member/index.html',
     process:function(seed,nut){
 
+        var wxid;
+
         // 通过oauth获取OPENID
         if(process.wxOauth){
 
             if(!seed.code){
 
                 this.res.writeHeader(302, {'location': process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")})  ;
+                return;
             }else{
 
-                process.wxOauth.getAccessToken(seed.code,function(err,doc){
+                process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
 
-                    console.log(err)
-                    console.log("323232323232232323",doc)
-                })
+                    if(!err){
+                        var openid = doc.openid
+                        wxid = openid || undefined;
+                    }else{
+                        this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+"/lavico/member/index"})  ;
+                    }
+                }))
             }
 
         }
 
 
-        return;
-
-
-
-
-
-
-
 
 
         /*先判断微信id是否存在*/
-
-        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         this.step(function(){
             if(wxid == 'undefined'){
                 nut.disable();//不显示模版
