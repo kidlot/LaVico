@@ -66,7 +66,7 @@ store-title .store-title p{position:relative;}
 .store-listContent ul li a .adree{ padding-top:2%;}
 .store-listContent ul li a .tel{ padding-top:5px;}
 /*专属礼券*/
-.use-rules{width:100%; background-color:#dcdcdc; padding-top:20px; }
+.use-rules{width:100%; background-color:#eee; padding: 2% 2% 0; }
 .use-rulesContent{margin:0 auto;width:590px;}
 .price_ticket{background-color:#fff;width:568px; height:330px; margin:0 auto; border:1px #bebebe solid; padding:10px 10px;}
 .use-rulesContent .title{ width:590px; height:53px; margin-top:1px; text-indent:-999em; background:url(../images/price_title.jpg) center center no-repeat;}
@@ -231,7 +231,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points3-box{width:100%;padding:10px 0; border-bottom:1px #dedede solid;}
 .points3-content{width:96%; background-color:#fff; margin-left:2%; position:relative; }
 .points3-content .text{ width:56%; padding:2%; font-size:1.4rem;}
-.points3-content .text .title3{height:25px; line-height:25px; font-size:25px; padding-left:20px; background:url(../images/title_bg.jpg) left center no-repeat;}
+.points3-content .text .title3{height:25px; line-height:25px; font-size:1.8rem; padding-left:20px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .points3-content .text .title3 a{ color:#000;}
 .points3-content .con{ color:#646464; padding:2%;}
 .points3-content .con a{ color:#646464;}
