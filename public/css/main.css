@@ -386,7 +386,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift_text .click-look{text-align:center; font-size:25px;}
 .gift_text .click-look a{color:#bb954a; border-bottom:1px #bb954a solid;}
 .gift_coupon{width:100%; background-color:#e5e5e5; padding-top:10px;}
-.gift_coupon .coupon-content{width:568px; height:330px; margin:0 auto; border:1px #bebebe solid; padding:10px 10px;}
+.gift_coupon .coupon-content{width:96%; height:auto; margin:0 auto; border:1px #bebebe solid; padding:2%;}
+.gift_coupon .coupon-content img { width:100%; }
 .gift_title{ text-align:right; padding-right:50px; font-size:25px; color:#fff; margin-top:-45px;}
 .gift_content{ width:580px; padding:0 30px;}
 .gift_content .title1{color:#bda172; font-size:25px; padding-top:30px;}
