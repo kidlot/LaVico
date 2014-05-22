@@ -22,9 +22,11 @@
             </span>
         </p>
     </div>
-    <div class="elite_img"><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}"></div>
-    <div class="prev_btn" onclick="leftPage()"></div>
-    <div class="next_btn" onclick="rightPage()"></div>
+    <div style="position:relative;">
+        <div class="elite_img"><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}"></div>
+        <div class="prev_btn" onclick="leftPage()"></div>
+        <div class="next_btn" onclick="rightPage()"></div>
+    </div>
     <div class="intros">
         <div class="title">{@ product.name}</div>
         <div class="content">{@ product.detail}</div>
