@@ -239,7 +239,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                             background:url(../images/next.png) center center no-repeat; background-size:100% 100%;}
 /*消费记录*/
 .points4{ background-color:#eee;}
-.points4 .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.8rem; color:#000;}
+.points4 .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.6rem; color:#000;}
 .points4 .title .text{width:92%; padding:0 4%; margin:0 auto; line-height:50px;}
 .points4-content{width:96%; padding:0 2%; margin:0 auto;}
 .points4-content .point-box{width:100%; margin-top:10px;}
@@ -247,8 +247,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points4-content .point-box ul { border-left:1px #dedede solid;border-right:1px #dedede solid; overflow:hidden; margin-bottom:20px; }
 .points4-content .point-box ul li{width:100%; height:auto; background-color:#efefef; border-bottom:1px #dedede solid; padding:6px; font-size:1.4rem; box-sizing:border-box; overflow:hidden;}
 .points4-content .gift_point-box{width:100%; margin-top:20px;}
-.points4-content .gift_point-box .title2{width:560px; height:65px; background:url(../images/point_bg1.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
-.points4-content .gift_point-box ul li{width:573px; height:80px; background-color:#efefef; border-bottom:1px #dedede solid;border-left:1px #dedede solid;border-right:1px #dedede solid; padding-left:5px; padding-right:20px; font-size:22px; padding-top:10px;}
+.points4-content .gift_point-box .title2{width:96%; height:50px; background:url(../images/point_bg1.png) no-repeat; font-size:1.8rem; color:#fff; line-height:50px; padding:0 2%; background-size:100% 100%;}
+.points4-content .gift_point-box ul li{width:100%; height:auto; background-color:#efefef; border-bottom:1px #dedede solid;border-left:1px #dedede solid;border-right:1px #dedede solid; 
+                                       font-size:1.6rem; box-sizing:border-box; overflow:hidden; padding:2% 0; }
 .c3{ color:#646464;}
 .ml20{ margin-left:2%; width:68%; }
 .pt55{ padding-top:20px;}
@@ -380,14 +381,15 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .m_prev_btn{ width:45px; height:82px; position:absolute; top:400px; left:35px; background:url(../images/member_shoucang_prebtn.png) no-repeat;}
 .m_next_btn{ width:45px; height:82px; position:absolute; top:400px; right:35px; background:url(../images/member_shoucang_nextbtn.png) no-repeat;}
 .m_prev_btn,.m_next_btn{ cursor:pointer;}
-.gift_bg{ width:100%; margin:0 auto; height:68px; text-align:center; background-color:#e5e5e5;}
-.gift_text{width:100%; background-color:#e5e5e5;padding-top:60px; padding-bottom:360px;}
-.gift_text .get{text-align:center; color:#2d2d2d; font-size:25px;}
-.gift_text .click-look{text-align:center; font-size:25px;}
+.gift_bg{ width:96%; margin:0 auto; height:50px; text-align:center; background-color:#e5e5e5; padding:2% 2% 0;background:url(../images/gift_bg.jpg) no-repeat; background-size:100% 100%;}
+.gift_text{width:100%; background-color:#e5e5e5;padding-top:10%; padding-bottom:10%;}
+.gift_text .get{text-align:center; color:#2d2d2d; font-size:1.8rem;}
+.gift_text .click-look{text-align:center; font-size:1.8rem;}
 .gift_text .click-look a{color:#bb954a; border-bottom:1px #bb954a solid;}
-.gift_coupon{width:100%; background-color:#e5e5e5; padding-top:10px;}
-.gift_coupon .coupon-content{width:568px; height:330px; margin:0 auto; border:1px #bebebe solid; padding:10px 10px;}
-.gift_title{ text-align:right; padding-right:50px; font-size:25px; color:#fff; margin-top:-45px;}
+.gift_coupon{width:96%;margin: 2% 2% 0; background-color:#e5e5e5;}
+.gift_coupon .coupon-content{width:96%; height:auto; margin:0 auto; border:1px #bebebe solid; padding:2%;}
+.gift_coupon .coupon-content img { width:100%; }
+.gift_title{ text-align:right; padding-right:10px; font-size:1.8rem; color:#fff; line-height:50px }
 .gift_content{ width:580px; padding:0 30px;}
 .gift_content .title1{color:#bda172; font-size:25px; padding-top:30px;}
 .gift_content .subtext{ color:#646464; font-size:25px; padding:30px 0;}
