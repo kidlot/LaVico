@@ -346,11 +346,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .next_btn{ width:45px; height:82px; position:absolute; top:400px; right:35px; background:url(../images/elite_next_btn.png) no-repeat;}
 .prev_btn:hover{ cursor:pointer;}
 .next_btn:hover{ cursor:pointer;}
-.elite_list{width:620px;  height:auto; background:#E5E5E5; position:relative; overflow:hidden; padding-bottom:10px;}
+.elite_list{width:100%; height:auto; background:#E5E5E5; position:relative; overflow:hidden; padding-bottom:10px;}
 .elite_list .list{ margin-top:5px;}
-/*.elite_list .list_left{ float:left; width:300px; height:auto; margin:5px 5px;}*/
-.elite_list .list_left{ float:left; width:610px; height:auto; margin:5px 5px;}
-.elite_list .list_right{ float:left; width:610px; height:auto; margin:5px 5px;}
+.elite_list .list_left{ float:left; width:92%; height:auto; margin:0 4%;}
+.elite_list .list_right{ float:left; width:92%; height:auto; margin:0 4%;}
 .elite_list .list_left img,
 .elite_list .list_right img{ width:100%; border-radius:8px;}
 .elite_list_title_bg{filter:alpha(opacity=70); margin-top:-134px; position:relative;}
