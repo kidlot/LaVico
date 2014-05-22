@@ -352,7 +352,7 @@ module.exports = {
             $(".mobile-pic").addClass("box_rotate2");
         }
 
-        var SHAKE_THRESHOLD = 100;
+        var SHAKE_THRESHOLD = 3000;
         var last_update = 0;
         var x=y=z=last_x=last_y=last_z=0;
 
@@ -370,10 +370,8 @@ module.exports = {
                 var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if (speed > SHAKE_THRESHOLD) {
-
+                    shake();
                     if(flag == 1){
-
-                      shake();
 
                     }
 

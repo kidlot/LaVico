@@ -26,7 +26,9 @@ module.exports = {
                     if(!err){
                         var openid = doc.openid
                         wxid = openid || undefined;
+                        console.log("通过oauth获得ID",wxid)
                     }else{
+                        console.log("通过oauth获得ID超时。")
                         this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+"/lavico/member/index"})  ;
                     }
                 }))
@@ -39,7 +41,7 @@ module.exports = {
 
         /*先判断微信id是否存在*/
         this.step(function(){
-            if(wxid == 'undefined'){
+            if(wxid == undefined){
                 nut.disable();//不显示模版
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
                 this.res.write('{"error":"wxid_is_empty"}');
