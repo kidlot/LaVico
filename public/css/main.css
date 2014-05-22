@@ -297,7 +297,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .form .submit_btn input{width:80%;margin:0 10%;  border:0; cursor:pointer; font-size:25px; height:67px; line-height:67px; color:#3C3C3C;text-align:center; background:url(../images/click_btn.jpg) center center no-repeat;}
 .apply .form .bg{ background-color:#dadada; border:1px #b2b1ad solid; box-sizing:content-box; }
 .apply .form .input .trade-right{width:62%; padding-left:3%; color:#000;}
-.apply .form .input .trade-right select{width:380px; height:65px; line-height:65px; padding-left:10px; font-size:25px;}
+.apply .form .input .trade-right select{width:100%; height:50px; line-height:50px; padding-left:10px; font-size:1.8rem;}
 /*精英搭配*/
 .match{width:100%; background-color:#F1F1F1;}
 .match .banner{width:608px; height:400px; margin:0 auto;}
@@ -427,11 +427,11 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input_select_div{ width:100%; height:50px;}
 .input_select{background:url('../images/input_select_bg.jpg') no-repeat;padding:4px 34px 4px 4px;width:100%;height:50px;border:0;padding:4px;font-size:1.8rem;line-height:50%;position:relative; background-size:100% 100%;}
 #model-name{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
-#select_province,#select_city,#select_profession,#select_favoriteStyle{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
+#select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:50px;opacity:0;-moz-opacity:0;position:relative;top:-50px;}
 .input_select_sex{padding:4px 34px 4px 4px;width:100%;height:48px;border:0;padding:0 2%;font-size:1.8rem;line-height:48px;position:relative; border:1px #999 solid;}
 #select_sex{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;left:-123px;}
 #select_month,#select_day{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
-.input_select_year{padding:4px 34px 4px 4px;width:100%;height:50px;border:0;padding:4px;font-size:25px;line-height:50px;position:relative; border:1px #999 solid;}
+.input_select_year{width:100%;height:50px;border:0;font-size:25px;line-height:50px;position:relative; border:1px #999 solid;}
 #select_year{width:160px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
 .input_select_div_f{ float:left; width:100%; height:50px;}
 .input_select_div_fy{ float:left; width:100%; height:50px; }
