@@ -11,6 +11,8 @@ exports.load = function () {
             console.log("*******shop search start********");
             var lat=msg.Location_X;
             var lng=msg.Location_Y;
+            console.log("lat:"+msg.lat);
+            console.log("lng:"+msg.lng);
 
             var docJson;
             var jsonData={};
@@ -25,8 +27,8 @@ exports.load = function () {
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
-
                             if(err) throw err;
+                            cosole.log("Shops:"+doc);
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
                         })
@@ -134,7 +136,7 @@ function changeTwoDecimal(floatvar)
     var f_x = parseFloat(floatvar);
     if (isNaN(f_x))
     {
-        alert('function:changeTwoDecimal->parameter error');
+        console.log('function:changeTwoDecimal->parameter error');
         return false;
     }
     var f_x = Math.round(floatvar*100)/100;
