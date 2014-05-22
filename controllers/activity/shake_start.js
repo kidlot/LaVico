@@ -11,6 +11,7 @@ module.exports = {
 
         var wxid = seed.uid ? seed.uid : 'undefined';//uid是用户的wechatid
         var aid = seed.aid ? seed.aid : 'undefined';//摇一摇活动ID
+        var shakeActivity;//摇一摇活动信息
 
         var member_id;
         this.step(function(){
@@ -66,7 +67,7 @@ module.exports = {
                 nut.disable();//不显示模版
                 //this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
                 this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                this.res.write("<script>alert('请先注册会员或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                 this.res.end();
                 this.terminate();
             }
@@ -78,7 +79,7 @@ module.exports = {
 //              this.res.writeHead(200, { 'Content-Type': 'application/json' });
 //              this.res.write('{"error":"aid_is_empty"}');
                 this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                this.res.write("<script>alert('请先注册会员或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                 this.res.end();
                 this.terminate();
             }
@@ -92,8 +93,28 @@ module.exports = {
 
         /*MemberID会员判断*/
 
+        /*每次积分消耗多少分，如果用户积分不够，需要提示用户。*/
+        /*提示用户是否确定消耗积分*/
+        this.step(function(){
+            helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
+                shakeActivity = doc;
+                console.log('~~~~~~~~~~~~~~~~~');
+                console.log(doc);
+                console.log('~~~~~~~~~~~~~~~~~');
+            }));
+        });
+
+        this.step(function(){
+            var _points = shakeActivity.points;
+        });
+
     },
     actions:{
+        points:{
+
+
+
+        },
         shakeit: {
             process: function(seed,nut)
             {
@@ -160,7 +181,30 @@ module.exports = {
                     activity.uid = seed.uid;
                     activity.name = shake.name;
                     activity.QTY = shake.QTY;
+                    activity.points = shake.points;//每次摇一摇，所需要的积分多少
                     activity.createDate = new Date().getTime();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     console.log(Math.floor(Math.random()*100+1));
                     console.log(shake);
