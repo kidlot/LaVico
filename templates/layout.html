@@ -10,21 +10,54 @@
 
 
 
-<div class="popup popupStyle1">
+<div class="popup popupStyle1" style="z-index: 1">
     <p>提交提交提交提交提交提交</p>
     <div class="popup_but">
-        <a href="javascript:" onclick="$('.popupStyle1').trigger('save', []);">提交</a>
-        <a href="javascript:" onclick="$('.popupStyle1').trigger('cancel', []);">取消</a>
+        <a href="javascript:" onclick="$('.popupStyle1').trigger('save', []);$('.popupStyle1').hide();">保存</a>
+        <a href="javascript:" onclick="$('.popupStyle1').trigger('cancel', []);$('.popupStyle1').hide();">取消</a>
     </div>
 </div>
 
+<div class="popup popupStyle2" style="z-index: 1">
+    <p>提交提交提交提交提交提交</p>
+    <div class="popup_but">
+        <a href="javascript:" onclick="$('.popupStyle2').trigger('confirm', []);$('.popupStyle2').hide();">确定</a>
+    </div>
+</div>
 
         <script>
             window.popupStyle1 = {}
-            window.popupStyle1.on = function(eventName,title){
+            window.popupStyle1.on = function(title,cb){
                 $(".popupStyle1").find("p").text(title)
-                $('.popupStyle1').on(eventName, function(event, param1, param2) {
-                    alert(param1 + "\n" + param2);
+                $(".popupStyle1").show()
+                $('.popupStyle1').on("save", function(event) {
+                    cb("save")
+                });
+                $('.popupStyle1').on("cancel", function(event) {
+                    cb("cancel")
                 });
             }
+            window.popupStyle2 = {}
+            window.popupStyle2.on = function(title,cb){
+                $(".popupStyle2").find("p").text(title)
+                $(".popupStyle2").show()
+                $('.popupStyle2').on("confirm", function(event) {
+                    cb("confirm")
+                });
+            }
+
+
+            // 使用方法
+
+            /*
+
+             window.popupStyle2.on("请先申领或绑定会员卡",function(event){
+
+             if(event == "confirm"){
+             location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
+             }
+             })
+
+
+             */
         </script>
