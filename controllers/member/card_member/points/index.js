@@ -213,6 +213,7 @@ module.exports = {
                     }
 
                     /*合并两个数组*/
+                    var _yearMonthLogLength = yearMonthLog.length;//记录多少个年月记录
                     for(var i=0; i< newLog.length; i++){
                         if(i==0){
                             //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
@@ -242,7 +243,10 @@ module.exports = {
 
                     nut.model.dataJson = JSON.stringify(dataJson);
                     nut.model.log = newLog;//当前会员的积分记录
-
+                    nut.model.yearMonthLogLength = _yearMonthLogLength;//记录多少个年月记录
+                    nut.model.logLength = newLog.length;
+                    nut.model.htmlStartUl = "<ul>";
+                    nut.model.htmlEndUl = "</ul>";
                 }));
             }
 
