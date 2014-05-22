@@ -206,7 +206,7 @@ module.exports = {
     },
     viewIn:function(){
         $('#loading').hide();//隐藏加载框
-        var wxid = $('wxid').val();
+        var wxid = $('#wxid').val();
         /*兑换产品的链接*/
         $('.reddem').click(function(){
             var _reddem_id = $(this).attr('id');
