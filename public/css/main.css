@@ -241,14 +241,14 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points4 .title .text{width:92%; padding:0 4%; margin:0 auto; line-height:50px;}
 .points4-content{width:96%; padding:0 2%; margin:0 auto;}
 .points4-content .point-box{width:100%; margin-top:10px;}
-.points4-content .point-box .title2{width:96%; height:50px; background:url(../images/point_bg1.png) no-repeat; font-size:1.8rem; color:#fff; line-height:50px; padding:0 2%;}
-.points4-content .point-box ul { border-left:1px #dedede solid;border-right:1px #dedede solid; overflow:hidden; }
-.points4-content .point-box ul li{width:100%; height:auto; background-color:#efefef; border-bottom:1px #dedede solid; padding:6px; font-size:1.8rem; box-sizing:border-box;}
+.points4-content .point-box .title2{width:96%; height:50px; background:url(../images/point_bg1.png) no-repeat; font-size:1.8rem; color:#fff; line-height:50px; padding:0 2%; background-size:100% 100%;}
+.points4-content .point-box ul { border-left:1px #dedede solid;border-right:1px #dedede solid; overflow:hidden; margin-bottom:20px; }
+.points4-content .point-box ul li{width:100%; height:auto; background-color:#efefef; border-bottom:1px #dedede solid; padding:6px; font-size:1.4rem; box-sizing:border-box; overflow:hidden;}
 .points4-content .gift_point-box{width:100%; margin-top:20px;}
 .points4-content .gift_point-box .title2{width:560px; height:65px; background:url(../images/point_bg1.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
 .points4-content .gift_point-box ul li{width:573px; height:80px; background-color:#efefef; border-bottom:1px #dedede solid;border-left:1px #dedede solid;border-right:1px #dedede solid; padding-left:5px; padding-right:20px; font-size:22px; padding-top:10px;}
 .c3{ color:#646464;}
-.ml20{ margin-left:20px;}
+.ml20{ margin-left:2%; width:68%; }
 .pt55{ padding-top:20px;}
 .points4-content .point-box .title3{width:560px; height:65px; background:url(../images/point_bg2.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
 .points4-content .gift_point-box .title3{width:560px; height:65px; background:url(../images/point_bg2.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
@@ -453,8 +453,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .city-listContent ul li a .tel{ padding-top:5px;}
 #fixed{ position:fixed; bottom:0; margin-left:30px; width:580px;}
 .bargin_content{width: 565px;margin: 0px auto;}
-.bargin_content .wei_name{color: #BA954F;font-size: 25px;padding-top: 30px;}
-.bargin_content .wei_text{color: #646464;font-size: 25px;padding-top: 10px;}
+.bargin_content .wei_name{color: #BA954F;font-size: 1.8rem;padding-top: 10px;}
+.bargin_content .wei_text{color: #646464;font-size: 1.8rem;padding-top: 10px;}
 
 /*loading*/
 .loading { position:fixed; z-index: 1000; left: 50%; top: 50%; width:64px; height:64px; margin:-32px 0 0 -32px; }
