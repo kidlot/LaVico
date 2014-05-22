@@ -97,11 +97,11 @@ exports.load = function () {
             console.log("******get location******");
             postData={"location":[msg.Latitude,msg.Longitude]};
             console.log("******"+msg.FromUserName+"*********8")
-//            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, postData,
-//                {multi: false, upsert: true},function(err,doc){
-//                    if(err)throw err;
-//                    console.log("**********insert db***********")
-//            });
+            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, postData,
+                {multi: false, upsert: true},function(err,doc){
+                    if(err)throw err;
+                    console.log("**********insert db***********")
+            });
 
         }
     })
