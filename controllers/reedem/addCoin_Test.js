@@ -32,6 +32,7 @@ module.exports={
                     var jsonData={};
                     jsonData.memberId=memberId;
                     jsonData.qty=seed.qty;
+                    jsonData.meno="测试";
                     middleware.request('Point/Change',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
