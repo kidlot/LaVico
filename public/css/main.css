@@ -117,8 +117,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .look-map .map .way{ padding-top:40px;}
 .look-map .map .way .title{ font-size:25px; color:#B9954D; line-height:45px;}
 .look-map .map .way .text{ font-size:22px; color:#646464; line-height:35px;}
-.inquiry{width:100%; height:81px; line-height:81px; background:url(../images/head_bg.jpg) center center no-repeat;}
-.inquiry .city{ font-size:30px; color:#010000; padding-left:40px;}
+.inquiry{width:100%; height:50px; line-height:50px; background:url(../images/head_bg.jpg) center center no-repeat;}
+.inquiry .city{ font-size:1.8rem; color:#010000; padding-left:40px;}
 .inquiry .input{ padding-top:10px; margin-left:80px;}
 .inquiry .input input{width:220px; border:1px #b0a18e solid; height:60px; font-size:25px; color:#000; line-height:60px; padding-left:20px;}
 .inquiry .change{ margin-right:40px; margin-top:10px;}
@@ -281,7 +281,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .title .text a{ color:#7C4A01; text-decoration:underline;}
 .apply .form{width:96%; margin: 0 auto; padding:0 2%; background:#eee;}
 .apply .form .input{ padding-top:10px; line-height:50px;}
-.apply .form .input .left{width:24%; text-align:right; color:#2D2D2D; font-size:1.6rem;}
+.apply .form .input .left{width:28%; text-align:right; color:#2D2D2D; font-size:1.6rem;}
 .apply .form .input .name-right{ width:62%; padding-left:3%; color:#000;}
 .apply .form .input .name-right input{ width:100%; height:50px; line-height:50px; padding:0 2%; font-size:1.6rem;}
 .apply .form .input .sex-right{ width:30%; padding-left:3%; color:#000;}
@@ -292,7 +292,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .form .input .birth-right .select2,.apply .form .input .birth-right .select3{width:110px;}
 .apply .form .input .tel-right{  width:62%;padding-left:3%; color:#000;}
 .apply .form .input .tel-right input{width:100%; height:50px; line-height:50px; padding:0 2%; font-size:1.6rem;}
-.apply .form .note{ font-size:1.8rem; text-align:center; color:#3C3C3C; padding-top:4%;}
+.apply .form .note{ font-size:1.6rem; text-align:center; color:#3C3C3C; padding-top:4%; line-height:2em; }
 .apply .form .submit_btn{ padding-top:30px; padding-bottom:100px;}
 .apply .form .submit_btn input{width:80%;margin:0 10%; border:0; cursor:pointer; font-size:1.8rem; height:50px; line-height:50px; color:#3C3C3C;text-align:center;
                                 background:url(../images/click_btn.jpg) center center no-repeat; background-size:100% 100%; }
