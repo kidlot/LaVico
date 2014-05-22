@@ -196,16 +196,16 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points1 .tab ul li a:hover,.points1 .tab ul li a.on{color:#fff; background:url(../images/tab.png) center center no-repeat;}
 .gift-box{ margin-top:20px; padding-bottom:20px; border-bottom:1px #ababab solid;}
 .gift-box1{ border:0; padding-bottom:40px;}
-.gift-box-content{width:585px; margin:0 auto;}
+.gift-box-content{width:94%; padding:0 3%; margin:0 auto;}
 .gift-top{ background-color:#fff;}
-.gift-top-right{width:220px; padding-left:35px; padding-top:35px;}
-.gift-top-right .name{ font-size:25px; color:#000; padding-left:20px; background:url(../images/title_bg.jpg) left center no-repeat;}
-.gift-top-right .intro{ font-size:25px; color:#8b8b8b; padding-top:10px; border-bottom:1px #ababab solid; padding-bottom:10px;}
-.gift-top-right .term{ font-size:25px; color:#8b8b8b; padding-top:30px;}
+.gift-top-right{width:56%; padding:2%;font-size:1.4rem;}
+.gift-top-right .name{ color:#000; padding-left:20px; background:url(../images/title_bg.jpg) left center no-repeat;}
+.gift-top-right .intro{ color:#8b8b8b; padding-top:10px; border-bottom:1px #ababab solid; padding-bottom:10px;}
+.gift-top-right .term{  color:#8b8b8b; padding-top:30px;}
 .gift-bottom{ height:65px; padding-top:20px;}
-.gift-bottom .left,.gift-bottom .right{height:65px; line-height:65px;font-size:25px; text-align:center; cursor:pointer;}
-.gift-bottom .left{width:310px;color:#fff; background:url(../images/pre3.png) no-repeat; }
-.gift-bottom .right{width:262px;color:#291b00; background:url(../images/next.png) no-repeat; }
+.gift-bottom .left,.gift-bottom .right{height:50px; line-height:50px;font-size:1.8rem; text-align:center; cursor:pointer;}
+.gift-bottom .left{width:50%;color:#fff; background:url(../images/pre3.png) no-repeat;background-size:100% 100%; }
+.gift-bottom .right{width:40%;color:#291b00; background:url(../images/next.png) no-repeat; margin-left:10%;background-size:100% 100%;}
 .gift-bottom .right a{color:#291b00;}
 .gift-bottom .left a{ color:#fff;}
 /*积分兑换*/
