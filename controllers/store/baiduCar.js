@@ -12,8 +12,8 @@ module.exports= {
                 if(err) throw err;
                 if(doc){
                     if(doc.location!=null) {
-                        nut.model.userLng = doc.location[0];
-                        nut.model.userLat = doc.location[1];
+                        nut.model.userLng = doc.location[1];
+                        nut.model.userLat = doc.location[0];
                     }else{
                         nut.model.userLng="";
                         nut.model.userLat="";
