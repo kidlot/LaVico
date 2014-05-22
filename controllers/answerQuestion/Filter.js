@@ -16,5 +16,10 @@ module.exports={
                 }
             }))
         })
+
+        helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(id)},this.hold(function(err,doc){
+            if(err) throw err
+            if(doc)	nut.model.docs=doc;
+        }));
     }
 }
