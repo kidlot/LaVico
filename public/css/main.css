@@ -68,7 +68,7 @@ store-title .store-title p{position:relative;}
 /*专属礼券*/
 .use-rules{width:96%; background-color:#eee; padding: 2% 2% 0; }
 .use-rulesContent{margin:0 auto;width:100%;}
-.price_ticket{background-color:#fff;width:568px; height:330px; margin:0 auto; border:1px #bebebe solid; padding:10px 10px;}
+.price_ticket{background-color:#fff;width:96%; height:auto; margin:0 auto; border:1px #bebebe solid; padding:2%;}
 .use-rulesContent .title{ width:590px; height:53px; margin-top:1px; text-indent:-999em; background:url(../images/price_title.jpg) center center no-repeat;}
 .use-rulesContent .text{font-size:25px; /*padding-top:50px;*/ padding-bottom:80px; line-height:40px; color:#646464;}
 .use-rules .border{border-top:1px #a9a9a9 solid; padding-top:80px;}
