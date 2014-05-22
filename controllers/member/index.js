@@ -12,31 +12,38 @@ module.exports = {
 
         var wxid = undefined;
 
-        // 通过oauth获取OPENID
-        if(process.wxOauth){
+        if(this.req.session.oauthTokenInfo){
+            
+            console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
+            wxid = this.req.session.oauthTokenInfo.openid
+        }else{
 
-            if(!seed.code){
+            // 通过oauth获取OPENID
+            if(process.wxOauth){
 
-                console.log("通过oauth获得CODE")
-                this.res.writeHeader(302, {'location': process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")})  ;
-            }else{
+                if(!seed.code){
 
-                process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+                    var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")
+                    console.log("通过oauth获得CODE的url",url)
+                    this.res.writeHeader(302, {'location': url })  ;
+                }else{
 
-                    if(!err){
-                        var openid = doc.openid
-                        wxid = openid || undefined;
-                        console.log("通过oauth获得ID",wxid)
-                    }else{
-                        console.log("通过oauth获得ID超时。",err)
-                        this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+"/lavico/member/index"})  ;
-                    }
-                }))
+                    process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+
+                        if(!err){
+                            var openid = doc.openid
+                            wxid = openid || undefined;
+                            console.log("通过oauth获得信息",doc)
+                            this.req.session.oauthTokenInfo = doc;
+                        }else{
+                            console.log("通过oauth获得ID超时。",err)
+                            this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+"/lavico/member/index"})  ;
+                        }
+                    }))
+                }
+
             }
-
         }
-
-
 
 
         /*先判断微信id是否存在*/
