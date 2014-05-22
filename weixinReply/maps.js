@@ -9,10 +9,23 @@ exports.load = function () {
 
         if(msg.EventKey === "shop"){
             console.log("*******shop search start********");
-            var lat=msg.Location_X;
-            var lng=msg.Location_Y;
-            console.log("lat:"+msg.lat);
-            console.log("lng:"+msg.lng);
+
+
+            var lat,lng;
+            helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
+                if(err) throw err;
+                if(doc){
+                    lat=doc.location[0];
+                    lng=doc.location[1];
+                }
+            })
+
+
+            console.log("lat:"+lat);
+            console.log("lng:"+lng);
+//            var lat=msg.Location_X;
+//            var lng=msg.Location_Y;
+
 
             var docJson;
             var jsonData={};
