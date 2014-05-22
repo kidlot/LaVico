@@ -10,22 +10,9 @@ exports.load = function () {
         if(msg.EventKey == "shop"){
             console.log("*******shop search start********");
 
-
             var lat,lng;
-            helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},this.hold(function(err,doc){
-                if(err) throw err;
-                if(doc){
-                    lat=doc.location[0];
-                    lng=doc.location[1];
-
-                    console.log("lat1:"+lat);
-                    console.log("lng2:"+lng);
-                }
-            }))
 
 
-            console.log("lat:"+lat);
-            console.log("lng:"+lng);
 //            var lat=msg.Location_X;
 //            var lng=msg.Location_Y;
 
@@ -37,7 +24,26 @@ exports.load = function () {
             var replyArr=[];
 
             Steps(
+
                 function(){
+                    helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            lat=doc.location[0];
+                            lng=doc.location[1];
+
+                            console.log("lat1:"+lat);
+                            console.log("lng2:"+lng);
+                        }
+                    })}
+
+
+
+
+            function(){
+
+                console.log("lat3:"+lat);
+                console.log("lng4:"+lng);
                     jsonData.perPage=1000;
                     jsonData.pageNum=1;
                     //接口返回的doc都是字符串
@@ -99,6 +105,7 @@ exports.load = function () {
                     res.reply(replyArr);
                 }
             )()
+
         }else{
             next()
         }
