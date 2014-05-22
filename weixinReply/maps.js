@@ -31,26 +31,20 @@ exports.load = function () {
                         if(doc){
                             lat=doc.location[0];
                             lng=doc.location[1];
-
                             console.log("lat1:"+lat);
-                            console.log("lng2:"+lng);
+                            console.log("lng1:"+lng);
                         }
                     })},
 
-
-
-
             function(){
 
-                console.log("lat3:"+lat);
-                console.log("lng4:"+lng);
                     jsonData.perPage=1000;
                     jsonData.pageNum=1;
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
-                            console.log("Shops:"+doc);
+
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
                         })
@@ -117,9 +111,11 @@ exports.load = function () {
         if(msg.MsgType=="event" && msg.Event=="LOCATION"){
             console.log("******get user position******");
             postData={"location":[msg.Latitude,msg.Longitude]};
+            console.log("******"+msg.FromUserName+"*******");
             helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
                 {multi: false, upsert: true},function(err,doc){
                     if(err)throw err;
+                    console.log("*******update db*******");
             });
 
         }
