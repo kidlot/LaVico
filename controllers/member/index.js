@@ -17,6 +17,7 @@ module.exports = {
 
             if(!seed.code){
 
+                console.log("通过oauth获得CODE")
                 this.res.writeHeader(302, {'location': process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")})  ;
                 return;
             }else{
