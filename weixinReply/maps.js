@@ -35,7 +35,7 @@ exports.load = function () {
                             console.log("lat1:"+lat);
                             console.log("lng2:"+lng);
                         }
-                    })}
+                    })},
 
 
 
