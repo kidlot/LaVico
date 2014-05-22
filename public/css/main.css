@@ -346,7 +346,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .prev_btn,
 .next_btn { width:22px; height:40px; position:absolute; top:50%; left:35px; margin-top:20px; }
 .prev_btn{ background:url(../images/elite_prev_btn.png) no-repeat; background-size:100% 100%;}
-.next_btn{ background:url(../images/elite_next_btn.png) no-repeat;background-size:100% 100%;}
+.next_btn{ background:url(../images/elite_next_btn.png) no-repeat;background-size:100% 100%; right:35px; }
 
 .prev_btn:hover{ cursor:pointer;}
 .next_btn:hover{ cursor:pointer;}
