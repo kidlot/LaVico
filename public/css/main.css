@@ -392,8 +392,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift_coupon .coupon-content img { width:100%; }
 .gift_title{ text-align:right; padding-right:10px; font-size:1.8rem; color:#fff; line-height:50px ; margin-top:10px;}
 .gift_content{ width:94%; padding:0 3%;}
-.gift_content .title1{color:#bda172; font-size:25px; padding-top:30px;}
-.gift_content .subtext{ color:#646464; font-size:25px; padding:30px 0;}
+.gift_content .title1{color:#bda172; font-size:1.8rem; padding-top:2%;}
+.gift_content .subtext{ color:#646464; font-size:1.8rem; padding:2% 0;}
 .gift_border{ width:600px; margin:0 auto;border-bottom:1px #c1c1c1 solid;}
 .line{ width:640px; height:30px; border-bottom:1px #666 solid; margin-top:50px;}
 .linebottom{ padding-top:40px;}
