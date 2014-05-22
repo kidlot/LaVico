@@ -10,6 +10,26 @@ module.exports = {
     view:'lavico/templates/member/index.html',
     process:function(seed,nut){
 
+        // 通过oauth获取OPENID
+        if(process.wxOauth){
+
+            process.wxOauth.getAccessToken(seed.code,function(err,doc){
+
+                console.log(doc)
+            })
+            seed.wxid = "ssssss"
+
+        }
+
+
+
+
+
+
+
+
+
+
         /*先判断微信id是否存在*/
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
