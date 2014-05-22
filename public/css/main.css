@@ -7,7 +7,7 @@ a.tel{color:#2d2d2d;}
 .wrapper{width:100%; height:100%;  max-width:640px; margin:0 auto; position:relative;}
 .wrapper .vip-card { position:relative; }
 .wrapper .vip-card img { width:100%; }
-.coupon-banner{width:100%; height:auto; padding:0 4%;}
+.coupon-banner{width:100%; height:auto; padding:4% 0;}
 .coupon-banner img {width:100%;}
 .activity-rules{width:100%; background-color:#e4e4e4;}
 .begin{width:486px; height:67px; padding-top:20px; margin:0 auto;}
@@ -15,7 +15,7 @@ a.tel{color:#2d2d2d;}
 .activity-rules .text{width:92%; margin:0 auto;padding:4%;}
 .activity-rules .text .title{text-align:center; color:#000; font-size:1.8rem;}
 .activity-rules .text .title1{color:#bda172; font-size:1.6rem; padding-top:4%;}
-.subtext{ color:#646464; font-size:25px; padding-top:30px;}
+.subtext{ color:#646464; font-size:1.6rem; padding-top:2%;}
 /*Member*/
 .vip-card-num{text-align: center; color:#999; font-size: 16px; position: relative; }
 /*礼品券*/
