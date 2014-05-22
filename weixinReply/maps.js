@@ -34,7 +34,7 @@ exports.load = function () {
                         if(err) throw err;
                         if(doc){
                             console.log(doc.location);
-                            if(doc.location){
+                            if(doc.location==null){
                                 console.log("111");
                                 //当时取消获取账户
                                 //单图文回复
