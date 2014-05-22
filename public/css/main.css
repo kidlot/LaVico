@@ -157,9 +157,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .link-cardContent{width:100%; background-color:#dadada;}
 .link-cardContent .title{width:100%; height:50px; line-height:50px; text-align:center; font-size:1.6rem; color:#000; background:url(../images/head_bg.jpg) center center no-repeat;}
 .link-cardContent .title a{ text-decoration:underline;color:#7d4900;}
-.input-tel{width:530px; margin:0 auto; padding-top:50px;}
-.input-tel .text{width:95px; height:65px; text-align:right; line-height:65px; font-size:25px; color:#2d2d2d; float:left;}
-.input-tel input{ border:0; background-color:#fff; border:1px #b2b1ad solid; padding-left:10px;font-size:22px; color:#000; line-height:65px; height:65px;width:190px; margin-left:20px;}
+.input-tel{width:90%; margin:0 auto; padding: 5% 5% 0;}
+.input-tel .text{width:20%; height:40px; text-align:right; line-height:40px; font-size:1.4rem; color:#2d2d2d; float:left;}
+.input-tel input{ border:0; background-color:#fff; border:1px #b2b1ad solid; font-size:1.4rem; color:#000; line-height:40px; height:40px;width:100%; padding:0 2%; }
 .verify{ display:inline-block;margin-left:2%; width:38%; height:40px; background:url(../images/verify_bg_01.png) center center no-repeat; line-height:40px;
           font-size:1.4rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%; }
 .mt10{ margin-top:5%; overflow:hidden; }
