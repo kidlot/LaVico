@@ -17,6 +17,7 @@ th, td /* table elements 表格元素 */ {
     padding: 0;
 }
 
+html { font-size: 62.5%; /*10 ÷ 16 × 100% = 62.5%*/}
 
 /** 设置默认字体 **/
 * {
@@ -99,7 +100,8 @@ q:before, q:after {
 /* inline block */
 .inline-block { display: inline-block; *display: inline; }
 
-.fl{float:left; display:inline;}
+.fl{float:left; display:inline; width:40%; }
+.fl img{ width:100%; }
 .fr{float:right; display:inline;}
 /* Clearfix */
 .clearfix:after{content:"."; display:block; height:0; clear:both; visibility:hidden;}

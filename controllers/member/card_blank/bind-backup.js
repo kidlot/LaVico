@@ -49,48 +49,104 @@ module.exports = {
             /*前端设计JS*/
             $('#loading').hide();//隐藏加载框
 
-            var wxid = $('#wxid').val();
-
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
-                alert("您已经是lavico的会员");
-                window.location.href="/lavico/member/index?wxid="+wxid;
+                alert("请将解绑后，再绑定");
             }
-            /*申请会员卡*/
-            $("#registerUrl").click(function(){
-                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+
+            $(".subbtn").click(function(){
+                $(".fade3").css("display","block");
+            });
+            $(".applybtn").click(function(){
+                window.location.href="member_num24.html";
+            });
+            $(".gonhome_btn").click(function(){
+                window.location.href="member_num4.html";
+            });
+            $(".bangding_btn").click(function(){
+                $(".fade1").css("display","block");
+                $(".fade3").css("display","none");
             });
 
-            $("#no_member_telephone .confirm .applybtn").click(function(){
-                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+            $(".bangding_btn").click(function(){
+                $(".fade1").css("display","block");
+                $(".fade3").css("display","none");
             });
 
-            /*绑定会员卡*/
-            $("#bindUrl").click(function(){
-                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
-            });
 
-            /*会员管理*/
-            $('#memberUrl').click(function(){
-                window.location.href="/lavico/member/index?wxid="+wxid;
-            });
+             var wxid = $('#wxid').val();
+                /*申请会员卡*/
+                $("#registerUrl").click(function(){
+                    window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+                });
 
-            /*会员管理*/
-            $('#member_manage').click(function(){
-                window.location.href="/lavico/member/index?wxid="+wxid;
-            });
+                $("#no_member_telephone .confirm .applybtn").click(function(){
+                    window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+                });
 
-            /*取消绑定*/
-            $(".cancel").click(function(){
-                $(this).parents('.popup').hide();
-            });
+                /*绑定会员卡*/
+                $("#bindUrl").click(function(){
+                    window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+                });
+
+                /*会员管理*/
+                $('#memberUrl').click(function(){
+                    window.location.href="/lavico/member/index?wxid="+wxid;
+                });
+
+                /*会员管理*/
+                $('#member_manage').click(function(){
+                    window.location.href="/lavico/member/index?wxid="+wxid;
+                });
+
+                /*取消绑定*/
+                $(".cancel").click(function(){
+                    $(this).parents('.popup').hide();
+                });
 
 
             /*后端编程JS*/
             /*验证码-开始*/
             var timer60Seconds;
             var flag = 0;
+            /*获取卡号*/
+            var getCardNum = function(wxid){
+                $.ajax({
+                    url:'/lavico/member/card_blank/bind:getCardNum',
+                    type:'POST',
+                    data:{
+                        'wxid':wxid,
+                    }}).done(function(data){
+                        var returnJson = data || {};
+                        //alert(returnJson.info);
+                        //alert(returnJson);
+                        if(returnJson.success == true){
+                            var cardNumValue = returnJson.info || '';
+                            //alert(cardNumValue.length);
+                            //alert(cardNumValue);
+                            if(cardNumValue.length > 0){
+                                alert("验证过的手机号码，不需要输入卡号，就可以绑定成功");
+                                //alert(cardNumValue);
+                                $("#userCardNumber").val(cardNumValue);
+                                //alert($("#userCardNumber").val());
+                                $(".step").hide();
+                                $("#step_3").show();
+                            }else{
+                                alert("测试数据未同步，请尝试其他测试帐号");
+                            }
 
+                        }else if(returnJson.success == false){
+                            if(returnJson.error == 'userCardNumber_is_undefined'){
+                                alert("测试数据未同步，请尝试其他测试帐号");
+                            }else{
+                                alert('网络接口不稳定，请稍后再尝试');
+                            }
+                        }else{
+                            alert('网络接口不稳定，请稍后再尝试');
+                        }
+
+                });
+            }
             /*第一步：判断手机号码的状态*/
             $("#submit_1").click(function(){
 
@@ -115,42 +171,37 @@ module.exports = {
                         if(returnJson.success == true){
                             if(returnJson.info == 'tel_checked_true'){
 
-                                //验证过的手机号码，不需要输入卡号，就可以绑定成功
                                 var memberId = returnJson.memberId || '';
                                 if(memberId.length > 0){
                                     $('#memberId').val(returnJson.memberId);
                                 }
                                 $('#tel_checked_status').val('tel_checked_true');
-                                get_id_code();//发送验证码
+                                getCardNum(wxid);
+                                $('#userTelClone').val($('#userTel').val());//复制手机号码
 
+                                //发送验证码
+                                //验证过的手机号码，不需要输入卡号，就可以绑定成功
 
                             }else if(returnJson.info == 'tel_checked_false'){
 
-                                //验证过的手机号码，需要输入卡号
-                                 $('#tel_checked_status').val('tel_checked_false');
-                                 $('#true_card_number').show();
+                                    $('#tel_checked_status').val('tel_checked_false');
+                                    $('#step_1').hide();
+                                    $('#step_2').show();
+                                    $('#userTelClone').val($('#userTel').val());//复制手机号码
 
                             }else{
-
                                 alert('网络不稳定，请稍后再尝试');
-
                             }
                         }else if(returnJson.success == false){
-
                             if(returnJson.error == 'tel_exists_false'){
                                 //alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线4001008866');
                                 $('#no_member_telephone').show();
-
                             }else if(returnJson.error == 'network_error'){
-
                                 alert('网络不稳定，请稍后再尝试');
-
                             }else{
-
                                 alert('网络不稳定，请稍后再尝试');
                             }
                         }else{
-
                             alert('网络不稳定，请稍后再尝试');
                         }
                     });
@@ -159,6 +210,10 @@ module.exports = {
             });
 
             /*第二步：判断卡号是否正确*/
+            $('#previous_step_2').click(function(){
+                $('.step').hide();
+                $('#step_1').show();
+            });
             $('#submit_2').click(function(){
                 $('#loading').show();
                 var userTel = $('#userTel').val();
@@ -186,15 +241,14 @@ module.exports = {
                         //console.log(returnJson);
                         if(returnJson.success == true){
                             if(returnJson.error == 'please_enter_next_step'){
-
-                                get_id_code();//发送验证码
+                                //alert('验证码已发送，请查收');
+                                $('.step').hide();
+                                $('#step_3').show();
                             }
                         }else if(returnJson.success == false){
                             if(returnJson.error == 'cardnum_no_found'){
                                 //$('#telephone_cardnumber_no_match').show();
-                                console.log('系统没有查找到此卡号，请核对后重新输入,可能由于此卡号绑定的不是第一步的手机号码');
-                                $('#telephone_cardnumber_no_match').show();
-
+                                alert('系统没有查找到此卡号，请核对后重新输入,可能由于此卡号绑定的不是第一步的手机号码');
                             }else if(returnJson.error == 'network_error'){
                                 alert('网络接口不稳定，请稍后再尝试');
                             }else{
@@ -207,6 +261,10 @@ module.exports = {
 
             });
             /*第三步*/
+            $('#previous_step_3').click(function(){
+                $('.step').hide();
+                $('#step_2').show();
+            });
             $('#submit_3').click(function(){
                 //submitCheck();
                 var wxid = $('#wxid').val();
@@ -216,6 +274,7 @@ module.exports = {
                 var userName = $.trim($('#userName').val());
                 var tel_checked_status = $.trim($('#tel_checked_status').val());
                 var memberId = $.trim($('#memberId').val());
+
 
                 if(userCaptcha ==''){
                     alert('请填写验证码');
@@ -275,13 +334,9 @@ module.exports = {
                     });
                 //$('#submit').click();
             });
-
-            /*发送验证码*/
-            var get_id_code = function(){
-
-                var userTel = $("#userTel").val();
-
-                if(userTel =='' || !(/^1[358]\d{9}$/i.test(userTel)) ){
+            /*验证码*/
+            $("#get_id_code").click(function(){
+                if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
                     alert("请输入正确的手机号码");
                     return	false;
                 }
@@ -290,7 +345,7 @@ module.exports = {
                 }
                 /*判断手机号码是否存在*/
                 $('#loading').show();//显示正在加载
-
+                var userTel = $("#userTel").val();
                 $.ajax({
                     url:'/lavico/member/card_blank/bind:checkTel',
                     type:'POST',
@@ -358,7 +413,6 @@ module.exports = {
                                 $('#userCaptcha').val(data.id_code);
                                 $('#id_code').val('send_captcha_success');
                                 console.log('验证码发送成功，请在2分钟内输入！');
-                                $(".popup").hide();
                             }else{
                                 alert('网络接口不稳定，请稍后再尝试');
                                 $('#id_code').val('send_captcha_fail');
@@ -368,30 +422,29 @@ module.exports = {
                     );
                 }
 
-            }
-
+            });
             function set_interval(){
                 clearInterval(timer60Seconds);
                 var time = 60;
-                $(".get_id_code").html('('+time+')重新获取');
+                $("#get_id_code").html('('+time+')重新获取');
                 timer60Seconds = setInterval(function(){
                     time--;
                     if(time == 0){
                         clearInterval(timer60Seconds);
                         re_get_code();
                     }else{
-                        $(".get_id_code").html('('+time+')重新获取');
-                        var _imgSrc = $(".get_id_code").css('background');
+                        $("#get_id_code").html('('+time+')重新获取');
+                        var _imgSrc = $("#get_id_code").css('background');
                         var _reg = /verify_bg\.png/;
 
                         if(!_reg.test(_imgSrc)){
-                            $(".get_id_code").css("background","url(/lavico/public/images/verify_bg.png)");
+                            $("#get_id_code").css("background","url(/lavico/public/images/verify_bg.png)");
                         }
                     }
                 },1000);
             }
             function re_get_code(){
-                $(".get_id_code").html('获取验证码').css("background","url(/lavico/public/images/verify_bg_01.png)");;
+                $("#get_id_code").html('获取验证码').css("background","url(/lavico/public/images/verify_bg_01.png)");;
                 flag = 0;
             }
             /*验证码-结束*/
@@ -681,7 +734,7 @@ module.exports = {
                                             'HaiLanMemberInfo':{
                                                 'memberID':dataJson.MEMBER_ID,
                                                 'action':'bind',
-                                                //'userCardNumber':userCardNumber,
+                                                'userCardNumber':userCardNumber,
                                                 'lastModified':new Date().getTime(),
                                                 'type':type
                                             }
@@ -713,6 +766,30 @@ module.exports = {
 
 
                         }
-                }
+                },
+        getCardNum:{
+            layout:null,
+            view:null,
+            process:function(seed,nut){
+                nut.disabled = true ;
+                var wxid = seed.wxid;
+                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                    if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.action ){
+                        userCardNumber =  doc.HaiLanMemberInfo.userCardNumber;
+                        this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                        this.res.write('{"success":true,"info":"'+userCardNumber+'"}');
+                        this.res.end();
+                        this.terminate();
+                    }else{
+                        userCardNumber = 'undefined';
+                        this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                        this.res.write('{"success":false,"error":"userCardNumber_is_undefined"}');
+                        this.res.end();
+                        this.terminate();
+                    }
+
+                }));
+            }
+        }
     }
 }

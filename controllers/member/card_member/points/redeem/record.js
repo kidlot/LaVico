@@ -1,5 +1,6 @@
 /**
  * Created by David Xu on 5/15/14.
+ * 兑换记录（积分兑换礼品的记录）
  */
 
 var middleware = require('lavico/lib/middleware.js');//引入中间件
@@ -106,6 +107,7 @@ module.exports = {
                         dataArr[_i].day = new Date(dataArr[_i].createDate).getDate();
                         dataArr[_i].yearmonth = dataArr[_i].year+'-'+dataArr[_i].month;
                         dataArr[_i].type = 'data';
+
                     }
 
 
@@ -204,7 +206,12 @@ module.exports = {
     },
     viewIn:function(){
         $('#loading').hide();//隐藏加载框
-
+        var wxid = $('wxid').val();
+        /*兑换产品的链接*/
+        $('.reddem').click(function(){
+            var _reddem_id = $(this).attr('id');
+            window.location.href = '/lavico/reedem/reedemdetail?_id='+_reddem_id+'&wxid='+wxid;
+        });
     }
 
 }
