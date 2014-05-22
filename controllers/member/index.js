@@ -10,6 +10,33 @@ module.exports = {
     view:'lavico/templates/member/index.html',
     process:function(seed,nut){
 
+        // 通过oauth获取OPENID
+        if(process.wxOauth){
+
+            if(!seed.code){
+
+                this.res.writeHeader(302, {'location': process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")})  ;
+            }else{
+
+                process.wxOauth.getAccessToken(seed.code,function(err,doc){
+
+                    console.log("323232323232232323",doc)
+                })
+            }
+
+        }
+
+
+        return;
+
+
+
+
+
+
+
+
+
         /*先判断微信id是否存在*/
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
