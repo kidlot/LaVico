@@ -8,19 +8,19 @@ exports.load = function () {
     wechatapi.registerReply(9,function(msg,req,res,next){
         //手动发送地址
         if(msg.MsgType=="location"){
+            console.log("********location*********8");
             var lat=msg.Location_X;
             var lng=msg.Location_Y;
 
             Steps(
                 function(){
-
                     jsonData.perPage=1000;
                     jsonData.pageNum=1;
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
-
+                            console.log("******Shops*********")
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
                         })
