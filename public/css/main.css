@@ -118,7 +118,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .look-map .map .way .title{ font-size:25px; color:#B9954D; line-height:45px;}
 .look-map .map .way .text{ font-size:22px; color:#646464; line-height:35px;}
 .inquiry{width:100%; height:50px; line-height:50px; background:url(../images/head_bg.jpg) center center no-repeat;}
-.inquiry .city{ font-size:1.8rem; color:#010000; padding-left:4%;}
+.inquiry .city{ font-size:1.8rem; color:#010000;}
 .inquiry .input{ padding-top:10px; margin-left:80px;}
 .inquiry .input input{width:220px; border:1px #b0a18e solid; height:60px; font-size:25px; color:#000; line-height:60px; padding-left:20px;}
 .inquiry .change{ margin-right:4%; }
@@ -444,7 +444,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .new_tab{ margin-top:20px;}
 .eli{ line-height:}
 .new_title{ margin-top:-50px;}
-.fm{ text-align:center; margin-left:-40px;}
+.fm{ text-align:center; padding-left:0px; }
 
 
 .city-list{width:100%;}
