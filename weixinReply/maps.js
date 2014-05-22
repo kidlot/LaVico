@@ -27,6 +27,17 @@ exports.load = function () {
                 },
 
                 function(){
+                    console.log("******get user position******");
+                    postData={"location":[msg.Location_X,msg.Location_Y]};
+                    console.log("******"+msg.FromUserName+"*******");
+                    helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
+                        {multi: false, upsert: true},function(err,doc){
+                            if(err)throw err;
+                            console.log("*******update db*******");
+                        });
+                },
+
+                function(){
                     jsonData.perPage=1000;
                     jsonData.pageNum=1;
                     //接口返回的doc都是字符串
