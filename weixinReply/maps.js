@@ -98,6 +98,8 @@ exports.load = function () {
                 }
             )()
 
+        }else{
+            next();
         }
     })
     //上报地理位置(进入服务号时)
@@ -112,6 +114,8 @@ exports.load = function () {
                     console.log("*******update db*******");
                 });
 
+        }else{
+            next();
         }
     })
 
@@ -220,6 +224,8 @@ exports.load = function () {
                 }
             )()
 
+        }else{
+            next();
         }
     })
 
