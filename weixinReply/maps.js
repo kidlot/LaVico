@@ -27,8 +27,8 @@ exports.load = function () {
             var storeList=[];
             var replyArr=[];
 
-            Steps(
 
+            Steps(
                 function(){
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
@@ -38,7 +38,10 @@ exports.load = function () {
                             console.log("lat:"+lat);
                             console.log("lng:"+lng);
                         }
-                    })},
+                    })}
+            )()
+
+            Steps(
 
                 function(){
                     console.log("lat111:"+lat);
@@ -112,8 +115,6 @@ exports.load = function () {
                     }
                 },
                 function(){
-                    console.log(JSON.stringify(replyArr));
-                    console.log(res);
                     res.reply(replyArr);
                 }
             )()
