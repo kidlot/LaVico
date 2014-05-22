@@ -276,14 +276,14 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .c4{ color:#B9954D;}
 /*申领会员卡*/
 .apply{ background-color:#dadada;}
-.apply .title{width:100%; height:81px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:25px; color:#000;}
-.apply .title .text{width:555px; margin:0 auto; line-height:81px; text-align:center;}
+.apply .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.8rem; color:#000;}
+.apply .title .text{width:100%; margin:0 auto; line-height:50px; text-align:center;}
 .apply .title .text a{ color:#7C4A01; text-decoration:underline;}
-.apply .form{width:600px; margin: 0 auto;}
-.apply .form .input{ padding-top:40px; line-height:65px;}
-.apply .form .input .left{width:120px; text-align:right; color:#2D2D2D; font-size:25px;}
-.apply .form .input .name-right{ padding-left:20px; color:#000;}
-.apply .form .input .name-right input{width:365px; height:65px; line-height:65px; padding-left:10px; font-size:25px;}
+.apply .form{width:96%; margin: 0 auto; padding:0 2%; background:#eee;}
+.apply .form .input{ padding-top:10px; line-height:50px;}
+.apply .form .input .left{width:20%; text-align:right; color:#2D2D2D; font-size:1.8rem;}
+.apply .form .input .name-right{ width:75%; padding-left:5%; color:#000;}
+.apply .form .input .name-right input{width:98%; height:50px; line-height:50px; padding:0 1%; font-size:1.8rem;}
 .apply .form .input .sex-right{ padding-left:20px; color:#000;}
 .apply .form .input .sex-right select{width:110px; height:65px; line-height:65px; padding-left:10px; font-size:25px;}
 .apply .form .input .birth-right{ padding-left:20px; color:#000;}
@@ -295,7 +295,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .form .note{ font-size:22px; text-align:center; color:#3C3C3C; padding-top:30px;}
 .apply .form .submit_btn{ padding-top:30px; padding-bottom:100px;}
 .apply .form .submit_btn input{width:80%;margin:0 10%;  border:0; cursor:pointer; font-size:25px; height:67px; line-height:67px; color:#3C3C3C;text-align:center; background:url(../images/click_btn.jpg) center center no-repeat;}
-.apply .form .bg{ background-color:#dadada; border:1px #b2b1ad solid;}
+.apply .form .bg{ background-color:#dadada; border:1px #b2b1ad solid; box-sizing:border-box; }
 .apply .form .input .trade-right{ padding-left:20px; color:#000;}
 .apply .form .input .trade-right select{width:380px; height:65px; line-height:65px; padding-left:10px; font-size:25px;}
 /*精英搭配*/
