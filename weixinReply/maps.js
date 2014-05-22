@@ -7,11 +7,25 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
 
-
         if(msg.EventKey === "shop"){
-            console.log("门店查询开始!!!");
-            var lat=msg.Location_X;
-            var lng=msg.Location_Y;
+            console.log("*******shop search start********");
+
+
+            var lat,lng;
+            helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
+                if(err) throw err;
+                if(doc){
+                    lat=doc.location[0];
+                    lng=doc.location[1];
+                }
+            })
+
+
+            console.log("lat:"+lat);
+            console.log("lng:"+lng);
+//            var lat=msg.Location_X;
+//            var lng=msg.Location_Y;
+
 
             var docJson;
             var jsonData={};
@@ -26,8 +40,8 @@ exports.load = function () {
                     //接口返回的doc都是字符串
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
-
                             if(err) throw err;
+                            cosole.log("Shops:"+doc);
                             docJson=JSON.parse(doc);
                             //return docJson;//注意字符串和对象格式
                         })
@@ -87,21 +101,16 @@ exports.load = function () {
         }
     })
 
-    //菜单事件
-
-
 
     //上报地理位置(进入服务号时)
     wechatapi.registerReply(9,function(msg,req,res,next){
         if(msg.MsgType=="event" && msg.Event=="LOCATION"){
-            console.log("******get location******");
+            console.log("******get user position******");
             postData={"location":[msg.Latitude,msg.Longitude]};
-            console.log("******"+msg.FromUserName+"*********8")
-//            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, postData,
-//                {multi: false, upsert: true},function(err,doc){
-//                    if(err)throw err;
-//                    console.log("**********insert db***********")
-//            });
+            helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
+                {multi: false, upsert: true},function(err,doc){
+                    if(err)throw err;
+            });
 
         }
     })
@@ -140,7 +149,7 @@ function changeTwoDecimal(floatvar)
     var f_x = parseFloat(floatvar);
     if (isNaN(f_x))
     {
-        alert('function:changeTwoDecimal->parameter error');
+        console.log('function:changeTwoDecimal->parameter error');
         return false;
     }
     var f_x = Math.round(floatvar*100)/100;
