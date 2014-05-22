@@ -281,16 +281,16 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .title .text a{ color:#7C4A01; text-decoration:underline;}
 .apply .form{width:96%; margin: 0 auto; padding:0 2%; background:#eee;}
 .apply .form .input{ padding-top:10px; line-height:50px;}
-.apply .form .input .left{width:20%; text-align:right; color:#2D2D2D; font-size:1.6rem;}
+.apply .form .input .left{width:24%; text-align:right; color:#2D2D2D; font-size:1.6rem;}
 .apply .form .input .name-right{ width:62%; padding-left:3%; color:#000;}
 .apply .form .input .name-right input{ width:100%; height:50px; line-height:50px; padding:0 2%; font-size:1.6rem;}
 .apply .form .input .sex-right{ width:30%; padding-left:3%; color:#000;}
 .apply .form .input .sex-right select{width:110px; height:65px; line-height:65px; padding-left:10px; font-size:1.6rem;}
-.apply .form .input .birth-right{ width:77%;padding-left:0.8%; color:#000;}
+.apply .form .input .birth-right{ width:62%;padding-left:0.8%; color:#000;}
 .apply .form .input .birth-right .select1,.apply .form .input .birth-right .select2,.apply .form .input .birth-right .select3{ height:65px; line-height:65px; padding-left:10px; font-size:25px;}
 .apply .form .input .birth-right .select1{width:150px;}
 .apply .form .input .birth-right .select2,.apply .form .input .birth-right .select3{width:110px;}
-.apply .form .input .tel-right{ padding-left:20px; color:#000;}
+.apply .form .input .tel-right{  width:62%;padding-left:3%; color:#000;}
 .apply .form .input .tel-right input{width:100%; height:50px; line-height:50px; padding:0 2%; font-size:1.6rem;}
 .apply .form .note{ font-size:1.8rem; text-align:center; color:#3C3C3C; padding-top:4%;}
 .apply .form .submit_btn{ padding-top:30px; padding-bottom:100px;}
