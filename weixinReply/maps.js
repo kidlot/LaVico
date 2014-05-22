@@ -7,7 +7,7 @@ exports.load = function () {
 
     wechatapi.registerReply(9,function(msg,req,res,next){
 
-        if(msg.EventKey === "shop"){
+        if(msg.EventKey == "shop"){
             console.log("*******shop search start********");
 
 
