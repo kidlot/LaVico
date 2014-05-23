@@ -338,13 +338,13 @@ window.onload =function() {
     </div>
 
     <div class="pages">
-        <div class="pages-content">
+        <div class="pages-content" style="text-align:center;">
             <!--<input type="button" onclick="self.location=document.referrer" name="btnBack" value=" 上一题" class="fl pre"/>-->
             <!--<a class="fl pre" onclick="javascript:history.go(-1);"> < 上一题</a>-->
             <if condition="{@optionCount!=optionId}">
-                <a class="fr next" href="javascript:nextChoose()">下一题 > </a>
+                <a class="fr next" href="javascript:nextChoose()" style="float:none;">下一题 > </a>
                 <else/>
-                <a class="fr next" href="javascript:finish()">完&nbsp;&nbsp;成 > </a>
+                <a class="fr next" href="javascript:finish()" style="float:none;">完&nbsp;&nbsp;成 > </a>
             </if>
         </div>
     </div>

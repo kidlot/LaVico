@@ -338,26 +338,36 @@ module.exports = {
         var timer;
 
         var shakeIt = function(){
+
                 mobileClickRight();
-                setTimeout(function(){mobileClickLeft()},500);
+
                 setTimeout(function(){
                     mobileClick();
-                },1000);
+                },50);
+
+                setTimeout(function(){mobileClickLeft()},100);
+
+                setTimeout(function(){
+                    mobileClick();
+                },150);
+
         }
 
-        //timer = setInterval(function(){shakeIt()},1000);
+        timer = setInterval(function(){shakeIt()},200);
 
         function mobileClickRight(){
 
             $(".mobile-pic").addClass("box_rotate");
         }
-        function mobileClick(){
-            $(".mobile-pic").removeClass("box_rotate");
-            $(".mobile-pic").removeClass("box_rotate2");
-        }
+
         function mobileClickLeft(){
 
             $(".mobile-pic").addClass("box_rotate2");
+        }
+
+        function mobileClick(){
+            $(".mobile-pic").removeClass("box_rotate");
+            $(".mobile-pic").removeClass("box_rotate2");
         }
 
         var SHAKE_THRESHOLD = 1500;
