@@ -335,6 +335,7 @@ module.exports = {
             console.log('您的手机没法摇？那就直接点击下面按钮吧');
             window.popupStyle2.on('您的手机没法摇？那就直接点击下面按钮吧',function(event){});
         }
+        var timer;
 
         var shakeIt = function(){
                 mobileClickRight();
@@ -344,7 +345,8 @@ module.exports = {
                 },1000);
         }
 
-        shakeIt();
+        //timer = setInterval(function(){shakeIt()},1000);
+
         function mobileClickRight(){
 
             $(".mobile-pic").addClass("box_rotate");
