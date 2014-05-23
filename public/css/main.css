@@ -90,7 +90,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input-price .msg,.first-price .msg,.second-price .msg{font-size:1.6rem; text-align:center; color:#fff; line-height:2em;}
 .input-price .input{padding-top:5px; text-align:center;}
 .input-price .input input{width:80%; height:40px; border:0; font-size:1.8rem; color:#000; outline:none; text-align:center; line-height:40px; background:url(../images/input_btn.jpg) center center no-repeat; background-size:100% 100%;}
-.input-price .confirm{margin-top:6%;}
+.input-price .confirm{margin-top:6%; text-align:center;}
 .input-price .confirm input,.first-price .confirm input,
 .second-price .confirm input,.input-price .confirm1 input{text-align:center;width:80%; height:40px;border:0; outline:none; 
                                                           line-height:40px; font-size:1.6rem; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;background-size:100% 100%;}
