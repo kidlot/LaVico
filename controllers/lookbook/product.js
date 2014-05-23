@@ -15,6 +15,7 @@ module.exports = {
 
             nut.model.wxid = seed.wxid
             nut.model._id = seed._id
+            nut.model.productId = seed.productId
             nut.model.source = seed.source||""
             nut.model.pageNum = parseInt(seed.pageNum) || 1
             nut.model.bigPicIndex = parseInt(seed.bigPicIndex) || 1
@@ -22,6 +23,7 @@ module.exports = {
             helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
                 nut.model.doc = doc.page[nut.model.pageNum-1]
+                nut.model.jsonPage = JSON.stringify(nut.model.doc)
                 nut.model.lookbookName = doc.name
                 nut.model.lookbookType = doc.type
 
