@@ -87,11 +87,11 @@ exports.load = function () {
                             reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
-                            var newCODE=(storeList[i].CODE).replace(/\s/g,'');
+
                             //console.log("storeList[i].CODE:"+newCODE);
                             //console.log("wxid:"+msg.FromUserName);
-
-                        reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                            var newCODE=(storeList[i].CODE).replace(/\s/g,'');
+                            reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);
@@ -213,15 +213,18 @@ exports.load = function () {
                         reply={};
                         reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
                         reply.description=storeList[i].ADDR;
-                        
-                        var newCODE=(storeList[i].CODE).replace(/\s/g,'');
+
+
 
                         if(storeList[i].PICURL==null)
                             reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
 
-                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE+"&wxid="+msg.FromUserName;
+
+                            var newCODE2=(storeList[i].CODE).replace(/\s/g,'');
+                            reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
+
                         if(i<10)
                             replyArr.push(reply);
                     }
