@@ -60,7 +60,7 @@ function build(){
 
                     }else if(jsonObject.type==1){
                         //多项选择题 value:'题号+选项编号+积分+下一题'
-                        $(".content ul").append("<li style='line-height: 80px;'><input type='checkbox'  style='display: none'  onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+jsonObject.optionId+
+                        $(".content ul").append("<li><input type='checkbox'  style='display: none'  onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+jsonObject.optionId+
                             "+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
                             jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check selects1'>"+jsonObject.choose[i].chooseName+"</span></label></li>");
                     }
