@@ -95,6 +95,21 @@
         location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
     }
     function favorites(wxid,pid){
+
+        var isvip = '{@isVip}'
+        if(isvip == "false"){
+
+            window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
+
+                if(event == "confirm"){
+                    location.href="/lavico/member/card_blank/register?wxid={@ wxid}"
+                }
+            })
+
+            return false;
+        }
+
+
         $.ajax({
             url:'/lavico/lookbook/favorites:save',
             type:'POST',

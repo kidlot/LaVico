@@ -51,7 +51,7 @@ module.exports = {
 
         /*判断是否会员已经绑定*/
         if($("#error").val()=="you_has_bound_already"){
-            window.popupStyle2.on("您已经是lavico的会员",function(event){
+            window.popupStyle2.on("您已经是LaVico的会员",function(event){
                 window.location.href="/lavico/member/index?wxid="+wxid;
             });
         }
@@ -371,8 +371,7 @@ module.exports = {
                             var _info = unescape(data.error);
                             if(_info == "该微信ID已是本品牌会员，请检查！"){
                                 //alert("您已经绑定会员，请先解绑，再申领新卡");
-
-                                window.popupStyle2.on("您已经lavico的会员",function(event){});
+                                window.popupStyle2.on("您已经是LaVico的会员",function(event){});
 
                             }else{
 

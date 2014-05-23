@@ -16,6 +16,7 @@ module.exports = {
 
         this.step(function(){
 
+            nut.model._id = seed._id || ""
             nut.model.wxid = seed.wxid
             nut.model.doc = doc
         })

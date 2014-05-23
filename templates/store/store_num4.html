@@ -45,22 +45,28 @@
             $(this).next().slideToggle("normal");
         });
 
-        var outlet_bottom = 0;
+    var outlet_bottom = 0;
     
     $("div.city-list").find("a.outlet_bottom").click(function () {
         if (outlet_bottom == 0) {
             $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
-            outlet_bottom = 1;           
+            outlet_bottom = 1;
+            
+            $(this).parent().siblings().children(".outlet_bottom").click(function () {
+                $("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+
+                $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
+
+               if (outlet_bottom == 1) {
+                    $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+                }
+
+            });
         } else if (outlet_bottom == 1) {           
-            $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
-            outlet_bottom = 0;           
+            $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+            outlet_bottom = 0;
         }
     });
-    $("div.city-list").find("a.outlet_bottom").parent().siblings().children("#c").click(function () {
-        $("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
-        outlet_bottom = 0;
-    });
-
 }
 
 //

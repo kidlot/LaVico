@@ -1,8 +1,12 @@
 <div class="wrapper">
     <div class="coupon-banner"><img src="/lavico/public/images/bargain_banner.jpg"></div>
     <div class="activity-rules">
-        <if condition="@doc.length == 3 ">
-            <div class="begin"><a href="/lavico/bargain/detail?wxid={@wxid}&_id={@doc[0]._id}'">立即开始</a></div>
+        <if condition="@ _id">
+            <div class="begin"><a href="/lavico/bargain/detail?wxid={@wxid}&_id={@ _id}'">立即开始</a></div>
+        <else/>
+            <if condition="@doc.length == 1">
+                <div class="begin"><a href="/lavico/bargain/detail?wxid={@wxid}&_id={@doc[0]._id}'">立即开始</a></div>
+            </if>
         </if>
         <div class="text">
             <div class="title">活动及使用规则</div>
