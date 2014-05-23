@@ -157,7 +157,9 @@ module.exports = {
         /*获得验证码*/
         $("#get_id_code").click(function(){
             if($("#mobile").val() =='' || !(/^1[358]\d{9}$/i.test($("#mobile").val())) ){
-                alert("请输入正确的手机号码");
+                window.popupStyle2.on("请输入正确的手机号码",function(event){});
+
+                //alert("请输入正确的手机号码");
                 return	false;
             }
             if(flag){
@@ -183,18 +185,22 @@ module.exports = {
                         if(returnJson.info == 'tel_checked_true'){
 
                             var memberId = returnJson.memberId || '';
+                            window.popupStyle2.on("此手机号已被使用，如果确认是您的手机，请点击会员绑定！",function(event){});
 
                             //Lavico远端系统不存在此手机号码
-                            alert('此手机号已被使用，如果确认是您的手机，请点击会员绑定！');
+                            //alert('此手机号已被使用，如果确认是您的手机，请点击会员绑定！');
                             //发送验证码
                             //验证过的手机号码
                         }else if(returnJson.info == 'tel_checked_false'){
 
                             //Lavico远端系统不存在此手机号码
-                            alert('此手机号已被使用，如果确认是您的手机，请点击会员绑定！');
+                            //alert('此手机号已被使用，如果确认是您的手机，请点击会员绑定！');
+                            window.popupStyle2.on("此手机号已被使用，如果确认是您的手机，请点击会员绑定！",function(event){});
 
                         }else{
-                            alert('网络接口不稳定，请稍后再尝试');
+                            window.popupStyle2.on("网络接口不稳定，请稍后再尝试",function(event){});
+
+                            //alert('网络接口不稳定，请稍后再尝试');
                         }
                     }else if(returnJson.success == false){
 
@@ -206,13 +212,20 @@ module.exports = {
 
 
                         }else if(returnJson.error == 'network_error'){
-                            alert('网络不稳定，请稍后再尝试');
+                            window.popupStyle2.on("网络接口不稳定，请稍后再尝试",function(event){});
+
+                            //alert('网络不稳定，请稍后再尝试');
                         }else{
-                            alert('网络不稳定，请稍后再尝试');
+
+                            window.popupStyle2.on("网络接口不稳定，请稍后再尝试",function(event){});
+
+                            //alert('网络不稳定，请稍后再尝试');
                         }
 
                     }else{
-                        alert('网络不稳定，请稍后再尝试');
+                        window.popupStyle2.on("网络接口不稳定，请稍后再尝试",function(event){});
+
+                        //alert('网络不稳定，请稍后再尝试');
                     }
                 });
 
@@ -227,14 +240,19 @@ module.exports = {
                 },function(data){
                     data = eval('('+data+')');
                     if(data.result == 'ofen'){
-                        alert('请稍后再获取');
+
+                        window.popupStyle2.on("请稍后再获取验证码",function(event){});
+
+                        //alert('请稍后再获取');
                         flag = 0;
                     }else if(data.result == 'ok'){
                         set_interval();
                         $('#id_code').val(data.id_code);
                         console.log('验证码发送成功，请在2分钟内输入');
                     }else{
-                        alert('网络不稳定，请稍后再尝试')
+
+                        window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
+                        //alert('网络不稳定，请稍后再尝试')
                     }
                 }
             );
@@ -268,33 +286,45 @@ module.exports = {
 
         $("#submit").click(function(){
             if($("#name").val() == ''){
-                alert("请输入姓名");
+                //alert("请输入姓名");
+                window.popupStyle2.on("请输入姓名",function(event){});
+
                 $("#name").focus();
                 return	false;
             }
             if($("#sex").val() == ''){
-                alert("请选择性别");
+
+                window.popupStyle2.on("请选择性别",function(event){});
+                //alert("请选择性别");
                 $("#sex").focus();
                 return	false;
             }
             if($("#year").val() == ''){
-                alert("请选择出生年月日");
+                window.popupStyle2.on("请选择出生年月日",function(event){});
+                //alert("请选择出生年月日");
                 return	false;
             }
             if($("#month").val() == ''){
-                alert("请选择出生年月日");
+                window.popupStyle2.on("请选择出生年月日",function(event){});
+
+                //alert("请选择出生年月日");
                 return	false;
             }
             if($("#day").val() == ''){
-                alert("请选择出生年月日");
+                window.popupStyle2.on("请选择出生年月日",function(event){});
+
+                //alert("请选择出生年月日");
                 return	false;
             }
             if($("#mobile").val() =='' || !(/^1[358]\d{9}$/i.test($("#mobile").val())) ){
-                alert("请输入正确的手机号码");
+
+                window.popupStyle2.on("请输入正确的手机号码",function(event){});
+                //alert("请输入正确的手机号码");
                 return	false;
             }
             if($("#id_code").val() == ''){
-                alert("验证码错误");
+                window.popupStyle2.on("验证码错误",function(event){});
+                //alert("验证码错误");
                 return	false;
             }
             $('#loading').show();//显示加载框
@@ -316,28 +346,45 @@ module.exports = {
                     if(data.success == true){
                         if(data.error){
                             //alert(data.error);
-                            //console.log(data.error);
-                            alert("网络不稳定，请稍后再尝试");
+                            console.log(data.error);
+                            //alert("网络不稳定，请稍后再尝试");
+                            window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
+
                         }else{
-                            alert("恭喜你，注册成功");
-                            window.location.href="/lavico/member/index?wxid="+$("#uid").val();
+                            //alert("恭喜你，注册成功");
+                            window.popupStyle2.on("恭喜你，注册成功",function(event){
+                                if(event == "confirm"){
+                                    window.location.href="/lavico/member/index?wxid="+$("#uid").val();
+                                }
+                            });
+
                         }
                         return false;
 
                     }else if(data.success == false){
                         if(data.error == "id_code_error"){
-                            alert("验证码错误");
+                            window.popupStyle2.on("验证码错误",function(event){});
+                            //alert("验证码错误");
                             return false;
                         }else{
                             var _info = unescape(data.error);
                             if(_info == "该微信ID已是本品牌会员，请检查！"){
-                                alert("该微信ID已是本品牌会员");
+
+                                window.popupStyle2.on("该微信ID已是本品牌会员",function(event){});
+
+                                //alert("该微信ID已是本品牌会员");
+
                             }else{
-                                alert("网络不稳定，请稍后再尝试");
+
+                                //alert("网络不稳定，请稍后再尝试");
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
+
                             }
                         }
                     }else{
-                        alert("网络不稳定，请稍后再尝试");
+                        window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
+
+                        //alert("网络不稳定，请稍后再尝试");
                         //console.log(data.error);
                         return false;
                     }
@@ -431,6 +478,7 @@ module.exports = {
 
             }
         },
+        /*注册会员*/
 		apply_card:{
 			process:function(seed,nut){
 
