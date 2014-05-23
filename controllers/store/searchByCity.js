@@ -146,7 +146,13 @@ module.exports={
                             //alert('您的位置：'+r.point.lng+','+r.point.lat);
                         }
                         else {
-                            alert('failed'+this.getStatus());
+                            //alert('failed'+this.getStatus());
+
+                            window.popupStyle2.on('failed'+this.getStatus(),function(event){
+                                if(event == "confirm"){
+
+                                }
+                            })
                         }
                     },{enableHighAccuracy: true})
                     //关于状态码

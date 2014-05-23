@@ -51,7 +51,8 @@ module.exports={
                         return doc.options[i];
                     }else{
                         nut.view.disable();
-                        nut.write("<script>alert('字数不符合要求，请重填');history.back()</script>");
+                        //nut.write("<script>alert('字数不符合要求，请重填');history.back()</script>");
+                        nut.write("<script>window.onload=function(){window.popupStyle2.on('字数不符合要求，请重填',function(event){history.back()})}</script>");
                         then.terminate();
                     }
                 }

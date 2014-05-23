@@ -43,7 +43,9 @@ module.exports={
             //判断活动是否开启或到期1-2
             if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
                 if(isOpen==0){
-                    nut.write("<script>alert('很抱歉，活动已经停止');history.back();</script>");
+                    nut.view.disable();
+                    //nut.write("<script>alert('很抱歉，活动已经停止');history.back();</script>");
+                    nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
                 }else{
                     //显示题目
                     helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,cursor){
@@ -61,14 +63,16 @@ module.exports={
                         }
                         if(optionId>cursor.options.length){
                             //异常情况：当optionId大于题数时
-                            nut.write("<script>alert('无此题，联系管理员');history.back();</script>");
+                            //nut.write("<script>alert('无此题，联系管理员');history.back();</script>");
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，联系管理员',function(event){history.back()})}</script>");
                             nut.view.disable();
                         }
                     }));
                 }
             }else{
                 nut.view.disable();
-                nut.write("<script>alert('很抱歉，活动已经停止');history.back();</script>");
+                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止1',function(event){history.back()})}</script>");
+               // nut.write("<script>alert('很抱歉，活动已经停止');history.back();</script>");
             }
         });
 

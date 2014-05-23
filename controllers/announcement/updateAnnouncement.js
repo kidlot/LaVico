@@ -10,7 +10,7 @@ module.exports={
         helper.db.coll("lavico/announcement").findOne({_id:helper.db.id(seed.id)},function(err,doc){
             if(err) throw err;
             if(doc){
-                //console.log(doc);
+
                 nut.model.doc=doc;
             };
         });

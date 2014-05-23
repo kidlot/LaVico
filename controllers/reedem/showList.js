@@ -15,6 +15,7 @@ module.exports={
                 }else{
                     nut.disable();//不显示模版
                     this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
+                    //this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                     this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                     this.res.end();
                     this.terminate();

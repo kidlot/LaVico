@@ -30,7 +30,8 @@ module.exports={
                 if(doc){
                     if(optionId>doc.options.length){
                         nut.view.disable();
-                        nut.write("<script>alert('无此题，请联系管理员')</script>");
+                        //nut.write("<script>alert('无此题，请联系管理员')</script>");
+                        nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，请联系管理员',function(event){history.back()})}</script>");
                     }
                     return doc.options;
                 }

@@ -94,8 +94,7 @@ module.exports={
         then.step(function(){
             nut.model.allRight=allRight
             nut.model.docs=docOne;
-            console.log("docs:"+nut.model.docs._id)
-            console.log("allRight:"+nut.model.allRight.themeId)
+
         })
 
     },
@@ -351,9 +350,7 @@ module.exports={
                             var all=0;
                             for(var i in docs_themeQuestion.scoreMinMax){
                                 for(var j in doc){
-                                    //console.log("docs_themeQuestion.scoreMinMax[i].conditionMinScore:"+docs_themeQuestion.scoreMinMax[i].conditionMinScore);
-                                    //console.log("doc[j].getChooseScore:"+doc[j].getChooseScore)
-                                    //console.log("docs_themeQuestion.scoreMinMax[i].conditionMaxScore:"+docs_themeQuestion.scoreMinMax[i].conditionMaxScore);
+
 
                                     if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=doc[j].getChooseScore &&
                                         doc[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore)

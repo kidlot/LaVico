@@ -48,7 +48,6 @@ module.exports={
                     page.docs.push(resultList[j])
             }
             nut.model.resultJson=page.docs
-            //console.log(resultList)
             nut.model.optionId=optionId
             nut.model._id=seed.themeId
         })
@@ -56,9 +55,6 @@ module.exports={
     actions:{
         exportXsl:{
             process:function(seed,nut){
-                //console.log(seed.themeId)
-                //console.log(seed.optionId)
-
                 var then=this
                 var themeId=seed.themeId
                 var optionId=seed.optionId
