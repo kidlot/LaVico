@@ -45,9 +45,17 @@ window.onload=function(){
         $(this).next().slideToggle("normal");
     });
 
+    var outlet_bottom = 0;
     $("div.city-list").find("a.outlet_bottom").click(function () {
-        $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat","background-size":"16px" });
+        $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
+        outlet_bottom = 1;
     });
+    if (outlet_bottom == 1) {
+        $("div.city-list").find("a.outlet_bottom").click(function () {
+            $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+            outlet_bottom = 0;
+        });
+    }
     $("div.city-list").find("a.outlet_bottom").parent().siblings().children("#c").click(function () {
         $("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
     });
