@@ -1,61 +1,38 @@
-
-<link rel="stylesheet" href="/lavico/public/css/base.css" />
-<link rel="stylesheet" href="/lavico/public/css/main.css" />
-    <script>
-        window.onload=function(){
-            $("#canExchange").css("backgroundColor","#ccc");
-            $("#canExchange").click(function(){
-                $("#can").show();
-                $("#notcan").hide();
-                $(this).css("backgroundColor","#ccc");
-                $("#cannotExchange").css("backgroundColor","white")
-            })
-            $("#cannotExchange").click(function(){
-                $("#can").hide();
-                $("#notcan").show();
-                $("#canExchange").css("backgroundColor","white");
-                $(this).css("backgroundColor","#ccc")
-            })
-
-
-        }
-        var exchange=function(memberId,needScore,wechatId,point,aid,_id){
-            $.get("/lavico/reedem/showList:exchange?memberId="+memberId+"&needScore="+needScore+"&wechatId="+wechatId+"&point="+point+"&aid="+aid+"&_id="+_id,function(result){
-                if(result!="sorry很抱歉！很抱歉您已经兑换过此商品"){
-                    document.write(result);
-                }else{
-                    alert(result);
-                }
-
-            })
-        }
-    </script>
-
 <script>
 window.onload=function(){
-    $("#canExchange").css("backgroundColor","#ccc");
-    $("#notcan").hide();
-    $("#canExchange").click(function(){
-        $("#can").show();
+
+    var isBind = '{@ isBind}'
+    if(isBind == "false"){
+
+        window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){
+            location.href='/lavico/member/index?wxid={@wxid}'
+        })
+    }
+
+
+        $("#canExchange").css("backgroundColor","#ccc");
         $("#notcan").hide();
-        $(this).css("backgroundColor","#ccc");
-        $("#cannotExchange").css("backgroundColor","white")
-    })
-    $("#cannotExchange").click(function(){
-        $("#can").hide();
-        $("#notcan").show();
-        $("#canExchange").css("backgroundColor","white");
-        $(this).css("backgroundColor","#ccc")
-    })
-}
-var exchange=function(memberId,needScore,wechatId,point,aid,_id){
-    $.get("/lavico/reedem/showList:exchange?memberId="+memberId+"&needScore="+needScore+"&wechatId="+wechatId+"&point="+point+"&aid="+aid+"&_id="+_id,function(result){
-        if(result!="sorry很抱歉！很抱歉您已经兑换过此商品"){
-            document.write(result);
-        }else{
-            alert(result);
-        }
-    })
+        $("#canExchange").click(function(){
+            $("#can").show();
+            $("#notcan").hide();
+            $(this).css("backgroundColor","#ccc");
+            $("#cannotExchange").css("backgroundColor","white")
+        })
+        $("#cannotExchange").click(function(){
+            $("#can").hide();
+            $("#notcan").show();
+            $("#canExchange").css("backgroundColor","white");
+            $(this).css("backgroundColor","#ccc")
+        })
+    }
+    var exchange=function(memberId,needScore,wechatId,point,aid,_id){
+        $.get("/lavico/reedem/showList:exchange?memberId="+memberId+"&needScore="+needScore+"&wechatId="+wechatId+"&point="+point+"&aid="+aid+"&_id="+_id,function(result){
+            if(result!="sorry很抱歉！很抱歉您已经兑换过此商品"){
+                document.write(result);
+            }else{
+                alert(result);
+            }
+        })
 }
 </script>
 <div class="wrapper">
@@ -71,8 +48,8 @@ var exchange=function(memberId,needScore,wechatId,point,aid,_id){
       </if>
   </span></p></div>
   <div class="tab">
-  <ul><li id="canExchange"><a href="#">可兑换({@reedemJson.canUse.length})</a></li>
-      <li id="cannotExchange"><a href="#">暂不可兑换({@reedemJson.noCanUse.length})</a></li>
+  <ul><li id="canExchange"><a href="#">可兑换({@reedemJson ? reedemJson.canUse.length : 0})</a></li>
+      <li id="cannotExchange"><a href="#">暂不可兑换({@reedemJson ? reedemJson.noCanUse.length :0})</a></li>
   </ul>
   </div>
 
