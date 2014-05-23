@@ -74,6 +74,11 @@
     }
 
 
+    window.onresize = function () {
+        var popupHig = $(".popup").height();
+        $(".popup").css("margin-top", -popupHig / 2);
+    }
+
     // 使用方法
 
     /*
