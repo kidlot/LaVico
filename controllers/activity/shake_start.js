@@ -386,6 +386,13 @@ module.exports = {
                         shake();
                     }
                     flag = 0;
+                }else{
+
+                    if(flag == 1){
+                        shake();
+                    }
+                    flag = 0;
+
                 }
                 last_x = x;
                 last_y = y;
