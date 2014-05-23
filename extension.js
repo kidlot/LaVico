@@ -36,6 +36,11 @@ exports.onload = function(application){
     sportsman.load();
 
 
+    // 覆盖WELAB的LAYOUT
+    var welabLayout = require("welab/controllers/Layout")
+    welabLayout.view = "lavico/templates/welabLayout.html";
+
+
     /**
      * reply list
      * @param oriMsg

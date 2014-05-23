@@ -78,7 +78,7 @@ module.exports={
                         themeQuestion.themeType = doc.themeType
                         themeQuestionList.push(themeQuestion)
                         nut.model.theme = doc.options
-                        console.log(nut.model.theme)
+
                     }))
                 })
 
@@ -115,7 +115,7 @@ module.exports={
                     }
                     nut.model.visitedPeopleList=page.docs
                     nut.model._id=seed._id
-                    //console.log(seed.optionId)
+
                     nut.model.optionId=seed.optionId
                     //nut.model.visitedPeopleList=visitePeopleList
                 })
@@ -136,7 +136,7 @@ module.exports={
                             {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$wechatid"}}}
                         ],this.hold(function(err,doc){
                             if(err)throw err
-                            //console.log(doc);
+
                             visitedPeople=doc[0].count
                         })
                     )
