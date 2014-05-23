@@ -476,7 +476,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 
 .city-list{width:100%; overflow:hidden; }
-.city-listContent{width:565px; margin:0 auto;}
+.city-listContent{width:100%; margin:0 auto; background:#fff; }
 
 .city-listContent ul li{width:100%; height:auto; border-bottom:1px #a9a9a9 solid; }
 .city-listContent ul li a{ height:auto;display:inline-block;}
