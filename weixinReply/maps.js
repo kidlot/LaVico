@@ -213,7 +213,7 @@ exports.load = function () {
                         reply={};
                         reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
                         reply.description=storeList[i].ADDR;
-
+                        
                         var newCODE=(storeList[i].CODE).replace(/\s/g,'');
 
                         if(storeList[i].PICURL==null)
