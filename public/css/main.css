@@ -492,7 +492,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .bargin_content .wei_text{color: #646464;font-size: 1.6rem;padding-top: 10px;}
 
 /*loading*/
-.loading { position:fixed; z-index: 1000; left: 50%; top: 50%; width:64px; height:64px; margin:-32px 0 0 -32px; }
+.loading { position:fixed; z-index: 10000000; left: 50%; top: 50%; width:64px; height:64px; margin:-32px 0 0 -32px; }
 .loading img { width:100%; }
 
 /*弹出层*/
