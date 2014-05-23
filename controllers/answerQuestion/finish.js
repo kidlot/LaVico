@@ -15,7 +15,7 @@ module.exports={
         var compScore
         //非停止标签过来
         if(stopLab!="true"){
-            console.log("___________111111111111");
+
             //插入总积分
             helper.db.coll("lavico/custReceive").insert({
                 "wechatid": wechatid,
@@ -37,7 +37,7 @@ module.exports={
             var docTheme;
             var themeType;
             this.step(function(){
-                console.log("___________12222222222222222");
+
                 helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
                     if(err) throw err;
                     scoreRange=doc.scoreMinMax;
@@ -50,7 +50,7 @@ module.exports={
             //查找全部券
             var doc_json;
             this.step(function(){
-                console.log("___________3333333333333333");
+
                 middleware.request('Coupon/Promotions',{
                     perPage:1000,
                     pageNum:1
@@ -63,7 +63,7 @@ module.exports={
 
             var resultList="[";
             this.step(function(){
-                console.log("___________44444444444444444");
+
                 for(var i=0;i<scoreRange.length;i++){
                     var minlen=scoreRange[i].conditionMinScore;//获取低分值
                     var maxlen=scoreRange[i].conditionMaxScore;//获取高分值
@@ -83,7 +83,7 @@ module.exports={
 
                         if(themeType!=1){
                             then.step(function(){
-                                console.log("___________555555555555555555");
+
                                 //根据姓名和电话查memberId
                                 helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
                                     this.hold(function(err,result){
@@ -130,13 +130,13 @@ module.exports={
                                 var jsonData = {
                                     openid: wechatid,
                                     otherPromId: _id,
-                                    PROMOTION_CODE: getActivities,
-                                    //PROMOTION_CODE:"L2013112709",
+                                    //PROMOTION_CODE: getActivities,
+                                    /PROMOTION_CODE:"L2013112709",
                                     memo: memoString,
                                     point: getScore
                                 }
                                 then.step(function () {
-                                    console.log("___________777777777777777");
+
                                     middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                         if (err) throw err;
                                         var docJson = JSON.parse(doc)
@@ -157,7 +157,7 @@ module.exports={
                         }
 
                         then.step(function() {
-                            console.log("________________________-1a1a1a")
+
                             //console.log(parseInt(then.req.session.scoreAll))
                             helper.db.coll("lavico/custReceive").insert({
                                 "wechatid": wechatid,
@@ -176,25 +176,24 @@ module.exports={
                             });
                             //记录json准备显示
 
-                            console.log("11111",resultList);
+
                             resultList += "{"
                                 + "getLabel:'" + getLabel
                                 + "',getScore:" + getScore
                                 + ",getTipContent:'" + getTipContent
                                 + "',getActivities:'" + newActivity + "'}";
-                            console.log("2222",resultList);
-//                            if(getLabel!="" || getLabel!=null){
-//                            //发送标签至CRM
-//                                jsonData={};
-//                                jsonData.memberId= nut.model.memberID;
-//                                jsonData.tag=getLabel;
-//                                middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
-//                                    if(err) throw err;
-//                                    console.log("tag record:"+doc.success);
-//                                }))
-//                            }
-                            console.log("dot:"+dot);
-                            console.log("scoreRange.length:"+scoreRange.length);
+
+                            if(getLabel!="" || getLabel!=null){
+                            //发送标签至CRM
+                                jsonData={};
+                                jsonData.memberId= nut.model.memberID;
+                                jsonData.tag=getLabel;
+                                middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                                    if(err) throw err;
+                                    console.log("tag record:"+doc.success);
+                                }))
+                            }
+
                             if (dot >=2 ) {
                                 resultList += ",";
                             }
@@ -203,6 +202,7 @@ module.exports={
                         })
                         //调用接口结束
                     }else{
+                        //????????
 //                        resultList+="{"
 //                            +"getLabel:'"+"null"
 //                            +"',getScore:"+0
@@ -217,7 +217,7 @@ module.exports={
 
 
             this.step(function(){
-                console.log("aaaaaaaaaaaaaaaaaa");
+
                 resultList+="]";
                 //返回显示
                 then.req.session.optionId=""
@@ -271,8 +271,7 @@ module.exports={
 
             var resultList="[";
             this.step(function(){
-                //console.log("scoreRange.length:"+scoreRange.length)
-                //console.log("scoreRange:"+scoreRange)
+
                 for(var i=0;i<scoreRange.length;i++){
                     var dot=1;
                     //session上的停止标签和db中的设置标签一致
@@ -348,7 +347,7 @@ module.exports={
                                     openid: wechatid,
                                     otherPromId: _id,
                                     //PROMOTION_CODE:getActivities,
-                                    PROMOTION_CODE: 'CQL201312230001',
+                                    PROMOTION_CODE: 'L2013112709',
                                     //qty:nowPromotion.coupons[0].QTY,
                                     point: getScore
                                 }
