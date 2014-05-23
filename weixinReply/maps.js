@@ -81,7 +81,9 @@ exports.load = function () {
                         else
                             reply.picurl=storeList[i].PICURL;
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
-                            reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                            //reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                            reply.url='http://192.168.0.59/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+
                         if(i<10)
                             replyArr.push(reply);
                     }
@@ -210,7 +212,8 @@ exports.load = function () {
 
 
                             var newCODE2=(storeList[i].CODE).replace(/\s/g,'');
-                            reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
+                            //reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
+                            reply.url="http://192.168.0.59/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);
