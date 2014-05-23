@@ -53,8 +53,12 @@ module.exports = {
 
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
-                alert("您已经是lavico的会员");
-                window.location.href="/lavico/member/index?wxid="+wxid;
+
+                //alert("您已经是lavico的会员");
+                window.popupStyle2.on("您已经是lavico的会员",function(event){
+                    window.location.href="/lavico/member/index?wxid="+wxid;
+                });
+
             }
             /*申请会员卡*/
             $("#registerUrl").click(function(){
@@ -95,7 +99,9 @@ module.exports = {
             $("#submit_1").click(function(){
 
                 if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
-                    alert("请输入正确的手机号码");
+                    //alert("请输入正确的手机号码");
+                    window.popupStyle2.on("请输入正确的手机号码",function(event){
+                    });
                     return	false;
                 }
                 /*判断手机号码是否存在*/
@@ -132,7 +138,9 @@ module.exports = {
 
                             }else{
 
-                                alert('网络不稳定，请稍后再尝试');
+                                //alert('网络不稳定，请稍后再尝试');
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                                });
 
                             }
                         }else if(returnJson.success == false){
