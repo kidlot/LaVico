@@ -43,6 +43,7 @@ module.exports={
                     docTheme=doc;
                     themeType=doc.themeType;
                     nut.model.themeType=themeType;
+                    nut.model.themeTitle=doc.theme
                 }));
             });
             //查找全部券
@@ -94,6 +95,7 @@ module.exports={
                                 var jsonData={};
                                 jsonData.memberId=memberId;
                                 jsonData.qty=compScore;
+                                jsonData.memo:'问答测试'+'-'+nut.model.themeTitle;
 
                                 middleware.request('Point/Change',jsonData,
                                     this.hold(function(err,doc){
@@ -253,8 +255,8 @@ module.exports={
 
             var resultList="[";
             this.step(function(){
-                console.log("scoreRange.length:"+scoreRange.length)
-                console.log("scoreRange:"+scoreRange)
+                //console.log("scoreRange.length:"+scoreRange.length)
+                //console.log("scoreRange:"+scoreRange)
                 for(var i=0;i<scoreRange.length;i++){
                     var dot=1;
                     //session上的停止标签和db中的设置标签一致
@@ -288,7 +290,8 @@ module.exports={
                                 var jsonData={};
                                 jsonData.memberId=memberId;
                                 jsonData.qty=getScore;
-                                console.log("jsonData:"+jsonData.memberId,jsonData.qty)
+                                jsonData.memo:'问答测试:'+'-'+nut.model.themeTitle;
+                                //console.log("jsonData:"+jsonData.memberId,jsonData.qty)
                                 middleware.request('Point/Change',jsonData,
                                     this.hold(function(err,doc){
                                         if(err) throw err;

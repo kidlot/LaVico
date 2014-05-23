@@ -48,6 +48,9 @@ module.exports = {
 
         /*先判断微信id是否存在*/
         this.step(function(){
+//            if(wxid == undefined){
+//                wxid = seed.wxid;
+//            }
             if(wxid == undefined){
                 nut.disable();//不显示模版
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
