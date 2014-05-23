@@ -83,15 +83,17 @@ module.exports = {
                     $('#loading').hide();
                     data = eval('('+data+')');
                     if(data.result == 'ofen'){
-                        alert('请稍后再获取！');
-                        window.popupStyle2.on("请输入正确的手机号码",function(event){});
+                        //alert('您好，您获取的验证码太频繁，稍等再尝试吧');
+                        window.popupStyle2.on("您好，您获取的验证码太频繁，稍等再尝试吧",function(event){});
                         flag = 0;
                     }else if(data.result == 'ok'){
                         set_interval();
                         $('#userCaptcha').val(data.id_code);
                         console.log('验证码发送成功，请在2分钟内输入');
                     }else{
-                        alert('网络不稳定，请稍后再试')
+                        //alert('网络不稳定，请稍后再试');
+                        window.popupStyle2.on("网络不稳定，请稍后再试",function(event){});
+
                     }
                 }
             );
@@ -132,12 +134,8 @@ module.exports = {
             var userCaptcha = $('#userCaptcha').val();
 
             if(!userCaptcha){
-                alert('请输入验证码！');
+                window.popupStyle2.on("请输入验证码",function(event){});
                 return false;
-            }
-            if(!MEMBER_ID){
-              alert('MEMBER_ID miss');
-              return false;
             }
 
             $('#loading').show();
@@ -157,16 +155,16 @@ module.exports = {
 
                     var dataJson = data;
                     if(dataJson['success'] == true){//dataJson.issuccessed
-                        alert('解绑成功');
+                        window.popupStyle2.on("解绑成功",function(event){});
                         window.location.href = "/lavico/member/index?wxid="+wxid;
                     }else if (dataJson['success'] == false){
                         if(dataJson['error'] == 'id_code_error'){
-                            alert('验证码错误，请重新输入');
+                            window.popupStyle2.on("验证码错误，请重新输入",function(event){});
                         }else{
-                            alert('解绑失败');
+                            window.popupStyle2.on("解绑失败，请稍后再尝试",function(event){});
                         }
                     }else{
-                        alert('解绑失败，请稍后再尝试');
+                        window.popupStyle2.on("解绑失败，请稍后再尝试",function(event){});
                     }
                 },
                 error:function(msg){
