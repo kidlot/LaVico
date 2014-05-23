@@ -54,7 +54,6 @@ module.exports = {
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
 
-                //alert("您已经是lavico的会员");
                 window.popupStyle2.on("您已经是lavico的会员",function(event){
                     window.location.href="/lavico/member/index?wxid="+wxid;
                 });
@@ -99,10 +98,10 @@ module.exports = {
             $("#submit_1").click(function(){
 
                 if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
-                    //alert("请输入正确的手机号码");
                     window.popupStyle2.on("请输入正确的手机号码",function(event){
+
                     });
-                    return	false;
+                    return false;
                 }
                 /*判断手机号码是否存在*/
                 $('#loading').show();//显示正在加载
@@ -138,7 +137,6 @@ module.exports = {
 
                             }else{
 
-                                //alert('网络不稳定，请稍后再尝试');
                                 window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
                                 });
 
@@ -147,19 +145,27 @@ module.exports = {
 
                             if(returnJson.error == 'tel_exists_false'){
                                 //alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线4001008866');
+                                //window.popupStyle2.on("抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线400-100-8866",function(event){});
+
                                 $('#no_member_telephone').show();
 
                             }else if(returnJson.error == 'network_error'){
 
-                                alert('网络不稳定，请稍后再尝试');
+                                //alert('网络不稳定，请稍后再尝试');
+
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                                });
 
                             }else{
 
-                                alert('网络不稳定，请稍后再尝试');
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                                });
+
                             }
                         }else{
 
-                            alert('网络不稳定，请稍后再尝试');
+                            window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                            });
                         }
                     });
                 /*判断手机号码是否验证过*/
@@ -173,12 +179,18 @@ module.exports = {
                 var userCardNumber = $('#userCardNumber').val();
                 var wxid = $('#wxid').val();
                 if(userCardNumber == '' ){
-                    alert("请输入正确的卡号");
+
+                    window.popupStyle2.on("请输入正确的卡号",function(event){
+                    });
                     return	false;
+
                 }
                 if(userTel =='' || !(/^1[358]\d{9}$/i.test(userTel)) ){
-                    alert("请输入正确的手机号码");
+
+                    window.popupStyle2.on("请输入正确的手机号码",function(event){
+                    });
                     return	false;
+
                 }
                 $.ajax({
                     url:'/lavico/member/card_blank/bind:checkCardNum',
@@ -204,12 +216,18 @@ module.exports = {
                                 $('#telephone_cardnumber_no_match').show();
 
                             }else if(returnJson.error == 'network_error'){
-                                alert('网络接口不稳定，请稍后再尝试');
+
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                                });
                             }else{
-                                alert('网络接口不稳定，请稍后再尝试');
+
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                                });
                             }
                         }else{
-                            alert('网络接口不稳定，请稍后再尝试');
+
+                            window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                            });
                         }
                     });
 
@@ -226,11 +244,14 @@ module.exports = {
                 var memberId = $.trim($('#memberId').val());
 
                 if(userCaptcha ==''){
-                    alert('请填写验证码');
+                    window.popupStyle2.on("请填写验证码",function(event){
+                    });
                     return false;
                 }
                 if(userName ==''){
-                    alert('请填写姓名');
+
+                    window.popupStyle2.on("请填写姓名",function(event){
+                    });
                     return false;
                 }
                 $('#loading').show();
@@ -254,11 +275,14 @@ module.exports = {
                             if(returnJson.info == 'bind_success'){
                                 if($('#tel_checked_status').val() == 'tel_checked_false'){
                                     //alert('绑定成功');
-                                    $('#member_manage').show();
+                                    //$('#member_manage').show();
+                                    window.popupStyle2.on("绑定成功",function(event){
+                                    });
                                 }else if($('#tel_checked_status').val() == 'tel_checked_true'){
                                     //alert('绑定成功');
-                                    $('#member_manage').show();
-
+                                    //$('#member_manage').show();
+                                    window.popupStyle2.on("绑定成功",function(event){
+                                    });
                                     //以前绑定过的手机号码，不再继续输入卡号码
                                 }
                             }else{
@@ -266,19 +290,28 @@ module.exports = {
                             }
                         }else if(returnJson.success == false){
                             if(returnJson.error == 'captcha_is_error'){
-                                alert('验证码错误,请重新输入');
+
+                                window.popupStyle2.on("验证码错误,请重新输入",function(event){
+                                });
+
                             }else if(returnJson.error == 'network_error'){
-                                alert('网络接口不稳定，请稍后再尝试');
+
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                                });
+
                             }else{
                                 var _info = returnJson.error;
                                 if(_info == "该微信ID已是本品牌会员，请检查！"){
-                                    alert("您已经绑定会员卡，请先解绑，再绑定");
+                                    window.popupStyle2.on("您已经是我们的会员",function(event){
+                                    });
                                 }else{
-                                    alert("网络不稳定，请稍后再尝试");
+                                    window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                                    });
                                 }
                             }
                         }else{
-                            alert('网络不稳定，请稍后再尝试');
+                            window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                            });
                         }
                     });
                 //$('#submit').click();
@@ -290,7 +323,8 @@ module.exports = {
                 var userTel = $("#userTel").val();
 
                 if(userTel =='' || !(/^1[358]\d{9}$/i.test(userTel)) ){
-                    alert("请输入正确的手机号码");
+                    window.popupStyle2.on("请输入正确的手机号码",function(event){
+                    });
                     return	false;
                 }
                 if(flag){
@@ -328,18 +362,22 @@ module.exports = {
                                 });//发送验证码
 
                             }else{
-                                alert('网络接口不稳定，请稍后再尝试');
+
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
+
                             }
                         }else if(returnJson.success == false){
                             if(returnJson.error == 'tel_exists_false'){
-                                alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线4001008866');
+
+                                window.popupStyle2.on("抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线400-100-8866",function(event){});
+
                             }else if(returnJson.error == 'network_error'){
-                                alert('不稳定，请稍后再尝试');
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
                             }else{
-                                alert("网络不稳定，请稍后再尝试");
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
                             }
                         }else{
-                            alert('网络不稳定，请稍后再尝试');
+                            window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
                         }
                     });
                 /*判断手机号码是否验证过*/
@@ -358,7 +396,8 @@ module.exports = {
                         },function(data){
                             data = eval('('+data+')');
                             if(data.result == 'ofen'){
-                                alert('请稍后再获取！');
+
+                                window.popupStyle2.on("您好，您获取的验证码太频繁，稍等再尝试吧",function(event){});
                                 $('#id_code').val('please_try_it_again_later');
                                 flag = 0;
                             }else if(data.result == 'ok'){
@@ -368,7 +407,8 @@ module.exports = {
                                 console.log('验证码发送成功，请在2分钟内输入！');
                                 $(".popup").hide();
                             }else{
-                                alert('网络接口不稳定，请稍后再尝试');
+
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
                                 $('#id_code').val('send_captcha_fail');
                             }
                             callback();//回调函数
