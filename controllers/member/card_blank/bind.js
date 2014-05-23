@@ -369,7 +369,7 @@ module.exports = {
                         }else if(returnJson.success == false){
                             if(returnJson.error == 'tel_exists_false'){
 
-                                window.popupStyle2.on("抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线400-100-8866",function(event){});
+                                window.popupStyle2.on("抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回注册会员；如有其他疑问，欢迎咨询客服热线400-100-8866",function(event){});
 
                             }else if(returnJson.error == 'network_error'){
                                 window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
