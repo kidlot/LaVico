@@ -428,13 +428,12 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .linebottom{ padding-top:40px;}
 .viewport {
     width: 640px;
-    height:256px;
     overflow: hidden;
     -webkit-transform: translateZ(0); /* Optional: When heavy at iOS6+ */
 }
 
 .flipsnap {
-    width: 1000px; /* 180px(item width) * 3(item count) */
+    width: 100%; /* 180px(item width) * 3(item count) */
 }
 
 .flipsnap:after {
@@ -451,7 +450,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
     text-align: center;
     padding: 0;
 	border: 0;
-    margin-right:0.5%;
+    /*margin-right:0.5%;*/
 }
 
 
