@@ -61,8 +61,9 @@
             if(nowProductNum > 1){
                 location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+page.product[nowProductNum-2]._id+"&bigPicIndex="+(page.product[nowProductNum-2].bigPic ? page.product[nowProductNum-2].bigPic.length:0)+"&source={@source}"
             }else{
+                window.popupStyle2.on('已经是第一页',function(event){
 
-                alert("已经是第一页")
+                })
             }
             return;
         }
@@ -86,8 +87,9 @@
             if(nowProductNum < page.product.length){
                 location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+(page.product[nowProductNum]._id)+"&source={@source}"
             }else{
+                window.popupStyle2.on('已经是最后一页',function(event){
 
-                alert("已经是最后一页")
+                })
             }
 
             return;
