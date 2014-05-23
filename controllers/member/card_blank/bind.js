@@ -209,7 +209,9 @@ module.exports = {
                             if(returnJson.error == 'cardnum_no_found'){
                                 //$('#telephone_cardnumber_no_match').show();
                                 console.log('系统没有查找到此卡号，请核对后重新输入,可能由于此卡号绑定的不是第一步的手机号码');
-                                $('#telephone_cardnumber_no_match').show();
+                                //$('#telephone_cardnumber_no_match').show();
+                                window.popupStyle2.on("系统没有查找到此卡号",function(event){});
+
 
                             }else if(returnJson.error == 'network_error'){
 
