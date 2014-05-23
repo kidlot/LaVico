@@ -498,5 +498,5 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
          background:rgba(0, 0, 0, 0.8) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/
          filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999; }
 .popup p { padding:4%; text-align:center; font-size:1.6rem;}
-.popup .popup_but { height:auto; }
-.popup .popup_but a { width:80px; height:40px; line-height:40px; float:left; text-align:center;text-align:center;background:url(../images/click_btn.jpg) center center no-repeat;background-size:100% 100%;  }
+.popup .popup_but { height:auto; padding:0 5% }
+.popup .popup_but a { width:40%; height:40px; line-height:40px; float:left; text-align:center;background:url(../images/click_btn.jpg) center center no-repeat;background-size:100% 100%;font-size:1.6rem; color:#fff; }
