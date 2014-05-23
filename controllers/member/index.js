@@ -10,55 +10,52 @@ module.exports = {
     view:'lavico/templates/member/index.html',
     process:function(seed,nut){
 
-        var wxid = undefined;
+        var wxid = seed.wxid || undefined;
 
-        if(this.req.session.oauthTokenInfo){
+        if(!wxid){
 
-            console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
-            wxid = this.req.session.oauthTokenInfo.openid
-        }else{
+            if(this.req.session.oauthTokenInfo){
 
-            // 通过oauth获取OPENID
-            if(process.wxOauth){
+                console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
+                wxid = this.req.session.oauthTokenInfo.openid
+            }else{
 
-                if(!seed.code){
+                // 通过oauth获取OPENID
+                if(process.wxOauth){
 
-                    var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")
-                    console.log("通过oauth获得CODE的url",url)
-                    this.res.writeHeader(302, {'location': url })  ;
-                }else{
+                    if(!seed.code){
 
-                    process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+                        var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")
+                        console.log("通过oauth获得CODE的url",url)
+                        this.res.writeHeader(302, {'location': url })  ;
+                    }else{
 
-                        if(!err){
-                            var openid = doc.openid
-                            wxid = openid || undefined;
-                            console.log("通过oauth获得信息",doc)
-                            this.req.session.oauthTokenInfo = doc;
-                        }else{
-                            console.log("通过oauth获得ID超时。",err)
-                            this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+"/lavico/member/index"})  ;
-                        }
-                    }))
+                        process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+
+                            if(!err){
+                                var openid = doc.openid
+                                wxid = openid || undefined;
+                                console.log("通过oauth获得信息",doc)
+                                this.req.session.oauthTokenInfo = doc;
+                            }else{
+                                console.log("通过oauth获得ID超时。",err)
+                                this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+"/lavico/member/index"})  ;
+                            }
+                        }))
+                    }
+
                 }
-
             }
         }
-
 
         /*先判断微信id是否存在*/
         this.step(function(){
             if(wxid == undefined){
-                if(seed.wxid){
-                    wxid  = seed.wxid;
-                }else{
-                    nut.disable();//不显示模版
-                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                    this.res.write('{"error":"wxid_is_empty"}');
-                    this.res.end();
-                    this.terminate();
-                }
-
+                nut.disable();//不显示模版
+                this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                this.res.write('{"error":"wxid_is_empty"}');
+                this.res.end();
+                this.terminate();
             }
         });
         this.step(function(){
