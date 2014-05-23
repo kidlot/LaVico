@@ -103,10 +103,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .answer{width:100%; padding-top:6%; background-color:#e5e5e5;border-bottom:1px #a9a9a9 solid; padding-bottom:8%;}
 .answer-content{width:90%; padding:0 5%;}
 .answer-content .content { }
-.answer-content .content ul li { }
+.answer-content .content ul li { padding:3% 0; }
 
 .answer-content .title{ font-size:1.6rem; color:#B08C4D;}
-.answer-content .select,.answer-content .select1,.answer-content .selects,.answer-content .selects1{ width:60%;height:30px;line-height:30px; font-size:1.6rem; color:#2D2D2D; padding-left:10%; position:relative; display:inline-block; vertical-align:top; }
+.answer-content .select,.answer-content .select1,.answer-content .selects,.answer-content .selects1{ width:60%;height:30px;line-height:30px; font-size:1.6rem; color:#2D2D2D; padding-left:16%; position:relative; display:inline-block; vertical-align:top; }
 .answer-content .select{background:url(../images/select_btnOn.jpg) left center no-repeat;}
 .answer-content .select1{background:url(../images/select_btn.jpg) left center no-repeat;}
 .answer-content .selects{background:url(../images/selects_btnOn.jpg) left center no-repeat;}
@@ -122,7 +122,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .blank{ padding-top:100px;}
 .points-content{width:604px; height:319px; margin:0 auto;}
 
-#sed { width:20%; display:inline-block; vertical-align:top; }
+#sed { width:14%; display:inline-block; vertical-align:top; }
 /*查看门店*/
 .look-map{ background-color:#eeeeee; width:100%;}
 .look-map .map{width:90%; margin:0 auto; padding:5%;}
