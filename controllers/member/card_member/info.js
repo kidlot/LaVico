@@ -362,7 +362,7 @@ module.exports = {
 
                 if(data.success == true){
 
-                  window.popupStyle2.on("提交成功，信息审核中",function(event){
+                  window.popupStyle2.on("提交成功，积分将在信息审核通过后发放到您的账户中",function(event){
                       window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
                   });
 
