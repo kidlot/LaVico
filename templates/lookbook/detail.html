@@ -84,7 +84,7 @@
                                     <div class="boxcontent">
                                         <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
                                         <img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" class="exchangebtn" width="293">
-                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" height="134"><div class="elite_list_title">{@page.name}</div></div> 
+                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" ><div class="elite_list_title">{@page.name}</div></div> 
                                     </div>
                                     <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
                             </div>
@@ -99,7 +99,7 @@
                                     <div class="boxcontent">
                                         <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
                                         <img src="{@page.pic}" class="exchangebtn" width="293">
-                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" height="134"><div class="elite_list_title">{@page.name}</div></div>
+                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" /><div class="elite_list_title">{@page.name}</div></div>
                                     </div>
                                     <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
                             </div>
@@ -110,9 +110,7 @@
         </div>
     </div>
 </if>
-
 <script>
-
     var n = 0;
     function showContent(m){
         if(n==0){
