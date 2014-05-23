@@ -36,7 +36,7 @@ a.tel{color:#2d2d2d;}
 .bargin{width:100%;background-color:#ededed; padding-top:2%;}
 .bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:1% 4%; overflow:hidden; position:relative; }
 .bargin-left{ float:none; }
-.bargin-right{width:58%; padding-left:2%;font-size:1.4rem; padding-top:2%; }
+.bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-top:2%; }
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:20px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .bargin-right .color{padding-top:2%;}
 .bargin-right .color .color-title{ color:#404040;}
@@ -45,8 +45,8 @@ a.tel{color:#2d2d2d;}
 .bargin-right .rules .rules-title{ color:#404040;}
 .bargin-right .rules .rules-con{ width:100%; line-height:25px; display:inline-block; color:#646464;}
 .bargin-right .pice{color:#AF8B4D;}
-.bargin-right .look_store{ width:140px; height:auto; position:absolute; bottom:1%; right:4%; }
-.bargin-right .look_store a{width:140px; height:40px; display:inline-block; margin-top:20px; color:#291b00;font-size:1.6rem; line-height:40px; text-align:center;
+.bargin-right .look_store{ width:130px; height:auto; position:absolute; bottom:1%; right:2%; }
+.bargin-right .look_store a{width:130px; height:40px; display:inline-block; margin-top:20px; color:#291b00;font-size:1.4rem; line-height:40px; text-align:center;
                              background:url(../images/look_storebg.jpg) center center no-repeat; background-size:100% 100%; }
 .bargin .border{ padding-top:20px; border-bottom:1px #c1c1c1 solid;}
 .bargin-mod{width:92%; margin:0 auto;  padding:4%; }
@@ -169,16 +169,16 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                               background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;background-size:100% 100%;}
 .my-card{ font-size:25px; line-height:35px; color:#646464; padding-top:30px;}
 .link-cardContent{width:100%; background-color:#dadada;}
-.link-cardContent .title{width:100%; height:50px; line-height:50px; text-align:center; font-size:1.6rem; color:#000; background:url(../images/head_bg.jpg) center center no-repeat;}
+.link-cardContent .title{width:100%; height:50px; line-height:50px; text-align:center; font-size:1.4rem; color:#000; background:url(../images/head_bg.jpg) center center no-repeat;}
 .link-cardContent .title a{ text-decoration:underline;color:#7d4900;}
-.input-tel{width:90%; margin:0 auto; padding: 5% 5% 0;}
+.input-tel{width:96%; margin:0 auto; padding:10px 2% 0;}
 .input-tel .text{width:20%; height:40px; text-align:right; line-height:40px; font-size:1.4rem; color:#2d2d2d; float:left;}
 .input-tel input{ border:0; background-color:#fff; border:1px #b2b1ad solid; font-size:1.4rem; color:#000; line-height:40px; height:40px;width:100%; padding:0 2%; margin-left:3%; }
-.verify{ display:inline-block;margin-left:2%; width:32%; height:40px; background:url(../images/verify_bg_01.png) center center no-repeat; line-height:40px;
+.verify{ display:inline-block;margin-left:2%; width:32%; height:40px; background:url(../images/verify_bg_01.png) center center no-repeat; line-height:40px; vertical-align:top;
           font-size:1.2rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%; }
 .mt10{ margin-top:5%; overflow:hidden; }
 .star-sign{ color:#a00100;}
-.input-tel .note{ padding-top:6%; font-size:1.6rem; line-height:2em; color:#2d2d2d; text-align:center;}
+.input-tel .note{ padding-top:6%; font-size:1.4rem; line-height:2em; color:#2d2d2d; text-align:center;}
 .submit input{margin-top:30px;text-align:center;width:80%; height:40px;border:0; outline:none; line-height:40px; font-size:1.4rem; color:#3C3C3C; 
               background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer; background-size:100% 100%;margin: 4% 10% 0 10%; }
 .input-card{ text-align:center;}
@@ -306,7 +306,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.4rem; color:#000;}
 .apply .title .text{width:100%; margin:0 auto; line-height:50px; text-align:center;}
 .apply .title .text a{ color:#7C4A01; text-decoration:underline;}
-.apply .form{width:96%; margin: 0 auto; padding:0 2%; background:#eee;}
+.apply .form{width:96%; margin: 0 auto; padding:0 2%;}
 .apply .form .input{ padding-top:10px; line-height:40px;}
 .apply .form .input .left{width:20%; text-align:right; color:#2D2D2D; font-size:1.4rem;}
 .apply .form .input .name-right{ width:62%; padding-left:3%; color:#000;}
@@ -350,11 +350,11 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 /********精英搭配**********/
 .elite_title{ position:absolute; top:0; width:100%; height:50px; background:#010417; color:#fff; line-height:50px; }
 .elite_title .title2{ font-size:1.6rem; display:block;width:100%;text-align:center;position:absolute;top:0px; left:0px; height:50px; line-height:50px;}
-.elite_title .title5 { display:block; position:absolute; top:0px; z-index:1;  }
-.elite_title .title5 a{width:135px;padding-left:25px; display:block;color:#fff; font-size:1.2rem; height:50px; line-height:52px; background:url(../images/store_jt.jpg) left center no-repeat; margin-left:12px; background-size:10px;}
-.elite_title .title6 { display:block; position:absolute; right:0px; z-index:1;  }
-.elite_title .title6 a{ width:auto; margin-top:0; margin-right:12px; vertical-align:middle; text-align:right; padding-right:12px; display:block;
-                        color:#fff; font-size:1.6rem;  height:50px; line-height:52px; background:url(../images/store_rt.jpg) right center no-repeat; background-size:10px;}
+.elite_title .title5 { display:block; position:absolute; top:0px; z-index:1; padding-left:4%;  }
+.elite_title .title5 a{width:135px;padding-left:12px; display:block;color:#fff; font-size:1.2rem; height:50px; line-height:52px; background:url(../images/store_jt.jpg) left center no-repeat; background-size:10px;}
+.elite_title .title6 { display:block; position:absolute; right:0px; z-index:1; padding-right:4%;  }
+.elite_title .title6 a{ width:auto; margin-top:0;vertical-align:middle; text-align:right; padding-right:12px; display:block;
+                        color:#fff; font-size:1.2rem;  height:50px; line-height:52px; background:url(../images/store_rt.jpg) right center no-repeat; background-size:10px;}
 
 .intros{ position:fixed; bottom:0; z-index:100; margin:0 auto; text-align:left; height:auto; width:92%; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding:4%; left:0px;}
 .intros .title{font-size: 1.6rem;color: #B9954D;line-height: 2em;}

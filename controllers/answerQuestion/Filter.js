@@ -7,6 +7,9 @@ module.exports={
         nut.model.ids = id;
         nut.model.wxid = wxid;
 
+
+
+
         this.step(function(){
             helper.db.coll("lavico/custReceive").count({"wechatid":wxid,"themeId":helper.db.id(id)},this.hold(function(err,doc){
                 if(err) throw err;

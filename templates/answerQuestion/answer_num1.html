@@ -1,6 +1,18 @@
 <link rel="stylesheet" href="/lavico/public/css/base.css" />
 <link rel="stylesheet" href="/lavico/public/css/main.css" />
-
+<script>
+    window.onload=function(){
+        var flag="{@flag}";
+        if(flag=="1")
+        {
+            window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
+                if(event == "confirm"){
+                    location.href="/lavico/member/index?wxid={@wechatId}";
+                }
+            })
+        }
+    }
+</script>
 
 <div class="wrapper">
     <div class="coupon-banner">
