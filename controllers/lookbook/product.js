@@ -20,6 +20,17 @@ module.exports = {
             nut.model.pageNum = parseInt(seed.pageNum) || 1
             nut.model.bigPicIndex = parseInt(seed.bigPicIndex) || 1
 
+
+            helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
+                var customers = customers || {}
+
+                nut.model.isVip = false
+                if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
+                    nut.model.isVip = true
+                }
+            }))
+
+
             helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
                 nut.model.doc = doc.page[nut.model.pageNum-1]
