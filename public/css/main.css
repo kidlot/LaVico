@@ -57,7 +57,7 @@ a.tel{color:#2d2d2d;}
 .store-title .title3{font-size:1.6rem; display:block;width:100%;text-align:center;position:absolute;top:0px;left:0px; height:50px; line-height:50px;}
 .store-title .title4{ display:block; position:absolute; right:4%; z-index:1; }
 .store-title .title4 a{width:115px;display:inline-block;color:#fff; font-size:1.6rem; height:50px; line-height:50px; background:url(../images/store_jtr.jpg) right center no-repeat; padding-right:25px; text-align:right; }
-.store-title .title6{color:#fff; font-size:25px;width:615px;text-align:center;  height:20px; line-height:20px;}
+.store-title .title6{color:#fff; font-size:1.6rem;width:100%;text-align:center; height:50px; line-height:50px;}
 store-title .store-title p{position:relative;}
 .store-title .title5{ font-size:1.6rem; display:block;width:100%;text-align:center;position:absolute;top:0px;left:0px; height:50px; line-height:50px;}
 .store-list{width:100%; background-color:#eeeeee;}
@@ -313,7 +313,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .form .input .trade-right select{width:100%; height:40px; line-height:40px; padding-left:10px; font-size:1.4rem;}
 /*精英搭配*/
 .match{width:100%; background-color:#F1F1F1;}
-.match .banner{width:608px; height:400px; margin:0 auto;}
+.match .banner{width:96%; height:auto; margin:0 auto; padding:0 2%; }
+.match .banner img { width:100%; }
 .match .roll-banner{padding-left:16px;width:610px; height:auto; overflow:hidden; position:relative; margin-top:30px;}
 .match .roll-banner .img{width:100%;height:auto; background:url(../images/elite_home_j.png) bottom center no-repeat; padding-bottom:16px; }
 .match .roll-banner img{ width:100% ;}
@@ -356,7 +357,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite_list .list_right{ float:left; width:92%; height:auto; margin:0 4%;}
 .elite_list .list_left img,
 .elite_list .list_right img{ width:100%; border-radius:8px;}
-.elite_list_title_bg{filter:alpha(opacity=70); margin-top:-134px; position:relative;}
+.elite_list_title_bg{filter:alpha(opacity=70); position:relative;}
 .elite_list_title{ width:100%; height:auto; z-index:100; font-size:1.6rem; padding-left:15px; color:#B9954D; position:absolute; top:50%; margin-top:-10px;}
 .elite_list_title:hover{ cursor:pointer;}
 /********圆角div***********/
