@@ -462,7 +462,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .fm{ text-align:center; padding-left:0px; }
 
 
-.city-list{width:100%;}
+.city-list{width:100%; overflow:hidden; }
 .city-listContent{width:565px; margin:0 auto;}
 
 .city-listContent ul li{width:100%; height:auto; border-bottom:1px #a9a9a9 solid; }
