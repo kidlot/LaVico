@@ -210,6 +210,8 @@ module.exports = {
                                 //$('#telephone_cardnumber_no_match').show();
                                 console.log('系统没有查找到此卡号，请核对后重新输入,可能由于此卡号绑定的不是第一步的手机号码');
                                 $('#telephone_cardnumber_no_match').show();
+                                //window.popupStyle2.on("系统没有查找到此卡号",function(event){});
+
 
                             }else if(returnJson.error == 'network_error'){
 
@@ -273,12 +275,16 @@ module.exports = {
                                     //alert('绑定成功');
                                     //$('#member_manage').show();
                                     window.popupStyle2.on("绑定成功",function(event){
+                                        window.location.href="/lavico/member/index?wxid="+wxid;
                                     });
+
                                 }else if($('#tel_checked_status').val() == 'tel_checked_true'){
                                     //alert('绑定成功');
                                     //$('#member_manage').show();
                                     window.popupStyle2.on("绑定成功",function(event){
+                                        window.location.href="/lavico/member/index?wxid="+wxid;
                                     });
+
                                     //以前绑定过的手机号码，不再继续输入卡号码
                                 }
                             }else{
