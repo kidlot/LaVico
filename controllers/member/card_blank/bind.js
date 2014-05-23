@@ -131,7 +131,7 @@ module.exports = {
 
                                 //无验证的手机号码，需要输入卡号
 
-                                 $("#maskdiv").show();//遮住
+
                                  $('#tel_checked_status').val('tel_checked_false');
                                  $('#true_card_number').show();
 
@@ -230,7 +230,6 @@ module.exports = {
                             });
                         }
 
-                        $('#maskdiv').hide();
 
                     });
 
