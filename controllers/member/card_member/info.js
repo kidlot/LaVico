@@ -361,7 +361,11 @@ module.exports = {
                 $("#loading").hide();
 
                 if(data.success == true){
-                  $("#check_popup").show();
+
+                  window.popupStyle2.on("提交成功，信息审核中",function(event){
+                      window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+                  });
+
                 }else if(data.success == false){
                    if((/[\u4e00-\u9fa5]+/).test(data.info)){
                        //如果输出的是汉字
