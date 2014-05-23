@@ -129,7 +129,9 @@ module.exports = {
 
                             }else if(returnJson.info == 'tel_checked_false'){
 
-                                //验证过的手机号码，需要输入卡号
+                                //无验证的手机号码，需要输入卡号
+
+
                                  $('#tel_checked_status').val('tel_checked_false');
                                  $('#true_card_number').show();
 
@@ -227,6 +229,8 @@ module.exports = {
                             window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
                             });
                         }
+
+
                     });
 
             });

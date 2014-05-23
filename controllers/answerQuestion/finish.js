@@ -10,12 +10,12 @@ module.exports={
         var wechatid=seed.wechatid;
         var scoreAll=this.req.session.scoreAll;
         var stopLab=seed.stopLab;
-        nut.model.wechatid = seed.wechatid;
+        nut.model.wechatid = seed.wechatid
+
 
         var compScore
         //非停止标签过来
         if(stopLab!="true"){
-
             //插入总积分
             helper.db.coll("lavico/custReceive").insert({
                 "wechatid": wechatid,
@@ -37,7 +37,6 @@ module.exports={
             var docTheme;
             var themeType;
             this.step(function(){
-
                 helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
                     if(err) throw err;
                     scoreRange=doc.scoreMinMax;
@@ -50,7 +49,6 @@ module.exports={
             //查找全部券
             var doc_json;
             this.step(function(){
-
                 middleware.request('Coupon/Promotions',{
                     perPage:1000,
                     pageNum:1
@@ -63,16 +61,11 @@ module.exports={
 
             var resultList="[";
             this.step(function(){
-
                 for(var i=0;i<scoreRange.length;i++){
                     var minlen=scoreRange[i].conditionMinScore;//获取低分值
                     var maxlen=scoreRange[i].conditionMaxScore;//获取高分值
                     var dot=1;
-                    if(scoreAll>minlen && scoreAll<maxlen){//在分值范围中
-                        console.log(scoreAll);
-                        console.log(minlen);
-
-
+                    if(scoreAll>=minlen && scoreAll<=maxlen){//在分值范围中
                         //获取三个奖励
                         var getLabel= scoreRange[i].getLabel==""?"":scoreRange[i].getLabel;
                         var getScore= scoreRange[i].getScore==""?0:scoreRange[i].getScore;
@@ -83,7 +76,6 @@ module.exports={
 
                         if(themeType!=1){
                             then.step(function(){
-
                                 //根据姓名和电话查memberId
                                 helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
                                     this.hold(function(err,result){
@@ -96,8 +88,9 @@ module.exports={
                                 )
                             })
 
+
                             then.step(function(memberId){
-                                console.log("___________66666666666666666666");
+
                                 //根据memberId调用接口给账户加分
                                 var jsonData={};
                                 jsonData.memberId=memberId;
@@ -111,7 +104,6 @@ module.exports={
                                     })
                                 )
                             })
-
                         }else{
                             for(var j=0;j<doc_json.list.length;j++){
                                 if(doc_json.list[j].PROMOTION_CODE==getActivities){
@@ -130,13 +122,12 @@ module.exports={
                                 var jsonData = {
                                     openid: wechatid,
                                     otherPromId: _id,
-                                    //PROMOTION_CODE: getActivities,
-                                    /PROMOTION_CODE:"L2013112709",
+                                    PROMOTION_CODE: getActivities,
+                                    //PROMOTION_CODE:"L2013112709",
                                     memo: memoString,
                                     point: getScore
                                 }
                                 then.step(function () {
-
                                     middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                         if (err) throw err;
                                         var docJson = JSON.parse(doc)
@@ -156,8 +147,7 @@ module.exports={
                             }
                         }
 
-                        then.step(function() {
-
+                        then.step(function(){
                             //console.log(parseInt(then.req.session.scoreAll))
                             helper.db.coll("lavico/custReceive").insert({
                                 "wechatid": wechatid,
@@ -166,25 +156,22 @@ module.exports={
                                 "optionId": 0,
                                 "chooseId": 0,
                                 "getChooseScore": parseInt(then.req.session.scoreAll),
-                                "getChooseLabel": "",
+                                "getChooseLabel":"",
                                 "getLabel": getLabel,
-                                "getGift": newActivity,
+                                "getGift":  newActivity,
                                 "compScore": getScore,
-                                "getTipContent": getTipContent,
+                                "getTipContent":getTipContent,
                                 "createTime": new Date().getTime()
-                            }, function (err, doc) {
-                            });
+                            },function(err,doc){});
                             //记录json准备显示
-
-
-                            resultList += "{"
-                                + "getLabel:'" + getLabel
-                                + "',getScore:" + getScore
-                                + ",getTipContent:'" + getTipContent
-                                + "',getActivities:'" + newActivity + "'}";
+                            resultList+="{"
+                                +"getLabel:'"+getLabel
+                                +"',getScore:"+getScore
+                                +",getTipContent:'"+getTipContent
+                                +"',getActivities:'"+newActivity+"'}";
 
                             if(getLabel!="" || getLabel!=null){
-                            //发送标签至CRM
+                                //发送标签至CRM
                                 jsonData={};
                                 jsonData.memberId= nut.model.memberID;
                                 jsonData.tag=getLabel;
@@ -194,15 +181,14 @@ module.exports={
                                 }))
                             }
 
-                            if (dot >=2 ) {
-                                resultList += ",";
+                            if(dot>=2){
+                                resultList+=",";
                             }
                             dot++;
 
                         })
                         //调用接口结束
                     }else{
-                        //????????
 //                        resultList+="{"
 //                            +"getLabel:'"+"null"
 //                            +"',getScore:"+0
@@ -217,12 +203,10 @@ module.exports={
 
 
             this.step(function(){
-
                 resultList+="]";
                 //返回显示
                 then.req.session.optionId=""
                 nut.model.result=resultList;
-                console.log("resultList:"+resultList);
                 nut.model.jsonResult=eval('('+resultList+')');
                 console.log("resultList:"+nut.model.jsonResult);
             })
@@ -271,7 +255,8 @@ module.exports={
 
             var resultList="[";
             this.step(function(){
-
+                //console.log("scoreRange.length:"+scoreRange.length)
+                //console.log("scoreRange:"+scoreRange)
                 for(var i=0;i<scoreRange.length;i++){
                     var dot=1;
                     //session上的停止标签和db中的设置标签一致
@@ -347,7 +332,7 @@ module.exports={
                                     openid: wechatid,
                                     otherPromId: _id,
                                     //PROMOTION_CODE:getActivities,
-                                    PROMOTION_CODE: 'L2013112709',
+                                    PROMOTION_CODE: 'CQL201312230001',
                                     //qty:nowPromotion.coupons[0].QTY,
                                     point: getScore
                                 }
@@ -385,7 +370,7 @@ module.exports={
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime()
                                     }, function (err, doc) {
-                                });
+                                    });
                                     if((typeof(getLabel)=="undefined" || getLabel=="") && (typeof(getScore)=="undefined" || getScore=="") &&
                                         (typeof(getTipContent)=="undefined" || getTipContent=="") && (typeof(newActivity)=="undefined" || newActivity=="")){
                                         resultList+="{"
