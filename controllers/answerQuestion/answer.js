@@ -24,6 +24,11 @@ module.exports={
                     nut.disable();
                     write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
                 }
+                if(member_id=="undefined"){
+                    nut.view.disable();
+                    nut.write("<script>window.onload=function(){window.popupStyle2.on('请先申请会员卡或者绑定会员,然后参加活动!',function(event){location.href='/lavico/member/index?wxid='+wechatid+"})}</script>");
+
+                }
                 nut.model.member_id =member_id;
             }))
         });
