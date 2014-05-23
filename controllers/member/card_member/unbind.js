@@ -66,7 +66,7 @@ module.exports = {
         $("#get_id_code").click(function(){
 
             if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
-                alert("请输入正确的手机号码");
+                window.popupStyle2.on("请输入正确的手机号码",function(event){});
                 return	false;
             }
             if(flag){
@@ -84,6 +84,7 @@ module.exports = {
                     data = eval('('+data+')');
                     if(data.result == 'ofen'){
                         alert('请稍后再获取！');
+                        window.popupStyle2.on("请输入正确的手机号码",function(event){});
                         flag = 0;
                     }else if(data.result == 'ok'){
                         set_interval();
