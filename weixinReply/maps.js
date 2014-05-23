@@ -91,7 +91,7 @@ exports.load = function () {
                             //console.log("storeList[i].CODE:"+newCODE);
                             //console.log("wxid:"+msg.FromUserName);
 
-                        reply.url='http://192.168.0.59/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                        reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);
