@@ -434,7 +434,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 }
 
 .flipsnap {
-    width: 1000px; /* 180px(item width) * 3(item count) */
+    /*width: 1000px;*/ /* 180px(item width) * 3(item count) */
 }
 
 .flipsnap:after {
@@ -446,7 +446,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 .item {
     float: left;
-    width: 30%;
+    width: 195px;
     font-size: 50px;
     text-align: center;
     padding: 0;
