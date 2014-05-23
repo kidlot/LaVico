@@ -1,20 +1,20 @@
 <div class="wrapper">
   <div class="store-title">
-    <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">门店切换</span></p>
+    <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">门店查询</a></span><span class="title2">选择城市</span></p>
   </div>
-  <div class="inquiry">
+  <!--<div class="inquiry">
   <div class="city fm" style="padding-left:0px;">选择城市</div> 
-  </div>
+  </div>-->
   <div class="city-list">
       <foreach for="{@provinceArr}" var="province">
-        <h3><a style="font-size: 1.8rem; padding: 10px 0 10px 70px; border-bottom: 1px solid darkgray; display: block; color: #cdb788">{@province}</a></h3>
+        <h3><a style="font-size: 1.8rem; padding: 10px 0 10px 2%; border-bottom: 1px solid #eee; display: block;" class="outlet_bottom">{@province}</a></h3>
         <div class="city-listContent" style="display: none">
           <ul>
               <foreach for="{@cityArr}" var="city">
                   <if condition="{@city[0]==province}">
                       <foreach for="{@city}" var="cityOne" key="key">
                           <if condition="@key!=0">
-                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}&wxid={@wxid}" id="ci" style="font-size: 1.8rem;padding:10px 0 10px 70px;display: block; color: #cdb788">{@cityOne}</a></li>
+                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}&wxid={@wxid}" id="ci" style="font-size: 1.6rem;padding:6px 0 6px 4%;display: block; color:#000; ">{@cityOne}</a></li>
                           </if>
                       </foreach>
                   </if>
@@ -37,13 +37,21 @@
 
 window.onload=function(){
     var i="";
-    $("h3").click(function(){
-        if(i!= $(this).text()){
-            i= $(this).text();
+    $("h3").click(function () {
+        if (i != $(this).text()) {
+            i = $(this).text();
             $("h3").next().slideUp("normal");
         }
         $(this).next().slideToggle("normal");
-    })
+    });
+
+    $("div.city-list").find("a.outlet_bottom").click(function () {
+        $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat","background-size":"16px" });
+    });
+    $("div.city-list").find("a.outlet_bottom").parent().siblings().children("#c").click(function () {
+        $("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+    });
+
 }
 
 //
