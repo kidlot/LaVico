@@ -494,7 +494,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .loading img { width:100%; }
 
 /*弹出层*/
-.popup { width:100%; height:auto; overflow:hidden; position:fixed;top:20%; color:#fff;display:none;background:#000;
+.popup { width:100%; height:auto; overflow:hidden; position:fixed;top:50%; color:#fff;display:none;background:#000;
          background:rgba(0, 0, 0, 0.8) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/
          filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999; }
 .popup p { padding:4%; text-align:center; font-size:1.6rem;}
