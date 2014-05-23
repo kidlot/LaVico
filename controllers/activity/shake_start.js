@@ -318,23 +318,22 @@ module.exports = {
         }
     },
     viewIn:function(){
+
         /*前端设计JS*/
-
         $('#loading').hide();//隐藏加载框
-
-
         var points = parseInt($("#points").val());
-
         if(points>0){
-            alert('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。');
+            //alert('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。');
+            window.popupStyle2.on('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。',function(event){});
         }
 
         var flag = 1;//默认可摇一摇
 
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
-        } else{
-            alert('您的手机没法摇？那就直接点这里');
+        }else{
+            console.log('您的手机没法摇？那就直接点击下面按钮吧');
+            window.popupStyle2.on('您的手机没法摇？那就直接点击下面按钮吧',function(event){});
         }
 
         var shakeIt = function(){
@@ -401,7 +400,8 @@ module.exports = {
 
         function shake(){
             if(!$("#uid").val() || !$("#aid").val()){
-                alert('请登陆微信后，参加我们的摇一摇活动');
+                //alert('请登陆微信后，参加我们的摇一摇活动');
+                window.popupStyle2.on('请登陆微信后，参加我们的摇一摇活动',function(event){});
                 return false;
             }
             $('#loading').show();
@@ -412,6 +412,7 @@ module.exports = {
             },function(data){
                 $('#loading').hide();
                 console.log(data);
+                flag = 1;
 
                 if(data.result == 'win'){
                     var _coupon_no = data.coupon_no;
@@ -419,36 +420,36 @@ module.exports = {
 
                 }else if(data.result == 'has-no-chance'){
 
-                    alert('今天您的机会用完了，明天再来参加活动吧！');
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
+                    window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){});
 
                 }else if(data.result == 'activity_is_over'){
 
-                    alert('活动到期关闭了，下次再来参加活动吧！');
+                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){});
 
                 }else if(data.result == 'something-error'){
 
-                    alert('活动到期关闭了，下次再来参加活动吧！');
+                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){});
 
                 }else if(data.result == 'unwin'){
 
                     var _i = data.count;
-                    alert('这次没摇到，要不再试一试？还有'+_i+'次机会！');
+                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会！',function(event){});
 
                 }else if((/[\u4e00-\u9fa5]+/).test(data.result)){
 
-                    alert(data.result);
+                    window.popupStyle2.on(data.result,function(event){});
 
                 }else if(data.result == 'your-points-not-enough'){
 
-                    alert("您的积分不够了，赶紧去参加抢积分活动吧！");
+                    window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){});
 
                 }else{
 
-                    alert('今天的机会被其他伙伴抢光了，明天再来试一试吧！');
+                    window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){});
+
                 }
 
-                flag = 1;
             })
         }
     }
