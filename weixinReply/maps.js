@@ -15,25 +15,19 @@ exports.load = function () {
         var lat,lng;
         console.log("msg.MsgType:"+msg.MsgType);
         if(msg.MsgType=="location"){
-            console.log("********location*********8");
-
-
+            console.log("********record location*********");
             Steps(
                 function(){
                     lat=msg.Location_X;
                     lng=msg.Location_Y;
-                    //console.log("lat1:"+msg.location[0]);
-                    console.log("lat2:"+lat);
                 },
 
                 function(){
-                    console.log("******get user position******");
                     postData={"location":[msg.Location_X,msg.Location_Y]};
-                    console.log("******"+msg.FromUserName+"*******");
                     helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
                         {multi: false, upsert: true},function(err,doc){
                             if(err)throw err;
-                            console.log("*******update db*******");
+                            console.log("*******change position record*******");
                         });
                 },
 
@@ -44,9 +38,8 @@ exports.load = function () {
                     middleware.request('Shops',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
-                            console.log("******Shops*********")
+                            console.log("******Shops info come back*********");
                             docJson=JSON.parse(doc);
-                            //return docJson;//注意字符串和对象格式
                         })
                     )
                 },
@@ -87,12 +80,8 @@ exports.load = function () {
                             reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
-
-                            //console.log("storeList[i].CODE:"+newCODE);
-                            //console.log("wxid:"+msg.FromUserName);
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
                             reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
-
                         if(i<10)
                             replyArr.push(reply);
                     }
@@ -111,13 +100,11 @@ exports.load = function () {
         if(msg.MsgType=="event" && msg.Event=="LOCATION"){
             console.log("******get user position******");
             postData={"location":[msg.Latitude,msg.Longitude]};
-            console.log("******"+msg.FromUserName+"*******");
             helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
                 {multi: false, upsert: true},function(err,doc){
                     if(err)throw err;
                     console.log("*******update db*******");
                 });
-
         }else{
             next();
         }
@@ -239,9 +226,6 @@ exports.load = function () {
         }
     })
 
-
-
-
     wechatapi.makeQueue();
 };
 
@@ -258,14 +242,11 @@ function getGreatCircleDistance(lng1,lat1,lng2,lat2)
 {
     var radLat1 = getRad(lat1);
     var radLat2 = getRad(lat2);
-
     var dy = radLat1 - radLat2;	//a
     var dx = getRad(lng1) - getRad(lng2);	//b
-
     var s = 2*Math.asin(Math.sqrt(Math.pow(Math.sin(dy/2),2) + Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(dx/2),2)));
     s = s*EARTH_RADIUS;
     s = Math.round(s*10000)/10000.0;
-
     return s;
 }
 
@@ -274,7 +255,7 @@ function changeTwoDecimal(floatvar)
     var f_x = parseFloat(floatvar);
     if (isNaN(f_x))
     {
-        console.log('function:changeTwoDecimal->parameter error');
+        console.log('parameter error');
         return false;
     }
     var f_x = Math.round(floatvar*100)/100;
