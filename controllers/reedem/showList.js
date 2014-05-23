@@ -7,24 +7,26 @@ module.exports={
         var then =this;
         var wxid = seed.wechatId ? seed.wechatId : 'undefined';
         nut.model.wxid = wxid;
+        var memberId = false;
+        nut.model.isBind = true;
 
         this.step(function(){
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
                 if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind'){
-                    return doc.HaiLanMemberInfo.memberID;//获取会员ID
+                    memberId =  doc.HaiLanMemberInfo.memberID;//获取会员ID
                 }else{
-                    nut.disable();//不显示模版
-                    this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                    //window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}
-                    this.res.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}")
-                    this.res.end();
-                    this.terminate();
+
+                    reedemJson.canUse = []
+                    reedemJson.noCanUse = []
+                    nut.model.reedemJson=reedemJson;
+                    nut.model.isBind = false;
+
                 }
             }));
 
         });
 
-        this.step(function(memberId){
+        this.step(function(){
             //调用接口:获取会员积分
             //console.log("memberId:"+memberId);
             if(memberId){
@@ -47,64 +49,69 @@ module.exports={
         });
 
         this.step(function(resultPoint){
-            //查找积分兑换表,获取所有所有兑换商品
-            reedemJson.point=resultPoint[0]
-            helper.db.coll("lavico/reddem").find({}).toArray(this.hold(function(err,result){
-                if(err) throw err;
-                reedemJson.canUse=[];//可兑换商品数组
-                reedemJson.noCanUse=[];//不可兑换商品数组
-                for(var i=0;i<result.length;i++){
-                    if(resultPoint[0]>=result[i].needScore){
-                        //调用接口：查找所有可兑换券
-                        (function(i){
-                            middleware.request('Coupon/Promotions',{
-                                perPage:10000,
-                                pageNum:1,
-                                code:result[i].aid
-                            },then.hold(function(err,doc){
-                                if(err) throw err;
-                                if(doc){
-                                    var resultJson=JSON.parse(doc)
-                                    var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
-                                    //还有剩余票可用
-                                    if(stillUse>0){
 
-                                        result[i].stillUse=stillUse;
-                                        result[i].memberId=resultPoint[1];
-                                        result[i].wechatId=seed.wechatId;
-                                        reedemJson.canUse.push(result[i]);//追加数组
-                                    }
-                                }else{
-                                    nut.disable();
-                                    write_info_text(then,"商家没有提供可兑换券");
-                                }
-                            }))
-                        })(i)
-                    }else{
-                        //调用接口：查找所有券
-                        (function(i){
-                            middleware.request('Coupon/Promotions',{
-                                perPage:10000,
-                                pageNum:1,
-                                code:result[i].aid
-                            },then.hold(function(err,doc){
-                                if(err) throw err;
-                                if(doc){
-                                    var resultJson=JSON.parse(doc)
-                                    var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;
-                                    if(stillUse>0){
-                                        result[i].stillUse=stillUse;
-                                        result[i].memberId=resultPoint[1];
-                                        result[i].wechatId=seed.wechatId;
-                                        reedemJson.noCanUse.push(result[i]);//分数过大的追加不可兑换数组
-                                    }
-                                }
-                            }))
-                        })(i)
+            if(memberId){
 
+                //查找积分兑换表,获取所有所有兑换商品
+                reedemJson.point=resultPoint[0]
+                helper.db.coll("lavico/reddem").find({}).toArray(this.hold(function(err,result){
+                    if(err) throw err;
+                    reedemJson.canUse=[];//可兑换商品数组
+                    reedemJson.noCanUse=[];//不可兑换商品数组
+                    for(var i=0;i<result.length;i++){
+                        if(resultPoint[0]>=result[i].needScore){
+                            //调用接口：查找所有可兑换券
+                            (function(i){
+                                middleware.request('Coupon/Promotions',{
+                                    perPage:10000,
+                                    pageNum:1,
+                                    code:result[i].aid
+                                },then.hold(function(err,doc){
+                                    if(err) throw err;
+                                    if(doc){
+                                        var resultJson=JSON.parse(doc)
+                                        var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
+                                        //还有剩余票可用
+                                        if(stillUse>0){
+
+                                            result[i].stillUse=stillUse;
+                                            result[i].memberId=resultPoint[1];
+                                            result[i].wechatId=seed.wechatId;
+                                            reedemJson.canUse.push(result[i]);//追加数组
+                                        }
+                                    }else{
+                                        nut.disable();
+                                        write_info_text(then,"商家没有提供可兑换券");
+                                    }
+                                }))
+                            })(i)
+                        }else{
+                            //调用接口：查找所有券
+                            (function(i){
+                                middleware.request('Coupon/Promotions',{
+                                    perPage:10000,
+                                    pageNum:1,
+                                    code:result[i].aid
+                                },then.hold(function(err,doc){
+                                    if(err) throw err;
+                                    if(doc){
+                                        var resultJson=JSON.parse(doc)
+                                        var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;
+                                        if(stillUse>0){
+                                            result[i].stillUse=stillUse;
+                                            result[i].memberId=resultPoint[1];
+                                            result[i].wechatId=seed.wechatId;
+                                            reedemJson.noCanUse.push(result[i]);//分数过大的追加不可兑换数组
+                                        }
+                                    }
+                                }))
+                            })(i)
+
+                        }
                     }
-                }
-            }))
+                }))
+
+            }
         })
         this.step(function(){
 
