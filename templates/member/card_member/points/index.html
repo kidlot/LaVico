@@ -25,20 +25,19 @@
                                 <div class='{@log[key].class} clear' id="title-{@key}" ">
                                     <p><span class="fl">{@log[key].time}</span><span class="fr">获得{@log[key].sumGetPoint}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用{@log[key].sumUsedPoint}</span></p>
                                 </div>
-
-                                <if condition="@key == 0">
                                     {@htmlStartUl}
-                                </if>
 
                             <else/>
+                                
+                                    <li>
+                                        <span class="fl c1">
+                                            {@log[key].MEMO}
+                                            {@log[key].formatetime}
+                                        </span>
+                                        <span class="fr c2 pt15">{@log[key].value}</span>
+                                    </li>
 
-                                <li>
-                                     <span class="fl c1">{@log[key].MEMO}
-                                        {@log[key].formatetime}</span>
-                                     <span class="fr c2 pt15">{@log[key].value}</span></li>
-                                </li>
-
-
+                                
                                 <if condition="@logLength == key + 1">
                                     {@htmlEndUl}
                                 </if>
@@ -58,8 +57,6 @@
 
                 </div>
                 <p>&nbsp;</p>
-
-
             </if>
 
         <elseif condition="@info=='return_data_error'"/>

@@ -259,10 +259,11 @@ module.exports = {
                     console.log(shake.lottery);
                     if(Math.floor(Math.random()*100+1) <= shake.lottery[0].lottery_chance){
                         console.log("摇一摇领取优惠券");
+
                         middleware.request('Coupon/FetchCoupon',{
                             openid:seed.uid,
                             PROMOTION_CODE:shake.aid, //海澜CRM 活动代码，由 Promotions 接口返回
-                            point:_points,//每次摇一摇，消耗积分
+                            point:0,//每次摇一摇，消耗积分
                             otherPromId:seed.aid, //微信活动识别ID
                             memo:activity.memo
                         },this.hold(function(err,doc){
@@ -271,6 +272,14 @@ module.exports = {
                             doc = JSON.parse(doc);
                             console.log(doc);
                             if(doc.success == true){
+                                //减去积分
+                                middleware.request('Point/Change',{
+                                    memberId:memberId,
+                                    qty:_points,//每次摇一摇，消耗积分
+                                    memo:'摇一摇'+'-'+shakeActivityName
+                                },then.hold(function(err,doc){
+                                    console.log(doc);
+                                }));
 
                                 activity.coupon_no = doc.coupon_no;//优惠券号码
 
@@ -278,13 +287,15 @@ module.exports = {
 
                                 helper.db.coll("shake/shake").insert(activity,function(err,doc){err&&console.log(doc);});
                                 write_info(then,'{"result":"win","coupon_no":"'+doc.coupon_no+'"}');
+
                             }else{
                                 write_info(then,'{"result":"'+doc.error+'"}');
                             }
 
-                        }))
+                        }));
 
                     }else{
+
                         console.log("shake fail");
                         helper.db.coll('shake/shake').insert(activity,function(err,doc){
                             err&&console.log(doc);
@@ -319,6 +330,7 @@ module.exports = {
         }
 
         var flag = 1;//默认可摇一摇
+
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
         } else{
@@ -370,11 +382,10 @@ module.exports = {
                 var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if (speed > SHAKE_THRESHOLD) {
-                    shake();
+
                     if(flag == 1){
-
+                        shake();
                     }
-
                     flag = 0;
                 }
                 last_x = x;
