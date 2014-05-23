@@ -164,7 +164,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input-member1{padding-top:70px;}
 .input-member .msg{font-size:25px; text-align:center; color:#fff; line-height:45px;padding-bottom:20px;}
 .input-member .msg1{font-size:22px; padding-top:20px;}
-.input-member .confirm input{text-align:center;width:486px; height:67px;border:0; outline:none; line-height:67px; font-size:25px; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;}
+.input-member .confirm input{text-align:center;width:60%; height:67px;border:0; outline:none; line-height:67px; font-size:25px; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;}
 .my-card{ font-size:25px; line-height:35px; color:#646464; padding-top:30px;}
 .link-cardContent{width:100%; background-color:#dadada;}
 .link-cardContent .title{width:100%; height:50px; line-height:50px; text-align:center; font-size:1.6rem; color:#000; background:url(../images/head_bg.jpg) center center no-repeat;}
@@ -492,6 +492,6 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 /*弹出层*/
 .popup { width:100%; height:auto; overflow:hidden; position:fixed;top:20%; background:#999; color:#fff;display:none; }
-.popup p { padding:4%; }
+.popup p { padding:4%; text-align:center;}
 .popup .popup_but { height:auto; }
 .popup .popup_but a { width:80px; height:30px; line-height:30px; float:left; text-align:center;  }
