@@ -1,12 +1,11 @@
 <input type='hidden' id='uid' value="{@uid}" />
 <input type='hidden' id='aid' value="{@aid}" />
-
+<input type='hidden' id='member_id' value="{@member_id}" />
 <div class="wrapper">
     <div class="coupon-banner"><img src="/lavico/public/images/coupon_banner.jpg" /></div>
     <div class="activity-rules">
-        <div class="begin"><a href="/lavico/activity/shake_start?uid={@uid}&aid={@aid}">立即开始</a></div>
+        <div class="begin"><a id="shake_start">立即开始</a></div>
         <div class="text">
-            <a id="return_member" href="/lavico/member/index?wxid={@uid}" style="display: none;">返回会员中心</a>
             <div class="title">活动及使用规则</div>
             <div class="title1">活动说明：</div>
             <div class="subtext"><p>1.礼品券只有会员和VIP用户可获得</p>
