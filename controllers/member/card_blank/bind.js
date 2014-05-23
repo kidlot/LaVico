@@ -275,12 +275,16 @@ module.exports = {
                                     //alert('绑定成功');
                                     //$('#member_manage').show();
                                     window.popupStyle2.on("绑定成功",function(event){
+                                        window.location.href="/lavico/member/index?wxid="+wxid;
                                     });
+
                                 }else if($('#tel_checked_status').val() == 'tel_checked_true'){
                                     //alert('绑定成功');
                                     //$('#member_manage').show();
                                     window.popupStyle2.on("绑定成功",function(event){
+                                        window.location.href="/lavico/member/index?wxid="+wxid;
                                     });
+
                                     //以前绑定过的手机号码，不再继续输入卡号码
                                 }
                             }else{
