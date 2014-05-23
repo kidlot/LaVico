@@ -286,7 +286,9 @@ module.exports = {
                                     //以前绑定过的手机号码，不再继续输入卡号码
                                 }
                             }else{
-                                alert('网络接口不稳定，请稍后再尝试');
+
+                                window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
+                                });
                             }
                         }else if(returnJson.success == false){
                             if(returnJson.error == 'captcha_is_error'){
