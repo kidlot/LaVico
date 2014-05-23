@@ -337,16 +337,11 @@ module.exports = {
         }
 
         var shakeIt = function(){
-
-            if(flag == 1){
                 mobileClickRight();
                 setTimeout(function(){mobileClickLeft()},500);
                 setTimeout(function(){
                     mobileClick();
                 },1000);
-            }
-
-            flag = 0;
         }
 
         shakeIt();
@@ -363,7 +358,7 @@ module.exports = {
             $(".mobile-pic").addClass("box_rotate2");
         }
 
-        var SHAKE_THRESHOLD = 3000;
+        var SHAKE_THRESHOLD = 1500;
         var last_update = 0;
         var x=y=z=last_x=last_y=last_z=0;
 
@@ -381,19 +376,13 @@ module.exports = {
                 var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if (speed > SHAKE_THRESHOLD) {
-
                     if(flag == 1){
                         shake();
                     }
                     flag = 0;
-                }else{
-
-                    if(flag == 1){
-                        shake();
-                    }
-                    flag = 0;
-
                 }
+
+
                 last_x = x;
                 last_y = y;
                 last_z = z;
@@ -401,7 +390,10 @@ module.exports = {
         }
 
         $('.mobile-btn').click(function(){
-            shake();
+            if(flag == 1){
+                shake();
+            }
+            flag = 0;
         });
         /*后端JS*/
 
@@ -419,7 +411,7 @@ module.exports = {
             },function(data){
                 $('#loading').hide();
                 console.log(data);
-                flag = 1;
+
 
                 if(data.result == 'win'){
                     var _coupon_no = data.coupon_no;
@@ -456,7 +448,7 @@ module.exports = {
                     window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){});
 
                 }
-
+                flag = 1;
             })
         }
     }
