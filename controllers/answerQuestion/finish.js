@@ -392,7 +392,7 @@ module.exports={
                                             jsonData.tag=getLabel;
                                             middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                                 if(err) throw err;
-
+                                                console.log("tag record:"+doc.success);
                                             }))
                                         }
 
@@ -585,7 +585,7 @@ module.exports={
                         }
 
                         then.step(function(){
-
+                            //console.log(parseInt(then.req.session.scoreAll))
                             helper.db.coll("lavico/custReceive").insert({
                                 "wechatid": wechatid,
                                 "themeId": helper.db.id(_id),
