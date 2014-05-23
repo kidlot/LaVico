@@ -384,10 +384,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .small_list_top img { width:100%;}
 .small_content{ position:absolute; top:0px; left:0px;width:100%; height:100%; text-align:center; display:none; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; color:#B9954D; font-size:1.6rem;}
 .content_up{ position:absolute; width:54px; height:54px; bottom:0px; z-index:100; display:block; margin-left:-27px; left:50%; }
-.small_list{ width:96%; padding:0 2%; height:auto; margin-top:2%; background: #E5E5E5;}
+.small_list{ width:96%; padding:2% 2% 0; height:auto; background: #E5E5E5; overflow:hidden;}
 .small_image{ float:left; width:195px; height:auto; margin:5px;}
 .small_image img { width:100%; }
-.small_middle{ margin:10px 0;}
+.small_middle{ padding:2% 0;background: #E5E5E5;  overflow:hidden;}
 
 .shoucang_foot{ position:absolute; bottom:0; z-index:100; margin:0 auto; text-align:left; height:100px; width:540px; padding: 40px 50px; background:url(../images/member_shoucang_foot.jpg) no-repeat;}
 .shoucang_foot .title{font-size: 25px;color: #B9954D;line-height: 45px;}
