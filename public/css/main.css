@@ -105,7 +105,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .answer-content .content { }
 .answer-content .content ul li { padding:3% 0 3% 4%; }
 
-.answer-content .title{ font-size:1.6rem; color:#B08C4D;}
+.answer-content .title{ font-size:2rem; color:#B08C4D;}
 .answer-content .select,.answer-content .select1,.answer-content .selects,.answer-content .selects1{ width:60%;height:auto;line-height:32px; font-size:1.6rem; color:#2D2D2D; padding-left:16%; position:relative; display:inline-block; vertical-align:top; }
 .answer-content .select{background:url(../images/select_btnOn.jpg) no-repeat;}
 .answer-content .select1{background:url(../images/select_btn.jpg) no-repeat;}
