@@ -1,7 +1,5 @@
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 
-<<<<<<< HEAD
-=======
         var compScore
         //非停止标签过来
         if(stopLab!="true"){

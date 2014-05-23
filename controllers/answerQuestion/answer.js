@@ -76,7 +76,7 @@ module.exports={
                 }
             }else{
                 nut.view.disable();
-                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止1',function(event){history.back()})}</script>");
+                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
                // nut.write("<script>alert('很抱歉，活动已经停止');history.back();</script>");
             }
         });

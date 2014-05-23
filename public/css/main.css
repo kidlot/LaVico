@@ -96,7 +96,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                                                           line-height:40px; font-size:1.6rem; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;background-size:100% 100%;}
 /*.fade1{ display:none;}
 .first-price{ display:none;}*/
-.first-price .confirm{margin-top:10px;}
+.first-price .confirm{margin-top:10px; text-align:center; }
 /*.fade2{ display:none;}
 .second-price{ display:none;}*/
 .second-price .confirm{margin-top:10px;}
@@ -104,7 +104,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .mt70{ margin-top:70px;}
 /*答题*/
 .answer-title{width:100%; height:50px;font-size:1.6rem; background-color:#010417; line-height:50px; text-align:center;color:#fff;}
-.answer{width:100%; padding-top:6%; background-color:#e5e5e5;border-bottom:1px #a9a9a9 solid; padding-bottom:8%;}
+.answer{width:100%; padding-top:6%;border-bottom:1px #a9a9a9 solid; padding-bottom:8%;}
 .answer-content{width:90%; padding:0 5%;}
 .answer-content .content { }
 .answer-content .content ul li { padding:3% 0 3% 4%; }
@@ -117,14 +117,16 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .answer-content .selects1{background:url(../images/selects_btn.jpg) no-repeat; background-size:22px;}
 .right-btn,.wrong-btn{width:42px; height:31px; position:absolute; left:-50px; top:0;}
 .answer-content .img{ padding-top:20px; margin-left:50px;}
-.pages{width:100%; background-color:#e5e5e5; padding:4% 0; overflow:hidden; }
+.pages{width:100%; padding:4% 0; overflow:hidden; position:fixed; bottom:0px; left:0px; }
 .pages-content{width:90%; margin:0 auto;height:auto; padding:0 5%; }
-.pages .pre,.pages .next,.pages .pre_on{width:48%; height:40px; display:inline-block; text-align:center; font-size:1.4rem;  line-height:40px; }
+.pages .pre,.pages .next,.pages .pre_on{width:60%; height:40px; display:inline-block; text-align:center; font-size:1.4rem;  line-height:40px; }
 .pages .pre{color:#fff; background:url(../images/pre.jpg) center center no-repeat;}
 .pages .pre_on{color:#fff; background:url(../images/pre_on.jpg) center center no-repeat;}
 .pages .next{color:#281B00; background:url(../images/next.png) center center no-repeat; background-size:100% 100%; }
 .blank{ padding-top:10%;}
-.points-content{width:604px; height:319px; margin:0 auto;}
+.points-content{width:100%; height:auto; margin:0 auto; background-size:100% 100%;position:relative; }
+.points-content img { width:100%;}
+.points-content .points_txt { position:absolute; top:34%; right:10%; font-size:1.6rem; width:42% ;text-align:right }
 
 #tip { font-size:1.6rem; padding:2%; }
 #sed { width:6%; display:inline-block; vertical-align:top; padding:1% 4% 0 0; }
@@ -171,7 +173,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input-member .msg1{font-size:1.6rem;}
 .input-member .confirm input{text-align:center;width:80%; height:40px;border:0; outline:none; line-height:40px; font-size:1.6rem; color:#3C3C3C;
                               background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;background-size:100% 100%;}
-.my-card{ font-size:25px; line-height:35px; color:#646464; padding-top:30px;}
+.my-card{ font-size:1.4rem; line-height:1.4em; color:#646464; padding-top:4%;}
 .link-cardContent{width:100%; background-color:#dadada;}
 .link-cardContent .title{width:100%; height:50px; line-height:50px; text-align:center; font-size:1.4rem; color:#000; background:url(../images/head_bg.jpg) center center no-repeat;}
 .link-cardContent .title a{ text-decoration:underline;color:#7d4900;}
@@ -250,7 +252,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                                    font-size:1.2rem; box-sizing:border-box; }
 .c1{ color:#2d2d2d; padding-left:2%;width:68%; }
 .c2{ color:#000; padding-right:2%; width:28%; text-align:right; }
-.pt15{ padding-top:15px }
+.pt15{ }
 .points2-content .point-box .title2,
 .points2-content .point-box .title3{width:96%; height:50px;  background:url(../images/point_bg1.png) no-repeat; font-size:1.2rem; color:#fff; line-height:50px; padding:0 2%;background-size:100% 100%; }
 .points2-content .point-box .title3 { background:url(../images/point_bg2.png) no-repeat;background-size:100% 100%; }
@@ -312,8 +314,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .title .text a{ color:#7C4A01; text-decoration:underline;}
 .apply .form{width:96%; margin: 0 auto; padding:0 2%;}
 .apply .form .input{ padding-top:10px; line-height:40px;}
-.apply .form .input .left{width:20%; text-align:right; color:#2D2D2D; font-size:1.4rem;}
-.apply .form .input .name-right{ width:62%; padding-left:3%; color:#000;}
+.apply .form .input .left{width:24%; text-align:right; color:#2D2D2D; font-size:1.4rem;}
+.apply .form .input .name-right{ width:58%; padding-left:3%; color:#000;}
 .apply .form .input .name-right input{ width:100%; height:40px; line-height:40px; padding:0 2%; font-size:1.4rem;border: 1px solid #999;}
 .apply .form .input .sex-right{ width:30%; padding-left:3%; color:#000;}
 .apply .form .input .sex-right select{width:110px; height:65px; line-height:65px; font-size:1.6rem;}
@@ -321,14 +323,14 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .form .input .birth-right .select1,.apply .form .input .birth-right .select2,.apply .form .input .birth-right .select3{ height:50px; line-height:50px; font-size:1.4rem;}
 .apply .form .input .birth-right .select1{width:150px;}
 .apply .form .input .birth-right .select2,.apply .form .input .birth-right .select3{width:110px;}
-.apply .form .input .tel-right{  width:77%;padding-left:3%; color:#000;}
+.apply .form .input .tel-right{  width:73%;padding-left:3%; color:#000;}
 .apply .form .input .tel-right input{width:60%; height:40px; line-height:40px; padding:0 2%; font-size:1.4rem; display:inline-block; vertical-align:top; }
 .apply .form .note{ font-size:1.4rem; text-align:center; color:#3C3C3C; padding-top:4%; line-height:2em; }
 .apply .form .submit_btn{  padding:5% 0; }
 .apply .form .submit_btn input{width:80%;margin:0 10%; border:0; cursor:pointer; font-size:1.4rem; height:40px; line-height:40px; color:#3C3C3C;text-align:center;
                                 background:url(../images/click_btn.jpg) center center no-repeat; background-size:100% 100%; }
 .apply .form .bg{ background-color:#dadada; border:1px #b2b1ad solid;  }
-.apply .form .input .trade-right{width:62%; padding-left:3%; color:#000;}
+.apply .form .input .trade-right{width:58%; padding-left:3%; color:#000;}
 .apply .form .input .trade-right select{width:100%; height:40px; line-height:40px; font-size:1.4rem;}
 /*精英搭配*/
 .match{width:100%; background-color:#F1F1F1;}
@@ -349,8 +351,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 /********************Create by MrLv 2014-04-21******************************/
 .man-test-title{ text-align:center; font-size:24px; background:#E5E5E5; width:100%; height:80px; padding-top:30px; line-height:40px;}
 .man-test-title span{ font-size:25px; color:#CDB788;}
-.man-test-content .title1{color:#bda172; font-size:25px; padding-top:50px; text-align:left; padding-left:30px;}
-.man-test-content .subtext{ color:#646464; font-size:25px; padding-top:30px;text-align:left; padding-left:30px;}
+.man-test-content { width:90%; padding:0 5%; }
+.man-test-content .title1{color:#bda172; font-size:1.4rem;text-align:left;}
+.man-test-content .subtext{ color:#646464; font-size:1.4rem; text-align:left;}
 /********精英搭配**********/
 .elite_title{ position:absolute; top:0; width:100%; height:50px; background:#010417; color:#fff; line-height:50px; }
 .elite_title .title2{ font-size:1.6rem; display:block;width:100%;text-align:center;position:absolute;top:0px; left:0px; height:50px; line-height:50px;}
@@ -428,8 +431,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift_content .title1{color:#bda172; font-size:1.6rem; padding-top:2%;}
 .gift_content .subtext{ color:#646464; font-size:1.6rem; padding:2% 0;}
 .gift_border{ width:100%; margin:0 auto;border-bottom:1px #c1c1c1 solid;}
-.line{ width:640px; height:30px; border-bottom:1px #666 solid; margin-top:50px;}
-.linebottom{ padding-top:40px;}
+.line{ width:100%; height:30px; border-bottom:1px #666 solid; margin-top:4%;}
+.linebottom{ padding:2%;}
 .viewport {
     width: 110%;
     overflow: hidden;
