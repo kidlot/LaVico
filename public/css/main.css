@@ -31,7 +31,7 @@ a.tel{color:#2d2d2d;}
 .mobile{width:100%; background-color:#e5e5e5; padding-top:4%; text-align:center;}
 .mobile .mobile-pic { width:80%; padding:0 10%; }
 .mobile .mobile-pic img { width:100%; }
-.mobile-btn{ padding-top:70px; padding-bottom:40px;}
+.mobile-btn{ padding-top:8%; padding-bottom:4%;}
 /*我要侃价详细页*/
 .bargin{width:100%;background-color:#ededed; padding-top:2%;}
 .bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:1% 4%; overflow:hidden; position:relative; }
