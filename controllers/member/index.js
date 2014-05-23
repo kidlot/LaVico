@@ -13,7 +13,7 @@ module.exports = {
         var wxid = undefined;
 
         if(this.req.session.oauthTokenInfo){
-            
+
             console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
             wxid = this.req.session.oauthTokenInfo.openid
         }else{
@@ -49,11 +49,16 @@ module.exports = {
         /*先判断微信id是否存在*/
         this.step(function(){
             if(wxid == undefined){
-                nut.disable();//不显示模版
-                this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                this.res.write('{"error":"wxid_is_empty"}');
-                this.res.end();
-                this.terminate();
+                if(seed.wxid){
+                    wxid  = seed.wxid;
+                }else{
+                    nut.disable();//不显示模版
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"error":"wxid_is_empty"}');
+                    this.res.end();
+                    this.terminate();
+                }
+
             }
         });
         this.step(function(){
