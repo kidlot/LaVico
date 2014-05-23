@@ -94,9 +94,15 @@ module.exports={
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
                 nut.model.wxid = seed.wxid;
-                nut.model._id=seed._id;
+                //var newId=seed.CODE;
+               // console.log("newId:"+newId);
+                nut.model._id=seed.CODE;
+
+                var cityCode=seed.CODE;
+
                 //获取CODE-取消最后一个自添加1
-                var cityCode=seed.CODE.substring(0,seed.CODE.length-1);
+                console.log("sed:"+nut.model._id);
+                //var cityCode=seed.CODE.substring(0,seed.CODE.length-1);
 
                 //接口读取门店列表(设置1000代表每页条数，即一次性全部返回)
                 this.step(function(){
@@ -114,8 +120,11 @@ module.exports={
                 this.step(function(doc){
                     //在接口列表中查找seed传送过来的cityCode
                     for(var i=0;i<doc.list.length;i++){
-                        if(doc.list[i].CODE==cityCode){
-
+                        var code=(doc.list[i].CODE).replace(/\s/g,'');
+                        console.log("code:"+code);
+                        console.log("cityCode:"+cityCode);
+                        if(code==cityCode){
+                            console.log("ok");
                             //return searchCity=doc.list[i];//返回指定门店
                             nut.model.searchCity=doc.list[i];
                             break;
