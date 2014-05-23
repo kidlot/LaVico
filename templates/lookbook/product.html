@@ -3,6 +3,8 @@
 <input type="hidden" id="bigPicIndex" value={@bigPicIndex}>
 <input type="hidden" id="sumBigPicIndex" value={@sumBigPicIndex}>
 <input type="hidden" id="bigPicIndex" value={@bigPicIndex}>
+<input type="hidden" id="productId" value={@productId}>
+<div style="display: none" id="jsonPage">{@jsonPage}</div>
 
 <div class="wrapper" id="exchangebtn">
     <div class="elite_title">
@@ -48,10 +50,23 @@
         var bigPicIndex = parseInt($("#bigPicIndex").val())
         var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
         if(bigPicIndex <= 1){
-            alert("已经是第一页")
+            var page = JSON.parse($("#jsonPage").text())
+            var nowProductNum = 0;
+            for(var i=0;i<page.product.length;i++){
+                if(page.product[i]._id == $("#productId").val()){
+                    nowProductNum = i+1
+                }
+            }
+
+            if(nowProductNum > 1){
+                location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+page.product[nowProductNum-2]._id+"&bigPicIndex="+(page.product[nowProductNum-2].bigPic ? page.product[nowProductNum-2].bigPic.length:0)+"&source={@source}"
+            }else{
+
+                alert("已经是第一页")
+            }
             return;
         }
-        location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex -1)
+        location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
     }
 
     function rightPage(){
@@ -59,7 +74,22 @@
         var bigPicIndex = parseInt($("#bigPicIndex").val())
         var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
         if(bigPicIndex >= sumBigPicIndex){
-            alert("已经是最后一页")
+
+            var page = JSON.parse($("#jsonPage").text())
+            var nowProductNum = 0;
+            for(var i=0;i<page.product.length;i++){
+                if(page.product[i]._id == $("#productId").val()){
+                    nowProductNum = i+1
+                }
+            }
+
+            if(nowProductNum < page.product.length){
+                location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+page.product[nowProductNum]._id
+            }else{
+
+                alert("已经是最后一页")
+            }
+
             return;
         }
         location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)
