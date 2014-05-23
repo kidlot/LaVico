@@ -361,7 +361,11 @@ module.exports = {
                 $("#loading").hide();
 
                 if(data.success == true){
-                  $("#check_popup").show();
+
+                  window.popupStyle2.on("提交成功，积分将在信息审核通过后发放到您的账户中",function(event){
+                      window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+                  });
+
                 }else if(data.success == false){
                    if((/[\u4e00-\u9fa5]+/).test(data.info)){
                        //如果输出的是汉字
