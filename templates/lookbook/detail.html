@@ -167,10 +167,10 @@
     function flipsnap_roll() {
         var itemWin = $(".wrapper").width() / 3;
         var flip_num = $(".flipsnap").find(".item").length;
-        $(".item").css("width", itemWin + 1);
+        $(".item").css("width", itemWin );
         var itemotWin = $(".item").outerWidth(true);
         console.log(itemWin, flip_num)
-        $(".flipsnap").css("width", itemotWin * flip_num);
+        $(".flipsnap").css("width", itemotWin * flip_num + 2);
     }
 
     window.onload = function () {   
