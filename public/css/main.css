@@ -125,7 +125,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 #tip { font-size:1.6rem; padding:2%; }
 #sed { width:18%; display:inline-block; vertical-align:top; }
 
-.textarea { width:98%; height:auto; padding:1%; }
+.textarea { width:96%; height:auto; padding:2%; font-size:1.4rem; }
 /*查看门店*/
 .look-map{ background-color:#eeeeee; width:100%;}
 .look-map .map{width:90%; margin:0 auto; padding:5%;}
