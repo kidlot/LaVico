@@ -19,7 +19,8 @@ a.tel{color:#2d2d2d;}
 /*Member*/
 .vip-card-num{text-align: center; color:#999; font-size: 16px; position: relative; }
 /*礼品券*/
-.header{width:100%;}
+.header{width:100%; height:50px; }
+.header img {width:100%; max-height:50px; }
 .coupon{width:100%; margin-top:20px;}
 .coupon-content{width:568px; height:330px; margin:0 auto; border:1px #bebebe solid; padding:10px 10px;}
 .look-text{width:100%; background-color:#e5e5e5; margin-top:20px; padding-top:60px; padding-bottom:360px;}
@@ -27,8 +28,10 @@ a.tel{color:#2d2d2d;}
 .look-text .click-look{text-align:center; font-size:25px;}
 .look-text .click-look a{color:#bb954a; border-bottom:1px #bb954a solid;}
 /*摇手机*/
-.mobile{width:100%; background-color:#e5e5e5; padding-top:60px; text-align:center;}
-.mobile-btn{ padding-top:70px; padding-bottom:40px;}
+.mobile{width:100%; background-color:#e5e5e5; padding-top:4%; text-align:center;}
+.mobile .mobile-pic { width:80%; padding:0 10%; }
+.mobile .mobile-pic img { width:100%; }
+.mobile-btn{ padding-top:8%; padding-bottom:4%;}
 /*我要侃价详细页*/
 .bargin{width:100%;background-color:#ededed; padding-top:2%;}
 .bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:1% 4%; overflow:hidden; position:relative; }
