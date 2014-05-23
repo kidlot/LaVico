@@ -37,13 +37,17 @@
 
 window.onload=function(){
     var i="";
-    $("h3").click(function(){
-        if(i!= $(this).text()){
-            i= $(this).text();
+    $("h3").click(function () {
+        if (i != $(this).text()) {
+            i = $(this).text();
             $("h3").next().slideUp("normal");
         }
         $(this).next().slideToggle("normal");
-    })
+    });
+
+    $("div.city-list").find("a.outlet_bottom").click(function () {
+        $(this).css("background", "url(../images/outlet_top.png) 97% center no-repeat");
+    });
 }
 
 //
