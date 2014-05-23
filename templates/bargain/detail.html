@@ -41,7 +41,17 @@
 
             <p class="wei_text">{@ doc.introduction}</p>
         </div>
-        <div class="bargin-mod"><img src="{@doc.pic_big}" /></div>
+        <div class="bargin-mod">
+
+
+            <foreach for="@doc.pic_big" var="bigpicurl">
+                <p>
+                <img src="{@ bigpicurl}" />
+                </p>
+            </foreach>
+
+
+        </div>
         <div class="foot">
             <if condition="@res.err==1">
 
@@ -175,6 +185,20 @@ function _close(){
 
 function _step(channelName){
 
+
+    if($("#isVip").val() == "false"){
+
+        window.popupStyle2.on("请先申领或绑定会员卡",function(event){
+
+            if(event == "confirm"){
+                location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
+            }
+        })
+
+        return false;
+    }
+
+
     var _func = function(){
 
         $("#_alert .channel").hide()
@@ -250,14 +274,6 @@ function bargain(){
             console.log(msg);
         }
     });
-}
-window.onload = function(){
-    if($("#isVip").val() == "false"){
-
-        $("#fixed").hide()
-        alert("请先申领或绑定会员卡");
-        location.href="/lavico/member/index?wxid="+$("#wxid").val()
-    }
 }
 
 </script>

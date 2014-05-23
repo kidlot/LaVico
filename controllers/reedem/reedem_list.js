@@ -67,7 +67,7 @@ module.exports={
         });
 
         this.step(function(){
-            //console.log("list:"+JSON.stringify(list));
+
             nut.model.list = list;
         });
 

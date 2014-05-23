@@ -8,7 +8,6 @@ module.exports={
 
         this.step(function(){
             middleware.request('Coupon/Promotions',{perPage:perPage,pageNum:pageNum},this.hold(function(err,doc){
-                //console.log(doc);
                 doc=doc.replace(/[\n\r\t]/,'');
                 var doc_json = eval('(' + doc + ')');
                 nut.model.doc_json=doc_json;
@@ -20,7 +19,6 @@ module.exports={
     actions:{
         save:{
             process:function(seed,nut){
-                //console.log(seed.json);
                 helper.db.coll("lavico/themeQuestion").insert(eval('('+seed.json+')'),this.hold(function(err, doc) {
                     if(err) throw err;
                 }));
@@ -29,7 +27,6 @@ module.exports={
                     perPage:1000,
                     pageNum:1
                 },this.hold(function(err,doc){
-                    //console.log(doc);
                     doc = doc.replace(/[\n\r\t]/,'');
                     var doc_json = eval('(' + doc + ')');
                     nut.model.doc_json=doc_json;
@@ -100,7 +97,7 @@ module.exports={
 //
 //        this.step(function(){
 //            middleware.request('Coupon/Promotions',{perPage:perPage,pageNum:pageNum},this.hold(function(err,doc){
-//                    console.log("doc:"+doc);
+//
 //                    doc=doc.replace(/[\n\r\t]/,'');
 //                    var doc_json = eval('(' + doc + ')');
 //                    nut.model.doc_json=doc_json;
@@ -121,7 +118,7 @@ module.exports={
 //                    perPage:1000,
 //                    pageNum:1
 //                },this.hold(function(err,doc){
-//                    console.log(doc);
+//
 //                    doc = doc.replace(/[\n\r\t]/,'');
 //                    var doc_json = eval('(' + doc + ')');
 //                    nut.model.doc_json=doc_json;

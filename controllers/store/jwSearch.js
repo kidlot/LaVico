@@ -89,7 +89,7 @@ function changeTwoDecimal(floatvar)
     var f_x = parseFloat(floatvar);
     if (isNaN(f_x))
     {
-        alert('function:changeTwoDecimal->parameter error');
+        //alert('function:changeTwoDecimal->parameter error');
         return false;
     }
     var f_x = Math.round(floatvar*100)/100;

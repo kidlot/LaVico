@@ -182,7 +182,7 @@ module.exports = {
 
 
                 this.step(function(){
-                    //console.log(_data)
+
 
                     var data = JSON.stringify(_data);
                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -269,7 +269,7 @@ module.exports = {
 
                 this.step(function(){
 
-                    //console.log(_data)
+
 
                     try{
                         var nodeExcel = require('excel-export');
@@ -350,7 +350,7 @@ module.exports = {
                     }
 
 
-                    //console.log(conf)
+
 
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');

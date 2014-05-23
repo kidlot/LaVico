@@ -6,20 +6,59 @@
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
-    layout:'lavico/member/layout',
+    layout:'lavico/layout',
     view:'lavico/templates/member/index.html',
     process:function(seed,nut){
 
-        /*先判断微信id是否存在*/
+        var wxid = undefined;
 
-        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
+        if(this.req.session.oauthTokenInfo){
+
+            console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
+            wxid = this.req.session.oauthTokenInfo.openid
+        }else{
+
+            // 通过oauth获取OPENID
+            if(process.wxOauth){
+
+                if(!seed.code){
+
+                    var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+"/lavico/member/index","123","snsapi_base")
+                    console.log("通过oauth获得CODE的url",url)
+                    this.res.writeHeader(302, {'location': url })  ;
+                }else{
+
+                    process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+
+                        if(!err){
+                            var openid = doc.openid
+                            wxid = openid || undefined;
+                            console.log("通过oauth获得信息",doc)
+                            this.req.session.oauthTokenInfo = doc;
+                        }else{
+                            console.log("通过oauth获得ID超时。",err)
+                            this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+"/lavico/member/index"})  ;
+                        }
+                    }))
+                }
+
+            }
+        }
+
+
+        /*先判断微信id是否存在*/
         this.step(function(){
-            if(wxid == 'undefined'){
-                nut.disable();//不显示模版
-                this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                this.res.write('{"error":"wxid_is_empty"}');
-                this.res.end();
-                this.terminate();
+            if(wxid == undefined){
+                if(seed.wxid){
+                    wxid  = seed.wxid;
+                }else{
+                    nut.disable();//不显示模版
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"error":"wxid_is_empty"}');
+                    this.res.end();
+                    this.terminate();
+                }
+
             }
         });
         this.step(function(){

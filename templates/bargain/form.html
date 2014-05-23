@@ -10,7 +10,6 @@
         <div class="panel-body" style="background:#f9fafb;">
             <div class="col-md-4">
                 <img id="showPic" style="width: 300; height: 380" src="{@ doc.pic || '/lavico/public/images/u6.jpg'}">
-                <input type="hidden" id="showPic_big" value="{@ doc.pic_big || '/lavico/public/images/u6.jpg'}">
             </div>
             <div class="col-md-8">
 
@@ -50,15 +49,36 @@
                         <tr>
                             <th>预览图</th>
                             <td>
-                                <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." id="pic" onchange="fileSelected(this.id);">
+                                <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." id="pic" onchange="fileSelected(this);">
                                 &nbsp;<span class="progressNumber"></span>
                             </td>
                         </tr>
                         <tr>
                             <th>细节图</th>
                             <td>
-                                <input type="file" class="input-xlarge"  style="width:206px" name="pic_big" placeholder="请输入...." id="pic_big" onchange="fileSelected(this.id);">
-                                &nbsp;<span class="progressNumber"></span>
+
+                                <span class="glyphicon glyphicon-plus" style="color: #919191;padding: 5px;cursor: pointer;" onclick="createBigPic()">增加细节图</span>
+
+                                <div class="bigPic">
+
+                                    <div style="padding: 5px;display: none" class="rowBigPic">
+                                        <input type="file" class="input-xlarge pull-left" name="bigPic"  style="width:235px" placeholder="请输入...." onchange="fileSelected(this);">
+                                        &nbsp;<span class="progressNumber"></span>
+                                        <span class="glyphicon glyphicon-remove pull-right" style="color: #919191;margin-left: 5px;cursor: pointer;margin-top: 1px;" onclick="removeBigPic(this)"></span>
+                                        <img style="width: 25px; " src="" class="pull-right" >
+                                    </div>
+
+                                    <foreach for="@doc.pic_big" var="bigpicurl">
+                                        <div style="padding: 5px;" class="rowBigPic">
+                                            <input type="file" class="input-xlarge pull-left" name="bigPic"  style="width:235px" placeholder="请输入...." onchange="fileSelected(this);">
+                                            &nbsp;<span class="progressNumber"></span>
+                                            <span class="glyphicon glyphicon-remove pull-right" style="color: #919191;margin-left: 5px;cursor: pointer;margin-top: 1px;" onclick="removeBigPic(this)"></span>
+                                            <img style="width: 25px; " src="{@ bigpicurl}" class="pull-right" >
+                                        </div>
+                                    </foreach>
+
+                                </div>
+
                             </td>
                         </tr>
                         <tr>
@@ -154,7 +174,7 @@
                 })
 
                 aFormInput['pic'] = $("#showPic").attr("src")
-                aFormInput['pic_big'] = $("#showPic_big").val()
+                aFormInput['pic_big'] = getBigPicList()
                 if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
                 if($("input[name='sizesVal']").val()) aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
 
@@ -173,11 +193,37 @@
                 }
             }
 
+            function getBigPicList(){
+                var list = []
+                $(".bigPic").find(".rowBigPic:gt(0)").each(function(i,o){
 
-            function fileSelected(inputid) {
+                    var src = $(o).find("img").attr("src")
+                    if(src){
+                        list.push(src)
+                    }
+                })
+                return list;
+            }
 
-                $("#"+inputid).next(".progressNumber").text("")
-                var file = document.getElementById(inputid).files[0];
+            function createBigPic(){
+
+                var oPanel = $(".bigPic").find(".rowBigPic").eq(0).clone()
+                oPanel.show()
+                $(".bigPic").append(oPanel)
+            }
+
+            function removeBigPic(button){
+                var oPanel = $(button).parents(".rowBigPic")
+                oPanel.fadeOut('normal', function() {
+                    oPanel.remove()
+                });
+            }
+
+
+            function fileSelected(input) {
+
+                $(input).next(".progressNumber").text("")
+                var file = input;
                 if (file) {
                     var fileSize = 0;
                     if (file.size > 1024 * 1024)
@@ -185,14 +231,16 @@
                     else
                         fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 
-                    lastPic = inputid
+                    window.oLastInput = input;
                     uploadFile();
                 }
             }
 
             function uploadFile() {
+
+
                 var fd = new FormData();
-                fd.append(lastPic, document.getElementById(lastPic).files[0]);
+                fd.append(window.oLastInput.name, window.oLastInput.files[0]);
                 var xhr = new XMLHttpRequest();
                 xhr.upload.addEventListener("progress", uploadProgress, false);
                 xhr.addEventListener("load", uploadComplete, false);
@@ -206,10 +254,10 @@
                 if (evt.lengthComputable) {
                     var percentComplete = Math.round(evt.loaded * 100 / evt.total);
 
-                    $("#"+lastPic).next(".progressNumber").text(percentComplete.toString() + '%')
+                    $(window.oLastInput).next(".progressNumber").text(percentComplete.toString() + '%')
                 }
                 else {
-                    $("#"+lastPic).next(".progressNumber").text('unable to compute')
+                    $(window.oLastInput).next(".progressNumber").text('unable to compute')
                 }
             }
 
@@ -217,12 +265,16 @@
                 var json = eval('(' + evt.target.responseText + ')');
 
                 var filename = json.model.fileName;
+                console.log(filename)
+                console.log(window.oLastInput)
 
-                if(lastPic == "pic"){
+                if(window.oLastInput.name == "pic"){
                     $("#showPic").attr("src",filename)
                 }
-                if(lastPic == "pic_big"){
-                    $("#showPic_big").val(filename)
+                if(window.oLastInput.name == "bigPic"){
+
+                    $(window.oLastInput).parents(".rowBigPic").find("img").attr("src",filename)
+
                 }
             }
 

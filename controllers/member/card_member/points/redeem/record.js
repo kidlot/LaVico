@@ -206,7 +206,7 @@ module.exports = {
     },
     viewIn:function(){
         $('#loading').hide();//隐藏加载框
-        var wxid = $('wxid').val();
+        var wxid = $('#wxid').val();
         /*兑换产品的链接*/
         $('.reddem').click(function(){
             var _reddem_id = $(this).attr('id');
@@ -227,11 +227,11 @@ function   formatDate(now){
 }
 function   formatTime(now){
     var   year=now.getFullYear();
-    var   month=now.getMonth()+1;
-    var   date=now.getDate();
-    var   hour=now.getHours();
-    var   minute=now.getMinutes();
-    var   second=now.getSeconds();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
     return   year+"年"+month+"月"+date+"日 "+hour+":"+minute+':'+second;
 }
 function contains(arr, obj) {

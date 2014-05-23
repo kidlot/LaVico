@@ -213,6 +213,7 @@ module.exports = {
                     }
 
                     /*合并两个数组*/
+                    var _yearMonthLogLength = yearMonthLog.length;//记录多少个年月记录
                     for(var i=0; i< newLog.length; i++){
                         if(i==0){
                             //console.log('yearMonthLog[0].time:'+yearMonthLog[0].time);
@@ -242,7 +243,10 @@ module.exports = {
 
                     nut.model.dataJson = JSON.stringify(dataJson);
                     nut.model.log = newLog;//当前会员的积分记录
-
+                    nut.model.yearMonthLogLength = _yearMonthLogLength;//记录多少个年月记录
+                    nut.model.logLength = newLog.length;
+                    nut.model.htmlStartUl = "<ul>";
+                    nut.model.htmlEndUl = "</ul>";
                 }));
             }
 
@@ -268,11 +272,11 @@ function   formatDate(now){
 }
 function   formatTime(now){
     var   year=now.getFullYear();
-    var   month=now.getMonth()+1;
-    var   date=now.getDate();
-    var   hour=now.getHours();
-    var   minute=now.getMinutes();
-    var   second=now.getSeconds();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
     return   year+"年"+month+"月"+date+"日 "+hour+":"+minute+':'+second;
 }
 function contains(arr, obj) {

@@ -11,6 +11,8 @@ module.exports = {
 
         var wxid = seed.uid ? seed.uid : 'undefined';//uid是用户的wechatid
         var aid = seed.aid ? seed.aid : 'undefined';//摇一摇活动ID
+        var shakeActivity;//摇一摇活动信息
+        var shakeActivityName;//摇一摇活动的名称
 
         var member_id;
         this.step(function(){
@@ -66,7 +68,7 @@ module.exports = {
                 nut.disable();//不显示模版
                 //this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
                 this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                this.res.write("<script>alert('请先注册会员或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                 this.res.end();
                 this.terminate();
             }
@@ -78,7 +80,7 @@ module.exports = {
 //              this.res.writeHead(200, { 'Content-Type': 'application/json' });
 //              this.res.write('{"error":"aid_is_empty"}');
                 this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                this.res.write("<script>alert('请先注册会员或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
                 this.res.end();
                 this.terminate();
             }
@@ -92,6 +94,22 @@ module.exports = {
 
         /*MemberID会员判断*/
 
+        /*每次积分消耗多少分，如果用户积分不够，需要提示用户。*/
+        /*提示用户是否确定消耗积分*/
+        this.step(function(){
+            helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
+                shakeActivity = doc;
+                console.log('~~~~~~~~~~~~~~~~~');
+                console.log(doc);
+                console.log('~~~~~~~~~~~~~~~~~');
+            }));
+        });
+
+        this.step(function(){
+            var _points = shakeActivity.points;
+            nut.model.points = _points
+        });
+
     },
     actions:{
         shakeit: {
@@ -104,10 +122,18 @@ module.exports = {
                     return;
                 }
                 var shake;
+                var costPerShake;//每次摇一摇消耗积分
                 var returnCount;//返回多少次机会
+                var memberPoints;//用户积分
+                var memberId;//用户memberID
+                var wxid = seed.uid;//用户微信ID
+                var shakeActivityName;//摇一摇活动名称
+
                 this.step(function(){
                     helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
                         shake = doc;
+                        costPerShake = shake.points;//每次摇一摇消耗积分
+                        shakeActivityName = shake.name;
                         console.log('~~~~~~~~~~~~~~~~~');
                         console.log(doc);
                         console.log('~~~~~~~~~~~~~~~~~');
@@ -116,10 +142,69 @@ module.exports = {
 
                 this.step(function(){
                     if(!shake){
-                        write_info(then,'{"result":"cannot"}');
+                        write_info(then,'{"result":"activity_is_over"}');
                     }
-                })
+                });
 
+                this.step(function(){
+                    /*判断用户积分是否足够*/
+                    console.log("costPerShake:"+costPerShake);
+                    if(costPerShake >  0){
+                        helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
+
+                            console.log(doc);
+
+                            if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
+                               memberId = doc.HaiLanMemberInfo.memberID;
+                            }else{
+                               memberId = "undefined";
+                            }
+                            console.log("memberId:"+memberId);
+
+                            if(memberId == "undefined"){
+                                write_info(then,'{"result":"something-error"}');
+                            }
+                        }));
+
+                    }
+                });
+
+                this.step(function(){
+                    if(costPerShake >  0){
+
+                        middleware.request('Point/'+memberId,{
+                        },then.hold(function(err,doc){
+                            doc = JSON.parse(doc);
+                            if(err){
+                                console.log(err);
+                                write_info(then,'{"result":"something-error"}');
+
+                            }else{
+
+                                if(doc.error){
+                                    console.log(doc.error);
+                                    write_info(then,'{"result":"something-error"}');
+                                }else{
+                                    memberPoints = doc.point;
+
+                                    console.log(doc);
+                                    console.log("memberPoints:"+memberPoints);
+
+                                }
+                            }
+
+                        }));
+
+                    }
+                });
+
+                this.step(function(){
+                    if(costPerShake >  0){
+                        if(memberPoints < costPerShake){
+                            write_info(then,'{"result":"your-points-not-enough"}');
+                        }
+                    }
+                });
                 var count=0;
                 this.step(function(){
                     var start_time;
@@ -136,7 +221,7 @@ module.exports = {
                         write_info(then,'{"result":"something-error"}');
                     }
                     helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
-                        count = doc;
+                        count = doc;//已经摇一摇次数
                         console.log('+++++++++++++++++');
                         console.log('now'+seed.aid+'sum:'+doc);
                         console.log('+++++++++++++++++');
@@ -144,9 +229,11 @@ module.exports = {
                 })
                 this.step(function(){
 
-                    returnCount = shake.lottery_count - count;
-                    console.log('now'+seed.aid+'can:'+shake.lottery_count);
-                    console.log('now'+seed.aid+'go on getting:'+returnCount);
+                    returnCount = shake.lottery_count - count;//shake.lottery_count 允许的摇一摇次数
+                    console.log('now '+seed.aid+' can:'+shake.lottery_count);
+                    console.log('now '+seed.aid+' go on getting:'+returnCount);
+                    console.log('has-count:'+count);
+                    console.log('system-count:'+shake.lottery_count);
                     if(count >= shake.lottery_count){
 
                         write_info(then,'{"result":"has-no-chance"}');
@@ -155,13 +242,18 @@ module.exports = {
 
                 this.step(function(){
                     var activity = {};
+
+                    var _points = 0 - parseInt(shake.points);//每次摇一摇，消耗积分
+
                     activity.aid = seed.aid;
                     activity.code = shake.aid;
                     activity.uid = seed.uid;
                     activity.name = shake.name;
                     activity.QTY = shake.QTY;
+                    activity.points = _points;//每次摇一摇，所需要的积分多少
                     activity.createDate = new Date().getTime();
-
+                    activity.memo = '摇一摇'+'-'+shakeActivityName;
+                    console.log(activity.memo);
                     console.log(Math.floor(Math.random()*100+1));
                     console.log(shake);
                     console.log(shake.lottery);
@@ -170,9 +262,9 @@ module.exports = {
                         middleware.request('Coupon/FetchCoupon',{
                             openid:seed.uid,
                             PROMOTION_CODE:shake.aid, //海澜CRM 活动代码，由 Promotions 接口返回
-                            point:0,
+                            point:_points,//每次摇一摇，消耗积分
                             otherPromId:seed.aid, //微信活动识别ID
-                            memo:'摇一摇'
+                            memo:activity.memo
                         },this.hold(function(err,doc){
                             //console.log("摇一摇领取优惠券");
                             err&&console.log(doc);
@@ -193,10 +285,21 @@ module.exports = {
                         }))
 
                     }else{
-                        console.log("依据概率，摇一摇没成功");
+                        console.log("shake fail");
                         helper.db.coll('shake/shake').insert(activity,function(err,doc){
                             err&&console.log(doc);
                         });
+                        if(costPerShake > 0){
+                            middleware.request('Point/Change',{
+                                memberId:memberId,
+                                qty:_points,//每次摇一摇，消耗积分
+                                memo:'摇一摇'+'-'+shakeActivityName
+                            },then.hold(function(err,doc){
+                                console.log(doc);
+                            }));
+                        }
+
+
                         write_info(then,'{"result":"unwin","count":"'+returnCount+'"}');
                     }
                 })
@@ -208,6 +311,13 @@ module.exports = {
 
         $('#loading').hide();//隐藏加载框
 
+
+        var points = parseInt($("#points").val());
+
+        if(points>0){
+            alert('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。');
+        }
+
         var flag = 1;//默认可摇一摇
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
@@ -215,22 +325,20 @@ module.exports = {
             alert('您的手机没法摇？那就直接点这里');
         }
 
-        $(".mobile-btn").click(function(){
+        var shakeIt = function(){
 
             if(flag == 1){
                 mobileClickRight();
                 setTimeout(function(){mobileClickLeft()},500);
                 setTimeout(function(){
                     mobileClick();
-                    $('#loading').show();
-                    setTimeout(function(){shake()},1000);
                 },1000);
             }
 
             flag = 0;
+        }
 
-        });
-
+        shakeIt();
         function mobileClickRight(){
 
             $(".mobile-pic").addClass("box_rotate");
@@ -244,7 +352,7 @@ module.exports = {
             $(".mobile-pic").addClass("box_rotate2");
         }
 
-        var SHAKE_THRESHOLD = 1500;
+        var SHAKE_THRESHOLD = 3000;
         var last_update = 0;
         var x=y=z=last_x=last_y=last_z=0;
 
@@ -262,15 +370,9 @@ module.exports = {
                 var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if (speed > SHAKE_THRESHOLD) {
-
+                    shake();
                     if(flag == 1){
-                        mobileClickRight();
-                        setTimeout(function(){mobileClickLeft()},500);
-                        setTimeout(function(){
-                            mobileClick();
-                            $('#loading').show();
-                            setTimeout(function(){shake()},1000);
-                        },1000);
+
                     }
 
                     flag = 0;
@@ -280,6 +382,10 @@ module.exports = {
                 last_z = z;
             }
         }
+
+        $('.mobile-btn').click(function(){
+            shake();
+        });
         /*后端JS*/
 
         function shake(){
@@ -305,7 +411,7 @@ module.exports = {
                     alert('今天您的机会用完了，明天再来参加活动吧！');
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
 
-                }else if(data.result == 'cannot'){
+                }else if(data.result == 'activity_is_over'){
 
                     alert('活动到期关闭了，下次再来参加活动吧！');
 
@@ -321,6 +427,10 @@ module.exports = {
                 }else if((/[\u4e00-\u9fa5]+/).test(data.result)){
 
                     alert(data.result);
+
+                }else if(data.result == 'your-points-not-enough'){
+
+                    alert("您的积分不够了，赶紧去参加抢积分活动吧！");
 
                 }else{
 
