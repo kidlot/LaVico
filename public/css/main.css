@@ -124,7 +124,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .pages .pre_on{color:#fff; background:url(../images/pre_on.jpg) center center no-repeat;}
 .pages .next{color:#281B00; background:url(../images/next.png) center center no-repeat; background-size:100% 100%; }
 .blank{ padding-top:10%;}
-.points-content{width:604px; height:319px; margin:0 auto;}
+.points-content{width:100%; height:auto;position:relative; }
+.points-content img {width:100%; }
+.points-content .points-content_txt { width:50% ;height:auto; line-height:2em; position:absolute; top:0px; right:0px; }
 
 #tip { font-size:1.6rem; padding:2%; }
 #sed { width:6%; display:inline-block; vertical-align:top; padding:1% 4% 0 0; }
