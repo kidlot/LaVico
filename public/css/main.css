@@ -338,7 +338,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .match .intro-text .arrow-left,.match .intro-text .arrow-right{width:15px; height:28px;position:absolute; top:50%; cursor:pointer; margin-top:-14px; }
 .match .intro-text .arrow-left{ left:10px; background:url(../images/macth_pre.png) no-repeat;}
 .match .intro-text .arrow-right{right:10px;background:url(../images/macth_next.png) no-repeat;}
-.match .intro-text .number{position:absolute; left:0px; bottom:0; line-height:50px; height:50px;width:100%; background-color:#000; text-align:center; color:#fff;}
+.match .intro-text .number{position:fixed; left:0px; bottom:0; line-height:50px; height:50px;width:100%; background-color:#000; text-align:center; color:#fff;}
 .f25,
 .f22{font-size:1.4rem;}
 
@@ -427,8 +427,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .line{ width:640px; height:30px; border-bottom:1px #666 solid; margin-top:50px;}
 .linebottom{ padding-top:40px;}
 .viewport {
-    width: 640px;
+    width: 110%;
     overflow: hidden;
+    margin: 0 auto;
     -webkit-transform: translateZ(0); /* Optional: When heavy at iOS6+ */
 }
 

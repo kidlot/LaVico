@@ -161,4 +161,15 @@
             }
         });
     }
+
+    function flipsnap_roll() {
+        var flip_num = $(".flipsnap").find(".item").index();
+        var itemWin = $(".item").width();
+
+        $(".flipsnap").css("width", itemWin * flip_num);
+    }
+
+    window.onload = function () {   
+        flipsnap_roll();
+    }
 </script>
