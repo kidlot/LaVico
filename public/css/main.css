@@ -126,7 +126,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .blank{ padding-top:10%;}
 .points-content{width:100%; height:auto; margin:0 auto; background-size:100% 100%;position:relative; }
 .points-content img { width:100%;}
-.points-content .points_txt { position:absolute; top:34%; right:10%; font-size:1.6rem; width:42% ;text-align:right }
+.points-content .points_txt { position:absolute; top:34%; right:10%; font-size:1.4rem; width:42% ;text-align:right }
 
 #tip { font-size:1.6rem; padding:2%; }
 #sed { width:6%; display:inline-block; vertical-align:top; padding:1% 4% 0 0; }
