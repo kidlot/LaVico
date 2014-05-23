@@ -1,0 +1,58 @@
+<style>
+    .floatRight{float: right;}
+    .width50{width:50px;}
+    .width100{width:100px;}
+    .width150{width:150px;}
+    .width250{width:250px;}
+    .width350{width:350px;}
+    .height35{heigth:35px;}
+    .staCount{background-color:#e8e8e8;}
+    .lineCenter{text-align: center;}
+    .maginTop20{margin-top:20px;}
+    .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
+    .borderBtm{border-bottom:1px solid darkgray;}
+</style>
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/statistics/statistics_list" class="stay">问答测试</a> <em></em></li>
+    <li class="active"><span>统计</span></li>
+</ul>
+
+<div name="container" class="panel panel-default">
+    <div name="title" style="padding: 10px;">
+        <div class="height35">
+            <input type="button" name="btnBack" onclick="history.back()" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">{@resultJson.title}</span>
+
+        </div>
+    </div>
+
+    <div name="getTheme" class="maginTop20">
+        <table class="tableSty">
+            <tr class="staCount borderBtm">
+                <td class="width50">选项名称</td>
+                <td class="width50">总共参与人数</td>
+                <td class="width50">参与人数</td>
+                <td class="width50">比列</td>
+            </tr>
+            <foreach for="@resultJson.choose" var="oneDoc" key="key">
+                <tr class="borderBtm">
+                    <td class="width50">{@oneDoc.chooseName}</td>
+                    <if condition="@key==0">
+                        <td class="width50" rowspan="{@resultJson.choose.length}" style="text-align: center;border: 3px solid #e8e8e8" >{@allPartakeNum}</td>
+                    </if>
+                    <td class="width50">{@oneDoc.selectCount}</td>
+                    <if condition="{@allPartakeNum==0}">
+                        <td>0%</td>
+                        <else/>
+                        <td>{@parseInt(oneDoc.selectCount/allPartakeNum*100)}%</td>
+                    </if>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+
+    <view name="visitedPartake"/>
+</div>
+
+
+

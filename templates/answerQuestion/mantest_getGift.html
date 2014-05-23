@@ -1,0 +1,17 @@
+
+<div class="wrapper">
+    <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
+    <div class="coupon">
+        <div class="coupon-content"><img src="/lavico/public/images/coupon.jpg" /></div>
+    </div>
+    <div class="look-text">
+        <if condition="{@getActivities!='no'}">
+            <p class="get">恭喜您获得奖券:{@getActivities}<br />
+                可在“专属礼券”内查询</p>
+            <p class="click-look"><a href="/lavico/member/card_member/coupon/index?wxid={@wxid}">点击查看</a></p>
+        <else/>
+            <p class="get">很抱歉礼券已经发放完毕</p>
+        </if>
+    </div>
+</div>
+

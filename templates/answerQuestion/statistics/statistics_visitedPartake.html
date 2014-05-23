@@ -1,0 +1,50 @@
+<style>
+    .floatRight{float: right;}
+    .width50{width:50px;}
+    .width100{width:100px;}
+    .width150{width:150px;}
+    .width250{width:250px;}
+    .width350{width:350px;}
+    .height35{heigth:35px;}
+    .staCount{background-color:#e8e8e8;}
+    .lineCenter{text-align: center;}
+    .maginTop20{margin-top:20px;}
+    .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
+    .borderBtm{border-bottom:1px solid darkgray;}
+</style>
+<div name="getMember" class="maginTop20">
+    <div style="margin-left: 17px;">
+        <div>参与过的人</div>
+        <div>
+            <a href="/lavico/answerQuestion/statistics/statistics_oneDetail:exportXsl?_id={@_id}" target="_blank">全部导出</a>&nbsp;
+            <foreach for="{@theme.type}" var="docc">
+                <if condition="{@docc==2}">
+                    <a href="/lavico/answerQuestion/statistics/statistics_simpleList?themeId={@_id}&optionId={@optionId}" target="_blank">显示用户答案</a>
+                </if>
+            </foreach>
+        </div>
+    </div>
+    <table class="tableSty">
+        <tr class="staCount borderBtm">
+            <td class="width50"><input type="checkbox" name="all"></input></td>
+            <td class="width50">用户姓名</td>
+            <td class="width100">性别</td>
+            <td class="width50">电话</td>
+            <td class="width50">email</td>
+            <td class="width50">行业</td>
+            <td class="width50">城市</td>
+        </tr>
+        <foreach for="@visitedPeopleList" var="people">
+            <tr class="borderBtm">
+                <td class="width50"><input type="checkbox" name="all"></input></td>
+                <td class="width50">{@people.realname}</td>
+                <td class="width100">{@people.gender=="male"?"男":"女"}</td>
+                <td class="width50">{@people.mobile}</td>
+                <td class="width50">{@people.email}</td>
+                <td class="width50">{@people.profession}</td>
+                <td class="width50">{@people.city}</td>
+            </tr>
+        </foreach>
+    </table>
+    <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@visitedPeopleList" model.url="/lavico/answerQuestion/statistics/statistics_oneDetail?themeId={@_id}&page=%pagenum%" /></div>
+</div>

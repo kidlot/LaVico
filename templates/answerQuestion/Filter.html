@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="/lavico/public/css/base.css" />
+<link rel="stylesheet" href="/lavico/public/css/main.css" />
+
+
+<div class="wrapper">
+    <div class="coupon-banner">
+        <if condition="@docs.themeType=='1'">
+            <img src="/lavico/public/images/man_test_banner.jpg" style="text-align:center;" />
+            <else/>
+            <img src="/lavico/public/images/answer_banner.jpg" />
+        </if>
+    </div>
+    <div class="activity-rules">
+        <div class="text">
+            <div class="title">您已经答过此题,不能再答题</div>
+        </div>
+        <div class="begin">
+            <a href="/lavico/member/index?wxid={@wxid}">会员中心</a>
+        </div>
+    </div>
+</div>

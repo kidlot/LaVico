@@ -1,0 +1,74 @@
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">积分明细</span><span class="title4"><a href="/lavico/reedem/showList?wechatId={@wxid}">积分兑换</a></span></p>
+    </div>
+    <div class="points2">
+        <div class="title">
+            <p class="text">公告：年度积分即将清零，<a href="/lavico/announcement/showIndex:show?_id=537473a97ea21a5542000c7e&wxid=oyYp3jhcoLVSaZdEfwxJ3XFyCZvc">查看详情 > </a></p>
+        </div>
+        <if condition="@info=='return_data_true'">
+
+            <if condition="@remaining != 0">
+                <div class="points2-content">
+                    <div class="banner"><img src="/lavico/public/images/points-log.jpg" /></div>
+                    <p class="title1 clear"><span class="fl">目前可用积分</span><span class="fr">{@remaining}</span></p>
+                    <div class="point-box">
+
+                        <!--循环-->
+                        <foreach for="@log" key="key">
+
+                            <if condition="{@log[key].type == 'sum'}">
+
+                                <if condition="@key != 0">
+                                    {@htmlEndUl}
+                                </if>
+                                <div class='{@log[key].class} clear' id="title-{@key}" ">
+                                    <p><span class="fl">{@log[key].time}</span><span class="fr">获得{@log[key].sumGetPoint}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用{@log[key].sumUsedPoint}</span></p>
+                                </div>
+
+                                <if condition="@key == 0">
+                                    {@htmlStartUl}
+                                </if>
+
+                            <else/>
+
+                                <li>
+                                     <span class="fl c1">{@log[key].MEMO}
+                                        {@log[key].formatetime}</span>
+                                     <span class="fr c2 pt15">{@log[key].value}</span></li>
+                                </li>
+
+
+                                <if condition="@logLength == key + 1">
+                                    {@htmlEndUl}
+                                </if>
+
+                            </if>
+
+                        </foreach>
+                        <!--循环-->
+                        <p>&nbsp;</p>
+                    </div>
+                </div>
+            <else/>
+
+                <div class="points2-content">
+                    <div class="banner"><img src="/lavico/public/images/point_banner.jpg" /></div>
+                    <p class="title1 clear"><span class="fl">目前可用积分</span><span class="fr">0</span></p>
+
+                </div>
+                <p>&nbsp;</p>
+
+
+            </if>
+
+        <elseif condition="@info=='return_data_error'"/>
+        网络不稳定，请稍后再尝试刷新此页面
+        <else/>
+        网络不稳定，请稍后再尝试刷新此页面
+        </if>
+    </div>
+</div>
+<input type="hidden" id="wxid" name="wxid" value="{@wxid}"/>
+<!--正在加载-->
+<div id="loading" class="loading" ><img src="/lavico/public/images/loading.gif"></div>

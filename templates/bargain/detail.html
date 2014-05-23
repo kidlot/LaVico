@@ -1,0 +1,279 @@
+<div class="wrapper">
+    <div class="bargin">
+        <div class="bargin-content">
+            <div class="fl bargin-left"><img src="{@ doc.pic}"/></div>
+            <div class="fl bargin-right">
+
+
+                <input type="hidden" value="{@ doc._id}" id="_id">
+                <input type="hidden" value="{@ wxid}" id="wxid">
+                <input type="hidden" value="{@ doc.promotionsCode}" id="promotionsCode">
+                <input type="hidden" value="{@ doc.deductionIntegral}" id="point">
+                <input type="hidden" value="{@ isVip}" id="isVip">
+
+
+                <p class="title name" >{@ doc.name}</p>
+
+                <p class="color">
+                    <span class="color-title">颜色：</span><span class="color-con">{@ doc.colors}</span>
+                </p>
+
+                <p class="rules">
+                    <span class="rules-title fl">尺码：</span><span
+                        class="rules-con fl">{@ doc.sizes}</span>
+                </p>
+
+                <p class="color">
+                    <span class="color-title">剩余：</span><span class="color-con">{@ doc.surplus}件</span>
+                </p>
+
+                <p class="color">
+                    <span class="color-title">市场零售价：</span><span class="color-con"><span
+                        class="pice">{@ doc.price}</span>元</span>
+                </p>
+
+                <p class="look_store"><a href="/lavico/bargain/maps?_id={@doc._id}&wxid={@wxid}">查看活动参与门店 > </a></p>
+            </div>
+        </div>
+        <div class="border"></div>
+        <div class="bargin_content">
+            <p class="wei_name">商品描述：</p>
+
+            <p class="wei_text">{@ doc.introduction}</p>
+        </div>
+        <div class="bargin-mod">
+
+
+            <foreach for="@doc.pic_big" var="bigpicurl">
+                <p>
+                <img src="{@ bigpicurl}" />
+                </p>
+            </foreach>
+
+
+        </div>
+        <div class="foot">
+            <if condition="@res.err==1">
+
+                <if condition="@res.url">
+                    <a href="{@res.url}" class="bargainBtn" id="fixed" >{@res.msg}</a>
+                <else/>
+                    <a href="javascript:;" class="bargainBtn" id="fixed" >{@res.msg}</a>
+                </if>
+            <else/>
+                <a href="javascript:;" class="bargainBtn" id="fixed" onclick="_step('bargain')">立即侃价</a>
+            </if>
+        </div>
+    </div>
+
+    <div id="_alert">
+        <div class="fade channel" id="_win_bargain">
+            <div class="input-price">
+                <p class="msg">请在下方输入您的心理价位<br/>
+                    (精确到元，例如1200)</p>
+
+                <p class="input"><input id="price" type="text" border="0" value="10"/></p>
+
+                <p class="confirm"><input class="confirmBtn" type="submit" border="0" value="确认" onclick="bargain()"/></p>
+            </div>
+        </div>
+
+
+        <div class="fade4 channel" id="_win_success">
+            <div class="first-price">
+                <p class="msg">您已成功砍价，请查看您的“专属礼券”</p>
+
+                <p class="confirm"><input class="goconfirmBtn" style="background:url('/lavico/public/images/click_btn_go.jpg')"
+                                          type="submit" border="0" value="" onclick="location.href='/lavico/member/card_member/coupon/index?wxid='+$('#wxid').val()"/></p>
+            </div>
+        </div>
+
+        <!-- STEP1 -->
+        <div class="fade2 channel" id="_win_step1_high">
+            <div class="second-price">
+                <p class="msg"><span class="f45 stepPrice">4900</span>元<br/>就喜欢和您这种爽气的买家做生意<br/>
+                    成交</p>
+
+                <p class="confirm"><input type="submit" class="okconfirmBtn" border="0" value="我确认价格，成交" onclick="_step('success')"/></p>
+
+                <p class="msg mt70">如果您觉得出价高了<br/>可以再重新出价一次<br/>
+                    不过只有最后一次机会哦</p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="重新出价" onclick="_step('bargain')"/></p>
+            </div>
+        </div>
+
+
+        <div class="fade1 channel" id="_win_step1_low">
+            <div class="first-price">
+                <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗吐血<br/>
+                    再加点儿呗<br/>
+                    不过只有最后一次机会哦</p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="重新出价" onclick="_step('bargain')"/></p>
+            </div>
+        </div>
+
+        <!-- STEP2 -->
+        <div class="fade2 channel" id="_win_step2_high">
+            <div class="second-price">
+                <p class="msg"><span class="f45 stepPrice">4900</span>元<br/>就喜欢和您这种爽气的买家做生意<br/>
+                    成交</p>
+
+                <p class="confirm"><input type="submit" class="okconfirmBtn" border="0" value="我确认价格，成交" onclick="_step('success')"/></p>
+
+                <p class="msg mt70">如果您觉得出价高了<br/>可以放弃此次机会<br/>
+                    十分钟以后再来和我侃价</p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="放弃" onclick="giveup()"/></p>
+            </div>
+        </div>
+
+        <div class="fade1 channel" id="_win_step2_low">
+            <div class="first-price">
+                <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗心寒的吐血<br/>
+                    休息一下，有心想买的话10分钟后再来<br/>
+                    好好出个价</p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="我去休息下" onclick="giveup()"/></p>
+            </div>
+        </div>
+
+
+        <div class="fade3">
+            <div class="first-price">
+                <p class="msg">休息休息，10分钟后才能再砍价</p>
+
+                <p class="confirm"><input class="restconfirmBtn" type="submit" border="0" value="好吧"/></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function giveup(){
+
+    $.ajax({
+        url:'/lavico/bargain/form:giveup',
+        type:'POST',
+        data:{
+            'price':$("#price").val(),
+            'name':$(".name").text(),
+            '_id':$("#_id").val(),
+            'wxid':$("#wxid").val(),
+            'productID':$("#_id").val()
+        },
+        success:function(data){
+            if(data.err == 0){
+
+                $("#fixed").text("休息休息，10分钟后才能再侃价")
+                $("#fixed").attr('href',"javascript:;");
+                _close()
+            }else{
+                alert(data.msg)
+            }
+        },
+        error:function(msg){
+            console.log(msg);
+        }
+    });
+
+}
+function _close(){
+    $("#_alert").hide()
+}
+
+function _step(channelName){
+
+
+    if($("#isVip").val() == "false"){
+
+        window.popupStyle2.on("请先申领或绑定会员卡",function(event){
+
+            if(event == "confirm"){
+                location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
+            }
+        })
+
+        return false;
+    }
+
+
+    var _func = function(){
+
+        $("#_alert .channel").hide()
+        $("#_win_"+channelName).show()
+        $("#_alert").show()
+    }
+    if(channelName == "success"){
+        deal(function(){
+            $("#fixed").text("您已成功侃价，请查看您的“专属礼券”")
+            $("#fixed").attr('href',"/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
+            _func()
+        })
+    }else{
+        _func()
+    }
+}
+
+function deal(cb){
+    $.ajax({
+        url:'/lavico/bargain/form:deal',
+        type:'POST',
+        data:{
+            'price':$("#price").val(),
+            'name':$(".name").text(),
+            '_id':$("#_id").val(),
+            'wxid':$("#wxid").val(),
+            'productID':$("#_id").val(),
+            'promotionsCode':$("#promotionsCode").val(),
+            'point':$("#point").val()
+        },
+        success:function(data){
+            if(data.err == 0){
+                cb()
+            }else{
+                alert(data.msg)
+            }
+        },
+        error:function(msg){
+            console.log(msg);
+        }
+    });
+}
+
+function bargain(){
+
+    if(!$("#price").val()){
+        alert("请输入您心目中的价格！")
+        return
+    }
+
+    if(isNaN($("#price").val())){
+        alert("请输入数字！")
+        return
+    }
+    $.ajax({
+        url:'/lavico/bargain/form:bargain',
+        type:'POST',
+        data:{
+            'price':$("#price").val(),
+            '_id':$("#_id").val(),
+            'wxid':$("#wxid").val()
+        },
+        success:function(data){
+            if(data.err == 0){
+                _step("step"+data.step+'_'+data.doc)
+                $("#_win_step"+data.step+'_'+data.doc).find(".stepPrice").text($("#price").val())
+                console.log(data)
+            }else{
+                alert(data.msg)
+            }
+        },
+        error:function(msg){
+            console.log(msg);
+        }
+    });
+}
+
+</script>

@@ -1,0 +1,265 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/lookbook/index" >精英搭配</a></li>
+    <li class="b03"><a href="#" class="stay">编辑</a></li>
+    <li class="pull-right"><a href="/lavico/lookbook/index"><i class="fui-arrow-left"></i>返回</a></li>
+</ul>
+
+<div class="panel panel-default formText" >
+    <div class="panel-heading clearfix">
+    </div>
+    <div class="panel-body" style="background:#f9fafb;">
+        <div class="col-md-12">
+            <br>
+            <div style="min-height: 70px;">
+                <h5 style="color: #1abc9c" class="pull-left" id="pagename">{@ doc.name||'2014秋冬搭配手册'}</h5>
+                <input type="hidden" id="_id" value="{@ _id}">
+                <div id="jsonDoc" style="display: none">{@ jsonDoc}</div>
+                <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="lookbook.save()"><i class="fui-check-inverted"></i> 保存</a>
+            </div>
+
+            <form class="form-horizontal" role="form">
+                <h6>基础设置</h6>
+                <br>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">状态</label>
+                    <div class="col-sm-10">
+
+                        <div class="switch has-switch way">
+                            <div class="switch-animate switch-off" onclick="audioClick(this)">
+                                <input type="checkbox" data-toggle="switch">
+                                <span class="switch-left">关</span>
+                                <label>&nbsp;</label>
+                                <span class="switch-right">开</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" placeholder="2014春季潮流搭配" style="width: 300px;" value="{@ doc.name}" oninput="$('#pagename').text(this.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">图文URL</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" value="http://{host}/lavico/lookbook/detail?_id={@ _id}&wxid={wxid}" style="width: 300px;color: #9B9B9B;float: left">
+                        <button type="button" class="btn btn-primary" style="float: left;margin-left: 6px">复制</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">类型</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" style="width: 150px" name="type">
+                            <option value="瀑布流型">瀑布流型</option>
+                            <option value="整图型">整图型</option>
+                            <option value="列表型">列表型</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">开始时间</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="startDate" name="startDate" class="form-control" style="width: 150px" value="{@ doc.startDate && new Date(doc.startDate+28800000).toISOString().substr(0,10)}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">结束时间</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="stopDate" name="stopDate" class="form-control" style="width: 150px" value="{@ doc.stopDate && new Date(doc.stopDate+28800000).toISOString().substr(0,10)}">
+                    </div>
+                </div>
+
+                <br>
+                <h6>内容设置</h6>
+                <br>
+
+                <!--  pageList  -->
+                <div class="pageList">
+                    <div class="panel panel-default formText pagePanel" style="display: none">
+
+                        <div class="panel-heading clearfix" style="padding: 6px 15px; height: 40px">
+                            <p class="h7 pull-left" style="margin-bottom: 0px;">第 <code class="page">1</code> 页</p>
+                            <span class="glyphicon glyphicon-remove removeButton pull-right" style="padding: 6px;color: #919191;margin-left: 5px;cursor: pointer;"></span>
+                            <span class="glyphicon glyphicon-chevron-down pull-right" style="padding: 6px;color: #919191;cursor: pointer;"></span>
+                            <span class="glyphicon glyphicon-chevron-up pull-right" style="padding: 6px;color: #919191;cursor: pointer;"></span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3">
+                                <div>搭配效果图 (600 x 400)</div>
+                                <img style="width: 150; " src="{@ doc.pic || '/lavico/public/images/u6.jpg'}" class="pagePic">
+                                <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." onchange="fileSelected(this);">
+                                &nbsp;<span class="progressNumber"></span>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">搭配名称</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="page.name" placeholder="10字以内" style="width: 300px">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">搭配说明</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" placeholder="100字以内" name="page.detail"></textarea>
+                                    </div>
+                                </div>
+                                <div class="productList">
+                                    <div class="panel panel-default formText productPanel" style="display: none">
+
+                                        <div class="panel-heading clearfix" style="padding: 3px 15px; height: 30px;">
+                                            <p class="pull-left" style="margin-bottom: 0px;font-size: 16px">单品 <code class="product">1</code></p>
+                                            <span class="glyphicon glyphicon-remove removeButton pull-right" style="padding: 3px;color: #919191;margin-left: 5px;cursor: pointer;"></span>
+                                            <span class="glyphicon glyphicon-chevron-down pull-right" style="padding: 3px;color: #919191;cursor: pointer;"></span>
+                                            <span class="glyphicon glyphicon-chevron-up pull-right" style="padding: 3px;color: #919191;cursor: pointer;"></span>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-sm-4">
+
+                                                <div>单品大图 (800 x 1200)</div>
+                                                <img id="showPic" style="width: 100px; " src="{@ doc.pic || '/lavico/public/images/u6.jpg'}" class="productPic">
+                                                <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." id="pic" onchange="fileSelected(this);">
+                                                &nbsp;<span class="progressNumber"></span>
+                                            </div>
+                                            <div class="col-sm-8">
+
+                                                <input type="text" class="form-control" name="page.product.name" placeholder="单品名称 (10字以内)" style="width: 300px"><br>
+                                                <textarea class="form-control" rows="3" placeholder="单品说明 (50字以内)" name="page.product.detail"></textarea>
+
+                                                <span class="glyphicon glyphicon-plus" style="color: #919191;padding: 5px;cursor: pointer;" onclick="lookbook.createProductBigPic(this)">增加特写图</span>
+
+                                                <div class="productBigPic">
+                                                    <div style="padding: 5px;display: none" class="rowProductBigPic">
+                                                        <input type="file" class="input-xlarge pull-left"  style="width:235px" placeholder="请输入...." onchange="fileSelected(this);">
+                                                        &nbsp;<span class="progressNumber"></span>
+                                                        <span class="glyphicon glyphicon-remove pull-right" style="color: #919191;margin-left: 5px;cursor: pointer;margin-top: 1px;" onclick="lookbook.removeProductBigPic(this)"></span>
+                                                        <img style="width: 25px; " src="" class="pull-right" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="btn btn-success btn-social-googleplus pull-right addProduct" href="javascript:;" onclick="lookbook.addProduct($(this))">增加单品</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <a class="btn btn-success btn-social-googleplus pull-right" href="javascript:;" onclick="var o = lookbook.addPage();o.addProduct()" style="margin-top: 10px">增加页面</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/lavico/public/js/lookbook.js"></script>
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+<script>
+
+    function fileSelected(oInput) {
+
+        $(oInput).next(".progressNumber").text("")
+        var file = oInput.files[0];
+        if (file) {
+            var fileSize = 0;
+            if (file.size > 1024 * 1024)
+                fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            else
+                fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+
+            window.oLastInput = oInput
+            uploadFile();
+        }
+    }
+
+    function uploadFile() {
+        var fd = new FormData();
+        fd.append("pic", window.oLastInput.files[0]);
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener("progress", uploadProgress, false);
+        xhr.addEventListener("load", uploadComplete, false);
+        xhr.addEventListener("error", uploadFailed, false);
+        xhr.addEventListener("abort", uploadCanceled, false);
+        xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
+        xhr.send(fd);
+    }
+
+    function uploadProgress(evt) {
+        if (evt.lengthComputable) {
+            var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+
+            $(window.oLastInput).next(".progressNumber").text(percentComplete.toString() + '%')
+        }
+        else {
+            $(window.oLastInput).next(".progressNumber").text('unable to compute')
+        }
+    }
+
+    function uploadComplete(evt) {
+
+        var json = eval('(' + evt.target.responseText + ')');
+        var filename = json.model.fileName;
+
+        var parent = $(window.oLastInput).parent();
+
+        if(parent.attr("class")=="rowProductBigPic"){
+
+            parent.find("img").attr("src",filename)
+
+            var _id = lookbook._getPageProductID($(window.oLastInput))
+            window.lookbook.page[parseInt(_id.pageId)].product[parseInt(_id.productId)].bigPic[parseInt(parent.attr("_num"))-1].pic = filename
+
+        }else{
+
+            $(window.oLastInput).prev().attr("src",filename)
+
+            // update model
+            var _id = lookbook._getPageProductID($(window.oLastInput))
+
+            if(!isNaN(_id.productId)){
+                window.lookbook.page[parseInt(_id.pageId)].product[parseInt(_id.productId)].pic = filename
+            }else{
+                window.lookbook.page[parseInt(_id.pageId)].pic = filename
+            }
+        }
+    }
+
+    function uploadFailed(evt) {
+        alert("There was an error attempting to upload the file.");
+    }
+
+    function uploadCanceled(evt) {
+        alert("The upload has been canceled by the user or the browser dropped the connection.");
+    }
+
+    window.audioClick = function(o){
+        if ($(o).hasClass("switch-off")){
+            $(o).removeClass("switch-off")
+            $(o).addClass("switch-on")
+
+            lookbook.on = false
+
+        }else{
+            $(o).addClass("switch-off")
+            $(o).removeClass("switch-on")
+
+            lookbook.on = true
+        }
+    }
+</script>

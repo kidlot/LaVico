@@ -1,0 +1,32 @@
+
+<body>
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">门店查询</span></p>
+    </div>
+    <div class="inquiry">
+        <div class="city fl">{@cityName}</div>
+        <div class="change fr"><input type="button" border="0" class="chengeCity" value="切换城市" /></div>
+    </div>
+    <div class="store-list">
+        <div class="store-listContent">
+            <ul>
+                <foreach for="{@city_docs}" var="docs" key="key">
+                    <li><a href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@docs.CODE}1&wxid={@wxid}'">
+                        <p class="name">{@docs.NAME}</p>
+                        <p class="adree">地址：{@docs.ADDR}</p>
+                        <p class="tel">电话：{@docs.TEL}</p>
+                        <p class="tel">活动：{@docs.ACT}</p>
+                    </a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        $(".chengeCity").click(function(){
+            window.location.href = "/lavico/store/searchByCity?wxid={@wxid}";
+        });
+    };
+</script>

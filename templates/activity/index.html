@@ -1,0 +1,81 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+
+        <div style="width: 300px;">
+            <a href="/lavico/activity" class="btn btn-xs btn-primary mhm stay">刷新</a>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th width="20%">活动名称</th>
+                <th width="20%">活动CODE</th>
+                <th width="20%">面值</th>
+                <th width="20%">类型</th>
+                <th width="20%">已发放/总数</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@list" var="doc">
+                <tr>
+                    <td style="text-align: center;"><a href="/lavico/activity/index:modify_html?aid={@ doc.PROMOTION_CODE}" class='mhm stay'>{@ doc.PROMOTION_NAME}</a></td>
+                    <td style="text-align: center;">{@ doc.PROMOTION_CODE}</td>
+                    <td style="text-align: center;">
+                        {@ doc.QTY}
+                    </td>
+                    <td style="text-align: center;">
+                        <if condition="{@doc.TYPE == '01'}">现金抵用券
+                            <elseif condition="{@doc.TYPE == '02'}"/>礼品券</if>&nbsp;
+                        <if condition="{@doc.CLS == '101'}">现金抵用券
+                            <elseif condition="{@doc.CLS == '102'}"/>礼品券
+                            <elseif condition="{@doc.CLS == '103'}"/>生日券</if>
+                    </td>
+                    <td style="text-align: center;">
+                        {@doc.USED}/{@doc.TOTAL}
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/activity/index?page=%pagenum%" />
+    </div>
+</div>
+<style>
+#tagList tr td .children_table tr td{
+  #background:white;
+}
+#tagList tr th{
+  text-align:center;
+}
+#tagList tr th .th_left{
+  float:left;
+  padding:0px 15px;
+}
+#tagList tr th .th_center{
+  text-align:left;
+  padding:0px 15px;
+}
+#tagList tr th .th_right{
+  float:right;
+  padding:0px 15px;
+} 
+#tagList tr td .children_table tr td{
+  border-bottom: 5px #edeff0 solid;
+  border-top: 5px #edeff0 solid;
+}
+#tagList tr td .children_table tr th{
+  border: none;
+  padding: 12px 15px;
+  vertical-align: middle;
+  border-bottom: 5px #edeff0 solid;
+  border-top: 5px #edeff0 solid;
+} 
+</style>
+<script>
+
+</script>

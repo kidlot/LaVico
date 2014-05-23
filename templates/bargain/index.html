@@ -1,0 +1,117 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+
+        <div style="width: 300px;">
+            <a href="/lavico/bargain/form" class="btn btn-xs btn-primary mhm">增加</a>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>产品名称</th>
+                <th>状态</th>
+                <th>市场零售价</th>
+                <th>最低价格</th>
+                <th>剩余数量</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@page.docs" var="doc">
+                <tr>
+                    <td>{@ doc.name}</td>
+                    <td>{@ doc.stat}</td>
+                    <td>{@ doc.price}</td>
+                    <td>{@ doc.minPrice}</td>
+                    <td>{@ doc.surplus}</td>
+                    <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
+                    <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
+                    <td>
+                        <a href="/lavico/bargain/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">修改</a>
+                        <a href="/lavico/bargain/statistics?_id={@ doc._id}" class="btn btn-xs btn-primary mhm">统计</a>
+                        <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/bargain/index?page=%pagenum%" />
+        <!--  /pagination  -->
+
+    </div>
+</div>
+
+        <script>
+            function func_remove(_id,event){
+
+                if (confirm("真的要删除吗？")){
+
+                    $.ajax({
+                        url: "/lavico/bargain/form:remove?_id="+_id,
+                        cache: false
+                    }).done(function( json ) {
+                                if(json.err == 0){
+                                    $(event).parents("tr").fadeOut();
+                                }else{
+                                    $.globalMessenger().post({
+                                        message: json.msg,
+                                        type: 'error',
+                                        showCloseButton: true})
+                                }
+                            });
+
+                }else{
+                    return false;
+                }
+            }
+
+            function copyToClipboard(txt) {
+
+                if (window.clipboardData) {
+                    window.clipboardData.clearData();
+                    window.clipboardData.setData("Text", txt);
+                    alert("复制成功！")
+                } else if (navigator.userAgent.indexOf("Opera") != -1) {
+                    window.location = txt;
+                    alert("复制成功！");
+                } else if (window.netscape) {
+                    try {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    } catch (e) {
+                        alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将 'signed.applets.codebase_principal_support'设置为'true'");
+                    }
+                    var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+                    if (!clip)
+                        return;
+                    var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+                    if (!trans)
+                        return;
+                    trans.addDataFlavor('text/unicode');
+                    var str = new Object();
+                    var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+                    var copytext = txt;
+                    str.data = copytext;
+                    trans.setTransferData("text/unicode", str, copytext.length * 2);
+                    var clipid = Components.interfaces.nsIClipboard;
+                    if (!clip)
+                        return false;
+                    clip.setData(trans, null, clipid.kGlobalClipboard);
+                    alert("复制成功！")
+                }else if(typeof(copy) == "function"){
+                    copy(txt);
+                    alert("复制成功！")
+                }else{
+                    alert("浏览器不支持,请手动复制。"+txt)
+                }
+            }
+        </script>

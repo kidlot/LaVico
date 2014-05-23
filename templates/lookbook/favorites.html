@@ -1,0 +1,72 @@
+<div class="wrapper">
+    <div class="store-title">
+        <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">收藏清单</span></p>
+    </div>
+    <div class="points3">
+
+        <if condition="@ $helper.gt(docs.length,0)">
+
+            <foreach for="@docs" var="fav" key="key">
+            <div class="points3-box">
+                <div class="points3-content clear">
+                    <div class="fl"><a href="/lavico/lookbook/product?_id={@ fav.lookbookid}&wxid={@ wxid}&pageNum={@fav.pageNum}&productId={@fav.product._id}&source=view"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" ></a></div>
+                    <div class="fl text">
+                        <div class="title3"><a href="member_num27.html">{@fav.product.name}</a></div>
+                        <div class="btn subbtn" onclick="cancelFav('{@ fav._id}')">取消收藏</div>
+                    </div>
+                </div>
+                <div class="points3-content clear">
+                    <div class="con"><a href="member_num27.html">{@fav.product.detail}</a></div>
+                </div>
+            </div>
+            </foreach>
+
+        <else/>
+            <div class="points3-box">
+                <div class="points3-content clear">
+                    <div class="fl text">
+                        <div class="title3"><a href="javascript:;">您还没有收藏商品</a></div>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </if>
+
+    </div>
+</div>
+
+<div class="fade2">
+    <div class="second-price">
+        <p class="msg"><span class="mt70">取消收藏成功</span></p>
+        <p class="confirm"><input type="submit" class="goon_btn" border="0" value="好的" onclick="location.reload()"></p>
+    </div>
+</div>
+
+        <script>
+            function cancelFav(_id){
+
+
+                window.popupStyle3.on("您确定要取消收藏吗？",function(event){
+
+                    if(event == "yes"){
+
+                        $.ajax({
+                            url:'/lavico/lookbook/favorites:cancelFav',
+                            type:'POST',
+                            data:{
+                                '_id':_id
+                            },
+                            success:function(data){
+                                $('.fade2').show()
+                            },
+                            error:function(msg){
+                                console.log(msg);
+                            }
+                        });
+                    }
+                })
+
+
+            }
+        </script>
