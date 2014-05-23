@@ -100,7 +100,7 @@ module.exports={
                                 middleware.request('Point/Change',jsonData,
                                     this.hold(function(err,doc){
                                         if(err) throw err;
-                                        console.log("doc:"+doc);
+
                                     })
                                 )
                             })
@@ -148,7 +148,7 @@ module.exports={
                         }
 
                         then.step(function(){
-                            //console.log(parseInt(then.req.session.scoreAll))
+
                             helper.db.coll("lavico/custReceive").insert({
                                 "wechatid": wechatid,
                                 "themeId": helper.db.id(_id),
@@ -177,7 +177,7 @@ module.exports={
                                 jsonData.tag=getLabel;
                                 middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                     if(err) throw err;
-                                    console.log("tag record:"+doc.success);
+
                                 }))
                             }
 
@@ -208,7 +208,7 @@ module.exports={
                 then.req.session.optionId=""
                 nut.model.result=resultList;
                 nut.model.jsonResult=eval('('+resultList+')');
-                console.log("resultList:"+nut.model.jsonResult);
+
             })
         }else{
             //停止标签过来
@@ -255,8 +255,7 @@ module.exports={
 
             var resultList="[";
             this.step(function(){
-                //console.log("scoreRange.length:"+scoreRange.length)
-                //console.log("scoreRange:"+scoreRange)
+
                 for(var i=0;i<scoreRange.length;i++){
                     var dot=1;
                     //session上的停止标签和db中的设置标签一致
@@ -291,7 +290,7 @@ module.exports={
                                 jsonData.memberId=memberId;
                                 jsonData.qty=getScore;
                                 jsonData.memo:'问答测试:'+'-'+nut.model.themeTitle;
-                                //console.log("jsonData:"+jsonData.memberId,jsonData.qty)
+
                                 middleware.request('Point/Change',jsonData,
                                     this.hold(function(err,doc){
                                         if(err) throw err;
@@ -393,7 +392,7 @@ module.exports={
                                             jsonData.tag=getLabel;
                                             middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                                 if(err) throw err;
-                                                console.log("tag record:"+doc.success);
+
                                             }))
                                         }
 
@@ -538,7 +537,7 @@ module.exports={
                                 middleware.request('Point/Change',jsonData,
                                     this.hold(function(err,doc){
                                         if(err) throw err;
-                                        console.log("doc:"+doc);
+
                                     })
                                 )
                             })
@@ -586,7 +585,7 @@ module.exports={
                         }
 
                         then.step(function(){
-                            //console.log(parseInt(then.req.session.scoreAll))
+
                             helper.db.coll("lavico/custReceive").insert({
                                 "wechatid": wechatid,
                                 "themeId": helper.db.id(_id),

@@ -45,10 +45,7 @@ module.exports={
             var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
             nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
-            //console.log("------------------");
-            //console.log(nut.model.startDate);
-            //console.log(nut.model.stopDate);
-            //console.log(nut.model._id);
+
             //传参数到children
             seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate,unwind:"reedem",_id:nut.model._id};
         })

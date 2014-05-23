@@ -85,7 +85,7 @@ module.exports={
         nut.model.cityArr=cityArr;
 
         nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
-        //console.log(nut.model.wxid);
+
     },
     actions:{
         //显示具体门店
@@ -115,7 +115,7 @@ module.exports={
                     //在接口列表中查找seed传送过来的cityCode
                     for(var i=0;i<doc.list.length;i++){
                         if(doc.list[i].CODE==cityCode){
-                            //console.log(doc.list[i])
+
                             //return searchCity=doc.list[i];//返回指定门店
                             nut.model.searchCity=doc.list[i];
                             break;

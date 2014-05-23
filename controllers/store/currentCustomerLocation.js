@@ -13,7 +13,7 @@ module.exports={
             //接口返回的doc都是字符串
             middleware.request('Shops',jsonData,
                 this.hold(function(err,doc){
-                    //console.log("doc:"+doc);
+
                     if(err) throw err;
                     return JSON.parse(doc);//注意字符串和对象格式
                 })

@@ -2,7 +2,7 @@ module.exports = {
     layout:null,
     view: null,
     process:function(seed,nut){
-            //console.log(seed.json);
+
             nut.disabled = true;//限制框架的返回
         this.step(
             helper.db.coll("lavico/themeQuestion").insert(eval('('+seed.json+')'),this.hold(function(err, doc) {
@@ -22,8 +22,7 @@ module.exports = {
     actions:{
         update:{
             process:function(seed,nut){
-                //console.log(seed._id);
-                //console.log(seed.json);
+
                 this.step(
                     helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(seed._id)}
                         ,eval('('+seed.json+')'),this.hold(function(err, doc) {

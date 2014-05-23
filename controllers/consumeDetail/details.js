@@ -32,7 +32,7 @@ module.exports={
         this.step(function(){
             middleware.request("Member/Spending/"+member,data_request,
                 this.hold(function(err,doc){
-                    //console.log("doc:"+doc)
+
                     if(err) throw err
                     var docsJson=JSON.parse(doc)
 
@@ -78,7 +78,7 @@ module.exports={
 
         this.step(function(){
 
-            console.log(JSON.stringify(arr));
+
             nut.model.arr=arr;
             nut.model.saleAllMoney=saleAllMoney;
         })

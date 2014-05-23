@@ -156,7 +156,7 @@ module.exports={
                         //先记录optionId和isFinish,为了让其能history.back后继续
                         then.req.session.optionId=(parseInt(optionId)+1);
                         then.req.session.isFinish=false;
-                        //console.log("wechatid+"+wechatid);
+
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
                             wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
                         this.res.end();
@@ -195,7 +195,7 @@ module.exports={
                     var themeQuestionoptionId;
                     var themeQuestionstopLabel
                     var themeQuestionchooseNext
-                    //console.log(docOptions)
+
                     for(var i=0;i<docOptions.length;i++){
                         if(optionId==docOptions[i].optionId){
                             themeQuestionoptionId=docOptions[i].optionId
@@ -210,9 +210,7 @@ module.exports={
 
                     if(finish!="true"){
                         var next = (parseInt(optionId)+1)
-                        //console.log(themeQuestionchooseNext)
-                        //console.log(parseInt(themeQuestionchooseNext));
-                        //console.log("option:"+optionId)
+
                         if(themeQuestionstopLabel==''||typeof(themeQuestionstopLabel)=='undefined'){
                             if(themeQuestionchooseNext==''||typeof(themeQuestionstopLabel)=='undefined'){
                                 if(next >docOptions.length){

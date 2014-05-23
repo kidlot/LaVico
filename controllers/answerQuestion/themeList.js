@@ -35,10 +35,10 @@ module.exports={
                         ],then.hold(function(err,doc){
                             if(err) throw err;
                                 try{
-                                    //console.log("1:"+doc[0].count.length)
+
                                     partakeCount[i]=doc[0].count.length;
                                 }catch(e){
-                                    //console.log("0:"+0);
+
                                     partakeCount[i]=0;
                                 }
                             }));

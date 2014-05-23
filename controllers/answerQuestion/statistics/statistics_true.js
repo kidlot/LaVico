@@ -344,7 +344,7 @@ module.exports={
                 then.step(function(){
                     helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,getLabel:"",getGift:"",compScore:""})
                         .toArray(function(err,doc){
-                            //console.log("doc:"+doc)
+
                             if(err) throw err;
                             var xinArr=[];
                             var all=0;
@@ -355,7 +355,7 @@ module.exports={
                                     if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=doc[j].getChooseScore &&
                                         doc[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore)
                                     {
-                                        //console.log("ok");
+
                                         if(docs_themeQuestion.scoreMinMax[i].sinCount){
                                             docs_themeQuestion.scoreMinMax[i].sinCount++;
                                         }else{

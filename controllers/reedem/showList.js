@@ -33,8 +33,7 @@ module.exports={
                         this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
                         this.res.end();
                     }
-                    //console.log("会员积分err:"+err);
-                    //console.log("会员积分:"+result);
+
                     if(result){
                         var resultJson=JSON.parse(result);
                         return [resultJson.point,memberId]//json数组双传值，数组格式
@@ -69,7 +68,7 @@ module.exports={
                                     var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
                                     //还有剩余票可用
                                     if(stillUse>0){
-                                        //console.log("asdasdsa:"+resultPoint);
+
                                         result[i].stillUse=stillUse;
                                         result[i].memberId=resultPoint[1];
                                         result[i].wechatId=seed.wechatId;
@@ -108,7 +107,7 @@ module.exports={
             }))
         })
         this.step(function(){
-            //console.log(reedemJson);
+
             nut.model.reedemJson=reedemJson;
             nut.model.wechatId=seed.wechatId;
         })
@@ -276,7 +275,7 @@ function write_info(then,info){
 }
 
 function write_info_txt(then,info){
-    //console.log(info)
+
     then.res.writeHead(200,{"Content-Type":"text/plain;charset=utf-8"});
     then.res.write(info);
     then.res.end();

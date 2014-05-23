@@ -95,7 +95,7 @@ module.exports={
 //            success: function(data){
 //                if(data.error == "false"){
 //                    var dates = data.dates;
-//                    console.log(dates)
+//
 //                }else{
 //                    $('#count').html('');
 //                }
