@@ -5,6 +5,7 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
 <div class="wrapper">
   <div class="store-title">
     <p><span class="title1">
+
     <if condition="{@_id!=null}">
         <a href="/lavico/bargain/maps?_id={@_id}&wxid={@wxid}">返回</a>
     <else/>
@@ -24,7 +25,7 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
     </if>
 </div>
 <div class="way">
-<p class="text">地址：{@searchCity.ADDR}<a href="/lavico/store/baiduCar?shopLng={@searchCity.LOG}&shopLat={@searchCity.LAT}">行车线路</a><br />
+<p class="text">地址：{@searchCity.ADDR}&nbsp;<a href="/lavico/store/baiduCar?shopLng={@searchCity.LOG}&shopLat={@searchCity.LAT}">行车线路</a><br />
 电话：{@searchCity.TEL}<br />
 
 </p></div>

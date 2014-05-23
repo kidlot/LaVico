@@ -427,9 +427,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .line{ width:640px; height:30px; border-bottom:1px #666 solid; margin-top:50px;}
 .linebottom{ padding-top:40px;}
 .viewport {
-    width: 110%;
+    width: 640px;
     overflow: hidden;
-    margin: 0 auto;
     -webkit-transform: translateZ(0); /* Optional: When heavy at iOS6+ */
 }
 
@@ -451,7 +450,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
     text-align: center;
     padding: 0;
 	border: 0;
-    margin-right:0.5%;
+    /*margin-right:0.5%;*/
 }
 
 
