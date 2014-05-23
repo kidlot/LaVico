@@ -15,8 +15,8 @@ module.exports={
                 }else{
                     nut.disable();//不显示模版
                     this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                    //this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
-                    this.res.write("<script>alert('请先申领会员卡或者绑定会员卡,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
+                    //window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}
+                    this.res.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}
                     this.res.end();
                     this.terminate();
                 }

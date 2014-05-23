@@ -28,7 +28,7 @@
 <div class="popup popupStyle2" style="z-index: 2000">
     <p>提交提交提交提交提交提交</p>
     <div class="popup_but">
-        <a href="javascript:" onclick="$('.popupStyle2').trigger('confirm', []);$('.popupStyle2').hide();">确定</a>
+        <a href="javascript:" onclick="$('.popupStyle2').trigger('confirm', []);$('.popupStyle2').hide();" style="margin:0 28%;          ">确定</a>
     </div>
 </div>
 
@@ -52,6 +52,9 @@
         $('.popupStyle1').on("cancel", function(event) {
             cb("cancel")
         });
+
+        var popupHig = $(".popup").height();
+        $(".popup").css("margon-top", -popupHig / 2);
     }
     window.popupStyle2 = {}
     window.popupStyle2.on = function(title,cb){
@@ -60,6 +63,9 @@
         $('.popupStyle2').on("confirm", function(event) {
             cb("confirm")
         });
+
+        var popupHig = $(".popup").height();
+        $(".popup").css("margon-top", -popupHig / 2);
     }
     window.popupStyle3 = {}
     window.popupStyle3.on = function(title,cb){
@@ -71,8 +77,10 @@
         $('.popupStyle3').on("no", function(event) {
             cb("no")
         });
-    }
 
+        var popupHig = $(".popup").height();
+        $(".popup").css("margon-top", -popupHig / 2);
+    }
 
     // 使用方法
 
