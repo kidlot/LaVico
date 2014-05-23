@@ -55,22 +55,22 @@ a.tel{color:#2d2d2d;}
 /*门店*/
 .store-title{width:100%; background-color:#010417; height:50px; color:#fff; position:relative;}
 .store-title .title1 { display:block; position:absolute; top:0px; z-index:1; padding-left:4%; }
-.store-title .title1 a{width:135px;padding-left:12px; display:block;color:#fff; font-size:1.2rem; height:50px; line-height:50px; background:url(../images/store_jt.jpg) left center no-repeat; background-size:8px;}
+.store-title .title1 a{width:135px;padding-left:12px; display:block;color:#fff; font-size:1.2rem; height:50px; line-height:52px; background:url(../images/store_jt.jpg) left center no-repeat; background-size:8px;}
 .store-title .title2{ font-size:1.6rem; display:block;width:100%;text-align:center;position:absolute;top:0px;left:0px; height:50px; line-height:50px; font-weight:bold;}
 .store-title .title3{font-size:1.6rem; display:block;width:100%;text-align:center;position:absolute;top:0px;left:0px; height:50px; line-height:50px;}
 .store-title .title4{ display:block; position:absolute; right:4%; z-index:1; }
-.store-title .title4 a{width:115px;display:inline-block;color:#fff; font-size:1.2rem; height:50px; line-height:50px; background:url(../images/store_jtr.jpg) right center no-repeat; 
+.store-title .title4 a{width:115px;display:inline-block;color:#fff; font-size:1.2rem; height:50px; line-height:52px; background:url(../images/store_jtr.jpg) right center no-repeat; 
                        padding-right:12px; text-align:right; background-size:8px;}
 .store-title .title6{color:#fff; font-size:1.6rem;width:100%;text-align:center; height:50px; line-height:50px;}
 store-title .store-title p{position:relative;}
 .store-title .title5{ font-size:1.6rem; display:block;width:100%;text-align:center;position:absolute;top:0px;left:0px; height:50px; line-height:50px;}
 .store-list{width:100%; background-color:#eeeeee;}
-.store-listContent{width:92%; margin:0 auto; padding:0 4%; }
+.store-listContent{width:100%; margin:0 auto; }
 .store-listContent ul{ padding-bottom:10%;}
 .store-listContent ul li{width:92%; height:auto; border-bottom:1px #a9a9a9 solid; overflow:hidden; padding:4%; }
 .store-listContent ul li a{width:100%; height:auto;display:inline-block;background:url(../images/store_ljt.jpg) right center no-repeat; background-size:10px;}
 .store-listContent ul li a .name{ font-size:1.6rem; color:#cdb788;}
-.store-listContent ul li a .adree,.store-listContent ul li a .tel{ width:90%; font-size:1.6rem; color:#646464; padding-right:10%;}
+.store-listContent ul li a .adree,.store-listContent ul li a .tel{ width:90%; font-size:1.4rem; color:#646464; padding-right:10%;}
 .store-listContent ul li a .adree{ padding-top:2%;}
 .store-listContent ul li a .tel{ padding-top:5px;}
 /*专属礼券*/
@@ -139,7 +139,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .inquiry .input{ padding-top:10px; margin-left:80px;}
 .inquiry .input input{width:220px; border:1px #b0a18e solid; height:60px; font-size:25px; color:#000; line-height:60px; padding-left:20px;}
 .inquiry .change{ margin-right:4%; }
-.inquiry .change input{width:140px; height:40px; font-size:1.6rem; color:#fff; line-height:40px; border:0; text-align:center; background:url(../images/change_btn.png) center center no-repeat; background-size:100% 100%; margin-top:5px;}
+.inquiry .change input{width:140px; height:40px; font-size:1.6rem; color:#fff; line-height:40px; border:0; text-align:center; 
+                       background:url(../images/verify_bg_01.png) center center no-repeat; background-size:100% 100%; margin-top:5px;}
 .store-name{ font-size:2rem; color:#000; text-align:center; padding-bottom:5%;}
 .activity-detail{ border-top:1px #a9a9a9 solid; margin-top:5%; padding-top:5%;}
 .activity-detail .title{ font-size:1.6rem; color:#B9954D; text-align:center;}
@@ -162,9 +163,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .radius1{ margin-top:30px;}
 .input-member{width:90%; margin:0 auto; padding:2% 5%; }
 .input-member1{padding-top:70px;}
-.input-member .msg{font-size:25px; text-align:center; color:#fff; line-height:45px;padding-bottom:20px;}
-.input-member .msg1{font-size:22px; padding-top:20px;}
-.input-member .confirm input{text-align:center;width:60%; height:67px;border:0; outline:none; line-height:67px; font-size:25px; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;}
+.input-member .msg{font-size:1.6rem; text-align:center; color:#fff; line-height:1.8em;}
+.input-member .msg1{font-size:1.6rem;}
+.input-member .confirm input{text-align:center;width:80%; height:50px;border:0; outline:none; line-height:50px; font-size:1.6rem; color:#3C3C3C;
+                              background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer;background-size:100% 100%;}
 .my-card{ font-size:25px; line-height:35px; color:#646464; padding-top:30px;}
 .link-cardContent{width:100%; background-color:#dadada;}
 .link-cardContent .title{width:100%; height:50px; line-height:50px; text-align:center; font-size:1.6rem; color:#000; background:url(../images/head_bg.jpg) center center no-repeat;}
@@ -172,8 +174,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input-tel{width:90%; margin:0 auto; padding: 5% 5% 0;}
 .input-tel .text{width:20%; height:40px; text-align:right; line-height:40px; font-size:1.4rem; color:#2d2d2d; float:left;}
 .input-tel input{ border:0; background-color:#fff; border:1px #b2b1ad solid; font-size:1.4rem; color:#000; line-height:40px; height:40px;width:100%; padding:0 2%; margin-left:3%; }
-.verify{ display:inline-block;margin-left:2%; width:38%; height:40px; background:url(../images/verify_bg_01.png) center center no-repeat; line-height:40px;
-          font-size:1.4rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%; }
+.verify{ display:inline-block;margin-left:2%; width:32%; height:40px; background:url(../images/verify_bg_01.png) center center no-repeat; line-height:40px;
+          font-size:1.2rem; color:#fff; text-align:center; cursor:pointer; background-size:100% 100%; }
 .mt10{ margin-top:5%; overflow:hidden; }
 .star-sign{ color:#a00100;}
 .input-tel .note{ padding-top:6%; font-size:1.6rem; line-height:2em; color:#2d2d2d; text-align:center;}
@@ -240,12 +242,13 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points2-content .banner img { width:100%; }
 .points2-content .title1{ font-size:1.6rem; color:#000; padding:20px 2% 0;}
 .points2-content .point-box{width:100%; margin-top:20px;}
-.points2-content .point-box ul li{width:100%; height:50px; line-height:50px; background-color:#efefef; border-bottom:1px #dedede solid;border-left:1px #dedede solid;border-right:1px #dedede solid; font-size:1.6rem; box-sizing:border-box; }
+.points2-content .point-box ul li{width:100%; height:50px; line-height:25px; background-color:#efefef; border-bottom:1px #dedede solid;border-left:1px #dedede solid;border-right:1px #dedede solid;
+                                   font-size:1.2rem; box-sizing:border-box; }
 .c1{ color:#2d2d2d; padding-left:2%;width:68%; }
 .c2{ color:#000; padding-right:2%; width:28%; text-align:right; }
-.pt15{ }
+.pt15{ padding-top:15px }
 .points2-content .point-box .title2,
-.points2-content .point-box .title3{width:96%; height:50px;  background:url(../images/point_bg1.png) no-repeat; font-size:1.4rem; color:#fff; line-height:50px; padding:0 2%;background-size:100% 100%; }
+.points2-content .point-box .title3{width:96%; height:50px;  background:url(../images/point_bg1.png) no-repeat; font-size:1.2rem; color:#fff; line-height:50px; padding:0 2%;background-size:100% 100%; }
 .points2-content .point-box .title3 { background:url(../images/point_bg2.png) no-repeat;background-size:100% 100%; }
 /*积分兑换*/
 .points3{ background-color:#eee;}
@@ -305,16 +308,16 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .apply .title .text a{ color:#7C4A01; text-decoration:underline;}
 .apply .form{width:96%; margin: 0 auto; padding:0 2%; background:#eee;}
 .apply .form .input{ padding-top:10px; line-height:40px;}
-.apply .form .input .left{width:28%; text-align:right; color:#2D2D2D; font-size:1.4rem;}
-.apply .form .input .name-right{ width:62%; padding-left:3%; color:#000;}
+.apply .form .input .left{width:20%; text-align:right; color:#2D2D2D; font-size:1.4rem;}
+.apply .form .input .name-right{ width:72%; padding-left:3%; color:#000;}
 .apply .form .input .name-right input{ width:100%; height:40px; line-height:40px; padding:0 2%; font-size:1.4rem;border: 1px solid #999;}
 .apply .form .input .sex-right{ width:30%; padding-left:3%; color:#000;}
-.apply .form .input .sex-right select{width:110px; height:65px; line-height:65px; padding-left:10px; font-size:1.6rem;}
+.apply .form .input .sex-right select{width:110px; height:65px; line-height:65px; font-size:1.6rem;}
 .apply .form .input .birth-right{ width:62%;padding-left:0.8%; color:#000;}
 .apply .form .input .birth-right .select1,.apply .form .input .birth-right .select2,.apply .form .input .birth-right .select3{ height:50px; line-height:50px; font-size:1.4rem;}
 .apply .form .input .birth-right .select1{width:150px;}
 .apply .form .input .birth-right .select2,.apply .form .input .birth-right .select3{width:110px;}
-.apply .form .input .tel-right{  width:62%;padding-left:3%; color:#000;}
+.apply .form .input .tel-right{  width:77%;padding-left:3%; color:#000;}
 .apply .form .input .tel-right input{width:60%; height:40px; line-height:40px; padding:0 2%; font-size:1.4rem; display:inline-block; vertical-align:top; }
 .apply .form .note{ font-size:1.4rem; text-align:center; color:#3C3C3C; padding-top:4%; line-height:2em; }
 .apply .form .submit_btn{  padding:5% 0; }
@@ -478,7 +481,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .city-listContent ul li{width:100%; height:auto; border-bottom:1px #a9a9a9 solid; }
 .city-listContent ul li a{ height:auto;display:inline-block;}
 .city-listContent ul li a .name{ font-size:1.6rem; color:#cdb788; padding-top:35px;}
-.city-listContent ul li a .adree,.store-listContent ul li a .tel{font-size:1.6rem; color:#646464; }
+.city-listContent ul li a .adree,.store-listContent ul li a .tel{font-size:1.4rem; color:#646464; }
 .city-listContent ul li a .adree{ padding-top:20px;}
 .city-listContent ul li a .tel{ padding-top:5px;}
 #fixed{ position:fixed; bottom:0; width:100%; left:0px; }
