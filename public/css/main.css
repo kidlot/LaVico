@@ -427,14 +427,14 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .line{ width:640px; height:30px; border-bottom:1px #666 solid; margin-top:50px;}
 .linebottom{ padding-top:40px;}
 .viewport {
-    width: 110%;
+    width: 640px;
+    height:256px;
     overflow: hidden;
-    margin: 0 auto;
     -webkit-transform: translateZ(0); /* Optional: When heavy at iOS6+ */
 }
 
 .flipsnap {
-    width: 100%; /* 180px(item width) * 3(item count) */
+    width: 1000px; /* 180px(item width) * 3(item count) */
 }
 
 .flipsnap:after {
