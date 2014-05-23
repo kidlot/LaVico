@@ -29,7 +29,7 @@ a.tel{color:#2d2d2d;}
 .look-text .click-look a{color:#bb954a; border-bottom:1px #bb954a solid;}
 /*摇手机*/
 .mobile{width:100%; background-color:#e5e5e5; padding-top:4%; text-align:center;}
-.mobile .mobile-pic { width:80%; padding:0 10%; }
+.mobile .mobile-pic { width:50%; padding:0 25%; }
 .mobile .mobile-pic img { width:100%; }
 .mobile-btn{ padding-top:8%; padding-bottom:4%;}
 /*我要侃价详细页*/
