@@ -3,8 +3,9 @@
     <div class="wrapper">
         <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
         <div class="coupon">
-            <div class="points-content" style="background-image: url('/lavico/public/images/points_banner-604X319.jpg');">
-                <div style="padding-top: 120px;padding-left: 348px; text-align: left">
+            <div class="points-content">
+                <img src="/lavico/public/images/points_banner-604X319.jpg" />
+                <div class="points_txt">
                     <foreach for="{@jsonResult}" var="resultString">
                         <label style="font-size: 36px">{@resultString.getScore}积分</label>
                     </foreach>
@@ -23,14 +24,13 @@
     <!--型男测试-->
     <div class="wrapper">
         <div class="mobile">
-            <div style="background-image: url('/lavico/public/images/man_test_result-642X385.png');width: 642px;height: 385px; margin: 0 auto">
-                <div style="padding-top: 130px;padding-left: 130px; text-align: left">
-                    <div style="width: 180px;">
-                        <p style="font-size: 24px;font-weight:normal;line-height: 40px">经LaVico  郎维高权威机构鉴定</p>
-                        <foreach for="{@jsonResult}" var="resultString">
-                            <p style="font-size: 24px;color: #a47e3c;font-weight:normal;margin-top: 10px">您是{@resultString.getLabel}</p>
-                        </foreach>
-                    </div>
+            <div class="points-content">
+                <img src="/lavico/public/images/man_test_result-642X385.png" />
+                <div style="text-align: left;position:absolute; top: 0px; left: 0px;">
+                    <p style="font-size: 1.6rem;font-weight:normal;line-height: 2em">经LaVico  郎维高权威机构鉴定</p>
+                    <foreach for="{@jsonResult}" var="resultString">
+                        <p style="font-size: 1.6rem;color: #a47e3c;font-weight:normal;margin-top: 10px">您是{@resultString.getLabel}</p>
+                    </foreach>    
                 </div>
             </div>
             <foreach for="{@jsonResult}" var="resultString">
@@ -52,8 +52,9 @@
     <div class="wrapper">
         <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
         <div class="coupon">
-            <div class="points-content" style="background-image: url('/lavico/public/images/points_banner-604X319.jpg');">
-                <div style="padding-top: 120px;padding-left: 348px; text-align: left">
+            <div class="points-content">
+                <img src="/lavico/public/images/points_banner-604X319.jpg" />
+                <div class="points_txt">
                     <foreach for="{@jsonResult}" var="resultString">
                         <label style="font-size: 36px">{@resultString.getScore}积分</label>
                     </foreach>
