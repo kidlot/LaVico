@@ -252,7 +252,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                                    font-size:1.2rem; box-sizing:border-box; }
 .c1{ color:#2d2d2d; padding-left:2%;width:68%; }
 .c2{ color:#000; padding-right:2%; width:28%; text-align:right; }
-.pt15{ padding-top:15px }
+.pt15{ }
 .points2-content .point-box .title2,
 .points2-content .point-box .title3{width:96%; height:50px;  background:url(../images/point_bg1.png) no-repeat; font-size:1.2rem; color:#fff; line-height:50px; padding:0 2%;background-size:100% 100%; }
 .points2-content .point-box .title3 { background:url(../images/point_bg2.png) no-repeat;background-size:100% 100%; }
