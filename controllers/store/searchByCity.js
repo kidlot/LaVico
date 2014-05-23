@@ -121,8 +121,8 @@ module.exports={
                     //在接口列表中查找seed传送过来的cityCode
                     for(var i=0;i<doc.list.length;i++){
                         var code=(doc.list[i].CODE).replace(/\s/g,'');
-                        console.log("code:"+code);
-                        console.log("cityCode:"+cityCode);
+                        //console.log("code:"+code);
+                       // console.log("cityCode:"+cityCode);
                         if(code==cityCode){
                             console.log("ok");
                             //return searchCity=doc.list[i];//返回指定门店
@@ -202,6 +202,10 @@ module.exports={
                     var searchCity=[]
                     for(var i=0;i<doc.list.length;i++){
                         if(doc.list[i].CITY==cityName){
+                           var newCODE= (doc.list[i].CODE).replace(/\s/g,'');
+                            console.log("::"+newCODE);
+                            doc.list[i].CODE=newCODE;
+                            console.log("??"+doc.list[i].CODE);
                             searchCity.push(doc.list[i]);
                         }
                     }
