@@ -36,7 +36,7 @@ function build(){
 
         //判断是否为“主观题”
         if(jsonObject.type==2){
-        $(".content").append("<div style='padding-top: 15px;'><textarea cols='20' rows='12' name='descContent' ></textarea></div>");
+            $(".content").append("<div style='padding-top: 15px;'><textarea cols='20' rows='12' name='descContent' class='textarea' ></textarea></div>");
 
         }else{
             //非“主观题”判断是否有图片
