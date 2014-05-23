@@ -94,14 +94,22 @@ module.exports={
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
                 nut.model.wxid = seed.wxid;
-                //var newId=seed.CODE;
-               // console.log("newId:"+newId);
-                nut.model._id=seed.CODE;
+
+                //设置id从砍价过来
+                //没设置id查询过来的
+                if(seed._id) {
+                    nut.model._id = seed._id;
+                }else{
+                    nut.model._id=null;
+                }
+
+
+
 
                 var cityCode=seed.CODE;
 
                 //获取CODE-取消最后一个自添加1
-                console.log("sed:"+nut.model._id);
+                console.log("sed:"+cityCode);
                 //var cityCode=seed.CODE.substring(0,seed.CODE.length-1);
 
                 //接口读取门店列表(设置1000代表每页条数，即一次性全部返回)
@@ -203,9 +211,7 @@ module.exports={
                     for(var i=0;i<doc.list.length;i++){
                         if(doc.list[i].CITY==cityName){
                            var newCODE= (doc.list[i].CODE).replace(/\s/g,'');
-                            console.log("::"+newCODE);
                             doc.list[i].CODE=newCODE;
-                            console.log("??"+doc.list[i].CODE);
                             searchCity.push(doc.list[i]);
                         }
                     }
