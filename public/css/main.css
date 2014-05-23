@@ -103,7 +103,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .f45{ font-size:45px;}
 .mt70{ margin-top:70px;}
 /*答题*/
-.answer-title{width:100%; height:50px;font-size:1.6rem; line-height:50px; text-align:center;color:#fff;}
+.answer-title{width:100%; height:50px;font-size:1.6rem; background-color:#010417; line-height:50px; text-align:center;color:#fff;}
 .answer{width:100%; padding-top:6%; background-color:#e5e5e5;border-bottom:1px #a9a9a9 solid; padding-bottom:8%;}
 .answer-content{width:90%; padding:0 5%;}
 .answer-content .content { }
@@ -117,7 +117,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .answer-content .selects1{background:url(../images/selects_btn.jpg) no-repeat; background-size:22px;}
 .right-btn,.wrong-btn{width:42px; height:31px; position:absolute; left:-50px; top:0;}
 .answer-content .img{ padding-top:20px; margin-left:50px;}
-.pages{width:100%;padding:4% 0; overflow:hidden; position:fixed;bottom:0px; }
+.pages{width:100%; background-color:#e5e5e5; padding:4% 0; overflow:hidden; }
 .pages-content{width:90%; margin:0 auto;height:auto; padding:0 5%; }
 .pages .pre,.pages .next,.pages .pre_on{width:48%; height:40px; display:inline-block; text-align:center; font-size:1.4rem;  line-height:40px; }
 .pages .pre{color:#fff; background:url(../images/pre.jpg) center center no-repeat;}
