@@ -8,7 +8,6 @@
 <meta name="HandheldFriendly" content="true" />
 <meta name="apple-touch-fullscreen" content="yes" />
 
-
 <div class="popup popupStyle1" style="z-index: 1">
     <p>提交提交提交提交提交提交</p>
     <div class="popup_but">
@@ -20,7 +19,7 @@
 <div class="popup popupStyle2" style="z-index: 1">
     <p>提交提交提交提交提交提交</p>
     <div class="popup_but">
-        <a href="javascript:" onclick="$('.popupStyle2').trigger('confirm', []);$('.popupStyle2').hide();">确定</a>
+        <a href="javascript:" onclick="$('.popupStyle2').trigger('confirm', []);$('.popupStyle2').hide();" style="margin:0 28%;">确定</a>
     </div>
 </div>
 
@@ -33,50 +32,59 @@
     </div>
 </div>
 
-        <script>
-            window.popupStyle1 = {}
-            window.popupStyle1.on = function(title,cb){
-                $(".popupStyle1").find("p").text(title)
-                $(".popupStyle1").show()
-                $('.popupStyle1').on("save", function(event) {
-                    cb("save")
-                });
-                $('.popupStyle1').on("cancel", function(event) {
-                    cb("cancel")
-                });
-            }
-            window.popupStyle2 = {}
-            window.popupStyle2.on = function(title,cb){
-                $(".popupStyle2").find("p").text(title)
-                $(".popupStyle2").show()
-                $('.popupStyle2').on("confirm", function(event) {
-                    cb("confirm")
-                });
-            }
-            window.popupStyle3 = {}
-            window.popupStyle3.on = function(title,cb){
-                $(".popupStyle3").find("p").text(title)
-                $(".popupStyle3").show()
-                $('.popupStyle3').on("yes", function(event) {
-                    cb("yes")
-                });
-                $('.popupStyle3').on("no", function(event) {
-                    cb("no")
-                });
-            }
+<script>
+    window.popupStyle1 = {}
+    window.popupStyle1.on = function(title,cb){
+        $(".popupStyle1").find("p").text(title)
+        $(".popupStyle1").show()
+        $('.popupStyle1').on("save", function(event) {
+            cb("save")
+        });
+        $('.popupStyle1').on("cancel", function(event) {
+            cb("cancel")
+        });
+
+        var popupHig = $(".popup").height();
+        $(".popup").css("margon-top", -popupHig / 2);
+    }
+    window.popupStyle2 = {}
+    window.popupStyle2.on = function(title,cb){
+        $(".popupStyle2").find("p").text(title)
+        $(".popupStyle2").show()
+        $('.popupStyle2').on("confirm", function(event) {
+            cb("confirm")
+        });
+
+        var popupHig = $(".popup").height();
+        $(".popup").css("margon-top", -popupHig / 2);
+    }
+    window.popupStyle3 = {}
+    window.popupStyle3.on = function(title,cb){
+        $(".popupStyle3").find("p").text(title)
+        $(".popupStyle3").show()
+        $('.popupStyle3').on("yes", function(event) {
+            cb("yes")
+        });
+        $('.popupStyle3').on("no", function(event) {
+            cb("no")
+        });
+
+        var popupHig = $(".popup").height();
+        $(".popup").css("margon-top", -popupHig / 2);
+    }
 
 
-            // 使用方法
+    // 使用方法
 
-            /*
+    /*
 
-             window.popupStyle2.on("请先申领或绑定会员卡",function(event){
+        window.popupStyle2.on("请先申领或绑定会员卡",function(event){
 
-             if(event == "confirm"){
-             location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
-             }
-             })
+        if(event == "confirm"){
+        location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
+        }
+        })
 
 
-             */
-        </script>
+        */
+</script>
