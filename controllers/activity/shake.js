@@ -89,7 +89,7 @@ module.exports = {
         var aid = $("#aid").val();
         $("#shake_start").click(function(){
             if(member_id != 'normal'){
-                window.popupStyle2.on("请先申请会员或者绑定会员,然后参加活动!",function(event){});
+                window.popupStyle2.on("您还不是lavico的会员，请先注册会员",function(event){});
                 return false;
             }else{
 
