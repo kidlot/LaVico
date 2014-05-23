@@ -87,9 +87,10 @@ exports.load = function () {
                             reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
-                            console.log("storeList[i].CODE:::::"+storeList[i].CODE);
+                            console.log("storeList[i].CODE:"+storeList[i].CODE);
                             console.log("wxid:"+msg.FromUserName);
-                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+storeList[i].CODE+"1&wxid="+msg.FromUserName;
+                        reply.url='http://192.168.0.253/lavico/store/searchByCity:show?CODE='+storeList[i].CODE+'1&wxid='+msg.FromUserName;
+                        //reply.url="http://www.baidu.com";
                         if(i<10)
                             replyArr.push(reply);
                     }
