@@ -26,7 +26,7 @@ module.exports={
                 }
                 if(member_id=="undefined"){
                     nut.view.disable();
-                    nut.write("<script>window.onload=function(){window.popupStyle2.on('请先申请会员卡或者绑定会员,然后参加活动!',function(event){location.href='/lavico/member/index?wxid='+wechatid+"})}</script>");
+                    nut.write("<script>window.onload=function(){window.popupStyle2.on('请先申请会员卡或者绑定会员,然后参加活动!',function(event){location.href='/lavico/member/index?wxid='"+wechatid+"})}</script>");
 
                 }
                 nut.model.member_id =member_id;

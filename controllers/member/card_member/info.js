@@ -162,7 +162,7 @@ module.exports = {
         $("#email").blur(function(){
             var email = $(this).val();
             if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
-                alert('邮箱格式错误');
+                window.popupStyle2.on("邮箱格式错误",function(event){});
                 return false;
             }
         });
@@ -303,43 +303,44 @@ module.exports = {
             var wxid = $("#wxid").val();
 
             if(!email || !/^.+@.+\..+$/.test(email)){
-              alert('邮箱格式错误');
+              window.popupStyle2.on("邮箱格式错误",function(event){});
               return false;
             }
             if(!profession || profession == "请选择行业"){
-              alert('请输入行业');
+              window.popupStyle2.on("请输入行业",function(event){});
               return false;
             }
 
             if(!province || province =="请选择"){
-              alert('请输入省份');
+              //alert('请输入省份');
+              window.popupStyle2.on("请输入省份",function(event){});
               return false;
             } 
             if(!city || province =="请选择"){
-              alert('请输入城市');
+              window.popupStyle2.on("请输入城市",function(event){});
               return false;
             } 
             if(!address){
-              alert('请输入地址');
+              window.popupStyle2.on("请输入地址",function(event){});
               return false;
             }
             if(!(/[\u4e00-\u9fa5]{3,}/).test(address)){
                 //判断是否为汉字
-                alert('请输入有效的地址');
+                window.popupStyle2.on("请输入有效的地址,至少三个汉字",function(event){});
                 return false;
             }
             if(!favoriteStyle){
-              alert('请输入喜好款式');
-              return false;
+                window.popupStyle2.on("请输入喜好款式",function(event){});
+                return false;
             } 
             if(!favoriteColor){
-              alert('请输入喜欢颜色');
-              return false;
+                window.popupStyle2.on("请输入喜欢颜色",function(event){});
+                return false;
             }
 
             if(!(/[\u4e00-\u9fa5]+/).test(favoriteColor)){
                 //判断是否为汉字
-                alert('请输入有效的颜色');
+                window.popupStyle2.on("请输入有效的颜色，如黑色",function(event){});
                 return false;
             }
 
@@ -364,15 +365,17 @@ module.exports = {
                 }else if(data.success == false){
                    if((/[\u4e00-\u9fa5]+/).test(data.info)){
                        //如果输出的是汉字
-                      alert(data.info);
+                      //alert(data.info);
+                      window.popupStyle2.on(data.info,function(event){});
+
                    }else if(data.info == 'missing_parameter'){
-                      alert('提交失败，请稍后再尝试');
+                      window.popupStyle2.on("提交失败，请稍后再尝试，有可能丢失参数",function(event){});
                    }else{
-                      alert('网络不稳定，请稍后再尝试');
+                      window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
                    }
 
                 }else{
-                  alert('网络不稳定，请稍后再尝试');
+                  window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
                 }
             });
         });
