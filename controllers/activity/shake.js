@@ -89,8 +89,9 @@ module.exports = {
         var aid = $("#aid").val();
         $("#shake_start").click(function(){
             if(member_id != 'normal'){
-                window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){});
-                return false;
+                window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
+                    window.location.href = "/lavico/member/card_blank/register?wxid="+uid;
+                });
             }else{
 
                 if(aid == 'undefined'){
