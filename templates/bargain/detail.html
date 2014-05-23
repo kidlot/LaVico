@@ -188,7 +188,7 @@ function _step(channelName){
 
     if($("#isVip").val() == "false"){
 
-        window.popupStyle2.on("请先申领或绑定会员卡",function(event){
+        window.popupStyle2.on("您还不是lavico的会员，请先注册会员",function(event){
 
             if(event == "confirm"){
                 location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
