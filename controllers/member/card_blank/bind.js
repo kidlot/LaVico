@@ -98,9 +98,7 @@ module.exports = {
             $("#submit_1").click(function(){
 
                 if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
-                    window.popupStyle2.on("请输入正确的手机号码",function(event){
-
-                    });
+                    window.popupStyle2.on("请输入正确的手机号码",function(event){});
                     return false;
                 }
                 /*判断手机号码是否存在*/
