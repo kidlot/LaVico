@@ -107,6 +107,7 @@
         </div>
     </div>
 </if>
+<script src="/lavico/public/js/flipsnap.js"></script>
 <script type="text/javascript" src="/lavico/public/js/jquery.touchwipe.1.1.1.js"></script>
 <script>
     var n = 0;
@@ -164,7 +165,7 @@
     }
 
     function flipsnap_roll() {
-        var flip_num = $(".flipsnap").find(".item").index();
+        var flip_num = $(".flipsnap").find(".item").length;
         var itemWin = $(".item").width();
         console.log(itemWin, flip_num)
         $(".flipsnap").css("width", itemWin * flip_num);
@@ -173,5 +174,5 @@
     window.onload = function () {   
         flipsnap_roll();
         Flipsnap('.flipsnap');
-    }   
+    }
 </script>
