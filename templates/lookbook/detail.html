@@ -166,7 +166,7 @@
 
     function flipsnap_roll() {
         var flip_num = $(".flipsnap").find(".item").length;
-        var itemWin = $(".item").width();
+        var itemWin = $(".item").outerWidth(true);
         console.log(itemWin, flip_num)
         $(".flipsnap").css("width", itemWin * flip_num);
     }
