@@ -84,7 +84,7 @@
             }
 
             if(nowProductNum < page.product.length){
-                location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+page.product[nowProductNum]._id
+                location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+(page.product[nowProductNum]._id)+"&source={@source}"
             }else{
 
                 alert("已经是最后一页")
@@ -92,7 +92,7 @@
 
             return;
         }
-        location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)
+        location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
     }
     function favorites(wxid,pid){
         $.ajax({
