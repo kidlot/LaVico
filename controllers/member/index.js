@@ -13,7 +13,7 @@ module.exports = {
         var wxid = undefined;
 
         if(this.req.session.oauthTokenInfo){
-            
+
             console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
             wxid = this.req.session.oauthTokenInfo.openid
         }else{
