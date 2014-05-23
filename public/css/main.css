@@ -475,9 +475,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .fm{ text-align:center; padding-left:0px; }
 
 
-.city-list{width:100%; overflow:hidden; background:#fff; }
+.city-list{width:100%; overflow:hidden; background:#fff; color:#000; }
 .city-listContent{width:100%; margin:0 auto; background:#dcdcdc; }
-.city-listContent ul{ border-top:1px solid #eee;border-bottom:1px solid #eee; }
+.city-listContent ul{ border-top:1px solid darkgray;border-bottom:1px solid darkgray; }
 .city-listContent ul li{width:100%; height:auto; border-bottom:1px #a9a9a9 solid; }
 .city-listContent ul li a{ height:auto;display:inline-block;}
 .city-listContent ul li a .name{ font-size:1.6rem; color:#cdb788; padding-top:35px;}
