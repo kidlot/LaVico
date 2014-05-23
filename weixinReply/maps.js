@@ -221,7 +221,7 @@ exports.load = function () {
                         else
                             reply.picurl=storeList[i].PICURL;
 
-                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE+"1&wxid="+msg.FromUserName;
+                        reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE+"&wxid="+msg.FromUserName;
                         if(i<10)
                             replyArr.push(reply);
                     }
