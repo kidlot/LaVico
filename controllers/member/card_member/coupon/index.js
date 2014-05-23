@@ -283,7 +283,7 @@ module.exports = {
         var wxid = $('#wxid').val();
         var error = $("#error").val();
         if(error!='null'){
-            window.popupStyle2.on("您好，请注册会员或者绑定会员后，查看此页面",function(event){
+            window.popupStyle2.on("您还不是lavico的会员，请先注册会员",function(event){
                 window.location.href="/lavico/member/index?wxid="+wxid;
             });
         }
