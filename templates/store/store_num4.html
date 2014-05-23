@@ -45,12 +45,12 @@ window.onload=function(){
         $(this).next().slideToggle("normal");
     });
 
-    $("div.city-list").find("a.outlet_bottom").toggle(function () {
+    $("div.city-list").find("a.outlet_bottom").click(function () {
         $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat","background-size":"16px" });
-    }, function () {
-        $(".a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
     });
-
+    $("div.city-list").find("a.outlet_bottom").parent().siblings().children("#c").click(function () {
+        $("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+    });
 
 }
 
