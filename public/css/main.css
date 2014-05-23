@@ -475,7 +475,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .fm{ text-align:center; padding-left:0px; }
 
 
-.city-list{width:100%; overflow:hidden; background:#fff; color:#000; }
+.city-list{width:96%; overflow:hidden; background:#fff; color:#000;padding-right:4%; }
 .city-listContent{width:100%; margin:0 auto; background:#dcdcdc; }
 .city-listContent ul{ border-top:1px solid darkgray; }
 .city-listContent ul li{width:100%; height:auto; border-bottom:1px #a9a9a9 solid; }
@@ -503,4 +503,4 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                       background-size:100% 100%;font-size:1.6rem; color:#3C3C3C; margin-left:5%; }
 
 /*后期增加*/
-.outlet_bottom { background:url(../images/right_jt.jpg) right center no-repeat; }
+.outlet_bottom { background:url(../images/outlet_bottom.png) right center no-repeat; background-size:16px; }
