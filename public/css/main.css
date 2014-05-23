@@ -318,12 +318,12 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .match .roll-banner{width:96%; height:auto; overflow:hidden; position:relative; padding:2%;}
 .match .roll-banner .img{width:100%;height:auto; background:url(../images/elite_home_j.png) bottom center no-repeat; padding-bottom:16px; }
 .match .roll-banner img{ width:100% ;}
-.match .intro-text{width:100%; height:auto; background:url(../images/match_bg.jpg) no-repeat; padding-top:2%; position:relative; margin-bottom:60px;}
+.match .intro-text{width:100%; height:auto; background:url(../images/match_bg.jpg) no-repeat; padding-top:2%; position:relative; margin-bottom:50px;}
 .match .intro-text .text{width:80%; margin:0 auto; font-size:1.4rem; color:#BA9E70; padding:0 10%; }
 .match .intro-text .arrow-left,.match .intro-text .arrow-right{width:15px; height:28px;position:absolute; top:50%; cursor:pointer; margin-top:-14px; }
 .match .intro-text .arrow-left{ left:10px; background:url(../images/macth_pre.png) no-repeat;}
 .match .intro-text .arrow-right{right:10px;background:url(../images/macth_next.png) no-repeat;}
-.match .intro-text .number{position:fixed; bottom:0; line-height:50px; height:50px;width:100%; background-color:#000; text-align:center; color:#fff;}
+.match .intro-text .number{position:fixed; left:0px; bottom:0; line-height:50px; height:50px;width:100%; background-color:#000; text-align:center; color:#fff;}
 .f25,
 .f22{font-size:1.4rem;}
 
