@@ -106,7 +106,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .answer-content .content ul li { }
 
 .answer-content .title{ font-size:1.6rem; color:#B08C4D;}
-.answer-content .select,.answer-content .select1,.answer-content .selects,.answer-content .selects1{margin-top:50px; margin-left:50px;width:360px;height:31px;  line-height:31px; font-size:25px; color:#2D2D2D; padding-left:50px; position:relative; display:inline-block; }
+.answer-content .select,.answer-content .select1,.answer-content .selects,.answer-content .selects1{ width:90%;height:30px;line-height:30px; font-size:1.6rem; color:#2D2D2D; padding-left:10%; position:relative; display:inline-block; }
 .answer-content .select{background:url(../images/select_btnOn.jpg) left center no-repeat;}
 .answer-content .select1{background:url(../images/select_btn.jpg) left center no-repeat;}
 .answer-content .selects{background:url(../images/selects_btnOn.jpg) left center no-repeat;}
