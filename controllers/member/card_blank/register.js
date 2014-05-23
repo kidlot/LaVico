@@ -369,11 +369,13 @@ module.exports = {
                         }else{
                             var _info = unescape(data.error);
                             if(_info == "该微信ID已是本品牌会员，请检查！"){
+                                alert("您已经绑定会员，请先解绑，再申领新卡");
 
                                 window.popupStyle2.on("该微信ID已是本品牌会员",function(event){});
 
                                 //alert("该微信ID已是本品牌会员");
 
+                                alert("该微信ID已是本品牌会员");
                             }else{
 
                                 //alert("网络不稳定，请稍后再尝试");
