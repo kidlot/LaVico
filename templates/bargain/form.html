@@ -163,7 +163,7 @@
                 })
 
                 aFormInput['pic'] = $("#showPic").attr("src")
-                aFormInput['pic_big'] = $("#showPic_big").val()
+                aFormInput['pic_big'] = getBigPicList()
                 if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
                 if($("input[name='sizesVal']").val()) aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
 
@@ -180,6 +180,16 @@
                         $.controller("/lavico/bargain/index",null,"lazy");
                     }) ;
                 }
+            }
+
+            function getBigPicList(){
+                var list = []
+                $(".bigPic").find(".rowBigPic:gt(0)").each(function(i,o){
+
+                    var src = $(o).find("img").attr("src")
+                    list.push(src)
+                })
+                return list;
             }
 
             function createBigPic(){
@@ -250,7 +260,8 @@
                 }
                 if(window.oLastInput.name == "bigPic"){
 
-                    
+                    $(window.oLastInput).parents(".rowBigPic").find("img").attr("src",filename)
+
                 }
             }
 
