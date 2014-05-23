@@ -25,7 +25,8 @@ module.exports={
             var cityName="上海";
             for(var i=0;i<doc.list.length;i++){
                 if(doc.list[i].CITY==cityName){
-
+                    var newCODE= (doc.list[i].CODE).replace(/\s/g,'');
+                    doc.list[i].CODE=newCODE;
                     list1.push(doc.list[i]);
 
                 }

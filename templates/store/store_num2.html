@@ -10,7 +10,7 @@
     <div class="store-listContent">
       <ul>
           <foreach for="{@city_docs}" var="docs" key="key">
-            <li><a href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@docs.CODE}1&wxid={@wxid}'">
+            <li><a href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@docs.CODE}&wxid={@wxid}'">
               <p class="name">{@docs.NAME}</p>
               <p class="adree">地址：{@docs.ADDR}</p>
               <p class="tel">电话：{@docs.TEL}</p>
