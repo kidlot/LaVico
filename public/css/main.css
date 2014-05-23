@@ -37,7 +37,7 @@ a.tel{color:#2d2d2d;}
 .bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:1% 4%; overflow:hidden; position:relative; }
 .bargin-left{ float:none; }
 .bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-top:2%; }
-.bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:20px; background:url(../images/title_bg.jpg) left center no-repeat;}
+.bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .bargin-right .color{padding-top:2%;}
 .bargin-right .color .color-title{ color:#404040;}
 .bargin-right .color .color-con{ color:#646464;}
@@ -299,7 +299,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5-content .pre-bottom .left,.pre-bottom .right{font-size:1.6rem; text-align:left; cursor:pointer;}
 .points5-content .pre-bottom .left{width:98%;color:#646464; border:1px #dedede solid; box-sizing: border-box; padding:1%; }
 .points5-content .pre-bottom .right{width:140px; line-height:34px; text-align:center; color:#291b00; background:url(../images/next.png) no-repeat; background-size:contain; margin-top:2%; float:left; }
-.points5-content .pre-bottom .right a{ color:#291b00; font-size:1.6em; }
+.points5-content .pre-bottom .right a{ color:#291b00; font-size:1.6rem; }
 .c4{ color:#B9954D;}
 /*申领会员卡*/
 .apply{ background-color:#dadada;}
