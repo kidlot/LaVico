@@ -189,11 +189,11 @@ module.exports={
                         })
                         //调用接口结束
                     }else{
-                        resultList+="{"
-                            +"getLabel:'"+"null"
-                            +"',getScore:"+0
-                            +",getTipContent:'"+"null"
-                            +"',getActivities:'"+"null"+"'}";
+//                        resultList+="{"
+//                            +"getLabel:'"+"null"
+//                            +"',getScore:"+0
+//                            +",getTipContent:'"+"null"
+//                            +"',getActivities:'"+"null"+"'}";
                     }
                 }
 
