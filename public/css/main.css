@@ -182,7 +182,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .submit input{margin-top:30px;text-align:center;width:80%; height:40px;border:0; outline:none; line-height:40px; font-size:1.4rem; color:#3C3C3C; 
               background:url(../images/click_btn.jpg) center center no-repeat; cursor:pointer; background-size:100% 100%;margin: 4% 10% 0 10%; }
 .input-card{ text-align:center;}
-.input-card input{width:365px; margin-bottom:70px; height:70px; line-height:70px; background-color:#fff; font-size:25px; padding-left:10px;}
+.input-card input{width:90%;height:50px; line-height:50px; background-color:#fff; font-size:1.6rem;}
 /*会员公告*/
 .notice-list{width:100%;}
 .notice-listContent{width:90%; margin:0 auto; padding:0 5%;}
