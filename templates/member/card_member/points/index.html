@@ -31,14 +31,16 @@
                                 </if>
 
                             <else/>
+                                <ul>
+                                    <li>
+                                        <span class="fl c1">
+                                            {@log[key].MEMO}
+                                            {@log[key].formatetime}
+                                        </span>
+                                        <span class="fr c2 pt15">{@log[key].value}</span>
+                                    </li>
 
-                                <li>
-                                     <span class="fl c1">{@log[key].MEMO}
-                                        {@log[key].formatetime}</span>
-                                     <span class="fr c2 pt15">{@log[key].value}</span></li>
-                                </li>
-
-
+                                </ul>
                                 <if condition="@logLength == key + 1">
                                     {@htmlEndUl}
                                 </if>
@@ -58,8 +60,6 @@
 
                 </div>
                 <p>&nbsp;</p>
-
-
             </if>
 
         <elseif condition="@info=='return_data_error'"/>
