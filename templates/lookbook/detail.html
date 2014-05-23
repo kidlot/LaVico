@@ -47,18 +47,15 @@
                             {@ page.detail}
                         </div>
                     </div>
-
-                    <div class="small_list">
-                        <foreach for="@page.product" var="product">
-                            <div class="small_image">
-                                <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}">
-                                    <img src="{@ product.pic}" class="exchangebtn">
-                                </a>
-                            </div>
-                        </foreach>
-
-                    </div>
-
+                </div>
+                <div class="small_list">
+                    <foreach for="@page.product" var="product">
+                        <div class="small_image">
+                            <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}">
+                                <img src="{@ product.pic}" class="exchangebtn">
+                            </a>
+                        </div>
+                    </foreach>
                 </div>
                 <div class="clear"></div>
                 <div class="small_middle"><img src="/lavico/public/images/small_list_middle.png" class="exchangebtn"></div>
