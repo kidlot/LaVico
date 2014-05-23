@@ -16,6 +16,7 @@ module.exports={
         var compScore
         //非停止标签过来
         if(stopLab!="true"){
+            console.log("___________111111111111");
             //插入总积分
             helper.db.coll("lavico/custReceive").insert({
                 "wechatid": wechatid,
@@ -37,6 +38,7 @@ module.exports={
             var docTheme;
             var themeType;
             this.step(function(){
+                console.log("___________12222222222222222");
                 helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},then.hold(function(err,doc){
                     if(err) throw err;
                     scoreRange=doc.scoreMinMax;
@@ -49,6 +51,7 @@ module.exports={
             //查找全部券
             var doc_json;
             this.step(function(){
+                console.log("___________3333333333333333");
                 middleware.request('Coupon/Promotions',{
                     perPage:1000,
                     pageNum:1
@@ -61,6 +64,7 @@ module.exports={
 
             var resultList="[";
             this.step(function(){
+                console.log("___________44444444444444444");
                 for(var i=0;i<scoreRange.length;i++){
                     var minlen=scoreRange[i].conditionMinScore;//获取低分值
                     var maxlen=scoreRange[i].conditionMaxScore;//获取高分值
@@ -76,6 +80,7 @@ module.exports={
 
                         if(themeType!=1){
                             then.step(function(){
+                                console.log("___________555555555555555555");
                                 //根据姓名和电话查memberId
                                 helper.db.coll("welab/customers").findOne({wechatid:seed.wechatid},
                                     this.hold(function(err,result){
@@ -90,7 +95,7 @@ module.exports={
 
 
                             then.step(function(memberId){
-
+                                console.log("___________66666666666666666666");
                                 //根据memberId调用接口给账户加分
                                 var jsonData={};
                                 jsonData.memberId=memberId;
@@ -128,6 +133,7 @@ module.exports={
                                     point: getScore
                                 }
                                 then.step(function () {
+                                    console.log("___________777777777777777");
                                     middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                         if (err) throw err;
                                         var docJson = JSON.parse(doc)
@@ -148,6 +154,7 @@ module.exports={
                         }
 
                         then.step(function(){
+                            console.log("________________________-1a1a1a")
                             //console.log(parseInt(then.req.session.scoreAll))
                             helper.db.coll("lavico/custReceive").insert({
                                 "wechatid": wechatid,
