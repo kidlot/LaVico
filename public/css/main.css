@@ -103,7 +103,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .answer{width:100%; padding-top:6%; background-color:#e5e5e5;border-bottom:1px #a9a9a9 solid; padding-bottom:8%;}
 .answer-content{width:90%; padding:0 5%;}
 .answer-content .content { }
-.answer-content .content ul li { height:5%; }
+.answer-content .content ul li { }
 
 .answer-content .title{ font-size:1.6rem; color:#B08C4D;}
 .answer-content .select,.answer-content .select1,.answer-content .selects,.answer-content .selects1{margin-top:50px; margin-left:50px;width:360px;height:31px;  line-height:31px; font-size:25px; color:#2D2D2D; padding-left:50px; position:relative; display:inline-block; }
