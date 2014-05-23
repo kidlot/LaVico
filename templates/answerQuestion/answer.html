@@ -1,7 +1,6 @@
 <style>
     ul{list-style: none}
-    ul li{padding: 20 0 0 0;}
-    #chooseNa{font-size: 25px;}
+    #chooseNa{font-size: 1.4rem;}
     #picImg{padding-top:  20px;}
     #sed{padding: 20 0 0 0;}
     #tip{font-size: 30px; text-align: center;}
@@ -51,7 +50,7 @@ function build(){
 
                         //组织显示项,value:'题号+选项编号+积分+下一题编号+停止标签+自定义标签'
                         //显示数据后跟是否正确图片
-                        $(".content ul").append("<li style='height:100px;'><span name='correntImg' id='sed' style='visibility:hidden'><img width='32px' height='31px'  src=/lavico/public/images/"+
+                        $(".content ul").append("<li><span name='correntImg' id='sed' style='visibility:hidden'><img width='32px' height='31px'  src=/lavico/public/images/"+
                             jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
                             + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
                             jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
@@ -351,6 +350,6 @@ window.onload =function() {
     </div>
 </div>
 <!--正在加载-->
-<div id="loading" class="loading" style="position: fixed; z-index: 1000; left: 40%; top: 40%;"><img src="/lavico/public/images/loading.gif"></div>
+<div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
 <script type="text/javascript">
 </script>
