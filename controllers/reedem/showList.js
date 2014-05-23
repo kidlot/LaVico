@@ -16,7 +16,7 @@ module.exports={
                     nut.disable();//不显示模版
                     this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
                     //window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}
-                    this.res.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}
+                    this.res.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}")
                     this.res.end();
                     this.terminate();
                 }
