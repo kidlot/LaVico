@@ -154,7 +154,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .radius{width:100%; height:auto; border:1px #dadada solid; background-color:#efefef;-moz-border-radius:8px;border-radius: 8px; -webkit-border-radius: 8px; box-sizing:border-box; }
 .radius .title{width:100%; height:50px; line-height:50px; text-align:center; background:url(../images/meber_bg.jpg) no-repeat; font-size:1.8rem; color:#3C3C3C; background-size:100% 100%; }
 .radius .list li{width:96%; line-height:50px; font-size:1.4rem; padding:0 2%; height:50px; border-bottom:1px #e2e2e2 solid; box-sizing:border-box; }
-.radius .list li a{width:100%; display:inline-block; background:url(../images/right_jt.jpg) right center no-repeat; color:#000;}
+.radius .list li a{width:100%; display:inline-block; background:url(../images/right_jt.jpg) right center no-repeat; color:#000; background-size:10px;}
 .radius .list li a.yellow{color:#B49870;}
 .suba{color:#B49870;}
 .radius .list .border-none{border-bottom:0;}
