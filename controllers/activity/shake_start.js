@@ -324,10 +324,14 @@ module.exports = {
         var points = parseInt($("#points").val());
         if(points>0){
             //alert('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。');
-            window.popupStyle2.on('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。',function(event){});
+            window.popupStyle2.on('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。',function(event){
+                flag = 1;//设置可以摇一摇
+            });
+        }else{
+            flag = 1;//设置可以摇一摇
         }
 
-        var flag = 1;//默认可摇一摇
+        var flag = 0;//默认不可摇一摇
 
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
