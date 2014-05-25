@@ -69,7 +69,7 @@ module.exports= {
                 if(err) throw err
                 if(doc)
                 {
-                    nut.model.goMemberInfo=(docs.explanation).replace("{@wechatid}",seed.wechatid);
+                    nut.model.goMemberInfo=(doc.explanation).replace("{@wechatid}",seed.wechatid);
                     nut.model.docs=doc;
                 }
             }));
