@@ -163,11 +163,12 @@ function showCorrent(t){
 
     //$("span[name='correntImg']").show();
     if(themeType==1){
-        $("span[name='correntImg']").css("visibility","hidden");
+        $("span[name='correntImg']").css("visibility","hidden");//隐藏
     }else{
-        $("span[name='correntImg']").css("visibility","visible");
+        $("span[name='correntImg']").css("visibility","visible");//显示
+        $("input[name='singleChooseInput']").attr("disabled",true);
     }
-    $("input[name='singleChooseInput']").attr("disabled",true);
+
     //追加cookie
     var date=new Date();
     date.setTime(date.getTime()+24*3600*1000);
