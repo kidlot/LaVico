@@ -45,49 +45,18 @@
             $(this).next().slideToggle("normal");
         });
 
+    var city_listContent=$(".city-listContent");
     $("div.city-list").find("a.outlet_bottom").click(function () {
         var h3Len = $(".city-list").find("h3");
         for (var i = 0; i < h3Len.length; i++) {
             h3Len.find("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
         };
-        $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
+        if (city_listContent.style.display == "block") {
+            $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
+        } else if (city_listContent.style.display == "none") {
+            $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+        }
+        
     });
-
-    //var outlet_bottom = 0;
-    
-    //$("div.city-list").find("a.outlet_bottom").click(function () {
-    //    if (outlet_bottom == 0) {
-    //        $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
-    //        outlet_bottom = 1;
-            
-    //        $(this).parent().siblings().children(".outlet_bottom").click(function () {
-    //            $("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
-
-    //            $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
-
-    //           if (outlet_bottom == 1) {
-    //                $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
-    //            }
-
-    //        });
-    //    } else if (outlet_bottom == 1) {           
-    //        $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
-    //        outlet_bottom = 0;
-    //    }
-    //});
 }
-
-//
-//    })
-//}
-//
-//$(document).ready(function(e) {
-//	$(".city_title").click(function(){
-//		$(".fade2").css("display","block");
-//	});
-//
-//	$(".goon_btn").click(function(){
-//		$(".fade2").css("display","none");
-//	});
-//});
 </script>
