@@ -1,17 +1,18 @@
+<if condition="@error == 'false'">
 <div class="wrapper">
 
         <if condition="{@bindStatus=='bind'}"
             <if condition="{@type=='0'}">
                    <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             <elseif condition="{@type == '1'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /></div>
-                    <div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div>
+
+                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
+                    
             <elseif condition="{@type=='2'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /></div>
-                    <div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
+                    
             <elseif condition="{@type=='3'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /></div>
-                     <div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
             <else/>
                 <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             </if>
@@ -19,17 +20,23 @@
             <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
         </if>
         <script>
-            //function vip_card() {
-            //    var vip_Win = $(window).height() / -12;
-            //    $(".vip-card-num").css("top", vip_Win);
-            //}
+            function vip_card() {
+                var vip_card_num = $(".vip-card-num").width() / 2;
+                $(".vip-card-num").css("margin-left", -vip_card_num );
+            }
 
-            //window.onload = function () {
-            //    vip_card();
-            //}
-            //window.onresize = function () {
-            //    vip_card();
-            //}
+            window.onload = function () {
+                vip_card();
+            }
+            window.onresize = function () {
+                vip_card();
+            }
+
+            function _gotoFavPage(){
+                var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
+                location.href = url
+            }
+
         </script>
         <div class="member">
         <div class="member-content">
@@ -40,7 +47,7 @@
                         <li><a id="coupon" href="{@coupon}">专属礼券<span id="count" class="suba">(正加载)</span></a></li>
                         <li><a id="points" href="{@reedem}">积分/兑换</a></li>
                         <li><a id="buy" href="{@buy}">消费记录</a></li>
-                        <li class="border-none"><a id="fav" href="{@fav}">收藏清单</a></li>
+                        <li class="border-none"><a id="fav" href="javascript:;" onclick="_gotoFavPage()">收藏清单</a></li>
                     </ul>
                 </div>
             </if>
@@ -80,5 +87,10 @@
 </div>
 <input type="hidden" id="wxid" name="wxid" value="{@wxid}" />
 <input type="hidden" id="bindStatus" name="bindStatus" value="{@bindStatus}" />
+<input type="hidden" id="error" name="error" value="{@error}" />
+
 <!--正在加载-->
 <div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
+<else/>
+<input type="hidden" id="error" name="error" value="{@error}" />
+</if>

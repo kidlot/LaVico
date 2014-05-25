@@ -441,13 +441,13 @@ module.exports = {
                         var _reg = /verify_bg\.png/;
 
                         if(!_reg.test(_imgSrc)){
-                            $(".get_id_code").css("background","url(/lavico/public/images/verify_bg.png)");
+                            $(".get_id_code").css({"background":"url(/lavico/public/images/verify_bg.png)","background-size":"100% 100%"});
                         }
                     }
                 },1000);
             }
             function re_get_code(){
-                $(".get_id_code").html('获取验证码').css("background","url(/lavico/public/images/verify_bg_01.png)");;
+                $(".get_id_code").html('获取验证码').css({"background":"url(/lavico/public/images/verify_bg_01.png)","background-size":"100% 100%"});
                 flag = 0;
             }
             /*验证码-结束*/
@@ -608,6 +608,8 @@ module.exports = {
                             var tel_checked_status = seed.tel_checked_status;//手机号码绑定状态
                             var checkCaptcha = seed.checkCaptcha;
                             var memberId = seed.memberId || 'undefined';
+                            var card_number;//显示在会员中心的帐号
+
                             /*
                             * 'wxid':wxid,
                              'userTel':userTel,
@@ -724,6 +726,18 @@ module.exports = {
                                 return doc;
                             });
 
+                            this.step(function(){
+                                //获取我的会员卡的头部显示的卡号Member/Info/9121535
+                                var dataJson = JSON.parse(data_doc);
+                                middleware.request( "Member/Info/"+dataJson.MEMBER_ID{
+                                    }
+                                    ,then.hold(function(err,req_doc){
+                                        var member_info = JSON.parse(req_doc);
+                                        card_number = member_info.info.MEM_CARD_NO;
+                                    }));
+
+                            });
+
                             this.step(function(doc){
                                 var dataJson = JSON.parse(data_doc);
                                 if(dataJson.success == true){
@@ -737,6 +751,7 @@ module.exports = {
                                             'HaiLanMemberInfo':{
                                                 'memberID':dataJson.MEMBER_ID,
                                                 'action':'bind',
+                                                'cardNumber':card_number,
                                                 //'userCardNumber':userCardNumber,
                                                 'lastModified':new Date().getTime(),
                                                 'type':type
