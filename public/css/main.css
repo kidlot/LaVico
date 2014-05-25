@@ -33,6 +33,7 @@ a.tel{color:#2d2d2d;}
 .mobile .mobile-pic { width:50%; padding:0 25%; }
 .mobile .mobile-pic img { width:100%; }
 .mobile-btn{ padding-top:8%; padding-bottom:4%;}
+.mobile .mobile-btn { width:74%; font-size:1.2rem; }
 /*我要侃价详细页*/
 .bargin{width:100%;background-color:#ededed; padding-top:2%;}
 .bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:1% 4%; overflow:hidden; position:relative; }
@@ -235,7 +236,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift-bottom{ height:50px; padding-top:20px;}
 .gift-bottom .left,.gift-bottom .right{height:40px; line-height:40px;font-size:1.4rem; text-align:center; cursor:pointer;}
 .gift-bottom .left{width:50%;color:#fff; background:url(../images/pre3.png) no-repeat;background-size:100% 100%; }
-.gift-bottom .right{width:40%;color:#291b00; background:url(../images/next.png) no-repeat; margin-left:10%;background-size:100% 100%;}
+.gift-bottom .right{width:44%;color:#291b00; background:url(../images/next.png) no-repeat; margin-left:6%;background-size:100% 100%;}
 .gift-bottom .right a{color:#291b00;}
 .gift-bottom .left a{ color:#fff;}
 /*积分兑换*/
