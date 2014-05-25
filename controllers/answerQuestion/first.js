@@ -27,7 +27,11 @@ module.exports= {
             console.log("aaa");
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(seed._id)},this.hold(function(err,doc){
                 if(err) throw err
-                if(doc)	nut.model.docs=doc;
+                if(doc)
+                {
+                    nut.model.goMemberInfo=docs.explanation.replace("{@wechatid}",wxid);
+                    nut.model.docs=doc;
+                }
             }));
         })
 
