@@ -18,17 +18,17 @@
             <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
         </if>
         <script>
-            function vip_card() {
-                var vip_Win = $(".vip-card").height() / 10;
-                $(".vip-card-num").css("bottom", vip_Win);
-            }
+            //function vip_card() {
+            //    var vip_Win = $(".vip-card").height() / 10;
+            //    $(".vip-card-num").css("bottom", vip_Win);
+            //}
 
-            window.onload = function () {
-                vip_card();
-            }
-            window.onresize = function () {
-                vip_card();
-            }
+            //window.onload = function () {
+            //    vip_card();
+            //}
+            //window.onresize = function () {
+            //    vip_card();
+            //}
 
             function _gotoFavPage(){
                 var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
