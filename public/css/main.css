@@ -33,7 +33,8 @@ a.tel{color:#2d2d2d;}
 .mobile .mobile-pic { width:50%; padding:0 25%; }
 .mobile .mobile-pic img { width:100%; }
 .mobile-btn{ padding-top:8%; padding-bottom:4%;}
-.mobile .mobile-btn { width:74%; font-size:1.2rem; }
+
+.mobile .mobile-btn a { width:74%; font-size:1.2rem; }
 /*我要侃价详细页*/
 .bargin{width:100%;background-color:#ededed; padding-top:2%;}
 .bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:1% 4%; overflow:hidden; position:relative; }
@@ -369,7 +370,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .intros .content{font-size: 1.4rem;color: #B9954D;}
 .elite_img img{ width:100%; margin-top:60px;}
 .prev_btn,
-.next_btn { width:22px; height:40px; position:absolute; top:50%;margin-top:-0px; }
+.next_btn { width:22px; height:40px; position:fixed; top:50%;margin-top:-0px; }
 .prev_btn{ background:url(../images/elite_prev_btn.png) no-repeat; background-size:100% 100%; left:35px; }
 .next_btn{ background:url(../images/elite_next_btn.png) no-repeat;background-size:100% 100%; right:35px; }
 .prev_btn:hover{ cursor:pointer;}
