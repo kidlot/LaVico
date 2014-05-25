@@ -166,8 +166,9 @@ function giveup(){
         success:function(data){
             if(data.err == 0){
 
-                $("#fixed").text("休息休息，10分钟后才能再侃价")
                 $("#fixed").attr('href',"javascript:;");
+                $("#fixed").attr('onclick',"return false");
+                $("#fixed").text("休息休息，10分钟后才能再侃价")
                 _close()
             }else{
                 alert(data.msg)
