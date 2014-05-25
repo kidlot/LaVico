@@ -436,35 +436,48 @@ module.exports = {
                 }else if(data.result == 'has-no-chance'){
 
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
-                    window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){});
+                    window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
+                        flag = 1;
+                    });
 
                 }else if(data.result == 'activity_is_over'){
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){});
+                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                        flag = 1;
+                    });
 
                 }else if(data.result == 'something-error'){
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){});
+                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){
+                        flag = 1;
+                    });
 
                 }else if(data.result == 'unwin'){
 
                     var _i = data.count;
-                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会！',function(event){});
+                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会！',function(event){
+                        flag = 1;
+                    });
 
                 }else if((/[\u4e00-\u9fa5]+/).test(data.result)){
 
-                    window.popupStyle2.on(data.result,function(event){});
+                    window.popupStyle2.on(data.result,function(event){
+                        flag = 1;
+                    });
 
                 }else if(data.result == 'your-points-not-enough'){
 
-                    window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){});
+                    window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+                        flag = 1;
+                    });
 
                 }else{
 
-                    window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){});
+                    window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){
+                        flag = 1;
+                    });
 
                 }
-                flag = 1;
             })
         }
     }
