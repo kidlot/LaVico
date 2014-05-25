@@ -10,9 +10,6 @@ module.exports= {
         nut.model._id=seed.wechatid;
         //var wxid=seed.wechatid;
 
-        console.log( nut.model.wechatId);
-        console.log(_id);
-
 
         this.step(function(){
 
