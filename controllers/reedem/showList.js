@@ -188,7 +188,7 @@ module.exports={
                     params.otherPromId=id;
                     params.PROMOTION_CODE=aid;
                     //params.PROMOTION_CODE='CQL201404280005';//aid:测试号
-                    params.point=0-needScore;
+                    params.point=0;
                     //调用接口：提交扣除积分和兑换奖券
                     //扣积分接口
 
