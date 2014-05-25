@@ -6,6 +6,7 @@ module.exports={
         //接口读取门店列表(设置1000代表每页条数，即一次性全部返回)
         //console.log(seed.wxid);
         nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
+        console.log("wxid:"+seed.wxid);
         this.step(function(){
             var jsonData={}
             jsonData.perPage=1000;
