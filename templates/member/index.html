@@ -4,13 +4,14 @@
             <if condition="{@type=='0'}">
                    <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             <elseif condition="{@type == '1'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /><div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div></div>
+
+                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
                     
             <elseif condition="{@type=='2'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /><div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div></div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
                     
             <elseif condition="{@type=='3'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /><div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div></div>    
+                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
             <else/>
                 <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             </if>
@@ -19,8 +20,8 @@
         </if>
         <script>
             function vip_card() {
-                var vip_Win = $(window).height() / 3;
-                $(".vip-card-num").css("top", vip_Win);
+                var vip_card_num = $(".vip-card-num").width() / 2;
+                $(".vip-card-num").css("margin-left", -vip_card_num );
             }
 
             window.onload = function () {

@@ -77,6 +77,7 @@ module.exports = {
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err,doc){
 
                 var MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "" ;
+                var cardNumber = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.cardNumber : "" ;
                 var bindStatus = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.action : "undefined" ;
                 var type = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.type : "undefined";
 
@@ -103,6 +104,8 @@ module.exports = {
 
 
                 nut.model.MEMBER_ID = MEMBER_ID;
+                nut.model.cardNumber = cardNumber;
+
 
 
 
