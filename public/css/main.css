@@ -122,7 +122,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .pages{width:100%; padding:4% 0; overflow:hidden; position:fixed; bottom:0px; left:0px; }
 .pages-content{width:96%; margin:0 auto;height:auto; padding:0 2%; }
 .pages .pre,.pages .next,.pages .pre_on{width:48%; height:40px; display:inline-block; text-align:center; font-size:1.4rem;line-height:40px; }
-.pages .pre{color:#fff; background:url(../images/pre.jpg) center center no-repeat;}
+.pages .pre{color:#281B00; background:url(../images/next.png) center center no-repeat;background-size:100% 100%; margin-right:4%;}
 .pages .pre_on{color:#fff; background:url(../images/pre_on.jpg) center center no-repeat;}
 .pages .next{color:#281B00; background:url(../images/next.png) center center no-repeat; background-size:100% 100%; }
 .blank{ padding-top:10%;}
