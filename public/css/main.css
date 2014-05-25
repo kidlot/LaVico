@@ -70,7 +70,7 @@ store-title .store-title p{position:relative;}
 .store-title .title5{ font-size:1.6rem; display:block;width:100%;text-align:center;position:absolute;top:0px;left:0px; height:50px; line-height:50px;}
 .store-list{width:100%; background-color:#eeeeee;}
 .store-listContent{width:100%; margin:0 auto; }
-.store-listContent ul{ padding-bottom:10%;}
+.store-listContent ul{}
 .store-listContent ul li{width:92%; height:auto; border-bottom:1px #a9a9a9 solid; overflow:hidden; padding:4%; }
 .store-listContent ul li a{width:100%; height:auto;display:inline-block;background:url(../images/store_ljt.jpg) right center no-repeat; background-size:10px;}
 .store-listContent ul li a .name{ font-size:1.6rem; color:#cdb788;}
