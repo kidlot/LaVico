@@ -30,7 +30,6 @@ module.exports= {
                 if(doc)
                 {
                     nut.model.goMemberInfo=(docs.explanation).replace("{@wechatid}",wxid);
-
                     nut.model.docs=doc;
                 }
             }));
