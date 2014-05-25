@@ -26,7 +26,7 @@ module.exports= {
         this.step(function(){
             //var id = '536879ea38c23a370d000c72';
 
-            helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(seed._id)},this.hold(function(err,doc){
+            helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(wxid)},this.hold(function(err,doc){
                 if(err) throw err
                 if(doc)
                 {
