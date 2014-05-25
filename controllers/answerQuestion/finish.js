@@ -132,15 +132,24 @@ module.exports={
                                     } else if (themeType == 1) {
                                         memoString = "型男测试-" + docTheme.theme;
                                     }
-                                    var jsonData = {
-                                        openid: wechatid,
-                                        otherPromId: _id,
-                                        //PROMOTION_CODE: getActivities,
-                                        PROMOTION_CODE:"L2013112709",
-                                        memo: memoString,
-                                        point: getScore
-                                    }
+
+
+                                    //得券接口
+
                                     then.step(function () {
+                                        var jsonData = {
+                                            openid: wechatid,
+                                            otherPromId: _id,
+                                            //PROMOTION_CODE: getActivities,
+                                            PROMOTION_CODE:"L2013112709",
+                                            memo: memoString,
+                                            point: 0
+                                        }
+                                        middleware.request("Point/Change",
+                                            {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
+                                            this.hold(function (err, doc) {
+                                            }))
+
                                         middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                             if (err) throw err;
                                             var docJson = JSON.parse(doc)
@@ -157,6 +166,11 @@ module.exports={
                                             }
                                         }));
                                     })
+
+
+
+
+
                                 }
                             }
 
@@ -186,7 +200,7 @@ module.exports={
 
                                 if (getLabel != "" || getLabel != null) {
                                     //发送标签至CRM
-                                    jsonData = {};
+                                     jsonData = {};
                                     jsonData.memberId = nut.model.memberID;
                                     jsonData.tag = getLabel;
                                     middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
