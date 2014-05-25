@@ -7,14 +7,14 @@
   </div>-->
   <div class="city-list">
       <foreach for="{@provinceArr}" var="province">
-        <h3><a style="font-size: 1.6rem; padding: 5% 0 5% 5.8%; border-bottom: 1px solid #eee; display: block;" class="outlet_bottom">{@province}</a></h3>
+        <h3><a style="font-size: 1.6rem; padding: 5% 0 5% 4%; border-bottom: 1px solid #eee; display: block;" class="outlet_bottom">{@province}</a></h3>
         <div class="city-listContent" style="display: none">
           <ul>
               <foreach for="{@cityArr}" var="city">
                   <if condition="{@city[0]==province}">
                       <foreach for="{@city}" var="cityOne" key="key">
                           <if condition="@key!=0">
-                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}&wxid={@wxid}" id="ci" style="font-size: 1.4rem;padding:4% 0 4% 7%;display: block; color:#000; ">{@cityOne}</a></li>
+                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}&wxid={@wxid}" id="ci" style="font-size: 1.4rem;padding:4% 0 4% 4%;display: block; color:#000; ">{@cityOne}</a></li>
                           </if>
                       </foreach>
                   </if>
@@ -47,14 +47,14 @@
         $("div.city-list").find("a.outlet_bottom").click(function () {
             var h3Len = $(".city-list").find("h3");
             for (var i = 0; i < h3Len.length; i++) {
-                h3Len.find("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+                h3Len.find("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 96% center no-repeat", "background-size": "16px" });
             };
 
             if ($(this).parent("h3").next(".city-listContent").css('display') == 'block') {
-                $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+                $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 96% center no-repeat", "background-size": "16px" });
             }
             if ($(this).parent("h3").next(".city-listContent").css('display') == 'none') {
-                $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
+                $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 96% center no-repeat", "background-size": "16px" });
             }
             //console.log($(this).parent("h3").next().attr("class"))
             //console.log($(this).parent("h3").next(".city-listContent").css('display'));
