@@ -80,13 +80,14 @@ module.exports = {
         this.step(function(){
             //获取我的会员卡的头部显示的卡号Member/Info/9121535
             console.log(memberInfo);
+
             if(memberInfo.HaiLanMemberInfo&&memberInfo.HaiLanMemberInfo.memberID&&memberInfo.HaiLanMemberInfo.cardNumber&&memberInfo.HaiLanMemberInfo.action=='bind'){
 
                 card_number = memberInfo.HaiLanMemberInfo.cardNumber;
 
             }else{
 
-                if(memberInfo.HaiLanMemberInfo.memberID){
+                if(memberInfo.HaiLanMemberInfo&&memberInfo.HaiLanMemberInfo.memberID){
                     middleware.request( "Member/Info/"+memberInfo.HaiLanMemberInfo.memberID,{
                         }
                         ,this.hold(function(err,req_doc){
@@ -104,7 +105,9 @@ module.exports = {
 
                         }));
                 }else{
-                    nut.model.error = 'missing_info';//丢失信息
+                    if(memberInfo.HaiLanMemberInfo&&memberInfo.HaiLanMemberInfo.memberID==undefined){
+                        nut.model.error = 'missing_info';//丢失信息
+                    }
                 }
 
             }
@@ -112,7 +115,11 @@ module.exports = {
         /*判断用户类型，申请会员卡或者绑定会员卡*/
         this.step(function(){
 
-            var MEMBER_ID = memberInfo.HaiLanMemberInfo ? memberInfo.HaiLanMemberInfo.memberID : "" ;
+            if(memberInfo.HaiLanMemberInfo&&memberInfo.HaiLanMemberInfo.memberID){
+                var MEMBER_ID = memberInfo.HaiLanMemberInfo.memberID;
+            }else{
+                var MEMBER_ID = '';
+            }
             var bindStatus = memberInfo.HaiLanMemberInfo ? memberInfo.HaiLanMemberInfo.action : "undefined" ;
             var type = memberInfo.HaiLanMemberInfo ? memberInfo.HaiLanMemberInfo.type : "undefined";
 
