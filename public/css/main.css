@@ -514,4 +514,4 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
                       background-size:100% 100%;font-size:1.4rem; color:#3C3C3C; margin-left:5%; }
 
 /*后期增加*/
-.outlet_bottom { background:url(../images/outlet_bottom.png) 97% center no-repeat; background-size:16px; }
+.outlet_bottom { background:url(../images/outlet_bottom.png) 96% center no-repeat; background-size:16px; }
