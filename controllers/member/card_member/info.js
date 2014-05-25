@@ -627,6 +627,32 @@ module.exports = {
                                     }));
 
                                 }
+                                else if(_field_name == 'MEM_PSN_BIRTHDAY'){
+                                    //格式：05-3月 -14 04.51.44.000000000 下午
+                                    //格式：13-3月 -14 09.02.46.000000000 上午
+                                    var _time = _new_value;
+                                    var _time = "05-3月 -14 04.51.44.000000000 下午";
+                                    var _timeArr = _time.split(" ");// 在每个逗号(,)处进行分解
+                                    console.log(_timeArr);//["05-3月", "-14", "04.51.44.000000000", "下午"];
+
+//                                    helper.db.coll('welab/customers').find(
+//                                        {
+//                                            $and:
+//                                                [
+//                                                    {"HaiLanMemberInfo":{$exists:true}},
+//                                                    {"HaiLanMemberInfo.memberID":{$exists:true}}
+//                                                ]
+//                                        }
+//                                    ).update({"HaiLanMemberInfo.memberID":memberIDArr[_i]},{
+//                                            $set:{
+//                                                'birthday':_new_value,
+//                                                'lastModified':new Date().getTime()
+//                                            }
+//                                        },this.hold(function(err, doc) {
+//                                        err&&console.log(err);
+//                                    }));
+
+                                }
                                 else if(_field_name == 'MOBILE_TELEPHONE_NO'){
 
                                     helper.db.coll('welab/customers').find(
