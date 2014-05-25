@@ -4,14 +4,13 @@
             <if condition="{@type=='0'}">
                    <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             <elseif condition="{@type == '1'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /></div>
-                    <div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /><div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div></div>
+                    
             <elseif condition="{@type=='2'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /></div>
-                    <div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /><div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div></div>
+                    
             <elseif condition="{@type=='3'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /></div>
-                     <div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /><div class="vip-card-num" style="color: #999;">{@MEMBER_ID}</div></div>    
             <else/>
                 <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             </if>
@@ -19,31 +18,30 @@
             <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
         </if>
         <script>
-            //function vip_card() {
-            //    var vip_Win = $(window).height() / -12;
-            //    $(".vip-card-num").css("top", vip_Win);
-            //}
+            function vip_card() {
+                var vip_Win = $(window).height() / 12;
+                $(".vip-card-num").css("top", vip_Win);
+            }
 
 <<<<<<< HEAD
-            window.onload = function () {
-                vip_card();
-            }
-            window.onresize = function () {
-                vip_card();
-            }
-
-            function _gotoFavPage(){
-                var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
-                location.href = url
-            }
-=======
             //window.onload = function () {
             //    vip_card();
             //}
             //window.onresize = function () {
             //    vip_card();
             //}
->>>>>>> 9e50972b77f009b1df911900ded7c5110d27cfbf
+
+            function _gotoFavPage(){
+                var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
+                location.href = url
+=======
+            window.onload = function () {
+                vip_card();
+            }
+            window.onresize = function () {
+                vip_card();
+>>>>>>> a593f74e1242005fdbeca85cbaf5bf5c797f30d3
+            }
         </script>
         <div class="member">
         <div class="member-content">
