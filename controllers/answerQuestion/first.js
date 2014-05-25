@@ -11,7 +11,7 @@ module.exports= {
         var wxid=seed.wechatid;
 
         this.step(function(){
-            console.log("bbbb");
+
             helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
                 if(err) throw err;
                 if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind'){
@@ -24,12 +24,12 @@ module.exports= {
 
         this.step(function(){
             //var id = '536879ea38c23a370d000c72';
-            console.log("aaa");
+
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(seed._id)},this.hold(function(err,doc){
                 if(err) throw err
                 if(doc)
                 {
-                    nut.model.goMemberInfo=docs.explanation.replace("{@wechatid}",wxid);
+                    nut.model.goMemberInfo=(docs.explanation).replace("{@wechatid}",wxid);
                     nut.model.docs=doc;
                 }
             }));
