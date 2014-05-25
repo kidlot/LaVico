@@ -27,6 +27,8 @@
 window.onload=function(){
 	$(".chengeCity").click(function(){
 		window.location.href = "/lavico/store/searchByCity?wxid={@wxid}";
-	});	
+	});
+
+	$("div.store-listContent").find("ul li:last-child").css("border-bottom", "none");
 }
 </script>
