@@ -616,6 +616,17 @@ module.exports = {
                              'userCaptcha':userCaptcha,
                              'userCardNumber':userCardNumber
                             */
+                            /*获取CRM的用户资料*/
+                            var email;
+                            var profession;
+                            var province;
+                            var city;
+                            var address;
+                            var favoriteStyle;
+                            var favoriteColor;
+                            var birthday;
+
+
                             var then = this;
                             var type = 0;   //获取卡类型    0 是没获取到   // 01: 白卡, 02: 普通VIP卡, 03: 白金VIP卡
                             var data_request;
@@ -727,16 +738,43 @@ module.exports = {
                             });
 
                             this.step(function(){
+
                                 //获取我的会员卡的头部显示的卡号Member/Info/9121535
+                                /*{"info":
+                                {"MEM_PSN_EMAIL":null,
+                                "MEM_INDUSTRY":null,
+                                "MEM_PSN_BIRTHDAY":1393948800000,
+                                "PROVINCE":null,
+                                "CITY":null,
+                                "MEM_PSN_ADDRESS":null,
+                                "MEM_PSN_HOPPY":null,
+                                "MEM_PSN_COLOR":null,
+                                "MEM_CARD_NO":"L9121533"}
+                                }
+                                * */
                                 var dataJson = JSON.parse(data_doc);
                                 middleware.request( "Member/Info/"+dataJson.MEMBER_ID,{
                                     }
                                     ,then.hold(function(err,req_doc){
                                         var member_info = JSON.parse(req_doc);
+
                                         card_number = member_info.info.MEM_CARD_NO;
+                                        /*用户个人资料*/
+                                        email = member_info.info.MEM_PSN_EMAIL;
+                                        profession = member_info.info.MEM_INDUSTRY;
+                                        province = member_info.info.PROVINCE;
+                                        city = member_info.info.CITY;
+                                        address = member_info.info.MEM_PSN_ADDRESS;
+                                        favoriteStyle = member_info.info.MEM_PSN_HOPPY;
+                                        favoriteColor = member_info.info.MEM_PSN_COLOR;
+                                        birthday = member_info.info.MEM_PSN_BIRTHDAY;
+
                                     }));
 
+
                             });
+
+
 
                             this.step(function(doc){
                                 var dataJson = JSON.parse(data_doc);
@@ -755,7 +793,16 @@ module.exports = {
                                                 //'userCardNumber':userCardNumber,
                                                 'lastModified':new Date().getTime(),
                                                 'type':type
-                                            }
+                                            },
+                                            'email':email,
+                                            'profession':profession,
+                                            'province':province,
+                                            'city':city,
+                                            'address':address,
+                                            'favoriteStyle':favoriteStyle,
+                                            'favoriteColor':favoriteColor,
+                                            'birthday':birthday
+
                                         }
                                     },function(err,doc){
                                         err&&console.log(doc);
