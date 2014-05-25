@@ -608,6 +608,8 @@ module.exports = {
                             var tel_checked_status = seed.tel_checked_status;//手机号码绑定状态
                             var checkCaptcha = seed.checkCaptcha;
                             var memberId = seed.memberId || 'undefined';
+                            var card_number;//显示在会员中心的帐号
+
                             /*
                             * 'wxid':wxid,
                              'userTel':userTel,
@@ -724,6 +726,18 @@ module.exports = {
                                 return doc;
                             });
 
+                            this.step(function(){
+                                //获取我的会员卡的头部显示的卡号Member/Info/9121535
+                                var dataJson = JSON.parse(data_doc);
+                                middleware.request( "Member/Info/"+dataJson.MEMBER_ID{
+                                    }
+                                    ,then.hold(function(err,req_doc){
+                                        var member_info = JSON.parse(req_doc);
+                                        card_number = member_info.MEM_CARD_NO || '';
+                                    }));
+
+                            });
+
                             this.step(function(doc){
                                 var dataJson = JSON.parse(data_doc);
                                 if(dataJson.success == true){
@@ -737,6 +751,7 @@ module.exports = {
                                             'HaiLanMemberInfo':{
                                                 'memberID':dataJson.MEMBER_ID,
                                                 'action':'bind',
+                                                'cardNumber':card_number,
                                                 //'userCardNumber':userCardNumber,
                                                 'lastModified':new Date().getTime(),
                                                 'type':type

@@ -489,6 +489,7 @@ module.exports = {
                 var memberID;
                 var sex = '';
                 var data_request;
+                var card_number;//显示在会员中心的帐号
 
 				this.step(function(){
 				  if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 300000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
@@ -578,6 +579,17 @@ module.exports = {
                 });
 
                 this.step(function(){
+                    //获取我的会员卡的头部显示的卡号Member/Info/9121535
+                    middleware.request( "Member/Info/"+data_return_middleware.MEMBER_ID,{
+                        }
+                        ,then.hold(function(err,req_doc){
+                            var member_info = JSON.parse(req_doc);
+                            card_number = member_info.MEM_CARD_NO;
+                        }));
+
+                });
+
+                this.step(function(){
 
                     helper.db.coll('welab/customers').update({wechatid:seed.uid},{
                         $set:{
@@ -589,6 +601,7 @@ module.exports = {
                             'gender':sex,
                             'HaiLanMemberInfo':{
                                 'memberID':data_return_middleware.MEMBER_ID,
+                                'cardNumber':card_number,
                                 'action':'bind',
                                 'lastModified':new Date().getTime(),
                                 'type':type
