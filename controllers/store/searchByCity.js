@@ -222,7 +222,7 @@ module.exports={
                         nut.model.city_docs=searchCity;
                     }else{
                         nut.view.disable();
-                        nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，本城市没有LaVico品牌上柜，请选择其他城市查询',function(event){location.href='javascript:history.back()'})}</script>");
+                        nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，本城市没有LaVico品牌专柜，请选择其他城市查询',function(event){location.href='javascript:history.back()'})}</script>");
                     }
                 })
             }
