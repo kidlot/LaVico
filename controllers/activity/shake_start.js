@@ -281,11 +281,14 @@ module.exports = {
                 }
                 var shake;
                 var costPerShake;//每次摇一摇消耗积分
-                var returnCount;//返回多少次机会
                 var memberPoints;//用户积分
                 var memberId;//用户memberID
                 var wxid = seed.uid;//用户微信ID
                 var shakeActivityName;//摇一摇活动名称
+
+
+                var countUserByPoints;//根据积分计算多少次数
+                var returnCount;//根据系统后台设置，返回多少次机会
 
                 this.step(function(){
                     helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
@@ -344,6 +347,7 @@ module.exports = {
                                     write_info(then,'{"result":"something-error"}');
                                 }else{
                                     memberPoints = doc.point;
+                                    countUserByPoints = Math.floor(memberPoints/costPerShake);
 
                                     console.log(doc);
                                     console.log("memberPoints:"+memberPoints);
@@ -468,8 +472,21 @@ module.exports = {
                             }));
                         }
 
+                        if(costPerShake > 0){
+                            if(countUserByPoints>returnCount){
+                                var _count = returnCount;//系统设置允许多少次
+                            }else{
+                                var _count = countUserByPoints;//根据用户积分设置允许多少次
+                            }
+                        }else{
+                            var _count = returnCount;//系统设置允许多少次
+                        }
 
-                        write_info(then,'{"result":"unwin","count":"'+returnCount+'"}');
+                        _count = _count - 1;
+
+                        write_info(then,'{"result":"unwin","points":"'+shake.points+'","count":"'+_count+'"}');
+
+
                     }
                 })
             }
@@ -514,8 +531,9 @@ module.exports = {
                     //每次摇一摇将消耗20积分，你当前还有10次机会
                     var _i = data.count;//你当前还有次机会的次数
                     var _points = parseInt(data.points);//每次摇一摇将消耗的积分
+
                     if(_points == 0){
-                        window.popupStyle2.on('您当前还有'+_i+'次机会！',function(event){
+                        window.popupStyle2.on('您当前还有'+_i+'次机会',function(event){
                             flag = 1;
                         });
                     }else{
@@ -681,10 +699,32 @@ module.exports = {
 
                 }else if(data.result == 'unwin'){
 
-                    var _i = data.count;
-                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会！',function(event){
-                        flag = 1;
-                    });
+//                    var _i = data.count;
+//                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会！',function(event){
+//                        flag = 1;
+//                    });
+
+                    //每次摇一摇将消耗20积分，你当前还有10次机会
+                    var _i = data.count;//你当前还有次机会的次数
+                    if(_i > 0){
+                        var _points = parseInt(data.points);//每次摇一摇将消耗的积分
+                        if(_points == 0){
+                            window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                flag = 1;
+                            });
+                        }else{
+                            window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                flag = 1;
+                            });
+                        }
+                    }else{
+
+                        window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+                            flag = 1;
+                        });
+
+                    }
+
 
                 }else if((/[\u4e00-\u9fa5]+/).test(data.result)){
 
