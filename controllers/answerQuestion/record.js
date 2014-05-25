@@ -39,8 +39,9 @@ module.exports={
         })
 
         this.step(function(docOptions){
-            //if(docvar==null){
-            if(1==1){
+            //没有记录过
+            if(docvar==null){
+            //if(1==1){
                 if(type==0){//单选
                     //积分在数字情况下记录
                     if(!isNaN(score)){
@@ -187,11 +188,19 @@ module.exports={
                     }
                 }
             }else{
+                console.log("********11111111111************");
+                //记录过
                 if(then.req.session.isFinish){
+                    //完成页过来的
+                    console.log("**********isFinish************");
+
+
                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                         "&_id="+_id+"&optionId="+then.req.session.optionId});
                     this.res.end();
                 }else{
+                    //已经记录过了的
+                    console.log("********2222222************");
                     var themeQuestionoptionId;
                     var themeQuestionstopLabel
                     var themeQuestionchooseNext
@@ -209,15 +218,19 @@ module.exports={
                     }
 
                     if(finish!="true"){
+                        console.log("*******33333333333************");
                         var next = (parseInt(optionId)+1)
 
                         if(themeQuestionstopLabel==''||typeof(themeQuestionstopLabel)=='undefined'){
+                            console.log("********6666666666************");
                             if(themeQuestionchooseNext==''||typeof(themeQuestionstopLabel)=='undefined'){
+                                console.log("********555555555************");
                                 if(next >docOptions.length){
                                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                                         "&_id="+_id+"&optionId="+docOptions.length});
                                     this.res.end();
                                 }else{
+                                    console.log("********999999999999************");
                                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
                                         wechatid+"&_id="+_id+
                                         "&optionId="+next});
@@ -225,18 +238,23 @@ module.exports={
                                 }
 
                             }else{
+                                console.log("********4444444444444444************");
                                 this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
                                     wechatid+"&_id="+_id+
                                     "&optionId="+parseInt(themeQuestionchooseNext)});
                                 this.res.end();
                             }
                         }else{
+                            console.log("********77777777************");
                             this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                                 "&_id="+_id+"&optionId="+optionId});
                             this.res.end();
                         }
                     }else{
-                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                        //单选按钮正常回退，再前进
+                        console.log("********888888888************");
+
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?isRecord=yes&wechatid="+wechatid+
                             "&_id="+_id+"&optionId="+optionId});
                         this.res.end();
                     }
