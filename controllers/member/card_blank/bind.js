@@ -733,7 +733,7 @@ module.exports = {
                                     }
                                     ,then.hold(function(err,req_doc){
                                         var member_info = JSON.parse(req_doc);
-                                        card_number = member_info.MEM_CARD_NO || '';
+                                        card_number = member_info.info.MEM_CARD_NO;
                                     }));
 
                             });
