@@ -441,13 +441,13 @@ module.exports = {
                         var _reg = /verify_bg\.png/;
 
                         if(!_reg.test(_imgSrc)){
-                            $(".get_id_code").css("background","url(/lavico/public/images/verify_bg.png)");
+                            $(".get_id_code").css({"background":"url(/lavico/public/images/verify_bg.png)","background-size":"100% 100%"});
                         }
                     }
                 },1000);
             }
             function re_get_code(){
-                $(".get_id_code").html('获取验证码').css("background","url(/lavico/public/images/verify_bg_01.png)");;
+                $(".get_id_code").html('获取验证码').css({"background":"url(/lavico/public/images/verify_bg_01.png)","background-size":"100% 100%"});
                 flag = 0;
             }
             /*验证码-结束*/
