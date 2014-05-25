@@ -174,7 +174,7 @@ module.exports = {
             $('#submit_2').click(function(){
                 $('#loading').show();
                 var userTel = $('#userTel').val();
-                var userCardNumber = $('#userCardNumber').val();
+                var userCardNumber = $('#userCardNumber').val().toUpperCase();
                 var wxid = $('#wxid').val();
                 if(userCardNumber == '' ){
 
@@ -240,7 +240,7 @@ module.exports = {
                 var wxid = $('#wxid').val();
                 var userTel = $('#userTel').val();
                 var userCaptcha = $('#userCaptcha').val();
-                var userCardNumber = $.trim($('#userCardNumber').val());
+                var userCardNumber = $.trim($('#userCardNumber').val()).toUpperCase();
                 var userName = $.trim($('#userName').val());
                 var tel_checked_status = $.trim($('#tel_checked_status').val());
                 var memberId = $.trim($('#memberId').val());
