@@ -729,11 +729,11 @@ module.exports = {
                             this.step(function(){
                                 //获取我的会员卡的头部显示的卡号Member/Info/9121535
                                 var dataJson = JSON.parse(data_doc);
-                                middleware.request( "Member/Info/"+dataJson.MEMBER_ID{
+                                middleware.request( "Member/Info/"+dataJson.MEMBER_ID,{
                                     }
                                     ,then.hold(function(err,req_doc){
                                         var member_info = JSON.parse(req_doc);
-                                        card_number = member_info.MEM_CARD_NO || '';
+                                        card_number = member_info.info.MEM_CARD_NO;
                                     }));
 
                             });

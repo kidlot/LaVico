@@ -140,9 +140,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .look-map{ background-color:#eeeeee; width:100%;}
 .look-map .map{width:90%; margin:0 auto; padding:5%;}
 .look-map .map .baidu-map img {width:100%; }
-.look-map .map .way{ padding-top:5%;}
+.look-map .map .way{ padding-top:5%;font-size:1.6rem; padding-bottom:4%;line-height:1.5em;}
 .look-map .map .way .title{ font-size:25px; color:#B9954D; line-height:45px;}
-.look-map .map .way .text{ font-size:1.6rem; color:#646464; line-height:35px;}
+.look-map .map .way .text{ color:#646464;  }
 .inquiry{width:100%; height:50px; line-height:50px; background:url(../images/head_bg.jpg) center center no-repeat;}
 .inquiry .city{ font-size:1.6rem; color:#010000; padding-left:4%;}
 .inquiry .input{ padding-top:10px; margin-left:80px;}
@@ -342,14 +342,14 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .match .roll-banner{width:96%; height:auto; overflow:hidden; position:relative; padding:2%;}
 .match .roll-banner .img{width:100%;height:auto; background:url(../images/elite_home_j.png) bottom center no-repeat; padding-bottom:16px; }
 .match .roll-banner img{ width:100% ;}
-.match .intro-text{width:100%; height:auto; background:url(../images/match_bg.jpg) no-repeat; padding-top:2%; position:relative; margin-bottom:50px;}
-.match .intro-text .text{width:80%; margin:0 auto; font-size:1.4rem; color:#BA9E70; padding:0 10%; }
+.match .intro-text{width:100%; height:auto; background:url(../images/match_bg.jpg) no-repeat; position:relative; margin-bottom:50px;}
+.match .intro-text .text{width:80%; margin:0 auto; font-size:1.4rem; color:#BA9E70; padding:4% 10%; }
 .match .intro-text .arrow-left,.match .intro-text .arrow-right{width:15px; height:28px;position:absolute; top:50%; cursor:pointer; margin-top:-14px; }
 .match .intro-text .arrow-left{ left:10px; background:url(../images/macth_pre.png) no-repeat;}
 .match .intro-text .arrow-right{right:10px;background:url(../images/macth_next.png) no-repeat;}
-.match .intro-text .number{position:absolute; left:0px; bottom:-50px; line-height:50px; height:50px;width:100%; background-color:#000; text-align:center; color:#fff;}
+.match .intro-text .number{position:absolute; left:0px; bottom:-20px; line-height:20px; height:20px;width:100%; background-color:#000; text-align:center; color:#fff;}
 .f25,
-.f22{font-size:1.4rem;}
+.f22{font-size:1.2rem;}
 
 /********************Create by MrLv 2014-04-21******************************/
 .man-test-title{ text-align:center; font-size:24px; background:#E5E5E5; width:100%; height:80px; padding-top:30px; line-height:40px;}
@@ -367,10 +367,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite_title .title6 a{ width:auto; margin-top:0;vertical-align:middle; text-align:right; padding-right:12px; display:block;
                         color:#fff; font-size:1.2rem;  height:50px; line-height:52px; background:url(../images/store_rt.jpg) right center no-repeat; background-size:10px;}
 
-.intros{ position:fixed; bottom:0; z-index:100; margin:0 auto; text-align:left; height:auto; width:92%; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding:4%; left:0px;}
-.intros .title{font-size: 1.6rem;color: #B9954D;line-height: 2em;}
-.intros .content{font-size: 1.4rem;color: #B9954D;}
-.elite_img img{ width:100%; margin-top:60px;}
+.intros{ position:fixed; bottom:0; z-index:100; margin:0 auto; text-align:left; height:auto; width:100%; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding:2% 0; left:0px;}
+.intros .title{font-size: 1.6rem;color: #B9954D; padding:0 4%; }
+.intros .content{font-size: 1.4rem;color: #B9954D; padding:0 4%;}
+.elite_img img{ width:100%; margin-top:50px;}
 .prev_btn,
 .next_btn { width:22px; height:40px; position:fixed; top:50%;margin-top:-0px; }
 .prev_btn{ background:url(../images/elite_prev_btn.png) no-repeat; background-size:100% 100%; left:4%; }
