@@ -155,8 +155,9 @@ module.exports = {
 
                     var dataJson = data;
                     if(dataJson['success'] == true){//dataJson.issuccessed
-                        window.popupStyle2.on("解绑成功",function(event){});
-                        window.location.href = "/lavico/member/index?wxid="+wxid;
+                        window.popupStyle2.on("解绑成功",function(event){
+                            window.location.href = "/lavico/member/index?wxid="+wxid;
+                        });
                     }else if (dataJson['success'] == false){
                         if(dataJson['error'] == 'id_code_error'){
                             window.popupStyle2.on("验证码错误，请重新输入",function(event){});
