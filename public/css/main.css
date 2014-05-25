@@ -227,7 +227,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points1 .tab ul li{ float:left; line-height:50px; font-size:1.6rem;text-align:center; width:50%; }
 .points1 .tab ul li a{width:100%;height:50px;display:inline-block; color:#606060; }
 .points1 .tab ul li a:hover,.points1 .tab ul li a.on{color:#fff; background:url(../images/tab.png) center center no-repeat;}
-.gift-box{ margin-top:20px; padding-bottom:20px; border-bottom:1px #ababab solid;}
+.gift-box{ margin-top:4%; padding-bottom:4%; border-bottom:1px #ababab solid;}
 .gift-box1{ border:0; padding-bottom:40px;}
 .gift-box-content{width:94%; padding:0 3%; margin:0 auto;}
 .gift-top{ background-color:#fff;}
@@ -235,7 +235,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift-top-right .name{ color:#000; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .gift-top-right .intro{ color:#8b8b8b; padding-top:1%; border-bottom:1px #ababab solid; padding-bottom:1%;}
 .gift-top-right .term{  color:#8b8b8b; padding-top:2%;}
-.gift-bottom{ height:50px; padding-top:20px;}
+.gift-bottom{ height:auto; padding-top:4%; overflow:hidden; }
 .gift-bottom .left,.gift-bottom .right{height:40px; line-height:40px;font-size:1.4rem; text-align:center; cursor:pointer;}
 .gift-bottom .left{width:50%;color:#fff; background:url(../images/pre3.png) no-repeat;background-size:100% 100%; }
 .gift-bottom .right{width:44%;color:#291b00; background:url(../images/next.png) no-repeat; margin-left:6%;background-size:100% 100%;}
@@ -293,22 +293,22 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5-content{width:96%; padding:2% 2% 0; }
 .points5-content .banner{width:96%; height:auto; border:1px #dedede solid; padding:2%; background-color:#fff; box-sizing:content-box; }
 .points5-content .banner img{ width:100%; }
-.points5 .tab{width:100%; height:54px;}
+.points5 .tab{width:100%; height:36px;}
 .points5 .tab ul {  }
-.points5 .tab ul li{ width:33%; float:left; line-height:46px; font-size:1.6rem;text-align:center;}
-.points5 .tab ul li a{width:100%;height:54px;display:inline-block; color:#B9954D;background:url(../images/tab1_bg.jpg) no-repeat; vertical-align:top; background-size:100% 100%; }
-.points5 .tab ul li a:hover,.points5 .tab ul li a.on{color:#000; background:url(../images/tab1_bgOn.jpg) center center no-repeat;}
-.points5-content .pre-box{ margin-top:20px; padding-bottom:20px; border-bottom:1px #ababab solid;}
+.points5 .tab ul li{ width:33%; float:left; line-height:32px; font-size:1.2rem;text-align:center;}
+.points5 .tab ul li a{width:100%;height:36px;display:inline-block; color:#B9954D;background:url(../images/tab1_bg.jpg) no-repeat; vertical-align:top; background-size:100% 100%; }
+.points5 .tab ul li a:hover,.points5 .tab ul li a.on{color:#000; background:url(../images/tab1_bgOn.jpg) center center no-repeat;  background-size:100% 100%;}
+.points5-content .pre-box{ margin-top:4%; padding-bottom:20px; border-bottom:1px #ababab solid;}
 .points5-content .pre-box1{ border:0; padding-bottom:40px;}
 .points5-content .pre-box-content{width:95%; margin:0 auto; overflow:hidden; padding-bottom:4%; }
 .points5-content .pre-top{ background-color:#fff;}
 .points5-content .pre-top-right{ width:56%; padding:2%; }
 .points5-content .pre-top-right .intro{font-size:1.2rem; color:#646464; }
-.points5-content .pre-bottom{ padding-top:8px;}
-.points5-content .pre-bottom .left,.pre-bottom .right{font-size:1.6rem; text-align:left; cursor:pointer;}
-.points5-content .pre-bottom .left{width:98%;color:#646464; border:1px #dedede solid; box-sizing: border-box; padding:1%; }
-.points5-content .pre-bottom .right{width:140px; line-height:34px; text-align:center; color:#291b00; background:url(../images/next.png) no-repeat; background-size:contain; margin-top:2%; float:left; }
-.points5-content .pre-bottom .right a{ color:#291b00; font-size:1.6rem; }
+.points5-content .pre-bottom{ padding-top:8px; overflow:hidden;}
+.points5-content .pre-bottom .left,.pre-bottom .right{font-size:1.2rem; text-align:left; cursor:pointer;}
+.points5-content .pre-bottom .left{width:72%; height:30px; line-height:30px; color:#646464; border:1px #dedede solid; box-sizing: border-box;  margin-right:2%; padding-left:2%; }
+.points5-content .pre-bottom .right{width:26%; height:30px; line-height:30px; text-align:center; color:#291b00; background:url(../images/next.png) no-repeat; background-size:100% 100%; float:left; }
+.points5-content .pre-bottom .right a{ color:#291b00; font-size:1.2rem; }
 .c4{ color:#B9954D;}
 /*申领会员卡*/
 .apply{ background-color:#dadada;}
@@ -472,15 +472,15 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input_select{width:100%;height:40px;border:0;font-size:1.4rem;line-height:40px;position:relative; background-size:100% 100%; padding:0 2%; border:1px solid #999; }
 #model-name{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
 #select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:40px;opacity:0;-moz-opacity:0;position:relative;top:-40px;}
-.input_select_sex{width:100%;height:40px;border:0;padding:0 2%;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
+.input_select_sex{width:96%;height:40px; padding-left:4%; border:0;padding:0 2%;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
 #select_sex{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;left:-123px;}
 #select_month,#select_day{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
-.input_select_year{width:100%;height:40px;border:0;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
+.input_select_year{width:96%;height:40px;padding-left:4%;border:0;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
 #select_year{width:160px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
 .input_select_div_f{ float:left; width:100%; height:50px;}
 .input_select_div_fy{ float:left; width:100%; height:50px; }
 .input_select_div_fys{ float:left; width:150px; height:65px; margin-left:0;}
-.new_tab{ margin-top:20px;}
+.new_tab{ margin-top:4%;}
 .eli{ line-height:}
 .new_title{ }
 .fm{ text-align:center; padding-left:0px; }

@@ -136,6 +136,8 @@ module.exports={
                 var then=this;
                 var t_name,QTY;
 
+
+
                 //判断
                 //活动时间范围判断
                 this.step(function(){
@@ -186,8 +188,16 @@ module.exports={
                     params.otherPromId=id;
                     params.PROMOTION_CODE=aid;
                     //params.PROMOTION_CODE='CQL201404280005';//aid:测试号
-                    params.point=0-needScore;
+                    params.point=0;
                     //调用接口：提交扣除积分和兑换奖券
+                    //扣积分接口
+
+                    middleware.request("Point/Change",
+                        {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
+                        this.hold(function (err, doc) {
+                        }))
+
+                    //得券
                     middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
                         if(err) throw err;
 
