@@ -34,7 +34,6 @@
 </div>
 </div>
 <script type="text/javascript">
-
     window.onload=function(){
         var i="";
         $("h3").click(function () {
@@ -45,41 +44,20 @@
             $(this).next().slideToggle("normal");
         });
 
-    var outlet_bottom = 0;
-    
-    $("div.city-list").find("a.outlet_bottom").click(function () {
-        if (outlet_bottom == 0) {
-            $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
-            outlet_bottom = 1;
-            
-            $(this).parent().siblings().children(".outlet_bottom").click(function () {
-                $("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+        $("div.city-list").find("a.outlet_bottom").click(function () {
+            var h3Len = $(".city-list").find("h3");
+            for (var i = 0; i < h3Len.length; i++) {
+                h3Len.find("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+            };
 
+            if ($(this).parent("h3").next(".city-listContent").css('display') == 'block') {
+                $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
+            }
+            if ($(this).parent("h3").next(".city-listContent").css('display') == 'none') {
                 $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
-
-               if (outlet_bottom == 1) {
-                    $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
-                }
-
-            });
-        } else if (outlet_bottom == 1) {           
-            $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
-            outlet_bottom = 0;
-        }
-    });
-}
-
-//
-//    })
-//}
-//
-//$(document).ready(function(e) {
-//	$(".city_title").click(function(){
-//		$(".fade2").css("display","block");
-//	});
-//
-//	$(".goon_btn").click(function(){
-//		$(".fade2").css("display","none");
-//	});
-//});
+            }
+            //console.log($(this).parent("h3").next().attr("class"))
+            //console.log($(this).parent("h3").next(".city-listContent").css('display'));
+        });
+    }
 </script>

@@ -24,17 +24,26 @@
             //    $(".vip-card-num").css("top", vip_Win);
             //}
 
+<<<<<<< HEAD
+            window.onload = function () {
+                vip_card();
+            }
+            window.onresize = function () {
+                vip_card();
+            }
+
+            function _gotoFavPage(){
+                var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
+                location.href = url
+            }
+=======
             //window.onload = function () {
             //    vip_card();
             //}
             //window.onresize = function () {
             //    vip_card();
             //}
-
-            function _gotoFavPage(){
-                var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
-                location.href = url
-            }
+>>>>>>> 9e50972b77f009b1df911900ded7c5110d27cfbf
         </script>
         <div class="member">
         <div class="member-content">

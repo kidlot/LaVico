@@ -54,7 +54,7 @@ module.exports = {
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
 
-                window.popupStyle2.on("您已经是LaVico的会员",function(event){
+                window.popupStyle2.on("您已绑定",function(event){
                     window.location.href="/lavico/member/index?wxid="+wxid;
                 });
 
@@ -174,7 +174,7 @@ module.exports = {
             $('#submit_2').click(function(){
                 $('#loading').show();
                 var userTel = $('#userTel').val();
-                var userCardNumber = $('#userCardNumber').val();
+                var userCardNumber = $('#userCardNumber').val().toUpperCase();
                 var wxid = $('#wxid').val();
                 if(userCardNumber == '' ){
 
@@ -240,7 +240,7 @@ module.exports = {
                 var wxid = $('#wxid').val();
                 var userTel = $('#userTel').val();
                 var userCaptcha = $('#userCaptcha').val();
-                var userCardNumber = $.trim($('#userCardNumber').val());
+                var userCardNumber = $.trim($('#userCardNumber').val()).toUpperCase();
                 var userName = $.trim($('#userName').val());
                 var tel_checked_status = $.trim($('#tel_checked_status').val());
                 var memberId = $.trim($('#memberId').val());

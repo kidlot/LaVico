@@ -103,9 +103,6 @@ module.exports={
                     nut.model._id=null;
                 }
 
-
-
-
                 var cityCode=seed.CODE;
 
                 //获取CODE-取消最后一个自添加1
@@ -127,17 +124,20 @@ module.exports={
 
                 this.step(function(doc){
                     //在接口列表中查找seed传送过来的cityCode
+
                     for(var i=0;i<doc.list.length;i++){
                         var code=(doc.list[i].CODE).replace(/\s/g,'');
-                        //console.log("code:"+code);
-                       // console.log("cityCode:"+cityCode);
+
                         if(code==cityCode){
-                            console.log("ok");
+                            ii=true;
                             //return searchCity=doc.list[i];//返回指定门店
                             nut.model.searchCity=doc.list[i];
                             break;
                         }
                     }
+
+
+
                 })
 
             },
@@ -208,6 +208,7 @@ module.exports={
 
                 this.step(function(doc){
                     var searchCity=[]
+
                     for(var i=0;i<doc.list.length;i++){
                         if(doc.list[i].CITY==cityName){
                            var newCODE= (doc.list[i].CODE).replace(/\s/g,'');
@@ -215,8 +216,13 @@ module.exports={
                             searchCity.push(doc.list[i]);
                         }
                     }
+
+
                     if(searchCity.length>0){
                         nut.model.city_docs=searchCity;
+                    }else{
+                        nut.view.disable();
+                        nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，本城市没有LaVico店铺',function(event){location.href='javascript:history.back()'})}</script>");
                     }
                 })
             }
