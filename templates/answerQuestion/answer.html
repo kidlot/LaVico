@@ -53,7 +53,7 @@ function build(){
                         $(".content ul").append("<li><span name='correntImg' id='sed' style='visibility:hidden'><img src=/lavico/public/images/"+
                             jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
                             + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
+                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check select1 lab'>"+jsonObject.choose[i].chooseName+
                             "</span></label></li>");
 
                         //$(".content ul").append("<li><div class='answer_check select1'>系上面两颗</div><div class='img'><img src='images/suit_pic01.jpg' /></div></li>");
@@ -62,7 +62,7 @@ function build(){
                         //多项选择题 value:'题号+选项编号+积分+下一题'
                         $(".content ul").append("<li><input type='checkbox'  style='display: none'  onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+jsonObject.optionId+
                             "+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check selects1'>"+jsonObject.choose[i].chooseName+"</span></label></li>");
+                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check selects1 lab'>"+jsonObject.choose[i].chooseName+"</span></label></li>");
                     }
                 }else{
                     //选项中存在照片
@@ -71,14 +71,14 @@ function build(){
                         $(".content ul").append("<li><span name='correntImg' id='sed' style='visibility:hidden'><img  src=/lavico/public/images/"+
                             jsonObject.choose[i].isCorrect+".jpg></span>&nbsp;&nbsp;<input onclick='showCorrent(this)' style='display: none'  type='radio' id='for"+i+"' name='singleChooseInput' class='single ' value='"
                             + jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check select1'>"+jsonObject.choose[i].chooseName+
+                            jsonObject.choose[i].chooseNext+"+"+jsonObject.choose[i].stopLabel+"+"+jsonObject.choose[i].customerLabel+"'><label  for='for"+i+"'><span id='chooseNa"+i+"' class='answer_check select1 lab'>"+jsonObject.choose[i].chooseName+
                             "</span></label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="+
                             jsonObject.choose[i].uploadFile+" id='picImg' name='radioimg' width='280' height='280'></li>");
                     }else if(jsonObject.type==1){
                     //多项选择题 value:'题号+选项编号+积分+下一题'
                         $(".content ul").append("<li><input type='checkbox'  style='display: none' onclick='showCorrents(this)' name='mutilChooseInput' id='for"+i+"' value='"+
                             jsonObject.optionId+"+"+jsonObject.choose[i].chooseID+"+"+jsonObject.choose[i].chooseScore+"+"+
-                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa"+i+"'  class='answer_check selects1'>"+jsonObject.choose[i].chooseName+
+                            jsonObject.choose[i].chooseNext+"'><label for='for"+i+"'><span id='chooseNa"+i+"'  class='answer_check selects1 lab'>"+jsonObject.choose[i].chooseName+
                             "</span></label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  src='"+jsonObject.choose[i].uploadFile+
                             "' name='chkimg' width='180' height='180' id='picImg'></li>");
                     }
@@ -158,15 +158,21 @@ function build(){
 function showCorrent(t){
     //<span name='correntImg'>
     //alert(t);
+
+
+    $("li .lab").removeClass("select");
+    $("li .lab").addClass("select1");
+
     $(t).next().find("span").removeClass("select1");
     $(t).next().find("span").addClass("select");
 
     //$("span[name='correntImg']").show();
     if(themeType==1){
+        //型男测试
         $("span[name='correntImg']").css("visibility","hidden");//隐藏
     }else{
         $("span[name='correntImg']").css("visibility","visible");//显示
-        $("input[name='singleChooseInput']").attr("disabled",true);
+        $("input[name='singleChooseInput']").attr("disabled",true);//
     }
 
     //追加cookie
