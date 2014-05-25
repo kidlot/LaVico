@@ -140,9 +140,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .look-map{ background-color:#eeeeee; width:100%;}
 .look-map .map{width:90%; margin:0 auto; padding:5%;}
 .look-map .map .baidu-map img {width:100%; }
-.look-map .map .way{ padding-top:5%;font-size:1.6rem; padding-bottom:4%;line-height:1.5em;}
+.look-map .map .way{ padding-top:5%;font-size:1.6rem; padding-bottom:4%;line-height:1.5em;color:#646464;}
 .look-map .map .way .title{ font-size:25px; color:#B9954D; line-height:45px;}
-.look-map .map .way .text{ color:#000;  }
+.look-map .map .way .text{   }
 .inquiry{width:100%; height:50px; line-height:50px; background:url(../images/head_bg.jpg) center center no-repeat;}
 .inquiry .city{ font-size:1.6rem; color:#010000; padding-left:4%;}
 .inquiry .input{ padding-top:10px; margin-left:80px;}
@@ -150,7 +150,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .inquiry .change{ margin-right:4%; }
 .inquiry .change input{width:140px; height:40px; font-size:1.6rem; color:#fff; line-height:40px; border:0; text-align:center; 
                        background:url(../images/verify_bg_01.png) center center no-repeat; background-size:100% 100%; margin-top:5px;}
-.store-name{ font-size:2rem; color:#000; text-align:center; padding-bottom:5%;}
+.store-name{ font-size:2rem; color:#cdb788; text-align:center; padding-bottom:5%;}
 .activity-detail{ border-top:1px #a9a9a9 solid; margin-top:5%; padding-top:5%;}
 .activity-detail .title{ font-size:1.6rem; color:#B9954D; text-align:center;}
 .activity-detail .text{font-size:1.6rem; color:#646464; padding-top:5px; padding-bottom:15px;}

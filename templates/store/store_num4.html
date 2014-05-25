@@ -7,14 +7,14 @@
   </div>-->
   <div class="city-list">
       <foreach for="{@provinceArr}" var="province">
-        <h3><a style="font-size: 1.8rem; padding: 10px 0 10px 2%; border-bottom: 1px solid #eee; display: block;" class="outlet_bottom">{@province}</a></h3>
+        <h3><a style="font-size: 1.8rem; padding: 2% 0 2% 5.8%; border-bottom: 1px solid #eee; display: block;" class="outlet_bottom">{@province}</a></h3>
         <div class="city-listContent" style="display: none">
           <ul>
               <foreach for="{@cityArr}" var="city">
                   <if condition="{@city[0]==province}">
                       <foreach for="{@city}" var="cityOne" key="key">
                           <if condition="@key!=0">
-                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}&wxid={@wxid}" id="ci" style="font-size: 1.6rem;padding:6px 0 6px 4%;display: block; color:#000; ">{@cityOne}</a></li>
+                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}&wxid={@wxid}" id="ci" style="font-size: 1.6rem;padding:6px 0 6px 7%;display: block; color:#000; ">{@cityOne}</a></li>
                           </if>
                       </foreach>
                   </if>
