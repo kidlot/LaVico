@@ -802,7 +802,6 @@ module.exports = {
                                             'favoriteStyle':favoriteStyle,
                                             'favoriteColor':favoriteColor,
                                             'birthday':birthday
-
                                         }
                                     },function(err,doc){
                                         err&&console.log(doc);
