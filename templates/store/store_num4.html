@@ -45,15 +45,16 @@
             $(this).next().slideToggle("normal");
         });
 
-    var city_listContent=$(".city-listContent");
+    var city_listContent=$(".city-listContent").css("display");
     $("div.city-list").find("a.outlet_bottom").click(function () {
         var h3Len = $(".city-list").find("h3");
         for (var i = 0; i < h3Len.length; i++) {
             h3Len.find("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
         };
-        if ($(this).parents("h3").next().city_listContent[0].style.display == "block") {
+        if ($(this).parents("h3").next().city_listContent == "block") {
             $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
-        } else if ($(this).parents("h3").next().city_listContent[0].style.display == "none") {
+        }
+        if ($(this).parents("h3").next().city_listContent == "none") {
             $(this).css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
         }
         
