@@ -106,12 +106,170 @@ module.exports = {
         });
 
         this.step(function(){
-            var _points = shakeActivity.points;
+            var _points = shakeActivity.points;//活动消耗积分
             nut.model.points = _points
         });
 
     },
     actions:{
+        init:{
+            //初始化
+            process: function(seed,nut)
+            {
+                nut.disabled = true ;
+                var then = this;
+                if(!seed.uid || !seed.aid){
+                    write_info(then,'{"result":"miss"}');
+                    return;
+                }
+                var shake;
+                var costPerShake;//每次摇一摇消耗积分
+                var memberPoints;//用户积分
+                var memberId;//用户memberID
+                var wxid = seed.uid;//用户微信ID
+                var shakeActivityName;//摇一摇活动名称
+
+                var countUserByPoints;//根据积分计算多少次数
+                var returnCount;//根据系统后台设置，返回多少次机会
+
+
+                this.step(function(){
+                    helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
+                        shake = doc;
+                        costPerShake = shake.points;//每次摇一摇消耗积分
+                        shakeActivityName = shake.name;
+                        console.log('~~~~~~~~~~~~~~~~~');
+                        console.log(doc);
+                        console.log('~~~~~~~~~~~~~~~~~');
+                    }));
+                });
+
+                this.step(function(){
+                    if(!shake){
+                        write_info(then,'{"result":"activity_is_over"}');
+                    }
+                });
+
+                this.step(function(){
+                    /*判断用户积分是否足够*/
+                    console.log("costPerShake:"+costPerShake);
+                    if(costPerShake >  0){
+                        helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
+
+                            console.log(doc);
+
+                            if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
+                                memberId = doc.HaiLanMemberInfo.memberID;
+                            }else{
+                                memberId = "undefined";
+                            }
+                            console.log("memberId:"+memberId);
+
+                            if(memberId == "undefined"){
+                                write_info(then,'{"result":"something-error"}');
+                            }
+                        }));
+
+                    }
+                });
+
+                this.step(function(){
+                    if(costPerShake >  0){
+
+                        middleware.request('Point/'+memberId,{
+                        },then.hold(function(err,doc){
+                            doc = JSON.parse(doc);
+                            if(err){
+                                console.log(err);
+                                write_info(then,'{"result":"something-error"}');
+
+                            }else{
+
+                                if(doc.error){
+                                    console.log(doc.error);
+                                    write_info(then,'{"result":"something-error"}');
+                                }else{
+                                    memberPoints = doc.point;
+                                    countUserByPoints = Math.floor(memberPoints/costPerShake);
+
+                                    console.log(doc);
+                                    console.log("memberPoints:"+memberPoints);
+                                    console.log("countUserByPoints:"+countUserByPoints);
+
+                                }
+                            }
+
+                        }));
+
+                    }
+                });
+
+                this.step(function(){
+                    if(costPerShake >  0){
+                        if(memberPoints < costPerShake){
+                            write_info(then,'{"result":"your-points-not-enough"}');
+                        }
+                    }
+                });
+                var count=0;
+                this.step(function(){
+                    var start_time;
+                    var now_timestamp = new Date().getTime();
+                    if(shake.lottery_cycle == '1'){ // 自然天
+                        start_time = now_timestamp - ( now_timestamp % 86400000 );
+                    }else if(shake.lottery_cycle == '2'){// 自然周
+                        start_time = now_timestamp -86400000*(new Date().getDay()) - ( now_timestamp % 86400000 );
+                    }else if(shake.lottery_cycle == '3'){//自然月
+                        start_time = now_timestamp -86400000*(new Date().getDate()) - ( now_timestamp % 86400000 );
+                    }else if(shake.lottery_cycle == '100'){//永久
+                        start_time = 0;
+                    }else{
+                        write_info(then,'{"result":"something-error"}');
+                    }
+                    helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                        count = doc;//已经摇一摇次数
+                        console.log('+++++++++++++++++');
+                        console.log('now'+seed.aid+'sum:'+doc);
+                        console.log('+++++++++++++++++');
+                    }));
+                })
+                this.step(function(){
+
+                    returnCount = shake.lottery_count - count;//shake.lottery_count 允许的摇一摇次数
+                    console.log('now '+seed.aid+' can:'+shake.lottery_count);
+                    console.log('now '+seed.aid+' go on getting:'+returnCount);
+                    console.log('has-count:'+count);
+                    console.log('system-count:'+shake.lottery_count);
+                    if(count >= shake.lottery_count){
+                        write_info(then,'{"result":"has-no-chance"}');
+                    }
+                })
+
+                this.step(function(){
+                    var activity = {};
+
+                    var _points = 0 - parseInt(shake.points);//每次摇一摇，消耗积分
+                    if(shake.points > 0){
+                        if(countUserByPoints>returnCount){
+                            var _count = returnCount;//系统设置允许多少次
+                        }else{
+                            var _count = countUserByPoints;//根据用户积分设置允许多少次
+                        }
+                    }else{
+                        var _count = returnCount;//系统设置允许多少次
+                    }
+
+                    console.log("countUserByPoints:"+countUserByPoints);
+                    console.log("returnCount:"+returnCount);
+                    console.log("count:"+_count);
+                    if(costPerShake>0){
+                        write_info(then,'{"result":"unwin","points":"'+shake.points+'","count":"'+_count+'"}');
+                    }else{
+                        write_info(then,'{"result":"unwin","points":"'+shake.points+'","count":"'+_count+'"}');
+                    }
+                })
+            }
+        },
         shakeit: {
             process: function(seed,nut)
             {
@@ -321,17 +479,86 @@ module.exports = {
 
         /*前端设计JS*/
         $('#loading').hide();//隐藏加载框
-        var points = parseInt($("#points").val());
-        if(points>0){
-            //alert('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。');
-            window.popupStyle2.on('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。',function(event){
-                flag = 1;//设置可以摇一摇
-            });
-        }else{
-            flag = 1;//设置可以摇一摇
-        }
 
         var flag = 0;//默认不可摇一摇
+
+        var init = function(){
+
+            $.get('/lavico/activity/shake_start:init',{
+                uid:$("#uid").val(),//微信ID
+                aid:$("#aid").val()//摇一摇活动ID
+            },function(data){
+                $('#loading').hide();
+                console.log(data);
+
+                if(data.result == 'has-no-chance'){
+
+                    //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
+                    window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
+                        flag = 1;
+                    });
+
+                }else if(data.result == 'activity_is_over'){
+
+                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                        flag = 1;
+                    });
+
+                }else if(data.result == 'something-error'){
+
+                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){
+                        flag = 1;
+                    });
+
+                }else if(data.result == 'unwin'){
+                    //每次摇一摇将消耗20积分，你当前还有10次机会
+                    var _i = data.count;//你当前还有次机会的次数
+                    var _points = parseInt(data.points);//每次摇一摇将消耗的积分
+                    if(_points == 0){
+                        window.popupStyle2.on('您当前还有'+_i+'次机会！',function(event){
+                            flag = 1;
+                        });
+                    }else{
+                        window.popupStyle2.on('每次摇一摇将消耗'+_points+'积分，你当前还有'+_i+'次机会',function(event){
+                            flag = 1;
+                        });
+                    }
+
+
+                }else if((/[\u4e00-\u9fa5]+/).test(data.result)){
+
+                    window.popupStyle2.on(data.result,function(event){
+                        flag = 1;
+                    });
+
+                }else if(data.result == 'your-points-not-enough'){
+
+                    window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+                        flag = 1;
+                    });
+
+                }else{
+
+                    window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){
+                        flag = 1;
+                    });
+
+                }
+            })
+        }
+
+
+        init();
+
+//        var points = parseInt($("#points").val());
+//        if(points>0){
+//            //alert('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。');
+//            window.popupStyle2.on('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。',function(event){
+//                flag = 1;//设置可以摇一摇
+//            });
+//        }else{
+//            flag = 1;//设置可以摇一摇
+//        }
 
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
