@@ -30,7 +30,7 @@ a.tel{color:#2d2d2d;}
 .look-text .click-look a{color:#bb954a; border-bottom:1px #bb954a solid;}
 /*摇手机*/
 .shake_bg { width:100%; height:100%; background:url(../images/shake_bg.jpg) no-repeat; background-size:100% 100%; }
-.mobile{width:100%; background-color:#e5e5e5; padding-top:4%; text-align:center;}
+.mobile{width:100%; padding-top:4%; text-align:center;}
 .mobile .mobile-pic { width:50%; padding:0 25%; }
 .mobile .mobile-pic img { width:100%; }
 .mobile-btn{ padding-top:8%; padding-bottom:4%;}
