@@ -135,8 +135,8 @@ module.exports={
                                     var jsonData = {
                                         openid: wechatid,
                                         otherPromId: _id,
-                                        PROMOTION_CODE: getActivities,
-                                        //PROMOTION_CODE:"L2013112709",
+                                        //PROMOTION_CODE: getActivities,
+                                        PROMOTION_CODE:"L2013112709",
                                         memo: memoString,
                                         point: getScore
                                     }
@@ -217,6 +217,7 @@ module.exports={
                 this.step(function () {
                     resultList += "]";
                     //返回显示
+                    console.log("___________resultList:"+resultList);
                     then.req.session.optionId = ""
                     nut.model.result = resultList;
                     nut.model.jsonResult = eval('(' + resultList + ')');
@@ -346,7 +347,7 @@ module.exports={
                                         openid: wechatid,
                                         otherPromId: _id,
                                         //PROMOTION_CODE:getActivities,
-                                        PROMOTION_CODE: 'CQL201312230001',
+                                        PROMOTION_CODE: 'L2013112709',
                                         //qty:nowPromotion.coupons[0].QTY,
                                         point: getScore
                                     }
