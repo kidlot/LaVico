@@ -48,8 +48,9 @@
     $("div.city-list").find("a.outlet_bottom").click(function () {
         var h3Len = $(".city-list").find("h3");
         for (var i = 0; i < h3Len.length; i++) {
-            h3Len.find("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
+            h3Len.find("a.outlet_bottom").css({ "background": "url(/lavico/public/images/outlet_bottom.png) 97% center no-repeat", "background-size": "16px" });
         };
+        $(this).css({ "background": "url(/lavico/public/images/outlet_top.png) 97% center no-repeat", "background-size": "16px" });
     });
 
     //var outlet_bottom = 0;
