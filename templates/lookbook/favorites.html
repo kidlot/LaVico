@@ -1,6 +1,6 @@
 <div class="wrapper">
     <div class="store-title">
-        <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">收藏清单</span></p>
+        <p><span class="title1"><a href="javascript:;" onclick="_cb()">返回</a></span><span class="title2">收藏清单</span></p>
     </div>
     <div class="points3">
 
@@ -11,12 +11,12 @@
                 <div class="points3-content clear">
                     <div class="fl"><a href="/lavico/lookbook/product?_id={@ fav.lookbookid}&wxid={@ wxid}&pageNum={@fav.pageNum}&productId={@fav.product._id}&source=view"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" ></a></div>
                     <div class="fl text">
-                        <div class="title3"><a href="member_num27.html">{@fav.product.name}</a></div>
+                        <div class="title3"><a href="javascript:;">{@fav.product.name}</a></div>
                         <div class="btn subbtn" onclick="cancelFav('{@ fav._id}')">取消收藏</div>
                     </div>
                 </div>
                 <div class="points3-content clear">
-                    <div class="con"><a href="member_num27.html">{@fav.product.detail}</a></div>
+                    <div class="con"><a href="javascript:;">{@fav.product.detail}</a></div>
                 </div>
             </div>
             </foreach>
@@ -64,7 +64,9 @@
                         });
                     }
                 })
+            }
 
-
+            function _cb(){
+                location.href = decodeURIComponent(window.location.search.match(/%7B(.*)%7D/)[1]);
             }
         </script>

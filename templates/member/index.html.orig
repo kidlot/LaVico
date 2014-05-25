@@ -19,22 +19,29 @@
         </if>
         <script>
             function vip_card() {
-                var vip_Win = $(".vip-card").height() / 3;
+                var vip_Win = $(window).height() / 12;
                 $(".vip-card-num").css("top", vip_Win);
             }
 
+<<<<<<< HEAD
+            //window.onload = function () {
+            //    vip_card();
+            //}
+            //window.onresize = function () {
+            //    vip_card();
+            //}
+
+            function _gotoFavPage(){
+                var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
+                location.href = url
+=======
             window.onload = function () {
                 vip_card();
             }
             window.onresize = function () {
                 vip_card();
+>>>>>>> a593f74e1242005fdbeca85cbaf5bf5c797f30d3
             }
-
-            function _gotoFavPage(){
-                var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
-                location.href = url
-            }
-
         </script>
         <div class="member">
         <div class="member-content">
