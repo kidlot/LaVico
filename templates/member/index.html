@@ -1,3 +1,4 @@
+<if condition="@error == 'false'">
 <div class="wrapper">
 
         <if condition="{@bindStatus=='bind'}"
@@ -86,5 +87,10 @@
 </div>
 <input type="hidden" id="wxid" name="wxid" value="{@wxid}" />
 <input type="hidden" id="bindStatus" name="bindStatus" value="{@bindStatus}" />
+<input type="hidden" id="error" name="error" value="{@error}" />
+
 <!--正在加载-->
 <div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
+<else/>
+<input type="hidden" id="error" name="error" value="{@error}" />
+</if>

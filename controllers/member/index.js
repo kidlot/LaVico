@@ -11,6 +11,9 @@ module.exports = {
     process:function(seed,nut){
 
         var wxid = seed.wxid || undefined;
+        var memberInfo;//用户信息
+        var card_number;//显示在会员中心的帐号
+        nut.model.error = 'false';
 
         if(!wxid){
 
@@ -66,50 +69,77 @@ module.exports = {
                     this.res.write('{"error":"wxid_no_bind_to_welab"}');
                     this.res.end();
                     this.terminate();
+                }else{
+                   nut.model.wxid = wxid;
+                   memberInfo =  doc;
                 }
             }));
         });
 
+
+        this.step(function(){
+            //获取我的会员卡的头部显示的卡号Member/Info/9121535
+            console.log(memberInfo);
+            if(memberInfo.HaiLanMemberInfo&&memberInfo.HaiLanMemberInfo.memberID&&memberInfo.HaiLanMemberInfo.cardNumber&&memberInfo.HaiLanMemberInfo.action=='bind'){
+
+                card_number = memberInfo.HaiLanMemberInfo.cardNumber;
+
+            }else{
+
+                if(memberInfo.HaiLanMemberInfo.memberID){
+                    middleware.request( "Member/Info/"+memberInfo.HaiLanMemberInfo.memberID,{
+                        }
+                        ,this.hold(function(err,req_doc){
+                            var _info = JSON.parse(req_doc);
+                            card_number = _info.info.MEM_CARD_NO;
+                            console.log(card_number);
+                            helper.db.coll('welab/customers').update({wechatid:wxid},{
+                                $set:{
+                                    'HaiLanMemberInfo.cardNumber':card_number,
+                                    'HaiLanMemberInfo.lastModified':new Date().getTime()
+                                }
+                            },function(err,doc){
+                                err&&console.log(doc);
+                            });
+
+                        }));
+                }else{
+                    nut.model.error = 'missing_info';//丢失信息
+                }
+
+            }
+        });
         /*判断用户类型，申请会员卡或者绑定会员卡*/
         this.step(function(){
 
-            nut.model.wxid = wxid;
-            helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err,doc){
+            var MEMBER_ID = memberInfo.HaiLanMemberInfo ? memberInfo.HaiLanMemberInfo.memberID : "" ;
+            var bindStatus = memberInfo.HaiLanMemberInfo ? memberInfo.HaiLanMemberInfo.action : "undefined" ;
+            var type = memberInfo.HaiLanMemberInfo ? memberInfo.HaiLanMemberInfo.type : "undefined";
 
-                var MEMBER_ID = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "" ;
-                var cardNumber = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.cardNumber : "" ;
-                var bindStatus = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.action : "undefined" ;
-                var type = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.type : "undefined";
+            if(bindStatus == 'bind'){
+                nut.model.bindStatus = 'bind';
+                /*自动跳转到card_member主页*/
 
-                if(bindStatus == 'bind'){
-                    nut.model.bindStatus = 'bind';
-                    /*自动跳转到card_member主页*/
+            }else if(bindStatus == 'unbind'){
+                nut.model.bindStatus = 'unbind';
+                /*自动跳转到card_member主页*/
+            }else{
+                //undefined;
+                nut.model.bindStatus = 'unbind';
+                /*自动跳转到card_member主页*/
+            }
 
-                }else if(bindStatus == 'unbind'){
-                    nut.model.bindStatus = 'unbind';
-                    /*自动跳转到card_member主页*/
-                }else{
-                    //undefined;
-                    nut.model.bindStatus = 'unbind';
-                    /*自动跳转到card_member主页*/
-                }
+            if(type >= 1 && type <=3){
+                nut.model.type = String(type);
 
-                if(type >= 1 && type <=3){
-                    nut.model.type = String(type);
+            }else{
+                //undefined;
+                nut.model.type = 0;
+            }
 
-                }else{
-                    //undefined;
-                    nut.model.type = 0;
-                }
+            nut.model.MEMBER_ID = MEMBER_ID;
+            nut.model.cardNumber = card_number;
 
-
-                nut.model.MEMBER_ID = MEMBER_ID;
-                nut.model.cardNumber = cardNumber;
-
-
-
-
-            }));
         });
 
         this.step(function(){
@@ -170,28 +200,34 @@ module.exports = {
         $('#loading').hide();//隐藏加载框
 
         var wxid = $('#wxid').val();
+        var error = $('#error').val();
         /*bind*/
-        if($('#bindStatus').val() == 'bind'){
-            /*计算当前用户可用的优惠券数*/
-            $.ajax({
-                type: "GET",
-                url: "/lavico/member/index:getUserEffectiveCouponsNum",
-                data: {"wxid":wxid},
-                dataType: "json",
-                success: function(data){
-                    if(data.error == "false"){
-                        var _count = data.count;
-                        var _html = "("+_count+"张未使用)";
-                        $('#count').html(_html);
-                    }else{
-                        $('#count').html('');
+        if(error == 'false'){
+            if($('#bindStatus').val() == 'bind'){
+                /*计算当前用户可用的优惠券数*/
+                $.ajax({
+                    type: "GET",
+                    url: "/lavico/member/index:getUserEffectiveCouponsNum",
+                    data: {"wxid":wxid},
+                    dataType: "json",
+                    success: function(data){
+                        if(data.error == "false"){
+                            var _count = data.count;
+                            var _html = "("+_count+"张未使用)";
+                            $('#count').html(_html);
+                        }else{
+                            $('#count').html('');
+                        }
                     }
-                }
-            });
+                });
 
+            }else{
+                $('#count').html('');
+            }
         }else{
-            $('#count').html('');
+            window.popupStyle2.on("网路不稳定，请稍后再尝试",function(event){});
         }
+
 
     },
     actions:{
