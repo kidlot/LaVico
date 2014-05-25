@@ -54,7 +54,7 @@ module.exports = {
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
 
-                window.popupStyle2.on("您已经是LaVico的会员",function(event){
+                window.popupStyle2.on("您已绑定",function(event){
                     window.location.href="/lavico/member/index?wxid="+wxid;
                 });
 

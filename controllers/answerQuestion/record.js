@@ -191,11 +191,11 @@ module.exports={
                 console.log("********11111111111************");
                 //记录过
                 if(then.req.session.isFinish){
-                    //完成页过来的
+                    //完成页过来的(************型男测试)
                     console.log("**********isFinish************");
 
 
-                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?isRecord=yes&wechatid="+wechatid+
                         "&_id="+_id+"&optionId="+then.req.session.optionId});
                     this.res.end();
                 }else{
