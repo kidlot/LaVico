@@ -8,9 +8,9 @@ module.exports= {
 
         nut.model.wechatId=seed.wechatid;
         nut.model._id=seed.wechatid;
-        var wxid=seed.wechatid;
+        //var wxid=seed.wechatid;
 
-        console.log(wechatId);
+        console.log( nut.model.wechatId);
         console.log(_id);
 
 
@@ -33,7 +33,7 @@ module.exports= {
                 if(err) throw err
                 if(doc)
                 {
-                    //nut.model.goMemberInfo=(docs.explanation).replace("{@wechatid}",wxid);
+                    nut.model.goMemberInfo=(docs.explanation).replace("{@wechatid}",seed.wechatid);
                     nut.model.docs=doc;
                 }
             }));
