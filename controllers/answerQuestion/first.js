@@ -8,7 +8,7 @@ module.exports= {
 
         nut.model.wechatId=seed.wechatid;
         nut.model._id=seed.wechatid;
-        //var wxid=seed.wechatid;
+        var wxid=seed.wechatid;
 
 
         this.step(function(){
