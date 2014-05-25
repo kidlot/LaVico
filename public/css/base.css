@@ -28,7 +28,7 @@ html { font-size: 62.5%; /*10 ÷ 16 × 100% = 62.5%*/}
 
 body,
 button, input, select, textarea /* for ie */ {
-    font:100% Microsoft Yahei,微软雅黑, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font:100% Arial;
 }
 
 img {
