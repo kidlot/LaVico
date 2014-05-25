@@ -307,7 +307,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5-content .pre-bottom{ padding-top:8px; overflow:hidden;}
 .points5-content .pre-bottom .left,.pre-bottom .right{font-size:1.2rem; text-align:left; cursor:pointer;}
 .points5-content .pre-bottom .left{width:72%; height:30px; line-height:30px; color:#646464; border:1px #dedede solid; box-sizing: border-box;  margin-right:2%; padding-left:2%; }
-.points5-content .pre-bottom .right{width:26%; height:30px; line-height:30px; text-align:center; color:#291b00; background:url(../images/next.png) no-repeat; background-size:contain; float:left; }
+.points5-content .pre-bottom .right{width:26%; height:30px; line-height:30px; text-align:center; color:#291b00; background:url(../images/next.png) no-repeat; background-size:100% 100%; float:left; }
 .points5-content .pre-bottom .right a{ color:#291b00; font-size:1.2rem; }
 .c4{ color:#B9954D;}
 /*申领会员卡*/
