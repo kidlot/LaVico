@@ -33,7 +33,7 @@ module.exports= {
                 if(err) throw err
                 if(doc)
                 {
-                    nut.model.goMemberInfo=(docs.explanation).replace("{@wechatid}",wxid);
+                    //nut.model.goMemberInfo=(docs.explanation).replace("{@wechatid}",wxid);
                     nut.model.docs=doc;
                 }
             }));
