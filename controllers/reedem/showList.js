@@ -161,6 +161,7 @@ module.exports={
                     }))
                 })
                 //是否已经兑换过
+                /*
                 this.step(function(){
                     var jsonData={};
                     jsonData.wechatId=wechatId;
@@ -177,6 +178,7 @@ module.exports={
                         })
                     )
                 })
+                */
 
                 this.step(function(){
                     //提交给接口
