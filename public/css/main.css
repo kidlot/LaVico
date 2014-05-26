@@ -238,7 +238,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift-bottom{ height:auto; padding-top:4%; overflow:hidden; }
 .gift-bottom .left,.gift-bottom .right{height:40px; line-height:40px;font-size:1.4rem; text-align:center; cursor:pointer;}
 .gift-bottom .left{width:50%;color:#fff; background:url(../images/pre3.png) no-repeat;background-size:100% 100%; }
-.gift-bottom .right{width:44%;color:#291b00; background:url(../images/next.png) no-repeat; margin-left:6%;background-size:100% 100%;}
+.gift-bottom .right{width:44%;color:#291b00; background:url(../images/click_btn.jpg) no-repeat; margin-left:6%;background-size:100% 100%;}
 .gift-bottom .right a{color:#291b00;}
 .gift-bottom .left a{ color:#fff;}
 /*积分兑换*/
@@ -431,9 +431,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift_coupon .coupon-content{width:96%; height:auto; margin:0 auto; border:1px #bebebe solid; padding:2%;}
 .gift_coupon .coupon-content img { width:100%; }
 .gift_title{ text-align:right; padding-right:10px; font-size:1.6rem; color:#fff; line-height:50px ; margin-top:10px;}
-.gift_content{ width:94%; padding:0 3%;}
+.gift_content{ width:96%; padding:0 2% 2%;}
 .gift_content .title1{color:#bda172; font-size:1.6rem; padding-top:2%;}
-.gift_content .subtext{ color:#646464; font-size:1.6rem; padding:2% 0;}
+.gift_content .subtext{ color:#646464; font-size:1.6rem; padding-top:2%;}
 .gift_border{ width:100%; margin:0 auto;border-bottom:1px #c1c1c1 solid;}
 .line{ width:100%; height:30px; border-bottom:1px #666 solid; margin-top:4%;}
 .linebottom{ padding:2%;}
@@ -515,3 +515,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 /*后期增加*/
 .outlet_bottom { background:url(../images/outlet_bottom.png) 96% center no-repeat; background-size:16px; }
+
+/*转屏*/
+.backdrop-orientation,.backdrop-follow{display:none;position:fixed;top:0;left:0;z-index:99998;height:100%;width:100%;background:#fff}
+.modal-orientation{display:none;position:fixed;left:50%;top:50%;z-index:99999;width:150px;height:140px;padding:30px 0 0;margin:-70px 0 0 -75px;font-size:12px;text-align:center;color:#fff;background:rgba(0,0,0,0.3);border-radius:20px}
+.modal-orientation p{margin:10px 0 0}
+.modal-orientation .btn-close{position:absolute;top:3px;right:3px;width:24px;height:24px;/*background:url(../img/icon-close.png) no-repeat 50% 50%; background-size:80%;*/}
