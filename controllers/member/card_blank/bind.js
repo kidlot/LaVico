@@ -172,24 +172,25 @@ module.exports = {
 
             /*第二步：判断卡号是否正确*/
             $('#submit_2').click(function(){
-                $('#loading').show();
+
                 var userTel = $('#userTel').val();
                 var userCardNumber = $('#userCardNumber').val().toUpperCase();
                 var wxid = $('#wxid').val();
-                if(userCardNumber == '' ){
 
-                    window.popupStyle2.on("请输入正确的卡号",function(event){
-                    });
+                if(userCardNumber.length == 0 ){
+
+                    $('#cardnumber_empty').show();
                     return	false;
 
                 }
-                if(userTel =='' || !(/^1[358]\d{9}$/i.test(userTel)) ){
+                if(userTel.length == 0 || !(/^1[358]\d{9}$/i.test(userTel)) ){
 
                     window.popupStyle2.on("请输入正确的手机号码",function(event){
                     });
                     return	false;
 
                 }
+                $('#loading').show();
                 $.ajax({
                     url:'/lavico/member/card_blank/bind:checkCardNum',
                     type:'POST',
