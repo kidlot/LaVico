@@ -33,23 +33,3 @@ var ua = navigator.userAgent;
 		}
 
 	});
-	function orient(event) {
-	    if (window.orientation == 0 || window.orientation == 180) {
-	        $("body").attr("class", "portrait");
-	        orientation = 'portrait';
-	        $('.backdrop-orientation, .modal-orientation').show();
-	        return false;
-	    } else if (window.orientation == 90 || window.orientation == -90) {
-	        $("body").attr("class", "landscape");
-	        orientation = 'landscape';
-	        $('.backdrop-orientation, .modal-orientation').hide();
-	        return false;
-	    }
-	}
-
-	window.onload = function () {
-	    orient();
-	}
-	window.onresize = function () {
-	    orient();
-	}
