@@ -5,9 +5,11 @@
     <div class="use-rules">
         <div class="use-rulesContent">
             <div class="price_ticket"><img src="{@doc.bigPic}" /></div>
-            <!--<div class="gift_bg">
-                <div class="gift_title">{@doc.name}</div>
-            </div>-->
+            <div class="gift-bottom" style="width:80%; padding:3% 10% 0;">
+                <div class="fr right" style="width:100%">
+                    <a href="/lavico/reedem/showList?wechatId={@wxid}" name="nowGet">立即兑换</a>
+                </div>
+            </div>
             <div class="text">{@doc.description}</div>
         </div>
         <div class="gift_border"></div>
@@ -16,11 +18,6 @@
             <div class="subtext">{@doc.explanation}</div>
             <div class="title1">免责声明：</div>
             <div class="subtext"><p>{@doc.relief}</p></div>
-            <div class="gift-bottom" style="width:50%; margin:0 auto;">
-                <div class="fr right" style="width:100%">
-                    <a href="/lavico/reedem/showList?wechatId={@wxid}" name="nowGet" >立即兑换</a>
-                </div>
-            </div>
         </div>
     </div>
 </div>
