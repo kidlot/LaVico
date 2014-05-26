@@ -8,6 +8,7 @@
 <meta content="telephone=no" name="format-detection" />
 <link rel="stylesheet" href="/lavico/public/css/base.css" />
 <link rel="stylesheet" href="/lavico/public/css/main.css" />
+<script src="/lavico/public/js/screenRotation.js"></script>
 <!--Content Start-->
 <!-- 正文会显示在 <views> 标签处 -->
 <views/>
@@ -38,7 +39,13 @@
     </div>
 </div>
 
-<div style="width: 100%;height: 100%;position: fixed; background-color: #ffffff;opacity: 0.1;z-index: 999; display: none ;top:0px; left:0px;" id="maskdiv">
+<div style="width: 100%;height: 100%;position: fixed; background-color: #ffffff;opacity: 0.1;z-index: 999; display: none ;top:0px; left:0px;" id="maskdiv"></div>
+
+<div class="backdrop-orientation"></div>
+<div class="modal-orientation">
+    <img src="/lavico/public/images/icon-orientation.png" alt="" />
+    <p>竖屏浏览，效果更佳。</p>
+    <!--<span class="btn-close ir">关闭</span>-->
 </div>
 
 <script>
