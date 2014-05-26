@@ -7,7 +7,7 @@ exports.load =  ()->
   welabExtension.apps.bargain = {
     categories: ['图片']
     , type: '互动'
-    , icon: '/welab/apps/photowall/public/icon_s.png'
+    , icon: '/welab/apps/welcome/public/icon_s.png'
     , on: true
     , title: '我要侃价'
     , desc: '我要侃价'
