@@ -313,6 +313,9 @@ module.exports = {
                                 if(_info == "该微信ID已是本品牌会员，请检查！"){
                                     window.popupStyle2.on("您已经是我们的会员",function(event){
                                     });
+                                }else if(_info == "未知错误"){
+                                    window.popupStyle2.on("此帐号已被其他微信号绑定",function(event){
+                                    });
                                 }else{
                                     window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
                                     });
