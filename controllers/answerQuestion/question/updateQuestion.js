@@ -30,7 +30,7 @@ module.exports={
         save:{
             process:function(seed,nut){
                 helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(seed._id)}
-                    ,eval('('+seed.json+')'),this.hold(function(err, doc) {
+                    ,{$set:eval('('+seed.json+')')},this.hold(function(err, doc) {
                         if(err) throw err;
                     }))
 

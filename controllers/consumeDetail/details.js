@@ -23,8 +23,8 @@ module.exports={
         this.step(function(){
             helper.db.coll("welab/customers").findOne({wechatid:seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
-                member=result.HaiLanMemberInfo.memberID
-                //member=9123084;//测试帐号
+               // member=result.HaiLanMemberInfo.memberID
+                member=9123084;//测试帐号
             }))
         })
 
