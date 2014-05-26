@@ -18,7 +18,7 @@
             <foreach for="@arrOne.val" var="oneYearInfo" key="key">
               <li><span class="fl"><img src="/lavico/public/images/logo.png" style="display: none"/></span><span class="fl ml20 pt15">
                 <p>{@oneYearInfo.PRODUCT_NAME}</p>
-                <p class="c3">{@oneYearInfo.GOODSNO}<br />
+                <p class="c3">{@oneYearInfo.GOODSNO}<br/>
                     购买日期：
                     <script type="template/script">
                         var date=new Date(oneYearInfo.date).getFullYear()+"-"+(new Date(oneYearInfo.date).getMonth()+1)+"-"+new Date(oneYearInfo.date).getDate();
