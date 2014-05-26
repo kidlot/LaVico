@@ -4,8 +4,8 @@ var welabExtension = require('welab/extension.js');
 exports.load = function () {
     welabExtension.apps.lookbook = {
       categories: ['图片'],
-      type: '定制应用',
-      icon: '/welab/apps/photowall/public/icon_s.png',
+      type: '互动',
+      icon: '/welab/apps/welcome/public/icon_s.png',
       on: true,
       title: '精英搭配',
       desc: '精英搭配',

@@ -11,8 +11,8 @@
     exports.load = function() {
         welabExtension.apps.announcement = {
             categories: ['图片'],
-            type: '定制应用',
-            icon: '/welab/apps/register/public/icon_s.png',
+            type: '互动',
+            icon: '/welab/apps/welcome/public/icon_s.png',
             on: true,
             title: '公告',
             desc: '系统公告',
