@@ -37,7 +37,8 @@ $(function () {
         }
 
         jsonData += "url:'"+url+"',themeType:"+themeType+",isOpen:'"+isOpen+"',endTime:'"+endTime+"',beginTime:'"+beginTime+"',createTime:'"+createTime()+"',theme:\'" + theme + "\',";
-        jsonData += "description:\'奖项设置\',relief:\'免责声明\',themePicUrl:\'主题图片路径\',themeUrl:\'主题点击链接\',options:[";
+        //jsonData += "description:\'奖项设置\',relief:\'免责声明\',themePicUrl:\'主题图片路径\',themeUrl:\'主题点击链接\',options:[";
+        jsonData += "options:[";
 
         //题目数
         var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
