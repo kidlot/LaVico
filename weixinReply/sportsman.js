@@ -9,7 +9,7 @@
     exports.load = function() {
         welabExtension.apps.sportsman = {
             categories: ['图片'],
-            type: '定制应用',
+            type: '互动',
             icon: '/welab/apps/register/public/icon_s.png',
             on: true,
             title: '型男测试',
