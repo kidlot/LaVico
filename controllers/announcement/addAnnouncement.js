@@ -24,6 +24,7 @@ module.exports={
         }
     },
     viewIn:function(){
+
         $("input[name='btnSave']").click(function(){
             var jsonData={title:$("input[name='announcementTitle']").val(),content:$("#content").val()}
             $.get("/lavico/announcement/addAnnouncement:save",jsonData,
