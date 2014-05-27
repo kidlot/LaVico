@@ -344,6 +344,8 @@ module.exports = {
                         }else if(coupons[_i].COUPON_STATUS == '04'){
 
                             overdueCoupons.push(coupons[_i]);
+                            console.log('~~~~~~~~~~~~~~~~~~~~~~`');
+                            console.log(overdueCoupons);
 
                         }else{
                             errorCoupons.push(coupons[_i]);

@@ -15,7 +15,7 @@
                 </div>
                 <div class="pre-box" id="overdueCouponsContent" style="display:none">
 
-                        <foreach for="@usedCoupons" key="key">
+                        <foreach for="@overdueCoupons" key="key">
                             <div class="pre-box-content">
                             <div class="pre-top clear">
                                 <div class="fl"><img src="{@overdueCoupons[key].PIC}" /></div>
@@ -25,7 +25,7 @@
                                 </div>
                             </div>
                             <div class="pre-bottom">
-                                活动代号:{@overdueCoupons[key].PROMOTION_CODE}
+
                                 <div class="fl left">券号：{@overdueCoupons[key].COUPON_NO}</div>
                                 <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
                             </div>
