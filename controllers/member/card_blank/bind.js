@@ -259,6 +259,7 @@ module.exports = {
                 }
                 $('#loading').show();
                 $.ajax({
+                    url:'/lavico/member/card_blank/bind:checkCaptcha',
                     type:'POST',
                     data:{
                         'wxid':wxid,
@@ -648,6 +649,34 @@ module.exports = {
                                 then.terminate();
                                 }
 				            });
+                            this.step(function(){
+                                if(tel_checked_status == 'tel_checked_true' && memberId != 'undefined' && memberId){
+                                    //先解绑，后绑定
+                                    var data_request = {
+                                        'openid':wxid,
+                                        'MEMBER_ID':memberId,
+                                    };
+                                    middleware.request( "Member/Unbind",
+                                        data_request,
+                                        this.hold(function(err,doc){
+                                            var dataJson = JSON.parse(doc);
+                                            helper.db.coll("lavico/feeds").insert(
+                                                {
+                                                    'createTime':new Date().getTime(),
+                                                    'wxid':seed.wxid,
+                                                    'action':"unbind",
+                                                    'request':data_request,
+                                                    'reponse':dataJson,
+                                                },
+                                                function(err,req_doc){
+                                                    err&&console.log(req_doc);
+                                                }
+                                            );
+                                            return doc;
+                                        }));
+                                    //
+                                }
+                            });
                             /*进行下一步*/
 
                             this.step(function(){
@@ -674,7 +703,7 @@ module.exports = {
                                             }
                                         );
                                         data_doc = doc;
-                                        //console.log(doc);
+                                        console.log(doc);
                                         return doc;
                                     }));
                             });
