@@ -105,14 +105,14 @@ module.exports = {
 
                 this.step(function(){
 
-                    var requestData = {
+                    var requestData01 = {
                         'memberId' : member_id,
                         'perPage':10000,
                         'pageNum':1,
                         'status':'01'//未生效
                     };
 
-                    middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+                    middleware.request( "Coupon/GetCoupons", requestData01,this.hold(function(err,doc){
 
                         couponData = JSON.parse(doc);
 
@@ -123,7 +123,7 @@ module.exports = {
                                 'createTime':new Date().getTime(),
                                 'wxid':seed.wxid,
                                 'action':"check_coupon",
-                                'request':requestData,
+                                'request':requestData01,
                                 'reponse':couponData
                             },this.hold( function(err, doc){
                                 err&console.log(doc);
@@ -132,18 +132,14 @@ module.exports = {
                         //记录用户动作
                     }));
 
-                });
-
-                this.step(function(){
-
-                    var requestData = {
+                    var requestData02 = {
                         'memberId' : member_id,
                         'perPage':10000,
                         'pageNum':1,
                         'status':'02'//已生效
                     };
 
-                    middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+                    middleware.request( "Coupon/GetCoupons", requestData02,this.hold(function(err,doc){
 
                         couponData = JSON.parse(doc);
 
@@ -154,7 +150,7 @@ module.exports = {
                                 'createTime':new Date().getTime(),
                                 'wxid':seed.wxid,
                                 'action':"check_coupon",
-                                'request':requestData,
+                                'request':requestData02,
                                 'reponse':couponData
                             },this.hold( function(err, doc){
                                 err&console.log(doc);
@@ -163,11 +159,7 @@ module.exports = {
                         //记录用户动作
                     }));
 
-                });
-
-                this.step(function(){
-
-                    var requestData = {
+                    var requestData03 = {
                         'memberId' : member_id,
                         'perPage':10000,
                         'pageNum':1,
@@ -175,7 +167,7 @@ module.exports = {
 
                     };
 
-                    middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+                    middleware.request( "Coupon/GetCoupons", requestData03,this.hold(function(err,doc){
 
                         couponData = JSON.parse(doc);
                         couponArr = couponArr.concat(couponData.list);
@@ -185,7 +177,7 @@ module.exports = {
                                 'createTime':new Date().getTime(),
                                 'wxid':seed.wxid,
                                 'action':"check_coupon",
-                                'request':requestData,
+                                'request':requestData03,
                                 'reponse':couponData
                             },this.hold( function(err, doc){
                                 err&console.log(doc);
@@ -194,11 +186,7 @@ module.exports = {
                         //记录用户动作
                     }));
 
-                });
-
-                this.step(function(){
-
-                    var requestData = {
+                    var requestData04 = {
                         'memberId' : member_id,
                         'perPage':10000,
                         'pageNum':1,
@@ -206,7 +194,7 @@ module.exports = {
 
                     };
 
-                    middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+                    middleware.request( "Coupon/GetCoupons", requestData04,this.hold(function(err,doc){
 
                         couponData = JSON.parse(doc);
                         couponArr = couponArr.concat(couponData.list);
@@ -216,7 +204,7 @@ module.exports = {
                                 'createTime':new Date().getTime(),
                                 'wxid':seed.wxid,
                                 'action':"check_coupon",
-                                'request':requestData,
+                                'request':requestData04,
                                 'reponse':couponData
                             },this.hold( function(err, doc){
                                 err&console.log(doc);
