@@ -14,6 +14,8 @@ module.exports={
 
         var isRecord=seed.isRecord;
         var go=true;
+        var memberid=seed.memberid;
+        var themetype = seed.themetype;
 
         this.step(function(){
             if(isRecord=="yes"){
@@ -41,7 +43,9 @@ module.exports={
                     "getLabel": "",
                     "getGift": "",
                     "compScore": "",
-                    "createTime": new Date().getTime()
+                    "createTime": new Date().getTime(),
+                    "memberId":memberid,
+                    "themetype":themetype
                 }, function (err, doc) {
                 });
 
@@ -188,7 +192,9 @@ module.exports={
                                     "getGift": newActivity,
                                     "compScore": getScore,
                                     "getTipContent": getTipContent,
-                                    "createTime": new Date().getTime()
+                                    "createTime": new Date().getTime(),
+                                    "memberId":memberid,
+                                    "themetype":themetype
                                 }, function (err, doc) {
                                 });
                                 //记录json准备显示
@@ -217,11 +223,11 @@ module.exports={
                             })
                             //调用接口结束
                         } else {
-//                        resultList+="{"
-//                            +"getLabel:'"+"null"
-//                            +"',getScore:"+0
-//                            +",getTipContent:'"+"null"
-//                            +"',getActivities:'"+"null"+"'}";
+//                            resultList += "{"
+//                                + "getLabel:'" + getLabel
+//                                + "',getScore:" + 0
+//                                + ",getTipContent:'" + getTipContent
+//                                + "',getActivities:'" + "null" + "'}";
                         }
                     }
 
@@ -252,7 +258,9 @@ module.exports={
                     "getLabel": "",
                     "getGift": "",
                     "compScore": 0,
-                    "createTime": new Date().getTime()
+                    "createTime": new Date().getTime(),
+                    "memberId":memberid,
+                    "themetype":themetype
                 }, function (err, doc) {
                 });
 
@@ -330,9 +338,9 @@ module.exports={
                                 if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
                                     (typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
                                     resultList += "{"
-                                        + "getLabel:'" + "null"
+                                        + "getLabel:'" + "对不起,您没有获得任何奖励"
                                         + "',getScore:" + 0
-                                        + ",getTipContent:'" + "null"
+                                        + ",getTipContent:'" + "对不起,您没有获得任何奖励"
                                         + "',getActivities:'" + "null" + "'}";
                                 } else {
                                     //记录json准备显示
@@ -395,7 +403,9 @@ module.exports={
                                             "getGift": newActivity,
                                             "compScore": getScore,
                                             "getTipContent": getTipContent,
-                                            "createTime": new Date().getTime()
+                                            "createTime": new Date().getTime(),
+                                            "memberId":memberid,
+                                            "themetype":themetype
                                         }, function (err, doc) {
                                         });
                                         if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
