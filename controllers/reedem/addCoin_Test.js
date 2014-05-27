@@ -36,6 +36,7 @@ module.exports={
                     middleware.request('Point/Change',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
+                            console.log(doc);
                             nut.message("添加完成",null,"success")
                         })
                     )
