@@ -30,6 +30,7 @@ module.exports={
 
                 }
                 nut.model.member_id =member_id;
+
             }))
         });
 
