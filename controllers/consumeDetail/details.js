@@ -24,7 +24,7 @@ module.exports={
             helper.db.coll("welab/customers").findOne({wechatid:seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
                 member=result.HaiLanMemberInfo.memberID
-                //member=9123084;//测试帐号
+               // member=9123084;//测试帐号
             }))
         })
 

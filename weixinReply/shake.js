@@ -9,8 +9,8 @@
   exports.load = function() {
     return welabExtension.apps.shake = {
       categories: ['图片'],
-      type: '定制应用',
-      icon: '/welab/apps/photowall/public/icon_s.png',
+      type: '互动',
+      icon: '/welab/apps/welcome/public/icon_s.png',
       on: true,
       title: '摇一摇',
       desc: '摇一摇',
