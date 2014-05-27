@@ -175,10 +175,10 @@ exports.load = function () {
                         for(var i=0;i<docJson.list.length;i++){
                             if(docJson.list[i].LOG!=null && docJson.list[i].LAT!=null){
                                 var kgmeter=getGreatCircleDistance(lng,lat,docJson.list[i].LOG,docJson.list[i].LAT)/1000
-                                if(kgmeter<100) {
+                                //if(kgmeter<100) {
                                     docJson.list[i].distance = changeTwoDecimal(kgmeter)
                                     storeDistance.push(changeTwoDecimal(kgmeter))
-                                }
+                                //}
                             }
                         }
                         storeDistance=storeDistance.sort(function(a,b){return a>b?1:-1});
