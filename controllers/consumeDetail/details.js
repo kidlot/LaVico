@@ -28,8 +28,8 @@ module.exports={
                 if(result){
                     if(result.HaiLanMemberInfo){
                         if(result.HaiLanMemberInfo.action && result.HaiLanMemberInfo.action=="bind"){
-                            //member = result.HaiLanMemberInfo.memberID;
-                             member=9123084;//测试帐号
+                            member = result.HaiLanMemberInfo.memberID;
+                            // member=9123084;//测试帐号
                             console.log("ok");
                         }else{
                             nut.view.disable();
