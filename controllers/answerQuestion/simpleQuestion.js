@@ -17,7 +17,9 @@ module.exports={
         var optionId=seed.optionId;
         var receiveAnswer=seed.receiveAnswer;
         var wechatId=seed.wechatid;
-
+        var memberid = seed.memberid;
+        var themetype = seed.themetype;
+        var type = seed.type;
         //字数判断
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
@@ -41,7 +43,10 @@ module.exports={
                                 "themeId":_id,
                                 "wechatId":wechatId,
                                 "optionId":optionId,
-                                "resultValue":receiveAnswer
+                                "resultValue":receiveAnswer,
+                                "memberId":memberid,
+                                "themetype":themetype,
+                                "type":type
                             },function(err,doc){
                                 if(err) throw err;
                             })
@@ -73,14 +78,16 @@ module.exports={
                     "getGift":  "",
                     "compScore": "",
                     "createTime": new Date().getTime(),
-                    "resultValue":receiveAnswer
+                    "resultValue":receiveAnswer,
+                    "memberId":memberid,
+                    "themetype":themetype,
+                    "type":type
                 },function(err,doc){});
             }
         })
 
         this.step(function(){
             if(seed.finish!='true'){
-                //go to next option
                 this.res.writeHead(302, {
                     'Location': "/lavico/answerQuestion/answer?wechatid="+wechatId+"&optionId="+(parseInt(optionId)+1)+"&_id="+_id
                 });
@@ -88,7 +95,7 @@ module.exports={
             }else{
 
                 this.res.writeHead(302, {
-                    'Location': "/lavico/answerQuestion/finish?wechatid="+wechatId+"&_id="+_id+"&optionId="+optionId});
+                    'Location': "/lavico/answerQuestion/finish?wechatid="+wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                 this.res.end();
             }
         })

@@ -22,6 +22,7 @@ module.exports={
 
         //根据微信ID获取memberID
         this.step(function(){
+            console.log(seed.wechatId);
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
@@ -29,6 +30,7 @@ module.exports={
                         if(result.HaiLanMemberInfo.action && result.HaiLanMemberInfo.action=="bind"){
                             //member = result.HaiLanMemberInfo.memberID;
                              member=9123084;//测试帐号
+                            console.log("ok");
                         }else{
                             nut.view.disable();
                             nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
@@ -50,8 +52,8 @@ module.exports={
                 this.hold(function(err,doc){
 
                     if(err) throw err
-                    var docsJson=JSON.parse(doc)
-
+                    var docsJson=JSON.parse(doc);
+                    console.log(doc);
                     for(var i in docsJson.log){
                         var yearAll={}
                         //从消费记录中获取年份
@@ -99,8 +101,6 @@ module.exports={
 
 
         this.step(function(){
-
-
             nut.model.arr=arr;
             nut.model.saleAllMoney=saleAllMoney;
         })
