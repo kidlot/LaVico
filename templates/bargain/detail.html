@@ -10,6 +10,7 @@
                 <input type="hidden" value="{@ doc.promotionsCode}" id="promotionsCode">
                 <input type="hidden" value="{@ doc.deductionIntegral}" id="point">
                 <input type="hidden" value="{@ isVip}" id="isVip">
+                <input type="hidden" value="{@ memberID}" id="memberID">
 
 
                 <p class="title name" >{@ doc.name}</p>
@@ -161,6 +162,7 @@ function giveup(){
             'name':$(".name").text(),
             '_id':$("#_id").val(),
             'wxid':$("#wxid").val(),
+            'memberID':$("#memberID").val(),
             'productID':$("#_id").val()
         },
         success:function(data){
@@ -226,6 +228,7 @@ function deal(cb){
             'name':$(".name").text(),
             '_id':$("#_id").val(),
             'wxid':$("#wxid").val(),
+            'memberID':$("#memberID").val(),
             'productID':$("#_id").val(),
             'promotionsCode':$("#promotionsCode").val(),
             'point':$("#point").val()
@@ -260,7 +263,8 @@ function bargain(){
         data:{
             'price':$("#price").val(),
             '_id':$("#_id").val(),
-            'wxid':$("#wxid").val()
+            'wxid':$("#wxid").val(),
+            'memberID':$("#memberID").val()
         },
         success:function(data){
             if(data.err == 0){

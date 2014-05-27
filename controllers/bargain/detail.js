@@ -23,6 +23,7 @@ module.exports = {
                 nut.model.isVip = false
                 if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
                     nut.model.isVip = true
+                    nut.model.memberID = customers.HaiLanMemberInfo.memberID
                 }
             }))
 
@@ -44,8 +45,9 @@ module.exports = {
         // repeat
         this.step(function(){
 
-            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":3,"data.stat":true}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":3,"data.stat":true}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
+                console.log(doc)
                 if(doc.length > 0){
 
                     nut.model.res = {err:1,msg:"您已成功侃价，请查看您的“专属礼券”",url:"/lavico/member/card_member/coupon/index?wxid="+seed.wxid};
@@ -59,7 +61,7 @@ module.exports = {
 
             if(nut.model.res.err != 1){
 
-                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                     if(doc.length > 0){
                         var timeout = 60 * 10 * 1000
@@ -78,7 +80,7 @@ module.exports = {
         this.step(function(){
 
             if(nut.model.res.err != 1){
-                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":3,"data.stat":true}).count(this.hold(function(err,num){
+                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":3,"data.stat":true}).count(this.hold(function(err,num){
 
                     if(num >= doc.surplus){
                         nut.model.res = {err:1,msg:"此商品已销售完毕，请选其它商品。"};
