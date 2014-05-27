@@ -40,6 +40,54 @@ exports.onload = function(application){
     var welabLayout = require("welab/controllers/Layout")
     welabLayout.view = "lavico/templates/welabLayout.html";
 
+    // 去掉正在使用中的
+    helper.template("welab/templates/dashboard.html",this.hold(function(err,tpl){
+
+        if(err) throw err ;
+        tpl.$(".more-info").hide() ;
+
+        // 重新编译模板
+        tpl.compile() ;
+    })) ;
+
+    // 去掉应用
+    var welabExtension = require("welab/extension.js");
+    delete welabExtension.apps.register;
+    delete welabExtension.apps.xiaoi;
+    delete welabExtension.apps.sends;
+    delete welabExtension.apps.webox;
+    delete welabExtension.apps.photowall;
+    delete welabExtension.apps.rurqqw;
+    delete welabExtension.apps.map;
+    delete welabExtension.apps.ar;
+    delete welabExtension.apps.mallfirework;
+    delete welabExtension.apps.qrcode;
+
+    welabExtension.apps.qrcode = {
+        categories: ['用户']
+            , type: '沟通'
+            , icon: '/welab/apps/qrcode/public/icon_s.png'
+            , isSwitch : false
+            , on: false
+            , replies: {
+            9: [ function(params,req,res,next){next()} ]
+        }
+    , title: '参数二维码'
+            , desc: '参数二维码'
+            , btns: [
+            {
+                title: '管理'
+                , controller: '/welab/apps/qrcode/form'
+            }
+
+        ]
+            , start: function(){
+            this.on = true;
+        }
+    , stop: function(){
+            this.on = false;
+        }
+    }
 
     /**
      * reply list

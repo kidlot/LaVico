@@ -10,6 +10,7 @@ module.exports={
         var member_id;
         nut.model.wxid = wechatid;
         nut.model.optionId = optionId;
+        var memberId;
 
         this.step(function(){
             //查找此会员是否存在
@@ -17,6 +18,7 @@ module.exports={
                 if(err) throw err;
                 if(result){
                     if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
+                        member_id = result.HaiLanMemberInfo.memberID;
                     }else{
                         member_id ="undefined";
                     }
@@ -29,7 +31,9 @@ module.exports={
                     nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
 
                 }
+                memberId = member_id;
                 nut.model.member_id =member_id;
+
             }))
         });
 
@@ -64,7 +68,9 @@ module.exports={
                                 nut.model._id=_id;
                                 nut.model.optionCount=cursor.options.length;//此题目总共有题数
                                 nut.model.wechatid=wechatid;
+                                nut.model.themeType =cursor.themeType;
                             }
+
                         }
                         if(optionId>cursor.options.length){
                             //异常情况：当optionId大于题数时
@@ -82,7 +88,7 @@ module.exports={
         });
 
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({"wechatid":wechatid,"themeId":helper.db.id(_id)}).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/custReceive").find({"wechatid":wechatid,"themeId":helper.db.id(_id),"memberId":""+memberId}).toArray(this.hold(function(err,doc){
                 if(err) throw err;
                 nut.model.custReceive = JSON.stringify(doc);
             }));

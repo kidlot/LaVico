@@ -13,13 +13,14 @@ module.exports={
         var finish=seed.finish;//是否为“完成”按钮 true
         var stopLabel=seed.stopLabel;//停止标签
         var customerLabel=seed.customerLabel;//自定义标签
-
+        var memberid=seed.memberid;
         var docvar=null;//是否已经有存储,即，是否已经做过此题
+        var themetype = seed.themetype;
 
         this.step(function(){
             //判断是否已经记录
             helper.db.coll("lavico/custReceive").findOne({"themeId":helper.db.id(_id),
-                "wechatid":wechatid,"optionId":parseInt(optionId)},this.hold(function(err,doc){
+                "wechatid":wechatid,"optionId":parseInt(optionId),"memberId":memberid},this.hold(function(err,doc){
                 docvar=doc;
             }))});
 
@@ -39,16 +40,14 @@ module.exports={
         })
 
         this.step(function(docOptions){
-            //没有记录过
-            if(docvar==null){
-            //if(1==1){
+            if(themetype==1){
+                //helper.db.coll("jinqiao/garage").update({"sid": doc[i].sid}, {$set: {"sid": doc[i].sid}}, {upsert: true},function(err,doc){
+//                    if(err) throw err;
+//                })
                 if(type==0){//单选
                     //积分在数字情况下记录
                     if(!isNaN(score)){
-
                         //session累加
-
-
                         var scores=0;
                         if(isNaN(parseInt(score))){
                             scores=0
@@ -56,7 +55,161 @@ module.exports={
                             scores=parseInt(score)
                             then.req.session.scoreAll+=parseInt(score);
                         }
+                        //记录积分
+                        helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,"themetype":themetype,"memberId":""+memberid},
+                            {$set: {
+                                "wechatid": wechatid,
+                                "themeId": helper.db.id(_id),
+                                "isFinish": false,
+                                "optionId": parseInt(optionId),
+                                "chooseId": parseInt(chooseId),
+                                "getChooseScore": scores,
+                                "getChooseLabel":"",
+                                "getLabel": "",
+                                "getGift":  "",
+                                "compScore": "111",
+                                "type":type,
+                                "createTime": createTime(),
+                                "memberId":memberid,
+                                "themetype":themetype
+                            }}, {upsert: true},function(err,doc){
+                                if(err) throw err;
+                                console.log(doc)
+                            })
+                    }
 
+                    if(chooseNext!=""){
+                        //下一题不空，跳转指定题
+                        //先记录optionId和isFinish,为了让其能history.back后继续
+                        then.req.session.optionId=parseInt(chooseNext);
+                        then.req.session.isFinish=false;
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+wechatid+"&_id="+_id
+                            +"&optionId="+parseInt(chooseNext)});
+                        this.res.end();
+
+                    }else{//下一题为空
+                        //判断是否有停止标签
+                        if(stopLabel!=""){
+                            //记录停止标签
+                            then.req.session.stopLabel=stopLabel;
+                            //停止标签存在，同时查看是否有自定义标签(自定义标签记录到customer中) 跳转finish
+                            if(customerLabel!=""){
+                                //自定义标签存在,自定义标签记录到customer中(session),跳转finish
+                                then.req.session.customerLabel=customerLabel;
+                                //先记录optionId和isFinish,为了让其能history.back后继续
+                                then.req.session.optionId=optionId;
+                                then.req.session.isFinish=true;
+
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
+                                    wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
+                                this.res.end();
+                            }else{
+                                //自定义标签不存在,跳转finish
+                                //先记录optionId和isFinish,为了让其能history.back后继续
+                                then.req.session.optionId=optionId;
+                                then.req.session.isFinish=true;
+
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
+                                    wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId});
+                                this.res.end();
+                            }
+                        }else{
+                            //停止标签不存在,判断是否是完成页面过来的
+                            if(finish!="true"){
+                                //下一题
+                                //先记录optionId和isFinish,为了让其能history.back后继续
+                                then.req.session.optionId=(parseInt(optionId)+1);
+                                then.req.session.isFinish=false;
+
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+                                    wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
+                                this.res.end();
+                            }else{
+                                //完成页面
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
+                                    wechatid+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
+                                this.res.end();
+
+                            }
+                        }
+                    }
+                }else if(type==1){
+                    //复选题,记录session
+                    then.req.session.scoreAll+=parseInt(score);
+                    //记录复选答案在chooseId中
+                    var selectChooseIdArr=seed.chooseId;
+                    var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
+                    var selId="["+selectChooseId.replace("_",",")+"]";
+                    helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,"themetype":themetype,"memberId":""+memberid},
+                        {$set: {
+                            "wechatid": wechatid,
+                            "themeId": helper.db.id(_id),
+                            "isFinish": false,
+                            "optionId": parseInt(optionId),
+                            "chooseId": selId,
+                            "getChooseScore": parseInt(score),
+                            "getChooseLabel":"",
+                            "getLabel": "",
+                            "getGift":  "",
+                            "compScore": "222",
+                            "createTime": createTime(),
+                            "type":type,
+                            "memberId":memberid,
+                            "themetype":themetype
+                            }}, {upsert: true},function(err,doc){
+                                if(err) throw err;
+                            console.log(doc)
+                        })
+                    //判断是否为最后一页
+                    if(finish!="true"){
+                        //下一题页
+                        //先记录optionId和isFinish,为了让其能history.back后继续
+                        then.req.session.optionId=(parseInt(optionId)+1);
+                        then.req.session.isFinish=false;
+
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+                            wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
+                        this.res.end();
+                    }else{
+                        //完成页
+                        //先记录optionId和isFinish,为了让其能history.back后继续
+                        then.req.session.optionId=optionId;
+                        then.req.session.isFinish=true;
+
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                            "&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
+                        this.res.end(); if(then.req.session.isFinish){
+                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                                "&_id="+_id+"&optionId="+then.req.session.optionId+"&memberid="+memberid+"&themetype="+themetype});
+                            this.res.end();
+                        }else{
+                            if(finish!="true"){
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+                                    wechatid+"&_id="+_id+
+                                    "&optionId="+then.req.session.optionId});
+                                this.res.end();
+                            }else{
+                                this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
+                                    "&_id="+_id+"&optionId="+then.req.session.optionId+"&memberid="+memberid+"&themetype="+themetype});
+                                this.res.end();
+                            }
+                        }
+                    }
+                }
+            }else if(docvar==null){
+                //没有记录过
+            //if(1==1){
+                if(type==0){//单选
+                    //积分在数字情况下记录
+                    if(!isNaN(score)){
+                        //session累加
+                        var scores=0;
+                        if(isNaN(parseInt(score))){
+                            scores=0
+                        }else{
+                            scores=parseInt(score)
+                            then.req.session.scoreAll+=parseInt(score);
+                        }
                         //记录积分
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
@@ -70,7 +223,9 @@ module.exports={
                             "getGift":  "",
                             "compScore": "",
                             "type":type,
-                            "createTime": createTime()
+                            "createTime": createTime(),
+                            "memberId":memberid,
+                            "themetype":themetype
                         },function(err,doc){
                         });
                     }
@@ -98,7 +253,7 @@ module.exports={
                                 then.req.session.isFinish=true;
 
                                 this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
-                                    wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId});
+                                    wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                                 this.res.end();
                             }else{
                                 //自定义标签不存在,跳转finish
@@ -124,7 +279,7 @@ module.exports={
                             }else{
                                 //完成页面
                                 this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
-                                    wechatid+"&_id="+_id+"&optionId="+optionId});
+                                    wechatid+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                                 this.res.end();
 
                             }
@@ -149,7 +304,9 @@ module.exports={
                         "getGift":  "",
                         "compScore": "",
                         "createTime": createTime(),
-                        "type":type
+                        "type":type,
+                        "memberId":memberid,
+                        "themetype":themetype
                     },function(err,doc){});
                     //判断是否为最后一页
                     if(finish!="true"){
@@ -168,10 +325,10 @@ module.exports={
                         then.req.session.isFinish=true;
 
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
-                            "&_id="+_id+"&optionId="+optionId});
+                            "&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                         this.res.end(); if(then.req.session.isFinish){
                             this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
-                                "&_id="+_id+"&optionId="+then.req.session.optionId});
+                                "&_id="+_id+"&optionId="+then.req.session.optionId+"&memberid="+memberid+"&themetype="+themetype});
                             this.res.end();
                         }else{
                             if(finish!="true"){
@@ -181,26 +338,21 @@ module.exports={
                                 this.res.end();
                             }else{
                                 this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
-                                    "&_id="+_id+"&optionId="+then.req.session.optionId});
+                                    "&_id="+_id+"&optionId="+then.req.session.optionId+"&memberid="+memberid+"&themetype="+themetype});
                                 this.res.end();
                             }
                         }
                     }
                 }
             }else{
-
                 //记录过
                 if(then.req.session.isFinish){
                     //完成页过来的(************型男测试)
-
-
-
                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?isRecord=yes&wechatid="+wechatid+
                         "&_id="+_id+"&optionId="+then.req.session.optionId});
                     this.res.end();
                 }else{
                     //已经记录过了的
-
                     var themeQuestionoptionId;
                     var themeQuestionstopLabel
                     var themeQuestionchooseNext

@@ -1,0 +1,20 @@
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=88318be4b6609ecec7e76169932d0b77"></script>
+<script>
+window.onload=function(){
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point({@locationLat},{@locationLng});
+    map.centerAndZoom(point,12);
+
+    function myFun(result){
+        var cityName = result.name;
+        map.setCenter(cityName);
+        location.href = "/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName=" + cityName;
+    }
+    var myCity = new BMap.LocalCity();
+    myCity.get(myFun)
+
+}
+
+
+</script>
+<div id="allmap"></div>

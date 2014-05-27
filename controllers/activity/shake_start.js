@@ -226,7 +226,7 @@ module.exports = {
                     }else{
                         write_info(then,'{"result":"something-error"}');
                     }
-                    helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                    helper.db.coll('lavico/shake/logs').count({aid:seed.aid,memberID:memberId,createDate:{$gte:start_time}},this.hold(function(err,doc){
                         count = doc;//已经摇一摇次数
                         console.log('+++++++++++++++++');
                         console.log('now'+seed.aid+'sum:'+doc);
@@ -382,7 +382,9 @@ module.exports = {
                     }else{
                         write_info(then,'{"result":"something-error"}');
                     }
-                    helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                    helper.db.coll('lavico/shake/logs').count({aid:seed.aid,memberID:memberId,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                        //aid:活动编号
+                        //memberID:lavico会员编号
                         count = doc;//已经摇一摇次数
                         console.log('+++++++++++++++++');
                         console.log('now'+seed.aid+'sum:'+doc);
@@ -411,8 +413,9 @@ module.exports = {
                     activity.code = shake.aid;
                     activity.uid = seed.uid;
                     activity.name = shake.name;
-                    activity.QTY = shake.QTY;
+                    activity.QTY = shake.lottery[0].QTY;
                     activity.points = _points;//每次摇一摇，所需要的积分多少
+                    activity.memberID = memberId;//用户
                     activity.createDate = new Date().getTime();
                     activity.memo = '摇一摇'+'-'+shakeActivityName;
                     console.log(activity.memo);
@@ -447,7 +450,7 @@ module.exports = {
 
                                 helper.db.coll('welab/customers').update({wechatid:seed.uid},{$addToSet:{shake:activity}},function(err,doc){err&&console.log(doc);});
 
-                                helper.db.coll("shake/shake").insert(activity,function(err,doc){err&&console.log(doc);});
+                                helper.db.coll("lavico/shake/logs").insert(activity,function(err,doc){err&&console.log(doc);});
                                 write_info(then,'{"result":"win","coupon_no":"'+doc.coupon_no+'"}');
 
                             }else{
@@ -459,7 +462,7 @@ module.exports = {
                     }else{
 
                         console.log("shake fail");
-                        helper.db.coll('shake/shake').insert(activity,function(err,doc){
+                        helper.db.coll('lavico/shake/logs').insert(activity,function(err,doc){
                             err&&console.log(doc);
                         });
                         if(costPerShake > 0){
@@ -585,6 +588,7 @@ module.exports = {
             window.popupStyle2.on('您的手机没法摇？那就直接点击下面按钮吧',function(event){});
         }
         var timer;
+        var timerShake;
 
         var shakeIt = function(){
 
@@ -602,7 +606,6 @@ module.exports = {
 
         }
 
-        timer = setInterval(function(){shakeIt()},200);
 
         function mobileClickRight(){
 
@@ -638,7 +641,10 @@ module.exports = {
 
                 if (speed > SHAKE_THRESHOLD) {
                     if(flag == 1){
+
+                        timer = setInterval(function(){shakeIt()},200);//开始摇动
                         shake();
+
                     }
                     flag = 0;
                 }
@@ -652,6 +658,7 @@ module.exports = {
 
         $('.mobile-btn').click(function(){
             if(flag == 1){
+                timer = setInterval(function(){shakeIt()},200);//开始摇动
                 shake();
             }
             flag = 0;
@@ -659,92 +666,107 @@ module.exports = {
         /*后端JS*/
 
         function shake(){
+
+
             if(!$("#uid").val() || !$("#aid").val()){
                 //alert('请登陆微信后，参加我们的摇一摇活动');
                 window.popupStyle2.on('请登陆微信后，参加我们的摇一摇活动',function(event){});
                 return false;
             }
             $('#loading').show();
+
             var _nowTime = new Date().getTime();
             $.get('/lavico/activity/shake_start:shakeit',{
                 uid:$("#uid").val(),//微信ID
                 aid:$("#aid").val()//摇一摇活动ID
             },function(data){
-                $('#loading').hide();
-                console.log(data);
 
+                timerShake = setTimeout(function(){
 
-                if(data.result == 'win'){
-                    var _coupon_no = data.coupon_no;
-                    window.location.href="/lavico/activity/shake_end?uid="+$("#uid").val()+"&_id="+$("#aid").val()+"&coupon_no="+_coupon_no;
+                    $('#loading').hide();
+                    clearInterval(timer);
+                    console.log(data);
 
-                }else if(data.result == 'has-no-chance'){
+                    if(data.result == 'win'){
+                        var _coupon_no = data.coupon_no;
+                        window.location.href="/lavico/activity/shake_end?uid="+$("#uid").val()+"&_id="+$("#aid").val()+"&coupon_no="+_coupon_no;
 
-                    //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
-                    window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
-                        flag = 1;
-                    });
+                    }else if(data.result == 'has-no-chance'){
 
-                }else if(data.result == 'activity_is_over'){
+                        //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
+                        window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
+                            flag = 1;
+                        });
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
-                        flag = 1;
-                    });
+                    }else if(data.result == 'activity_is_over'){
 
-                }else if(data.result == 'something-error'){
+                        window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                            flag = 1;
+                        });
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){
-                        flag = 1;
-                    });
+                    }else if(data.result == 'something-error'){
 
-                }else if(data.result == 'unwin'){
+                        window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){
+                            flag = 1;
+                        });
+
+                    }else if(data.result == 'unwin'){
 
 //                    var _i = data.count;
 //                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会！',function(event){
 //                        flag = 1;
 //                    });
 
-                    //每次摇一摇将消耗20积分，你当前还有10次机会
-                    var _i = data.count;//你当前还有次机会的次数
-                    if(_i > 0){
-                        var _points = parseInt(data.points);//每次摇一摇将消耗的积分
-                        if(_points == 0){
-                            window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
-                                flag = 1;
-                            });
+                        //每次摇一摇将消耗20积分，你当前还有10次机会
+                        var _i = data.count;//你当前还有次机会的次数
+                        if(_i > 0){
+                            var _points = parseInt(data.points);//每次摇一摇将消耗的积分
+                            if(_points == 0){
+                                window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                    flag = 1;
+                                });
+                            }else{
+                                window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                    flag = 1;
+                                });
+                            }
                         }else{
-                            window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+
+//                            window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+//                                flag = 1;
+//                            });
+                              window.popupStyle2.on('这次没摇到，而且今天也没机会了，明天再来试一试吧！',function(event){
                                 flag = 1;
-                            });
+                              });
+
                         }
-                    }else{
+
+
+                    }else if((/[\u4e00-\u9fa5]+/).test(data.result)){
+
+                        window.popupStyle2.on(data.result,function(event){
+                            flag = 1;
+                        });
+
+                    }else if(data.result == 'your-points-not-enough'){
 
                         window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+                            flag = 1;
+                        });
+
+                    }else{
+
+                        window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){
                             flag = 1;
                         });
 
                     }
 
 
-                }else if((/[\u4e00-\u9fa5]+/).test(data.result)){
+                },1500);
 
-                    window.popupStyle2.on(data.result,function(event){
-                        flag = 1;
-                    });
 
-                }else if(data.result == 'your-points-not-enough'){
 
-                    window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
-                        flag = 1;
-                    });
-
-                }else{
-
-                    window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){
-                        flag = 1;
-                    });
-
-                }
             })
         }
     }

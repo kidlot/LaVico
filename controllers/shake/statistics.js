@@ -32,14 +32,14 @@
                        if(_doc2[i].shake[j].aid == docs._id.toString()){
                           real_count++;
                         }                        
-                      } 
+                      }
                     }
                 }))           
             }))        
         })
         
         this.step(function(){
-            helper.db.coll("shake/shake").aggregate(
+            helper.db.coll("lavico/shake/logs").aggregate(
                         [
                           {$match:{
                               aid:seed._id
