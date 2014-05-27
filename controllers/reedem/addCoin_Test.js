@@ -31,7 +31,7 @@ module.exports={
                     //根据memberId调用接口给账户加分
                     var jsonData={};
                     jsonData.memberId=memberId;
-                    jsonData.qty=seed.qty;
+                    jsonData.qty=3000;
                     jsonData.memo="测试";
                     middleware.request('Point/Change',jsonData,
                         this.hold(function(err,doc){

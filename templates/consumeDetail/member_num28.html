@@ -21,7 +21,13 @@
                 <p class="c3">{@oneYearInfo.GOODSNO}<br/>
                     购买日期：
                     <script type="template/script">
-                        var date=new Date(oneYearInfo.date).getFullYear()+"年"+(new Date(oneYearInfo.date).getMonth()+1)+"月"+new Date(oneYearInfo.date).getDate()+"日";
+                        var date=new Date(oneYearInfo.date).getFullYear()+"年";
+                        var months=new Date(oneYearInfo.date).getMonth()+1;
+                        months=months>9?months:'0'+months;
+                        date+=months+"月";
+                        var dates=new Date(oneYearInfo.date).getDate();
+                        dates=dates>9?dates:'0'+dates;
+                        date+=dates+"日";
                         var hours=new Date(oneYearInfo.date).getHours();
                         hours=hours>9?hours:'0'+hours;
                         var minutes=new Date(oneYearInfo.date).getMinutes();

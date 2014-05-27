@@ -188,8 +188,8 @@ module.exports={
                     params.meno='积分兑换-'+t_name;
                     params.openid=wechatId;
                     params.otherPromId=id;
-                    params.PROMOTION_CODE=aid;
-                    //params.PROMOTION_CODE='CQL201404280005';//aid:测试号
+                    //params.PROMOTION_CODE=aid;
+                    params.PROMOTION_CODE='CQL201404280005';//aid:测试号
                     params.point=0;
                     //调用接口：提交扣除积分和兑换奖券
                     //扣积分接口
@@ -231,7 +231,7 @@ module.exports={
                         record.QTY=QTY;
                         record.codeByCRM=docJson.coupon_no;//接口返回的券号
                         //记录会员表
-                        helper.db.coll('welab/customers').update({wechatid:wechatId},{$addToSet:{reedem:record}},function(err,doc){
+                        helper.db.coll('welab/customers').update({"wechatid":wechatId,"memberId":memberId},{$addToSet:{reedem:record}},function(err,doc){
                         })
                         //记录兑换表
                         helper.db.coll("lavico/exchangeRecord").insert(record,this.hold(function(err,result){
