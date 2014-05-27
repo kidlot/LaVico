@@ -32,7 +32,7 @@
                        if(_doc2[i].shake[j].aid == docs._id.toString()){
                           real_count++;
                         }                        
-                      } 
+                      }
                     }
                 }))           
             }))        
