@@ -74,7 +74,7 @@ module.exports= {
                 if(err) throw err
                 if(doc)
                 {
-                    nut.model.goMemberInfo=(doc.explanation);
+                    //nut.model.goMemberInfo=doc.explanation;
                     nut.model.docs=doc;
                 }
             }));
