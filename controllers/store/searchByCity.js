@@ -94,7 +94,7 @@ module.exports={
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
                 nut.model.wxid = seed.wxid;
-
+                console.log("seed.wxid:"+seed.wxid);
                 //设置id从砍价过来
                 //没设置id查询过来的
                 if(seed._id) {
@@ -130,7 +130,8 @@ module.exports={
 
                         if(code==cityCode){
                             ii=true;
-                            //return searchCity=doc.list[i];//返回指定门店
+                            //return searchCity=doc.list[i];//
+                            console.log(doc.list[i]);
                             nut.model.searchCity=doc.list[i];
                             break;
                         }
