@@ -17,6 +17,7 @@ var wxid = '{@wxid}';
 var optionId = '{@optionId}';
 var themequestion = JSON.parse('{@themequestion}')
 var custReceive = JSON.parse('{@custReceive}')
+var themetype = '{@themeType}'
 
 if(window.name != "bencalie"){
     location.reload();
@@ -24,6 +25,8 @@ if(window.name != "bencalie"){
 }else{
     window.name = "";
 }
+
+
 //初始化事件
 function build(){
 
@@ -94,43 +97,74 @@ function build(){
     }
     var value=Request.QueryString("optionId");
     for(var i=0;i<custReceive.length;i++){
-        if(custReceive[i].optionId==value){
-            if(custReceive[i].chooseId == "主观题"){
-                $("textarea[name='descContent']").val(custReceive[i].resultValue);
-                $("textarea[name='descContent']").attr("readonly","readonly");
-            }else if(custReceive[i].type==0){
-                $("#for"+custReceive[i].chooseId).attr('checked','checked');
-                var leng = $("input[name='singleChooseInput']").length;
-                for(var h = 0;h<leng;h++){
-                    $("#for"+h).attr('disabled',true);
-                }
-                $("span[name='correntImg']").css("visibility","visible");
-                $("#chooseNa"+custReceive[i].chooseId).removeClass("select1");
-                $("#chooseNa"+custReceive[i].chooseId).addClass("select");
-            }else if(custReceive[i].type==1){
-                var chooseid=custReceive[i].chooseId;
-                var arry=chooseid.split(",");
-                var str;
-                for(var h=0;h<arry.length;h++){
-                    if(h==0){
-                        str = arry[0].substr(1,1);
-                    }else if(h==(arry.length)-1){
-                        str += arry[(arry.length)-1].substr(0,1);
-                    }else{
-                        str += arry[h].substr(0,1);
+        if(custReceive[i].themetype=="1"){
+            if(custReceive[i].optionId==value){
+                if(custReceive[i].chooseId == "主观题"){
+                    $("textarea[name='descContent']").val(custReceive[i].resultValue);
+                }else if(custReceive[i].type==0){
+                    $("#for"+custReceive[i].chooseId).attr('checked','checked');
+                    $("#chooseNa"+custReceive[i].chooseId).removeClass("select1");
+                    $("#chooseNa"+custReceive[i].chooseId).addClass("select");
+                }else if(custReceive[i].type==1){
+                    var chooseid=custReceive[i].chooseId;
+                    var arry=chooseid.split(",");
+                    var str;
+                    for(var h=0;h<arry.length;h++){
+                        if(h==0){
+                            str = arry[0].substr(1,1);
+                        }else if(h==(arry.length)-1){
+                            str += arry[(arry.length)-1].substr(0,1);
+                        }else{
+                            str += arry[h].substr(0,1);
+                        }
+                    }
+                    for(var s=0;s<str.length;s++){
+                        $("#for"+str[s]).attr('checked','checked');
+                        $("#chooseNa"+str[s]).removeClass("selects1");
+                        $("#chooseNa"+str[s]).addClass("selects");
                     }
                 }
-                for(var s=0;s<str.length;s++){
-                    $("#for"+str[s]).attr('checked','checked');
-                    var length = $("input[name='mutilChooseInput']").length;
-                    for(var h=0;h<length;h++){
+            }
+        }else{
+            if(custReceive[i].optionId==value){
+                if(custReceive[i].chooseId == "主观题"){
+                    $("textarea[name='descContent']").val(custReceive[i].resultValue);
+                    $("textarea[name='descContent']").attr("readonly","readonly");
+                }else if(custReceive[i].type==0){
+                    $("#for"+custReceive[i].chooseId).attr('checked','checked');
+                    var leng = $("input[name='singleChooseInput']").length;
+                    for(var h = 0;h<leng;h++){
                         $("#for"+h).attr('disabled',true);
                     }
-                    $("#chooseNa"+str[s]).removeClass("selects1");
-                    $("#chooseNa"+str[s]).addClass("selects");
+                    $("span[name='correntImg']").css("visibility","visible");
+                    $("#chooseNa"+custReceive[i].chooseId).removeClass("select1");
+                    $("#chooseNa"+custReceive[i].chooseId).addClass("select");
+                }else if(custReceive[i].type==1){
+                    var chooseid=custReceive[i].chooseId;
+                    var arry=chooseid.split(",");
+                    var str;
+                    for(var h=0;h<arry.length;h++){
+                        if(h==0){
+                            str = arry[0].substr(1,1);
+                        }else if(h==(arry.length)-1){
+                            str += arry[(arry.length)-1].substr(0,1);
+                        }else{
+                            str += arry[h].substr(0,1);
+                        }
+                    }
+                    for(var s=0;s<str.length;s++){
+                        $("#for"+str[s]).attr('checked','checked');
+                        var length = $("input[name='mutilChooseInput']").length;
+                        for(var h=0;h<length;h++){
+                            $("#for"+h).attr('disabled',true);
+                        }
+                        $("#chooseNa"+str[s]).removeClass("selects1");
+                        $("#chooseNa"+str[s]).addClass("selects");
+                    }
                 }
             }
         }
+
     }
 
 //判断开还关
@@ -158,7 +192,7 @@ function build(){
 function showCorrent(t){
     //<span name='correntImg'>
     //alert(t);
-
+    choose();
 
     $("li .lab").removeClass("select");
     $("li .lab").addClass("select1");
@@ -189,6 +223,7 @@ function showCorrent(t){
 function showCorrents(t){
     //<span name='correntImg'>
     //alert(t);
+    //choose();
     $(t).next().find("span").toggleClass("selects1");
     $(t).next().find("span").toggleClass("selects");
 
@@ -222,7 +257,7 @@ function finish(){
 
         //跳转“答案记录题”
         location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&finish=true&score="+
-                jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content;
+                jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content+"&memberid="+member_id+"&themetype="+themetype+"&type=2";
     }else{
         //单选
         if($("input[name='singleChooseInput']").length>0){
@@ -238,7 +273,7 @@ function finish(){
             //跳转“记录页”
             location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=0&optionId="+valueArr[0]+
                     "&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+
-                    "&customerLabel="+valueArr[5];
+                    "&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
         }else if($("input[name='mutilChooseInput']:checked").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
@@ -257,7 +292,58 @@ function finish(){
                     score+=parseInt(valueArr[2]);//累计选项积分
             });
             location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=1&optionId="+
-                    valueArr[0]+"&_id="+_id+"&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3];
+                    valueArr[0]+"&_id="+_id+"&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&memberid="+member_id+"&themetype="+themetype;
+        }
+
+    }
+}
+
+
+function choose(){
+    Request={
+        QueryString:function(item) {
+            var svalue=location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)","i"));
+            return svalue?svalue[1]:svalue;
+        }
+    }
+    var value=Request.QueryString("optionId");
+    for(var i=0;i<custReceive.length;i++){
+        if(custReceive[i].themetype =="1"){
+            if(custReceive[i].optionId==value){
+                if(custReceive[i].chooseId == "主观题"){
+                    $("textarea[name='descContent']").val(custReceive[i].resultValue);
+                }else if(custReceive[i].type==0){
+                    //$("#for"+custReceive[i].chooseId).attr('checked','checked');
+                    var leng = $("input[name='singleChooseInput']").length;
+                    for(var h = 0;h<leng;h++){
+                        $("#for"+h).attr('disabled',false);
+                    }
+                    $("#chooseNa"+custReceive[i].chooseId).removeClass("select");
+                    $("#chooseNa"+custReceive[i].chooseId).addClass("select1");
+                }else if(custReceive[i].type==1){
+                    var chooseid=custReceive[i].chooseId;
+                    var arry=chooseid.split(",");
+                    var str;
+                    for(var h=0;h<arry.length;h++){
+                        if(h==0){
+                            str = arry[0].substr(1,1);
+                        }else if(h==(arry.length)-1){
+                            str += arry[(arry.length)-1].substr(0,1);
+                        }else{
+                            str += arry[h].substr(0,1);
+                        }
+                    }
+                    for(var s=0;s<str.length;s++){
+                        //$("#for"+str[s]).attr('checked','checked');
+                        var length = $("input[name='mutilChooseInput']").length;
+                        for(var h=0;h<length;h++){
+                            $("#for"+h).attr('disabled',false);
+                        }
+                        $("#chooseNa"+str[s]).removeClass("selects");
+                        $("#chooseNa"+str[s]).addClass("selects1");
+                    }
+                }
+            }
         }
 
     }
@@ -276,7 +362,7 @@ function nextChoose(){
         var content=$("textarea[name='descContent']").val();
         //跳转主观题记录页面--传送内容:积分&题组号&题目号&回复内容
         location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&score="+jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+
-                "&receiveAnswer="+content;
+                "&receiveAnswer="+content+"&memberid="+member_id+"&themetype="+themetype+"&type=2";
 
 
     }else if($("input[name='singleChooseInput']").length>0){
@@ -292,7 +378,7 @@ function nextChoose(){
         valueArr=value.split('+');
         //跳转“记录结果页” 传值：微信id&单选类型&当前题号&题组号&选项号&积分&下一题题号&停止标签&自定义标签
         location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=0&optionId="+valueArr[0]+"&_id="+_id+
-                "&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5];
+                "&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
 
 
     }else if($("input[name='mutilChooseInput']:checked").length>0){
@@ -317,7 +403,7 @@ function nextChoose(){
         });
         //跳转“记录结果页”，传值：微信ID&单选类型&当前题号&题组号&选项号&积分&下一题
         location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=1&optionId="+valueArr[0]+"&_id="+_id+
-                "&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5];
+                "&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
     }else{
         alert("您忘记填写了～");
     }
@@ -330,7 +416,7 @@ window.onload =function() {
 
 <link rel="stylesheet" href="/lavico/public/css/base.css" />
 <link rel="stylesheet" href="/lavico/public/css/main.css" />
-<div class="wrapper">
+<div class="wrapper" style="background-color: #e2e2e2;">
     <div class="answer-title">
         <p><span class="title2">本次共有 {@optionCount} 个问题，当前是第 {@optionId} 题</span></p>
     </div>

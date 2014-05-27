@@ -259,7 +259,6 @@ module.exports = {
                 }
                 $('#loading').show();
                 $.ajax({
-                    url:'/lavico/member/card_blank/bind:checkCaptcha',
                     type:'POST',
                     data:{
                         'wxid':wxid,

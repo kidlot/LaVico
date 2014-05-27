@@ -5,6 +5,7 @@ module.exports= {
     process: function (seed, nut) {
         nut.model.shopLng=seed.shopLng;//门店经度
         nut.model.shopLat=seed.shopLat;//门店纬度
+        nut.model.address=seed.address;
         var lng,lat;
 
         this.step(function(){
@@ -21,6 +22,7 @@ module.exports= {
                         console.log("bb");
                         nut.model.userLng="";
                         nut.model.userLat="";
+
                     }
                 }
             }));

@@ -101,7 +101,7 @@ module.exports = {
                     if(dataArr[_i].hasOwnProperty('needScore')){
 
                         total = total + parseInt(dataArr[_i].needScore);
-                        dataArr[_i].formatTime = formatDate(new Date(dataArr[_i].createDate));
+                        dataArr[_i].formatTime = formatTime(new Date(dataArr[_i].createDate));
                         dataArr[_i].year = new Date(dataArr[_i].createDate).getFullYear();
                         dataArr[_i].month = new Date(dataArr[_i].createDate).getMonth() + 1;
                         dataArr[_i].day = new Date(dataArr[_i].createDate).getDate();
