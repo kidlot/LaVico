@@ -8,38 +8,51 @@ module.exports = {
         if(seed.wxid){
 
             var docs = [];
-            helper.db.coll("lavico/favorites").find({wxid:seed.wxid}).toArray(this.hold(function(err,_doc){
 
-                if(err) console.log(err);
-                var then = this;
-                docs = _doc
-                if(_doc){
-                    for(var i=0 ; i<_doc.length ; i++){
+            helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
+                var customers = customers || {}
 
-                        (function(i){
+                if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
+                    nut.model.memberID = customers.HaiLanMemberInfo.memberID
+                }
+            }))
 
-                            helper.db.coll("lavico/lookbook").findOne({_id:_doc[i].lookbookid},then.hold(function(err,_docLookBook){
+            this.step(function(){
 
-                                if(err) console.log(err)
+                helper.db.coll("lavico/favorites").find({memberID:nut.model.memberID}).toArray(this.hold(function(err,_doc){
 
-                                if(_docLookBook){
+                    if(err) console.log(err);
+                    var then = this;
+                    docs = _doc
+                    if(_doc){
+                        for(var i=0 ; i<_doc.length ; i++){
 
-                                    for(var ii=0 ; ii < _docLookBook.page.length ; ii++){
-                                        if(_docLookBook.page[ii]._id == _doc[i].pageid){
-                                            for(var iii=0 ; iii < _docLookBook.page[ii].product.length ; iii++){
-                                                if(_docLookBook.page[ii].product[iii]._id == _doc[i].productId){
-                                                    _doc[i].pageNum = ii+1
-                                                    _doc[i].product = _docLookBook.page[ii].product[iii]
+                            (function(i){
+
+                                helper.db.coll("lavico/lookbook").findOne({_id:_doc[i].lookbookid},then.hold(function(err,_docLookBook){
+
+                                    if(err) console.log(err)
+
+                                    if(_docLookBook){
+
+                                        for(var ii=0 ; ii < _docLookBook.page.length ; ii++){
+                                            if(_docLookBook.page[ii]._id == _doc[i].pageid){
+                                                for(var iii=0 ; iii < _docLookBook.page[ii].product.length ; iii++){
+                                                    if(_docLookBook.page[ii].product[iii]._id == _doc[i].productId){
+                                                        _doc[i].pageNum = ii+1
+                                                        _doc[i].product = _docLookBook.page[ii].product[iii]
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            }))
-                        })(i)
+                                }))
+                            })(i)
+                        }
                     }
-                }
-            }))
+                }))
+            })
+
 
             this.step(function(){
 
@@ -144,12 +157,12 @@ module.exports = {
                             }
 
 
-                            helper.db.coll("lavico/favorites").insert({lookbookid:doc._id,pageid:oPage._id,productId:oProduct._id,wxid:seed.wxid,createDate:new Date().getTime()},this.hold(function(err,_doc){
+                            helper.db.coll("lavico/favorites").insert({lookbookid:doc._id,pageid:oPage._id,productId:oProduct._id,wxid:seed.wxid,memberID:parseInt(seed.memberID),createDate:new Date().getTime()},this.hold(function(err,_doc){
 
                                 if(err) console.log(err)
                             }))
 
-                            _log(seed.wxid,"收藏",{lookbookid:doc._id,pageid:oPage._id,productId:oProduct._id,wxid:seed.wxid,createDate:new Date().getTime()})
+                            _log(seed.wxid,seed.memberID,"收藏",{lookbookid:doc._id,pageid:oPage._id,productId:oProduct._id,wxid:seed.wxid,createDate:new Date().getTime()})
 
                             var lookbook = {
                                 "_id": doc._id.toString(),
@@ -188,8 +201,8 @@ module.exports = {
 
 
 
-function _log(wxid,action,data){
-    helper.db.coll("lavico/user/logs").insert({createTime:new Date().getTime(),wxid:wxid,action:action,data:data}, function(err, doc){
+function _log(wxid,memberID,action,data){
+    helper.db.coll("lavico/user/logs").insert({createTime:new Date().getTime(),wxid:wxid,memberID:parseInt(memberID),action:action,data:data}, function(err, doc){
         if(err)console.log(err)
     })
 }
