@@ -22,10 +22,6 @@
                     购买日期：
                     <script type="template/script">
 
-
-
-
-
                         function formatTime(now){
                         var year=now.getFullYear();
                         var month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
@@ -36,9 +32,7 @@
                         return year+"年"+month+"月"+date+"日 "+hour+":"+minute+':'+second;
                         }
 
-
-                        date= formatTime(new Date(oneYearInfo.date));
-
+                        date= formatTime(new Date(oneYearInfo.time));
 
                     </script>
                     {@date}
