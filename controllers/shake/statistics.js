@@ -39,7 +39,7 @@
         })
         
         this.step(function(){
-            helper.db.coll("shake/shake").aggregate(
+            helper.db.coll("lavico/shake/logs").aggregate(
                         [
                           {$match:{
                               aid:seed._id
