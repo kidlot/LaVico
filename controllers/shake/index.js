@@ -36,7 +36,7 @@ module.exports = {
                         list.docs[i].count = _doc2.length;
                     }))
 
-                    helper.db.coll("shake/shake").aggregate(
+                    helper.db.coll("lavico/shake/logs").aggregate(
                         [
                             {$match: {
                                 aid: list.docs[i]._id.toString()
@@ -294,7 +294,7 @@ module.exports = {
                     }));
                 })
                 this.step(function () {
-                    helper.db.coll("shake/shake").find({aid: shake._id.toString()}).sort({createTime: -1}).page(perPage, pageNum, then.hold(function (err, page) {
+                    helper.db.coll("lavico/shake/logs").find({aid: shake._id.toString()}).sort({createTime: -1}).page(perPage, pageNum, then.hold(function (err, page) {
                         list = page
                     }));
                 })

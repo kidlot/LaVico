@@ -23,6 +23,7 @@ module.exports = {
         var overdueCoupons = [];//已到期失效 04
         var errorCoupons = [];//错误
         var couponData;
+        var couponArr;
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
 
@@ -76,6 +77,7 @@ module.exports = {
                 this.step(function(){
 
                     if(!member_id){
+
                         nut.model.ineffectiveCoupons = ineffectiveCoupons;
                         nut.model.ineffectiveCouponsLength = 0;
                         nut.model.effectiveCoupons = effectiveCoupons;//可使用
@@ -106,12 +108,108 @@ module.exports = {
                     var requestData = {
                         'memberId' : member_id,
                         'perPage':10000,
-                        'pageNum':1
+                        'pageNum':1,
+                        'status':'01'//未生效
                     };
 
                     middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
 
                         couponData = JSON.parse(doc);
+
+                        couponArr  = couponData.list;
+
+                        helper.db.coll("welab/feeds").insert(
+                            {
+                                'createTime':new Date().getTime(),
+                                'wxid':seed.wxid,
+                                'action':"check_coupon",
+                                'request':requestData,
+                                'reponse':couponData
+                            },this.hold( function(err, doc){
+                                err&console.log(doc);
+                            })
+                        );
+                        //记录用户动作
+                    }));
+
+                });
+
+                this.step(function(){
+
+                    var requestData = {
+                        'memberId' : member_id,
+                        'perPage':10000,
+                        'pageNum':1,
+                        'status':'02'//已生效
+                    };
+
+                    middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+
+                        couponData = JSON.parse(doc);
+
+                        couponArr = couponArr.concat(couponData.list);
+
+                        helper.db.coll("welab/feeds").insert(
+                            {
+                                'createTime':new Date().getTime(),
+                                'wxid':seed.wxid,
+                                'action':"check_coupon",
+                                'request':requestData,
+                                'reponse':couponData
+                            },this.hold( function(err, doc){
+                                err&console.log(doc);
+                            })
+                        );
+                        //记录用户动作
+                    }));
+
+                });
+
+                this.step(function(){
+
+                    var requestData = {
+                        'memberId' : member_id,
+                        'perPage':10000,
+                        'pageNum':1,
+                        'status':'03'//已使用
+
+                    };
+
+                    middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+
+                        couponData = JSON.parse(doc);
+                        couponArr = couponArr.concat(couponData.list);
+
+                        helper.db.coll("welab/feeds").insert(
+                            {
+                                'createTime':new Date().getTime(),
+                                'wxid':seed.wxid,
+                                'action':"check_coupon",
+                                'request':requestData,
+                                'reponse':couponData
+                            },this.hold( function(err, doc){
+                                err&console.log(doc);
+                            })
+                        );
+                        //记录用户动作
+                    }));
+
+                });
+
+                this.step(function(){
+
+                    var requestData = {
+                        'memberId' : member_id,
+                        'perPage':10000,
+                        'pageNum':1,
+                        'status':'04'//已到期失效
+
+                    };
+
+                    middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+
+                        couponData = JSON.parse(doc);
+                        couponArr = couponArr.concat(couponData.list);
 
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -131,7 +229,7 @@ module.exports = {
 
                 this.step(function(){
                     //console.log(couponData);
-                    var _coupons = couponData.list;
+                    var _coupons = couponArr;
 
                     for(var _i=0;_i<_coupons.length;_i++){
 
@@ -152,9 +250,9 @@ module.exports = {
                                     }else{
                                         var _PROMOTION_NAME = "";
                                     }
-                                    couponData.list[_i].PIC = _PIC;
+                                    couponArr[_i].PIC = _PIC;
 
-                                    couponData.list[_i].COUPON_NAME = _PROMOTION_NAME;//活动和优惠券一一对应
+                                    couponArr[_i].COUPON_NAME = _PROMOTION_NAME;//活动和优惠券一一对应
                                 }));
                         })(_i);
 
@@ -165,8 +263,8 @@ module.exports = {
                 this.step(function(){
 
                     var coupons = [];
-                    var _coupons = couponData.list;
-                    console.log(couponData.list);
+                    var _coupons = couponArr;
+                    console.log(couponArr);
                     /*
                      优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02
                      */

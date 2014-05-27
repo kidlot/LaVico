@@ -17,7 +17,7 @@ module.exports={
             process:function(seed,nut){
                 this.step(function(){
                     //根据姓名和电话查memberId
-                    helper.db.coll("welab/customers").findOne({realname:seed.realName,mobile:seed.mobile},
+                    helper.db.coll("welab/customers").findOne({"HaiLanMemberInfo.cardNumber":seed.cardNumber},
                         this.hold(function(err,result){
                             if(err) throw err;
                             if(result){
@@ -31,7 +31,7 @@ module.exports={
                     //根据memberId调用接口给账户加分
                     var jsonData={};
                     jsonData.memberId=memberId;
-                    jsonData.qty=seed.qty;
+                    jsonData.qty=3000;
                     jsonData.memo="测试";
                     middleware.request('Point/Change',jsonData,
                         this.hold(function(err,doc){
@@ -46,9 +46,7 @@ module.exports={
     viewIn:function(){
         $("#addCoin").click(function(){
             var oLinkOptions = {} ;
-            oLinkOptions.data = [{name:'realName',value:$("#realName").val()},
-                {name:'qty',value:$('#qty').val()},
-                {name:'mobile',value:$("#mobile").val()}];
+            oLinkOptions.data = [{name:'cardNumber',value:$("#cardNumber").val()}];
             oLinkOptions.type = "POST";
             oLinkOptions.url = "/lavico/reedem/addCoin_Test:submit";
             $.request(oLinkOptions,function(err,nut){

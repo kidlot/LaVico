@@ -226,7 +226,7 @@ module.exports = {
                     }else{
                         write_info(then,'{"result":"something-error"}');
                     }
-                    helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                    helper.db.coll('lavico/shake/logs').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
                         count = doc;//已经摇一摇次数
                         console.log('+++++++++++++++++');
                         console.log('now'+seed.aid+'sum:'+doc);
@@ -382,7 +382,7 @@ module.exports = {
                     }else{
                         write_info(then,'{"result":"something-error"}');
                     }
-                    helper.db.coll('shake/shake').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                    helper.db.coll('lavico/shake/logs').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
                         count = doc;//已经摇一摇次数
                         console.log('+++++++++++++++++');
                         console.log('now'+seed.aid+'sum:'+doc);
@@ -447,7 +447,7 @@ module.exports = {
 
                                 helper.db.coll('welab/customers').update({wechatid:seed.uid},{$addToSet:{shake:activity}},function(err,doc){err&&console.log(doc);});
 
-                                helper.db.coll("shake/shake").insert(activity,function(err,doc){err&&console.log(doc);});
+                                helper.db.coll("lavico/shake/logs").insert(activity,function(err,doc){err&&console.log(doc);});
                                 write_info(then,'{"result":"win","coupon_no":"'+doc.coupon_no+'"}');
 
                             }else{
@@ -459,7 +459,7 @@ module.exports = {
                     }else{
 
                         console.log("shake fail");
-                        helper.db.coll('shake/shake').insert(activity,function(err,doc){
+                        helper.db.coll('lavico/shake/logs').insert(activity,function(err,doc){
                             err&&console.log(doc);
                         });
                         if(costPerShake > 0){
@@ -757,7 +757,7 @@ module.exports = {
                     }
 
 
-                },1000);
+                },1500);
 
 
 
