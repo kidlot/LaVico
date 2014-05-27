@@ -39,7 +39,7 @@ module.exports = {
 
                 middleware.request( "System/SendSMS",{
                       'mobile':userTel,
-                      'content':_content+"【郎维高LaVico】"
+                      'content':"【郎维高LaVico】"+_content
                   },this.hold(
                   function(err,doc){
                       then.res.end();
