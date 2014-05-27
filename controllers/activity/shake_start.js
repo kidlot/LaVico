@@ -602,7 +602,6 @@ module.exports = {
 
         }
 
-        timer = setInterval(function(){shakeIt()},200);
 
         function mobileClickRight(){
 
@@ -638,7 +637,9 @@ module.exports = {
 
                 if (speed > SHAKE_THRESHOLD) {
                     if(flag == 1){
-                        shake();
+
+                        timer = setInterval(function(){shakeIt()},200);//开始摇动
+
                     }
                     flag = 0;
                 }
@@ -659,12 +660,15 @@ module.exports = {
         /*后端JS*/
 
         function shake(){
+
+
             if(!$("#uid").val() || !$("#aid").val()){
                 //alert('请登陆微信后，参加我们的摇一摇活动');
                 window.popupStyle2.on('请登陆微信后，参加我们的摇一摇活动',function(event){});
                 return false;
             }
-            $('#loading').show();
+            //$('#loading').show();
+
             var _nowTime = new Date().getTime();
             $.get('/lavico/activity/shake_start:shakeit',{
                 uid:$("#uid").val(),//微信ID
