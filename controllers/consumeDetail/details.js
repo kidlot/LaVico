@@ -11,6 +11,7 @@ module.exports={
     process:function(seed,nut){
         var data_request={};
         data_request.perPage=20;
+        var wechatid=seed.wechatId;
         nut.model.wechatId = seed.wechatId;
         var num=typeof(seed.pageNum) == "undefined"?1:seed.pageNum;
         data_request.pageNum=num;
@@ -21,10 +22,25 @@ module.exports={
 
         //根据微信ID获取memberID
         this.step(function(){
-            helper.db.coll("welab/customers").findOne({wechatid:seed.wechatId},this.hold(function(err,result){
+            helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,result){
                 if(err) throw err;
-                member=result.HaiLanMemberInfo.memberID
-               // member=9123084;//测试帐号
+                if(result){
+                    if(result.HaiLanMemberInfo){
+                        if(result.HaiLanMemberInfo.action && result.HaiLanMemberInfo.action=="bind"){
+                            member = result.HaiLanMemberInfo.memberID;
+                            // member=9123084;//测试帐号
+                        }else{
+                            nut.view.disable();
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
+                        }
+                    }else {
+                        nut.view.disable();
+                        nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
+                    }
+                }else{
+                    nut.view.disable();
+                    nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
+                }
             }))
         })
 
@@ -73,6 +89,12 @@ module.exports={
                     }
                 })
             )
+        })
+
+        this.step(function(){
+            for(var i=0;i<arr.length();i++){
+                arr[i].val.sort(function(a,b){return a['date']<b['date']?1:-1});
+            }
         })
 
 
