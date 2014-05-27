@@ -24,16 +24,20 @@ window.onload=function(){
             $("#canExchange").css("backgroundColor","white");
             $(this).css("backgroundColor","#ccc")
         })
-    }
-    var exchange=function(memberId,needScore,wechatId,point,aid,_id){
+}
+
+ var exchange=function(memberId,needScore,wechatId,point,aid,_id){
         $.get("/lavico/reedem/showList:exchange?memberId="+memberId+"&needScore="+needScore+"&wechatId="+wechatId+"&point="+point+"&aid="+aid+"&_id="+_id,function(result){
+
             if(result!="sorry很抱歉！很抱歉您已经兑换过此商品"){
                 document.write(result);
             }else{
                 alert(result);
             }
+
         })
 }
+
 </script>
 <div class="wrapper">
   <div class="store-title">
@@ -69,7 +73,7 @@ window.onload=function(){
                   </div>
                   </div>
                   <div class="gift-bottom">
-                  <div class="fl left"><a href="/lavico/reedem/reedemdetail?_id={@canUseOne._id}&wxid={@wxid}">礼品介绍及兑换细则</a> > </div>
+                  <div class="fl left"><a href="/lavico/reedem/reedemdetail?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}&wxid={@wxid}">礼品介绍及兑换细则</a> > </div>
                   <div class="fr right">
                       <!--<a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"   name="nowGet">立即兑换</a>-->
                       <a href="#" name="nowGet" onclick="exchange('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">立即兑换</a>

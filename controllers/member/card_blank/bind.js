@@ -703,7 +703,7 @@ module.exports = {
                                             }
                                         );
                                         data_doc = doc;
-                                        //console.log(doc);
+                                        console.log(doc);
                                         return doc;
                                     }));
                             });

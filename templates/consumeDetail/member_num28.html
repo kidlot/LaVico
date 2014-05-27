@@ -21,21 +21,18 @@
                 <p class="c3">{@oneYearInfo.GOODSNO}<br/>
                     购买日期：
                     <script type="template/script">
-                        var date=new Date(oneYearInfo.date).getFullYear()+"年";
-                        var months=new Date(oneYearInfo.date).getMonth()+1;
-                        months=months>9?months:'0'+months;
-                        date+=months+"月";
-                        var dates=new Date(oneYearInfo.date).getDate();
-                        dates=dates>9?dates:'0'+dates;
-                        date+=dates+"日";
-                        var hours=new Date(oneYearInfo.date).getHours();
-                        hours=hours>9?hours:'0'+hours;
-                        var minutes=new Date(oneYearInfo.date).getMinutes();
-                        minutes=minutes>9?minutes:'0'+minutes;
-                        var seconds=new Date(oneYearInfo.date).getSeconds();
-                        seconds=seconds>9?seconds:'0'+seconds;
 
-                        date+=" "+hours+":"+minutes+":"+seconds;
+                        function formatTime(now){
+                        var year=now.getFullYear();
+                        var month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+                        var date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+                        var hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+                        var minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+                        var second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+                        return year+"年"+month+"月"+date+"日 "+hour+":"+minute+':'+second;
+                        }
+
+                        date= formatTime(new Date(oneYearInfo.time));
 
                     </script>
                     {@date}

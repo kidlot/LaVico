@@ -27,6 +27,7 @@ module.exports = {
                 nut.model.isVip = false
                 if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
                     nut.model.isVip = true
+                    nut.model.memberID = customers.HaiLanMemberInfo.memberID
                 }
             }))
 

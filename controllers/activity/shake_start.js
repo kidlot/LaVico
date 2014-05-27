@@ -226,7 +226,7 @@ module.exports = {
                     }else{
                         write_info(then,'{"result":"something-error"}');
                     }
-                    helper.db.coll('lavico/shake/logs').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                    helper.db.coll('lavico/shake/logs').count({aid:seed.aid,memberID:memberId,createDate:{$gte:start_time}},this.hold(function(err,doc){
                         count = doc;//已经摇一摇次数
                         console.log('+++++++++++++++++');
                         console.log('now'+seed.aid+'sum:'+doc);
@@ -382,7 +382,9 @@ module.exports = {
                     }else{
                         write_info(then,'{"result":"something-error"}');
                     }
-                    helper.db.coll('lavico/shake/logs').count({uid:seed.uid,aid:seed.aid,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                    helper.db.coll('lavico/shake/logs').count({aid:seed.aid,memberID:memberId,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                        //aid:活动编号
+                        //memberID:lavico会员编号
                         count = doc;//已经摇一摇次数
                         console.log('+++++++++++++++++');
                         console.log('now'+seed.aid+'sum:'+doc);
@@ -411,8 +413,9 @@ module.exports = {
                     activity.code = shake.aid;
                     activity.uid = seed.uid;
                     activity.name = shake.name;
-                    activity.QTY = shake.QTY;
+                    activity.QTY = shake.lottery[0].QTY;
                     activity.points = _points;//每次摇一摇，所需要的积分多少
+                    activity.memberID = memberId;//用户
                     activity.createDate = new Date().getTime();
                     activity.memo = '摇一摇'+'-'+shakeActivityName;
                     console.log(activity.memo);
@@ -729,9 +732,12 @@ module.exports = {
                             }
                         }else{
 
-                            window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+//                            window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+//                                flag = 1;
+//                            });
+                              window.popupStyle2.on('这次没摇到，而且今天也没机会了，明天再来试一试吧！',function(event){
                                 flag = 1;
-                            });
+                              });
 
                         }
 
