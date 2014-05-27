@@ -170,7 +170,7 @@ module.exports = {
                     var requestData = {
                         'memberId' : member_id,
                         'perPage':10000,
-                        'pageNum':1
+                        'pageNum':1,
                         'status':'03'//已使用
 
                     };
@@ -201,7 +201,7 @@ module.exports = {
                     var requestData = {
                         'memberId' : member_id,
                         'perPage':10000,
-                        'pageNum':1
+                        'pageNum':1,
                         'status':'04'//已到期失效
 
                     };
@@ -229,7 +229,7 @@ module.exports = {
 
                 this.step(function(){
                     //console.log(couponData);
-                    var _coupons = couponData.list;
+                    var _coupons = couponArr;
 
                     for(var _i=0;_i<_coupons.length;_i++){
 
@@ -250,9 +250,9 @@ module.exports = {
                                     }else{
                                         var _PROMOTION_NAME = "";
                                     }
-                                    couponData.list[_i].PIC = _PIC;
+                                    couponArr[_i].PIC = _PIC;
 
-                                    couponData.list[_i].COUPON_NAME = _PROMOTION_NAME;//活动和优惠券一一对应
+                                    couponArr[_i].COUPON_NAME = _PROMOTION_NAME;//活动和优惠券一一对应
                                 }));
                         })(_i);
 
@@ -263,8 +263,8 @@ module.exports = {
                 this.step(function(){
 
                     var coupons = [];
-                    var _coupons = couponData.list;
-                    console.log(couponData.list);
+                    var _coupons = couponArr;
+                    console.log(couponArr);
                     /*
                      优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02
                      */
