@@ -6,13 +6,13 @@
                    <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             <elseif condition="{@type == '1'}"/>
 
-                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-1.jpg" /><div class="vip_card_num" style="color: #999;">{@cardNumber}</div></div>
                     
             <elseif condition="{@type=='2'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-2.jpg" /><div class="vip_card_num" style="color: #999;">{@cardNumber}</div></div>
                     
             <elseif condition="{@type=='3'}"/>
-                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /><div class="vip-card-num" style="color: #999;">{@cardNumber}</div></div>
+                    <div class="vip-card"><img src="/lavico/public/images/type-3.jpg" /><div class="vip_card_num" style="color: #999;">{@cardNumber}</div></div>
             <else/>
                 <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             </if>
@@ -21,22 +21,35 @@
         </if>
         <script>
             function vip_card() {
-                var vip_card_num = document.getElementsByTagName("vip-card-num");
-                var vip_cardWin = vip_card_num.offsetWidth;
-                console.log(vip_cardWin)
-                var vip_margWin = document.getElementsByTagName("vip-card-num");
-                vip_margWin.style.cssText = 'margin-left:' - vip_cardWin;
-
-                //var vip_card_num = $(".vip-card-num").width() / 2;
-                //$(".vip-card-num").css("margin-left", -vip_card_num );
+                var vip_card_num = document.getElementsByTagName("*");
+                var a;
+                for (var i = 0; i < vip_card_num.length; i++) {
+                    if (vip_card_num[i].className == vip_card_num) {
+                        a = vip_card_num;
+                    }
+                    return a;
+                }
+                console.log(a.style.width);
             }
-
+            
             window.onload = function () {
                 vip_card();
             }
             window.onresize = function () {
                 vip_card();
             }
+
+            //function vip_card() {
+            //    var vip_cardWin = vip_card_num.offsetWidth;
+            //    console.log(vip_cardWin)
+            //    var vip_margWin = document.getElementsByTagName("vip-card-num");
+            //    vip_margWin.style.cssText = 'margin-left:' - vip_cardWin;
+
+            //    var vip_card_num = $(".vip-card-num").width() / 2;
+            //    $(".vip-card-num").css("margin-left", -vip_card_num );
+            //}
+
+            
 
             function _gotoFavPage(){
                 var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
