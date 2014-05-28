@@ -219,9 +219,10 @@ exports.load = function () {
 
 
         this.step(function(){
-
+            //console.log("tip:"+conditions);
             helper.db.coll("welab/customers").find(conditions).sort(sort).toArray(this.hold(function(err,docs){
                 if(err) throw err ;
+
                 for (var i=0; i<docs.length; i++)
                 {
 
@@ -269,7 +270,7 @@ exports.load = function () {
         })
 
 
-
+        //导出
         this.step(function(){
 
             var nodeExcel = require('excel-export');
@@ -384,7 +385,7 @@ exports.load = function () {
 
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
-
+        console.log("aaaaa");
         nut.disabled = true ;
 
         // 总人数
@@ -401,6 +402,7 @@ exports.load = function () {
 
 
         var conditions = search.conditions(seed) ;
+
         var _data = {};
         var _rows = [];
 
@@ -440,6 +442,8 @@ exports.load = function () {
         ) ;
 
         this.step(function(){
+            console.log(conditions);
+
 
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
