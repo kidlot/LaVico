@@ -14,7 +14,7 @@ module.exports = {
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         var member_id;
-        var total;
+        var total;//用户明细记录数
         var remaining;//用户积分
         this.step(function(){
 
@@ -107,7 +107,8 @@ module.exports = {
                 var dataJson = JSON.parse(doc);
                 console.log(dataJson);
 
-                total = parseInt(dataJson.total);
+                total = parseInt(dataJson.log.length);
+                nut.model.total = total;
 
             }));
         });
