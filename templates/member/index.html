@@ -21,8 +21,13 @@
         </if>
         <script>
             function vip_card() {
-                var vip_card_num = $(".vip-card-num").width() / 2;
-                $(".vip-card-num").css("margin-left", -vip_card_num );
+                var vip_card_num = document.getElementsByClassName(".vip-card-num");
+                var vip_cardWin = vip_card_num.offsetWidth;
+                var vip_margWin = document.getElementsByClassName(".vip-card-num");
+                vip_margWin.style.cssText = 'margin-left:' - vip_cardWin;
+
+                //var vip_card_num = $(".vip-card-num").width() / 2;
+                //$(".vip-card-num").css("margin-left", -vip_card_num );
             }
 
             window.onload = function () {
