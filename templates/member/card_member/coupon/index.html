@@ -14,43 +14,44 @@
                     </ul>
                 </div>
                 <div class="pre-box" id="overdueCouponsContent" style="display:none">
-
-                        <foreach for="@overdueCoupons" key="key">
-                            <div class="pre-box-content">
-                            <div class="pre-top clear">
-                                <div class="fl"><img src="{@overdueCoupons[key].PIC}" /></div>
-                                <div class="fl pre-top-right">
-                                    <div class="intro"><span class="c4">[{@overdueCoupons[key].COUPON_TYPE}] </span>{@overdueCoupons[key].COUPON_NAME}<br />
-                                        有效期：{@overdueCoupons[key]. BEGIN_DATE} 至 {@overdueCoupons[key].END_DATE}</div>
+                    <foreach for="@overdueCoupons" key="key">
+                        <div class="pre-box-content">
+                        <div class="pre-top clear">
+                            <div class="fl"><img src="{@overdueCoupons[key].PIC}" /></div>
+                            <div class="fl pre-top-right">
+                                <div class="intro"><span class="c4">[{@overdueCoupons[key].COUPON_TYPE}] </span>{@overdueCoupons[key].COUPON_NAME}<br />
+                                    有效期：{@overdueCoupons[key]. BEGIN_DATE} 至 {@overdueCoupons[key].END_DATE}</div>
+                            </div>
+                        </div>
+                            <div class="time_top">
+                                [{@overdueCoupons[key].CREAT_DATE}]
+                                </div>
+                                <div class="pre-bottom">
+                                    <div class="fl left">券号：{@overdueCoupons[key].COUPON_NO}</div>
+                                    <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
                                 </div>
                             </div>
-                            <div class="pre-bottom">
-
-                                <div class="fl left">券号：{@overdueCoupons[key].COUPON_NO}</div>
-                                <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
-                            </div>
-                            </div>
-                        </foreach>
-
+                    </foreach>
                 </div>
                 <div class="pre-box" id="effectiveCouponsContent">
-
-                        <foreach for="@effectiveCoupons" key="key">
-                            <div class="pre-box-content">
-                            <div class="pre-top clear">
-                                <div class="fl"><img src="{@effectiveCoupons[key].PIC}" /></div>
-                                <div class="fl pre-top-right">
-                                    <div class="intro"><span class="c4">[{@effectiveCoupons[key].COUPON_TYPE}]</span>{@effectiveCoupons[key].COUPON_NAME}<br />
-                                        有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</div>
+                    <foreach for="@effectiveCoupons" key="key">
+                        <div class="pre-box-content">
+                        <div class="pre-top clear">
+                            <div class="fl"><img src="{@effectiveCoupons[key].PIC}" /></div>
+                            <div class="fl pre-top-right">
+                                <div class="intro"><span class="c4">[{@effectiveCoupons[key].COUPON_TYPE}]</span>{@effectiveCoupons[key].COUPON_NAME}<br />
+                                    有效期：{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</div>
+                            </div>
+                        </div>
+                            <div class="time_top">
+                                [{@effectiveCoupons[key].CREAT_DATE}]
+                                </div>
+                                <div class="pre-bottom">
+                                    <div class="fl left">券号：{@effectiveCoupons[key].COUPON_NO}</div>
+                                    <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
                                 </div>
                             </div>
-                            <div class="pre-bottom">
-                                <div class="fl left">券号：{@effectiveCoupons[key].COUPON_NO}</div>
-                                <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
-                            </div>
-                            </div>
-                        </foreach>
-
+                    </foreach>
                 </div >
                 <div class="pre-box" id="usedCouponsContent" style="display:none">
                     <foreach for="@usedCoupons" key="key">
@@ -62,11 +63,14 @@
                                         有效期：{@usedCoupons[key]. BEGIN_DATE} 至 {@usedCoupons[key].END_DATE}</div>
                                 </div>
                             </div>
-                            <div class="pre-bottom">
-                                <div class="fl left">券号：{@usedCoupons[key].COUPON_NO}</div>
-                                <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
+                            <div class="time_top">
+                                [{@usedCoupons[key].CREAT_DATE}]
+                                </div>
+                                <div class="pre-bottom">
+                                    <div class="fl left">券号：{@usedCoupons[key].COUPON_NO}</div>
+                                    <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
+                                </div>
                             </div>
-                        </div>
                     </foreach>
                 </div>
             </div>

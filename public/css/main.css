@@ -21,7 +21,7 @@ a.tel{color:#2d2d2d;}
 /*礼品券*/
 .header{width:100%; height:50px; }
 .header img {width:100%; max-height:50px; }
-.coupon{width:96%;background-color: #e5e5e5; padding:2% 2% 0;}
+.coupon{width:96%;background-color: #e5e5e5; padding:2%;}
 .coupon-content{width:96%; height:auto; margin:0 auto; border:1px #bebebe solid;padding: 2%; background:#fff; }
 .coupon-content img{width:100%; }
 .look-text{width:100%; background-color:#e5e5e5; padding-top:6%; padding-bottom:20%;}
@@ -129,7 +129,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .blank{ padding-top:10%;}
 .points-content{width:100%; height:auto; margin:0 auto; background-size:100% 100%;position:relative; }
 .points-content img { width:100%;}
-.points-content .points_txt { position:absolute; top:34%; right:10%; font-size:1.6rem; width:42% ;text-align:right }
+.points-content .points_txt { position:absolute; top:36%; right:10%; font-size:2.4rem; width:42% ;text-align:right }
 
 #tip { font-size:1.6rem; padding:2%; }
 #sed { width:6%; display:inline-block; vertical-align:top; padding:1% 4% 0 0; }
@@ -304,11 +304,12 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5-content .pre-top{ background-color:#fff;}
 .points5-content .pre-top-right{ width:56%; padding:2%; }
 .points5-content .pre-top-right .intro{font-size:1.2rem; color:#646464; }
-.points5-content .pre-bottom{ padding-top:8px; overflow:hidden;}
+.points5-content .pre-bottom{ padding-top:4px; overflow:hidden;}
 .points5-content .pre-bottom .left,.pre-bottom .right{font-size:1.2rem; text-align:left; cursor:pointer;}
 .points5-content .pre-bottom .left{width:72%; height:30px; line-height:30px; color:#646464; border:1px #dedede solid; box-sizing: border-box;  margin-right:2%; padding-left:2%; }
 .points5-content .pre-bottom .right{width:26%; height:30px; line-height:30px; text-align:center; color:#291b00; background:url(../images/next.png) no-repeat; background-size:100% 100%; float:left; }
 .points5-content .pre-bottom .right a{ color:#291b00; font-size:1.2rem; }
+.points5-content .time_top { padding-top:8px; overflow:hidden; color: #646464; padding-left:2%; }
 .c4{ color:#B9954D;}
 /*申领会员卡*/
 .apply{ background-color:#dadada;}
