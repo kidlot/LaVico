@@ -9,7 +9,7 @@
             <foreach for="@docs" var="fav" key="key">
             <div class="points3-box">
                 <div class="points3-content clear">
-                    <div class="fl"><a href="/lavico/lookbook/product?_id={@ fav.lookbookid}&wxid={@ wxid}&pageNum={@fav.pageNum}&productId={@fav.product._id}&source=view"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" ></a></div>
+                    <div class="fl"><a href="javascript:;" onclick="_gotoProductPage('{@ fav.lookbookid}','{@fav.pageNum}','{@fav.product._id}')"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" ></a></div>
                     <div class="fl text">
                         <div class="title3"><a href="javascript:;">{@fav.product.name}</a></div>
                         <div class="btn subbtn" onclick="cancelFav('{@ fav._id}')">取消收藏</div>
@@ -42,6 +42,16 @@
 </div>
 
         <script>
+
+
+
+            function _gotoProductPage(p1,p2,p3){
+                var url = "/lavico/lookbook/product?_id="+p1+"&wxid={@ wxid}&pageNum="+p2+"&productId="+p3+"&source=view&cb="+encodeURIComponent('{'+location.href+'}')
+                location.href = url
+            }
+
+
+
             function cancelFav(_id){
 
 
