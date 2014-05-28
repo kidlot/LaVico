@@ -24,7 +24,9 @@
                                         有效期：{@overdueCoupons[key]. BEGIN_DATE} 至 {@overdueCoupons[key].END_DATE}</div>
                                 </div>
                             </div>
-                            <div class="pre-bottom">
+                                [{@overdueCoupons[key].CREAT_DATE}]
+
+                                <div class="pre-bottom">
 
                                 <div class="fl left">券号：{@overdueCoupons[key].COUPON_NO}</div>
                                 <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
@@ -63,6 +65,8 @@
                                         有效期：{@usedCoupons[key]. BEGIN_DATE} 至 {@usedCoupons[key].END_DATE}</div>
                                 </div>
                             </div>
+                            [{@usedCoupons[key].CREAT_DATE}]
+
                             <div class="pre-bottom">
                                 <div class="fl left">券号：{@usedCoupons[key].COUPON_NO}</div>
                                 <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
