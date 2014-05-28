@@ -63,7 +63,7 @@
             <!-- 消息内容 -->
             <td>
                 <if condition="@doc.type=='text'">
-                    {@doc.content}
+                    {@doc.content.substr(0,40)}
                     <elseif condition="@doc.type=='image'" />
                     <a href="/{@doc.filename}" class="fancybox">
                         <img src="/{@doc.filename}" width="70px" />
