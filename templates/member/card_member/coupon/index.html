@@ -41,9 +41,10 @@
                                 <div class="fl"><img src="{@effectiveCoupons[key].PIC}" /></div>
                                 <div class="fl pre-top-right">
                                     <div class="intro"><span class="c4">[{@effectiveCoupons[key].COUPON_TYPE}]</span>{@effectiveCoupons[key].COUPON_NAME}<br />
-                                        有效期：{@effectiveCoupons[key]. BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</div>
+                                        有效期：{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</div>
                                 </div>
                             </div>
+                                [{@effectiveCoupons[key].CREAT_DATE}]
                             <div class="pre-bottom">
                                 <div class="fl left">券号：{@effectiveCoupons[key].COUPON_NO}</div>
                                 <div class="fr right"><a href="/lavico/member/card_member/coupon/rule?wxid={@wxid}">使用细则</a></div>
