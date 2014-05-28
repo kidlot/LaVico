@@ -259,6 +259,7 @@ module.exports = {
                 }
                 $('#loading').show();
                 $.ajax({
+                    url:'/lavico/member/card_blank/bind:checkCaptcha',
                     type:'POST',
                     data:{
                         'wxid':wxid,
@@ -702,7 +703,7 @@ module.exports = {
                                             }
                                         );
                                         data_doc = doc;
-                                        //console.log(doc);
+                                        console.log(doc);
                                         return doc;
                                     }));
                             });

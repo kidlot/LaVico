@@ -20,6 +20,7 @@ module.exports={
                     helper.db.coll("welab/customers").findOne({"HaiLanMemberInfo.cardNumber":seed.cardNumber},
                         this.hold(function(err,result){
                             if(err) throw err;
+                            console.log(result);
                             if(result){
                                 return result.HaiLanMemberInfo.memberID
                             }
@@ -36,6 +37,7 @@ module.exports={
                     middleware.request('Point/Change',jsonData,
                         this.hold(function(err,doc){
                             if(err) throw err;
+                            console.log(doc);
                             nut.message("添加完成",null,"success")
                         })
                     )

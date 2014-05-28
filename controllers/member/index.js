@@ -232,7 +232,7 @@ module.exports = {
                 $('#count').html('');
             }
         }else{
-            window.popupStyle2.on("网路不稳定，请稍后再尝试",function(event){});
+            window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
         }
 
 

@@ -19,7 +19,7 @@ module.exports = {
             nut.model.source = seed.source||""
             nut.model.pageNum = parseInt(seed.pageNum) || 1
             nut.model.bigPicIndex = parseInt(seed.bigPicIndex) || 1
-
+            nut.model.memberID = false
 
             helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
                 var customers = customers || {}
@@ -27,6 +27,7 @@ module.exports = {
                 nut.model.isVip = false
                 if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
                     nut.model.isVip = true
+                    nut.model.memberID = customers.HaiLanMemberInfo.memberID
                 }
             }))
 

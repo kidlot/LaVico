@@ -28,13 +28,21 @@
             <foreach for="@page.docs" var="doc">
                 <tr>
                     <td>{@ doc.name}</td>
-                    <td>{@ doc.stat}</td>
+                    <td id="docstatus">{@ doc.stat}</td>
                     <td>{@ doc.price}</td>
                     <td>{@ doc.minPrice}</td>
                     <td>{@ doc.surplus}</td>
                     <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
                     <td>
+                        <div class="switch has-switch way">
+                            <div class="switch-animate switch-{@ doc.switcher}" data="{@ doc._id}" onclick="audioClick(this)">
+                                <input type="checkbox" data-toggle="switch">
+                                <span class="switch-left">关</span>
+                                <label>&nbsp;</label>
+                                <span class="switch-right">开</span>
+                            </div>
+                        </div>
                         <a href="/lavico/bargain/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">修改</a>
                         <a href="/lavico/bargain/statistics?_id={@ doc._id}" class="btn btn-xs btn-primary mhm">统计</a>
                         <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
@@ -115,3 +123,32 @@
                 }
             }
         </script>
+
+<script>
+    function audioClick(o){
+        var flag = '';
+        if ($(o).hasClass("switch-off")){
+            $(o).removeClass("switch-off")
+            $(o).addClass("switch-on")
+            flag = 'on'; //  开
+            $(o).parent().parent().parent().find("td#docstatus").html("进行中")
+
+        }else{
+            $(o).addClass("switch-off")
+            $(o).removeClass("switch-on")
+            flag = 'off'; // 关
+            $(o).parent().parent().parent().find("td#docstatus").html("已关闭")
+        }
+        if(flag){
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'switcher',value:flag},{name:'_id',value:$(o).attr('data')}];
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/bargain/openOrClose";
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err;
+                nut.msgqueue.popup();
+            });
+        }
+    }
+
+</script>

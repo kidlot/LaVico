@@ -19,11 +19,17 @@ module.exports = {
                 }else{
                     page.docs[i].stat = "进行中"
                 }
+
+                if(!page.docs[i].switcher){
+                    page.docs[i].switcher="off";
+                }
             }
         })) ;
 
         this.step(function(){
-            nut.model.page = list
+
+            console.log(list);
+            nut.model.page = list;
         })
     }
 }
