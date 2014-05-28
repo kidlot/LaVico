@@ -107,4 +107,118 @@
 
 
         */
+
+
+    window.onload = function(){
+
+        var fromWelab = location.search.match(/fromWelab=(.*)$/);
+        if(fromWelab){
+
+            // 好友浏览数
+            $.ajax({
+                url:'/lavico/log',
+                type:'POST',
+                data:{
+                    'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                    'url':location.href,
+                    'action' : "好友浏览",
+                    'fromWelab' : location.search.match(/fromWelab=(.*)$/)[1].split("&")[0]
+                },
+                success:function(data){
+
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        }else{
+
+            // 记录浏览数
+            $.ajax({
+                url:'/lavico/log',
+                type:'POST',
+                data:{
+                    'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                    'url':location.href,
+                    'action' : "浏览"
+                },
+                success:function(data){
+
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        }
+
+
+        // 记录分享数
+        var timeid = setInterval(function(){
+            if(typeof WeixinJSBridge =="undefined")
+                return ;
+
+            clearTimeout(timeid) ;
+
+            WeixinJSBridge.on('menu:share:timeline', function(argv){
+
+
+                $.ajax({
+                    url:'/lavico/log',
+                    type:'POST',
+                    data:{
+                        'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                        'url':location.href,
+                        'action' : "转发朋友圈"
+                    },
+                    success:function(data){
+
+                    },
+                    error:function(msg){
+                    }
+                });
+
+                WeixinJSBridge.invoke('shareTimeline',{
+                    "img_url":location.origin + "/lavico/public/images/logo.png",
+                    "link":location.href + "&fromWelab=timeline",
+                    "desc":"朗维高",
+                    "title":"朗维高"
+                }, function(res) {
+
+                });
+            });
+
+            WeixinJSBridge.on('menu:share:appmessage', function(argv){
+
+                $.ajax({
+                    url:'/lavico/log',
+                    type:'POST',
+                    data:{
+                        'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                        'url':location.href,
+                        'action' : "转发好友"
+                    },
+                    success:function(data){
+
+                    },
+                    error:function(msg){
+                    }
+                });
+
+
+                var contentModel = {
+                    "img_url":location.origin + "/lavico/public/images/logo.png",
+                    "link":location.href + "&fromWelab=friend",
+                    "desc":"朗维高",
+                    "title":"朗维高"
+                }
+                WeixinJSBridge.invoke('sendAppMessage',contentModel, function(res) {
+
+                });
+            });
+
+        },300) ;
+
+
+
+    }
 </script>

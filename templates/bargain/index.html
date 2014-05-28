@@ -1,5 +1,7 @@
 <ul class="breadcrumb clearfix">
-    <li class="b01"><a href="/welab/AppList" class="stay">返回</a> <em></em></li>
+    <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
+    <li class="b02"><a href="/lavico/bargain/form" class="stay">添加侃价</a> <em></em></li>
+    <li class="active"><span>列表管理</span></li>
 </ul>
 
 <div class="panel panel-default">
@@ -19,6 +21,7 @@
                 <th>市场零售价</th>
                 <th>最低价格</th>
                 <th>剩余数量</th>
+                <th>完成人数</th>
                 <th>开始时间</th>
                 <th>结束时间</th>
                 <th></th>
@@ -32,9 +35,11 @@
                     <td>{@ doc.price}</td>
                     <td>{@ doc.minPrice}</td>
                     <td>{@ doc.surplus}</td>
+                    <td>{@ doc.num}</td>
                     <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
                     <td>
+
                         <div class="switch has-switch way">
                             <div class="switch-animate switch-{@ doc.switcher}" data="{@ doc._id}" onclick="audioClick(this)">
                                 <input type="checkbox" data-toggle="switch">
@@ -43,7 +48,7 @@
                                 <span class="switch-right">开</span>
                             </div>
                         </div>
-                        <a href="/lavico/bargain/form?_id={@ doc._id}" class="btn btn-xs btn-primary mhm stay">修改</a>
+                        <a href="/lavico/bargain/form?_id={@ doc._id}&type=1" class="btn btn-xs btn-primary mhm stay">修改</a>
                         <a href="/lavico/bargain/statistics?_id={@ doc._id}" class="btn btn-xs btn-primary mhm">统计</a>
                         <a href="javascript:;" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
                     </td>

@@ -9,7 +9,7 @@ var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
 
-    layout:'lavico/member/layout'
+    layout:'lavico/layout'
     ,view: 'lavico/templates/member/card_member/unbind.html'
     ,process:function(seed, nut){
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID

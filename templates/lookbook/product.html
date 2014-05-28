@@ -11,9 +11,9 @@
         <p>
 
             <if condition="@ source!='view'">
-            <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}">{@ lookbookName}</a></span>
+                <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}">{@ lookbookName}</a></span>
             <else/>
-                <span class="title5"><a href="/lavico/lookbook/favorites?wxid={@ wxid}">返回列表</a></span>
+                <span class="title5"><a href="javascript:;" onclick="_cb()">返回列表</a></span>
             </if>
             <span class="title2">单品</span>
             <span class="title6">
@@ -47,10 +47,23 @@
 
 <script>
 
+    function _cb(){
+
+        var cb = decodeURIComponent(window.location.search.match(/%7B(.*)%7D/)[1]);
+        if(cb){
+            location.href = cb;
+        }else{
+
+            location.href = "/lavico/lookbook/favorites?wxid={@ wxid}";
+        }
+
+    }
+
     function leftPage(){
 
         var bigPicIndex = parseInt($("#bigPicIndex").val())
         var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
+        var cb = window.location.search.match(/cb=(.*)$/)[1];
         if(bigPicIndex <= 1){
             var page = JSON.parse($("#jsonPage").text())
             var nowProductNum = 0;
@@ -61,7 +74,8 @@
             }
 
             if(nowProductNum > 1){
-                location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+page.product[nowProductNum-2]._id+"&bigPicIndex="+(page.product[nowProductNum-2].bigPic ? page.product[nowProductNum-2].bigPic.length:0)+"&source={@source}"
+                var url =  "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+page.product[nowProductNum-2]._id+"&bigPicIndex="+(page.product[nowProductNum-2].bigPic ? page.product[nowProductNum-2].bigPic.length:0)+"&source={@source}"
+                location.href = url + (cb?"&cb="+cb:"");
             }else{
                 window.popupStyle2.on('已经是第一页',function(event){
 
@@ -69,13 +83,15 @@
             }
             return;
         }
-        location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
+        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
+        location.href = url + (cb?"&cb="+cb:"");
     }
 
     function rightPage(){
 
         var bigPicIndex = parseInt($("#bigPicIndex").val())
         var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
+        var cb = window.location.search.match(/cb=(.*)$/)[1];
         if(bigPicIndex >= sumBigPicIndex){
 
             var page = JSON.parse($("#jsonPage").text())
@@ -87,7 +103,8 @@
             }
 
             if(nowProductNum < page.product.length){
-                location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+(page.product[nowProductNum]._id)+"&source={@source}"
+                var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+(page.product[nowProductNum]._id)+"&source={@source}"
+                location.href = url + (cb?"&cb="+cb:"");
             }else{
                 window.popupStyle2.on('已经是最后一页',function(event){
 
@@ -96,7 +113,8 @@
 
             return;
         }
-        location.href = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
+        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
+        location.href = url + (cb?"&cb="+cb:"");
     }
     function favorites(wxid,pid){
 
