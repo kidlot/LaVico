@@ -57,12 +57,17 @@ module.exports = {
                             list.docs[i].num = userlogs[j].num;
                         }
                     }
+                    if(!page.docs[i].switcher){
+                        page.docs[i].switcher="off";
+                    }
                 }
             }));
         })
 
         this.step(function(){
-            nut.model.page = list
+
+            console.log(list);
+            nut.model.page = list;
         })
     }
 }

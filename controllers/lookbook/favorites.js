@@ -9,6 +9,9 @@ module.exports = {
 
             var docs = [];
 
+
+            nut.model.memberID = false;
+
             helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
                 var customers = customers || {}
 

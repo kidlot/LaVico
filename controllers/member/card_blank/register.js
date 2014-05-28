@@ -5,7 +5,7 @@
 
 var middleware = require('../../../lib/middleware.js');
 module.exports = {
-    layout:'lavico/member/layout',
+    layout:'lavico/layout',
 	view: "lavico/templates/member/card_blank/register.html",
 	process: function(seed,nut)
 	{

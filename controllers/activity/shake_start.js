@@ -3,7 +3,7 @@
  */
 var middleware = require('../../lib/middleware.js');
 module.exports = {
-    layout: "lavico/member/layout",
+    layout: "lavico/layout",
     view: "lavico/templates/activity/shake_start.html",
     process:function(seed,nut){
 
