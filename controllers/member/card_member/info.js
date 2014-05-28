@@ -2,7 +2,7 @@ var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
 
-    layout:'lavico/member/layout',
+    layout:'lavico/layout',
 
     view:'lavico/templates/member/card_member/info.html',
 
