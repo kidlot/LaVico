@@ -7,6 +7,7 @@ module.exports = {
 
     , process: function(seed,nut)
     {
+        nut.model.type = seed.type ? seed.type : 0;
         var doc = {};
 
         if(seed._id){
@@ -78,7 +79,6 @@ module.exports = {
 
             process: function(seed,nut)
             {
-
                 nut.view.disable() ;
 
                 var postData = JSON.parse(seed.postData);
