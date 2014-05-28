@@ -373,8 +373,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite_img img{ width:100%; margin-top:50px;}
 .prev_btn,
 .next_btn { width:50px; height:60px; position:fixed; top:50%;margin-top:-25px; }
-.prev_btn{ background:url(../images/elite_prev_btn.png) no-repeat; background-size:40%; left:4%; }
-.next_btn{ background:url(../images/elite_next_btn.png) no-repeat;background-size:40%; right:4%; }
+.prev_btn{ background:url(../images/elite_prev_btn.png) left center no-repeat; background-size:40%; left:4%; }
+.next_btn{ background:url(../images/elite_next_btn.png) right center no-repeat;background-size:40%; right:4%; }
 .prev_btn:hover{ cursor:pointer;}
 .next_btn:hover{ cursor:pointer;}
 .elite_list{width:100%; height:auto; background:#E5E5E5; position:relative; overflow:hidden; padding:2% 0;}
