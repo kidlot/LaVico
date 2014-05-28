@@ -20,6 +20,7 @@ module.exports={
                     helper.db.coll("welab/customers").findOne({"HaiLanMemberInfo.cardNumber":seed.cardNumber},
                         this.hold(function(err,result){
                             if(err) throw err;
+                            console.log(result);
                             if(result){
                                 return result.HaiLanMemberInfo.memberID
                             }

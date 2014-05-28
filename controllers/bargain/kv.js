@@ -9,7 +9,7 @@ module.exports = {
 
         if(seed.wxid){
 
-            helper.db.coll("lavico/bargain").find({}).toArray(this.hold(function(err,_doc){
+            helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(this.hold(function(err,_doc){
                 doc = _doc || {}
             }))
         }

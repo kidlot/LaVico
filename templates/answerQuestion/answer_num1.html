@@ -23,11 +23,11 @@
         </if>
     </div>
     <div class="activity-rules">
-        <div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}">立即开始</a></div>
+        <div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}">立即开始</a></div>
         <div class="text">
             <div class="title">活动及使用规则</div>
             <div class="title1">活动说明：</div>
-            <div class="subtext">{@goMemberInfo}</div>
+            <div class="subtext">{@docs.explanation}</div>
             <div class="title1">奖项设置：</div>
             <div class="subtext">{@docs.description}</div>
             <div class="title1">免责声明：</div>
