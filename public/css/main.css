@@ -78,7 +78,7 @@ store-title .store-title p{position:relative;}
 .store-listContent ul li a .adree{ padding-top:2%;}
 .store-listContent ul li a .tel{ padding-top:5px;}
 /*专属礼券*/
-.use-rules{width:96%; background-color:#eee; padding: 2% 2% 0; }
+.use-rules{width:96%; padding: 2% 2% 0; }
 .use-rulesContent{margin:0 auto;width:100%;}
 .price_ticket{background-color:#fff;width:96%; height:auto; margin:0 auto; border:1px #bebebe solid; padding:2%;}
 .price_ticket img { width:100% }
@@ -160,7 +160,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .footer-right p{width:100%; padding-left:32px; height:30px; line-height:30px; background:url(../images/tel.png) left center no-repeat; font-size:1.4rem; color:#80673e; background-size:contain;}
 .footer-right p a{color: #80673e;}
 /*会员特权*/
-.member{width:100%;background-color:#dadada;}
+.member{width:100%;}
 .member-content{width:96%; margin:0 auto; padding:0 2%}
 .radius{width:100%; height:auto; border:1px #dadada solid; background-color:#efefef;-moz-border-radius:8px;border-radius: 8px; -webkit-border-radius: 8px; box-sizing:border-box; }
 .radius .title{width:100%; height:50px; line-height:50px; text-align:center; background:url(../images/meber_bg.jpg) no-repeat; font-size:1.8rem; color:#3C3C3C; background-size:100% 100%; }
@@ -204,7 +204,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .use-rulesContent .text .title2{color:#bda172; font-size:1.6rem; padding-top:4%;}
 
 /*解绑会员卡*/
-.remo-card{width:100%; background-color:#dadada;}
+.remo-card{width:100%;}
 .remo-card .input-tel{width:90%; margin:0 auto; padding:5% 5% 0;}
 .remo-card .input-tel .text{width:20%; height:40px; text-align:right; line-height:40px; font-size:1.4rem; color:#2d2d2d;}
 .remo-card .input-tel .input input{ border:0; background-color:#fff; border:1px #b2b1ad solid; padding:0 2%;font-size:1.4rem; color:#000; line-height:40px; height:40px;width:100%; margin-left:3%;}
@@ -312,7 +312,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5-content .time_top { padding-top:8px; overflow:hidden; color: #646464; padding-left:2%; }
 .c4{ color:#B9954D;}
 /*申领会员卡*/
-.apply{ background-color:#dadada;}
+.apply{ }
 .apply .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.4rem; color:#000;}
 .apply .title .text{width:100%; margin:0 auto; line-height:50px; text-align:center;}
 .apply .title .text a{ color:#7C4A01; text-decoration:underline;}
