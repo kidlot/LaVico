@@ -222,6 +222,21 @@ module.exports={
                                     + ",getTipContent:'" + getTipContent
                                     + "',getActivities:'" + newActivity + "'}";
 
+                                if (getLabel != "" || getLabel != null) {
+                                    //发送标签至CRM
+                                     jsonData = {};
+                                    jsonData.memberId = nut.model.memberID;
+                                    jsonData.tag = getLabel;
+                                    middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                                        if (err) throw err;
+                                        console.log("tag record:" + doc.success);
+                                    }))
+                                    helper.db.coll("welab/customers").update({_id : helper.db.id(wechatid)}, {$addToSet:jsonData},this.hold(function(err,doc){
+                                        if(err ){
+                                            throw err;
+                                        }
+                                    }));
+                                }
 //                                if (getLabel != "" && getLabel != null) {
 //                                    //发送标签至CRM
 //                                     jsonData = {};
