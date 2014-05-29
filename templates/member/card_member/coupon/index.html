@@ -22,8 +22,9 @@
                                     <div class="intro"><span class="c4">[{@overdueCoupons[key].COUPON_TYPE}] </span>{@overdueCoupons[key].COUPON_NAME}<br />
                                         有效期：{@overdueCoupons[key]. BEGIN_DATE} 至 {@overdueCoupons[key].END_DATE}<br/>
                                         [{@overdueCoupons[key].CREAT_DATE}]<br/>
+                                        券号：{@overdueCoupons[key].COUPON_NO}<br/>
 
-                                        面额：100
+                                        面额：{@overdueCoupons[key].COUPON_QTY}
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +39,9 @@
                                 <div class="fl pre-top-right">
                                     <div class="intro"><span class="c4">[{@effectiveCoupons[key].COUPON_TYPE}]</span>{@effectiveCoupons[key].COUPON_NAME}<br />
                                         有效期：{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}<br/>[{@effectiveCoupons[key].CREAT_DATE}]<br/>
-                                        面额：100
+                                        券号：{@effectiveCoupons[key].COUPON_NO}<br/>
+
+                                        面额：{@effectiveCoupons[key].COUPON_QTY}
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +57,8 @@
                                     <div class="intro"><span class="c4">
                                         [{@usedCoupons[key].COUPON_TYPE}] </span>{@usedCoupons[key].COUPON_NAME}<br />
                                         有效期：{@usedCoupons[key]. BEGIN_DATE} 至 {@usedCoupons[key].END_DATE}<br />                                                  [{@usedCoupons[key].CREAT_DATE}]<br/>
-                                        面额：100
+                                        券号：{@usedCoupons[key].COUPON_NO}<br/>
+                                        面额：{@usedCoupons[key].COUPON_QTY}
                                     </div>
                                 </div>
                             </div>

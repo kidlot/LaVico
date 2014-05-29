@@ -43,13 +43,14 @@
 </div>
 <script>
     /*掩藏分享按钮Start*/
-    function onBridgeReady(){
-        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady()  {
-            WeixinJSBridge.call('hideOptionMenu');
-        });
-    }
+    window.hideShareButtion = {}
+    window.hideShareButtion.on = function(){
+        function onBridgeReady(){
+            document.addEventListener('WeixinJSBridgeReady', function onBridgeReady()  {
+                WeixinJSBridge.call('hideOptionMenu');
+            });
+        }
 
-    function hideOptionMenu(){
         if (typeof WeixinJSBridge == "undefined"){
             if( document.addEventListener ){
                 document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
@@ -62,7 +63,6 @@
         }
     }
     /*掩藏分享按钮End*/
-
 
 
     window.popupStyle1 = {}
