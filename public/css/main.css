@@ -506,13 +506,11 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .loading img { width:100%; }
 
 /*弹出层*/
-.popup { width:100%; height:auto; overflow:hidden; position:fixed;top:50%; color:#fff;display:none;background:#000;
-         background:rgba(0, 0, 0, 0.8) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/
-         filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999; }
-.popup p { padding:4%; text-align:center; font-size:1.4rem;}
-.popup .popup_but { height:auto; overflow:hidden; padding:2% 0 5% 0; }
-.popup .popup_but a { width:43%; height:30px; line-height:30px;text-align:center;background:url(../images/click_btn.jpg) no-repeat;
-                      background-size:100% 100%;font-size:1.4rem; color:#3C3C3C; margin-left:5%; display:block; }
+.tier { width:100%; height:auto; overflow:hidden; position:fixed;top:50%; color:#fff;display:none; }
+.tier p { padding:4%; text-align:center; font-size:1.4rem;}
+.tier .popup_but { height:auto; overflow:hidden; padding:2% 0 5% 0; }
+.tier .popup_but a { width:43%; height:30px; line-height:30px;text-align:center;background:url(../images/click_btn.jpg) no-repeat;
+                      background-size:100% 100%;font-size:1.4rem; color:#3C3C3C; margin-left:5%; display:inline-block; vertical-align: top;}
 
 /*后期增加*/
 .outlet_bottom { background:url(../images/outlet_bottom.png) 96% center no-repeat; background-size:16px; }
