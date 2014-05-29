@@ -147,9 +147,11 @@ module.exports = {
                                 //alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线4001008866');
                                 window.popupStyle2.on("抱歉，此号码绑定不成功",function(event){});
 
-                            }else if(returnJson.error == 'network_error'){
+                            }else if(returnJson.error == 'tel_was_bound'){
 
-                                //alert('网络不稳定，请稍后再尝试');
+                                window.popupStyle2.on("抱歉，此帐号已被其他微信号绑定",function(event){});
+
+                            }else if(returnJson.error == 'network_error'){
 
                                 window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
                                 });
@@ -314,7 +316,7 @@ module.exports = {
                                     window.popupStyle2.on("您已经是我们的会员",function(event){
                                     });
                                 }else if(_info == "未知错误"){
-                                    window.popupStyle2.on("此帐号已被其他微信号绑定",function(event){
+                                    window.popupStyle2.on("抱歉，此帐号已被其他微信号绑定",function(event){
                                     });
                                 }else{
                                     window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){
@@ -470,6 +472,21 @@ module.exports = {
                 var then = this;
                 var memberId = 'undefined';
 
+                /*判断手机号码是否为绑定状态*/
+                this.step(function(){
+                    middleware.request( "Member/getMobileBindOpenid",{
+                        'mobile':userTel
+                    },this.hold(function(err,doc){
+                        var dataJson = JSON.parse(doc);
+                        if(dataJson.checked == true){
+                            //true
+                            then.res.writeHead(200, { 'Content-Type': 'application/json' });
+                            then.res.write('{"success":false,"error":"tel_was_bound"}');
+                            then.res.end();
+                            then.terminate();
+                        }
+                    }));
+                });
                 /*判断手机号码是否存在*/
                 this.step(function(){
                     //lavico.middleware/L/Member/CheckMobileExists?mobile=18651125967
