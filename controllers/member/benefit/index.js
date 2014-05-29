@@ -4,6 +4,10 @@
 module.exports = {
     layout:'lavico/layout',
     view:'lavico/templates/member/benefit/weiCard.html',
+    viewIn:function(){
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
+    },
     process:function(seed,nut){
     },
     actions:{

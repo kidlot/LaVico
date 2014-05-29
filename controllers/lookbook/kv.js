@@ -7,6 +7,8 @@ module.exports = {
     {
         var doc = {};
 
+        nut.model.fromWelab = seed.fromWelab || ""
+
         if(seed._id && seed.wxid){
 
             helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){

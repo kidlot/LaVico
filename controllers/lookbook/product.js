@@ -20,6 +20,7 @@ module.exports = {
             nut.model.pageNum = parseInt(seed.pageNum) || 1
             nut.model.bigPicIndex = parseInt(seed.bigPicIndex) || 1
             nut.model.memberID = false
+            nut.model.fromWelab = seed.fromWelab || ""
 
             helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
                 var customers = customers || {}

@@ -2,6 +2,12 @@ var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports={
     layout: "lavico/layout",
     view:"lavico/templates/reedem/member_num16.html",
+    viewIn:function(){
+
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
+
+    },
     process:function(seed,nut){
         var reedemJson={};
         var then =this;

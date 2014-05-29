@@ -6,21 +6,23 @@
 <input type="hidden" id="productId" value={@productId}>
 <div style="display: none" id="jsonPage">{@jsonPage}</div>
 
-<div class="wrapper" id="exchangebtn">
+<div class="wrapper" id="exchangebtn" style="background-color:#fff">
     <div class="elite_title">
         <p>
 
             <if condition="@ source!='view'">
-                <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}">{@ lookbookName}</a></span>
+                <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}">{@ lookbookName}</a></span>
             <else/>
                 <span class="title5"><a href="javascript:;" onclick="_cb()">返回列表</a></span>
             </if>
             <span class="title2">单品</span>
             <span class="title6">
 
+        <if condition="@ fromWelab==''">
                 <if condition="@ source!='view'">
                     <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}','{@ product._id}')">收藏</a>
                 </if>
+        </if>
             </span>
         </p>
     </div>
@@ -40,7 +42,7 @@
         <p class="msg"><span class="mt70 fad2Tit">收藏成功</span></p>
         <p class="confirm"><input type="submit" class="goon_btn" border="0" value="继续浏览" onclick="$('.fade2').hide()"></p>
         <p class="msg mt70">或</p>
-        <p class="confirm"><input class="gocollection" type="submit" border="0" value="转至收藏夹" onclick="location.href='/lavico/lookbook/favorites?wxid={@ wxid}&cb='+encodeURIComponent('{'+location.href+'}')"></p>
+        <p class="confirm"><input class="gocollection" type="submit" border="0" value="转至收藏夹" onclick="location.href='/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}&cb='+encodeURIComponent('{'+location.href+'}')"></p>
     </div>
 </div>
 
@@ -54,7 +56,7 @@
             location.href = cb;
         }else{
 
-            location.href = "/lavico/lookbook/favorites?wxid={@ wxid}";
+            location.href = "/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}";
         }
 
     }
@@ -63,7 +65,7 @@
 
         var bigPicIndex = parseInt($("#bigPicIndex").val())
         var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
-        var cb = window.location.search.match(/cb=(.*)$/)[1];
+        var cb = window.location.search.match(/cb=(.*)$/) ? window.location.search.match(/cb=(.*)$/)[1] : false;
         if(bigPicIndex <= 1){
             var page = JSON.parse($("#jsonPage").text())
             var nowProductNum = 0;
@@ -74,8 +76,8 @@
             }
 
             if(nowProductNum > 1){
-                var url =  "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+page.product[nowProductNum-2]._id+"&bigPicIndex="+(page.product[nowProductNum-2].bigPic ? page.product[nowProductNum-2].bigPic.length:0)+"&source={@source}"
-                location.href = url + (cb?"&cb="+cb:"");
+                var url =  "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId="+page.product[nowProductNum-2]._id+"&bigPicIndex="+(page.product[nowProductNum-2].bigPic ? page.product[nowProductNum-2].bigPic.length:0)+"&source={@source}"
+                location.href = cb ? url + (cb?"&cb="+cb:"") : url;
             }else{
                 window.popupStyle2.on('已经是第一页',function(event){
 
@@ -83,15 +85,15 @@
             }
             return;
         }
-        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
-        location.href = url + (cb?"&cb="+cb:"");
+        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
+        location.href = cb ? url + (cb?"&cb="+cb:"") : url;
     }
 
     function rightPage(){
 
         var bigPicIndex = parseInt($("#bigPicIndex").val())
         var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
-        var cb = window.location.search.match(/cb=(.*)$/)[1];
+        var cb = window.location.search.match(/cb=(.*)$/) ? window.location.search.match(/cb=(.*)$/)[1] : false;
         if(bigPicIndex >= sumBigPicIndex){
 
             var page = JSON.parse($("#jsonPage").text())
@@ -103,8 +105,8 @@
             }
 
             if(nowProductNum < page.product.length){
-                var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+(page.product[nowProductNum]._id)+"&source={@source}"
-                location.href = url + (cb?"&cb="+cb:"");
+                var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId="+(page.product[nowProductNum]._id)+"&source={@source}"
+                location.href = cb ? url + (cb?"&cb="+cb:"") : url;
             }else{
                 window.popupStyle2.on('已经是最后一页',function(event){
 
@@ -113,8 +115,8 @@
 
             return;
         }
-        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
-        location.href = url + (cb?"&cb="+cb:"");
+        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
+        location.href = cb ? url + (cb?"&cb="+cb:"") : url;
     }
     function favorites(wxid,pid){
 

@@ -386,6 +386,10 @@ module.exports = {
                 $('#'+_id+'Content').show();
             });
         });
+
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
+
     },
     action:{
         getUserCoupons:function(seed,nut){

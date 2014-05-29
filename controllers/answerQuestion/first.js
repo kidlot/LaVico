@@ -12,10 +12,17 @@ module.exports= {
 
             helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
                 if(err) throw err;
-                if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind'){
-                    memberid = doc.HaiLanMemberInfo.memberID;
-                    nut.model.flag="0";
+
+                if(doc && doc.HaiLanMemberInfo){
+                    if(doc.HaiLanMemberInfo.action=='bind') {
+                        memberid = doc.HaiLanMemberInfo.memberID;
+                        nut.model.flag = "0";
+                    }else{
+                        memberid = doc.HaiLanMemberInfo.memberID;
+                        nut.model.flag="1";
+                    }
                 }else{
+                    //未绑定
                     memberid = "undefined";
                     nut.model.flag="1";
                 }
@@ -25,10 +32,10 @@ module.exports= {
 
         this.step(function(){
             if(memberid!="undefined"){
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(id),"memberId":memberid},this.hold(function(err,doc){
+                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":memberid},this.hold(function(err,doc){
                     if(err) throw err;
-                    if(doc>0){
-                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?_id="+id+"&optionId=1&wechatid="+wxid});
+                    if(doc<=0){
+                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?_id="+seed._id+"&optionId=1&wechatid="+wxid});
                         this.res.end();
                     }
                 }))

@@ -82,7 +82,7 @@ module.exports={
                         var minlen = scoreRange[i].conditionMinScore;//获取低分值
                         var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                         var dot = 1;
-                        if (scoreAll > minlen && scoreAll < maxlen) {//在分值范围中
+                        if (scoreAll >= minlen && scoreAll <= maxlen) {//在分值范围中
                             //获取三个奖励
                             var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                             var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
@@ -114,12 +114,23 @@ module.exports={
                                     jsonData.qty = compScore;
                                     jsonData.memo = '问答测试' + '-' + nut.model.themeTitle;
 
+                                    console.log("问答测试:"+JSON.stringify(jsonData));
                                     middleware.request('Point/Change', jsonData,
                                         this.hold(function (err, doc) {
                                             if (err) throw err;
 
                                         })
                                     )
+
+                                    var tagRecord='问答测试' + '-' + nut.model.themeTitle;
+                                    console.log("tag:"+tagRecord);
+                                    console.log("memberId:"+memberId);
+                                    middleware.request("Tag/Add", {"memberId": memberId,"tag":tagRecord}, this.hold(function (err, doc) {
+                                        if (err) throw err;
+                                        console.log("tag record:" + doc);
+                                    }))
+
+
                                 })
                             } else {
                                 for (var j = 0; j < doc_json.list.length; j++) {
@@ -127,7 +138,7 @@ module.exports={
                                         nowPromotion = doc_json.list[j]
                                     }
                                 }
-                                if (typeof(getActivities) != "undefined" || getActivities != "") {
+                                if (typeof(getActivities) != "undefined" && getActivities != "") {
                                     var newActivity = ""//服务器返回的券
                                     //调用接口开始
                                     var memoString = "主观题-" + docTheme.theme;
@@ -149,10 +160,17 @@ module.exports={
                                             memo: memoString,
                                             point: 0
                                         }
+                                        console.log("hello:"+JSON.stringify(jsonData));
+
                                         middleware.request("Point/Change",
                                             {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                             this.hold(function (err, doc) {
                                             }))
+
+                                        middleware.request("Tag/Add", {"memberId": nut.model.memberID,"tag":memoString}, this.hold(function (err, doc) {
+                                            if (err) throw err;
+                                            console.log("tag record:" + doc.success);
+                                        }))
 
                                         middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                             if (err) throw err;
@@ -219,6 +237,17 @@ module.exports={
                                         }
                                     }));
                                 }
+//                                if (getLabel != "" && getLabel != null) {
+//                                    //发送标签至CRM
+//                                     jsonData = {};
+//                                    jsonData.memberId = nut.model.memberID;
+//                                    jsonData.tag = getLabel;
+//                                    middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+//                                        if (err) throw err;
+//                                        console.log("tag record:" + doc.success);
+//                                    }))
+//
+//                                }
 
                                 if (dot >= 2) {
                                     resultList += ",";
@@ -376,8 +405,19 @@ module.exports={
                                         //PROMOTION_CODE:getActivities,
                                         PROMOTION_CODE: 'L2013112709',
                                         //qty:nowPromotion.coupons[0].QTY,
-                                        point: getScore
+                                        point: 0
                                     }
+
+                                    middleware.request("Point/Change",
+                                        {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
+                                        this.hold(function (err, doc) {
+                                        }))
+
+                                    middleware.request("Tag/Add", {"memberId": nut.model.memberID,"tag":memoString}, this.hold(function (err, doc) {
+                                        if (err) throw err;
+                                        console.log("tag record:" + doc.success);
+                                    }))
+
                                     then.step(function () {
                                         middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                             if (err) throw err;
@@ -428,16 +468,16 @@ module.exports={
                                                 + ",getTipContent:'" + getTipContent
                                                 + "',getActivities:'" + newActivity + "'}";
 
-                                            if (getLabel != "" || getLabel != null) {
-                                                //发送标签至CRM
-                                                jsonData = {};
-                                                jsonData.memberId = nut.model.memberID;
-                                                jsonData.tag = getLabel;
-                                                middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
-                                                    if (err) throw err;
-                                                    console.log("tag record:" + doc.success);
-                                                }))
-                                            }
+//                                            if (getLabel != "" || getLabel != null) {
+//                                                //发送标签至CRM
+//                                                jsonData = {};
+//                                                jsonData.memberId = nut.model.memberID;
+//                                                jsonData.tag = getLabel;
+//                                                middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+//                                                    if (err) throw err;
+//                                                    console.log("tag record:" + doc.success);
+//                                                }))
+//                                            }
 
                                             if (i < scoreRange.length - 1) {
                                                 resultList += ",";

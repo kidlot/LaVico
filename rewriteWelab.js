@@ -4,7 +4,6 @@ var util = require("welab/controllers/summary/util.js") ;
 var middleware = require('lavico/lib/middleware.js');//引入中间件
 exports.load = function () {
 
-
     var summaryUserTrend = require("welab/controllers/summary/userTrend.js");
 
 //    summaryUserTrend.children.page = {
@@ -190,6 +189,7 @@ exports.load = function () {
 
     var welabUserlist = require("welab/controllers/user/list.js");
 
+
     // 复写用户列表的导出
     welabUserlist.actions.exports.process = function(seed, nut){
 
@@ -217,37 +217,56 @@ exports.load = function () {
 
 
         this.step(function(){
-
+            //console.log("tip:"+conditions);
             helper.db.coll("welab/customers").find(conditions).sort(sort).toArray(this.hold(function(err,docs){
                 if(err) throw err ;
+
                 for (var i=0; i<docs.length; i++)
                 {
-
                     docs[i].realname = docs[i].realname || '';
                     docs[i].nickname = docs[i].nickname || '';
+                    docs[i].province = docs[i].province || '';
                     docs[i].city = docs[i].city || '';
+                    docs[i].address = docs[i].address || '';
+
                     docs[i].followCount = docs[i].followCount || '1';
                     docs[i].messageCount = docs[i].messageCount && otherData.totaMessages ? (docs[i].messageCount) + " " + (parseInt((docs[i].messageCount / otherData.totaMessages)*100)) + "%" : "0";
                     docs[i].isRegister = docs[i].registerTime ? "是" : "否"
-                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '')
+                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
                     docs[i].birthday = docs[i].birthday ? parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365)) : ""
 
                     docs[i].source = docs[i].source || '';
-                    docs[i].cardtype = docs[i].cardtype || '微信会员卡';
-                    docs[i].industry = docs[i].industry || '';
+                    docs[i].mobile = docs[i].mobile || '';
+
+                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.type){
+                        if(docs[i].HaiLanMemberInfo.type == 1){
+                            docs[i].cardtype = '白卡';
+                        }else if(docs[i].HaiLanMemberInfo.type == 2){
+                            docs[i].cardtype = 'VIP卡';
+                        }else if(docs[i].HaiLanMemberInfo.type == 3){
+                            docs[i].cardtype = '白金VIP卡';
+                        }else{
+                            docs[i].cardtype = '未知';
+                        }
+                    }else{
+                        docs[i].cardtype = '未知';
+                    }
+
+                    docs[i].industry = docs[i].profession || '';
 
                     var tags = [];
                     if( docs[i].tags){
                         for (var ii=0; ii<docs[i].tags.length; ii++)
                         {
-                            tags.push('<span class="tm-tag tm-tag-info" ><span>'+docs[i].tags[ii]+'</span><a href="#" class="tm-tag-remove" tagidtoremove="1" data-dismiss="alert" onclick="removeTagOrKeyword(this)">×</a></span>')
+                                tags.push(docs[i].tags[ii]);
                         }
                     }
-                    docs[i].tags = tags.join("&nbsp;")
+
+                    docs[i].tags = tags.join(",");
                     docs[i].followTimebak = docs[i].followTime;
                     docs[i].followTime = docs[i].followTime ? parseInt(((new Date()) - (new Date(docs[i].followTime*1000))) / (1000*60*60*24)) : ""
                     docs[i].registerTime = docs[i].registerTime ? parseInt(((new Date()) - (new Date(docs[i].registerTime))) / (1000*60*60*24)) : ""
-                    docs[i].lastMessageTime = parseInt(((new Date()) - (new Date(docs[i].lastMessageTime))) / (1000*60*60*24))
+                    docs[i].lastMessageTime = parseInt(((new Date()) - (new Date(docs[i].lastMessageTime))) / (1000*60*60*24)) || '';
                     docs[i].viewCount = docs[i].viewCount && otherData.totalView ? (docs[i].viewCount) + " <span style='color: #1ABC9C'>" + (parseInt((docs[i].viewCount / otherData.totalView)*100)) + "%</span>" : "0";
 
                     var viewFriendCount = docs[i].viewFriendCount + docs[i].viewTimeLineCount;
@@ -260,18 +279,22 @@ exports.load = function () {
                     docs[i].unfollowTimeForFollow = docs[i].isFollow == false ? parseInt((docs[i].unfollowTime - (docs[i].followTimebak*1000)) / (1000*60*60*24)) : ''
                     docs[i].unfollowTimeForReg = docs[i].registerTime ? parseInt((docs[i].unfollowTime - (docs[i].registerTime)) / (1000*60*60*24)) : ''
 
-                    _data.push(docs[i])
+                    _data.push(docs[i]);
+
                 }
-            })) ;
+
+            }));
 
         })
 
 
-
+        //导出
         this.step(function(){
 
             var nodeExcel = require('excel-export');
+
             var conf = {};
+
             conf.cols = [
                 {
                     caption: '昵称',
@@ -286,13 +309,38 @@ exports.load = function () {
                     caption: '年龄',
                     type: 'string'
                 }, {
-                    caption: '城市',
+                    caption: '手机',
                     type: 'string'
                 }, {
                     caption: '行业',
                     type: 'string'
+
+                }, {
+                    caption: 'Email',
+                    type: 'string'
+                }, {
+                    caption: '省份',
+                    type: 'string'
+                }, {
+                    caption: '城市',
+                    type: 'string'
+                }, {
+                    caption: '具体地址',
+                    type: 'string'
+                }, {
+                    caption: '喜好款式',
+                    type: 'string'
+                }, {
+                    caption: '喜好颜色',
+                    type: 'string'
                 }, {
                     caption: '卡类型',
+                    type: 'string'
+                }, {
+                    caption: '卡号码',
+                    type: 'string'
+                }, {
+                    caption: '会员号码',
                     type: 'string'
                 }, {
                     caption: '关注来源',
@@ -300,44 +348,8 @@ exports.load = function () {
                 }, {
                     caption: '标签',
                     type: 'string'
-                }, {
-                    caption: '已关注(天)',
-                    type: 'string'
-                }, {
-                    caption: '已注册(天)',
-                    type: 'string'
-                }, {
-                    caption: '未会话(天)',
-                    type: 'string'
-                }, {
-                    caption: '会话数(占比)',
-                    type: 'string'
-                }, {
-                    caption: '注册',
-                    type: 'string'
-                }, {
-                    caption: '自己浏览(占比)',
-                    type: 'string'
-                }, {
-                    caption: '分享(占比)',
-                    type: 'string'
-                }, {
-                    caption: '好友浏览(占比)',
-                    type: 'string'
-                }, {
-                    caption: '关注次数',
-                    type: 'string'
-                }, {
-                    caption: '取消关注距关注(天)',
-                    type: 'string'
-                }, {
-                    caption: '取消关注距注册(天)',
-                    type: 'string'
                 }
-
-
             ];
-
 
 
             conf.rows = [];
@@ -348,30 +360,24 @@ exports.load = function () {
                 rows = [
                     _data[i].nickname,
                     _data[i].realname,
+                    _data[i].mobile,
                     _data[i].gender,
                     _data[i].birthday,
+                    _data[i].province,
                     _data[i].city,
+                    _data[i].address,
                     _data[i].industry,
                     _data[i].cardtype,
                     _data[i].source,
-                    _data[i].tags,
-                    _data[i].followTime,
-                    _data[i].registerTime,
-                    _data[i].lastMessageTime,
-                    _data[i].messageCount,
-                    _data[i].isRegister,
-                    _data[i].viewCount,
-                    _data[i].shareFriendCount,
-                    _data[i].viewFriendCount,
-                    _data[i].followCount,
-                    _data[i].unfollowTimeForFollow,
-                    _data[i].unfollowTimeForReg
+                    _data[i].tags
+
                 ]
                 conf.rows.push(rows)
 
             }
-
             var result = nodeExcel.execute(conf);
+            console.log(conf);
+
             this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
             this.res.write(result, 'binary');
@@ -456,7 +462,7 @@ exports.load = function () {
 
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
-
+        console.log("---search customers---");
         nut.disabled = true ;
 
         // 总人数
@@ -472,7 +478,9 @@ exports.load = function () {
         count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
 
+
         var conditions = search.conditions(seed) ;
+
         var _data = {};
         var _rows = [];
 
@@ -512,6 +520,8 @@ exports.load = function () {
         ) ;
 
         this.step(function(){
+            console.log(conditions);
+
 
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
@@ -731,6 +741,145 @@ exports.load = function () {
             return false;
 
         });
+    }
+
+    //json复写list-viewIn
+    welabUserlist.viewIn=function(){
+        jQuery("#tags").tagsManager({
+            prefilled: [],
+            hiddenTagListName: 'tagsVal'
+        });
+
+
+        // search box--搜索显示
+        $.searchInitConditions([
+            {field:'realname',title:'姓名',type:'text'}
+            , {field:'gender',title:'性别',type:'gender'}
+            , {field:'age',title:'年龄',type:'num'}
+            , {field:'email',title:'电子邮件',type:'text'}
+            , {field:'mobile',title:'移动电话',type:'text'}
+            , {field:'createtime',title:'注册时间',type:'date'}
+            , {field:'followTime',title:'关注时间',type:'date'}
+            , {field:'tags',title:'标签',type:'value'}
+            , {field:'nickname',title:'昵称',type:'value'}
+            , {field:'city',title:'城市',type:'value'}
+            , {field:'profession',title:'行业',type:'value'}
+            , {field:'source',title:'关注来源',type:'value'}
+            , {field:'HaiLanMemberInfo.action',title:'绑定与否',type:'value'}
+            , {field:'HaiLanMemberInfo.cardNumber',title:'会员卡',type:'value'}
+        ]) ;
+
+        $(".btnsearch").click(function(){
+            var conditions = $(this).searchConditions() ;
+            //alert(JSON.stringify(conditions));
+            if(!conditions.length)
+                return ;
+
+            //{params:[{name:"conditions",value:[["city","上海"]]},{name:"logic",value:"任意"}]}
+            $("#userList").flexOptions({params: [{name:"conditions",value:JSON.stringify(conditions)},{name:"logic",value:$("[name=searchLogic]").val()}]});
+            $('#userList').flexOptions({newp: 1}).flexReload();
+
+            /*
+             $.controller("/welab/user/list:page",{
+             conditions:JSON.stringify(conditions)
+             , logic: $("[name=searchLogic]").val()
+             },'.childview>.ocview') ;*/
+        }) ;
+
+        //取消筛选
+        $(".btncancel").click(function(){
+
+            $('#searchView').fadeOut('100')
+            $('.searchConditionOuter').empty()
+            $.controller("/welab/user/list:page",{
+                conditions:JSON.stringify({})
+                , logic: $("[name=searchLogic]").val()
+            },'.childview>.ocview') ;
+        }) ;
+
+        /**
+         * 设置标签
+         */
+        $(".userSetTagView").on("click",function(){
+
+            var aList = getUserList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            jQuery("#tags").tagsManager('empty');
+
+            $('#tagModal').modal('toggle');
+            oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+            return false;
+        })
+
+
+        /**
+         * 设置标签
+         */
+        $(".sendMessageView").on("click",function(){
+
+            var aList = getUserList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            $('#sendMessageModal').modal('toggle');
+            return false;
+        })
+
+        /**
+         * 删除动作
+         */
+        var deletingLink ;
+        $(".removeUserView").on("click",function(){
+
+            $('#delModal').modal('toggle');
+
+            deletingLink = this ;
+            deletingLink.href += "?userList=";
+            var aUserList = [];
+            $("#userList").find("tr").each(function(i,o){
+
+                var _oInput = jQuery(o).find("td:eq(0)").find("input")
+
+                var _uid = _oInput.attr("userid");
+
+                if( _uid && _oInput[0].checked){
+                    aUserList.push(_uid);
+                }
+
+            })
+
+            deletingLink.href += aUserList.join(",");
+            return false;
+        })
+
+        $(".removeUserBtn").click(function(){
+
+            $('#delModal').modal('toggle');
+
+            $(deletingLink).action(function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/welab/user/list",null,"lazy");
+
+            }) ;
+
+            return false;
+        });
+
     }
 
 

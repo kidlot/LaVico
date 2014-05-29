@@ -235,7 +235,8 @@ module.exports = {
             window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
         }
 
-
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
     },
     actions:{
         getUserEffectiveCouponsNum:{

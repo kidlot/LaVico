@@ -41,8 +41,15 @@
     <p>竖屏浏览，效果更佳。</p>
     <!--<span class="btn-close ir">关闭</span>-->
 </div>
-
 <script>
+    /*掩藏分享按钮Start*/
+    window.hideShareButtion = {}
+    window.hideShareButtion.on = function(){
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            WeixinJSBridge.call('hideOptionMenu');
+        });
+    }
+    /*掩藏分享按钮End*/
     window.popupStyle1 = {}
     window.popupStyle1.on = function(title,cb){
         $(".popupStyle1").find("p").text(title)
@@ -87,6 +94,11 @@
     }
 
 
+    function bindPosition(id){
+        var popupHig = $(id).height();
+        $(id).css("margin-top", -popupHig / 2);
+    }
+
     window.onresize = function () {
         var popupHig = $(".popup").height();
         $(".popup").css("margin-top", -popupHig / 2);
@@ -108,6 +120,72 @@
 
         */
 
+
+    // 记录分享数
+    var timeid = setInterval(function(){
+        if(typeof WeixinJSBridge =="undefined")
+            return ;
+
+        clearTimeout(timeid) ;
+
+        WeixinJSBridge.on('menu:share:timeline', function(argv){
+
+
+            $.ajax({
+                url:'/lavico/log',
+                type:'POST',
+                data:{
+                    'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                    'url':location.href,
+                    'action' : "转发朋友圈"
+                },
+                success:function(data){
+
+                },
+                error:function(msg){
+                }
+            });
+
+            WeixinJSBridge.invoke('shareTimeline',{
+                "img_url":location.origin + "/lavico/public/images/logo.png",
+                "link":location.href + "&fromWelab=timeline",
+                "desc":"朗维高",
+                "title":"朗维高"
+            }, function(res) {
+
+            });
+        });
+
+        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+
+            $.ajax({
+                url:'/lavico/log',
+                type:'POST',
+                data:{
+                    'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                    'url':location.href,
+                    'action' : "转发好友"
+                },
+                success:function(data){
+
+                },
+                error:function(msg){
+                }
+            });
+
+
+            var contentModel = {
+                "img_url":location.origin + "/lavico/public/images/logo.png",
+                "link":location.href + "&fromWelab=friend",
+                "desc":"朗维高",
+                "title":"朗维高"
+            }
+            WeixinJSBridge.invoke('sendAppMessage',contentModel, function(res) {
+
+            });
+        });
+
+    },300) ;
 
     window.onload = function(){
 
@@ -150,73 +228,6 @@
                 }
             });
         }
-
-
-        // 记录分享数
-        var timeid = setInterval(function(){
-            if(typeof WeixinJSBridge =="undefined")
-                return ;
-
-            clearTimeout(timeid) ;
-
-            WeixinJSBridge.on('menu:share:timeline', function(argv){
-
-
-                $.ajax({
-                    url:'/lavico/log',
-                    type:'POST',
-                    data:{
-                        'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
-                        'url':location.href,
-                        'action' : "转发朋友圈"
-                    },
-                    success:function(data){
-
-                    },
-                    error:function(msg){
-                    }
-                });
-
-                WeixinJSBridge.invoke('shareTimeline',{
-                    "img_url":location.origin + "/lavico/public/images/logo.png",
-                    "link":location.href + "&fromWelab=timeline",
-                    "desc":"朗维高",
-                    "title":"朗维高"
-                }, function(res) {
-
-                });
-            });
-
-            WeixinJSBridge.on('menu:share:appmessage', function(argv){
-
-                $.ajax({
-                    url:'/lavico/log',
-                    type:'POST',
-                    data:{
-                        'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
-                        'url':location.href,
-                        'action' : "转发好友"
-                    },
-                    success:function(data){
-
-                    },
-                    error:function(msg){
-                    }
-                });
-
-
-                var contentModel = {
-                    "img_url":location.origin + "/lavico/public/images/logo.png",
-                    "link":location.href + "&fromWelab=friend",
-                    "desc":"朗维高",
-                    "title":"朗维高"
-                }
-                WeixinJSBridge.invoke('sendAppMessage',contentModel, function(res) {
-
-                });
-            });
-
-        },300) ;
 
 
 
