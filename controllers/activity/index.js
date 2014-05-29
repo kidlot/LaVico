@@ -50,6 +50,8 @@ module.exports = {
                 var perPage = 4;
                 var pageNum = seed.page ? seed.page : 1;
                 var then = this;
+
+
                 this.step(function (doc) {
                     middleware.request('Coupon/Promotions', {
                         perPage: perPage,
@@ -74,7 +76,6 @@ module.exports = {
                         }
                     }))
                 });
-
 
                 this.step(function (activity) {
                     helper.db.coll('lavico/activity').findOne({aid: activity.PROMOTION_CODE}, this.hold(function (err, doc) {
