@@ -9,7 +9,7 @@
                 <div class="tab new_tab">
                     <ul>
                         <li><a id="overdueCoupons" class="couponBtn" href="javascript:void(0);">已过期 ({@overdueCouponsLength})</a></li>
-                        <li><a id="effectiveCoupons" class="couponBtn on" href="javascript:void(0);">可使用({@effectiveCouponsLength})</a></li>
+                        <li style="width:34%;"><a id="effectiveCoupons" class="couponBtn on" href="javascript:void(0);">可使用({@effectiveCouponsLength})</a></li>
                         <li><a id="usedCoupons" class="couponBtn" href="javascript:void(0);">已使用 ({@usedCouponsLength})</a></li>
                     </ul>
                 </div>
@@ -17,15 +17,14 @@
                     <foreach for="@effectiveCoupons" key="key">
                         <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}'">
                             <div class="pre_title">
-                                <h2>[{@effectiveCoupons[key].COUPON_TYPE}]-{@effectiveCoupons[key].COUPON_NAME}</h2>
+                                <h2><em>{@effectiveCoupons[key].COUPON_TYPE}</em> - {@effectiveCoupons[key].COUPON_NAME}{@effectiveCoupons[key].COUPON_QTY}元</h2>
                                 <h3>{@effectiveCoupons[key].CREAT_DATE}</h3>
                             </div>
                             <div class="pre-top clear">
                                 <div class="fl"><img src="{@effectiveCoupons[key].PIC}" /></div>
                                 <div class="fl pre-top-right">
                                     <div class="intro">
-                                        <p>面额：{@effectiveCoupons[key].COUPON_QTY}</p>
-                                        <p>有效期：{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</p>
+                                        <p>有效：{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</p>
                                         <p>券号：{@effectiveCoupons[key].COUPON_NO}</p>
                                     </div>
                                 </div>
