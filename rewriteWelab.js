@@ -1,7 +1,7 @@
 var search = require("welab/lib/search.js") ;
 var summary = require("welab/controllers/user/summary.js") ;
 var util = require("welab/controllers/summary/util.js") ;
-
+var middleware = require('lavico/lib/middleware.js');//引入中间件
 exports.load = function () {
 
     var summaryUserTrend = require("welab/controllers/summary/userTrend.js");
@@ -385,6 +385,80 @@ exports.load = function () {
 
         })
     }
+    //短信发送  viewIn
+    welabUserlist.children.page.viewIn = function(){
+        /**
+         * 消息
+         */
+        $(".sendMessageBtn").on("click",function(){
+            var oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:getUserList().join(",")});
+            oUserSetOption.data.push({name:"sContent",value:$("#sendMessageValue").val()});
+            oUserSetOption.type = "POST";
+            oUserSetOption.url = "/welab/user/form:sendMessage";
+
+            $.request(oUserSetOption,function(err,nut){
+                if(err) throw err ;
+                $("#sendMessageValue").val("")
+                nut.msgqueue.popup() ;
+
+            }) ;
+
+            $('#sendMessageModal').modal('toggle');
+            return false;
+
+        });
+    }
+
+    welabUserlist.viewIn =function(){
+        /**
+         * 发送短信
+         */
+        jQuery("#tags").tagsManager({
+            prefilled: [],
+            hiddenTagListName: 'tagsVal'
+        });
+        $(".sendSMS").on("click",function(){
+            var sms = getUserList();
+            if(sms.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+            jQuery("#tags").tagsManager('empty');
+            $('#sendMessageModal').modal('toggle');
+            oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:sms.join(",")});
+            return false;
+        })
+
+        $(".userSetTagView").on("click",function(){
+
+            var aList = getUserList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            jQuery("#tags").tagsManager('empty');
+
+            $('#tagModal').modal('toggle');
+            oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+            return false;
+        })
+    }
+
+
+
 
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
@@ -815,8 +889,67 @@ exports.load = function () {
     welabMessagelist.children.page.view = "lavico/templates/MessageListPage.html";
 
 
+    var welabUserform= require("welab/controllers/user/form.js");
+    //短信发送
+    welabUserform.actions.sendMessage = function(seed,nut){
+        nut.view.disable() ;
+        var sUserList = seed.sUserList.split(",");
+        var aValue = seed.sContent;
+        var errID = [];
+        var successID = [];
+        var mobile;
+        var wxid;
+        var memberid;
+        var count = sUserList.length;
+        for(var i = 0 ; i < sUserList.length ; i++){
+            (function(userdoc,then){
+                helper.db.coll("welab/customers").findOne({_id : helper.db.id(userdoc)},then.hold(function(err,doc){
+                    console.log(doc.mobile)
+                    if(doc.mobile){
+                        mobile = doc.mobile;
+                        memberid=doc.HaiLanMemberInfo.memberID;
+                        wxid = doc.wechatid;
+                        console.log(doc.mobile)
+                        try{
+                            middleware.request( "System/SendSMS",{'mobile':doc.mobile,'content':"【LaVico朗维高】:"+aValue},this.hold(function(err,doc){
+                                helper.db.coll("welab/SMS").insert({"wxid":wxid,"memberID":memberid,"mobile":mobile,"content":"【LaVico朗维高】:"+aValue,"createTime":new Date().getTime()},function(err,docs){
+                                    if(err) throw err;
+                                })
+                            })
+                            );
+                        }catch (err){
+                            console.log(err)
+                        }
+
+                        successID.push(doc.mobile)
+                    }else{
+                        errID.push(doc.mobile)
+                    }
+                }))
+            })(sUserList[i],this)
+        }
+        this.step(function(){
+            if( errID.length == 0){
+                helper.db.coll("welab/SMScount").insert({"success":successID.length,"failure":errID.length,"total":count,"createTime":new Date().getTime()},function(err,docs){
+                    if(err) throw err;
+                })
+                nut.message("发送成功",null,"success") ;
+            }else{
+                helper.db.coll("welab/SMScount").insert({"success":successID.length,"failure":errID.length,"total":count,"createTime":new Date().getTime()},function(err,docs){
+                    if(err) throw err;
+                })
+                nut.message(successID.length+"个用户发送成功;" + errID.length+"个失败",null,"error") ;
+            }
+        })
+
+    }
+
+
+
     // 复写 welab/user/detail by David.xu 2014-05-29 Start
     var welabUserDetail = require("welab/controllers/user/detail.js");
+
+
 
     welabUserDetail.view = "lavico/templates/welab/user/detail.html";
     welabUserDetail.process = function(seed,nut){
@@ -879,5 +1012,93 @@ exports.load = function () {
 
     // 复写 welab/user/detail by David.xu 2014-05-29 End
 
+
+    var welabUserTags = require("welab/controllers/user/tags.js");
+    welabUserTags.actions.setUserTag.process = function(seed,nut){
+        nut.view.disable() ;
+        nut.model.page = {} ;
+
+        var aTagList = seed.sTagList.split(",");
+        var aUserList = seed.sUserList.split(",");
+        var errID = [];
+        var successID = [];
+        var then = this;
+        var jsonData=[];
+        var stutas=[];
+        var jsontag=[];
+
+        this.step(function(){
+            if( seed.sUserList == "" ){
+                nut.message("没有指定要操作的ID",null,"error") ;
+                return false;
+            }
+            for(var i=0;i<aTagList.length;i++){
+
+                var tag = aTagList[i];
+
+                (function(i,jsonData){
+                    for(var j=0;j<aUserList.length;j++){
+                        (function(j,jsonData){
+                            helper.db.coll("welab/customers").findOne({"_id":helper.db.id(aUserList[j])},then.hold(function(err,doc){
+                                if(err) throw err;
+                                if(doc && typeof(doc.HaiLanMemberInfo)!="underfined"){
+                                    json={};
+                                    json.memberId = doc.HaiLanMemberInfo.memberID;
+                                    json.tag = tag;
+                                    json.id= aUserList[j];
+                                    jsonData.push(json);
+                                }else{
+                                    json.memberId = "null";
+                                    json.id= aUserList[j];
+                                    jsonData.push(json);
+                                }
+                            }))
+                        })(j,jsonData)
+                    }
+                })(i,jsonData)
+            }
+        })
+
+        this.step(function(){
+            console.log(jsonData)
+            for(var i=0;i<jsonData.length;i++){
+                var id = jsonData[i].id;
+                middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, this.hold(function (err, doc) {
+                    if (err) throw err;
+                    var docs = JSON.parse(doc);
+                    sta={};
+                    console.log(docs);
+                    sta.stat = docs.success;
+                    sta.id = id;
+                    stutas.push(sta);
+                }))
+            }
+        })
+
+        this.step(function(){
+            for (var i=0; i<aTagList.length; i++) {
+                tag = aTagList[i];
+                for(var j=0;j<stutas.length;j++){
+                    if(stutas[i].stat=="true"){
+                        successID.push(stutas[i].id);
+                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[i].id)}, {$addToSet:{tags:tag}},this.hold(function(err,doc){
+                            if(err ){
+                                throw err;
+                            }
+                        }));
+                    }else{
+                        errID.push(stutas[i].id);
+                    }
+                }
+            }
+        });
+        this.step(function(){
+            if(errID.length==0){
+                nut.message("操作完成",null,"success") ;
+            }else{
+                nut.message(successID.length+"个用户设定标签成功;" + errID.length+"个失败",null,"error") ;
+            }
+        })
+    }
 
 };

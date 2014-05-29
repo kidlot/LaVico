@@ -37,9 +37,9 @@ a.tel{color:#2d2d2d;}
 
 .mobile .mobile-btn a { width:74%; font-size:1.2rem; }
 /*我要侃价详细页*/
-.bargin{width:100%;background-color:#ededed; padding-top:2%;}
-.bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:1% 4%; overflow:hidden; position:relative; }
-.bargin-left{ float:none; }
+.bargin{width:100%;background-color:#ededed;}
+.bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:0 4% 5%; overflow:hidden; position:relative; }
+.bargin-left{ width:80%; margin:0 10%; display:block; }
 .bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-top:2%; }
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .bargin-right .color{padding-top:2%;}
@@ -52,7 +52,7 @@ a.tel{color:#2d2d2d;}
 .bargin-right .look_store{ width:130px; height:auto; position:absolute; bottom:1%; right:2%; }
 .bargin-right .look_store a{width:130px; height:40px; display:inline-block; margin-top:20px; color:#291b00;font-size:1.4rem; line-height:40px; text-align:center;
                              background:url(../images/look_storebg.jpg) center center no-repeat; background-size:100% 100%; }
-.bargin .border{ padding-top:20px; border-bottom:1px #c1c1c1 solid;}
+.bargin .border{  border-bottom:1px #c1c1c1 solid;}
 .bargin-mod{width:92%; margin:0 auto;  padding:4%; }
 .bargin-mod img {width:100%; }
 .foot a{width:100%; height:50px; display:inline-block; line-height:50px; font-size:1.6rem; text-align:center; color:#281B00; background:url(../images/foot_bg.jpg) center center no-repeat; background-size:100% 100%; }
@@ -373,9 +373,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .intros .content{font-size: 1.4rem;color: #B9954D; padding:0 4%;}
 .elite_img img{ width:100%; margin-top:50px;}
 .prev_btn,
-.next_btn { width:50px; height:60px; position:fixed; top:50%;margin-top:-25px; }
-.prev_btn{ background:url(../images/elite_prev_btn.png) left center no-repeat; background-size:40%; left:4%; }
-.next_btn{ background:url(../images/elite_next_btn.png) right center no-repeat;background-size:40%; right:4%; }
+.next_btn { width:50%; height:200px; position:fixed; top:50%;margin-top:-100px; }
+.prev_btn{ background:url(../images/elite_prev_btn.png) left center no-repeat; background-size:14%; left:4%; }
+.next_btn{ background:url(../images/elite_next_btn.png) right center no-repeat;background-size:14%; right:4%; }
 .prev_btn:hover{ cursor:pointer;}
 .next_btn:hover{ cursor:pointer;}
 .elite_list{width:100%; height:auto; background:#E5E5E5; position:relative; overflow:hidden; padding:2% 0;}

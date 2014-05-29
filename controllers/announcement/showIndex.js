@@ -11,6 +11,7 @@ module.exports={
         helper.db.coll("lavico/announcement").find({isOpen:true}).toArray(this.hold(function(err,doc){
             if(err) throw err;
             nut.model.docs=doc;
+
         }));
     },
     actions:{

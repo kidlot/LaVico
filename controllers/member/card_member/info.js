@@ -138,6 +138,9 @@ module.exports = {
 
         $('#loading').hide();//隐藏加载框
 
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
+
         /*设计前端JS*/
         if($("#profession").val()=='请选择行业'){
             $("#select_profession").parent().find("input").val($("#select_profession").val());

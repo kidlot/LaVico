@@ -128,6 +128,9 @@ module.exports = {
     },
     viewIn:function(){
 
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
+
         $('#loading').hide();//隐藏加载框
 
         var wxid = $('#wxid').val();

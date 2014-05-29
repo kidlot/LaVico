@@ -212,6 +212,8 @@ module.exports = {
             var _reddem_id = $(this).attr('id');
             window.location.href = '/lavico/reedem/reedemdetail?_id='+_reddem_id+'&wxid='+wxid;
         });
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
     }
 
 }
