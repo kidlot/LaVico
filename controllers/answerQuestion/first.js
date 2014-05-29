@@ -31,25 +31,26 @@ module.exports= {
         })
 
         this.step(function(){
-            if(memberid!="undefined"){
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":memberid},this.hold(function(err,doc){
-                    if(err) throw err;
-                    if(doc<=0){
-                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?_id="+seed._id+"&optionId=1&wechatid="+wxid});
-                        this.res.end();
-                    }
-                }))
-            }
-        })
-
-        this.step(function(){
-            console.log(seed._id);
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(seed._id)},this.hold(function(err,doc){
                 if(err) throw err
                 if(doc){
                     nut.model.docs=doc;
+                    nut.model.themeQuestion = JSON.stringify(doc);
                 }
             }));
+        })
+
+        this.step(function(){
+            if(memberid!="undefined"){
+                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid},this.hold(function(err,doc){
+                    if(err) throw err;
+                    if(doc){
+                        nut.model.isok = "0";
+                    }else{
+                        nut.model.isok = "1";
+                    }
+                }))
+            }
         })
 
     }
