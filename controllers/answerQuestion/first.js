@@ -56,10 +56,17 @@ module.exports= {
 
             helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
                 if(err) throw err;
-                if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind'){
-                    memberid = doc.HaiLanMemberInfo.memberID;
-                    nut.model.flag="0";
+
+                if(doc && doc.HaiLanMemberInfo){
+                    if(doc.HaiLanMemberInfo.action=='bind') {
+                        memberid = doc.HaiLanMemberInfo.memberID;
+                        nut.model.flag = "0";
+                    }else{
+                        memberid = doc.HaiLanMemberInfo.memberID;
+                        nut.model.flag="1";
+                    }
                 }else{
+                    //未绑定
                     memberid = "undefined";
                     nut.model.flag="1";
                 }
