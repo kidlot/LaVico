@@ -13,7 +13,26 @@
                         <li><a id="usedCoupons" class="couponBtn" href="javascript:void(0);">已使用 ({@usedCouponsLength})</a></li>
                     </ul>
                 </div>
-                <div class="pre-box" id="effectiveCouponsContent" style="display:none">
+                <div class="pre-box" id="overdueCouponsContent" style="display:none">
+                    <foreach for="@overdueCoupons" key="key">
+                        <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}'">
+                            <div class="pre_title">
+                                <h2><em>{@overdueCoupons[key].COUPON_TYPE}</em> - {@overdueCoupons[key].COUPON_NAME}{@overdueCoupons[key].COUPON_QTY}元</h2>
+                                <h3>{@overdueCoupons[key].CREAT_DATE}</h3>
+                            </div>
+                            <div class="pre-top clear">
+                                <div class="fl"><img src="{@overdueCoupons[key].PIC}" /></div>
+                                <div class="fl pre-top-right">
+                                    <div class="intro">
+                                        <p>有效期：<br />{@overdueCoupons[key].BEGIN_DATE} 至 {@overdueCoupons[key].END_DATE}</p>
+                                        <p>礼券号：<br />{@overdueCoupons[key].COUPON_NO}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreach>
+                </div>
+                <div class="pre-box" id="effectiveCouponsContent" style="display:block">
                     <foreach for="@effectiveCoupons" key="key">
                         <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}'">
                             <div class="pre_title">
@@ -24,15 +43,33 @@
                                 <div class="fl"><img src="{@effectiveCoupons[key].PIC}" /></div>
                                 <div class="fl pre-top-right">
                                     <div class="intro">
-                                        <p>有效：{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</p>
-                                        <p>券号：{@effectiveCoupons[key].COUPON_NO}</p>
+                                        <p>有效期：<br/>{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</p>
+                                        <p>礼券号：<br />{@effectiveCoupons[key].COUPON_NO}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </foreach>
                 </div>
-
+                <div class="pre-box" id="usedCouponsContent" style="display:none">
+                    <foreach for="@usedCoupons" key="key">
+                        <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}'">
+                            <div class="pre_title">
+                                <h2><em>{@usedCoupons[key].COUPON_TYPE}</em> - {@usedCoupons[key].COUPON_NAME}{@usedCoupons[key].COUPON_QTY}元</h2>
+                                <h3>{@usedCoupons[key].CREAT_DATE}</h3>
+                            </div>
+                            <div class="pre-top clear">
+                                <div class="fl"><img src="{@usedCoupons[key].PIC}" /></div>
+                                <div class="fl pre-top-right">
+                                    <div class="intro">
+                                        <p>有效期：<br />{@usedCoupons[key].BEGIN_DATE} 至 {@usedCoupons[key].END_DATE}</p>
+                                        <p>礼券号：<br />{@usedCoupons[key].COUPON_NO}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreach>
+                </div>
 
 
 
