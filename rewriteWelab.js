@@ -670,6 +670,8 @@ exports.load = function () {
     // 复写 messageList
     welabMessagelist.children.page.view = "lavico/templates/MessageListPage.html";
 
+    //
+
 
     // 复写 welab/user/detail
     var welabUserDetail = require("welab/controllers/user/detail.js");
