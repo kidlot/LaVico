@@ -76,11 +76,6 @@ module.exports = {
                 window.location.href="/lavico/member/index?wxid="+wxid;
             });
 
-            /*会员管理*/
-            $('#member_manage').click(function(){
-                window.location.href="/lavico/member/index?wxid="+wxid;
-            });
-
             /*取消绑定*/
             $(".cancel").click(function(){
                 $(this).parents('.popup').hide();
@@ -136,6 +131,7 @@ module.exports = {
 
                                  $('#tel_checked_status').val('tel_checked_false');
                                  $('#true_card_number').show();
+                                 bindPosition('#true_card_number');
 
 
                             }else{
@@ -185,6 +181,7 @@ module.exports = {
                 if(userCardNumber.length == 0 ){
 
                     $('#cardnumber_empty').show();
+                    bindPosition('#cardnumber_empty');
                     return	false;
 
                 }
@@ -218,6 +215,7 @@ module.exports = {
                                 //$('#telephone_cardnumber_no_match').show();
                                 console.log('系统没有查找到此卡号，请核对后重新输入,可能由于此卡号绑定的不是第一步的手机号码');
                                 $('#telephone_cardnumber_no_match').show();
+                                bindPosition('#telephone_cardnumber_no_match');
                                 //window.popupStyle2.on("系统没有查找到此卡号",function(event){});
 
 
@@ -283,14 +281,12 @@ module.exports = {
                             if(returnJson.info == 'bind_success'){
                                 if($('#tel_checked_status').val() == 'tel_checked_false'){
                                     //alert('绑定成功');
-                                    //$('#member_manage').show();
                                     window.popupStyle2.on("绑定成功",function(event){
                                         window.location.href="/lavico/member/index?wxid="+wxid;
                                     });
 
                                 }else if($('#tel_checked_status').val() == 'tel_checked_true'){
                                     //alert('绑定成功');
-                                    //$('#member_manage').show();
                                     window.popupStyle2.on("绑定成功",function(event){
                                         window.location.href="/lavico/member/index?wxid="+wxid;
                                     });

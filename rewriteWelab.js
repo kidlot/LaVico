@@ -222,32 +222,50 @@ exports.load = function () {
                 if(err) throw err ;
                 for (var i=0; i<docs.length; i++)
                 {
-
                     docs[i].realname = docs[i].realname || '';
                     docs[i].nickname = docs[i].nickname || '';
+                    docs[i].province = docs[i].province || '';
                     docs[i].city = docs[i].city || '';
+                    docs[i].address = docs[i].address || '';
+
                     docs[i].followCount = docs[i].followCount || '1';
                     docs[i].messageCount = docs[i].messageCount && otherData.totaMessages ? (docs[i].messageCount) + " " + (parseInt((docs[i].messageCount / otherData.totaMessages)*100)) + "%" : "0";
                     docs[i].isRegister = docs[i].registerTime ? "是" : "否"
-                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '')
+                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
                     docs[i].birthday = docs[i].birthday ? parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365)) : ""
 
                     docs[i].source = docs[i].source || '';
-                    docs[i].cardtype = docs[i].cardtype || '微信会员卡';
-                    docs[i].industry = docs[i].industry || '';
+                    docs[i].mobile = docs[i].mobile || '';
+
+                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.type){
+                        if(docs[i].HaiLanMemberInfo.type == 1){
+                            docs[i].cardtype = '白卡';
+                        }else if(docs[i].HaiLanMemberInfo.type == 2){
+                            docs[i].cardtype = 'VIP卡';
+                        }else if(docs[i].HaiLanMemberInfo.type == 3){
+                            docs[i].cardtype = '白金VIP卡';
+                        }else{
+                            docs[i].cardtype = '未知';
+                        }
+                    }else{
+                        docs[i].cardtype = '未知';
+                    }
+
+                    docs[i].industry = docs[i].profession || '';
 
                     var tags = [];
                     if( docs[i].tags){
                         for (var ii=0; ii<docs[i].tags.length; ii++)
                         {
-                            tags.push('<span class="tm-tag tm-tag-info" ><span>'+docs[i].tags[ii]+'</span><a href="#" class="tm-tag-remove" tagidtoremove="1" data-dismiss="alert" onclick="removeTagOrKeyword(this)">×</a></span>')
+                                tags.push(docs[i].tags[ii]);
                         }
                     }
-                    docs[i].tags = tags.join("&nbsp;")
+
+                    docs[i].tags = tags.join(",");
                     docs[i].followTimebak = docs[i].followTime;
                     docs[i].followTime = docs[i].followTime ? parseInt(((new Date()) - (new Date(docs[i].followTime*1000))) / (1000*60*60*24)) : ""
                     docs[i].registerTime = docs[i].registerTime ? parseInt(((new Date()) - (new Date(docs[i].registerTime))) / (1000*60*60*24)) : ""
-                    docs[i].lastMessageTime = parseInt(((new Date()) - (new Date(docs[i].lastMessageTime))) / (1000*60*60*24))
+                    docs[i].lastMessageTime = parseInt(((new Date()) - (new Date(docs[i].lastMessageTime))) / (1000*60*60*24)) || '';
                     docs[i].viewCount = docs[i].viewCount && otherData.totalView ? (docs[i].viewCount) + " <span style='color: #1ABC9C'>" + (parseInt((docs[i].viewCount / otherData.totalView)*100)) + "%</span>" : "0";
 
                     var viewFriendCount = docs[i].viewFriendCount + docs[i].viewTimeLineCount;
@@ -260,9 +278,11 @@ exports.load = function () {
                     docs[i].unfollowTimeForFollow = docs[i].isFollow == false ? parseInt((docs[i].unfollowTime - (docs[i].followTimebak*1000)) / (1000*60*60*24)) : ''
                     docs[i].unfollowTimeForReg = docs[i].registerTime ? parseInt((docs[i].unfollowTime - (docs[i].registerTime)) / (1000*60*60*24)) : ''
 
-                    _data.push(docs[i])
+                    _data.push(docs[i]);
+
                 }
-            })) ;
+
+            }));
 
         })
 
@@ -271,7 +291,9 @@ exports.load = function () {
         this.step(function(){
 
             var nodeExcel = require('excel-export');
+
             var conf = {};
+
             conf.cols = [
                 {
                     caption: '昵称',
@@ -283,16 +305,35 @@ exports.load = function () {
                     caption: '性别',
                     type: 'string'
                 }, {
-                    caption: '年龄',
-                    type: 'string'
-                }, {
-                    caption: '城市',
+                    caption: '手机号码',
                     type: 'string'
                 }, {
                     caption: '行业',
                     type: 'string'
                 }, {
+                    caption: '年龄',
+                    type: 'string'
+                }, {
+                    caption: '省份',
+                    type: 'string'
+                }, {
+                    caption: '城市',
+                    type: 'string'
+                }, {
+                    caption: '具体地址',
+                    type: 'string'
+
+                }, {
+                    caption: 'Email',
+                    type: 'string'
+                }, {
                     caption: '卡类型',
+                    type: 'string'
+                }, {
+                    caption: '卡号码',
+                    type: 'string'
+                }, {
+                    caption: '会员号码',
                     type: 'string'
                 }, {
                     caption: '关注来源',
@@ -300,44 +341,8 @@ exports.load = function () {
                 }, {
                     caption: '标签',
                     type: 'string'
-                }, {
-                    caption: '已关注(天)',
-                    type: 'string'
-                }, {
-                    caption: '已注册(天)',
-                    type: 'string'
-                }, {
-                    caption: '未会话(天)',
-                    type: 'string'
-                }, {
-                    caption: '会话数(占比)',
-                    type: 'string'
-                }, {
-                    caption: '注册',
-                    type: 'string'
-                }, {
-                    caption: '自己浏览(占比)',
-                    type: 'string'
-                }, {
-                    caption: '分享(占比)',
-                    type: 'string'
-                }, {
-                    caption: '好友浏览(占比)',
-                    type: 'string'
-                }, {
-                    caption: '关注次数',
-                    type: 'string'
-                }, {
-                    caption: '取消关注距关注(天)',
-                    type: 'string'
-                }, {
-                    caption: '取消关注距注册(天)',
-                    type: 'string'
                 }
-
-
             ];
-
 
 
             conf.rows = [];
@@ -348,30 +353,24 @@ exports.load = function () {
                 rows = [
                     _data[i].nickname,
                     _data[i].realname,
+                    _data[i].mobile,
                     _data[i].gender,
                     _data[i].birthday,
+                    _data[i].province,
                     _data[i].city,
+                    _data[i].address,
                     _data[i].industry,
                     _data[i].cardtype,
                     _data[i].source,
-                    _data[i].tags,
-                    _data[i].followTime,
-                    _data[i].registerTime,
-                    _data[i].lastMessageTime,
-                    _data[i].messageCount,
-                    _data[i].isRegister,
-                    _data[i].viewCount,
-                    _data[i].shareFriendCount,
-                    _data[i].viewFriendCount,
-                    _data[i].followCount,
-                    _data[i].unfollowTimeForFollow,
-                    _data[i].unfollowTimeForReg
+                    _data[i].tags
+
                 ]
                 conf.rows.push(rows)
 
             }
-
             var result = nodeExcel.execute(conf);
+            console.log(conf);
+
             this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
             this.res.write(result, 'binary');
