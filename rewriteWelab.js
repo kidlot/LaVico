@@ -306,13 +306,17 @@ exports.load = function () {
                     caption: '性别',
                     type: 'string'
                 }, {
-                    caption: '手机号码',
+                    caption: '年龄',
+                    type: 'string'
+                }, {
+                    caption: '手机',
                     type: 'string'
                 }, {
                     caption: '行业',
                     type: 'string'
+
                 }, {
-                    caption: '年龄',
+                    caption: 'Email',
                     type: 'string'
                 }, {
                     caption: '省份',
@@ -323,9 +327,11 @@ exports.load = function () {
                 }, {
                     caption: '具体地址',
                     type: 'string'
-
                 }, {
-                    caption: 'Email',
+                    caption: '喜好款式',
+                    type: 'string'
+                }, {
+                    caption: '喜好颜色',
                     type: 'string'
                 }, {
                     caption: '卡类型',
