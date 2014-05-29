@@ -38,7 +38,7 @@ a.tel{color:#2d2d2d;}
 .mobile .mobile-btn a { width:74%; font-size:1.2rem; }
 /*我要侃价详细页*/
 .bargin{width:100%;background-color:#ededed;}
-.bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:0 4% 5%; overflow:hidden; position:relative; }
+.bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:4% 5%; overflow:hidden; position:relative; }
 .bargin-left{ width:100%; display:block; }
 .bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-top:2%; }
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
