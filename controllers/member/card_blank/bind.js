@@ -48,6 +48,7 @@ module.exports = {
 
             /*前端设计JS*/
             $('#loading').hide();//隐藏加载框
+            jQuery('.popupStyle2').css('z-index','10002');
 
             var wxid = $('#wxid').val();
 
@@ -64,9 +65,6 @@ module.exports = {
                 window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
             });
 
-            $("#no_member_telephone .confirm .applybtn").click(function(){
-                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
-            });
 
             /*绑定会员卡*/
             $("#bindUrl").click(function(){
@@ -105,6 +103,9 @@ module.exports = {
                 $('#loading').show();//显示正在加载
                 var userTel = $("#userTel").val();
                 var wxid = $("#wxid").val();
+                jQuery('#maskdiv').show();//显示遮层
+
+
                 $.ajax({
                     url:'/lavico/member/card_blank/bind:checkTel',
                     type:'POST',
@@ -113,6 +114,7 @@ module.exports = {
                     }}).done(function(data){
 
                         $('#loading').hide();//显示正在加载
+
                         var returnJson = data || {};
 
                         if(returnJson.success == true){
@@ -134,6 +136,7 @@ module.exports = {
 
                                  $('#tel_checked_status').val('tel_checked_false');
                                  $('#true_card_number').show();
+                                 
 
                             }else{
 
@@ -408,6 +411,7 @@ module.exports = {
                     $.get('/lavico/member/card_blank/code:id_code',{
                             'userTel' : userTel
                         },function(data){
+                            jQuery('#maskdiv').hide();
                             data = eval('('+data+')');
                             if(data.result == 'ofen'){
 
@@ -774,7 +778,7 @@ module.exports = {
                                 }
                                 * */
                                 var dataJson = JSON.parse(data_doc);
-                                middleware.request( "Member/Info/"+dataJson.MEMBER_ID,{
+                                    middleware.request( "Member/Info/"+dataJson.MEMBER_ID,{
                                     }
                                     ,then.hold(function(err,req_doc){
                                         var member_info = JSON.parse(req_doc);
@@ -788,7 +792,12 @@ module.exports = {
                                         address = member_info.info.MEM_PSN_ADDRESS;
                                         favoriteStyle = member_info.info.MEM_PSN_HOPPY;
                                         favoriteColor = member_info.info.MEM_PSN_COLOR;
-                                        birthday = member_info.info.MEM_PSN_BIRTHDAY;
+
+                                        if(member_info.info.MEM_PSN_BIRTHDAY < 0){
+                                            birthday = 0;
+                                        }else{
+                                            birthday = member_info.info.MEM_PSN_BIRTHDAY;
+                                        }
 
                                     }));
 
