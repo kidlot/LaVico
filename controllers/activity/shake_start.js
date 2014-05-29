@@ -735,7 +735,7 @@ module.exports = {
 //                            window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
 //                                flag = 1;
 //                            });
-                              window.popupStyle2.on('这次没摇到，而且今天也没机会了，明天再来试一试吧！',function(event){
+                              window.popupStyle2.on('这次没摇到，今天没机会了，明天再来试一试吧！',function(event){
                                 flag = 1;
                               });
 
