@@ -89,5 +89,9 @@ module.exports = {
 
 
 
+    },
+    viewIn:function(){
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
     }
 }

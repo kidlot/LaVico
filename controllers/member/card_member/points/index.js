@@ -257,6 +257,8 @@ module.exports = {
     },
     viewIn:function(){
         $('#loading').hide();//隐藏加载框
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
 
     }
 

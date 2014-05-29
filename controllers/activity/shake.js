@@ -84,6 +84,7 @@ module.exports = {
         });
     },
     viewIn:function(){
+
         var member_id = $("#member_id").val();
         var uid = $("#uid").val();
         var aid = $("#aid").val();

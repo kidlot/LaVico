@@ -387,7 +387,9 @@ module.exports = {
             });
         });
 
+        /*掩藏分享按钮*/
         window.hideShareButtion.on();
+
     },
     action:{
         getUserCoupons:function(seed,nut){
