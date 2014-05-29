@@ -128,21 +128,23 @@ exports.load = function () {
                 function(){
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
-                        console.log("-1-1");
+
                         if(doc){
-                            console.log("0000");
+
                             if(doc.location==null){
-                                console.log("111");
+
                                 //当时取消获取账户
                                 //单图文回复
-                                res.reply([{
-                                    title: '门店查询',
-                                    description: '请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。',
-                                    picurl: 'http://test.welab.lavicouomo.com/public/files/2014/5/12/~!77a37b225d61a40f84fb32468c81ba00!map.jpg',
-                                    url: 'http://test.welab.lavicouomo.com/lavico/store/currentCustomerLocation?wxid='+msg.FromUserName
-                                }])
+//                                res.reply([{
+//                                    title: '门店查询',
+//                                    description:请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。 '请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。',
+//                                    picurl: 'http://test.welab.lavicouomo.com/public/files/2014/5/12/~!77a37b225d61a40f84fb32468c81ba00!map.jpg',
+//                                    url: 'http://test.welab.lavicouomo.com/lavico/store/currentCustomerLocation?wxid='+msg.FromUserName
+//                                }])
+
+                                res.reply('请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。 请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。');
                             }else{
-                                console.log("222");
+
                                 lat=doc.location[0];
                                 lng=doc.location[1];
                                 console.log("lat:"+lat);
