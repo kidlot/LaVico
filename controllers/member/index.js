@@ -236,6 +236,7 @@ module.exports = {
         }
 
 
+
     },
     actions:{
         getUserEffectiveCouponsNum:{

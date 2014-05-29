@@ -87,6 +87,11 @@
     }
 
 
+    function bindPosition(id){
+        var popupHig = $(id).height();
+        $(id).css("margin-top", -popupHig / 2);
+    }
+
     window.onresize = function () {
         var popupHig = $(".popup").height();
         $(".popup").css("margin-top", -popupHig / 2);
