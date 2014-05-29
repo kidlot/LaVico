@@ -1,0 +1,433 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
+    <li class="b02"><a href="/welab/user/list" class="stay">用户</a> <em></em></li>
+    <li class="active"><span>详细</span></li>
+</ul>
+<style>
+    .btn-edit,.btn-warning{display:none;}
+</style>
+<div class="panel panel-default">
+<div class="panel-heading">
+    <ul class="nav nav-tabs nav-head">
+        <li class="active"><a href="/welab/user/detail?_id={@data._id}" class="stay-top">详细</a></li>
+        <li><a href="/welab/user/dialog?_id={@data._id}" class="stay-top">会话</a></li>
+        <li><a href="/welab/user/activitys?_id={@data._id}" class="stay-top">动态</a></li>
+    </ul>
+</div>
+<div class="panel-body" style="border-bottom:2px #ddd solid;">
+    <div class="btn-group">
+        <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown"><em class="icon02"></em> 操作 <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="#" class="userSetTagView">设定标签</a></li>
+            <li role="presentation" class="divider"></li>
+            <li><a>结果导出xls (即将推出)</a></li>
+            <li><a>发送微信信息 (即将推出)</a></li>
+            <li><a>发送邮件 (即将推出)</a></li>
+            <li><a>发送短信 (即将推出)</a></li>
+            <li role="presentation" class="divider"></li>
+            <li><a href="/welab/user/form:remove?userList={@data._id}" class="removeUserView">删除</a></li>
+        </ul>
+    </div>
+    <a class="btn btn-primary handle_btn stay" type="button" href="/welab/user/list">返回</a>
+</div>
+
+<div class="panel-body">
+
+<if condition="@data.face">
+    <a class="thumbnail pull-left" href="#">
+        <img class="media-object" alt="100x100" data-src="holder.js/100x100" style="width: 100px; height: 100px;" src="{@data.face}">
+    </a>
+</if>
+
+
+
+<div class="clearfix"></div>
+<table class="table" id="tagList">
+<tbody>
+<tr>
+    <td class="td-name">姓名</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.realname || "未注册用户"}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.realname}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('realname',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+    <td class="td-name">用户ID</td>
+    <td id="_id">{@data._id}</td>
+</tr>
+
+<tr>
+    <td class="td-name">性别</td>
+    <td class="editAndView">
+        <div>
+                            <span style="float: left">
+                                {@ data.gender=='female' ? "女" : ''}
+                                {@ data.gender=='male' ? "男" : ''}
+                            {@ (data.gender!='male' && data.gender!='female') ? "未知" : ''}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <select class="form-control input-sm" style="float: left;width:70%">
+                <option value="male">男</option>
+                <option value="female">女</option>
+            </select>
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('gender',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+    <td class="td-name">微信ID</td>
+    <td>{@data.wechatid}</td>
+</tr>
+<tr>
+    <td class="td-name">生日</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@ data.birthday ? new Date(parseInt(data.birthday)).toISOString().substr(0,10) : "--"}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input type="text" class="form-control input-sm hasDatepicker" utime="{@data.birthday}" value="{@ data.birthday && new Date(parseInt(data.birthday)).toISOString().substr(0,10) }" id="datetimepicker" style="float: left;width:70%;">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('birthday',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+    <td class="td-name">关注时间</td>
+    <td>{@ data.followTime ? new Date(data.followTime*1000).toISOString().substr(0,10) :'--' }</td>
+</tr>
+<tr>
+    <td class="td-name">城市</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@(data.province||'未知') +'-'+ (data.city||'未知')}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <select class="form-control input-sm" name="provid" id="provid" onchange="chsel();" style="width:110px">
+                <option value="" selected="">选择省份</option>
+            </select>
+            <select class="form-control input-sm" name="cityid" id="cityid" style="width:110px">
+                <option value="" selected="">选择城市</option>
+            </select>
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('city',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+    <td class="td-name">注册时间</td>
+    <td>{@ data.registerTime ? new Date(data.registerTime).toISOString().substr(0,10) : '--' }</td>
+</tr>
+<tr>
+    <td class="td-name">移动电话</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.mobile||'未知'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="tel" style="float: left;width:70%" value="{@data.mobile}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('mobile',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+    <td class="td-name">最近会话时间</td>
+    <td>{@ data.otherData.sessionLastTime ? new Date(data.otherData.sessionLastTime).toISOString().substr(0,10) : '--'}</td>
+</tr>
+<tr>
+    <td class="td-name">电子邮件</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.email || '未知'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="email" style="float: left;width:70%" value="{@data.email}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('email',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+    <td class="td-name">会话数</td>
+    <td><a href="/welab/user/dialog?_id={@data._id}" class="stay">{@data.otherData.sesseionCount || '--'}</a></td>
+</tr>
+<tr>
+    <td class="td-name">具体地址</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.address || '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.address}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('address',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="td-name">喜好颜色</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.favoriteColor || '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.favoriteColor}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('favoriteColor',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td class="td-name">喜好款式</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.favoriteStyle || '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.favoriteStyle}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('favoriteColor',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td class="td-name">绑定状态</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.isRegister == true ? "已绑定" : '未绑定'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.isRegister}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('isRegister',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td class="td-name">所属行业</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.profession || '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.profession}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('profession',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td class="td-name">取消绑定时间</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.unRegisterTime ? new Date(data.unRegisterTime).toISOString().substr(0,10) : '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.unRegisterTime}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('unRegisterTime',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+
+
+<tr style="display:none;">
+    <td class="td-name">摇一摇记录</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.shake || '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.shake}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('shake',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+
+<foreach for="@data.regData" var="regData" key="key">
+    <tr style="display:none;">
+        <td class="td-name">{@key}</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@regData}</span>
+                <button type="button" class="btn btn-warning" onclick="changeEdit(this)" style="float: right">修改</button>
+            </div>
+            <div style="display: none">
+                <input type="text" class="form-control input-sm" style="float: left;width:70%; " value="{@regData}" />
+                <button type="button" class="btn btn-success" onclick="changeSave('{@key}',this)" style="float: right; margin-left: 5px;">保存</button>
+                <button type="button" class="btn" onclick="changeCancel(this)" style="float: right">取消</button>
+            </div>
+
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+</foreach>
+<tr>
+    <td class="td-name">标签</td>
+    <td colspan="3" class="editAndView">
+        <div>
+            <foreach for="@data.tags" var="tag">
+                <span class="tm-tag tm-tag-info" ><span>{@tag}</span><a href="#" class="tm-tag-remove" tagidtoremove="1" data-dismiss="alert" onclick="removeTag(this)">×</a></span>
+            </foreach>
+
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="td-name">备注</td>
+    <td colspan="3" class="editAndView">
+        <div>
+            <span style="float: left">{@data.remarks||'--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.remarks}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('remarks',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+
+<!-- 删除 -->
+<div class="modal fade" id="delModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">删除操作</h4>
+            </div>
+            <div class="modal-body">
+                真的要删除吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary removeUserBtn">删除</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- 设置标签 -->
+<div class="modal fade" id="tagModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">设置标签</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm" style="width:240px;"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary userTagBtn">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+<link type="text/css" href="/node_modules/welab/public/css/bootstrap-tagmanager.css">
+<script type="text/javascript" src="/node_modules/welab/public/js/bootstrap-tagmanager.js"></script>
+
+
+<script>
+
+    function changeEdit( o){
+
+        $(o).parents("td").children("div:eq(0)").hide();
+        $(o).parents("td").children("div:eq(1)").show();
+    }
+
+    function changeCancel( o){
+
+        var div1 = $(o).parents("td").children("div:eq(0)").show();
+        var div2 = $(o).parents("td").children("div:eq(1)").hide();
+        div2.children("input").val( div1.children("span").text())
+
+    }
+
+    function changeSave( name, o){
+
+        var oRequestOptions = {} ;
+        oRequestOptions.data = [];
+        oRequestOptions.data.push({name:"name",value:name});
+
+        if(name == "birthday"){
+
+            oRequestOptions.data.push({name:"value",value:$("#datetimepicker").attr("utime")});
+        }else if(name=="city"){
+
+            oRequestOptions.data = [];
+            oRequestOptions.data.push({name:"name",value:"province,city"});
+            oRequestOptions.data.push({name:"value",value:$("#provid").val() +","+ $("#cityid").val()});
+        }else{
+            oRequestOptions.data.push({name:"value",value:$(o).prev().val()});
+        }
+
+        oRequestOptions.data.push({name:"_id",value:$("#_id").text()});
+        oRequestOptions.type = "POST";
+        oRequestOptions.url = "/welab/user/form:update";
+
+        $.request(oRequestOptions,function(err,nut){
+            if(err) throw err ;
+            nut.msgqueue.popup() ;
+            $.controller("/welab/user/detail?_id="+$("#_id").text(),null,"lazy");
+        }) ;
+
+
+
+
+        return false;
+    }
+
+
+    function removeTag ( o){
+
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [];
+        oLinkOptions.data.push({name:"_id",value:$("#_id").text()});
+        oLinkOptions.data.push({name:"name",value:$(o).prev().text()});
+        oLinkOptions.type = "POST";
+        oLinkOptions.url = "/welab/user/form:removeTag";
+
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+
+            nut.msgqueue.popup() ;
+
+            $(o ).parent().remove();
+        }) ;
+    }
+
+
+</script>
+
+
+
+<script src="/node_modules/welab/public/js/city.js"></script>
