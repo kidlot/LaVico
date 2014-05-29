@@ -45,7 +45,7 @@
     /*掩藏分享按钮Start*/
     window.hideShareButtion = {}
     window.hideShareButtion.on = function(){
-        function onBridgeReady(){
+        window.onBridgeReady = function (){
             document.addEventListener('WeixinJSBridgeReady', function onBridgeReady()  {
                 WeixinJSBridge.call('hideOptionMenu');
             });
@@ -59,7 +59,7 @@
                 document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
             }
         }else{
-            onBridgeReady();
+            window.onBridgeReady();
         }
     }
     /*掩藏分享按钮End*/
