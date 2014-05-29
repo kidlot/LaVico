@@ -213,6 +213,7 @@ module.exports={
                                         if (err) throw err;
                                         console.log("tag record:" + doc.success);
                                     }))
+
                                 }
 
                                 if (dot >= 2) {
