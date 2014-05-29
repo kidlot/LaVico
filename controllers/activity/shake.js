@@ -11,6 +11,8 @@ module.exports = {
 
         var wxid = seed.uid ? seed.uid : 'undefined';//uid是用户的wechatid
         var aid = seed.aid ? seed.aid : 'undefined';//摇一摇活动ID
+        nut.model.fromWelab = seed.fromWelab || ""
+
         var member_id;
         this.step(function(){
             if(wxid == 'undefined' || wxid == '{wxid}'){

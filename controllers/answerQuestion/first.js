@@ -51,6 +51,7 @@ module.exports= {
         nut.model.wechatId=seed.wechatid;
         nut.model._id=seed.wechatid;
         var wxid=seed.wechatid;
+        nut.model.fromWelab = seed.fromWelab || ""
         var memberid;
         this.step(function(){
 

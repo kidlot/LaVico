@@ -4,7 +4,10 @@
 <div class="wrapper">
     <div class="coupon-banner"><img src="/lavico/public/images/coupon_banner.jpg" /></div>
     <div class="activity-rules">
-        <div class="begin"><a id="shake_start">立即开始</a></div>
+
+        <if condition="@ fromWelab==''">
+            <div class="begin"><a id="shake_start">立即开始</a></div>
+        </if>
         <div class="text">
             <div class="title">活动及使用规则</div>
             <div class="subtext">

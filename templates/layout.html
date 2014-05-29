@@ -128,7 +128,7 @@
                 url:'/lavico/log',
                 type:'POST',
                 data:{
-                    'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                    'wxid':getWxid(),
                     'url':location.href,
                     'action' : "转发朋友圈"
                 },
@@ -155,7 +155,7 @@
                 url:'/lavico/log',
                 type:'POST',
                 data:{
-                    'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                    'wxid':getWxid(),
                     'url':location.href,
                     'action' : "转发好友"
                 },
@@ -190,7 +190,7 @@
                 url:'/lavico/log',
                 type:'POST',
                 data:{
-                    'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                    'wxid':getWxid(),
                     'url':location.href,
                     'action' : "好友浏览",
                     'fromWelab' : location.search.match(/fromWelab=(.*)$/)[1].split("&")[0]
@@ -209,7 +209,7 @@
                 url:'/lavico/log',
                 type:'POST',
                 data:{
-                    'wxid':location.search.match(/wxid=(.*)$/)[1].split("&")[0],
+                    'wxid':getWxid(),
                     'url':location.href,
                     'action' : "浏览"
                 },
@@ -224,5 +224,22 @@
 
 
 
+    }
+
+
+    function getWxid (){
+
+        var wxid = ""
+        if(location.search.match(/wxid=(.*)$/)){
+
+            wxid = location.search.match(/wxid=(.*)$/)[1].split("&")[0];
+        }else if(location.search.match(/uid=(.*)$/)){
+
+            wxid = location.search.match(/uid=(.*)$/)[1].split("&")[0];
+        }else if(location.search.match(/wechatid=(.*)$/)){
+
+            wxid = location.search.match(/wechatid=(.*)$/)[1].split("&")[0];
+        }
+        return wxid;
     }
 </script>
