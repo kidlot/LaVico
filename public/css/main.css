@@ -302,7 +302,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5-content .pre-box1{ border:0; padding-bottom:40px;}
 .points5-content .pre-box-content{width:96%; margin:0 auto; overflow:hidden; margin-bottom:4%; background-color:#fff; padding:2%; }
 .points5-content .pre-top{ }
-.points5-content .pre-top-right{ width:56%; padding:2%; }
+.points5-content .pre-top-right{ width:56%; padding:0 2%; }
 .points5-content .pre-top-right .intro{font-size:1.2rem; color:#646464; }
 .points5-content .pre-bottom{ padding-top:4px; overflow:hidden;}
 .points5-content .pre-bottom .left,.pre-bottom .right{font-size:1.2rem; text-align:left; cursor:pointer;}
@@ -515,9 +515,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 /*后期增加*/
 .outlet_bottom { background:url(../images/outlet_bottom.png) 96% center no-repeat; background-size:16px; }
-.points5-content .pre_title { width:100%; height:30px; }
+.points5-content .pre_title { width:100%; height:auto; }
 .points5-content .pre_title h2 { font-size:1.6rem; }
-.points5-content .pre_title h3 { font-size:1.4rem; }
+.points5-content .pre_title h2 em { color:#B9954D; }
+.points5-content .pre_title h3 { font-size:1.2rem; }
 
 /*转屏*/
 .backdrop-orientation,.backdrop-follow{display:none;position:fixed;top:0;left:0;z-index:99998;height:100%;width:100%;background:#fff}
