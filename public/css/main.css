@@ -151,7 +151,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .inquiry .change input{width:140px; height:40px; font-size:1.6rem; color:#fff; line-height:40px; border:0; text-align:center; 
                        background:url(../images/verify_bg_01.png) center center no-repeat; background-size:100% 100%; margin-top:5px;}
 .store-name{ font-size:2rem; color:#cdb788; text-align:center; padding-bottom:5%;}
-.activity-detail{ border-top:1px #a9a9a9 solid; margin-top:5%; padding-top:5%;}
+.activity-detail{ border-top:1px #a9a9a9 solid; margin-top:5%; padding-top:5%; margin-bottom:80px; }
 .activity-detail .title{ font-size:1.6rem; color:#B9954D; text-align:center;}
 .activity-detail .text{font-size:1.6rem; color:#646464; padding-top:5px; padding-bottom:15px;}
 .footer{width:100%; height:auto; padding-bottom:10px;  background:url(../images/foot_bg.jpg) no-repeat;position:fixed; left:0px; bottom:0px; z-index:999; background-size:100% 100%; }
