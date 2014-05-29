@@ -188,8 +188,6 @@ exports.load = function () {
 //        }
 //    }
 
-
-
     var welabUserlist = require("welab/controllers/user/list.js");
 
     // 复写用户列表的导出
@@ -666,4 +664,11 @@ exports.load = function () {
 
     // 复写 messageList
     welabMessagelist.children.page.view = "lavico/templates/MessageListPage.html";
+
+
+    // 复写 welab/user/detail
+    var welabUserDetail = require("welab/controllers/user/detail.js");
+    welabUserDetail.view = "lavico/templates/welab/detail.html";
+
+
 };
