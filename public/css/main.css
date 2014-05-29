@@ -515,10 +515,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 /*后期增加*/
 .outlet_bottom { background:url(../images/outlet_bottom.png) 96% center no-repeat; background-size:16px; }
-.points5-content .pre_title { width:100%; height:auto; }
+.points5-content .pre_title { width:100%; height:auto; padding-bottom:2%; }
 .points5-content .pre_title h2 { font-size:1.4rem; }
 .points5-content .pre_title h2 em { color:#B9954D; }
-.points5-content .pre_title h3 { font-size:1.2rem; }
+.points5-content .pre_title h3 { font-size:1.2rem; color:#646464; }
 
 /*转屏*/
 .backdrop-orientation,.backdrop-follow{display:none;position:fixed;top:0;left:0;z-index:99998;height:100%;width:100%;background:#fff}
