@@ -13,7 +13,33 @@
                         <li><a id="usedCoupons" class="couponBtn" href="javascript:void(0);">已使用 ({@usedCouponsLength})</a></li>
                     </ul>
                 </div>
-                <div class="pre-box" id="overdueCouponsContent" style="display:none">
+                <div class="pre-box" id="effectiveCouponsContent" style="display:none">
+                    <foreach for="@effectiveCoupons" key="key">
+                        <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}'">
+                            <div class="pre_title">
+                                <span class="c4">[{@effectiveCoupons[key].COUPON_TYPE}]</span>{@effectiveCoupons[key].COUPON_NAME}
+                            </div>
+                            <div class="pre-top clear">
+                                <div class="fl"><img src="{@overdueCoupons[key].PIC}" /></div>
+                                <div class="fl pre-top-right">
+                                    <div class="intro">
+                                        <p>面额：{@effectiveCoupons[key].COUPON_QTY}</p>
+                                        <p>有效期：{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}<br />[{@effectiveCoupons[key].CREAT_DATE}]</p>
+                                        <p>券号：{@effectiveCoupons[key].COUPON_NO}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreach>
+                </div>
+
+
+
+
+
+
+
+                <!--<div class="pre-box" id="overdueCouponsContent" style="display:none">
                     <foreach for="@overdueCoupons" key="key">
                         <div class="pre-box-content" onclick="window.location.href='/lavico/member/card_member/coupon/rule?wxid={@wxid}'">
                             <div class="pre-top clear">
@@ -64,7 +90,7 @@
                             </div>
                         </div>
                     </foreach>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
