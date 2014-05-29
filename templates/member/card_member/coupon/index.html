@@ -17,7 +17,7 @@
                     <foreach for="@effectiveCoupons" key="key">
                         <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}'">
                             <div class="pre_title">
-                                <h2><em>{@effectiveCoupons[key].COUPON_TYPE}</em>-{@effectiveCoupons[key].COUPON_NAME}{@effectiveCoupons[key].COUPON_QTY}</h2>
+                                <h2><em>{@effectiveCoupons[key].COUPON_TYPE}</em> - {@effectiveCoupons[key].COUPON_NAME}{@effectiveCoupons[key].COUPON_QTY}</h2>
                                 <h3>{@effectiveCoupons[key].CREAT_DATE}</h3>
                             </div>
                             <div class="pre-top clear">
