@@ -45,9 +45,14 @@
     /*掩藏分享按钮Start*/
     window.hideShareButtion = {}
     window.hideShareButtion.on = function(){
-        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady()  {
+
+        var timeid = setInterval(function(){
+            if(typeof WeixinJSBridge =="undefined")
+                return ;
+
+            clearTimeout(timeid) ;
             WeixinJSBridge.call('hideOptionMenu');
-        });
+        },300) ;
     }
     /*掩藏分享按钮End*/
 
