@@ -4,7 +4,6 @@ var util = require("welab/controllers/summary/util.js") ;
 
 exports.load = function () {
 
-
     var summaryUserTrend = require("welab/controllers/summary/userTrend.js");
 
 //    summaryUserTrend.children.page = {
@@ -189,6 +188,7 @@ exports.load = function () {
 //    }
 
     var welabUserlist = require("welab/controllers/user/list.js");
+
 
     // 复写用户列表的导出
     welabUserlist.actions.exports.process = function(seed, nut){
@@ -398,7 +398,7 @@ exports.load = function () {
         count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
         count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
-        console.log(seed.realname);
+
 
         var conditions = search.conditions(seed) ;
 
@@ -662,6 +662,145 @@ exports.load = function () {
             return false;
 
         });
+    }
+
+    //json复写list-viewIn
+    welabUserlist.viewIn=function(){
+        jQuery("#tags").tagsManager({
+            prefilled: [],
+            hiddenTagListName: 'tagsVal'
+        });
+
+
+        // search box--搜索显示
+        $.searchInitConditions([
+            {field:'realname',title:'姓名',type:'text'}
+            , {field:'gender',title:'性别',type:'gender'}
+            , {field:'age',title:'年龄',type:'num'}
+            , {field:'email',title:'电子邮件',type:'text'}
+            , {field:'mobile',title:'移动电话',type:'text'}
+            , {field:'createtime',title:'注册时间',type:'date'}
+            , {field:'followTime',title:'关注时间',type:'date'}
+            , {field:'tags',title:'标签',type:'value'}
+            , {field:'nickname',title:'昵称',type:'value'}
+            , {field:'city',title:'城市',type:'value'}
+            , {field:'profession',title:'行业',type:'value'}
+            , {field:'source',title:'关注来源',type:'value'}
+            , {field:'HaiLanMemberInfo.action',title:'绑定与否',type:'value'}
+            , {field:'HaiLanMemberInfo.cardNumber',title:'会员卡',type:'value'}
+        ]) ;
+
+        $(".btnsearch").click(function(){
+            var conditions = $(this).searchConditions() ;
+            //alert(JSON.stringify(conditions));
+            if(!conditions.length)
+                return ;
+
+            //{params:[{name:"conditions",value:[["city","上海"]]},{name:"logic",value:"任意"}]}
+            $("#userList").flexOptions({params: [{name:"conditions",value:JSON.stringify(conditions)},{name:"logic",value:$("[name=searchLogic]").val()}]});
+            $('#userList').flexOptions({newp: 1}).flexReload();
+
+            /*
+             $.controller("/welab/user/list:page",{
+             conditions:JSON.stringify(conditions)
+             , logic: $("[name=searchLogic]").val()
+             },'.childview>.ocview') ;*/
+        }) ;
+
+        //取消筛选
+        $(".btncancel").click(function(){
+
+            $('#searchView').fadeOut('100')
+            $('.searchConditionOuter').empty()
+            $.controller("/welab/user/list:page",{
+                conditions:JSON.stringify({})
+                , logic: $("[name=searchLogic]").val()
+            },'.childview>.ocview') ;
+        }) ;
+
+        /**
+         * 设置标签
+         */
+        $(".userSetTagView").on("click",function(){
+
+            var aList = getUserList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            jQuery("#tags").tagsManager('empty');
+
+            $('#tagModal').modal('toggle');
+            oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+            return false;
+        })
+
+
+        /**
+         * 设置标签
+         */
+        $(".sendMessageView").on("click",function(){
+
+            var aList = getUserList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            $('#sendMessageModal').modal('toggle');
+            return false;
+        })
+
+        /**
+         * 删除动作
+         */
+        var deletingLink ;
+        $(".removeUserView").on("click",function(){
+
+            $('#delModal').modal('toggle');
+
+            deletingLink = this ;
+            deletingLink.href += "?userList=";
+            var aUserList = [];
+            $("#userList").find("tr").each(function(i,o){
+
+                var _oInput = jQuery(o).find("td:eq(0)").find("input")
+
+                var _uid = _oInput.attr("userid");
+
+                if( _uid && _oInput[0].checked){
+                    aUserList.push(_uid);
+                }
+
+            })
+
+            deletingLink.href += aUserList.join(",");
+            return false;
+        })
+
+        $(".removeUserBtn").click(function(){
+
+            $('#delModal').modal('toggle');
+
+            $(deletingLink).action(function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/welab/user/list",null,"lazy");
+
+            }) ;
+
+            return false;
+        });
+
     }
 
 
