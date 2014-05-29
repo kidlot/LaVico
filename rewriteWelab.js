@@ -188,8 +188,6 @@ exports.load = function () {
 //        }
 //    }
 
-
-
     var welabUserlist = require("welab/controllers/user/list.js");
 
     // 复写用户列表的导出
@@ -463,7 +461,7 @@ exports.load = function () {
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';
                     page.docs[i].industry = page.docs[i].profession || '';
 
-                    var cardtype = {1:"白金卡", 1:"VIP卡", 1:"白金VIP卡"}
+                    var cardtype = {1:"白卡", 2:"VIP卡", 3:"白金VIP卡"}
                     page.docs[i].cardtype = page.docs[i].HaiLanMemberInfo ? cardtype[page.docs[i].HaiLanMemberInfo.type]||"" : "";
 
                     var tags = [];
@@ -666,4 +664,71 @@ exports.load = function () {
 
     // 复写 messageList
     welabMessagelist.children.page.view = "lavico/templates/MessageListPage.html";
+
+
+    // 复写 welab/user/detail by David.xu 2014-05-29 Start
+    var welabUserDetail = require("welab/controllers/user/detail.js");
+
+    welabUserDetail.view = "lavico/templates/welab/user/detail.html";
+    welabUserDetail.process = function(seed,nut){
+        helper.db.coll("welab/customers").findOne({_id : helper.db.id(seed._id)},this.hold(function(err,doc){
+
+            var _data = {};
+            _data = doc;
+
+            summary.otherData(seed._id , this.hold(function(doc){
+                _data.otherData = doc;
+
+                _data.regData = {}
+                for(var _tmp in _data){
+                    if( _tmp != "_id" && _tmp != "city" && _tmp != "country" && _tmp != "face" && _tmp != "fakeid" && _tmp != "followCount" && _tmp != "followTime" && _tmp != "gender" && _tmp != "isFollow" && _tmp != "lastMessageTime" && _tmp != "messageCount" && _tmp != "province" && _tmp != "ranking" && _tmp != "realname" && _tmp != "wechatUsername" && _tmp != "wechatid" && _tmp != "otherData" && _tmp!="regData" && _tmp!="birthday" && _tmp!="mobile" && _tmp!="tags" && _tmp!="email" && _tmp!="registerTime" && _tmp!="telephone" && _tmp!="unfollowCount" && _tmp!="unfollowTime"  && _tmp!="shareFriendCount" && _tmp!="shareTimeLineCount" && _tmp!="viewCount" && _tmp!="viewTimeLineCount"){
+                        _data.regData[_tmp] = _data[_tmp]
+                    }
+                }
+
+                if(_data.face && !/^http:\/\//g.test(_data.face) && !/^\/welab\//g.test(_data.face)){
+                    _data.face = "/welab/" + _data.face
+                }
+
+                console.log(_data)
+
+
+                nut.model.data = _data||{};
+
+                if(_data.HaiLanMemberInfo&&_data.HaiLanMemberInfo.memberID){
+                    nut.model.data.memberID = _data.HaiLanMemberInfo.memberID;
+                }
+
+                if(_data.HaiLanMemberInfo&&_data.HaiLanMemberInfo.cardNumber){
+                    nut.model.data.cardNumber = _data.HaiLanMemberInfo.cardNumber;
+                }
+
+                if(_data.HaiLanMemberInfo&&_data.HaiLanMemberInfo.action){
+                    if(_data.HaiLanMemberInfo.action == 'bind'){
+                        nut.model.data.action = '绑定';
+                    }else{
+                        nut.model.data.action = '未绑定';
+                    }
+                }
+
+                if(_data.HaiLanMemberInfo&&_data.HaiLanMemberInfo.type){
+                    if(_data.HaiLanMemberInfo.type == 1){
+                        nut.model.data.type = '白卡';
+                    }else if(_data.HaiLanMemberInfo.type == 2){
+                        nut.model.data.type = 'VIP卡';
+                    }else if(_data.HaiLanMemberInfo.type == 3){
+                        nut.model.data.type = '白金VIP卡';
+                    }else{
+                        nut.model.data.type = '未知';
+                    }
+                }
+            }));
+        }));
+
+
+    };
+
+    // 复写 welab/user/detail by David.xu 2014-05-29 End
+
+
 };
