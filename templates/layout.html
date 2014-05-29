@@ -41,8 +41,14 @@
     <p>竖屏浏览，效果更佳。</p>
     <!--<span class="btn-close ir">关闭</span>-->
 </div>
-
 <script>
+    /*掩藏分享按钮Start*/
+    function hideShareButtion(){
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            WeixinJSBridge.call('hideOptionMenu');
+        });
+    }
+    /*掩藏分享按钮End*/
     window.popupStyle1 = {}
     window.popupStyle1.on = function(title,cb){
         $(".popupStyle1").find("p").text(title)
