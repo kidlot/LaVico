@@ -32,18 +32,6 @@
                 vip_card();
             }
 
-            //function vip_card() {
-            //    var vip_cardWin = vip_card_num.offsetWidth;
-            //    console.log(vip_cardWin)
-            //    var vip_margWin = document.getElementsByTagName("vip-card-num");
-            //    vip_margWin.style.cssText = 'margin-left:' - vip_cardWin;
-
-            //    var vip_card_num = $(".vip-card-num").width() / 2;
-            //    $(".vip-card-num").css("margin-left", -vip_card_num );
-            //}
-
-            
-
             function _gotoFavPage(){
                 var url = "/lavico/lookbook/favorites?wxid={@wxid}&cb="+encodeURIComponent('{'+location.href+'}')
                 location.href = url
@@ -106,11 +94,3 @@
 <else/>
 <input type="hidden" id="error" name="error" value="{@error}" />
 </if>
-<script>
-    /*掩藏分享按钮Start*/
-    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-        WeixinJSBridge.call('hideOptionMenu');
-    });
-
-    /*掩藏分享按钮End*/
-</script>

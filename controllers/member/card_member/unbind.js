@@ -61,6 +61,9 @@ module.exports = {
         /*验证码开始*/
         $('#loading').hide();//隐藏加载框
 
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
+
         var timer60Seconds;
         var flag = 0;
         $("#get_id_code").click(function(){

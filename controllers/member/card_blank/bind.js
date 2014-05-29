@@ -46,6 +46,9 @@ module.exports = {
     }
     ,viewIn:function(){
 
+            /*掩藏分享按钮*/
+            window.hideShareButtion.on();
+
             /*前端设计JS*/
             $('#loading').hide();//隐藏加载框
             jQuery('.popupStyle2').css('z-index','10002');
