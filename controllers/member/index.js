@@ -235,7 +235,7 @@ module.exports = {
             window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
         }
 
-        hideShareButtion();
+        window.hideShareButtion.on();
 
     },
     actions:{

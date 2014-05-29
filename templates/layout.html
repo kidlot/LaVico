@@ -43,7 +43,8 @@
 </div>
 <script>
     /*掩藏分享按钮Start*/
-    function hideShareButtion(){
+    window.hideShareButtion = {}
+    window.hideShareButtion.on = function(){
         document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
             WeixinJSBridge.call('hideOptionMenu');
         });

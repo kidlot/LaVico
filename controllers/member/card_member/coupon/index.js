@@ -386,6 +386,8 @@ module.exports = {
                 $('#'+_id+'Content').show();
             });
         });
+
+        window.hideShareButtion.on();
     },
     action:{
         getUserCoupons:function(seed,nut){
