@@ -461,7 +461,7 @@ exports.load = function () {
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';
                     page.docs[i].industry = page.docs[i].profession || '';
 
-                    var cardtype = {1:"白金卡", 1:"VIP卡", 1:"白金VIP卡"}
+                    var cardtype = {1:"白卡", 2:"VIP卡", 3:"白金VIP卡"}
                     page.docs[i].cardtype = page.docs[i].HaiLanMemberInfo ? cardtype[page.docs[i].HaiLanMemberInfo.type]||"" : "";
 
                     var tags = [];
@@ -668,7 +668,7 @@ exports.load = function () {
 
     // 复写 welab/user/detail
     var welabUserDetail = require("welab/controllers/user/detail.js");
-    welabUserDetail.view = "lavico/templates/welab/detail.html";
+    welabUserDetail.view = "lavico/templates/welab/user/detail.html";
 
 
 };
