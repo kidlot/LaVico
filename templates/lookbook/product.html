@@ -63,7 +63,7 @@
 
         var bigPicIndex = parseInt($("#bigPicIndex").val())
         var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
-        var cb = window.location.search.match(/cb=(.*)$/)[1];
+        var cb = window.location.search.match(/cb=(.*)$/) ? window.location.search.match(/cb=(.*)$/)[1] : false;
         if(bigPicIndex <= 1){
             var page = JSON.parse($("#jsonPage").text())
             var nowProductNum = 0;
@@ -75,7 +75,7 @@
 
             if(nowProductNum > 1){
                 var url =  "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+page.product[nowProductNum-2]._id+"&bigPicIndex="+(page.product[nowProductNum-2].bigPic ? page.product[nowProductNum-2].bigPic.length:0)+"&source={@source}"
-                location.href = url + (cb?"&cb="+cb:"");
+                location.href = cb ? url + (cb?"&cb="+cb:"") : url;
             }else{
                 window.popupStyle2.on('已经是第一页',function(event){
 
@@ -84,14 +84,14 @@
             return;
         }
         var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
-        location.href = url + (cb?"&cb="+cb:"");
+        location.href = cb ? url + (cb?"&cb="+cb:"") : url;
     }
 
     function rightPage(){
 
         var bigPicIndex = parseInt($("#bigPicIndex").val())
         var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
-        var cb = window.location.search.match(/cb=(.*)$/)[1];
+        var cb = window.location.search.match(/cb=(.*)$/) ? window.location.search.match(/cb=(.*)$/)[1] : false;
         if(bigPicIndex >= sumBigPicIndex){
 
             var page = JSON.parse($("#jsonPage").text())
@@ -104,7 +104,7 @@
 
             if(nowProductNum < page.product.length){
                 var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId="+(page.product[nowProductNum]._id)+"&source={@source}"
-                location.href = url + (cb?"&cb="+cb:"");
+                location.href = cb ? url + (cb?"&cb="+cb:"") : url;
             }else{
                 window.popupStyle2.on('已经是最后一页',function(event){
 
@@ -114,7 +114,7 @@
             return;
         }
         var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
-        location.href = url + (cb?"&cb="+cb:"");
+        location.href = cb ? url + (cb?"&cb="+cb:"") : url;
     }
     function favorites(wxid,pid){
 
