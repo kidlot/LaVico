@@ -220,7 +220,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .wei_text{ color:#646464; font-size:1.4rem; padding-top:10px;}
 
 /*积分兑换*/
-.points1{ background-color:#eeeeee;}
+.points1{ /*background-color:#eee;*/}
 .points1 .title{width:92%; height:50px; padding:0 4%;  background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.6rem; color:#000;}
 .points1 .title .text{width:100%; margin:0 auto; line-height:50px;}
 .points1 .tab{width:100%; height:50px; background-color:#e9e9e9;}
@@ -260,7 +260,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points2-content .point-box .title3{width:96%; height:50px;  background:url(../images/point_bg1.png) no-repeat; font-size:1.2rem; color:#fff; line-height:50px; padding:0 2%;background-size:100% 100%; }
 .points2-content .point-box .title3 { background:url(../images/point_bg2.png) no-repeat;background-size:100% 100%; }
 /*积分兑换*/
-.points3{ background-color:#eee;}
+.points3{ /*background-color:#eee;*/}
 .points3-box{width:100%;padding:10px 0; border-bottom:1px #dedede solid;}
 .points3-content{width:96%; background-color:#fff; margin-left:2%; position:relative; }
 .points3-content .text{ width:56%; padding:2%; font-size:1.4rem;}
@@ -271,7 +271,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points3-content .text .btn{width:140px; height:40px; line-height:40px;color:#281a00; text-align:center; position:absolute; bottom:0px; right:2%;
                             background:url(../images/next.png) center center no-repeat; background-size:100% 100%;}
 /*消费记录*/
-.points4{ background-color:#eee;}
+.points4{ /*background-color:#eee;*/}
 .points4 .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.6rem; color:#000;}
 .points4 .title .text{width:92%; padding:0 4%; margin:0 auto; line-height:50px;}
 .points4-content{width:96%; padding:0 2%; margin:0 auto;}
@@ -289,7 +289,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points4-content .point-box .title3{width:560px; height:65px; background:url(../images/point_bg2.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
 .points4-content .gift_point-box .title3{width:560px; height:65px; background:url(../images/point_bg2.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
 /*专属礼券*/
-.points5{background-color:#eeeeee;}
+.points5{background-color:#eee;}
 .points5-content{width:96%; padding:2% 2% 0; }
 .points5-content .banner{width:96%; height:auto; border:1px #dedede solid; padding:2%; background-color:#fff; box-sizing:content-box; }
 .points5-content .banner img{ width:100%; }
