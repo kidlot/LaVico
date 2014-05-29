@@ -82,7 +82,7 @@ module.exports={
                         var minlen = scoreRange[i].conditionMinScore;//获取低分值
                         var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                         var dot = 1;
-                        if (scoreAll > minlen && scoreAll < maxlen) {//在分值范围中
+                        if (scoreAll >= minlen && scoreAll <= maxlen) {//在分值范围中
                             //获取三个奖励
                             var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                             var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
