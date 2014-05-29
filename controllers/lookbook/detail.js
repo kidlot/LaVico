@@ -16,6 +16,7 @@ module.exports = {
             nut.model.wxid = seed.wxid
             nut.model._id = seed._id
             nut.model.pageNum = parseInt(seed.pageNum) || 1
+            nut.model.fromWelab = seed.fromWelab || ""
 
             helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}

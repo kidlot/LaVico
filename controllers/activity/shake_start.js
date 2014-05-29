@@ -500,6 +500,9 @@ module.exports = {
         /*前端设计JS*/
         $('#loading').hide();//隐藏加载框
 
+        /*掩藏分享按钮*/
+        window.hideShareButtion.on();
+
         var flag = 0;//默认不可摇一摇
 
         var init = function(){
@@ -570,16 +573,6 @@ module.exports = {
 
 
         init();
-
-//        var points = parseInt($("#points").val());
-//        if(points>0){
-//            //alert('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。');
-//            window.popupStyle2.on('您好，请注意此活动每次摇一摇需要消耗'+points+'分，'+'消耗后，不可返还。',function(event){
-//                flag = 1;//设置可以摇一摇
-//            });
-//        }else{
-//            flag = 1;//设置可以摇一摇
-//        }
 
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);

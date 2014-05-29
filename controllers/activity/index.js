@@ -1,9 +1,7 @@
 /*
-* 应用：活动券
+* 应用：活动券-后台应用
 * URL：{host}/lavico/activity
 * */
-
-
 
 var middleware = require('../../lib/middleware.js');
 module.exports = {
