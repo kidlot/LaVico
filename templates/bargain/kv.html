@@ -13,7 +13,6 @@ window.onload=function(){
 <div class="wrapper">
     <div class="coupon-banner"><img src="/lavico/public/images/bargain_banner.jpg"></div>
     <div class="activity-rules">
-        <if condition="@ fromWelab==''">
         <if condition="@ _id">
             <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@ _id}')">立即开始</a></div>
         <else/>
@@ -21,12 +20,11 @@ window.onload=function(){
                 <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@doc[0]._id}')">立即开始</a></div>
             </if>
         </if>
-        </if>
         <div class="text">
             <div class="title">活动及使用规则</div>
             <div class="title1">活动说明：</div>
             <div class="subtext">侃价是门技术更是门艺术，既要有吃定你不放弃的决心，更要练就三寸不烂的嘴上功夫。生活中的你也是侃价达人吗？马上参与郎维高“我要侃价”活动，点击“立即侃价”，输入你心目中的理想价位，给力优惠，惊喜无限！<br>
-                该活动只有朗维高会员才有权限参与，如果你还不是会员请点击菜单-我的会员卡-<a href="/lavico/member/card_blank/register?wxid={@ wxid}">注册会员</a></div>
+                该活动只有朗维高会员才有权限参与，如果你还不是会员请点击菜单-我的会员卡-<a href="/lavico/member/card_blank/register?wxid={@ wxid}" style="text-decoration:underline;">注册会员</a></div>
             <div class="title1">奖项设置：</div>
             <div class="subtext">1、不同额度的优惠券 <br>2、每期活动每位会员能参与1次</div>
             <div class="title1">免责声明：</div>
@@ -39,6 +37,9 @@ window.onload=function(){
     </div>
 </div>
 
+<if condition="@ fromWelab!=''">
+    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
+</if>
 <script>
     function _isVip(wxid,_id){
         var isvip = '{@ isVip}'
