@@ -18,7 +18,7 @@ module.exports = {
             nut.model.memberID = false
 
 
-                helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
+            helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
                 var customers = customers || {}
 
                 nut.model.isVip = false
