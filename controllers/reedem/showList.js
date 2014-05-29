@@ -40,8 +40,8 @@ module.exports={
                         var resultJson=JSON.parse(result);
                         return [resultJson.point,memberId]//json数组双传值，数组格式
                     }else{
-                        nut.disable();
-                        write_info(then,"没有查到您的积分，请联系我们");
+                        nut.view.disable();
+                        nut.write("<script>window.onload=function(){window.popupStyle2.on('没有查到您的积分，请联系我们',function(event){history.back()})}</script>");
                     }
                 })
                 )
@@ -80,8 +80,8 @@ module.exports={
                                             reedemJson.canUse.push(result[i]);//追加数组
                                         }
                                     }else{
-                                        nut.disable();
-                                        write_info_text(then,"商家没有提供可兑换券");
+                                        nut.view.disable();
+                                        nut.write("<script>window.onload=function(){window.popupStyle2.on('商家没有提供可兑换券',function(event){history.back()})}</script>");
                                     }
                                 }))
                             })(i)
@@ -136,7 +136,24 @@ module.exports={
                 var then=this;
                 var t_name,QTY;
 
-
+                this.step(function(){
+                    middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,doc){
+                        if(err){
+                            this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
+                            this.res.end();
+                        }
+                        if(doc){
+                            var result  = JSON.parse(doc);
+                            if(result.point<needScore){
+                                nut.view.disable();
+                                nut.write("<script>window.onload=function(){window.popupStyle2.on('对不起,您的积分不足!',function(event){history.back()})}</script>");
+                            }
+                        }else{
+                            nut.view.disable();
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('没有查到您的积分，请联系我们',function(event){history.back()})}</script>");
+                        }
+                }))
+                })
 
                 //判断
                 //活动时间范围判断
@@ -149,12 +166,12 @@ module.exports={
                             var currentTime=new Date().getTime();
                             if(currentTime<result.startDate || currentTime>result.endDate){
                                 //超出
-                                nut.disable();
-                                write_info_text(then,'sorry很抱歉！此活动已经下架');
+                                nut.view.disable();
+                                nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动已经下架',function(event){history.back()})}</script>");
                             }else{
                                 if(result.switcher=="Off" || result.switcher=="off"){
-                                    nut.disable();//不返回模板
-                                    write_info_text(then,'sorry很抱歉！此活动关闭中，请重新选择');
+                                    nut.view.disable();
+                                    nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动关闭中，请重新选择',function(event){history.back()})}</script>");
                                 }
                             }
                         }
@@ -189,7 +206,8 @@ module.exports={
                     params.openid=wechatId;
                     params.otherPromId=id;
                     //params.PROMOTION_CODE=aid;
-                    params.PROMOTION_CODE='CQL201404280005';//aid:测试号
+                    //params.PROMOTION_CODE='CQL201404280005';//aid:测试号
+                    params.PROMOTION_CODE='L2013112709'
                     params.point=0;
                     //调用接口：提交扣除积分和兑换奖券
                     //扣积分接口
@@ -210,8 +228,8 @@ module.exports={
                             //返回true，表成功兑换，返回券值
                             return docJson
                         }else{
-                            nut.disable();
-                            write_info_text(then,'sorry很抱歉！此商品暂停兑换');
+                            nut.view.disable();
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此商品暂停兑换',function(event){history.back()})}</script>");
                         }
                     }))
                 });
@@ -239,9 +257,8 @@ module.exports={
                             return record;//return只能放在hold
                         }))
                     }else{
-
-                        nut.disable();
-                        write_info_text(then,'数据错误1');
+                        nut.view.disable();
+                        nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误1',function(event){history.back()})}</script>");
                     }
                 })
 
@@ -256,9 +273,8 @@ module.exports={
                             record.name=result.name;
                             return record;
                         }else{
-
-                            nut.disable();
-                            write_info_text(then,'数据错误2');
+                            nut.view.disable();
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误2',function(event){history.back()})}</script>");
 
 
                         }
