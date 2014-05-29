@@ -152,6 +152,59 @@
     <td class="td-name">会话数</td>
     <td><a href="/welab/user/dialog?_id={@data._id}" class="stay">{@data.otherData.sesseionCount || '--'}</a></td>
 </tr>
+
+<tr>
+    <td class="td-name">绑定状态</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.action || '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.action}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('action',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td class="td-name">卡类型</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.type || '--'}</span>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td class="td-name">会员号码</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.memberID || '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.memberID}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('memberID',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="td-name">会员卡号码</td>
+    <td class="editAndView">
+        <div>
+            <span style="float: left">{@data.cardNumber || '--'}</span>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+        </div>
+        <div style="display: none">
+            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.cardNumber}">
+            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('memberID',this)" type="button">保存</button>
+            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+        </div>
+    </td>
+</tr>
 <tr>
     <td class="td-name">具体地址</td>
     <td class="editAndView">
@@ -197,23 +250,6 @@
 </tr>
 
 <tr>
-    <td class="td-name">绑定状态</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.isRegister == true ? "已绑定" : '未绑定'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.isRegister}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('isRegister',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-</tr>
-
-
-
-<tr>
     <td class="td-name">所属行业</td>
     <td class="editAndView">
         <div>
@@ -227,22 +263,6 @@
         </div>
     </td>
 </tr>
-
-<tr>
-    <td class="td-name">取消绑定时间</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.unRegisterTime ? new Date(data.unRegisterTime).toISOString().substr(0,10) : '--'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.unRegisterTime}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('unRegisterTime',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-</tr>
-
 
 <tr style="display:none;">
     <td class="td-name">摇一摇记录</td>
