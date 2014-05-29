@@ -385,7 +385,7 @@ exports.load = function () {
 
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
-        console.log("aaaaa");
+        console.log("---search customers---");
         nut.disabled = true ;
 
         // 总人数
@@ -400,6 +400,7 @@ exports.load = function () {
         count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
         count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
+        console.log(seed.realname);
 
         var conditions = search.conditions(seed) ;
 
@@ -670,4 +671,7 @@ exports.load = function () {
 
     // 复写 messageList
     welabMessagelist.children.page.view = "lavico/templates/MessageListPage.html";
+
+
+
 };
