@@ -7,6 +7,8 @@ module.exports = {
     {
         var doc = {};
 
+        nut.model.fromWelab = seed.fromWelab || ""
+
         if(seed.wxid){
 
             helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(this.hold(function(err,_doc){
