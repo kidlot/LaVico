@@ -12,6 +12,7 @@ window.onload=function(){
 
         $("#canExchange").css("backgroundColor","#ccc");
         $("#notcan").hide();
+        //$("#notcan").attr('checked','checked');
         $("#canExchange").click(function(){
             $("#can").show();
             $("#notcan").hide();
@@ -40,76 +41,93 @@ window.onload=function(){
 
 </script>
 <div class="wrapper">
-  <div class="store-title">
-    <p><span class="title1"><a href="/lavico/member/card_member/points/index?wxid={@wechatId}">积分明细</a></span><span class="title2">积分兑换</span><span class="title4"><a href="/lavico/member/card_member/points/redeem/record?wxid={@wechatId}">兑换记录</a></span></p>
-  </div>
-  <div class="points1">
-  <div class="title"><p class="text"><span class="fl">目前可用积分</span><span class="fr">
-      <if condition="{@$helper.gt(reedemJson.point,0)}">
-          {@reedemJson.point}
-          <else/>
-          {@reedemJson.point}
-      </if>
-  </span></p></div>
-  <div class="tab">
-  <ul><li id="canExchange"><a href="#">可兑换({@reedemJson ? reedemJson.canUse.length : 0})</a></li>
-      <li id="cannotExchange"><a href="#">暂不可兑换({@reedemJson ? reedemJson.noCanUse.length :0})</a></li>
-  </ul>
-  </div>
+    <div class="store-title">
+        <p><span class="title1"><a href="/lavico/member/card_member/points/index?wxid={@wechatId}">积分明细</a></span><span class="title2">积分兑换</span><span class="title4"><a href="/lavico/member/card_member/points/redeem/record?wxid={@wechatId}">兑换记录</a></span></p>
+    </div>
+    <div class="points1">
+        <div class="title">
+            <p class="text">
+                <span class="fl">目前可用积分</span>
+                <span class="fr">
+                    <if condition="{@$helper.gt(reedemJson.point,0)}">
+                        {@reedemJson.point}
+                        <else/>
+                        {@reedemJson.point}
+                    </if>
+                </span>
+            </p>
+        </div>
+        <div class="tab">
+            <ul>
+                <li id="canExchange">
+                    <a href="#">可兑换({@reedemJson ? reedemJson.canUse.length : 0})</a>
+                </li>
+                <li id="cannotExchange">
+                    <a href="#">暂不可兑换({@reedemJson ? reedemJson.noCanUse.length :0})</a>
+                </li>
+            </ul>
+        </div>
 
-<div id="content">
-  <div id="can">
-      <ul style="list-style: none">
-          <foreach for="@reedemJson.canUse" var="canUseOne">
-              <li>
-                  <div class="gift-box">
-                  <div class="gift-box-content">
-                  <div class="gift-top clear">
-                  <div class="fl"><img src="{@canUseOne.smallPic}" /></div>
-                  <div class="fl gift-top-right">
-                  <div class="name">{@canUseOne.name}</div>
-                  <div class="intro">{@canUseOne.introduction}</div>
-                  <div class="term"><p>所需积分：{@canUseOne.needScore}</p><p>剩余数量：{@canUseOne.stillUse}</p></div>
-                  </div>
-                  </div>
-                  <div class="gift-bottom">
-                  <div class="fl left"><a href="/lavico/reedem/reedemdetail?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}&wxid={@wxid}">礼品介绍及兑换细则</a> > </div>
-                  <div class="fr right">
-                      <!--<a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"   name="nowGet">立即兑换</a>-->
-                      <a href="#" name="nowGet" onclick="exchange('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">立即兑换</a>
-                  </div>
-                  </div>
-                  </div>
-                  </div>
-              </li>
-          </foreach>
-      </ul>
-  </div>
+        <div id="content">
+            <div id="can">
+                <ul style="list-style: none">
+                    <foreach for="@reedemJson.canUse" var="canUseOne">
+                        <li>
+                            <div class="gift-box">
+                                <div class="gift-box-content">
+                                    <div class="gift-top clear">
+                                        <div class="fl">
+                                            <img src="{@canUseOne.smallPic}" />
+                                        </div>
+                                        <div class="fl gift-top-right">
+                                            <div class="name">{@canUseOne.name}</div>
+                                            <div class="intro">{@canUseOne.introduction}</div>
+                                            <div class="term"><p>所需积分：{@canUseOne.needScore}</p>
+                                                <p>剩余数量：{@canUseOne.stillUse}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gift-bottom">
+                                        <div class="fl left">
+                                            <a href="/lavico/reedem/reedemdetail?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}&wxid={@wxid}">
+                                                礼品介绍及兑换细则</a> >
+                                        </div>
+                                        <div class="fr right">
+                                            <a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"   name="nowGet">立即兑换</a>
+                                            <!--<a href="#" name="nowGet" onclick="exchange('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">立即兑换</a>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </foreach>
+                </ul>
+            </div>
 
-  <div id="notcan">
-      <ul style="list-style: none">
-          <foreach for="@reedemJson.noCanUse" var="canUseOne">
-              <li>
-                  <div class="gift-box">
-                      <div class="gift-box-content">
-                          <div class="gift-top clear">
-                              <div class="fl"><img src="{@canUseOne.smallPic}" /></div>
-                              <div class="fl gift-top-right">
-                                  <div class="name">{@canUseOne.name}</div>
-                                  <div class="intro">{@canUseOne.introduction}</div>
-                                  <div class="term"><p>所需积分：{@canUseOne.needScore}</p><p>剩余数量：{@canUseOne.stillUse}</p></div>
-                              </div>
-                          </div>
-                          <div class="gift-bottom">
-                              <div class="fl left"><a href="/lavico/reedem/reedemdetail?_id={@canUseOne._id}&wxid={@wxid}">礼品介绍及兑换细则</a> > </div>
-
-                          </div>
-                      </div>
-                  </div>
-              </li>
-          </foreach>
-      </ul>
-  </div>
-</div>
-  </div>
+            <div id="notcan" style="list-style: none;display: none">
+                <ul>
+                    <foreach for="@reedemJson.noCanUse" var="canUseOne">
+                        <li>
+                            <div class="gift-box">
+                                <div class="gift-box-content">
+                                    <div class="gift-top clear">
+                                        <div class="fl"><img src="{@canUseOne.smallPic}" /></div>
+                                        <div class="fl gift-top-right">
+                                            <div class="name">{@canUseOne.name}</div>
+                                            <div class="intro">{@canUseOne.introduction}</div>
+                                            <div class="term"><p>所需积分：{@canUseOne.needScore}</p><p>剩余数量：{@canUseOne.stillUse}</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="gift-bottom">
+                                        <div class="fl left"><a href="/lavico/reedem/reedemdetail?_id={@canUseOne._id}&wxid={@wxid}">礼品介绍及兑换细则</a> >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </foreach>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
