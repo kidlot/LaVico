@@ -9,7 +9,7 @@
 <meta name="apple-touch-fullscreen" content="yes" />
 <meta content="telephone=no" name="format-detection" />
 
-<div class="tier popupStyle1" style="z-index: 1000">
+<div class="popup popupStyle1" style="z-index: 1000">
     <p>提交提交提交提交提交提交</p>
     <div class="popup_but">
         <a href="javascript:" onclick="$('.popupStyle1').trigger('save', []);$('.popupStyle1').hide();$('#maskdiv').hide()">保存</a>
@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<div class="tier popupStyle2" style="z-index: 1000">
+<div class="popup popupStyle2" style="z-index: 1000">
     <p>提交提交提交提交提交提交</p>
     <div class="popup_but">
         <a href="javascript:" onclick="$('.popupStyle2').trigger('confirm', []);$('.popupStyle2').hide();$('#maskdiv').hide()" style="margin:0 28%;">确定</a>
@@ -25,7 +25,7 @@
 </div>
 
 
-<div class="tier popupStyle3" style="z-index: 1000">
+<div class="popup popupStyle3" style="z-index: 1000">
     <p>提交提交提交提交提交提交</p>
     <div class="popup_but">
         <a href="javascript:" onclick="$('.popupStyle3').trigger('yes', []);$('.popupStyle3').hide();$('#maskdiv').hide()">是</a>
@@ -55,8 +55,8 @@
             cb("cancel")
         });
 
-        var popupHig = $(".tier").height();
-        $(".tier").css("margin-top", -popupHig / 2);
+        var popupHig = $(".popup").height();
+        $(".popup").css("margin-top", -popupHig / 2);
     }
     window.popupStyle2 = {}
     window.popupStyle2.on = function(title,cb){
@@ -67,8 +67,8 @@
             cb("confirm")
         });
 
-        var popupHig = $(".tier").height();
-        $(".tier").css("margin-top", -popupHig / 2);
+        var popupHig = $(".popup").height();
+        $(".popup").css("margin-top", -popupHig / 2);
     }
     window.popupStyle3 = {}
     window.popupStyle3.on = function(title,cb){
@@ -82,14 +82,14 @@
             cb("no")
         });
 
-        var popupHig = $(".tier").height();
-        $(".tier").css("margin-top", -popupHig / 2);
+        var popupHig = $(".popup").height();
+        $(".popup").css("margin-top", -popupHig / 2);
     }
 
 
     window.onresize = function () {
-        var popupHig = $(".tier").height();
-        $(".tier").css("margin-top", -popupHig / 2);
+        var popupHig = $(".popup").height();
+        $(".popup").css("margin-top", -popupHig / 2);
     }
 
 
