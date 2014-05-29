@@ -300,7 +300,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points5 .tab ul li a:hover,.points5 .tab ul li a.on{color:#000; background:url(../images/tab1_bgOn.jpg) center center no-repeat;  background-size:100% 100%;}
 .points5-content .pre-box{ margin-top:4%; padding-bottom:20px; border-bottom:1px #ababab solid;}
 .points5-content .pre-box1{ border:0; padding-bottom:40px;}
-.points5-content .pre-box-content{width:100%; margin:0 auto; overflow:hidden; margin-bottom:4%; background-color:#fff; padding:2%; }
+.points5-content .pre-box-content{width:96%; margin:0 auto; overflow:hidden; margin-bottom:4%; background-color:#fff; padding:2%; }
 .points5-content .pre-top{ }
 .points5-content .pre-top-right{ width:56%; padding:2%; }
 .points5-content .pre-top-right .intro{font-size:1.2rem; color:#646464; }
