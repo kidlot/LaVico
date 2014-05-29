@@ -1,9 +1,8 @@
 <script>
 window.onload=function(){
 
-    var isBind = '{@ isBind}'
+    var isBind = '{@isBind}'
     if(isBind == "false"){
-
         window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){
             location.href='/lavico/member/index?wxid={@wxid}'
         })
@@ -119,7 +118,7 @@ window.onload=function(){
                                         </div>
                                     </div>
                                     <div class="gift-bottom">
-                                        <div class="fl left"><a href="/lavico/reedem/reedemdetail?_id={@canUseOne._id}&wxid={@wxid}">礼品介绍及兑换细则</a> >
+                                        <div class="fl left"><a href="/lavico/reedem/reedemdetail?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}">礼品介绍及兑换细则</a> >
                                         </div>
                                     </div>
                                 </div>

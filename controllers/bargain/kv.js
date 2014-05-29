@@ -12,6 +12,15 @@ module.exports = {
             helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(this.hold(function(err,_doc){
                 doc = _doc || {}
             }))
+
+            helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
+                var customers = customers || {}
+
+                nut.model.isVip = false
+                if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
+                    nut.model.isVip = true
+                }
+            }))
         }
 
         this.step(function(){
