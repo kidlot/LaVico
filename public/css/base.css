@@ -47,8 +47,10 @@ button, input, select, textarea {font-size: 100%;margin: 0;outline: 0 none;verti
 i, em, cite, u{ font-style: normal; }
 
 /** 重置文本格式元素 **/
-a { text-decoration: none; }
-a:hover { text-decoration: none; }
+a, a:link { color: #ba954f; text-decoration: none; }
+a:visited {  }
+a:active, a:hover { text-decoration: none; }
+a:focus { outline: none; }
 
 sup { vertical-align: text-top; } /* 重置，减少对行高的影响 */
 sub { vertical-align: text-bottom; }

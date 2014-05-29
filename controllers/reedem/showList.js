@@ -135,6 +135,7 @@ module.exports={
                 var needScore=seed.needScore;//所需扣积分
                 var then=this;
                 var t_name,QTY;
+                var isok = true;
 
                 this.step(function(){
                     middleware.request('Point/'+memberId,{memberId:memberId},this.hold(function(err,doc){
@@ -147,10 +148,12 @@ module.exports={
                             if(result.point<needScore){
                                 nut.view.disable();
                                 nut.write("<script>window.onload=function(){window.popupStyle2.on('对不起,您的积分不足!',function(event){history.back()})}</script>");
+                                isok = false;
                             }
                         }else{
                             nut.view.disable();
                             nut.write("<script>window.onload=function(){window.popupStyle2.on('没有查到您的积分，请联系我们',function(event){history.back()})}</script>");
+                            isok=false;
                         }
                 }))
                 })
@@ -168,10 +171,12 @@ module.exports={
                                 //超出
                                 nut.view.disable();
                                 nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动已经下架',function(event){history.back()})}</script>");
+                                isok=false;
                             }else{
                                 if(result.switcher=="Off" || result.switcher=="off"){
                                     nut.view.disable();
                                     nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动关闭中，请重新选择',function(event){history.back()})}</script>");
+                                    isok=false;
                                 }
                             }
                         }
@@ -198,6 +203,7 @@ module.exports={
                 */
 
                 this.step(function(){
+
                     //提交给接口
                     //console.log("wechatId:"+wechatId)//不删
                     //拿优惠券
@@ -212,6 +218,7 @@ module.exports={
                     //调用接口：提交扣除积分和兑换奖券
                     //扣积分接口
 
+                    if(isok){
                     middleware.request("Point/Change",
                         {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
                         this.hold(function (err, doc) {
@@ -232,6 +239,7 @@ module.exports={
                             nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此商品暂停兑换',function(event){history.back()})}</script>");
                         }
                     }))
+                    }
                 });
 
                 this.step(function(docJson){
@@ -258,12 +266,13 @@ module.exports={
                         }))
                     }else{
                         nut.view.disable();
-                        nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误1',function(event){history.back()})}</script>");
+                        nut.write("<script>window.onload=function(){window.popupStyle2.on('对不起,您的积分不足',function(event){history.back()})}</script>");
                     }
                 })
 
                 this.step(function(record){
                     //根据券号，查找券名和大小图片
+                    if(record){
                     helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(record.reddem_id)},this.hold(function(err,result){
                         if(err) throw err;
                         if(result){
@@ -274,15 +283,17 @@ module.exports={
                             return record;
                         }else{
                             nut.view.disable();
-                            nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误2',function(event){history.back()})}</script>");
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('对不起,您的积分不足',function(event){history.back()})}</script>");
 
 
                         }
                     }))
+                    }
                 })
 
                 this.step(function(record){
                     //查找礼券图
+                    if(record){
                     helper.db.coll("lavico/activity").findOne({aid:record.aid},this.hold(function(err,result){
                         if(err) throw err;
                         if(result){
@@ -291,6 +302,7 @@ module.exports={
                         }
                         return record;
                     }))
+                    }
                 })
 
                 this.step(function(record){
