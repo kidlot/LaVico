@@ -42,12 +42,12 @@ a.tel{color:#2d2d2d;}
 .bargin-left{ width:100%; display:block; }
 .bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-top:2%; }
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
-.bargin-right .color{padding-top:2%;}
+.bargin-right .color{padding-top:5px;}
 .bargin-right .color .color-title{ color:#404040;}
 .bargin-right .color .color-con{ color:#646464;}
 .bargin-right .rules{padding-top:5px; overflow:hidden; }
 .bargin-right .rules .rules-title{ color:#404040;}
-.bargin-right .rules .rules-con{ width:100%; line-height:25px; display:inline-block; color:#646464;}
+.bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464;}
 .bargin-right .pice{color:#AF8B4D;}
 .bargin-right .look_store{ width:130px; height:auto; position:absolute; bottom:3%; right:2%; }
 .bargin-right .look_store a{width:130px; height:40px; display:inline-block; margin-top:20px; color:#291b00;font-size:1.4rem; line-height:40px; text-align:center;
@@ -498,8 +498,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .city-listContent ul li a .tel{ padding-top:5px;}
 #fixed{ position:fixed; bottom:0; width:100%; left:0px; }
 .bargin_content{width: 92%; padding:0 4%; }
-.bargin_content .wei_name{color: #BA954F;font-size: 1.6rem;padding-top: 10px;}
-.bargin_content .wei_text{color: #646464;font-size: 1.6rem;padding-top: 10px;}
+.bargin_content .wei_name{color: #BA954F;font-size: 1.4rem;padding-top: 10px;}
+.bargin_content .wei_text{color: #646464;font-size: 1.4rem;padding-top: 10px;}
 
 /*loading*/
 .loading { position:fixed; z-index: 10000000; left: 50%; top: 50%; width:64px; height:64px; margin:-32px 0 0 -32px; }
