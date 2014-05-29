@@ -8,10 +8,7 @@
 
 <script>
 
-document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-    WeixinJSBridge.call('hideOptionMenu');
-});
-
+hideOptionMenu()
 
 var jsonObject=JSON.parse('{@option}');//获取此题
 var themeType = '{@themeType}';
