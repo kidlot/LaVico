@@ -213,6 +213,11 @@ module.exports={
                                         if (err) throw err;
                                         console.log("tag record:" + doc.success);
                                     }))
+                                    helper.db.coll("welab/customers").update({_id : helper.db.id(wechatid)}, {$addToSet:jsonData},this.hold(function(err,doc){
+                                        if(err ){
+                                            throw err;
+                                        }
+                                    }));
                                 }
 
                                 if (dot >= 2) {
