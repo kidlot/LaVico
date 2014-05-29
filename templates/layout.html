@@ -58,6 +58,8 @@
 
         var popupHig = $(".tier").height();
         $(".tier").css("margin-top", -popupHig / 2);
+
+        $("#shade").show();
     }
     window.popupStyle2 = {}
     window.popupStyle2.on = function(title,cb){
@@ -70,6 +72,8 @@
 
         var popupHig = $(".popup").height();
         $(".tier").css("margin-top", -popupHig / 2);
+
+        $("#shade").show();
     }
     window.popupStyle3 = {}
     window.popupStyle3.on = function(title,cb){
@@ -85,12 +89,14 @@
 
         var popupHig = $(".popup").height();
         $(".tier").css("margin-top", -popupHig / 2);
+
+        $("#shade").show();
     }
 
 
     window.onresize = function () {
         var popupHig = $(".popup").height();
-        $(".popup").css("margin-top", -popupHig / 2);
+        $(".tier").css("margin-top", -popupHig / 2);
     }
 
 
