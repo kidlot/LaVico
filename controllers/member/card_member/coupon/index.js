@@ -372,7 +372,7 @@ module.exports = {
         var error = $("#error").val();
         if(error!='null'){
             window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
-                window.location.href="/lavico/member/index?wxid="+wxid;
+                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
             });
         }
         $('.couponBtn').each(function(){
