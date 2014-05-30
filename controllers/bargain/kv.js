@@ -11,6 +11,7 @@ module.exports = {
         var doc = {};
 
         nut.model.fromWelab = seed.fromWelab || ""
+        nut.model._id = seed._id || ""
 
         var cbUrl = "http://"+this.req.headers.host + this.req.url
 
@@ -34,31 +35,21 @@ module.exports = {
 
 module._run = function (wxid,nut){
 
-    Steps(
+    nut.model.wxid = wxid
 
-        function(){
+    helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(this.hold(function(err,_doc){
+        doc = _doc || {}
+        nut.model.doc = doc
+    }))
 
-            helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(this.hold(function(err,_doc){
-                doc = _doc || {}
-            }))
+    helper.db.coll("welab/customers").findOne({wechatid:wxid},this.hold(function(err,customers){
+        var customers = customers || {}
 
-            helper.db.coll("welab/customers").findOne({wechatid:wxid},this.hold(function(err,customers){
-                var customers = customers || {}
-
-                nut.model.isVip = false
-                if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
-                    nut.model.isVip = true
-                }
-            }))
+        nut.model.isVip = false
+        if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
+            nut.model.isVip = true
         }
-
-        , function(){
-
-            nut.model._id = seed._id || ""
-            nut.model.wxid = res.openid
-            nut.model.doc = doc
-        }
-    )()
+    }))
 
 }
 
