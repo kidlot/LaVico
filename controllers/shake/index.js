@@ -90,6 +90,7 @@ module.exports = {
                 var perPage = 1000;
                 var pageNum = seed.page ? seed.page : 1;
                 var then = this;
+                nut.model.host = this.req.headers.host;
 
                 this.step(function (doc) {
                     middleware.request('Coupon/Promotions', {
@@ -120,18 +121,9 @@ module.exports = {
                     for (var i = 0; i < doc.length; i++) {
                         (function (i) {
                             helper.db.coll("lavico/activity").findOne({aid: doc[i].PROMOTION_CODE}, then.hold(function (err, detail) {
-                                //console.log(doc[i]);
                                 count++;
 
                                 if (detail) {
-//                                    for (var j = 0; j < doc[i].coupons.length; j++) {
-//                                        for (var k = 0; k < detail.coupons.length; k++) {
-//                                            if (doc[i].coupons[j].QTY == detail.coupons[k].QTY && detail.coupons[k].pic) {
-//                                                doc[i].coupons[j].pic = detail.coupons[k].pic;
-//                                            }
-//                                        }
-//
-//                                    }
                                       doc[i].pic = detail.pic;
 
                                 }

@@ -30,8 +30,8 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">图文URL</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="host-url" readonly value="http://{}/lavico/activity/shake?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
-                        <button type="button"  id="copy" class="btn btn-primary" style="float: left;margin-left: 6px">复制</button>
+                        <input type="text" class="form-control" id="host-url" readonly value="http://{@host}/lavico/activity/shake?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
+                        <button type="button" id="btnCopy" name="btnCopy" class="btn btn-primary" style="float: left;margin-left: 6px" >复制</button>
                     </div>
                 </div>
 
@@ -151,12 +151,8 @@
 <script>
 /*点击复制按钮*/
 window.onload = function(){
-    $('#copy').click(function(){
-
-
-//        /startDate.setFullYear(_startDate);
-        //jQuery("#host-url").copy();
-        //_startDate.substring(0,4)+':'+startDate.substr(5,2)+':'+startDate.substr(8,2)
+    $('#btnCopy').click(function(){
+        copyToClipboard($(this).val());
     });
 }
 
@@ -358,5 +354,47 @@ function save (){
         }) ;
     }
 }
+
+
+function copyToClipboard(txt) {
+
+    if (window.clipboardData) {
+        window.clipboardData.clearData();
+        window.clipboardData.setData("Text", txt);
+        alert("复制成功！")
+    } else if (navigator.userAgent.indexOf("Opera") != -1) {
+        window.location = txt;
+        alert("复制成功！");
+    } else if (window.netscape) {
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        } catch (e) {
+            alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将 'signed.applets.codebase_principal_support'设置为'true'");
+        }
+        var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+        if (!clip)
+            return;
+        var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+        if (!trans)
+            return;
+        trans.addDataFlavor('text/unicode');
+        var str = new Object();
+        var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+        var copytext = txt;
+        str.data = copytext;
+        trans.setTransferData("text/unicode", str, copytext.length * 2);
+        var clipid = Components.interfaces.nsIClipboard;
+        if (!clip)
+            return false;
+        clip.setData(trans, null, clipid.kGlobalClipboard);
+        alert("复制成功！")
+    }else if(typeof(copy) == "function"){
+        copy(txt);
+        alert("复制成功！")
+    }else{
+        alert("浏览器不支持,请手动复制。"+txt)
+    }
+}
+
 </script>
 
