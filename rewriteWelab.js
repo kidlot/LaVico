@@ -411,51 +411,6 @@ exports.load = function () {
         });
     }
 
-    welabUserlist.viewIn =function(){
-        /**
-         * 发送短信
-         */
-        jQuery("#tags").tagsManager({
-            prefilled: [],
-            hiddenTagListName: 'tagsVal'
-        });
-        $(".sendSMS").on("click",function(){
-            var sms = getUserList();
-            if(sms.length == 0){
-                $.globalMessenger().post({
-                    message: '至少选择一个用户.',
-                    type: 'error',
-                    showCloseButton: true})
-                return ;
-            }
-            jQuery("#tags").tagsManager('empty');
-            $('#sendMessageModal').modal('toggle');
-            oUserSetOption = {} ;
-            oUserSetOption.data = [];
-            oUserSetOption.data.push({name:"sUserList",value:sms.join(",")});
-            return false;
-        })
-
-        $(".userSetTagView").on("click",function(){
-
-            var aList = getUserList();
-            if( aList.length == 0){
-                $.globalMessenger().post({
-                    message: '至少选择一个用户.',
-                    type: 'error',
-                    showCloseButton: true})
-                return ;
-            }
-
-            jQuery("#tags").tagsManager('empty');
-
-            $('#tagModal').modal('toggle');
-            oUserSetOption = {} ;
-            oUserSetOption.data = [];
-            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
-            return false;
-        })
-    }
 
 
 
@@ -880,6 +835,50 @@ exports.load = function () {
             return false;
         });
 
+        /**
+         * 发送短信
+         */
+        jQuery("#tags").tagsManager({
+            prefilled: [],
+            hiddenTagListName: 'tagsVal'
+        });
+        $(".sendSMS").on("click",function(){
+
+            var sms = getUserList();
+            if(sms.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+            jQuery("#tags").tagsManager('empty');
+            $('#sendMessageModal').modal('toggle');
+            oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:sms.join(",")});
+            return false;
+        })
+
+//        $(".userSetTagView").on("click",function(){
+//
+//            var aList = getUserList();
+//            if( aList.length == 0){
+//                $.globalMessenger().post({
+//                    message: '至少选择一个用户.',
+//                    type: 'error',
+//                    showCloseButton: true})
+//                return ;
+//            }
+//
+//            jQuery("#tags").tagsManager('empty');
+//
+//            $('#tagModal').modal('toggle');
+//            oUserSetOption = {} ;
+//            oUserSetOption.data = [];
+//            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+//            return false;
+//        })
     }
 
 

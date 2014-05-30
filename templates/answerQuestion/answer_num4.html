@@ -13,8 +13,6 @@ window.onload=function(){
         })
     }
 }
-
-
 </script>
 
 
@@ -26,6 +24,7 @@ window.onload=function(){
             <div class="points-content">
                 <img src="/lavico/public/images/points_banner-604X319.jpg" />
                 <div class="points_txt">
+
                     <foreach for="{@jsonResult}" var="resultString">
                         <label style="font-size: 2.4rem">{@resultString.getScore}积分</label>
                     </foreach>
@@ -50,7 +49,7 @@ window.onload=function(){
                     <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  郎维高权威机构鉴定</p>
                     <foreach for="{@jsonResult}" var="resultString">
                         <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">您是{@resultString.getLabel}</p>
-                    </foreach>    
+                    </foreach>
                 </div>
             </div>
             <foreach for="{@jsonResult}" var="resultString">
