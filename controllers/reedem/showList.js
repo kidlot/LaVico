@@ -13,6 +13,7 @@ module.exports={
         var then =this;
         var wxid = seed.wechatId ? seed.wechatId : 'undefined';
         nut.model.wxid = wxid;
+        nut.model.wechatId = seed.wechatId;
         var memberId = false;
         nut.model.isBind = true;
 
