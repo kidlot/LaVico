@@ -290,7 +290,7 @@ module.exports = {
 
             var name = $.trim($("#name").val());
             var nameReg = /^[\u4e00-\u9fa50-9A-Za-z]{1,}$/g;
-            var sex = $("#sex").val();
+            var sex = $("#model_sex_input").val();
 
             if(name.length == 0){
                 window.popupStyle2.on("请输入姓名",function(event){});
@@ -304,7 +304,7 @@ module.exports = {
                 $("#name").focus();
                 return	false;
             }
-            if(sex.length > 0){
+            if(sex.length == 0){
                 window.popupStyle2.on("请选择性别",function(event){});
                 $("#sex").focus();
                 return	false;
