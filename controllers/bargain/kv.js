@@ -13,21 +13,21 @@ module.exports = {
         nut.model.fromWelab = seed.fromWelab || ""
         nut.model._id = seed._id || ""
 
-        var cbUrl = "http://"+this.req.headers.host + this.req.url
-
         var _cb = this.hold();
+
+        var cbUrl = "http://"+this.req.headers.host + this.req.url
 
         if(seed.wxid){
             module._run(seed.wxid,nut,_cb)
         }else{
-            oauth.getOpenid(this.req,this.res,seed.code,cbUrl,function(res){
+            oauth.getOpenid(this.req,this.res,seed.code,cbUrl,this.hold(function(res){
 
-                if(res.err){
-                    console.log("获得OPID错误",res)
-                }else{
+                if(!res.err){
                     module._run(res.openid,nut,_cb)
+                }else{
+                    _cb()
                 }
-            })
+            }))
         }
 
     }
