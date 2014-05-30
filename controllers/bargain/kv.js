@@ -25,6 +25,7 @@ module.exports = {
                 if(!res.err){
                     module._run(res.openid,nut,_cb)
                 }else{
+                    console.log(res.msg)
                     _cb()
                 }
             }))
