@@ -24,7 +24,7 @@ module.exports = {
                 if(res.err){
                     console.log("获得OPID错误",res)
                 }else{
-                    module.run(res.openid)
+                    module._run(res.openid)
                 }
             })
         }
