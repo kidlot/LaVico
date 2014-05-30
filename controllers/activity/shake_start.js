@@ -106,7 +106,8 @@ module.exports = {
         });
 
         this.step(function(){
-            var _points = shakeActivity.points;//活动消耗积分
+            console.log(shakeActivity);
+            var _points = shakeActivity ? shakeActivity.points : 0;//活动消耗积分
             nut.model.points = _points
         });
 
@@ -134,10 +135,11 @@ module.exports = {
 
 
                 this.step(function(){
+
                     helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
                         shake = doc;
-                        costPerShake = shake.points;//每次摇一摇消耗积分
-                        shakeActivityName = shake.name;
+                        costPerShake = shake ? shake.points : 0;//每次摇一摇消耗积分
+                        shakeActivityName = shake ? shake.name :'';
                         console.log('~~~~~~~~~~~~~~~~~');
                         console.log(doc);
                         console.log('~~~~~~~~~~~~~~~~~');
@@ -146,7 +148,7 @@ module.exports = {
 
                 this.step(function(){
                     if(!shake){
-                        write_info(then,'{"result":"activity_is_over"}');
+                            write_info(then,'{"result":"activity_is_over"}');
                     }
                 });
 
