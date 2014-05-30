@@ -117,6 +117,7 @@ module.exports = {
                         couponData = JSON.parse(doc);
 
                         couponArr  = couponData.list;
+                        //nut.model.ineffectiveCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -144,6 +145,7 @@ module.exports = {
                         couponData = JSON.parse(doc);
 
                         couponArr = couponArr.concat(couponData.list);
+                        //nut.model.effectiveCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -171,6 +173,7 @@ module.exports = {
 
                         couponData = JSON.parse(doc);
                         couponArr = couponArr.concat(couponData.list);
+                        //nut.model.overdueCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
                             {
