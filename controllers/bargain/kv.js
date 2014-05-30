@@ -6,6 +6,7 @@ module.exports = {
     , process: function(seed,nut)
     {
         var doc = {};
+        nut.model.doc = doc
 
         nut.model.fromWelab = seed.fromWelab || ""
 
@@ -27,10 +28,6 @@ module.exports = {
                         var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.href,"123","snsapi_base")
                         console.log("通过oauth获得CODE的url",url)
                         this.res.writeHeader(302, {'location': url }) ;
-
-                        nut.disable();//不显示模版
-                        this.res.end();
-                        this.terminate();
 
                     }else{
 
