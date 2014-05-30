@@ -1146,37 +1146,41 @@ exports.load = function () {
 
         this.step(function(){
             console.log(jsonData)
+            console.log(jsonData.length)
             for(var i=0;i<jsonData.length;i++){
                 if(jsonData[i].memberId){
                     (function(i,stutas){
-                        console.log(jsonData[i].memberId)
-                            middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, function (err, doc) {
-                                if (err) throw err;
-                                var docs = JSON.parse(doc);
-                                console.log(docs)
-                                sta={};
-                                sta.stat = docs.success;
-                                sta.id = jsonData[i].id;
-                                console.log(sta)
-                                stutas.push(sta);
-                            })
+                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, then.hold(function (err, doc) {
+                            if (err) throw err;
+                            console.log(doc)
+                            var docs = JSON.parse(doc);
+                            sta={};
+                            sta.stat = docs.success;
+                            sta.id = jsonData[i].id;
+                            console.log(sta)
+                            stutas.push(sta);
+                            console.log("i:"+i)
+                        }))
                     })(i,stutas)
                 }
             }
         })
 
         this.step(function(){
+            console.log("1")
             for (var i=0; i<aTagList.length; i++) {
+                console.log("2")
                 tag = aTagList[i];
                 console.log(stutas)
                 for(var j=0;j<stutas.length;j++){
                     if(stutas[j].stat==true){
                         successID.push(stutas[j].id);
-                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},function(err,doc){
+                        console.log("3")
+                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},then.hold(function(err,doc){
                             if(err ){
                                 throw err;
                             }
-                        })
+                        }))
                     }else{
                         errID.push(stutas[j].id);
                     }
