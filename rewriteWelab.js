@@ -1108,6 +1108,7 @@ exports.load = function () {
         var jsonData=[];
         var stutas=[];
         var jsontag=[];
+        var cuid
 
         this.step(function(){
             if( seed.sUserList == "" ){
@@ -1144,54 +1145,55 @@ exports.load = function () {
         })
 
         this.step(function(){
-
-
-
             console.log(jsonData)
             for(var i=0;i<jsonData.length;i++){
-                if(jsonData[i].memberId!="null"){
-                   // (function(i,stutas){
-                        var id = jsonData[i].id;
-
+                if(jsonData[i].memberId){
+                    (function(i,stutas){
                         console.log(jsonData[i].memberId)
-                        console.log(jsonData[i].id)
-                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, this.hold(function (err, doc) {
-                            if (err) throw err;
-                            console.log(doc)
-                            var docs = JSON.parse(doc);
-                            sta={};
-                            sta.stat = docs.success;
-                            sta.id = id;
-                            console.log(sta)
-                            stutas.push(sta);
-                        }))
-                    //})(i,stutas)
+
+                        //setTimeout(function(){
+                            middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, function (err, doc) {
+                                if (err) throw err;
+                                var docs = JSON.parse(doc);
+                                console.log(docs)
+                                sta={};
+                                sta.stat = docs.success;
+                                sta.id = jsonData[i].id;
+                                console.log(sta)
+                                stutas.push(sta);
+                            })
+                       // },3000)
+                    })(i,stutas)
                 }
             }
         })
 
         this.step(function(){
-            for (var i=0; i<aTagList.length; i++) {
-                tag = aTagList[i];
-                console.log(stutas)
-                for(var j=0;j<stutas.length;j++){
-                   // (function(j){
-                        console.log(stutas[j].stat)
+            //setTimeout(function(){
+                for (var i=0; i<aTagList.length; i++) {
+                    tag = aTagList[i];
+                    console.log(stutas)
+                    for(var j=0;j<stutas.length;j++){
+                        // (function(j){
                         if(stutas[j].stat==true){
                             successID.push(stutas[j].id);
-                            helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},this.hold(function(err,doc){
+                            helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},function(err,doc){
                                 if(err ){
                                     throw err;
                                 }
-                            }));
+                            })
                         }else{
                             errID.push(stutas[j].id);
                         }
-                    //})(j)
+                        //})(j)
 
+                    }
                 }
-            }
+
+            //},8000)
+
         });
+
         this.step(function(){
             console.log(errID.length)
             console.log(successID.length)
