@@ -12,8 +12,6 @@ module.exports = {
 
         nut.model.fromWelab = seed.fromWelab || ""
 
-        var then = this;
-
         var cbUrl = "http://"+this.req.headers.host + this.req.url
 
         if(seed.wxid){
@@ -40,11 +38,11 @@ module._run = function (wxid,nut){
 
         function(){
 
-            helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(then.hold(function(err,_doc){
+            helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(this.hold(function(err,_doc){
                 doc = _doc || {}
             }))
 
-            helper.db.coll("welab/customers").findOne({wechatid:wxid},then.hold(function(err,customers){
+            helper.db.coll("welab/customers").findOne({wechatid:wxid},this.hold(function(err,customers){
                 var customers = customers || {}
 
                 nut.model.isVip = false
