@@ -287,53 +287,53 @@ module.exports = {
 
 
         $("#submit").click(function(){
-            if($("#name").val() == ''){
-                //alert("请输入姓名");
-                window.popupStyle2.on("请输入姓名",function(event){});
 
+            var name = $.trim($("#name").val());
+            var nameReg = /^[\u4e00-\u9fa50-9A-Za-z]{1,}$/g;
+            var sex = $("#sex").val();
+
+            if(name.length == 0){
+                window.popupStyle2.on("请输入姓名",function(event){});
+                $("#name").val('');
                 $("#name").focus();
                 return	false;
             }
-            if($("#sex").val() == ''){
 
+            if(!nameReg.test(name)){
+                window.popupStyle2.on("请输入真实的姓名",function(event){});
+                $("#name").focus();
+                return	false;
+            }
+            if(sex.length > 0){
                 window.popupStyle2.on("请选择性别",function(event){});
-                //alert("请选择性别");
                 $("#sex").focus();
                 return	false;
             }
             if($("#year").val() == ''){
                 window.popupStyle2.on("请选择出生年月日",function(event){});
-                //alert("请选择出生年月日");
                 return	false;
             }
             if($("#month").val() == ''){
                 window.popupStyle2.on("请选择出生年月日",function(event){});
-
-                //alert("请选择出生年月日");
                 return	false;
             }
             if($("#day").val() == ''){
                 window.popupStyle2.on("请选择出生年月日",function(event){});
-
-                //alert("请选择出生年月日");
                 return	false;
             }
             if($("#mobile").val() =='' || !(/^1[358]\d{9}$/i.test($("#mobile").val())) ){
-
                 window.popupStyle2.on("请输入正确的手机号码",function(event){});
-                //alert("请输入正确的手机号码");
                 return	false;
             }
             if($("#id_code").val() == ''){
                 window.popupStyle2.on("验证码错误",function(event){});
-                //alert("验证码错误");
                 return	false;
             }
             $('#loading').show();//显示加载框
 
             $.get('/lavico/member/card_blank/register:apply_card',{
                     uid : $("#uid").val(),
-                    name : $("#name").val(),
+                    name : name,
                     sex : $("#sex").val(),
                     birthday : $("#year").val()+'-'+$("#month").val()+'-'+$('#day').val(),
                     mobile : $("#mobile").val(),
