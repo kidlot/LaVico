@@ -117,6 +117,7 @@ module.exports = {
                         couponData = JSON.parse(doc);
 
                         couponArr  = couponData.list;
+                        //nut.model.ineffectiveCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -144,6 +145,7 @@ module.exports = {
                         couponData = JSON.parse(doc);
 
                         couponArr = couponArr.concat(couponData.list);
+                        //nut.model.effectiveCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -171,6 +173,7 @@ module.exports = {
 
                         couponData = JSON.parse(doc);
                         couponArr = couponArr.concat(couponData.list);
+                        //nut.model.overdueCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -230,7 +233,7 @@ module.exports = {
                                     if(doc&&doc.pic){
                                         var _PIC = doc.pic;
                                     }else{
-                                        var _PIC = "/lavico/public/images/suit_pic02.jpg";
+                                        var _PIC = "/lavico/public/images/coupons.jpg";
                                     }
 
                                     if(doc&&doc.promotion_name){
@@ -256,6 +259,7 @@ module.exports = {
                     /*
                      优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02
                      */
+                    //_coupons.sort(function(a,b){return a['CREAT_DATE']<b['CREAT_DATE']?1:-1});
 
                     for(var _i=0;_i<_coupons.length;_i++){
 

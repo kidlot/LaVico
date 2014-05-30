@@ -210,7 +210,12 @@ module.exports = {
 
                 var postData = JSON.parse(seed.postData);
 
-                console.log(seed.postData.endDate);
+                console.log(new Date(postData.startDate-8*3600*1000));
+                console.log(new Date(postData.endDate-8*3600*1000));
+
+                postData.startDate = postData.startDate-8*3600*1000;
+                postData.endDate = postData.endDate-8*3600*1000+24*3600*1000-1000;
+
                 if (postData.length == 0) {
                     nut.message("保存失败。数据不能为空", null, 'error');
                     return;

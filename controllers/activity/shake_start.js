@@ -108,7 +108,7 @@ module.exports = {
         this.step(function(){
             console.log(shakeActivity);
             var _points = shakeActivity ? shakeActivity.points : 0;//活动消耗积分
-            nut.model.points = _points
+            nut.model.points = _points;
         });
 
     },

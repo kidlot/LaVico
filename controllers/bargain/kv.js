@@ -24,7 +24,7 @@ module.exports = {
 
                     if(!seed.code){
 
-                        var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.href,"123","snsapi_base")
+                        var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.url,"123","snsapi_base")
                         console.log("通过oauth获得CODE的url",url)
                         this.res.writeHeader(302, {'location': url }) ;
 
