@@ -1144,13 +1144,17 @@ exports.load = function () {
         })
 
         this.step(function(){
+
+
+
             console.log(jsonData)
             for(var i=0;i<jsonData.length;i++){
+                if(jsonData[i].memberId!="null"){
+                   // (function(i,stutas){
+                        var id = jsonData[i].id;
 
-                //(function(i){
-                    var id = jsonData[i].id;
-                    if(jsonData[i].memberId!="null"){
                         console.log(jsonData[i].memberId)
+                        console.log(jsonData[i].id)
                         middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, this.hold(function (err, doc) {
                             if (err) throw err;
                             console.log(doc)
@@ -1158,10 +1162,11 @@ exports.load = function () {
                             sta={};
                             sta.stat = docs.success;
                             sta.id = id;
+                            console.log(sta)
                             stutas.push(sta);
                         }))
-                    }
-               // })(i)
+                    //})(i,stutas)
+                }
             }
         })
 
