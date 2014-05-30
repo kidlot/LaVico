@@ -1032,24 +1032,27 @@ exports.load = function () {
                 return false;
             }
             for(var i=0;i<aTagList.length;i++){
-
                 var tag = aTagList[i];
-
                 (function(i,jsonData){
                     for(var j=0;j<aUserList.length;j++){
                         (function(j,jsonData){
+                            var id= aUserList[j]
                             helper.db.coll("welab/customers").findOne({"_id":helper.db.id(aUserList[j])},then.hold(function(err,doc){
                                 if(err) throw err;
-                                if(doc && typeof(doc.HaiLanMemberInfo)!="underfined"){
-                                    json={};
-                                    json.memberId = doc.HaiLanMemberInfo.memberID;
-                                    json.tag = tag;
-                                    json.id= aUserList[j];
-                                    jsonData.push(json);
-                                }else{
-                                    json.memberId = "null";
-                                    json.id= aUserList[j];
-                                    jsonData.push(json);
+                                if(doc){
+                                    if(doc.HaiLanMemberInfo){
+                                        json={};
+                                        json.memberId = doc.HaiLanMemberInfo.memberID;
+                                        json.tag = tag;
+                                        json.id= id;
+                                        jsonData.push(json);
+                                    }else{
+                                        json={};
+                                        json.memberId = "null"
+                                        json.tag = tag;
+                                        json.id= id;
+                                        jsonData.push(json);
+                                    }
                                 }
                             }))
                         })(j,jsonData)
@@ -1061,37 +1064,56 @@ exports.load = function () {
         this.step(function(){
             console.log(jsonData)
             for(var i=0;i<jsonData.length;i++){
-                var id = jsonData[i].id;
-                middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, this.hold(function (err, doc) {
-                    if (err) throw err;
-                    var docs = JSON.parse(doc);
-                    sta={};
-                    console.log(docs);
-                    sta.stat = docs.success;
-                    sta.id = id;
-                    stutas.push(sta);
-                }))
+
+                //(function(i){
+                    var id = jsonData[i].id;
+                    if(jsonData[i].memberId!="null"){
+                        console.log(jsonData[i].memberId)
+                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, this.hold(function (err, doc) {
+                            if (err) throw err;
+                            var docs = JSON.parse(doc);
+                            sta={};
+                            sta.stat = docs.success;
+                            sta.id = id;
+                            stutas.push(sta);
+                        }))
+                    }else{
+                        sta={};
+                        sta.stat = false;
+                        sta.id = id;
+                        stutas.push(sta);
+                    }
+
+             //   })(i)
+
             }
         })
 
         this.step(function(){
             for (var i=0; i<aTagList.length; i++) {
                 tag = aTagList[i];
+                console.log(stutas)
                 for(var j=0;j<stutas.length;j++){
-                    if(stutas[i].stat=="true"){
-                        successID.push(stutas[i].id);
-                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[i].id)}, {$addToSet:{tags:tag}},this.hold(function(err,doc){
-                            if(err ){
-                                throw err;
-                            }
-                        }));
-                    }else{
-                        errID.push(stutas[i].id);
-                    }
+                   // (function(j){
+                        console.log(stutas[j].stat)
+                        if(stutas[j].stat==true){
+                            successID.push(stutas[j].id);
+                            helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},this.hold(function(err,doc){
+                                if(err ){
+                                    throw err;
+                                }
+                            }));
+                        }else{
+                            errID.push(stutas[j].id);
+                        }
+                    //})(j)
+
                 }
             }
         });
         this.step(function(){
+            console.log(errID.length)
+            console.log(successID.length)
             if(errID.length==0){
                 nut.message("操作完成",null,"success") ;
             }else{
