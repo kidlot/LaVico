@@ -6,7 +6,6 @@ module.exports = {
     , process: function(seed,nut)
     {
         var doc = {};
-        nut.model.doc = doc
 
         nut.model.fromWelab = seed.fromWelab || ""
 
@@ -38,6 +37,9 @@ module.exports = {
                                 wxid = openid || undefined;
                                 console.log("通过oauth获得信息",doc)
                                 this.req.session.oauthTokenInfo = doc;
+                            }else{
+                                console.log("通过oauth获得ID超时。",err)
+                                this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+this.req.href})  ;
                             }
                         }))
                     }
