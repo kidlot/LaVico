@@ -18,6 +18,7 @@ module.exports={
         var themetype = seed.themetype;
         nut.model.themeType = themetype;
         var stutas= seed.stutas ? seed.stutas :"false";
+        nut.model.stutas = stutas;
 
         var docs;
         this.step(function(){
@@ -54,14 +55,16 @@ module.exports={
                         if(sa){
                             ssa.push(sa);
                             nut.model.jsonResult =ssa;
+                            nut.model.score = "0";
                         }else{
                             var resultList;
                             resultList = "[{"
-                                + "getLabel:'" + "对不起您上次答题没有获得任何卷"
+                                + "getLabel:'" + "您上次未能完成答题"
                                 + "',getScore:" + "0"
-                                + ",getTipContent:'" + "对不起您上次答题没有获得任何卷"
+                                + ",getTipContent:'" + "您上次未能完成答题"
                                 + "',getActivities:'" + "null" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
+                            nut.model.score = "0";
                         }
                     }else{
                         for(var i=0;i<docs.length;i++){
@@ -73,14 +76,16 @@ module.exports={
                         if(sa){
                             ssa.push(sa);
                             nut.model.jsonResult =ssa;
+                            nut.model.score = "1";
                         }else{
                             var resultList;
                             resultList = "[{"
-                                + "getLabel:'" + "对不起您上次答题没有获得任何卷"
+                                + "getLabel:'" + "您上次未能完成答题"
                                 + "',getScore:" + "0"
-                                + ",getTipContent:'" + "对不起您上次答题没有获得任何卷"
+                                + ",getTipContent:'" + "您上次未能完成答题"
                                 + "',getActivities:'" + "null" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
+                            nut.model.score = "0";
                         }
                     }
                 }
