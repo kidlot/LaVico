@@ -33,7 +33,19 @@ window.onload=function(){
         </div>
         <foreach for="{@jsonResult}" var="resultString">
             <div class="look-text">
-                <p class="get">恭喜您获得{@resultString.getScore}积分<br />
+                <p class="get">
+                    <if condition="{@stutas=='true'}">
+                        <if condition="{@score=='0'}">
+
+                            您上次未能完成答题:
+                            <else/>
+                            您上次答题获得
+                        </if>
+                        
+                        <else/>
+                        恭喜您获得
+                    </if>
+                    {@resultString.getScore}积分<br />
                     可在“积分明细”内查询</p>
                 <p class="click-look"><a href="/lavico/member/card_member/points/index?wxid={@wechatid}">点击查看</a></p>
             </div>
@@ -48,7 +60,12 @@ window.onload=function(){
                 <div style="text-align: left;position:absolute; top: 20%; left: 18%;width:30%">
                     <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  郎维高权威机构鉴定</p>
                     <foreach for="{@jsonResult}" var="resultString">
-                        <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">您是{@resultString.getLabel}</p>
+                        <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
+                            <if condition="{@stutas=='true'}">
+
+                                <else/>
+                                您是
+                            </if>{@resultString.getLabel}</p>
                     </foreach>
                 </div>
             </div>
@@ -82,7 +99,12 @@ window.onload=function(){
         </div>
         <foreach for="{@jsonResult}" var="resultString">
             <div class="look-text">
-                <p class="get">恭喜您获得{@resultString.getScore}积分<br />
+                <p class="get">
+                    <if condition="{@stutas=='true'}">
+                        您上次答题获得
+                        <else/>
+                        恭喜您获得
+                    </if>{@resultString.getScore}积分<br />
                     可在“积分明细”内查询</p>
                 <p class="click-look"><a href="/lavico/member/card_member/points/index?wxid={@wechatid}">点击查看</a></p>
             </div>
