@@ -62,7 +62,7 @@ module.exports={
                                 + "getLabel:'" + "您上次未能完成答题"
                                 + "',getScore:" + "0"
                                 + ",getTipContent:'" + "您上次未能完成答题"
-                                + "',getActivities:'" + "null" + "'}]";
+                                + "',getActivities:'" + "您没有获得任何卷" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
                             nut.model.score = "0";
                         }
@@ -83,7 +83,7 @@ module.exports={
                                 + "getLabel:'" + "您上次未能完成答题"
                                 + "',getScore:" + "0"
                                 + ",getTipContent:'" + "您上次未能完成答题"
-                                + "',getActivities:'" + "null" + "'}]";
+                                + "',getActivities:'" + "您没有获得任何卷" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
                             nut.model.score = "0";
                         }
