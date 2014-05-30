@@ -24,9 +24,13 @@ module.exports = {
 
                     if(!seed.code){
 
-                        var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.href,"123","snsapi_base")
+                        var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.url,"123","snsapi_base")
                         console.log("通过oauth获得CODE的url",url)
                         this.res.writeHeader(302, {'location': url }) ;
+
+                        nut.disable();//不显示模版
+                        this.res.end();
+                        this.terminate();
 
                     }else{
 
@@ -37,9 +41,6 @@ module.exports = {
                                 wxid = openid || undefined;
                                 console.log("通过oauth获得信息",doc)
                                 this.req.session.oauthTokenInfo = doc;
-                            }else{
-                                console.log("通过oauth获得ID超时。",err)
-                                this.res.writeHeader(302, {'location': "http://"+this.req.headers.host+this.req.href})  ;
                             }
                         }))
                     }
