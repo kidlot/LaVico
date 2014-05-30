@@ -860,25 +860,25 @@ exports.load = function () {
             return false;
         })
 
-        $(".userSetTagView").on("click",function(){
-
-            var aList = getUserList();
-            if( aList.length == 0){
-                $.globalMessenger().post({
-                    message: '至少选择一个用户.',
-                    type: 'error',
-                    showCloseButton: true})
-                return ;
-            }
-
-            jQuery("#tags").tagsManager('empty');
-
-            $('#tagModal').modal('toggle');
-            oUserSetOption = {} ;
-            oUserSetOption.data = [];
-            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
-            return false;
-        })
+//        $(".userSetTagView").on("click",function(){
+//
+//            var aList = getUserList();
+//            if( aList.length == 0){
+//                $.globalMessenger().post({
+//                    message: '至少选择一个用户.',
+//                    type: 'error',
+//                    showCloseButton: true})
+//                return ;
+//            }
+//
+//            jQuery("#tags").tagsManager('empty');
+//
+//            $('#tagModal').modal('toggle');
+//            oUserSetOption = {} ;
+//            oUserSetOption.data = [];
+//            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+//            return false;
+//        })
     }
 
 

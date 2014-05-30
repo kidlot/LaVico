@@ -42,42 +42,46 @@ module.exports={
         this.step(function(){
             console.log(5)
             if(stutas=="true"){
-                console.log("4")
                 var sa;
                 if(docs){
-                    console.log("6")
-                    for(var i=0;i<docs.length;i++){
-                        if(docs[i].compScore!=""){
-                            sa = docs[i];
+                    if(themetype==1){
+                        for(var i=0;i<docs.length;i++){
+                            if(docs[i].compScore!=""){
+                                sa = docs[i];
+                            }
                         }
-                    }
-                    var ssa=[];
-                    if(sa){
-                        ssa.push(sa);
-                        nut.model.jsonResult =ssa;
-                    }
-                    else{
-                        console.log("3")
-                        var resultList;
-                        if(themetype==1){
-                            console.log("1")
-                            resultList = "[{"
-                                + "getLabel:'" + "暂无"
-                                + "',getScore:" + 0
-                                + ",getTipContent:'" + "null"
-                                + "',getActivities:'" + "null" + "'}[";
-
+                        var ssa=[];
+                        if(sa){
+                            ssa.push(sa);
+                            nut.model.jsonResult =ssa;
                         }else{
-                            console.log("2")
+                            var resultList;
                             resultList = "[{"
-                                + "getLabel:'" + "暂无"
+                                + "getLabel:'" + "对不起您上次答题没有获得任何卷"
                                 + "',getScore:" + "0"
-                                + ",getTipContent:'" + "null"
+                                + ",getTipContent:'" + "对不起您上次答题没有获得任何卷"
                                 + "',getActivities:'" + "null" + "'}]";
+                            nut.model.jsonResult = eval('(' + resultList + ')');
                         }
-                        console.log(resultList)
-                        nut.model.jsonResult = eval('(' + resultList + ')');
-                        console.log(nut.model.jsonResult)
+                    }else{
+                        for(var i=0;i<docs.length;i++){
+                            if(docs[i].getLabel!=""){
+                                sa = docs[i];
+                            }
+                        }
+                        var ssa=[];
+                        if(sa){
+                            ssa.push(sa);
+                            nut.model.jsonResult =ssa;
+                        }else{
+                            var resultList;
+                            resultList = "[{"
+                                + "getLabel:'" + "对不起您上次答题没有获得任何卷"
+                                + "',getScore:" + "0"
+                                + ",getTipContent:'" + "对不起您上次答题没有获得任何卷"
+                                + "',getActivities:'" + "null" + "'}]";
+                            nut.model.jsonResult = eval('(' + resultList + ')');
+                        }
                     }
                 }
             }
