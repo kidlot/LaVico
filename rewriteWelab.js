@@ -1108,6 +1108,7 @@ exports.load = function () {
         var jsonData=[];
         var stutas=[];
         var jsontag=[];
+        var cuid
 
         this.step(function(){
             if( seed.sUserList == "" ){
@@ -1146,22 +1147,21 @@ exports.load = function () {
         this.step(function(){
             console.log(jsonData)
             for(var i=0;i<jsonData.length;i++){
-
-                //(function(i){
-                    var id = jsonData[i].id;
-                    if(jsonData[i].memberId!="null"){
+                if(jsonData[i].memberId){
+                    (function(i,stutas){
                         console.log(jsonData[i].memberId)
-                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, this.hold(function (err, doc) {
-                            if (err) throw err;
-                            console.log(doc)
-                            var docs = JSON.parse(doc);
-                            sta={};
-                            sta.stat = docs.success;
-                            sta.id = id;
-                            stutas.push(sta);
-                        }))
-                    }
-               // })(i)
+                            middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, function (err, doc) {
+                                if (err) throw err;
+                                var docs = JSON.parse(doc);
+                                console.log(docs)
+                                sta={};
+                                sta.stat = docs.success;
+                                sta.id = jsonData[i].id;
+                                console.log(sta)
+                                stutas.push(sta);
+                            })
+                    })(i,stutas)
+                }
             }
         })
 
@@ -1170,23 +1170,20 @@ exports.load = function () {
                 tag = aTagList[i];
                 console.log(stutas)
                 for(var j=0;j<stutas.length;j++){
-                   // (function(j){
-                        console.log(stutas[j].stat)
-                        if(stutas[j].stat==true){
-                            successID.push(stutas[j].id);
-                            helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},this.hold(function(err,doc){
-                                if(err ){
-                                    throw err;
-                                }
-                            }));
-                        }else{
-                            errID.push(stutas[j].id);
-                        }
-                    //})(j)
-
+                    if(stutas[j].stat==true){
+                        successID.push(stutas[j].id);
+                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},function(err,doc){
+                            if(err ){
+                                throw err;
+                            }
+                        })
+                    }else{
+                        errID.push(stutas[j].id);
+                    }
                 }
             }
         });
+
         this.step(function(){
             console.log(errID.length)
             console.log(successID.length)
@@ -1197,5 +1194,4 @@ exports.load = function () {
             }
         })
     }
-
 };

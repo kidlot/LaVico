@@ -42,7 +42,7 @@ module.exports= {
         })
 
         this.step(function(){
-            if(memberid!="undefined"){
+            //if(memberid!="undefined"){
                 helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid},this.hold(function(err,doc){
                     if(err) throw err;
                     if(doc){
@@ -52,8 +52,9 @@ module.exports= {
                     }
                 }))
 
-            }
-            nut.model.isok = "2";
+           // }else{
+                //nut.model.isok = "1";
+            //}
         })
 
     }
