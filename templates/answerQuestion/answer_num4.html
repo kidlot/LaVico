@@ -101,7 +101,13 @@ window.onload=function(){
             <div class="look-text">
                 <p class="get">
                     <if condition="{@stutas=='true'}">
-                        您上次答题获得
+                        <if condition="{@score=='0'}">
+
+                            您上次未能完成答题:
+                            <else/>
+                            您上次答题获得
+                        </if>
+
                         <else/>
                         恭喜您获得
                     </if>{@resultString.getScore}积分<br />
