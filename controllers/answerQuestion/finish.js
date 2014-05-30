@@ -6,16 +6,86 @@ module.exports={
 
         var then=this;
         var _id=seed._id;
-        var opptionId=seed.optionId;
+        var opptionId=seed.optionId ? seed.optionId : 0;
         var wechatid=seed.wechatid;
         var scoreAll=this.req.session.scoreAll;
-        var stopLab=seed.stopLab;
+        var stopLab=seed.stopLab ? seed.stopLabel : "null";
         nut.model.wechatid = seed.wechatid
 
-        var isRecord=seed.isRecord;
+        var isRecord=seed.isRecord ? seed.isRecord : "no";
         var go=true;
         var memberid=seed.memberid;
         var themetype = seed.themetype;
+        nut.model.themeType = themetype;
+        var stutas= seed.stutas ? seed.stutas :"false";
+
+        var docs;
+        this.step(function(){
+            if(stutas=="true"){
+                go = false;
+                if(themetype==1){
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                        "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
+                            if(err) throw err;
+                            docs = doc;
+                        }))
+                }else{
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                        "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
+                        if(err) throw err;
+                            docs = doc;
+                    }))
+                }
+            }
+        })
+
+        this.step(function(){
+            console.log(5)
+            if(stutas=="true"){
+                var sa;
+                if(docs){
+                    if(themetype==1){
+                        for(var i=0;i<docs.length;i++){
+                            if(docs[i].compScore!=""){
+                                sa = docs[i];
+                            }
+                        }
+                        var ssa=[];
+                        if(sa){
+                            ssa.push(sa);
+                            nut.model.jsonResult =ssa;
+                        }else{
+                            var resultList;
+                            resultList = "[{"
+                                + "getLabel:'" + "对不起您上次答题没有获得任何卷"
+                                + "',getScore:" + "0"
+                                + ",getTipContent:'" + "对不起您上次答题没有获得任何卷"
+                                + "',getActivities:'" + "null" + "'}]";
+                            nut.model.jsonResult = eval('(' + resultList + ')');
+                        }
+                    }else{
+                        for(var i=0;i<docs.length;i++){
+                            if(docs[i].getLabel!=""){
+                                sa = docs[i];
+                            }
+                        }
+                        var ssa=[];
+                        if(sa){
+                            ssa.push(sa);
+                            nut.model.jsonResult =ssa;
+                        }else{
+                            var resultList;
+                            resultList = "[{"
+                                + "getLabel:'" + "对不起您上次答题没有获得任何卷"
+                                + "',getScore:" + "0"
+                                + ",getTipContent:'" + "对不起您上次答题没有获得任何卷"
+                                + "',getActivities:'" + "null" + "'}]";
+                            nut.model.jsonResult = eval('(' + resultList + ')');
+                        }
+                    }
+                }
+            }
+        })
 
         this.step(function(){
             if(isRecord=="yes"){
@@ -28,6 +98,7 @@ module.exports={
 
         this.step(function(){
         if(go) {
+            console.log("input go");
             var compScore
             //非停止标签过来
             if (stopLab != "true") {
@@ -42,7 +113,7 @@ module.exports={
                     "getChooseLabel": "",
                     "getLabel": "",
                     "getGift": "",
-                    "compScore": "",
+                    "getScore": "",
                     "createTime": new Date().getTime(),
                     "memberId":memberid,
                     "themetype":themetype
@@ -208,7 +279,7 @@ module.exports={
                                     "getChooseLabel": "",
                                     "getLabel": getLabel,
                                     "getGift": newActivity,
-                                    "compScore": getScore,
+                                    "getScore": getScore,
                                     "getTipContent": getTipContent,
                                     "createTime": new Date().getTime(),
                                     "memberId":memberid,

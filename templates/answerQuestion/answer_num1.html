@@ -12,8 +12,11 @@
 //            })
 //        }
 //    }
-
+var doc = JSON.parse('{@themeQuestion}');
+var wechatId = '{@wechatId}';
+var memberid = '{@memberid}';
 var isReg=function(){
+
     var flag="{@flag}";
         if(flag=="1")
         {
@@ -25,6 +28,17 @@ var isReg=function(){
             })
             return false;
         }
+    var flag="{@isok}";
+    if(flag=="0")
+    {
+
+        window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!!!",function(event){
+            if(event == "confirm"){
+                location.href="/lavico/answerQuestion/finish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true";
+            }
+        })
+        return false;
+    }
 }
 </script>
 
@@ -37,9 +51,15 @@ var isReg=function(){
         </if>
     </div>
     <div class="activity-rules">
-        <if condition="@ fromWelab==''">
-        	<div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()">立即开始</a></div>
-		</if>
+        <div class="begin"><a href="/lavico/answerQuestion/answer?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()" style="text-decoration:none;">立即开始</a></div>
+        <!--<if condition="@ fromWelab==''">-->
+        	<!--<div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()">立即开始</a></div>-->
+		<!--</if>-->
+        <!--<div class="begin"><a href="/lavico/answerQuestion/answer?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()">立即开始</a></div>-->
+        <!--<if condition="@ fromWelab==''">-->
+        	<!--<div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()" style="text-decoration: underline">立即开始</a></div>-->
+		<!--</if>-->
+
         <div class="text">
             <div class="title">活动及使用规则</div>
             <div class="title1">活动说明：</div>

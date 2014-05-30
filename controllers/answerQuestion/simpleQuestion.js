@@ -76,7 +76,7 @@ module.exports={
                     "getChooseLabel":"",
                     "getLabel": "",
                     "getGift":  "",
-                    "compScore": "",
+                    "getScore": "",
                     "createTime": new Date().getTime(),
                     "resultValue":receiveAnswer,
                     "memberId":memberid,
