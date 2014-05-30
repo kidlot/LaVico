@@ -11,6 +11,9 @@ module.exports={
     actions:{
         save:{
             process:function(seed,nut){
+                var description = seed.description.replace(/[\n\r\t]/,'<br/>');
+                var relief = seed.relief.replace(/[\n\r\t]/,'<br/>');
+                var explanation = seed.relief.replace(/[\n\r\t]/,'<br/>');
                 helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(id)},{$set:{description:seed.description,relief:seed.relief,explanation:seed.explanation}},
                     this.hold(function(err,doc){
                         if(err){
