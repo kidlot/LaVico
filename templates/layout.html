@@ -155,7 +155,7 @@
 
             WeixinJSBridge.invoke('shareTimeline',{
                 "img_url":location.origin + "/lavico/public/images/logo.png",
-                "link":location.href + "&fromWelab=timeline",
+                "link":replaceWxid(location.href) + "&fromWelab=timeline",
                 "desc":"朗维高",
                 "title":"朗维高"
             }, function(res) {
@@ -183,7 +183,7 @@
 
             var contentModel = {
                 "img_url":location.origin + "/lavico/public/images/logo.png",
-                "link":location.href + "&fromWelab=friend",
+                "link":replaceWxid(location.href) + "&fromWelab=friend",
                 "desc":"朗维高",
                 "title":"朗维高"
             }
@@ -260,5 +260,9 @@
             wxid = location.search.match(/wechatid=(.*)$/)[1].split("&")[0];
         }
         return wxid;
+    }
+
+    function replaceWxid (url){
+        return url.replace("wxid=","by=").replace("uid=","by=").replace("wechatid=","by=")
     }
 </script>
