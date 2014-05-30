@@ -287,17 +287,27 @@ module.exports = {
 
 
         $("#submit").click(function(){
-            if($("#name").val() == ''){
-                //alert("请输入姓名");
-                window.popupStyle2.on("请输入姓名",function(event){});
 
+            var name = $.trim($("#name").val());
+            var nameReg = /[\u4e00-\u9fa50-9A-Za-z]{1,}/;
+            var sex = $("#sex").val();
+
+            if(name.length == 0){
+
+                window.popupStyle2.on("请输入姓名",function(event){});
                 $("#name").focus();
                 return	false;
             }
-            if($("#sex").val() == ''){
+
+            if(!nameReg.test(name)){
+
+                window.popupStyle2.on("请输入真实的姓名",function(event){});
+                $("#name").focus();
+                return	false;
+            }
+            if(sex.length > 0){
 
                 window.popupStyle2.on("请选择性别",function(event){});
-                //alert("请选择性别");
                 $("#sex").focus();
                 return	false;
             }
@@ -333,7 +343,7 @@ module.exports = {
 
             $.get('/lavico/member/card_blank/register:apply_card',{
                     uid : $("#uid").val(),
-                    name : $("#name").val(),
+                    name : name,
                     sex : $("#sex").val(),
                     birthday : $("#year").val()+'-'+$("#month").val()+'-'+$('#day').val(),
                     mobile : $("#mobile").val(),
