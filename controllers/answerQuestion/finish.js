@@ -46,7 +46,7 @@ module.exports={
                 if(docs){
                     if(themetype==1){
                         for(var i=0;i<docs.length;i++){
-                            if(docs[i].compScore!=""){
+                            if(docs[i].getLabel!=""){
                                 sa = docs[i];
                             }
                         }
@@ -65,7 +65,7 @@ module.exports={
                         }
                     }else{
                         for(var i=0;i<docs.length;i++){
-                            if(docs[i].getLabel!=""){
+                            if(docs[i].compScore!=""){
                                 sa = docs[i];
                             }
                         }
@@ -97,13 +97,13 @@ module.exports={
 
 
         this.step(function(){
-        if(go) {
-            console.log("input go");
-            var compScore
-            //非停止标签过来
-            if (stopLab != "true") {
-                //插入总积分
-                helper.db.coll("lavico/custReceive").insert({
+            if(go) {
+                console.log("input go");
+                var compScore
+                //非停止标签过来
+                if (stopLab != "true") {
+                    //插入总积分
+                    helper.db.coll("lavico/custReceive").insert({
                     "wechatid": wechatid,
                     "themeId": helper.db.id(_id),
                     "isFinish": true,
@@ -118,13 +118,14 @@ module.exports={
                     "memberId":memberid,
                     "themetype":themetype
                 }, function (err, doc) {
-                });
 
-                //查找单题组,获取分值范围数组
-                var scoreRange
-                var docTheme;
-                var themeType;
-                this.step(function () {
+                    });
+
+                    //查找单题组,获取分值范围数组
+                    var scoreRange
+                    var docTheme;
+                    var themeType;
+                    this.step(function () {
                     helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
                         if (err) throw err;
                         scoreRange = doc.scoreMinMax;
@@ -136,7 +137,7 @@ module.exports={
                 });
                 //查找全部券
                 var doc_json;
-                this.step(function () {
+                    this.step(function () {
                     middleware.request('Coupon/Promotions', {
                         perPage: 1000,
                         pageNum: 1
@@ -147,68 +148,61 @@ module.exports={
 
                 });
 
-                var resultList = "[";
-                this.step(function () {
-                    for (var i = 0; i < scoreRange.length; i++) {
-                        var minlen = scoreRange[i].conditionMinScore;//获取低分值
-                        var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                        var dot = 1;
-                        if (scoreAll >= minlen && scoreAll <= maxlen) {//在分值范围中
-                            //获取三个奖励
-                            var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                            var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                            compScore = getScore;
-                            var getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                            var getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                            var nowPromotion;
+                    var resultList = "[";
+                    this.step(function () {
+                        for (var i = 0; i < scoreRange.length; i++) {
+                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
+                            var dot = 1;
+                            if (scoreAll >= minlen && scoreAll <= maxlen) {//在分值范围中
+                                //获取三个奖励
+                                var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                compScore = getScore;
+                                var getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                var getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+                                var nowPromotion;
 
-                            if (themeType != 1) {
-                                then.step(function () {
-                                    //根据姓名和电话查memberId
-                                    helper.db.coll("welab/customers").findOne({wechatid: seed.wechatid},
-                                        this.hold(function (err, result) {
+                                if (themeType != 1) {
+                                    then.step(function () {
+                                        //根据姓名和电话查memberId
+                                        helper.db.coll("welab/customers").findOne({wechatid: seed.wechatid},
+                                            this.hold(function (err, result) {
+                                                if (err) throw err;
+                                                if (result) {
+                                                    nut.model.memberID = result.HaiLanMemberInfo.memberID;
+                                                    return result.HaiLanMemberInfo.memberID
+                                                }
+                                            })
+                                        )
+                                    })
+                                    then.step(function (memberId) {
+                                        //根据memberId调用接口给账户加分
+                                        var jsonData = {};
+                                        jsonData.memberId = memberId;
+                                        jsonData.qty = compScore;
+                                        jsonData.memo = '问答测试' + '-' + nut.model.themeTitle;
+
+                                        console.log("问答测试:"+JSON.stringify(jsonData));
+                                        middleware.request('Point/Change', jsonData,
+                                            this.hold(function (err, doc) {
+                                                if (err) throw err;
+                                            })
+                                        )
+                                        var tagRecord='问答测试' + '-' + nut.model.themeTitle;
+                                        console.log("tag:"+tagRecord);
+                                        console.log("memberId:"+memberId);
+                                        middleware.request("Tag/Add", {"memberId": memberId,"tag":tagRecord}, this.hold(function (err, doc) {
                                             if (err) throw err;
-                                            if (result) {
-                                                nut.model.memberID = result.HaiLanMemberInfo.memberID;
-                                                return result.HaiLanMemberInfo.memberID
-                                            }
-                                        })
-                                    )
-                                })
-
-
-                                then.step(function (memberId) {
-
-                                    //根据memberId调用接口给账户加分
-                                    var jsonData = {};
-                                    jsonData.memberId = memberId;
-                                    jsonData.qty = compScore;
-                                    jsonData.memo = '问答测试' + '-' + nut.model.themeTitle;
-
-                                    console.log("问答测试:"+JSON.stringify(jsonData));
-                                    middleware.request('Point/Change', jsonData,
-                                        this.hold(function (err, doc) {
-                                            if (err) throw err;
-
-                                        })
-                                    )
-
-                                    var tagRecord='问答测试' + '-' + nut.model.themeTitle;
-                                    console.log("tag:"+tagRecord);
-                                    console.log("memberId:"+memberId);
-                                    middleware.request("Tag/Add", {"memberId": memberId,"tag":tagRecord}, this.hold(function (err, doc) {
-                                        if (err) throw err;
-                                        console.log("tag record:" + doc);
-                                    }))
-
-
-                                })
-                            } else {
-                                for (var j = 0; j < doc_json.list.length; j++) {
-                                    if (doc_json.list[j].PROMOTION_CODE == getActivities) {
-                                        nowPromotion = doc_json.list[j]
+                                            console.log("tag record:" + doc);
+                                        }))
+                                    })
+                                } else {
+                                    for (var j = 0; j < doc_json.list.length; j++) {
+                                        if (doc_json.list[j].PROMOTION_CODE == getActivities) {
+                                            nowPromotion = doc_json.list[j]
+                                        }
                                     }
-                                }
                                 if (typeof(getActivities) != "undefined" && getActivities != "") {
                                     var newActivity = ""//服务器返回的券
                                     //调用接口开始
@@ -218,10 +212,7 @@ module.exports={
                                     } else if (themeType == 1) {
                                         memoString = "型男测试-" + docTheme.theme;
                                     }
-
-
                                     //得券接口
-
                                     then.step(function () {
                                         var jsonData = {
                                             openid: wechatid,
@@ -232,17 +223,14 @@ module.exports={
                                             point: 0
                                         }
                                         console.log("hello:"+JSON.stringify(jsonData));
-
                                         middleware.request("Point/Change",
                                             {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                             this.hold(function (err, doc) {
                                             }))
-
                                         middleware.request("Tag/Add", {"memberId": nut.model.memberID,"tag":memoString}, this.hold(function (err, doc) {
                                             if (err) throw err;
                                             console.log("tag record:" + doc.success);
                                         }))
-
                                         middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                             if (err) throw err;
                                             var docJson = JSON.parse(doc)
@@ -259,11 +247,6 @@ module.exports={
                                             }
                                         }));
                                     })
-
-
-
-
-
                                 }
                             }
 
@@ -292,7 +275,6 @@ module.exports={
                                     + "',getScore:" + getScore
                                     + ",getTipContent:'" + getTipContent
                                     + "',getActivities:'" + newActivity + "'}";
-
                                 if (getLabel != "" || getLabel != null) {
                                     //发送标签至CRM
                                      jsonData = {};
@@ -319,12 +301,10 @@ module.exports={
 //                                    }))
 //
 //                                }
-
                                 if (dot >= 2) {
                                     resultList += ",";
                                 }
                                 dot++;
-
                             })
                             //调用接口结束
                         } else {
@@ -336,10 +316,10 @@ module.exports={
                         }
                     }
 
-                })
+                    })
 
 
-                this.step(function () {
+                    this.step(function () {
                     resultList += "]";
                     //返回显示
                     console.log("___________resultList:"+resultList);
@@ -348,11 +328,11 @@ module.exports={
                     nut.model.jsonResult = eval('(' + resultList + ')');
                     console.log("resultList:" + nut.model.jsonResult);
                 })
-            }
-            else {
-                //停止标签过来
-                //记录总分
-                helper.db.coll("lavico/custReceive").insert({
+                }
+                else {
+                    //停止标签过来
+                    //记录总分
+                    helper.db.coll("lavico/custReceive").insert({
                     "wechatid": wechatid,
                     "themeId": helper.db.id(_id),
                     "isFinish": true,
@@ -367,13 +347,13 @@ module.exports={
                     "memberId":memberid,
                     "themetype":themetype
                 }, function (err, doc) {
-                });
+                    });
 
-                //查找单题组,获取分值范围数组
-                var scoreRange;
-                var docTheme;
-                var themeType;
-                this.step(function () {
+                    //查找单题组,获取分值范围数组
+                    var scoreRange;
+                    var docTheme;
+                    var themeType;
+                    this.step(function () {
                     helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
                         if (err) throw err;
                         scoreRange = doc.scoreMinMax;
@@ -383,9 +363,9 @@ module.exports={
                     }));
                 });
 
-                //查找全部券
-                var doc_json;
-                this.step(function () {
+                    //查找全部券
+                    var doc_json;
+                    this.step(function () {
                     middleware.request('Coupon/Promotions', {
                         perPage: 1000,
                         pageNum: 1
@@ -395,8 +375,8 @@ module.exports={
                     }))
                 });
 
-                var resultList = "[";
-                this.step(function () {
+                    var resultList = "[";
+                    this.step(function () {
                     //console.log("scoreRange.length:"+scoreRange.length)
                     //console.log("scoreRange:"+scoreRange)
                     for (var i = 0; i < scoreRange.length; i++) {
@@ -582,14 +562,14 @@ module.exports={
                     }
 
                 })
-                this.step(function () {
+                    this.step(function () {
                     resultList += "]";
                     then.req.session.optionId = ""
                     nut.model.result = resultList;
                     nut.model.jsonResult = eval('(' + resultList + ')');
                 })
+                }
             }
-        }
         })
 
     }
