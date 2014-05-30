@@ -529,7 +529,7 @@ module.exports = {
 
                 }else if(data.result == 'something-error'){
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){
+                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
                         flag = 1;
                     });
 
@@ -543,7 +543,7 @@ module.exports = {
                             flag = 1;
                         });
                     }else{
-                        window.popupStyle2.on('每次摇一摇将消耗'+_points+'积分，你当前还有'+_i+'次机会',function(event){
+                        window.popupStyle2.on('每次摇一摇将消耗'+_points+'积分，您当前还有'+_i+'次机会',function(event){
                             flag = 1;
                         });
                     }
@@ -557,7 +557,7 @@ module.exports = {
 
                 }else if(data.result == 'your-points-not-enough'){
 
-                    window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+                    window.popupStyle2.on('您的积分不够了，快去朗维高门店消费或者参加抢积分活动吧！',function(event){
                         flag = 1;
                     });
 
@@ -577,8 +577,8 @@ module.exports = {
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion',deviceMotionHandler, false);
         }else{
-            console.log('您的手机没法摇？那就直接点击下面按钮吧');
-            window.popupStyle2.on('您的手机没法摇？那就直接点击下面按钮吧',function(event){});
+            console.log('您的手机没法摇？那就直接点击下面按钮吧！');
+            window.popupStyle2.on('您的手机没法摇？那就直接点击下面按钮吧！',function(event){});
         }
         var timer;
         var timerShake;
@@ -743,7 +743,7 @@ module.exports = {
 
                     }else if(data.result == 'your-points-not-enough'){
 
-                        window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
+                        window.popupStyle2.on('您的积分不够了，快去朗维高门店消费或者参加抢积分活动吧！',function(event){
                             flag = 1;
                         });
 
