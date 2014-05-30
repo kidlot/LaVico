@@ -17,12 +17,12 @@ module.exports = {
         var cbUrl = "http://"+this.req.headers.host + this.req.url
 
         if(seed.wxid){
-            module.run(seed.wxid,nut)
+            module._run(seed.wxid,nut)
         }else{
-            oauth.getOpenid(this.req,this.res,cbUrl,function(res){
+            oauth.getOpenid(this.req,this.res,seed.code,cbUrl,function(res){
 
                 if(res.err){
-                    console.log("获得OPID错误")
+                    console.log("获得OPID错误",res)
                 }else{
                     module.run(res.openid)
                 }
@@ -34,7 +34,7 @@ module.exports = {
 
 
 
-module.run = function (wxid,nut){
+module._run = function (wxid,nut){
 
     Steps(
 
