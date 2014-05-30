@@ -1150,8 +1150,6 @@ exports.load = function () {
                 if(jsonData[i].memberId){
                     (function(i,stutas){
                         console.log(jsonData[i].memberId)
-
-                        //setTimeout(function(){
                             middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, function (err, doc) {
                                 if (err) throw err;
                                 var docs = JSON.parse(doc);
@@ -1162,36 +1160,28 @@ exports.load = function () {
                                 console.log(sta)
                                 stutas.push(sta);
                             })
-                       // },3000)
                     })(i,stutas)
                 }
             }
         })
 
         this.step(function(){
-            //setTimeout(function(){
-                for (var i=0; i<aTagList.length; i++) {
-                    tag = aTagList[i];
-                    console.log(stutas)
-                    for(var j=0;j<stutas.length;j++){
-                        // (function(j){
-                        if(stutas[j].stat==true){
-                            successID.push(stutas[j].id);
-                            helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},function(err,doc){
-                                if(err ){
-                                    throw err;
-                                }
-                            })
-                        }else{
-                            errID.push(stutas[j].id);
-                        }
-                        //})(j)
-
+            for (var i=0; i<aTagList.length; i++) {
+                tag = aTagList[i];
+                console.log(stutas)
+                for(var j=0;j<stutas.length;j++){
+                    if(stutas[j].stat==true){
+                        successID.push(stutas[j].id);
+                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},function(err,doc){
+                            if(err ){
+                                throw err;
+                            }
+                        })
+                    }else{
+                        errID.push(stutas[j].id);
                     }
                 }
-
-            //},8000)
-
+            }
         });
 
         this.step(function(){
@@ -1204,5 +1194,4 @@ exports.load = function () {
             }
         })
     }
-
 };
