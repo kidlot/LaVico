@@ -321,11 +321,12 @@ function save (){
     
 
   
-    aFormInput['startDate'] = new Date($("#startDate").val()).getTime()-8*3600*1000;
+    aFormInput['startDate'] = new Date($("#startDate").val()).getTime();
+    //console.log(new Date(Date.parse($("#startDate").val().replace(/-/g,   "/"))))
     //console.log(new Date($("#startDate").val()).getTime()-8*3600*1000);
     //console.log(new Date(new Date($("#startDate").val()).getTime()-8*3600*1000));
     //console.log($("#startDate").val());
-    aFormInput['endDate'] = new Date($("#endDate").val()).getTime()-8*3600*1000+24*3600*1000-1000;
+    aFormInput['endDate'] = new Date($("#endDate").val()).getTime();
     //console.log(new Date($("#endDate").val()));
     aFormInput['aid'] = aid;
     aFormInput['name'] = $("#name").val();

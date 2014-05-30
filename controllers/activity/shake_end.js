@@ -11,6 +11,8 @@ module.exports = {
         var _id = seed._id || 'undefined';//表lavico/shake，唯一确定shake的活动
         var aid;//在表lavico/activity唯一确定活动ID
         var coupon_no = seed.coupon_no || 'undefined';//优惠券
+        var time = (new Date()).getTime();
+        nut.model.time = time;
 
         this.step(function(){
             if(uid == 'undefined'){
@@ -93,5 +95,6 @@ module.exports = {
     viewIn:function(){
         /*掩藏分享按钮*/
         window.hideShareButtion.on();
+
     }
 }
