@@ -333,6 +333,7 @@ module.exports={
                         nut.model.result = resultList;
                         nut.model.jsonResult = eval('(' + resultList + ')');
                         console.log("resultList:" + nut.model.jsonResult);
+                        nut.model.sta = "false";
                     })
                 }
                 else {
@@ -573,6 +574,7 @@ module.exports={
                         then.req.session.optionId = ""
                         nut.model.result = resultList;
                         nut.model.jsonResult = eval('(' + resultList + ')');
+                        nut.model.sta = "false";
                     })
                 }
             }
