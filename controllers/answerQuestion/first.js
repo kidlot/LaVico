@@ -52,8 +52,9 @@ module.exports= {
                     }
                 }))
 
+            }else{
+            nut.model.isok = "1";
             }
-            nut.model.isok = "2";
         })
 
     }
