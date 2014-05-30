@@ -848,6 +848,13 @@ exports.load = function () {
                     showCloseButton: true})
                 return ;
             }
+            if( aList.length > 5){
+                $.globalMessenger().post({
+                    message: '最多只能选择五条数据.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
 
             jQuery("#tags").tagsManager('empty');
 
@@ -868,6 +875,13 @@ exports.load = function () {
             if( aList.length == 0){
                 $.globalMessenger().post({
                     message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+            if( aList.length > 5){
+                $.globalMessenger().post({
+                    message: '最多只能选择五条数据.',
                     type: 'error',
                     showCloseButton: true})
                 return ;
@@ -1144,34 +1158,23 @@ exports.load = function () {
         })
 
         this.step(function(){
-            var num=0;
             console.log(jsonData)
             console.log(jsonData.length)
-            for(var i=0;i<num;i++){
-                num++;
-                console.log(jsonData[i].memberId)
-                var memberid = jsonData[i].memberId
-                var tag = jsonData[i].tag;
-                var id = jsonData[i].id;
-                var sa = setInterval(function(){
-                    if(memberid){
-                        (function(i,stutas){
-                            middleware.request("Tag/Add", {memberId: memberid,tag: tag}, then.hold(function (err, doc) {
-                                if (err) throw err;
-                                console.log(doc)
-                                var docs = JSON.parse(doc);
-                                sta={};
-                                sta.stat = docs.success;
-                                sta.id = id;
-                                console.log(docs)
-                                stutas.push(sta);
-                                console.log("i:"+i)
-                            }))
-                        })(i,stutas)
-                    }
-                },1000)
-                if(num==jsonData.length){
-                    clearInterval(sa);
+            for(var i=0;i<jsonData.length;i++){
+                if(jsonData[i].memberId){
+                    (function(i,stutas){
+                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, then.hold(function (err, doc) {
+                            if (err) throw err;
+                            console.log(doc)
+                            var docs = JSON.parse(doc);
+                            sta={};
+                            sta.stat = docs.success;
+                            sta.id = jsonData[i].id;
+                            console.log(sta)
+                            stutas.push(sta);
+                            console.log("i:"+i)
+                        }))
+                    })(i,stutas)
                 }
             }
         })
