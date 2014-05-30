@@ -1,4 +1,4 @@
-module.exports = {
+    module.exports = {
 
 	layout: "welab/Layout"
 	, view: "lavico/templates/coupan/index.html"
