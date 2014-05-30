@@ -222,7 +222,23 @@ exports.load = function () {
                 if(err) throw err ;
 
                 for (var i=0; i<docs.length; i++)
-                {
+                {/*
+                 _data[i].nickname,
+                 _data[i].realname,
+                 _data[i].gender,
+                 _data[i].birthday,
+                 _data[i].mobile,
+                 _data[i].industry,
+                 _data[i].email,
+                 _data[i].province,
+                 _data[i].city,
+                 _data[i].address,
+                 _data[i].favoriteStyle,
+                 _data[i].favoriteColor,
+                 _data[i].cardtype,
+                 _data[i].cardNumber,
+                 _data[i].source,
+                 _data[i].tags*/
                     docs[i].realname = docs[i].realname || '';
                     docs[i].nickname = docs[i].nickname || '';
                     docs[i].province = docs[i].province || '';
@@ -232,7 +248,7 @@ exports.load = function () {
                     docs[i].followCount = docs[i].followCount || '1';
                     docs[i].messageCount = docs[i].messageCount && otherData.totaMessages ? (docs[i].messageCount) + " " + (parseInt((docs[i].messageCount / otherData.totaMessages)*100)) + "%" : "0";
                     docs[i].isRegister = docs[i].registerTime ? "是" : "否"
-                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
+                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '--')
                     docs[i].birthday = docs[i].birthday ? parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365)) : ""
 
                     docs[i].source = docs[i].source || '';
@@ -249,35 +265,47 @@ exports.load = function () {
                             docs[i].cardtype = '未知';
                         }
                     }else{
-                        docs[i].cardtype = '未知';
+                        docs[i].cardtype = '--';
                     }
 
+                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.cardNumber){
+                        docs[i].cardNumber = docs[i].HaiLanMemberInfo.cardNumber;
+                    }else{
+                        docs[i].cardNumber = '--';
+                    }
+
+                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.favoriteStyle){
+                        docs[i].favoriteStyle = docs[i].HaiLanMemberInfo.favoriteStyle;
+                    }else{
+                        docs[i].favoriteStyle = '--';
+                    }
+
+                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.memberID){
+                        docs[i].memberID = docs[i].HaiLanMemberInfo.memberID;
+                    }else{
+                        docs[i].memberID = '--';
+                    }
+
+                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.favoriteColor){
+                        docs[i].favoriteColor = docs[i].HaiLanMemberInfo.favoriteColor;
+                    }else{
+                        docs[i].favoriteColor = '--';
+                    }
+
+
                     docs[i].industry = docs[i].profession || '';
+                    docs[i].email = docs[i].email || '';
 
                     var tags = [];
-                    if( docs[i].tags){
+                    if(docs[i].tags){
                         for (var ii=0; ii<docs[i].tags.length; ii++)
                         {
                                 tags.push(docs[i].tags[ii]);
                         }
+                        docs[i].tags = tags.join(",");
+                    }else{
+                        docs[i].tags = '';
                     }
-
-                    docs[i].tags = tags.join(",");
-                    docs[i].followTimebak = docs[i].followTime;
-                    docs[i].followTime = docs[i].followTime ? parseInt(((new Date()) - (new Date(docs[i].followTime*1000))) / (1000*60*60*24)) : ""
-                    docs[i].registerTime = docs[i].registerTime ? parseInt(((new Date()) - (new Date(docs[i].registerTime))) / (1000*60*60*24)) : ""
-                    docs[i].lastMessageTime = parseInt(((new Date()) - (new Date(docs[i].lastMessageTime))) / (1000*60*60*24)) || '';
-                    docs[i].viewCount = docs[i].viewCount && otherData.totalView ? (docs[i].viewCount) + " <span style='color: #1ABC9C'>" + (parseInt((docs[i].viewCount / otherData.totalView)*100)) + "%</span>" : "0";
-
-                    var viewFriendCount = docs[i].viewFriendCount + docs[i].viewTimeLineCount;
-
-                    docs[i].viewFriendCount = viewFriendCount && otherData.totalViewFriend ? (viewFriendCount) + " <span style='color: #1ABC9C'>" + (parseInt((viewFriendCount / otherData.totalViewFriend)*100)) + "%</span>" : "0";
-                    var viewShareCount = docs[i].shareFriendCount + docs[i].shareTimeLineCount;
-
-                    docs[i].shareFriendCount = viewShareCount && otherData.totalShare ? (viewShareCount) + " <span style='color: #1ABC9C'>" + (parseInt((viewShareCount / otherData.totalShare)*100)) + "%</span>" : "0";
-
-                    docs[i].unfollowTimeForFollow = docs[i].isFollow == false ? parseInt((docs[i].unfollowTime - (docs[i].followTimebak*1000)) / (1000*60*60*24)) : ''
-                    docs[i].unfollowTimeForReg = docs[i].registerTime ? parseInt((docs[i].unfollowTime - (docs[i].registerTime)) / (1000*60*60*24)) : ''
 
                     _data.push(docs[i]);
 
@@ -314,7 +342,6 @@ exports.load = function () {
                 }, {
                     caption: '行业',
                     type: 'string'
-
                 }, {
                     caption: 'Email',
                     type: 'string'
@@ -355,22 +382,78 @@ exports.load = function () {
             conf.rows = [];
 
             for(var i=0 ;i < _data.length ;i++){
-
+/*
+* {
+ caption: '昵称',
+ type: 'string'
+ }, {
+ caption: '姓名',
+ type: 'string'
+ }, {
+ caption: '性别',
+ type: 'string'
+ }, {
+ caption: '年龄',
+ type: 'string'
+ }, {
+ caption: '手机',
+ type: 'string'
+ }, {
+ caption: '行业',
+ type: 'string'
+ }, {
+ caption: 'Email',
+ type: 'string'
+ }, {
+ caption: '省份',
+ type: 'string'
+ }, {
+ caption: '城市',
+ type: 'string'
+ }, {
+ caption: '具体地址',
+ type: 'string'
+ }, {
+ caption: '喜好款式',
+ type: 'string'
+ }, {
+ caption: '喜好颜色',
+ type: 'string'
+ }, {
+ caption: '卡类型',
+ type: 'string'
+ }, {
+ caption: '卡号码',
+ type: 'string'
+ }, {
+ caption: '会员号码',
+ type: 'string'
+ }, {
+ caption: '关注来源',
+ type: 'string'
+ }, {
+ caption: '标签',
+ type: 'string'
+ }*/
                 var rows;
                 rows = [
                     _data[i].nickname,
                     _data[i].realname,
-                    _data[i].mobile,
                     _data[i].gender,
                     _data[i].birthday,
+                    _data[i].mobile,
+                    _data[i].industry,
+                    _data[i].email,
                     _data[i].province,
                     _data[i].city,
                     _data[i].address,
-                    _data[i].industry,
+                    _data[i].favoriteStyle,
+                    _data[i].favoriteColor,
                     _data[i].cardtype,
+                    _data[i].cardNumber,
+                    _data[i].memberID,
                     _data[i].source,
                     _data[i].tags
-
                 ]
                 conf.rows.push(rows)
 
@@ -1047,11 +1130,10 @@ exports.load = function () {
                                         json.id= id;
                                         jsonData.push(json);
                                     }else{
-                                        json={};
-                                        json.memberId = "null"
-                                        json.tag = tag;
-                                        json.id= id;
-                                        jsonData.push(json);
+                                        sta={};
+                                        sta.stat = false;
+                                        sta.id = id;
+                                        stutas.push(sta)
                                     }
                                 }
                             }))
@@ -1071,21 +1153,15 @@ exports.load = function () {
                         console.log(jsonData[i].memberId)
                         middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, this.hold(function (err, doc) {
                             if (err) throw err;
+                            console.log(doc)
                             var docs = JSON.parse(doc);
                             sta={};
                             sta.stat = docs.success;
                             sta.id = id;
                             stutas.push(sta);
                         }))
-                    }else{
-                        sta={};
-                        sta.stat = false;
-                        sta.id = id;
-                        stutas.push(sta);
                     }
-
-             //   })(i)
-
+               // })(i)
             }
         })
 
