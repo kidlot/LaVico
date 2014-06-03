@@ -66,7 +66,7 @@ module.exports = {
                     var customers = customers || {}
 
                     nut.model.isVip = false
-                    nut.model.isFollow = customers ? true : false;
+                    nut.model.isFollow = customers.isFollow ? true : false;
                     if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
                         nut.model.isVip = true
                     }
