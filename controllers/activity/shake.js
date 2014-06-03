@@ -14,6 +14,48 @@ module.exports = {
         nut.model.fromWelab = seed.fromWelab || ""
 
         var member_id;
+
+        this.step(function(){
+            //oauth认证
+            if(wxid == 'undefined'){
+
+                if(this.req.session.oauthTokenInfo){
+
+                    console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
+                    wxid = this.req.session.oauthTokenInfo.openid
+                }else{
+
+                    // 通过oauth获取OPENID
+                    if(process.wxOauth){
+
+                        if(!seed.code){
+
+                            var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.url,"123","snsapi_base")
+                            console.log("通过oauth获得CODE的url",url)
+                            this.res.writeHeader(302, {'location': url }) ;
+
+                            nut.disable();//不显示模版
+                            this.res.end();
+                            this.terminate();
+
+                        }else{
+
+                            process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+
+                                if(!err){
+                                    var openid = doc.openid
+                                    wxid = openid || "undefined";
+                                    console.log("通过oauth获得信息",doc)
+                                    this.req.session.oauthTokenInfo = doc;
+                                }
+                            }))
+                        }
+
+                    }
+                }
+            }
+        });
+
         this.step(function(){
             if(wxid == 'undefined' || wxid == '{wxid}'){
                 nut.disable();//不显示模版
@@ -49,8 +91,15 @@ module.exports = {
             }else{
 
                 helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+
+                    var doc = doc || {};
+                    nut.model.isVip = false;
+
                     if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind' ){
                         member_id =  doc.HaiLanMemberInfo.memberID;
+                        nut.model.isFollow = doc.isFollow ? true : false;
+                        nut.model.isVip = true;
+
                     }else{
                         member_id = 'undefined';
                     }
