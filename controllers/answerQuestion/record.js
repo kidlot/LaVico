@@ -110,7 +110,7 @@ module.exports={
                                 then.req.session.isFinish=true;
 
                                 this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+
-                                    wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId});
+                                    wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                                 this.res.end();
                             }
                         }else{
@@ -349,7 +349,7 @@ module.exports={
                 if(then.req.session.isFinish){
                     //完成页过来的(************型男测试)
                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?isRecord=yes&wechatid="+wechatid+
-                        "&_id="+_id+"&optionId="+then.req.session.optionId});
+                        "&_id="+_id+"&optionId="+then.req.session.optionId+"&memberid="+memberid+"&themetype="+themetype});
                     this.res.end();
                 }else{
                     //已经记录过了的
@@ -379,7 +379,7 @@ module.exports={
 
                                 if(next >docOptions.length){
                                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
-                                        "&_id="+_id+"&optionId="+docOptions.length});
+                                        "&_id="+_id+"&optionId="+docOptions.length+"&memberid="+memberid+"&themetype="+themetype});
                                     this.res.end();
                                 }else{
 
@@ -407,7 +407,7 @@ module.exports={
 
 
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?isRecord=yes&wechatid="+wechatid+
-                            "&_id="+_id+"&optionId="+optionId});
+                            "&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                         this.res.end();
                     }
                 }
