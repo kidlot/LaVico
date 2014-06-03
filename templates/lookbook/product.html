@@ -1,15 +1,13 @@
 <input type="hidden" id="pageNum" value={@pageNum}>
-<input type="hidden" id="bigPicIndex" value={@bigPicIndex}>
-<input type="hidden" id="sumBigPicIndex" value={@sumBigPicIndex}>
-<input type="hidden" id="bigPicIndex" value={@bigPicIndex}>
+<input type="hidden" id="current" >
 <input type="hidden" id="productId" value={@productId}>
-<div style="display: none" id="jsonPage">{@jsonPage}</div>
+<div style="display: none" id="jsonPage">{@jsonDoc}</div>
 <script src="/lavico/public/js/iscroll.js"></script>
 <section id="section">
     <div class="elite_title">
         <p>
             <if condition="@ source!='view'">
-                <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}">{@ lookbookName}</a></span>
+                <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}">qweqweqweqwe</a></span>
             <else />
                 <span class="title5"><a href="javascript:;" onclick="_cb()">返回列表</a></span>
             </if>
@@ -17,7 +15,7 @@
             <span class="title6">
                 <if condition="@ fromWelab==''">
                     <if condition="@ source!='view'">
-                        <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}','{@ product._id}')">收藏</a>
+                        <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}','333')">收藏</a>
                     </if>
                 </if>
             </span>
@@ -26,10 +24,11 @@
     <div id="wrapMain">
         <div id="scroller">
             <ul id="thelist">
-                <li><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" /></li>
-                <li><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" /></li>
-                <li><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" /></li>
-                <li><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" /></li>
+                <foreach for="@doc.product" var="page">
+                    <foreach for="@page.bigPic" var="doc2">
+                        <li><img src="/lavico/public/images/suits_mod.jpg" /></li>
+                    </foreach>
+                </foreach>
             </ul>
         </div>
     </div>
@@ -45,9 +44,16 @@
                 snap: true,
                 momentum: false,
                 hScrollbar: false,
-                onScrollEnd: false
+                onScrollEnd: onScrollEnd
             });
         }
+
+        function onScrollEnd(){
+
+            console.log(myScroll.currPageX)
+        }
+
+
         document.addEventListener('DOMContentLoaded', loaded, false);
 
         function wrapWin() {
@@ -106,7 +112,7 @@
             }
             return;
         }
-        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
+        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId=232323&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
         location.href = cb ? url + (cb?"&cb="+cb:"") : url;
     }
 
@@ -136,7 +142,7 @@
 
             return;
         }
-        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId={@ product._id}&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
+        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId=23232323&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
         location.href = cb ? url + (cb?"&cb="+cb:"") : url;
     }
     function favorites(wxid,pid){

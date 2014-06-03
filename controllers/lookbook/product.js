@@ -19,6 +19,8 @@ module.exports = {
             nut.model.source = seed.source||""
             nut.model.memberID = false
             nut.model.fromWelab = seed.fromWelab || ""
+            nut.model.pageNum = seed.pageNum || 1
+            nut.model.pageNum
 
             helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
                 var customers = customers || {}
@@ -38,11 +40,12 @@ module.exports = {
                 for(var i=0 ; i < nut.model.doc.product.length ; i++){
 
                     if(nut.model.doc.product[i]._id == seed.productId){
-                        nut.model.product = nut.model.doc.product[i]
+                        nut.model.doc.product[i].current = true
                     }
                 }
+                nut.model.jsonDoc = JSON.stringify(nut.model.doc)
+                console.log("11",nut.model.doc)
 
-                nut.model.sumBigPicIndex = nut.model.product.bigPic ? nut.model.product.bigPic.length : "0"
             }))
         }else{
             nut.disable();
