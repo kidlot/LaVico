@@ -17,8 +17,6 @@ module.exports = {
             nut.model._id = seed._id
             nut.model.productId = seed.productId
             nut.model.source = seed.source||""
-            nut.model.pageNum = parseInt(seed.pageNum) || 1
-            nut.model.bigPicIndex = parseInt(seed.bigPicIndex) || 1
             nut.model.memberID = false
             nut.model.fromWelab = seed.fromWelab || ""
 
@@ -36,11 +34,7 @@ module.exports = {
             helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
                 nut.model.doc = doc.page[nut.model.pageNum-1]
-                nut.model.jsonPage = JSON.stringify(nut.model.doc)
-                nut.model.lookbookName = doc.name
-                nut.model.lookbookType = doc.type
 
-                console.log("page",nut.model.doc)
                 for(var i=0 ; i < nut.model.doc.product.length ; i++){
 
                     if(nut.model.doc.product[i]._id == seed.productId){
@@ -49,7 +43,6 @@ module.exports = {
                 }
 
                 nut.model.sumBigPicIndex = nut.model.product.bigPic ? nut.model.product.bigPic.length : "0"
-                console.log("product",nut.model.product)
             }))
         }else{
             nut.disable();
