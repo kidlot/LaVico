@@ -231,26 +231,25 @@ module.exports={
                     //扣积分接口
 
                     if(isok){
-//                        middleware.request("Point/Change",
-//                            {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
-//                            this.hold(function (err, doc) {
-//                            }))
+                        middleware.request("Point/Change",
+                            {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
+                            this.hold(function (err, doc) {
+                            }))
 
                         //得券
                         middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
                             if(err) throw err;
-
                             //console.log("doc:"+doc)//不删
                             var docJson=JSON.parse(doc)
+                            console.log(docJson.success)
                             if(docJson.success){
                                 //扣除积分
-                                middleware.request("Point/Change",
-                                    {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
-                                    this.hold(function (err, doc) {
-                                    }))
                                 //返回true，表成功兑换，返回券值
                                 return docJson
+
                             }else{
+                                middleware.request("Point/Change",{"memberId": memberId, "qty": (needScore), "memo": '积分兑换-'+t_name},this.hold(function (err, doc) {
+                                    }))
                                 nut.view.disable();
                                 nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此商品暂停兑换',function(event){history.back()})}</script>");
                             }
