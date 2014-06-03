@@ -1,5 +1,4 @@
 <input type="hidden" id="pageNum" value={@pageNum}>
-<input type="hidden" id="current" >
 <input type="hidden" id="productId" value={@productId}>
 <div style="display: none" id="jsonPage">{@jsonDoc}</div>
 <script src="/lavico/public/js/iscroll.js"></script>
@@ -7,7 +6,7 @@
     <div class="elite_title">
         <p>
             <if condition="@ source!='view'">
-                <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}">qweqweqweqwe</a></span>
+                <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}">{@ pageName}</a></span>
             <else />
                 <span class="title5"><a href="javascript:;" onclick="_cb()">返回列表</a></span>
             </if>
@@ -15,7 +14,7 @@
             <span class="title6">
                 <if condition="@ fromWelab==''">
                     <if condition="@ source!='view'">
-                        <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}','333')">收藏</a>
+                        <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}')">收藏</a>
                     </if>
                 </if>
             </span>
@@ -24,18 +23,16 @@
     <div id="wrapMain">
         <div id="scroller">
             <ul id="thelist">
-                <foreach for="@doc.product" var="page">
-                    <foreach for="@page.bigPic" var="doc2">
-                        <li><img src="/lavico/public/images/suits_mod.jpg" /></li>
-                    </foreach>
+                <foreach for="@doc" var="item">
+                        <li><img src="{@ item.pic}" /></li>
                 </foreach>
             </ul>
         </div>
     </div>
     <article class="article" id="article"><h3>多色POLO衫</h3><p>热情洋溢的彩色polo衫，如同夏季香甜果汁，沁人心脾；舒适透气面料加以简洁时尚的设计，清新灵动。</p></article>
     <div id="nav">
-        <div id="prev" onclick="myScroll.scrollToPage('prev', 0);return false">prev</div>
-        <div id="next" onclick="myScroll.scrollToPage('next', 0);return false">next</div>
+        <div id="prev" onclick="leftPage();return false">prev</div>
+        <div id="next" onclick="rightPage();return false">next</div>
     </div>
     <script>
         var myScroll;
@@ -50,7 +47,10 @@
 
         function onScrollEnd(){
 
-            console.log(myScroll.currPageX)
+            var data = JSON.parse($("#jsonPage").text())
+
+            $("#article").find("h3").text(data[myScroll.currPageX].name)
+            $("#article").find("p").text(data[myScroll.currPageX].detail)
         }
 
 
@@ -76,6 +76,7 @@
 </section>
 
 <script>
+
     function _cb(){
 
         var cb = decodeURIComponent(window.location.search.match(/%7B(.*)%7D/)[1]);
@@ -85,67 +86,30 @@
 
             location.href = "/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}";
         }
-
     }
 
     function leftPage(){
 
-        var bigPicIndex = parseInt($("#bigPicIndex").val())
-        var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
-        var cb = window.location.search.match(/cb=(.*)$/) ? window.location.search.match(/cb=(.*)$/)[1] : false;
-        if(bigPicIndex <= 1){
-            var page = JSON.parse($("#jsonPage").text())
-            var nowProductNum = 0;
-            for(var i=0;i<page.product.length;i++){
-                if(page.product[i]._id == $("#productId").val()){
-                    nowProductNum = i+1
-                }
-            }
+        if(myScroll.currPageX == 0){
+            window.popupStyle2.on('已经是第一页',function(event){
 
-            if(nowProductNum > 1){
-                var url =  "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId="+page.product[nowProductNum-2]._id+"&bigPicIndex="+(page.product[nowProductNum-2].bigPic ? page.product[nowProductNum-2].bigPic.length:0)+"&source={@source}"
-                location.href = cb ? url + (cb?"&cb="+cb:"") : url;
-            }else{
-                window.popupStyle2.on('已经是第一页',function(event){
-
-                })
-            }
-            return;
+            })
+        }else{
+            myScroll.scrollToPage('prev', 0)
         }
-        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId=232323&bigPicIndex=" + (bigPicIndex -1)+"&source={@source}"
-        location.href = cb ? url + (cb?"&cb="+cb:"") : url;
     }
 
     function rightPage(){
 
-        var bigPicIndex = parseInt($("#bigPicIndex").val())
-        var sumBigPicIndex = parseInt($("#sumBigPicIndex").val())
-        var cb = window.location.search.match(/cb=(.*)$/) ? window.location.search.match(/cb=(.*)$/)[1] : false;
-        if(bigPicIndex >= sumBigPicIndex){
+        if($("#thelist>li").length == (myScroll.currPageX+1)){
+            window.popupStyle2.on('已经是最后一页',function(event){
 
-            var page = JSON.parse($("#jsonPage").text())
-            var nowProductNum = 0;
-            for(var i=0;i<page.product.length;i++){
-                if(page.product[i]._id == $("#productId").val()){
-                    nowProductNum = i+1
-                }
-            }
-
-            if(nowProductNum < page.product.length){
-                var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId="+(page.product[nowProductNum]._id)+"&source={@source}"
-                location.href = cb ? url + (cb?"&cb="+cb:"") : url;
-            }else{
-                window.popupStyle2.on('已经是最后一页',function(event){
-
-                })
-            }
-
-            return;
+            })
+        }else{
+            myScroll.scrollToPage('next', 0)
         }
-        var url = "/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId=23232323&bigPicIndex=" + (bigPicIndex +1)+"&source={@source}"
-        location.href = cb ? url + (cb?"&cb="+cb:"") : url;
     }
-    function favorites(wxid,pid){
+    function favorites(wxid){
 
         var isvip = '{@isVip}'
         if(isvip == "false"){
@@ -160,6 +124,8 @@
             return false;
         }
 
+        var data = JSON.parse($("#jsonPage").text())
+        var pid = data[myScroll.currPageX]._id
 
         $.ajax({
             url:'/lavico/lookbook/favorites:save',
