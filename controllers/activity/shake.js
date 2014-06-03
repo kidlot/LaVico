@@ -95,32 +95,24 @@ module.exports = {
                     var doc = doc || {};
                     nut.model.isVip = false;
 
-                    if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind' ){
-                        member_id =  doc.HaiLanMemberInfo.memberID;
+                    if(doc){
                         nut.model.isFollow = doc.isFollow ? true : false;
-                        nut.model.isVip = true;
-
                     }else{
                         nut.model.isFollow = false;
-
-                        member_id = 'undefined';
                     }
+
+                    if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind' ){
+                        nut.model.member_id = "normal";
+                    }else{
+                        nut.model.member_id = "undefined";
+                    }
+
                 }));
 
             }
 
         });
 
-        this.step(function(){
-
-            if(member_id == "undefined"){
-                //缺少微信ID参数，强制中断
-                //直接跳转
-                nut.model.member_id = "undefined";
-            }else{
-                nut.model.member_id = "normal";
-            }
-        });
 
         this.step(function(){
             if(aid == 'undefined'){
