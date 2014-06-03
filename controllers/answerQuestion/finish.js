@@ -19,29 +19,21 @@ module.exports={
         nut.model.themeType = themetype;
         var stutas= seed.stutas ? seed.stutas :"false";
         nut.model.stutas = stutas;
+        nut.model.getScores ="1";
 
         var docs;
         this.step(function(){
             if(stutas=="true"){
                 go = false;
-                if(themetype==1){
-                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
-                        "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
-                            if(err) throw err;
-                            docs = doc;
-                        }))
-                }else{
-                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
-                        "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
-                            if(err) throw err;
-                            docs = doc;
-                        }))
-                }
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                    "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
+                        if(err) throw err;
+                        docs = doc;
+                    }))
             }
         })
 
         this.step(function(){
-            console.log(5)
             if(stutas=="true"){
                 go = false;
                 var sa;
@@ -64,7 +56,7 @@ module.exports={
                                 + "getLabel:'" + "您上次未能完成答题"
                                 + "',getScore:" + "0"
                                 + ",getTipContent:'" + "您上次未能完成答题"
-                                + "',getActivities:'" + "您没有获得任何卷" + "'}]";
+                                + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
                             nut.model.score = "0";
                             nut.model.sta = "true";
@@ -86,7 +78,7 @@ module.exports={
                                 + "getLabel:'" + "您上次未能完成答题"
                                 + "',getScore:" + "0"
                                 + ",getTipContent:'" + "您上次未能完成答题"
-                                + "',getActivities:'" + "您没有获得任何卷" + "'}]";
+                                + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
                             nut.model.score = "0";
                         }
@@ -122,8 +114,8 @@ module.exports={
                         "getActivities": "",
                         "getScore": "",
                         "createTime": new Date().getTime(),
-                        "memberId":memberid,
-                        "themetype":themetype
+                        "memberId":seed.memberid,
+                        "themetype":seed.themetype
                     }, function (err, doc) {
 
                     });
@@ -157,10 +149,13 @@ module.exports={
 
                     var resultList = "[";
                     this.step(function () {
+                        console.log("scoreRange.length:"+scoreRange.length)
                         for (var i = 0; i < scoreRange.length; i++) {
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                            var dot = 1;
+                            console.log(scoreAll)
+                            console.log(minlen)
+                            console.log(maxlen)
                             if (scoreAll >= minlen && scoreAll <= maxlen) {//在分值范围中
                                 //获取三个奖励
                                 var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
@@ -256,9 +251,9 @@ module.exports={
                                         })
                                     }
                                 }
-
+                                console.log("memberid:"+memberid)
+                                console.log("themetype:"+themetype)
                                 then.step(function () {
-                                    //console.log(parseInt(then.req.session.scoreAll))
                                     helper.db.coll("lavico/custReceive").insert({
                                         "wechatid": wechatid,
                                         "themeId": helper.db.id(_id),
@@ -272,10 +267,14 @@ module.exports={
                                         "getScore": getScore,
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
-                                        "memberId":memberid,
-                                        "themetype":themetype
+                                        "memberId":seed.memberid,
+                                        "themetype":seed.themetype
                                     }, function (err, doc) {
                                     });
+                                    console.log(getLabel)
+                                    console.log(getScore)
+                                    console.log(getTipContent)
+                                    console.log(newActivity)
                                     //记录json准备显示
                                     resultList += "{"
                                         + "getLabel:'" + getLabel
@@ -308,24 +307,24 @@ module.exports={
 //                                    }))
 //
 //                                }
-                                    if (dot >= 2) {
-                                        resultList += ",";
-                                    }
-                                    dot++;
                                 })
                                 //调用接口结束
-                            } else {
-//                            resultList += "{"
-//                                + "getLabel:'" + getLabel
-//                                + "',getScore:" + 0
-//                                + ",getTipContent:'" + getTipContent
-//                                + "',getActivities:'" + "null" + "'}";
+                            }
+                            console.log("resultList:"+resultList.length)
+                            if(resultList.length==0){
+                                if(i==scoreRange.length-1){
+                                    resultList += "{"
+                                        + "getLabel:'" + "对不起,您没有获得任何奖励"
+                                        + "',getScore:" + 0
+                                        + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                        + "',getActivities:'" + "您没有获得任何礼券" + "'}";
+                                    nut.model.stutas = "true";
+                                    nut.model.score = "0";
+                                    nut.model.getScores ="0";
+                                }
                             }
                         }
-
                     })
-
-
                     this.step(function () {
                         resultList += "]";
                         //返回显示
@@ -335,9 +334,9 @@ module.exports={
                         nut.model.jsonResult = eval('(' + resultList + ')');
                         console.log("resultList:" + nut.model.jsonResult);
                         nut.model.sta = "false";
+
                     })
-                }
-                else {
+                }else {
                     //停止标签过来
                     //记录总分
                     helper.db.coll("lavico/custReceive").insert({
@@ -385,10 +384,8 @@ module.exports={
 
                     var resultList = "[";
                     this.step(function () {
-                        //console.log("scoreRange.length:"+scoreRange.length)
-                        //console.log("scoreRange:"+scoreRange)
+                        console.log("scoreRange.length:"+scoreRange.length)
                         for (var i = 0; i < scoreRange.length; i++) {
-                            var dot = 1;
                             //session上的停止标签和db中的设置标签一致
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
                                 var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
@@ -442,9 +439,9 @@ module.exports={
                                             + "',getScore:" + getScore
                                             + ",getTipContent:'" + getTipContent
                                             + "',getActivities:'" + newActivity + "'}";
-                                        if (i < scoreRange.length - 1) {
-                                            resultList += ",";
-                                        }
+                                    }
+                                    if(resultList){
+                                        break;
                                     }
                                 } else {
                                     if (typeof(getActivities) != "undefined" || getActivities != "") {
@@ -536,16 +533,13 @@ module.exports={
 //                                                    console.log("tag record:" + doc.success);
 //                                                }))
 //                                            }
-                                                if (i < scoreRange.length - 1) {
-                                                    resultList += ",";
-                                                }
-
                                             }
                                         })
                                         //调用接口结束
                                     }
                                 }
                             }
+
                             //判断是否有session自定义标签
                             var custLabel = then.req.session.customerLabel
 
@@ -565,8 +559,20 @@ module.exports={
                                 helper.db.coll("welab/customers").update({wechatid: wechatid}, {$set: customerLab}, function (err, doc) {
                                 });
                             }
-                        }
 
+                            if(resultList.length==0){
+                                if(i==scoreRange.length-1){
+                                    resultList += "{"
+                                        + "getLabel:'" + "对不起,您没有获得任何奖励"
+                                        + "',getScore:" + 0
+                                        + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                        + "',getActivities:'" + "您没有获得任何礼券" + "'}";
+                                    nut.model.stutas = "true";
+                                    nut.model.score = "0";
+                                    nut.model.getScores ="0";
+                                }
+                            }
+                        }
                     })
                     this.step(function () {
                         resultList += "]";

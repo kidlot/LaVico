@@ -270,7 +270,7 @@ function finish(){
         if($("input[name='singleChooseInput']").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("您忘记填写了～",function(event){
+                window.popupStyle2.on("您忘记选择了～",function(event){
                 })
                 return;
             }
@@ -285,7 +285,7 @@ function finish(){
         }else if($("input[name='mutilChooseInput']:checked").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("您忘记填写了～",function(event){
+                window.popupStyle2.on("您忘记选择了～",function(event){
                 })
                 return;
             }
@@ -369,6 +369,7 @@ function nextChoose(){
 
         //获取主观题内容
         var content=$("textarea[name='descContent']").val();
+
         //跳转主观题记录页面--传送内容:积分&题组号&题目号&回复内容
         location.href="/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&score="+jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+
                 "&receiveAnswer="+content+"&memberid="+member_id+"&themetype="+themetype+"&type=2";
@@ -377,7 +378,7 @@ function nextChoose(){
     }else if($("input[name='singleChooseInput']").length>0){
         //
         if($("input[name='singleChooseInput']:checked").length==0) {
-            window.popupStyle2.on("您忘记填写了～",function(event){
+            window.popupStyle2.on("您忘记选择了～",function(event){
             })
             return;
         }
@@ -394,7 +395,7 @@ function nextChoose(){
     }else if($("input[name='mutilChooseInput']:checked").length>0){
         //
         if($("input[name='mutilChooseInput']:checked").length==0) {
-            window.popupStyle2.on("您忘记填写了～",function(event){
+            window.popupStyle2.on("您忘记选择了～",function(event){
             })
             return;
         }
