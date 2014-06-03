@@ -114,8 +114,8 @@ module.exports={
                         "getActivities": "",
                         "getScore": "",
                         "createTime": new Date().getTime(),
-                        "memberId":seed.memberid,
-                        "themetype":seed.themetype
+                        "memberId":memberid,
+                        "themetype":themetype
                     }, function (err, doc) {
 
                     });
@@ -267,8 +267,8 @@ module.exports={
                                         "getScore": getScore,
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
-                                        "memberId":seed.memberid,
-                                        "themetype":seed.themetype
+                                        "memberId":memberid,
+                                        "themetype":themetype
                                     }, function (err, doc) {
                                     });
                                     console.log(getLabel)
