@@ -4,7 +4,7 @@
 <input type="hidden" id="bigPicIndex" value={@bigPicIndex}>
 <input type="hidden" id="productId" value={@productId}>
 <div style="display: none" id="jsonPage">{@jsonPage}</div>
-<script src="/lavico/public/js/ender.js"></script>
+<script src="/lavico/public/js/iscroll.js"></script>
 <section id="section">
     <div class="elite_title">
         <p>
@@ -39,6 +39,17 @@
         <div id="next" onclick="myScroll.scrollToPage('next', 0);return false">next</div>
     </div>
     <script>
+        var myScroll;
+        function loaded() {
+            myScroll = new iScroll('wrapMain', {
+                snap: true,
+                momentum: false,
+                hScrollbar: false,
+                onScrollEnd: false
+            });
+        }
+        document.addEventListener('DOMContentLoaded', loaded, false);
+
         function wrapWin() {
             var wrapMain = document.getElementById("wrapMain");
             var MainWin = wrapMain.offsetWidth;
