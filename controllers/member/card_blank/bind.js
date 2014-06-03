@@ -88,10 +88,17 @@ module.exports = {
             /*后端编程JS*/
             /*验证码-开始*/
             var timer60Seconds;
-            var flag = 0;
+            var flag = 0;//默认可以发送验证码
 
             /*第一步：判断手机号码的状态*/
-            $("#submit_1").click(function(){
+            $("#submit_1").click(
+                function(){
+                    if(flag == 0){
+                        submit_1();
+                    }
+                }
+            );
+            var submit_1 = function(){
 
                 if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
                     window.popupStyle2.on("请输入正确的手机号码",function(event){});
@@ -101,7 +108,6 @@ module.exports = {
                 $('#loading').show();//显示正在加载
                 var userTel = $("#userTel").val();
                 var wxid = $("#wxid").val();
-                jQuery('#maskdiv').show();//显示遮层
 
 
                 $.ajax({
@@ -131,10 +137,11 @@ module.exports = {
 
                                 //无验证的手机号码，需要输入卡号
 
+                                jQuery('#maskdiv').show();//显示遮层
 
-                                 $('#tel_checked_status').val('tel_checked_false');
-                                 $('#true_card_number').show();
-                                 bindPosition('#true_card_number');
+                                $('#tel_checked_status').val('tel_checked_false');
+                                $('#true_card_number').show();
+                                bindPosition('#true_card_number');
 
 
                             }else{
@@ -172,8 +179,7 @@ module.exports = {
                     });
                 /*判断手机号码是否验证过*/
 
-            });
-
+            }
             /*第二步：判断卡号是否正确*/
             $('#submit_2').click(function(){
 
@@ -246,22 +252,29 @@ module.exports = {
                 //submitCheck();
                 var wxid = $('#wxid').val();
                 var userTel = $('#userTel').val();
-                var userCaptcha = $('#userCaptcha').val();
+                var userCaptcha = $.trim($('#userCaptcha').val());
                 var userCardNumber = $.trim($('#userCardNumber').val()).toUpperCase();
                 var userName = $.trim($('#userName').val());
+                var nameReg = /^[\u4e00-\u9fa50-9A-Za-z]{1,}$/g;//只允许字母和汉字数字
                 var tel_checked_status = $.trim($('#tel_checked_status').val());
                 var memberId = $.trim($('#memberId').val());
 
-                if(userCaptcha ==''){
+                if(userCaptcha.length == 0){
                     window.popupStyle2.on("请填写验证码",function(event){
                     });
                     return false;
                 }
-                if(userName ==''){
+                if(userName.length == 0){
 
                     window.popupStyle2.on("请填写姓名",function(event){
                     });
+                    $("#userName").focus();
                     return false;
+                }
+                if(!nameReg.test(userName)){
+                    window.popupStyle2.on("请输入真实的姓名",function(event){});
+                    $("#userName").focus();
+                    return	false;
                 }
                 $('#loading').show();
                 $.ajax({
@@ -662,7 +675,7 @@ module.exports = {
 
                             /*判断验证码输入的是否正确*/
                             this.step(function(){
-                                if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 300000) < new Date().getTime() || seed.userCaptcha != this.req.session.id_code){
+                                if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 120000) < new Date().getTime() || seed.userCaptcha != this.req.session.id_code){
                                 then.res.writeHead(200, { 'Content-Type': 'application/json' });
                                 //then.res.write('{"code_error":"id_code_error"}');
                                 then.res.write('{"success":false,"error":"captcha_is_error"}');

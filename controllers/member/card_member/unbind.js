@@ -190,7 +190,7 @@ module.exports = {
                 var _this = this;
 
                 this.step(function(){
-                  if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 300000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
+                  if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 120000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
                     _this.res.writeHead(200, { 'Content-Type': 'application/json' });
                     _this.res.write('{"success":false,"error":"id_code_error"}');
                     _this.res.end();
