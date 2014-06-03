@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="/lavico/public/css/base.css" />
+<link rel="stylesheet" href="/lavico/public/css/main.css" />
+
 <style>
     ul{list-style: none}
     #chooseNa{font-size: 1.4rem;}
@@ -254,7 +257,11 @@ function finish(){
         var content=$("textarea[name='descContent']").val();
 
         if(content==""){
-            alert("您忘记填写了～");
+            window.popupStyle2.on("您忘记填写了～",function(event){
+                if(event == "confirm"){
+                    location.reload();
+                }
+            })
             return;
         }
 
@@ -266,7 +273,11 @@ function finish(){
         if($("input[name='singleChooseInput']").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                alert("您忘记选择了～");
+                window.popupStyle2.on("您忘记填写了～",function(event){
+                    if(event == "confirm"){
+                        location.reload();
+                    }
+                })
                 return;
             }
             //获取单选值
@@ -280,7 +291,11 @@ function finish(){
         }else if($("input[name='mutilChooseInput']:checked").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                alert("您忘记选择了～");
+                window.popupStyle2.on("您忘记填写了～",function(event){
+                    if(event == "confirm"){
+                        location.reload();
+                    }
+                })
                 return;
             }
             //多选
@@ -371,7 +386,11 @@ function nextChoose(){
     }else if($("input[name='singleChooseInput']").length>0){
         //
         if($("input[name='singleChooseInput']:checked").length==0) {
-            alert("您忘记选择了～");
+            window.popupStyle2.on("您忘记填写了～",function(event){
+                if(event == "confirm"){
+                    location.reload();
+                }
+            })
             return;
         }
         //单选，获取选择的值
@@ -387,7 +406,11 @@ function nextChoose(){
     }else if($("input[name='mutilChooseInput']:checked").length>0){
         //
         if($("input[name='mutilChooseInput']:checked").length==0) {
-            alert("您忘记选择了～");
+            window.popupStyle2.on("您忘记填写了～",function(event){
+                if(event == "confirm"){
+                    location.reload();
+                }
+            })
             return;
         }
         //多选
@@ -408,7 +431,11 @@ function nextChoose(){
         location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=1&optionId="+valueArr[0]+"&_id="+_id+
                 "&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
     }else{
-        alert("您忘记填写了～");
+        window.popupStyle2.on("您忘记填写了～",function(event){
+            if(event == "confirm"){
+                location.reload();
+            }
+        })
     }
 }
 

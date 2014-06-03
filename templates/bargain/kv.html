@@ -37,11 +37,9 @@ window.onload=function(){
     </div>
 </div>
 
-<!--
-<if condition="@ fromWelab!=''">
+<if condition="@ !isFollow">
     <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
 </if>
--->
 <script>
     function _isVip(wxid,_id){
         var isvip = '{@ isVip}'
