@@ -5,7 +5,7 @@ module.exports = {
 
     , process: function(seed,nut)
     {
-        var doc = {};
+        var doc = [];
 
         this.res.setHeader("Cache-Control", "no-cache");
         this.res.setHeader("Cache-Control", "no-store");
@@ -20,7 +20,6 @@ module.exports = {
             nut.model.memberID = false
             nut.model.fromWelab = seed.fromWelab || ""
             nut.model.pageNum = seed.pageNum || 1
-            nut.model.pageNum
 
             helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
                 var customers = customers || {}
@@ -34,19 +33,45 @@ module.exports = {
 
 
             helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
-                doc = _doc || {}
-                nut.model.doc = doc.page[nut.model.pageNum-1]
 
-                for(var i=0 ; i < nut.model.doc.product.length ; i++){
+                nut.model.pageName = _doc.name
+                var aPageList = _doc.page[nut.model.pageNum-1]
 
-                    if(nut.model.doc.product[i]._id == seed.productId){
-                        nut.model.doc.product[i].current = true
+                if(seed.onlyProduct == "true"){
+
+                    for(var i=0 ; i < aPageList.product.length ; i++){
+
+                        if(seed.productId == aPageList.product[i]._id){
+
+                            for(var ii=0 ; ii < aPageList.product[i].bigPic.length ; ii++){
+
+                                aPageList.product[i].bigPic[ii].detail = aPageList.product[i].detail
+                                aPageList.product[i].bigPic[ii].name = aPageList.product[i].name
+                                aPageList.product[i].bigPic[ii]._id = aPageList.product[i]._id
+                                doc.push(aPageList.product[i].bigPic[ii])
+                            }
+                        }
+                    }
+                }else{
+                    for(var i=0 ; i < aPageList.product.length ; i++){
+
+                        for(var ii=0 ; ii < aPageList.product[i].bigPic.length ; ii++){
+
+                            aPageList.product[i].bigPic[ii].detail = aPageList.product[i].detail
+                            aPageList.product[i].bigPic[ii].name = aPageList.product[i].name
+                            aPageList.product[i].bigPic[ii]._id = aPageList.product[i]._id
+                            doc.push(aPageList.product[i].bigPic[ii])
+                        }
                     }
                 }
-                nut.model.jsonDoc = JSON.stringify(nut.model.doc)
-                console.log("11",nut.model.doc)
-
             }))
+
+            this.step(function(){
+
+                nut.model.jsonDoc = JSON.stringify(doc)
+                nut.model.doc = doc
+                console.log("11",doc)
+            })
         }else{
             nut.disable();
             var data = JSON.stringify({err:1,msg:"没有微信ID或产品ID"});
