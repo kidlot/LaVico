@@ -50,6 +50,10 @@ module.exports = {
         }
 
 
+        /*
+        检查是否关注
+         */
+
         this.step(function(){
 
             if(wxid){
@@ -62,6 +66,7 @@ module.exports = {
                     var customers = customers || {}
 
                     nut.model.isVip = false
+                    nut.model.isFollow = customers ? true : false;
                     if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
                         nut.model.isVip = true
                     }
