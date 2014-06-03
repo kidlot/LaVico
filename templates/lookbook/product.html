@@ -37,6 +37,13 @@
     <script>
         var myScroll;
         function loaded() {
+
+            var data = JSON.parse($("#jsonPage").text())
+
+            $("#article").find("h3").text(data[0].name)
+            $("#article").find("p").text(data[0].detail)
+
+
             myScroll = new iScroll('wrapMain', {
                 snap: true,
                 momentum: false,
