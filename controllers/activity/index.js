@@ -106,18 +106,29 @@ module.exports = {
                 });
             },
             viewIn: function () {
+
                 $('#start_date').datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
                     minView: 2
-                })
+                });
 
                 $('#end_date').datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
                     minView: 2,
                     endDate: new Date()
-                })
+                });
+
+                /*编辑器*/
+
+                CKEDITOR.replace( 'introduction', {
+
+                });
+                CKEDITOR.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+                CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+
+
             }
         },
         save: {
