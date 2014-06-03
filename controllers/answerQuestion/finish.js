@@ -43,6 +43,7 @@ module.exports={
         this.step(function(){
             console.log(5)
             if(stutas=="true"){
+                go = false;
                 var sa;
                 if(docs){
                     if(themetype==1){
@@ -70,7 +71,7 @@ module.exports={
                         }
                     }else{
                         for(var i=0;i<docs.length;i++){
-                            if(docs[i].compScore!=""){
+                            if(docs[i].getScore!=""){
                                 sa = docs[i];
                             }
                         }
