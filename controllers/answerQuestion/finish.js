@@ -526,7 +526,6 @@ module.exports={
                                                     + "',getScore:" + getScore
                                                     + ",getTipContent:'" + getTipContent
                                                     + "',getActivities:'" + newActivity + "'}";
-
 //                                            if (getLabel != "" || getLabel != null) {
 //                                                //发送标签至CRM
 //                                                jsonData = {};
@@ -537,7 +536,6 @@ module.exports={
 //                                                    console.log("tag record:" + doc.success);
 //                                                }))
 //                                            }
-
                                                 if (i < scoreRange.length - 1) {
                                                     resultList += ",";
                                                 }

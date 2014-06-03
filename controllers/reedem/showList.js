@@ -152,17 +152,22 @@ module.exports={
                         }
                         if(doc){
                             var result  = JSON.parse(doc);
-                            if(result.point<needScore){
+                            if(parseInt(result.point) < parseInt(needScore)){
+                                console.log(parseInt(result.point))
+                                console.log(typeof (parseInt(result.point)))
+                                console.log(parseInt(needScore))
+                                console.log(typeof(parseInt(needScore)))
+                                isok=false;
                                 nut.view.disable();
                                 nut.write("<script>window.onload=function(){window.popupStyle2.on('对不起,您的积分不足!',function(event){history.back()})}</script>");
-                                isok = false;
+
                             }
                         }else{
+                            isok = false;
                             nut.view.disable();
                             nut.write("<script>window.onload=function(){window.popupStyle2.on('没有查到您的积分，请联系我们',function(event){history.back()})}</script>");
-                            isok=false;
                         }
-                }))
+                    }))
                 })
 
                 //判断
@@ -226,89 +231,96 @@ module.exports={
                     //扣积分接口
 
                     if(isok){
-                    middleware.request("Point/Change",
-                        {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
-                        this.hold(function (err, doc) {
+//                        middleware.request("Point/Change",
+//                            {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
+//                            this.hold(function (err, doc) {
+//                            }))
+
+                        //得券
+                        middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
+                            if(err) throw err;
+
+                            //console.log("doc:"+doc)//不删
+                            var docJson=JSON.parse(doc)
+                            if(docJson.success){
+                                //扣除积分
+                                middleware.request("Point/Change",
+                                    {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
+                                    this.hold(function (err, doc) {
+                                    }))
+                                //返回true，表成功兑换，返回券值
+                                return docJson
+                            }else{
+                                nut.view.disable();
+                                nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此商品暂停兑换',function(event){history.back()})}</script>");
+                            }
                         }))
-
-                    //得券
-                    middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
-                        if(err) throw err;
-
-                        //console.log("doc:"+doc)//不删
-
-                        var docJson=JSON.parse(doc)
-                        if(docJson.success){
-                            //返回true，表成功兑换，返回券值
-                            return docJson
-                        }else{
-                            nut.view.disable();
-                            nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此商品暂停兑换',function(event){history.back()})}</script>");
-                        }
-                    }))
                     }
                 });
 
                 this.step(function(docJson){
-                    //把兑换记录，记录至数据库
-                    if(docJson){
+                    console.log(docJson)
+                    if(isok){
+                        //把兑换记录，记录至数据库
+                        if(docJson){
 
-                        var record={};
-                        record.wechatId=wechatId;
-                        record.aid=aid;//p_code
-                        record.reddem_id=seed._id;
-                        record.needScore=needScore;
-                        record.memberId=memberId;
-                        record.createDate=new Date().getTime();
-                        record.name=t_name;
-                        record.QTY=QTY;
-                        record.codeByCRM=docJson.coupon_no;//接口返回的券号
-                        //记录会员表
-                        helper.db.coll('welab/customers').update({"wechatid":wechatId,"memberId":memberId},{$addToSet:{reedem:record}},function(err,doc){
-                        })
-                        //记录兑换表
-                        helper.db.coll("lavico/exchangeRecord").insert(record,this.hold(function(err,result){
-                            if(err) throw err;
-                            return record;//return只能放在hold
-                        }))
-                    }else{
-                        nut.view.disable();
-                        nut.write("<script>window.onload=function(){window.popupStyle2.on('对不起,您的积分不足',function(event){history.back()})}</script>");
+                            var record={};
+                            record.wechatId=wechatId;
+                            record.aid=aid;//p_code
+                            record.reddem_id=seed._id;
+                            record.needScore=needScore;
+                            record.memberId=memberId;
+                            record.createDate=new Date().getTime();
+                            record.name=t_name;
+                            record.QTY=QTY;
+                            record.codeByCRM=docJson.coupon_no;//接口返回的券号
+                            //记录会员表
+                            helper.db.coll('welab/customers').update({"wechatid":wechatId,"memberId":memberId},{$addToSet:{reedem:record}},function(err,doc){
+                            })
+                            //记录兑换表
+                            helper.db.coll("lavico/exchangeRecord").insert(record,this.hold(function(err,result){
+                                if(err) throw err;
+                                return record;//return只能放在hold
+                            }))
+                        }else{
+                            nut.view.disable();
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误1',function(event){history.back()})}</script>");
+                        }
                     }
                 })
 
                 this.step(function(record){
                     //根据券号，查找券名和大小图片
                     if(record){
-                    helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(record.reddem_id)},this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result){
+                        helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(record.reddem_id)},this.hold(function(err,result){
+                            if(err) throw err;
+                            if(result){
 
-                            record.smallPic=result.smallPic;
-                            record.bigPic=result.bigPic;
-                            record.name=result.name;
-                            return record;
-                        }else{
-                            nut.view.disable();
-                            nut.write("<script>window.onload=function(){window.popupStyle2.on('对不起,您的积分不足',function(event){history.back()})}</script>");
+                                record.smallPic=result.smallPic;
+                                record.bigPic=result.bigPic;
+                                record.name=result.name;
+                                return record;
+                            }else{
+                                nut.view.disable();
+                                nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误2',function(event){history.back()})}</script>");
 
 
-                        }
-                    }))
+                            }
+                        }))
                     }
                 })
 
                 this.step(function(record){
                     //查找礼券图
                     if(record){
-                    helper.db.coll("lavico/activity").findOne({aid:record.aid},this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result){
+                        helper.db.coll("lavico/activity").findOne({aid:record.aid},this.hold(function(err,result){
+                            if(err) throw err;
+                            if(result){
 
-                            record.pic=result.pic;
-                        }
-                        return record;
-                    }))
+                                record.pic=result.pic;
+                            }
+                            return record;
+                        }))
                     }
                 })
 
