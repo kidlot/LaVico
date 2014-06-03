@@ -41,7 +41,7 @@ window.onload=function(){
                             <else/>
                             您上次答题获得
                         </if>
-                        
+
                         <else/>
                         恭喜您获得
                     </if>
@@ -77,7 +77,12 @@ window.onload=function(){
             </foreach>
             <div class="line"></div>
             <if condition="{@resultString.getActivities!=''}">
-                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wechatid}">领取优惠券</a></div>
+                <if condition="{@sta=='true'}">
+                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wechatid}&stuas=true">领取优惠券</a></div>
+                    <else/>
+                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wechatid}">领取优惠券</a></div>
+                </if>
+
                 <else/>
                 <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&wxid={@wechatid}">领取优惠券</a></div>
             </if>
@@ -102,12 +107,10 @@ window.onload=function(){
                 <p class="get">
                     <if condition="{@stutas=='true'}">
                         <if condition="{@score=='0'}">
-
                             您上次未能完成答题:
                             <else/>
                             您上次答题获得
                         </if>
-
                         <else/>
                         恭喜您获得
                     </if>{@resultString.getScore}积分<br />

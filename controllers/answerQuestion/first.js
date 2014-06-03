@@ -7,6 +7,7 @@ module.exports= {
         nut.model._id=seed.wechatid;
         var wxid=seed.wechatid;
         nut.model.fromWelab = seed.fromWelab || ""
+        var _id = seed._id;
         var memberid;
 
         this.step(function(){

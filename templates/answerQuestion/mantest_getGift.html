@@ -6,7 +6,13 @@
     </div>
     <div class="look-text">
         <if condition="{@getActivities!='no'}">
-            <p class="get">恭喜您获得奖券:{@getActivities}<br />
+            <p class="get">
+                <if condition="{@stuas=='true'}">
+                    {@getActivities}
+                    <else/>
+                    恭喜您获得奖券:{@getActivities}
+                </if>
+                <br />
                 可在“专属礼券”内查询</p>
             <p class="click-look"><a href="/lavico/member/card_member/coupon/index?wxid={@wxid}">点击查看</a></p>
         <else/>

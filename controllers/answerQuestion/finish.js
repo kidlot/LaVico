@@ -18,6 +18,7 @@ module.exports={
         var themetype = seed.themetype;
         nut.model.themeType = themetype;
         var stutas= seed.stutas ? seed.stutas :"false";
+        nut.model.stutas = stutas;
 
         var docs;
         this.step(function(){
@@ -39,49 +40,60 @@ module.exports={
             }
         })
 
-//        this.step(function(){
-//            console.log(5)
-//            if(stutas=="true"){
-//                console.log("4")
-//                var sa;
-//                if(docs){
-//                    console.log("6")
-//                    for(var i=0;i<docs.length;i++){
-//                        if(docs[i].compScore!=""){
-//                            sa = docs[i];
-//                        }
-//                    }
-//                    var ssa=[];
-//                    if(sa){
-//                        ssa.push(sa);
-//                        nut.model.jsonResult =ssa;
-//                    }
-//                    else{
-//                        console.log("3")
-//                        var resultList;
-//                        if(themetype==1){
-//                            console.log("1")
-//                            resultList = "[{"
-//                                + "getLabel:'" + "暂无"
-//                                + "',getScore:" + 0
-//                                + ",getTipContent:'" + "null"
-//                                + "',getActivities:'" + "null" + "'}[";
-//
-//                        }else{
-//                            console.log("2")
-//                            resultList = "[{"
-//                                + "getLabel:'" + "暂无"
-//                                + "',getScore:" + "0"
-//                                + ",getTipContent:'" + "null"
-//                                + "',getActivities:'" + "null" + "'}]";
-//                        }
-//                        console.log(resultList)
-//                        nut.model.jsonResult = eval('(' + resultList + ')');
-//                        console.log(nut.model.jsonResult)
-//                    }
-//                }
-//            }
-//        })
+        this.step(function(){
+            console.log(5)
+            if(stutas=="true"){
+                go = false;
+                var sa;
+                if(docs){
+                    if(themetype==1){
+                        for(var i=0;i<docs.length;i++){
+                            if(docs[i].getLabel!=""){
+                                sa = docs[i];
+                            }
+                        }
+                        var ssa=[];
+                        if(sa){
+                            ssa.push(sa);
+                            nut.model.jsonResult =ssa;
+                            nut.model.score = "0";
+                            nut.model.sta = "false";
+                        }else{
+                            var resultList;
+                            resultList = "[{"
+                                + "getLabel:'" + "您上次未能完成答题"
+                                + "',getScore:" + "0"
+                                + ",getTipContent:'" + "您上次未能完成答题"
+                                + "',getActivities:'" + "您没有获得任何卷" + "'}]";
+                            nut.model.jsonResult = eval('(' + resultList + ')');
+                            nut.model.score = "0";
+                            nut.model.sta = "true";
+                        }
+                    }else{
+                        for(var i=0;i<docs.length;i++){
+                            if(docs[i].getScore!=""){
+                                sa = docs[i];
+                            }
+                        }
+                        var ssa=[];
+                        if(sa){
+                            ssa.push(sa);
+                            nut.model.jsonResult =ssa;
+                            nut.model.score = "1";
+                        }else{
+                            var resultList;
+                            resultList = "[{"
+                                + "getLabel:'" + "您上次未能完成答题"
+                                + "',getScore:" + "0"
+                                + ",getTipContent:'" + "您上次未能完成答题"
+                                + "',getActivities:'" + "您没有获得任何卷" + "'}]";
+                            nut.model.jsonResult = eval('(' + resultList + ')');
+                            nut.model.score = "0";
+                        }
+                    }
+                }
+            }
+        })
 
         this.step(function(){
             if(isRecord=="yes"){
@@ -90,7 +102,6 @@ module.exports={
                 go=false;
             }
         })
-
 
         this.step(function(){
             if(go) {
@@ -108,12 +119,13 @@ module.exports={
                         "getChooseScore": parseInt(scoreAll),
                         "getChooseLabel": "",
                         "getLabel": "",
-                        "getGift": "",
+                        "getActivities": "",
                         "getScore": "",
                         "createTime": new Date().getTime(),
                         "memberId":memberid,
                         "themetype":themetype
                     }, function (err, doc) {
+
                     });
 
                     //查找单题组,获取分值范围数组
@@ -171,10 +183,7 @@ module.exports={
                                             })
                                         )
                                     })
-
-
                                     then.step(function (memberId) {
-
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
                                         jsonData.memberId = memberId;
@@ -185,10 +194,8 @@ module.exports={
                                         middleware.request('Point/Change', jsonData,
                                             this.hold(function (err, doc) {
                                                 if (err) throw err;
-
                                             })
                                         )
-
                                         var tagRecord='问答测试' + '-' + nut.model.themeTitle;
                                         console.log("tag:"+tagRecord);
                                         console.log("memberId:"+memberId);
@@ -196,8 +203,6 @@ module.exports={
                                             if (err) throw err;
                                             console.log("tag record:" + doc);
                                         }))
-
-
                                     })
                                 } else {
                                     for (var j = 0; j < doc_json.list.length; j++) {
@@ -214,10 +219,7 @@ module.exports={
                                         } else if (themeType == 1) {
                                             memoString = "型男测试-" + docTheme.theme;
                                         }
-
-
                                         //得券接口
-
                                         then.step(function () {
                                             var jsonData = {
                                                 openid: wechatid,
@@ -228,17 +230,14 @@ module.exports={
                                                 point: 0
                                             }
                                             console.log("hello:"+JSON.stringify(jsonData));
-
                                             middleware.request("Point/Change",
                                                 {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                                 this.hold(function (err, doc) {
                                                 }))
-
                                             middleware.request("Tag/Add", {"memberId": nut.model.memberID,"tag":memoString}, this.hold(function (err, doc) {
                                                 if (err) throw err;
                                                 console.log("tag record:" + doc.success);
                                             }))
-
                                             middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                 if (err) throw err;
                                                 var docJson = JSON.parse(doc)
@@ -255,11 +254,6 @@ module.exports={
                                                 }
                                             }));
                                         })
-
-
-
-
-
                                     }
                                 }
 
@@ -274,7 +268,7 @@ module.exports={
                                         "getChooseScore": parseInt(then.req.session.scoreAll),
                                         "getChooseLabel": "",
                                         "getLabel": getLabel,
-                                        "getGift": newActivity,
+                                        "getActivities": newActivity,
                                         "getScore": getScore,
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
@@ -288,7 +282,6 @@ module.exports={
                                         + "',getScore:" + getScore
                                         + ",getTipContent:'" + getTipContent
                                         + "',getActivities:'" + newActivity + "'}";
-
                                     if (getLabel != "" || getLabel != null) {
                                         //发送标签至CRM
                                         jsonData = {};
@@ -315,12 +308,10 @@ module.exports={
 //                                    }))
 //
 //                                }
-
                                     if (dot >= 2) {
                                         resultList += ",";
                                     }
                                     dot++;
-
                                 })
                                 //调用接口结束
                             } else {
@@ -343,6 +334,7 @@ module.exports={
                         nut.model.result = resultList;
                         nut.model.jsonResult = eval('(' + resultList + ')');
                         console.log("resultList:" + nut.model.jsonResult);
+                        nut.model.sta = "false";
                     })
                 }
                 else {
@@ -357,7 +349,7 @@ module.exports={
                         "getChooseScore": parseInt(then.req.session.scoreAll),
                         "getChooseLabel": "",
                         "getLabel": "",
-                        "getGift": "",
+                        "getActivities": "",
                         "compScore": 0,
                         "createTime": new Date().getTime(),
                         "memberId":memberid,
@@ -512,7 +504,7 @@ module.exports={
                                                 "getChooseScore": parseInt(then.req.session.scoreAll),
                                                 "getChooseLabel": "",
                                                 "getLabel": getLabel,
-                                                "getGift": newActivity,
+                                                "getActivities": newActivity,
                                                 "compScore": getScore,
                                                 "getTipContent": getTipContent,
                                                 "createTime": new Date().getTime(),
@@ -583,10 +575,10 @@ module.exports={
                         then.req.session.optionId = ""
                         nut.model.result = resultList;
                         nut.model.jsonResult = eval('(' + resultList + ')');
+                        nut.model.sta = "false";
                     })
                 }
             }
         })
-
     }
 }
