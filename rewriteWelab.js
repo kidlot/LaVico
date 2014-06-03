@@ -848,13 +848,13 @@ exports.load = function () {
                     showCloseButton: true})
                 return ;
             }
-            if( aList.length > 5){
-                $.globalMessenger().post({
-                    message: '最多只能选择五条数据.',
-                    type: 'error',
-                    showCloseButton: true})
-                return ;
-            }
+//            if( aList.length > 5){
+//                $.globalMessenger().post({
+//                    message: '最多只能选择五条数据.',
+//                    type: 'error',
+//                    showCloseButton: true})
+//                return ;
+//            }
 
             jQuery("#tags").tagsManager('empty');
 
