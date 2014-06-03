@@ -16,6 +16,7 @@ module.exports={
         nut.model.wechatId = seed.wechatId;
         var memberId = false;
         nut.model.isBind = true;
+        nut.model.time = new Date().getTime();
 
         this.step(function(){
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){

@@ -4,7 +4,7 @@
     </div>
     <div class="points4">
 
-        <if condition="@remaining != 0">
+        <if condition="@total != 0">
 
             <div class="title">
                 <p class="text"><span class="fl">目前已兑换积分</span><span class="fr">-{@total}</span></p>
@@ -14,21 +14,29 @@
                     <foreach for="@log" key="key">
 
                         <if condition="{@log[key].type == 'sum'}">
+                            <if condition="@key != 0">
+                                {@htmlEndUl}
+                            </if>
                             <div class="{@log[key].class} clear">
                                 <p><span class="fl">{@log[key].formatTime}</span></p>
                             </div>
+                            {@htmlStartUl}
                         <else/>
-                            <ul>
-                                <li class="reddem" id="{@log[key].reddem_id}">
-                                    <span class="fl ml20 pt15">
-                                     <p>{@log[key].name}×1</p>
-                                     <p class="c3">
-                                     {@log[key].formatTime}
-                                     </p>
-                                    </span>
-                                    <span class="fr c2 pt55">-{@log[key].needScore}</span>
-                                </li>
-                            </ul>
+
+                            <li class="reddem" id="{@log[key].reddem_id}">
+                                <span class="fl ml20 pt15">
+                                 <p>{@log[key].name}×1</p>
+                                 <p class="c3">
+                                 {@log[key].formatTime}
+                                 </p>
+                                </span>
+                                <span class="fr c2 pt55">-{@log[key].needScore}</span>
+                            </li>
+
+                            <if condition="@total == key + 1">
+                                {@htmlEndUl}
+                            </if>
+
                         </if>
                     </foreach>
                     <p>&nbsp;</p>

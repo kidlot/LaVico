@@ -198,6 +198,8 @@ module.exports = {
             this.step(function(){
                 console.log(dataArr);
                 nut.model.log = dataArr;
+                nut.model.htmlStartUl = "<ul>";
+                nut.model.htmlEndUl = "</ul>";
 
             });
 

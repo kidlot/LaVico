@@ -14,7 +14,7 @@
                     <div class="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
                         <foreach for="@doc.product" var="doc2">
                             <div class="item">
-                                <div class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId={@doc2._id}"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></div>
+                                <div class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></div>
                             </div>
                         </foreach>
                     </div>
@@ -51,7 +51,7 @@
                 <div class="small_list">
                     <foreach for="@page.product" var="product">
                         <div class="small_image">
-                            <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@key+1}&productId={@product._id}">
+                            <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}&onlyProduct=true">
                                 <img src="{@ product.pic}" class="exchangebtn">
                             </a>
                         </div>
@@ -79,7 +79,7 @@
                             <div class="list">
                                 <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
                                     <div class="boxcontent">
-                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@key+1}&productId={@page.product[0]._id}">
+                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
                                         <img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" class="exchangebtn" width="293">
                                         <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" ><div class="elite_list_title">{@page.name}</div></div> 
                                     </div>
@@ -94,7 +94,7 @@
                             <div class="list">
                                 <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
                                     <div class="boxcontent">
-                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@key+1}&productId={@page.product[0]._id}">
+                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
                                         <img src="{@page.pic}" class="exchangebtn" width="293">
                                         <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" /><div class="elite_list_title">{@page.name}</div></div>
                                     </div>
@@ -132,7 +132,7 @@
             alert("已经是第一页")
             return;
         }
-        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum=" + (pageNum -1);
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum -1);
         return false;
     }
 
@@ -144,7 +144,7 @@
             alert("已经是最后一页")
             return;
         }
-        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum=" + (pageNum +1);
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum +1);
         return false;
     }
     function favorites(wxid,pid){
