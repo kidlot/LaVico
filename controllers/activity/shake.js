@@ -101,6 +101,8 @@ module.exports = {
                         nut.model.isVip = true;
 
                     }else{
+                        nut.model.isFollow = false;
+
                         member_id = 'undefined';
                     }
                 }));
