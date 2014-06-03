@@ -36,8 +36,11 @@ window.onload=function(){
                 <p class="get">
                     <if condition="{@stutas=='true'}">
                         <if condition="{@score=='0'}">
-
-                            您上次未能完成答题:
+                            <if condition="{@getScores=='0'}">
+                                对不起,您获得:
+                                <else/>
+                                您上次答题获得
+                            </if>
                             <else/>
                             您上次答题获得
                         </if>
@@ -107,10 +110,15 @@ window.onload=function(){
                 <p class="get">
                     <if condition="{@stutas=='true'}">
                         <if condition="{@score=='0'}">
-                            您上次未能完成答题:
+                            <if condition="{@getScores=='0'}">
+                                对不起,您获得:
+                                <else/>
+                                您上次答题获得
+                            </if>
                             <else/>
                             您上次答题获得
                         </if>
+
                         <else/>
                         恭喜您获得
                     </if>{@resultString.getScore}积分<br />

@@ -493,7 +493,8 @@ module.exports = {
                 var card_number;//显示在会员中心的帐号
 
 				this.step(function(){
-				  if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 300000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
+				  if(!this.req.session.set_id_code_time || !this.req.session.id_code || (this.req.session.set_id_code_time + 120000) < new Date().getTime() || seed.id_code != this.req.session.id_code){
+                    //120000=2分钟
                     then.res.writeHead(200, { 'Content-Type': 'text/plain' });;
                     then.res.write('{"success":false,"error":"id_code_error"}');
                     then.res.end();

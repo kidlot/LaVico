@@ -1,75 +1,54 @@
+
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="bigPicIndex" value={@bigPicIndex}>
 <input type="hidden" id="sumBigPicIndex" value={@sumBigPicIndex}>
 <input type="hidden" id="bigPicIndex" value={@bigPicIndex}>
 <input type="hidden" id="productId" value={@productId}>
 <div style="display: none" id="jsonPage">{@jsonPage}</div>
-<script src="/lavico/public/js/iscroll.js"></script>
-<section id="section">
+
+<div class="wrapper" id="exchangebtn" style="background-color:#fff">
     <div class="elite_title">
         <p>
+
             <if condition="@ source!='view'">
                 <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}">{@ lookbookName}</a></span>
-            <else />
+            <else/>
                 <span class="title5"><a href="javascript:;" onclick="_cb()">返回列表</a></span>
             </if>
             <span class="title2">单品</span>
             <span class="title6">
-                <if condition="@ fromWelab==''">
-                    <if condition="@ source!='view'">
-                        <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}','{@ product._id}')">收藏</a>
-                    </if>
+
+        <if condition="@ fromWelab==''">
+                <if condition="@ source!='view'">
+                    <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}','{@ product._id}')">收藏</a>
                 </if>
+        </if>
             </span>
         </p>
     </div>
-    <div id="wrapMain">
-        <div id="scroller">
-            <ul id="thelist">
-                <li><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" /></li>
-                <li><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" /></li>
-                <li><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" /></li>
-                <li><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}" /></li>
-            </ul>
-        </div>
+    <div style="position:relative;">
+        <div class="elite_img"><img src="{@ product.bigPic ? product.bigPic[bigPicIndex-1].pic : '/lavico/public/images/suits_mod.jpg'}"></div>
+        <div class="prev_btn" onclick="leftPage()"></div>
+        <div class="next_btn" onclick="rightPage()"></div>
     </div>
-    <article class="article" id="article"><h3>多色POLO衫</h3><p>热情洋溢的彩色polo衫，如同夏季香甜果汁，沁人心脾；舒适透气面料加以简洁时尚的设计，清新灵动。</p></article>
-    <div id="nav">
-        <div id="prev" onclick="myScroll.scrollToPage('prev', 0);return false">prev</div>
-        <div id="next" onclick="myScroll.scrollToPage('next', 0);return false">next</div>
+    <div class="intros">
+        <div class="title">{@ product.name}</div>
+        <div class="content">{@ product.detail}</div>
     </div>
-    <script>
-        var myScroll;
-        function loaded() {
-            myScroll = new iScroll('wrapMain', {
-                snap: true,
-                momentum: false,
-                hScrollbar: false,
-                onScrollEnd: false
-            });
-        }
-        document.addEventListener('DOMContentLoaded', loaded, false);
+</div>
 
-        function wrapWin() {
-            var wrapMain = document.getElementById("wrapMain");
-            var MainWin = wrapMain.offsetWidth;
-            var listLi = document.getElementById("thelist").getElementsByTagName("li");
-            for (var i = 0; i < listLi.length; i++) {
-                listLi[i].style.width = MainWin + "px";
-            }
-            var theLength = document.getElementById("thelist").getElementsByTagName("li").length;
-            document.getElementById("scroller").style.width = MainWin * theLength + "px";
-        }
+<div class="fade2">
+    <div class="second-price">
+        <p class="msg"><span class="mt70 fad2Tit">收藏成功</span></p>
+        <p class="confirm"><input type="submit" class="goon_btn" border="0" value="继续浏览" onclick="$('.fade2').hide()"></p>
+        <p class="msg mt70">或</p>
+        <p class="confirm"><input class="gocollection" type="submit" border="0" value="转至收藏夹" onclick="location.href='/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}&cb='+encodeURIComponent('{'+location.href+'}')"></p>
+    </div>
+</div>
 
-        wrapWin();
-
-        window.onresize = function () {
-            wrapWin();
-        }
-    </script>
-</section>
 
 <script>
+
     function _cb(){
 
         var cb = decodeURIComponent(window.location.search.match(/%7B(.*)%7D/)[1]);
