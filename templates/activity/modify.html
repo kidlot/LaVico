@@ -76,7 +76,16 @@
     var aItemList = {};
     var flag = 0;
     var _inputCheck = true;
-    function save ( ){
+
+    window.onload = function(){
+
+        var content = decodeURIComponent('{@activity.introduction}');
+        if(content){
+            CKEDITOR.instances.textarea.setData(content);
+        }
+    }
+
+    function save(){
         var _inputCheck = true;
         $(".postData").each(function(i,o){
             if(! $(o).val()){
@@ -89,9 +98,11 @@
               if(!aItemList[$(o).attr("data")]){
                 aItemList[$(o).attr("data")] = {};
               }
-              aItemList[$(o).attr("data")].introduction = $(o).val();
+              var _content = CKEDITOR.instances.textarea.document.getBody().getHtml();
+              aItemList[$(o).attr("data")].introduction = encodeURIComponent(_content);
               aItemList[$(o).attr("data")].promotion_name = $(o).attr("promotion_name");
               aItemList[$(o).attr("data")].promotion_desc = $(o).attr("promotion_desc");
+              console.log(aItemList);
             }
         })
         
@@ -175,10 +186,10 @@
       }
 
       function uploadFailed(evt) {
-          alert("There was an error attempting to upload the file.");
+          alert("上传失败");
       }
 
       function uploadCanceled(evt) {
-          alert("The upload has been canceled by the user or the browser dropped the connection.");
+          alert("已经取消上传");
       }
 </script>     

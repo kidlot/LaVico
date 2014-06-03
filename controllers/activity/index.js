@@ -122,9 +122,8 @@ module.exports = {
 
                 /*编辑器*/
 
-                CKEDITOR.replace( 'introduction', {
+                CKEDITOR.replace( 'introduction', {});
 
-                });
                 CKEDITOR.config.shiftEnterMode = CKEDITOR.ENTER_BR;
                 CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
 
