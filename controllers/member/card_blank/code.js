@@ -13,17 +13,18 @@ module.exports = {
 		    this.step(function(){
 
 		      var set_id_code_time = this.req.session.set_id_code_time;
-              if(set_id_code_time && (set_id_code_time + 30000) > new Date().getTime()){
+              if(set_id_code_time && (set_id_code_time + 60000) > new Date().getTime()){
+
                 then.res.writeHead(200, { 'Content-Type': 'text/plain' });
                 then.res.write("{result:'ofen'}");
                 then.res.end();
+
               }else{
+
                 var id_code  = get_id_code();
                 this.req.session.id_code = id_code;
                 this.req.session.set_id_code_time = new Date().getTime();
 
-
-                var userTelArray = [seed.mobile,'13964081593'];
                 var userTel = seed.userTel;
                 console.log(id_code);
                 then.res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -45,20 +46,6 @@ module.exports = {
                       then.res.end();
                   })
                 );
-
-
-
-//                    for(var i=0;i<userTelArray.length;i++){
-//                        middleware.request( "System/SendSMS",{
-//                                'mobile':userTelArray[i],
-//                                'content':_content+"【郎维高LaVico】"
-//                            },this.hold(
-//                            function(err,doc){
-//                                then.res.end();
-//                            })
-//                        );
-//                    }
-
 
               }
 		    });
