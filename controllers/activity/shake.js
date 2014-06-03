@@ -130,8 +130,8 @@ module.exports = {
 
 
         this.step(function(){
-            nut.model.uid = seed.uid;//uid是用户的wechatid
-            nut.model.aid = seed.aid || 'undefined';//摇一摇活动ID
+            nut.model.uid = wxid ;//uid是用户的wechatid
+            nut.model.aid = aid;//摇一摇活动ID
         });
     },
     viewIn:function(){
