@@ -258,9 +258,6 @@ function finish(){
 
         if(content==""){
             window.popupStyle2.on("您忘记填写了～",function(event){
-                if(event == "confirm"){
-                    location.reload();
-                }
             })
             return;
         }
@@ -274,9 +271,6 @@ function finish(){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
                 window.popupStyle2.on("您忘记填写了～",function(event){
-                    if(event == "confirm"){
-                        location.reload();
-                    }
                 })
                 return;
             }
@@ -292,9 +286,6 @@ function finish(){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
                 window.popupStyle2.on("您忘记填写了～",function(event){
-                    if(event == "confirm"){
-                        location.reload();
-                    }
                 })
                 return;
             }
@@ -387,9 +378,6 @@ function nextChoose(){
         //
         if($("input[name='singleChooseInput']:checked").length==0) {
             window.popupStyle2.on("您忘记填写了～",function(event){
-                if(event == "confirm"){
-                    location.reload();
-                }
             })
             return;
         }
@@ -407,9 +395,6 @@ function nextChoose(){
         //
         if($("input[name='mutilChooseInput']:checked").length==0) {
             window.popupStyle2.on("您忘记填写了～",function(event){
-                if(event == "confirm"){
-                    location.reload();
-                }
             })
             return;
         }
@@ -432,9 +417,6 @@ function nextChoose(){
                 "&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
     }else{
         window.popupStyle2.on("您忘记填写了～",function(event){
-            if(event == "confirm"){
-                location.reload();
-            }
         })
     }
 }
