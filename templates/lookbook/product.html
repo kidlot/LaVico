@@ -34,6 +34,15 @@
         <div id="prev" onclick="leftPage();return false">prev</div>
         <div id="next" onclick="rightPage();return false">next</div>
     </div>
+
+    <div class="fade2">
+        <div class="second-price">
+            <p class="msg"><span class="mt70 fad2Tit">收藏成功</span></p>
+            <p class="confirm"><input type="submit" class="goon_btn" border="0" value="继续浏览" onclick="$('.fade2').hide()"></p>
+            <p class="msg mt70">或</p>
+            <p class="confirm"><input class="gocollection" type="submit" border="0" value="转至收藏夹" onclick="location.href='/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}&cb='+encodeURIComponent('{'+location.href+'}')"></p>
+        </div>
+    </div>
     <script>
         var myScroll;
         function loaded() {
