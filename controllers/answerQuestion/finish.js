@@ -114,8 +114,8 @@ module.exports={
                         "getActivities": "",
                         "getScore": "",
                         "createTime": new Date().getTime(),
-                        "memberId":memberid,
-                        "themetype":themetype
+                        "memberId":seed.memberid,
+                        "themetype":seed.themetype
                     }, function (err, doc) {
 
                     });
@@ -251,7 +251,8 @@ module.exports={
                                         })
                                     }
                                 }
-
+                                console.log("memberid:"+memberid)
+                                console.log("themetype:"+themetype)
                                 then.step(function () {
                                     helper.db.coll("lavico/custReceive").insert({
                                         "wechatid": wechatid,
@@ -266,8 +267,8 @@ module.exports={
                                         "getScore": getScore,
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
-                                        "memberId":memberid,
-                                        "themetype":themetype
+                                        "memberId":seed.memberid,
+                                        "themetype":seed.themetype
                                     }, function (err, doc) {
                                     });
                                     console.log(getLabel)
