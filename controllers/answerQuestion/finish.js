@@ -351,8 +351,8 @@ module.exports={
                         "getActivities": "",
                         "compScore": 0,
                         "createTime": new Date().getTime(),
-                        "memberId":memberid,
-                        "themetype":themetype
+                        "memberId":seed.memberid,
+                        "themetype":seed.themetype
                     }, function (err, doc) {
                     });
 
@@ -505,8 +505,8 @@ module.exports={
                                                 "compScore": getScore,
                                                 "getTipContent": getTipContent,
                                                 "createTime": new Date().getTime(),
-                                                "memberId":memberid,
-                                                "themetype":themetype
+                                                "memberId":seed.memberid,
+                                                "themetype":seed.themetype
                                             }, function (err, doc) {
                                             });
                                             if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
