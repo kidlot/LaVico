@@ -1,6 +1,7 @@
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="sumPageNum" value={@sumPageNum}>
-<script src="/lavico/public/js/waterfall.js"></script>
+
+
 <if condition="@lookbookType == '整图型'">
     <div class="wrapper">
         <div class="store-title">
@@ -65,43 +66,7 @@
     </div>
 </if>
 <if condition="@lookbookType == '瀑布流型'">
-    <section id="section" style="background-color: #e4e4e4; ">
-        <div class="elite" id="wrap">
-            <div class="elite_list">
-                <span class="elite_img"><img src="img/list3_10.png" /></span>
-                <span class="elite_details">内容内容内容</span>
-            </div>
-            <div class="elite_list">
-                <span class="elite_img"><img src="img/list3_10.png" /></span>
-                <span class="elite_details">内容内容内容</span>
-            </div>
-            <div class="elite_list">
-                <span class="elite_img"><img src="img/list3_10.png" /></span>
-                <span class="elite_details">内容内容内容</span>
-            </div>
-            <div class="elite_list">
-                <span class="elite_img"><img src="img/list3_10.png" /></span>
-                <span class="elite_details">内容内容内容</span>
-            </div>
-            <div class="elite_list">
-                <span class="elite_img"><img src="img/list3_10.png" /></span>
-                <span class="elite_details">内容内容内容</span>
-            </div>
-        </div>
-        <script>
-            function wrapWin() {
-                var wrap = document.getElementById("wrap").offsetWidth / 2.2;
-                console.log(wrap)
-                var elite_list = document.getElementById("wrap").getElementsByTagName("div");
-                for (var i = 0; i < elite_list.length; i++) {
-                    elite_list[i].style.width = wrap + "px";
-                }
-            }
-
-            wrapWin();
-        </script>
-    </section>
-    <!--<div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num3.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
+    <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num3.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
         <div class="wrapper">
             <div class="elite_list">
                 <div class="list_left">
@@ -137,7 +102,7 @@
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
 </if>
 <script src="/lavico/public/js/flipsnap.js"></script>
 <script type="text/javascript" src="/lavico/public/js/jquery.touchwipe.1.1.1.js"></script>
