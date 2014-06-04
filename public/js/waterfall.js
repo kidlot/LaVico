@@ -1,4 +1,9 @@
-
+//window.onload = function () {
+//    waterFall("wrap")
+//}
+//window.onresize = function () {
+//    waterFall("wrap")
+//}
 function waterFall(element, space, children) {
     if (!element) return;
     space = space || 10;
