@@ -82,14 +82,17 @@
 
 
         function save( ){
+
+            var _content = editor.document.getBody().getHtml();
+
             var _inputCheck = true;
             $(".postData").each(function(i,o){
-                if(! $(o).val()){
+                if(!_content){
                     _inputCheck = false;
-                    $.globalMessenger().post({
-                        message: $(o).prev().prev().text() + " 不能为空！",
-                        type: 'error',
-                        showCloseButton: true})
+//                    $.globalMessenger().post({
+//                        message: "详细介绍不能为空！",
+//                        type: 'error',
+//                        showCloseButton: true})
                 }else{
                   if(!aItemList[$(o).attr("data")]){
                     aItemList[$(o).attr("data")] = {};
@@ -128,10 +131,8 @@
         }
 
 
-
-
         content = decodeURIComponent('{@activity.introduction}');
-        console.log(content);
+
         /*编辑器*/
         editor = CKEDITOR.replace( 'introduction', {
             toolbar: [
