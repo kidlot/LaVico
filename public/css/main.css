@@ -4,7 +4,7 @@ a, button, input { -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highl
 /*个人中心*/
 a.tel{color:#2d2d2d;}
 /*活动规则*/
-.wrapper{width:100%; height:100%;  max-width:640px; margin:0 auto; position:relative; background-color:#e4e4e4; }
+.wrapper{width:100%; height:auto;min-height:100%; max-width:640px; margin:0 auto; position:relative; background-color:#e4e4e4; }
 .wrapper .vip-card { position:relative; }
 .wrapper .vip-card img { width:100%; }
 .coupon-banner{width:100%; height:auto; padding:4% 0;}
