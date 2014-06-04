@@ -43,11 +43,11 @@
                                   <div class="form-group">
                                       <label for="inputEmail3" class="col-sm-2 control-label">券图<span>(400×400)</span></label>
                                       <div class="col-sm-10" style="padding-top: 8px;">
-                                        <input id="image" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
+                                        <input id="image"  name="image" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
                                         &nbsp;<span calss="progressNumber"></span>
 
                                         <div class="alert alert-success picView file_box">
-                                            <img class="media-object image_data" style="height: 64px;" src="{@activity.pic}">
+                                            <img id="image_upload" class="media-object image_data" style="height: 64px;" src="{@activity.pic}">
                                         </div>
                                       </div>
                                   </div>
@@ -57,8 +57,8 @@
                                           <textarea id="introduction" class="form-control input-sm" rows="3" name="introduction"  placeholder="请输入..." style="height:400px;">{@activity.introduction}</textarea>
                                           <input id="PROMOTION_NAME" type="hidden" value="{@activity.PROMOTION_NAME}"/>
                                           <input id="PROMOTION_DESC" type="hidden" value="{@activity.PROMOTION_DESC}"/>
-                                          <input name='aid' id='aid' type=hidden  value='{@activity.PROMOTION_CODE}' />
-
+                                          <input name='aid' id='aid' type="hidden" value='{@activity.PROMOTION_CODE}' />
+                                          <input id="PROMOTION_QTY" type="hidden"  value="{@activity.QTY}"/>
                                       </div>
                                   </div>                           
                               </div>
@@ -85,37 +85,39 @@
         content = decodeURIComponent('{@activity.introduction}');
 
         /*编辑器*/
-        editor = CKEDITOR.replace( 'introduction', {
-            toolbar: [
-                ['Source','-','Save','NewPage','Preview','-','Templates'],
-                ['Undo', 'Redo', '-', 'SelectAll', 'RemoveFormat'],
-                ['Styles','Format','Font','FontSize'],
-                ['TextColor','BGColor'],
-                ['Maximize', 'ShowBlocks'],
-                '/',
-                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-                ['Link','Unlink','Anchor'],
-                ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
-                ['Code']
-            ]
-        });
+//        editor = CKEDITOR.replace( 'introduction', {
+//            toolbar: [
+//                ['Source','-','Save','NewPage','Preview','-','Templates'],
+//                ['Undo', 'Redo', '-', 'SelectAll', 'RemoveFormat'],
+//                ['Styles','Format','Font','FontSize'],
+//                ['TextColor','BGColor'],
+//                ['Maximize', 'ShowBlocks'],
+//                '/',
+//                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+//                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+//                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+//                ['Link','Unlink','Anchor'],
+//                ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
+//                ['Code']
+//            ]
+//        });
         if(content){
-            editor.setData(content);
+            //editor.setData(content);
         }
 
 
         function save(){
 
-            var content = editor.document.getBody().getHtml();
+            //var content = editor.document.getBody().getHtml();encodeURIComponent(content)
+            var content = $('#introduction').val();
             var _inputCheck = true;
             var _json = {};
             console.log(content);
-            _json.introduction = encodeURIComponent(content);
+            _json.introduction = content;
             _json.promotion_name = $('#PROMOTION_NAME').val();
             _json.promotion_desc = $('#PROMOTION_DESC').val();
-            _json.pic = $('#image').val() || '';
+            _json.pic = $('#image_upload').attr('src') || null;
+            _json.QTY = $('#PROMOTION_QTY').val() || null;
 
             aItemList[0] = _json;
             if(_inputCheck){
@@ -128,7 +130,7 @@
                     if(err) throw err ;
                     flag = 0;
                     nut.msgqueue.popup() ;
-                    //$.controller("/lavico/activity",null,"lazy");
+                    $.controller("/lavico/activity",null,"lazy");
                 }) ;
             }
 
@@ -153,6 +155,7 @@
 
               lastPic = inputid
 
+
               uploadFile();
 
           }
@@ -168,7 +171,6 @@
           xhr.addEventListener("abort", uploadCanceled, false);
           xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
           xhr.send(fd);
-
       }
 
       function uploadProgress(evt) {
@@ -185,7 +187,7 @@
       function uploadComplete(evt) {
           var json = eval('(' + evt.target.responseText + ')');
           var filename = json.model.fileName;
-          $("#"+lastPic+"_image").attr("src",filename)
+          $("#"+lastPic+"_upload").attr("src",filename)
       }
 
       function uploadFailed(evt) {
