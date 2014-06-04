@@ -157,12 +157,12 @@
 
     function flipsnapRoll() {        
         var itemWin = wrapper.offsetWidth / 3;
-        var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div").length;
-        for (var i = 0; i < flipsnapLen; i++) {
+        var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
+        for (var i = 0; i < flipsnapLen.length; i++) {
             flipsnapLen[i].style.width = itemWin + "px";
         }
         var flipsnap = document.getElementById("flipsnap");
-        flipsnap.offsetWidth = itemWin * flipsnapLen + "px";
+        flipsnap.offsetWidth = itemWin * flipsnapLen.length + "px";
 
         //var itemWin = $(".wrapper").width() / 3;
         //var flip_num = $(".flipsnap").find(".item").length;
