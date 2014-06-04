@@ -298,6 +298,8 @@ module.exports={
                             jsonData = {};
                             jsonData.memberId = memberid;
                             jsonData.tag = memoString;
+                            console.log("sa")
+                            console.log(jsonData)
                             middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                 if (err) throw err;
                                 console.log("tag record:" + doc);
@@ -375,8 +377,8 @@ module.exports={
                         for (var i = 0; i < scoreRange.length; i++) {
                             //session上的停止标签和db中的设置标签一致
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
-                                var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 var getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                 var getTipContent = scoreRange[i].tipContent == "" ? 0 : scoreRange[i].tipContent;
                                 var nowPromotion;
@@ -509,29 +511,28 @@ module.exports={
                                 }
                             }
                             //判断是否有session自定义标签
-                            var custLabel = then.req.session.customerLabel
-                            console.log("custLabel:"+custLabel)
-                            if (typeof(custLabel) != "undefined") {
-                                //存在,录入customer
-                                var customerLab;
-                                var choArr = custLabel.split(',');
-                                if (choArr.length <= 1) {
-                                    choArr = custLabel.split(' ');
-                                }
-                                //记录至customers表
-                                for (var j = 0; j < choArr.length; j++) {
-                                    customerLab += "'" + choArr[j] + "'" + ",";
-                                }
-                                var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',');
-                                customerLab = eval('(' + jsonStr + ')');
-                                helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:customerLab}},this.hold(function(err,doc){
-                                    if(err ){
-                                        throw err;
-                                    }
-                                    console.log("doc:"+doc)
-                                }));
-                            }
-                            if(resultList.length==0){
+//                            var custLabel = then.req.session.customerLabel
+//                            if (typeof(custLabel) != "undefined") {
+//                                //存在,录入customer
+//                                var customerLab;
+//                                var choArr = custLabel.split(',');
+//                                if (choArr.length <= 1) {
+//                                    choArr = custLabel.split(' ');
+//                                }
+//                                //记录至customers表
+//                                for (var j = 0; j < choArr.length; j++) {
+//                                    customerLab += "'" + choArr[j] + "'" + ",";
+//                                }
+//                                var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',');
+//                                customerLab = eval('(' + jsonStr + ')');
+//                                helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:customerLab}},this.hold(function(err,doc){
+//                                    if(err ){
+//                                        throw err;
+//                                    }
+//                                    console.log("doc:"+doc)
+//                                }));
+//                            }
+//                            if(resultList.length==0){
                                 if(i==scoreRange.length-1){
                                     resultList += "{"
                                         + "getLabel:'" + "对不起,您没有获得任何奖励"
@@ -563,10 +564,19 @@ module.exports={
                             jsonData = {};
                             jsonData.memberId = memberid;
                             jsonData.tag = memoString;
+                            console.log("sa")
+                            console.log(jsonData)
                             middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                 if (err) throw err;
                                 console.log("tag record:" + doc);
                             }))
+
+                            helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+                                if(err ){
+                                    throw err;
+                                }
+                                console.log("doc:"+doc)
+                            }));
                         }
                     })
                 }
