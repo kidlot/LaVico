@@ -167,11 +167,13 @@
     }
 
     if (wrapper != undefined) {
-        flipsnapRoll();       
+        flipsnapRoll();
+        window.onload = function () {
+            Flipsnap('.flipsnap');
+        }      
 
         window.onresize = function () {
             flipsnapRoll();
         }
     }
-    Flipsnap('.flipsnap');
 </script>
