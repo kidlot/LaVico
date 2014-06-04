@@ -95,11 +95,9 @@
                     aItemList[$(o).attr("data")] = {};
                   }
                   var content = editor.document.getBody().getHtml();
-                  console.log(content)
                   aItemList[$(o).attr("data")].introduction = encodeURIComponent(content);
                   aItemList[$(o).attr("data")].promotion_name = $(o).attr("promotion_name");
                   aItemList[$(o).attr("data")].promotion_desc = $(o).attr("promotion_desc");
-                  //console.log(aItemList);
                 }
             })
 

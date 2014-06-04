@@ -8,7 +8,7 @@ module.exports = {
     layout: "welab/Layout",
     view: "lavico/templates/activity/index.html",
     process: function (seed, nut) {
-        var perPage = 4;
+        var perPage = 20;
         var pageNum = seed.page ? seed.page : 1;
         this.step(function (doc) {
             middleware.request('Coupon/Promotions', {

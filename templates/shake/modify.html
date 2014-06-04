@@ -5,7 +5,6 @@
         font-weight: bold;
     }
 </style>
-
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
     <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
@@ -16,13 +15,12 @@
 
 <div class="panel panel-default formText" >
     <div class="panel-heading clearfix">
+        <a class="btn btn-defalut btn-social-googleplus pull-left" href="/lavico/shake"><i class="fui-arrow-left"></i> 返回</a>
+        <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save();"><i class="fui-check-inverted"></i> 保存</a>
     </div>
     <div class="panel-body" style="background:#f9fafb;">
         <div class="col-md-12">
-            <br>
-            <div style="min-height: 70px;">
-                <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
-            </div>
+
 
             <form class="form-horizontal" role="form">
                 <h6>基础设置</h6>
@@ -81,6 +79,7 @@
 
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">详细介绍</label>
                     <div class="col-sm-10">
@@ -147,6 +146,7 @@
 
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<script src="http://127.0.0.1/welab/public/ckeditor/ckeditor.js"></script>
 
 <script>
 /*点击复制按钮*/
@@ -155,8 +155,32 @@ window.onload = function(){
         copyToClipboard($(this).val());
     });
 }
+/*编辑器*/
+var content = decodeURIComponent('{@shake.content}');
 
-function save (){
+console.log(content);
+/*编辑器*/
+editor = CKEDITOR.replace( 'content', {
+    toolbar: [
+        ['Source','-','Save','NewPage','Preview','-','Templates'],
+        ['Undo', 'Redo', '-', 'SelectAll', 'RemoveFormat'],
+        ['Styles','Format','Font','FontSize'],
+        ['TextColor','BGColor'],
+        ['Maximize', 'ShowBlocks'],
+        '/',
+        ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+        ['Link','Unlink','Anchor'],
+        ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
+        ['Code']
+    ]
+});
+if(content){
+    editor.setData(content);
+}
+
+function save(){
 
     var aFormInput = {}
 
@@ -318,17 +342,11 @@ function save (){
           aFormInput['lottery'].push({'QTY':$(o).attr('data'),'lottery_chance':$(o).val(),'coupon_name':$(o).attr('coupon_name')});
         }
     })
-    
 
+    var content = editor.document.getBody().getHtml();
   
     aFormInput['startDate'] = new Date($("#startDate").val()).getTime();
-    console.log($("#startDate").val());
-    //console.log(new Date(Date.parse($("#startDate").val().replace(/-/g,   "/"))))
-    //console.log(new Date($("#startDate").val()).getTime()-8*3600*1000);
-    //console.log(new Date(new Date($("#startDate").val()).getTime()-8*3600*1000));
-    //console.log($("#startDate").val());
     aFormInput['endDate'] = new Date($("#endDate").val()).getTime();
-    //console.log(new Date($("#endDate").val()));
     aFormInput['aid'] = aid;
     aFormInput['name'] = $("#name").val();
     aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
@@ -336,7 +354,7 @@ function save (){
     aFormInput['switcher'] = 'on';
     aFormInput['createTime'] = new Date().getTime();
     aFormInput['points'] = parseInt($("#points").val()) || 0;//每次游戏，所消耗的积分
-    aFormInput['content'] = $("#content").val();
+    aFormInput['content'] = encodeURIComponent(content);
     
     
     if(_inputCheck){
@@ -348,10 +366,11 @@ function save (){
         $.request(oLinkOptions,function(err,nut){
             if(err) throw err ;
             nut.msgqueue.popup();
-            $.controller("/lavico/shake",null,"lazy");
+            //$.controller("/lavico/shake",null,"lazy");
         }) ;
     }
 }
+
 
 
 function copyToClipboard(txt) {
