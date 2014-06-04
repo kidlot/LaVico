@@ -162,7 +162,7 @@
             flipsnapLen[i].style.width = itemWin + "px";
         }
         var flipsnap = document.getElementById("flipsnap");
-        flipsnap.offsetWidth = itemWin * flipsnapLen.length + "px";
+        flipsnap.style.width = itemWin * flipsnapLen.length + "px";
 
         //var itemWin = $(".wrapper").width() / 3;
         //var flip_num = $(".flipsnap").find(".item").length;
@@ -173,7 +173,7 @@
 
     if (wrapper != undefined) {
         flipsnapRoll();
-        Flipsnap('flipsnap');
+        Flipsnap('#flipsnap');
 
         window.onresize = function () {
             flipsnapRoll();
