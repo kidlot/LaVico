@@ -120,14 +120,6 @@ module.exports = {
                     endDate: new Date()
                 });
 
-                /*编辑器*/
-
-                CKEDITOR.replace( 'introduction', {});
-
-                CKEDITOR.config.shiftEnterMode = CKEDITOR.ENTER_BR;
-                CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
-
-
             }
         },
         save: {
