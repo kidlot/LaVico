@@ -161,21 +161,14 @@
         for (var i = 0; i < flipsnapLen.length; i++) {
             flipsnapLen[i].style.width = itemWin + "px";
         }
-        var temWin8 = flipsnapLen[0].offsetWidth + 8;
-        console.log(temWin8)
+        var temWin8 = flipsnapLen[0].offsetWidth + 9;
         var flipsnap = document.getElementById("flipsnap");
         flipsnap.style.width = temWin8 * flipsnapLen.length + "px";
-
-        //var itemWin = $(".wrapper").width() / 3;
-        //var flip_num = $(".flipsnap").find(".item").length;
-        //$(".item").css("width", itemWin );
-        //var itemotWin = $(".item").outerWidth(true);
-        //$(".flipsnap").css("width", itemotWin * flip_num + 4);
     }
 
     if (wrapper != undefined) {
         flipsnapRoll();
-        Flipsnap('#flipsnap');
+        Flipsnap('.flipsnap');
 
         window.onresize = function () {
             flipsnapRoll();
