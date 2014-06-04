@@ -1,6 +1,5 @@
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="sumPageNum" value={@sumPageNum}>
-<script src="/lavico/public/js/waterfall.js"></script>
 <if condition="@lookbookType == '整图型'">
     <div class="wrapper">
         <div class="store-title">
@@ -90,11 +89,17 @@
             if (sectionWrap != undefined) {
                 wrapWin();
 
-                waterFall("wrap")
+                window.onload = function () {
+                    waterFall("wrap")
+                }
+                window.onresize = function () {
+                    waterFall("wrap")
+                }
             }
         </script>
     </section>
 </if>
+<script src="/lavico/public/js/waterfall.js"></script>
 <script src="/lavico/public/js/flipsnap.js"></script>
 <script type="text/javascript" src="/lavico/public/js/jquery.touchwipe.1.1.1.js"></script>
 <script>
