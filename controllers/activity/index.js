@@ -8,7 +8,7 @@ module.exports = {
     layout: "welab/Layout",
     view: "lavico/templates/activity/index.html",
     process: function (seed, nut) {
-        var perPage = 4;
+        var perPage = 20;
         var pageNum = seed.page ? seed.page : 1;
         this.step(function (doc) {
             middleware.request('Coupon/Promotions', {
@@ -119,14 +119,6 @@ module.exports = {
                     minView: 2,
                     endDate: new Date()
                 });
-
-                /*编辑器*/
-
-                CKEDITOR.replace( 'introduction', {});
-
-                CKEDITOR.config.shiftEnterMode = CKEDITOR.ENTER_BR;
-                CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
-
 
             }
         },

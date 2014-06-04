@@ -1,7 +1,9 @@
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="sumPageNum" value={@sumPageNum}>
+
+
 <if condition="@lookbookType == '整图型'">
-    <div class="wrapper" id="wrapper">
+    <div class="wrapper">
         <div class="store-title">
             <p class="title6">精英搭配</p>
         </div>
@@ -9,10 +11,10 @@
             <div class="banner"><img src="{@doc.pic||'/lavico/public/images/elite_home_top.gif'}"></div>
             <div class="roll-banner">
                 <div class="viewport">
-                    <div class="flipsnap" id="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
+                    <div class="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
                         <foreach for="@doc.product" var="doc2">
                             <div class="item">
-                                <span class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></span>
+                                <div class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@pageNum}&productId={@doc2._id}"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></div>
                             </div>
                         </foreach>
                     </div>
@@ -22,7 +24,7 @@
                 <div class="text"><a href="javascript:;" class="elite_intro">{@doc.detail}</a></div>
                 <div class="arrow">
                     <div class="arrow-left" onclick="leftPage()"></div>
-                    <a href="javascript:;" onclick="rightPage()"><div class="arrow-right"></div></a>
+                    <a href="javascript:;" onclick="rightPage()"><div class="arrow-right" ></div></a>
                 </div>
                 <div class="number">
                     <p><span class="f25">{@pageNum}</span><span class="f22">/{@ sumPageNum}</span></p>
@@ -34,7 +36,8 @@
 
 <if condition="@lookbookType == '列表型'">
     <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num2.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
-        <div class="wrapper" style="background-color: #fff;">
+        <div class="wrapper">
+
             <foreach for="@allPage.page" var="page" key="key">
                 <div class="elite_list">
                     <div class="small_list_top">
@@ -48,7 +51,7 @@
                 <div class="small_list">
                     <foreach for="@page.product" var="product">
                         <div class="small_image">
-                            <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}&onlyProduct=true">
+                            <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@key+1}&productId={@product._id}">
                                 <img src="{@ product.pic}" class="exchangebtn">
                             </a>
                         </div>
@@ -57,45 +60,50 @@
                 <div class="clear"></div>
                 <div class="small_middle"><img src="/lavico/public/images/small_list_middle.png" class="exchangebtn"></div>
             </foreach>
+
+        </div>
+
+    </div>
+</if>
+<if condition="@lookbookType == '瀑布流型'">
+    <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num3.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
+        <div class="wrapper">
+            <div class="elite_list">
+                <div class="list_left">
+
+                    <foreach for="@allPage.page" var="page" key="key">
+                        <if condition="@key%2 == 0">
+                            <div class="list">
+                                <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
+                                    <div class="boxcontent">
+                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@key+1}&productId={@page.product[0]._id}">
+                                        <img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" class="exchangebtn" width="293">
+                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" ><div class="elite_list_title">{@page.name}</div></div> 
+                                    </div>
+                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
+                            </div>
+                        </if>
+                    </foreach>
+                </div>
+                <div class="list_right">
+                    <foreach for="@allPage.page" var="page" key="key">
+                        <if condition="@key%2 != 0">
+                            <div class="list">
+                                <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
+                                    <div class="boxcontent">
+                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum={@key+1}&productId={@page.product[0]._id}">
+                                        <img src="{@page.pic}" class="exchangebtn" width="293">
+                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" /><div class="elite_list_title">{@page.name}</div></div>
+                                    </div>
+                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
+                            </div>
+                        </if>
+                    </foreach>
+                </div>
+            </div>
         </div>
     </div>
 </if>
-
-<if condition="@lookbookType == '瀑布流型'">
-    <section id="section" style="background-color: #e4e4e4;">
-        <div class="elite" id="wrap">
-            <foreach for="@allPage.page" var="page" key="key">
-                <if condition="@key%2 == 0">
-                    <div class="elite_list_lw">
-                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
-                            <span class="elite_img"><img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" /></span>
-                            <span class="elite_details">{@page.name}</span>
-                        </a>
-                    </div>
-                </if>
-            </foreach>
-        </div>
-        <script>
-            function wrapWin() {
-                var wrap = document.getElementById("wrap");
-                var wrapWin = wrap.offsetWidth / 2.2;
-                //console.log(wrapWin)
-                var elite_list = document.getElementById("wrap").getElementsByTagName("div");
-                for (var i = 0; i < elite_list.length; i++) {
-                    elite_list[i].style.width = wrapWin + "px";
-                }
-            }
-
-            if (wrap != undefined) {
-                wrapWin();
-                window.onload = function () {
-                    waterFall("wrap");
-                }              
-            }
-        </script>
-    </section>
-</if>
-<script src="/lavico/public/js/waterfall.js"></script>
 <script src="/lavico/public/js/flipsnap.js"></script>
 <script type="text/javascript" src="/lavico/public/js/jquery.touchwipe.1.1.1.js"></script>
 <script>
@@ -121,7 +129,7 @@
             alert("已经是第一页")
             return;
         }
-        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum -1);
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum=" + (pageNum -1);
         return false;
     }
 
@@ -133,7 +141,7 @@
             alert("已经是最后一页")
             return;
         }
-        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&pageNum=" + (pageNum +1);
+        location.href = "/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}&pageNum=" + (pageNum +1);
         return false;
     }
     function favorites(wxid,pid){
@@ -153,27 +161,21 @@
         });
     }
 
-    var wrapper = document.getElementById("wrapper");
-
-    function flipsnapRoll() {        
-        var itemWin = wrapper.offsetWidth / 3;
-        var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
-        for (var i = 0; i < flipsnapLen.length; i++) {
-            flipsnapLen[i].style.width = itemWin + "px";
-        }
-        var temWin8 = flipsnapLen[0].offsetWidth + 9;
-        var flipsnap = document.getElementById("flipsnap");
-        flipsnap.style.width = temWin8 * flipsnapLen.length + "px";
+    function flipsnap_roll() {
+        var itemWin = $(".wrapper").width() / 3;
+        var flip_num = $(".flipsnap").find(".item").length;
+        $(".item").css("width", itemWin );
+        var itemotWin = $(".item").outerWidth(true);
+        console.log(itemWin, flip_num)
+        $(".flipsnap").css("width", itemotWin * flip_num + 4);
     }
 
-    if (wrapper != undefined) {
-        flipsnapRoll();
-        window.onload = function () {
-            Flipsnap('.flipsnap');
-        }      
+    window.onload = function () {   
+        flipsnap_roll();
+        Flipsnap('.flipsnap');
+    }
 
-        window.onresize = function () {
-            flipsnapRoll();
-        }
+    window.onresize = function () {
+        flipsnap_roll();
     }
 </script>
