@@ -153,8 +153,9 @@
         });
     }
 
-    function flipsnapRoll() {
-        var wrapper = document.getElementById("wrapper");
+    var wrapper = document.getElementById("wrapper");
+
+    function flipsnapRoll() {        
         var itemWin = wrapper.offsetWidth / 3;
         var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div").length;
         for (var i = 0; i < flipsnapLen; i++) {
