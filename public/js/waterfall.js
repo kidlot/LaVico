@@ -1,9 +1,4 @@
-window.onload = function () {
-    waterFall(id)
-}
-window.onresize = function () {
-    waterFall(id)
-}
+
 function waterFall(element, space, children) {
     if (!element) return;
     space = space || 10;
