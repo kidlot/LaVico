@@ -43,25 +43,28 @@
                                   <div class="form-group">
                                       <label for="inputEmail3" class="col-sm-2 control-label">券图<span>(400×400)</span></label>
                                       <div class="col-sm-10" style="padding-top: 8px;">
-                                        <input type="file" class="input-xlarge"  style="width:206px" data="{@activity.QTY}" name="{@activity.QTY}" placeholder="请输入...." id="{@activity.QTY}" onchange="fileSelected(this.id);">
+                                        <input id="image" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
                                         &nbsp;<span calss="progressNumber"></span>
 
                                         <div class="alert alert-success picView file_box">
-                                            <img id='{@activity.QTY}_image' class="media-object image_data" data="{@activity.QTY}" style="height: 64px;" src="{@activity.pic}">
+                                            <img class="media-object image_data" style="height: 64px;" src="{@activity.pic}">
                                         </div>
                                       </div>
                                   </div>
                                   <div class="form-group">
                                       <label for="inputEmail3" class="col-sm-2 control-label">详细介绍</label>
                                       <div class="col-sm-10" style="padding-top: 8px;">
-                                          <textarea class="form-control input-sm postData" rows="3" data="{@activity.QTY}" id="{@activity.QTY}_introduction" name="introduction" promotion_name="{@activity.PROMOTION_NAME}"  promotion_desc="{@activity.PROMOTION_DESC}"  placeholder="请输入..." style="height:400px;">{@activity.introduction}</textarea>
+                                          <textarea id="introduction" class="form-control input-sm" rows="3" name="introduction"  placeholder="请输入..." style="height:400px;">{@activity.introduction}</textarea>
+                                          <input id="PROMOTION_NAME" type="hidden" value="{@activity.PROMOTION_NAME}"/>
+                                          <input id="PROMOTION_DESC" type="hidden" value="{@activity.PROMOTION_DESC}"/>
+                                          <input name='aid' id='aid' type=hidden  value='{@activity.PROMOTION_CODE}' />
+
                                       </div>
                                   </div>                           
                               </div>
                           </div>
                       </div>
 
-                    <input type=hidden name='aid' id='aid' value='{@activity.PROMOTION_CODE}' />
                 </form>
             </div>
         </div>        
@@ -78,58 +81,6 @@
         var _inputCheck = true;
         var content;
         var editor;
-
-
-
-        function save( ){
-
-            var _content = editor.document.getBody().getHtml();
-
-            var _inputCheck = true;
-            $(".postData").each(function(i,o){
-                if(!_content){
-                    _inputCheck = false;
-//                    $.globalMessenger().post({
-//                        message: "详细介绍不能为空！",
-//                        type: 'error',
-//                        showCloseButton: true})
-                }else{
-                  if(!aItemList[$(o).attr("data")]){
-                    aItemList[$(o).attr("data")] = {};
-                  }
-                  var content = editor.document.getBody().getHtml();
-                  aItemList[$(o).attr("data")].introduction = encodeURIComponent(content);
-                  aItemList[$(o).attr("data")].promotion_name = $(o).attr("promotion_name");
-                  aItemList[$(o).attr("data")].promotion_desc = $(o).attr("promotion_desc");
-                }
-            })
-
-            $(".image_data").each(function(i,o){
-              if($(o).attr('src')){
-                if(!aItemList[$(o).attr("data")]){
-                  aItemList[$(o).attr("data")] = {};
-                }
-                aItemList[$(o).attr("data")].pic = $(o).attr("src");
-              }
-            });
-
-
-            if(_inputCheck){
-                var oLinkOptions = {} ;
-                oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'aid',value:$("#aid").val()}];
-                oLinkOptions.type = "POST";
-                oLinkOptions.url = "/lavico/activity/index:save";
-                flag = 1;
-                $.request(oLinkOptions,function(err,nut){
-                    if(err) throw err ;
-                    flag = 0;
-                    nut.msgqueue.popup() ;
-                    //$.controller("/lavico/activity",null,"lazy");
-                }) ;
-            }
-
-        }
-
 
         content = decodeURIComponent('{@activity.introduction}');
 
@@ -153,6 +104,38 @@
         if(content){
             editor.setData(content);
         }
+
+
+        function save(){
+
+            var content = editor.document.getBody().getHtml();
+            var _inputCheck = true;
+            var _json = {};
+            console.log(content);
+            _json.introduction = encodeURIComponent(content);
+            _json.promotion_name = $('#PROMOTION_NAME').val();
+            _json.promotion_desc = $('#PROMOTION_DESC').val();
+            _json.pic = $('#image').val() || '';
+
+            aItemList[0] = _json;
+            if(_inputCheck){
+                var oLinkOptions = {} ;
+                oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'aid',value:$("#aid").val()}];
+                oLinkOptions.type = "POST";
+                oLinkOptions.url = "/lavico/activity/index:save";
+                flag = 1;
+                $.request(oLinkOptions,function(err,nut){
+                    if(err) throw err ;
+                    flag = 0;
+                    nut.msgqueue.popup() ;
+                    //$.controller("/lavico/activity",null,"lazy");
+                }) ;
+            }
+
+        }
+
+
+
 
       
       var lastPic = ""
