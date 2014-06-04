@@ -69,7 +69,7 @@
         <div class="elite" id="wrap">
             <foreach for="@allPage.page" var="page" key="key">
                 <if condition="@key%2 == 0">
-                    <div class="elite_list">
+                    <div class="elite_list_lw">
                         <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
                             <span class="elite_img"><img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" /></span>
                             <span class="elite_details">{@page.name}</span>
