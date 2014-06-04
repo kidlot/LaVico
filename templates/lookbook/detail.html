@@ -158,9 +158,12 @@
     function flipsnapRoll() {        
         var itemWin = wrapper.offsetWidth / 3;
         var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
+        var temWin8;
         for (var i = 0; i < flipsnapLen.length; i++) {
             flipsnapLen[i].style.width = itemWin + "px";
+            temWin8 = flipsnapLen[i].style.width = itemWin + "px" + 8;
         }
+        console.log(temWin8)
         var flipsnap = document.getElementById("flipsnap");
         flipsnap.style.width = itemWin * flipsnapLen.length + "px";
 
