@@ -527,7 +527,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .modal-orientation .btn-close{position:absolute;top:3px;right:3px;width:24px;height:24px;/*background:url(../img/icon-close.png) no-repeat 50% 50%; background-size:80%;*/}
 
 /*2014.6.3 精英搭配改版*/
-#section { width:100%; height:auto; max-width:640px; margin:0 auto; position:relative; background-color:#fff; }
+#section { width:100%; height:auto; min-height:100%; max-width:640px; margin:0 auto; position:relative; background-color:#fff; }
 .article { width:100%; height:auto;z-index:100;background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8); padding:2% 0; position:fixed; left:0px; bottom:0px;  }
 .article h3,
 .article p { width:92%; font-size: 1.6rem;color: #B9954D; padding:0 4%; display:block; }
