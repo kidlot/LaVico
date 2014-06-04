@@ -1,7 +1,7 @@
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="sumPageNum" value={@sumPageNum}>
 <if condition="@lookbookType == '整图型'">
-    <div class="wrapper">
+    <div class="wrapper" id="wrapper">
         <div class="store-title">
             <p class="title6">精英搭配</p>
         </div>
@@ -9,7 +9,7 @@
             <div class="banner"><img src="{@doc.pic||'/lavico/public/images/elite_home_top.gif'}"></div>
             <div class="roll-banner">
                 <div class="viewport">
-                    <div class="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
+                    <div class="flipsnap" id="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
                         <foreach for="@doc.product" var="doc2">
                             <div class="item">
                                 <div class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></div>
@@ -153,16 +153,21 @@
         });
     }
 
-    function flipsnap_roll() {
-        var itemWin = $(".wrapper").width() / 3;
-        var flip_num = $(".flipsnap").find(".item").length;
-        $(".item").css("width", itemWin );
-        var itemotWin = $(".item").outerWidth(true);
-        console.log(itemWin, flip_num)
-        $(".flipsnap").css("width", itemotWin * flip_num + 4);
+    function flipsnapRoll() {
+        var itemWin = document.getElementById("wrapper").offsetWidth / 3;
+        var flip_Len = document.getElementById("flipsnap").getElementsByTagName("div");
+        console.log(flip_Len);
+
+
+        //var itemWin = $(".wrapper").width() / 3;
+        //var flip_num = $(".flipsnap").find(".item").length;
+        //$(".item").css("width", itemWin );
+        //var itemotWin = $(".item").outerWidth(true);
+        //console.log(itemWin, flip_num)
+        //$(".flipsnap").css("width", itemotWin * flip_num + 4);
     }
- 
-    flipsnap_roll();
+    
+    flipsnapRoll();
     Flipsnap('.flipsnap');
     
     window.onresize = function () {
