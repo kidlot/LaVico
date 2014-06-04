@@ -54,7 +54,7 @@
                                   <div class="form-group">
                                       <label for="inputEmail3" class="col-sm-2 control-label">详细介绍</label>
                                       <div class="col-sm-10" style="padding-top: 8px;">
-                                          <textarea class="form-control input-sm postData" rows="3" data="{@activity.QTY}" id="{@activity.QTY}_introduction" name="{@activity.QTY}_introduction" promotion_name="{@activity.PROMOTION_NAME}"  promotion_desc="{@activity.PROMOTION_DESC}"  placeholder="请输入..." style="height:300px;">{@activity.introduction}</textarea>
+                                          <textarea class="form-control input-sm postData" rows="3" data="{@activity.QTY}" id="{@activity.QTY}_introduction" name="introduction" promotion_name="{@activity.PROMOTION_NAME}"  promotion_desc="{@activity.PROMOTION_DESC}"  placeholder="请输入..." style="height:400px;">{@activity.introduction}</textarea>
                                       </div>
                                   </div>                           
                               </div>
@@ -69,59 +69,92 @@
 </div>
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<script src="/welab/public/ckeditor/ckeditor.js"></script>
 
 
 <script>
-    var aItemList = {};
-    var flag = 0;
-    var _inputCheck = true;
-    function save ( ){
+        var aItemList = {};
+        var flag = 0;
         var _inputCheck = true;
-        $(".postData").each(function(i,o){
-            if(! $(o).val()){
-                _inputCheck = false;
-                $.globalMessenger().post({
-                    message: $(o).prev().prev().text() + " 不能为空！",
-                    type: 'error',
-                    showCloseButton: true})
-            }else{
-              if(!aItemList[$(o).attr("data")]){
-                aItemList[$(o).attr("data")] = {};
-              }
-              aItemList[$(o).attr("data")].introduction = $(o).val();
-              aItemList[$(o).attr("data")].promotion_name = $(o).attr("promotion_name");
-              aItemList[$(o).attr("data")].promotion_desc = $(o).attr("promotion_desc");
-            }
-        })
-        
-        $(".image_data").each(function(i,o){
-          if($(o).attr('src')){
-            if(!aItemList[$(o).attr("data")]){
-              aItemList[$(o).attr("data")] = {};
-            }
-            aItemList[$(o).attr("data")].pic = $(o).attr("src");            
-          }
-        });
-                            
+        var content;
+        var editor;
 
-        if(_inputCheck){
-            var oLinkOptions = {} ;
-            oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'aid',value:$("#aid").val()}];
-            oLinkOptions.type = "POST";
-            oLinkOptions.url = "/lavico/activity/index:save";
-            flag = 1;
-            $.request(oLinkOptions,function(err,nut){
-                if(err) throw err ;
-                flag = 0;
-                nut.msgqueue.popup() ;
-                $.controller("/lavico/activity",null,"lazy");
-            }) ;
+
+
+        function save( ){
+            var _inputCheck = true;
+            $(".postData").each(function(i,o){
+                if(! $(o).val()){
+                    _inputCheck = false;
+                    $.globalMessenger().post({
+                        message: $(o).prev().prev().text() + " 不能为空！",
+                        type: 'error',
+                        showCloseButton: true})
+                }else{
+                  if(!aItemList[$(o).attr("data")]){
+                    aItemList[$(o).attr("data")] = {};
+                  }
+                  var content = editor.document.getBody().getHtml();
+                  console.log(content)
+                  aItemList[$(o).attr("data")].introduction = encodeURIComponent(content);
+                  aItemList[$(o).attr("data")].promotion_name = $(o).attr("promotion_name");
+                  aItemList[$(o).attr("data")].promotion_desc = $(o).attr("promotion_desc");
+                  //console.log(aItemList);
+                }
+            })
+
+            $(".image_data").each(function(i,o){
+              if($(o).attr('src')){
+                if(!aItemList[$(o).attr("data")]){
+                  aItemList[$(o).attr("data")] = {};
+                }
+                aItemList[$(o).attr("data")].pic = $(o).attr("src");
+              }
+            });
+
+
+            if(_inputCheck){
+                var oLinkOptions = {} ;
+                oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'aid',value:$("#aid").val()}];
+                oLinkOptions.type = "POST";
+                oLinkOptions.url = "/lavico/activity/index:save";
+                flag = 1;
+                $.request(oLinkOptions,function(err,nut){
+                    if(err) throw err ;
+                    flag = 0;
+                    nut.msgqueue.popup() ;
+                    //$.controller("/lavico/activity",null,"lazy");
+                }) ;
+            }
+
         }
 
-    }   
-    
-    
-      
+
+
+
+        content = decodeURIComponent('{@activity.introduction}');
+        console.log(content);
+        /*编辑器*/
+        editor = CKEDITOR.replace( 'introduction', {
+            toolbar: [
+                ['Source','-','Save','NewPage','Preview','-','Templates'],
+                ['Undo', 'Redo', '-', 'SelectAll', 'RemoveFormat'],
+                ['Styles','Format','Font','FontSize'],
+                ['TextColor','BGColor'],
+                ['Maximize', 'ShowBlocks'],
+                '/',
+                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                ['Link','Unlink','Anchor'],
+                ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
+                ['Code']
+            ]
+        });
+        if(content){
+            editor.setData(content);
+        }
+
       
       var lastPic = ""
       function fileSelected(inputid) {
@@ -174,10 +207,10 @@
       }
 
       function uploadFailed(evt) {
-          alert("There was an error attempting to upload the file.");
+          alert("上传失败");
       }
 
       function uploadCanceled(evt) {
-          alert("The upload has been canceled by the user or the browser dropped the connection.");
+          alert("已经取消上传");
       }
 </script>     

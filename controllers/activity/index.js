@@ -106,18 +106,20 @@ module.exports = {
                 });
             },
             viewIn: function () {
+
                 $('#start_date').datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
                     minView: 2
-                })
+                });
 
                 $('#end_date').datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
                     minView: 2,
                     endDate: new Date()
-                })
+                });
+
             }
         },
         save: {

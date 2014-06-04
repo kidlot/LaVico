@@ -287,7 +287,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .ml20{ margin-left:2%; width:68%; }
 .pt55{ padding-top:12px; }
 .points4-content .point-box .title3{width:560px; height:65px; background:url(../images/point_bg2.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
-.points4-content .gift_point-box .title3{width:560px; height:65px; background:url(../images/point_bg2.png) no-repeat; font-size:25px; color:#fff; line-height:65px; padding-left:20px; padding-right:20px;}
+.points4-content .gift_point-box .title3{width:96%; height:50px; background:url(../images/point_bg2.png) no-repeat; font-size:1.6rem; color:#fff; line-height:50px; padding:0 2%; background-size:100% 100%;}
 /*专属礼券*/
 .points5{background-color:#eee;}
 .points5-content{width:96%; padding:2% 2% 0; }

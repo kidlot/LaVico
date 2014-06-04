@@ -9,7 +9,7 @@ module.exports={
         var opptionId=seed.optionId ? seed.optionId : 0;
         var wechatid=seed.wechatid;
         var scoreAll=this.req.session.scoreAll;
-        var stopLab=seed.stopLab ? seed.stopLabel : "null";
+        var stopLab=seed.stopLab ? seed.stopLab : "null";
         nut.model.wechatid = seed.wechatid
 
         var isRecord=seed.isRecord ? seed.isRecord : "no";
@@ -20,6 +20,9 @@ module.exports={
         var stutas= seed.stutas ? seed.stutas :"false";
         nut.model.stutas = stutas;
         nut.model.getScores ="1";
+
+
+
 
         var docs;
         this.step(function(){
@@ -149,7 +152,6 @@ module.exports={
 
                     var resultList = "[";
                     this.step(function () {
-                        console.log("scoreRange.length:"+scoreRange.length)
                         for (var i = 0; i < scoreRange.length; i++) {
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
@@ -251,7 +253,8 @@ module.exports={
                                         })
                                     }
                                 }
-
+                                console.log("memberid:"+memberid)
+                                console.log("themetype:"+themetype)
                                 then.step(function () {
                                     helper.db.coll("lavico/custReceive").insert({
                                         "wechatid": wechatid,
@@ -383,9 +386,12 @@ module.exports={
 
                     var resultList = "[";
                     this.step(function () {
+                        console.log("sa")
                         console.log("scoreRange.length:"+scoreRange.length)
                         for (var i = 0; i < scoreRange.length; i++) {
                             //session上的停止标签和db中的设置标签一致
+                            console.log(then.req.session.stopLabel)
+                            console.log(scoreRange[i].conditionLabel)
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
                                 var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                 var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
