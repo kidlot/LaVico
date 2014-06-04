@@ -77,19 +77,19 @@
         </div>
         <script>
             function wrapWin() {
-                var wrap = document.getElementById("wrap").offsetWidth / 2.2;
-                console.log(wrap)
+                var wrap = document.getElementById("wrap");
+                var wrapWin = wrap.offsetWidth / 2.2;
+                //console.log(wrapWin)
                 var elite_list = document.getElementById("wrap").getElementsByTagName("div");
                 for (var i = 0; i < elite_list.length; i++) {
-                    elite_list[i].style.width = wrap + "px";
+                    elite_list[i].style.width = wrapWin + "px";
                 }
             }
 
-            var sectionWrap = document.getElementById("wrap");
-            if (sectionWrap != undefined) {
+            if (wrap != undefined) {
                 wrapWin();
 
-                waterFall("wrap")
+                waterFall(wrap)
             }
         </script>
     </section>
