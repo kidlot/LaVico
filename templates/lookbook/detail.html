@@ -2,7 +2,7 @@
 <input type="hidden" id="sumPageNum" value={@sumPageNum}>
 <script src="/lavico/public/js/waterfall.js"></script>
 <if condition="@lookbookType == '整图型'">
-    <div class="wrapper" style="background-color: #e4e4e4;">
+    <div class="wrapper">
         <div class="store-title">
             <p class="title6">精英搭配</p>
         </div>
@@ -86,7 +86,10 @@
                 }
             }
 
-            wrapWin();
+            var section = document.getElementById("section");
+            if (section != undefined) {
+                wrapWin();
+            }
         </script>
     </section>
 </if>
