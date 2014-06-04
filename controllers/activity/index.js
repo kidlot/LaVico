@@ -141,7 +141,7 @@ module.exports = {
                 this.step(function () {
                     var activity = {};
                     for (var o in postData) {
-                        activity['QTY'] = o;
+                        activity['QTY'] = postData[o].QTY;
                         activity['pic'] = postData[o].pic;
                         activity['introduction'] = postData[o].introduction;
                         activity['promotion_name'] = postData[o].promotion_name;

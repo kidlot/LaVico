@@ -57,8 +57,8 @@
                                           <textarea id="introduction" class="form-control input-sm" rows="3" name="introduction"  placeholder="请输入..." style="height:400px;">{@activity.introduction}</textarea>
                                           <input id="PROMOTION_NAME" type="hidden" value="{@activity.PROMOTION_NAME}"/>
                                           <input id="PROMOTION_DESC" type="hidden" value="{@activity.PROMOTION_DESC}"/>
-                                          <input name='aid' id='aid' type=hidden  value='{@activity.PROMOTION_CODE}' />
-
+                                          <input name='aid' id='aid' type="hidden" value='{@activity.PROMOTION_CODE}' />
+                                          <input id="PROMOTION_QTY" type="hidden"  value="{@activity.QTY}"/>
                                       </div>
                                   </div>                           
                               </div>
@@ -108,15 +108,16 @@
 
         function save(){
 
-            //var content = editor.document.getBody().getHtml();
+            //var content = editor.document.getBody().getHtml();encodeURIComponent(content)
             var content = $('#introduction').val();
             var _inputCheck = true;
             var _json = {};
             console.log(content);
-            _json.introduction = encodeURIComponent(content);
+            _json.introduction = content;
             _json.promotion_name = $('#PROMOTION_NAME').val();
             _json.promotion_desc = $('#PROMOTION_DESC').val();
-            _json.pic = $('#image_upload').attr('src') || '';
+            _json.pic = $('#image_upload').attr('src') || null;
+            _json.QTY = $('#PROMOTION_QTY').val() || null;
 
             aItemList[0] = _json;
             if(_inputCheck){
@@ -168,14 +169,8 @@
           xhr.addEventListener("load", uploadComplete, false);
           xhr.addEventListener("error", uploadFailed, false);
           xhr.addEventListener("abort", uploadCanceled, false);
-          console.log(document.getElementById(lastPic).files[0]);
-
           xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
-
           xhr.send(fd);
-          console.log(document.getElementById(lastPic).files[0]);
-
-
       }
 
       function uploadProgress(evt) {
