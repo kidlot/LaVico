@@ -207,8 +207,8 @@ module.exports={
                                             var jsonData = {
                                                 openid: wechatid,
                                                 otherPromId: _id,
-                                                //PROMOTION_CODE: getActivities,
-                                                PROMOTION_CODE:"L2013112709",
+                                                PROMOTION_CODE: getActivities,
+                                                //PROMOTION_CODE:"L2013112709",
                                                 memo: memoString,
                                                 point: 0
                                             }
@@ -446,8 +446,8 @@ module.exports={
                                             memo: memoString,
                                             openid: wechatid,
                                             otherPromId: _id,
-                                            //PROMOTION_CODE:getActivities,
-                                            PROMOTION_CODE: 'L2013112709',
+                                            PROMOTION_CODE:getActivities,
+                                            //PROMOTION_CODE: 'L2013112709',
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
