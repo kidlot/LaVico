@@ -12,7 +12,7 @@
                     <div class="flipsnap" id="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
                         <foreach for="@doc.product" var="doc2">
                             <div class="item">
-                                <div class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></div>
+                                <span class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></span>
                             </div>
                         </foreach>
                     </div>
@@ -154,23 +154,28 @@
     }
 
     function flipsnapRoll() {
-        var itemWin = document.getElementById("wrapper").offsetWidth / 3;
-        var flip_Len = document.getElementById("flipsnap").getElementsByTagName("div.item").length;
-        console.log(flip_Len);
-
+        var wrapper = document.getElementById("wrapper");
+        var itemWin = wrapper.offsetWidth / 3;
+        var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div").length;
+        for (var i = 0; i < flipsnapLen; i++) {
+            flipsnapLen[i].style.width = itemWin;
+        }
+        var flipsnap = document.getElementById("flipsnap");
+        flipsnap.offsetWidth = itemWin * flipsnapLen;
 
         //var itemWin = $(".wrapper").width() / 3;
         //var flip_num = $(".flipsnap").find(".item").length;
         //$(".item").css("width", itemWin );
         //var itemotWin = $(".item").outerWidth(true);
-        //console.log(itemWin, flip_num)
         //$(".flipsnap").css("width", itemotWin * flip_num + 4);
     }
-    
-    flipsnapRoll();
-    Flipsnap('.flipsnap');
-    
-    window.onresize = function () {
-        flipsnap_roll();
+
+    if (wrapper != undefined) {
+        flipsnapRoll();
+        Flipsnap('.flipsnap');
+
+        window.onresize = function () {
+            flipsnap_roll();
+        }
     }
 </script>
