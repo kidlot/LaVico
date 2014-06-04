@@ -2,7 +2,7 @@
 <input type="hidden" id="sumPageNum" value={@sumPageNum}>
 <script src="/lavico/public/js/waterfall.js"></script>
 <if condition="@lookbookType == '整图型'">
-    <div class="wrapper">
+    <div class="wrapper" style="background-color: #e4e4e4;">
         <div class="store-title">
             <p class="title6">精英搭配</p>
         </div>
@@ -23,7 +23,7 @@
                 <div class="text"><a href="javascript:;" class="elite_intro">{@doc.detail}</a></div>
                 <div class="arrow">
                     <div class="arrow-left" onclick="leftPage()"></div>
-                    <a href="javascript:;" onclick="rightPage()"><div class="arrow-right" ></div></a>
+                    <a href="javascript:;" onclick="rightPage()"><div class="arrow-right"></div></a>
                 </div>
                 <div class="number">
                     <p><span class="f25">{@pageNum}</span><span class="f22">/{@ sumPageNum}</span></p>
@@ -35,8 +35,7 @@
 
 <if condition="@lookbookType == '列表型'">
     <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num2.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
-        <div class="wrapper">
-
+        <div class="wrapper" style="background-color: #e4e4e4;">
             <foreach for="@allPage.page" var="page" key="key">
                 <div class="elite_list">
                     <div class="small_list_top">
@@ -59,13 +58,12 @@
                 <div class="clear"></div>
                 <div class="small_middle"><img src="/lavico/public/images/small_list_middle.png" class="exchangebtn"></div>
             </foreach>
-
         </div>
-
     </div>
 </if>
+
 <if condition="@lookbookType == '瀑布流型'">
-    <section id="section" style="background-color:none">
+    <section id="section" style="background-color: #e4e4e4;">
         <div class="elite" id="wrap">
             <foreach for="@allPage.page" var="page" key="key">
                 <if condition="@key%2 == 0">
