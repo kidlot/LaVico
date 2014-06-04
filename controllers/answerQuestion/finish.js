@@ -532,7 +532,7 @@ module.exports={
 //                                    console.log("doc:"+doc)
 //                                }));
 //                            }
-//                            if(resultList.length==0){
+                            if(resultList.length==0){
                                 if(i==scoreRange.length-1){
                                     resultList += "{"
                                         + "getLabel:'" + "对不起,您没有获得任何奖励"
