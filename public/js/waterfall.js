@@ -1,9 +1,3 @@
-window.onload = function () {
-    waterFall("wrap")
-}//尽量避免使用Jquery的ready，safari出现问题很头痛
-window.onresize = function () {
-    waterFall("wrap")
-}
 function waterFall(element, space, children) {
     if (!element) return;
     space = space || 10;
