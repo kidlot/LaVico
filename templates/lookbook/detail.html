@@ -65,7 +65,7 @@
     </div>
 </if>
 <if condition="@lookbookType == '瀑布流型'">
-    <section id="section">
+    <section id="section" style="background-color:none">
         <div class="elite" id="wrap">
             <foreach for="@allPage.page" var="page" key="key">
                 <if condition="@key%2 == 0">
@@ -91,43 +91,6 @@
             wrapWin();
         </script>
     </section>
-    <!--<div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num3.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
-        <div class="wrapper">
-            <div class="elite_list">
-                <div class="list_left">
-
-                    <foreach for="@allPage.page" var="page" key="key">
-                        <if condition="@key%2 == 0">
-                            <div class="list">
-                                <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
-                                    <div class="boxcontent">
-                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
-                                        <img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" class="exchangebtn" width="293">
-                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" ><div class="elite_list_title">{@page.name}</div></div> 
-                                    </div>
-                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
-                            </div>
-                        </if>
-                    </foreach>
-                </div>
-                <div class="list_right">
-                    <foreach for="@allPage.page" var="page" key="key">
-                        <if condition="@key%2 != 0">
-                            <div class="list">
-                                <div class="raised"> <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
-                                    <div class="boxcontent">
-                                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
-                                        <img src="{@page.pic}" class="exchangebtn" width="293">
-                                        <div class="elite_list_title_bg"><img src="/lavico/public/images/list_bg.png" /><div class="elite_list_title">{@page.name}</div></div>
-                                    </div>
-                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b> </div>
-                            </div>
-                        </if>
-                    </foreach>
-                </div>
-            </div>
-        </div>
-    </div>-->
 </if>
 <script src="/lavico/public/js/flipsnap.js"></script>
 <script type="text/javascript" src="/lavico/public/js/jquery.touchwipe.1.1.1.js"></script>
