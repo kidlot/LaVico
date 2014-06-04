@@ -63,7 +63,7 @@ var m = Math,
 		// Default options
 		that.options = {
 			hScroll: true,
-			vScroll: true,
+			vScroll: false,
 			x: 0,
 			y: 0,
 			bounce: true,
@@ -77,7 +77,7 @@ var m = Math,
 
 			// Scrollbar
 			hScrollbar: true,
-			vScrollbar: true,
+			vScrollbar: false,
 			fixedScrollbar: isAndroid,
 			hideScrollbar: isIDevice,
 			fadeScrollbar: isIDevice && has3d,
