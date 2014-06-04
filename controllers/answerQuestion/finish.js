@@ -20,8 +20,8 @@ module.exports={
         var stutas= seed.stutas ? seed.stutas :"false";
         nut.model.stutas = stutas;
         nut.model.getScores ="1";
-
-
+        var getLabel;
+        var getScore;
 
 
         var docs;
@@ -100,8 +100,6 @@ module.exports={
 
         this.step(function(){
             if(go) {
-                console.log("input go");
-                var compScore
                 //非停止标签过来
                 if (stopLab != "true") {
                     //插入总积分
@@ -122,7 +120,6 @@ module.exports={
                     }, function (err, doc) {
 
                     });
-
                     //查找单题组,获取分值范围数组
                     var scoreRange
                     var docTheme;
@@ -155,14 +152,10 @@ module.exports={
                         for (var i = 0; i < scoreRange.length; i++) {
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                            console.log(scoreAll)
-                            console.log(minlen)
-                            console.log(maxlen)
                             if (scoreAll >= minlen && scoreAll <= maxlen) {//在分值范围中
                                 //获取三个奖励
-                                var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                compScore = getScore;
+                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 var getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                 var getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 var nowPromotion;
@@ -184,7 +177,7 @@ module.exports={
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
                                         jsonData.memberId = memberId;
-                                        jsonData.qty = compScore;
+                                        jsonData.qty = getScore;
                                         jsonData.memo = '问答测试' + '-' + nut.model.themeTitle;
 
                                         console.log("问答测试:"+JSON.stringify(jsonData));
@@ -193,13 +186,6 @@ module.exports={
                                                 if (err) throw err;
                                             })
                                         )
-                                        var tagRecord='问答测试' + '-' + nut.model.themeTitle;
-                                        console.log("tag:"+tagRecord);
-                                        console.log("memberId:"+memberId);
-                                        middleware.request("Tag/Add", {"memberId": memberId,"tag":tagRecord}, this.hold(function (err, doc) {
-                                            if (err) throw err;
-                                            console.log("tag record:" + doc);
-                                        }))
                                     })
                                 } else {
                                     for (var j = 0; j < doc_json.list.length; j++) {
@@ -210,11 +196,11 @@ module.exports={
                                     if (typeof(getActivities) != "undefined" && getActivities != "") {
                                         var newActivity = ""//服务器返回的券
                                         //调用接口开始
-                                        var memoString = "主观题-" + docTheme.theme;
+                                        var memoString = "主观题-" + getScore+"积分";
                                         if (themeType == 0) {
-                                            memoString = "答题抢积分-" + docTheme.theme;
+                                            memoString = "答题抢积分-" + getScore+"积分";
                                         } else if (themeType == 1) {
-                                            memoString = "型男测试-" + docTheme.theme;
+                                            memoString = "型男测试-" + getLabel;
                                         }
                                         //得券接口
                                         then.step(function () {
@@ -231,10 +217,7 @@ module.exports={
                                                 {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                                 this.hold(function (err, doc) {
                                                 }))
-                                            middleware.request("Tag/Add", {"memberId": nut.model.memberID,"tag":memoString}, this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                console.log("tag record:" + doc.success);
-                                            }))
+
                                             middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                 if (err) throw err;
                                                 var docJson = JSON.parse(doc)
@@ -253,8 +236,6 @@ module.exports={
                                         })
                                     }
                                 }
-                                console.log("memberid:"+memberid)
-                                console.log("themetype:"+themetype)
                                 then.step(function () {
                                     helper.db.coll("lavico/custReceive").insert({
                                         "wechatid": wechatid,
@@ -273,46 +254,15 @@ module.exports={
                                         "themetype":themetype
                                     }, function (err, doc) {
                                     });
-                                    console.log(getLabel)
-                                    console.log(getScore)
-                                    console.log(getTipContent)
-                                    console.log(newActivity)
                                     //记录json准备显示
                                     resultList += "{"
                                         + "getLabel:'" + getLabel
                                         + "',getScore:" + getScore
                                         + ",getTipContent:'" + getTipContent
                                         + "',getActivities:'" + newActivity + "'}";
-                                    if (getLabel != "" || getLabel != null) {
-                                        //发送标签至CRM
-                                        jsonData = {};
-                                        jsonData.memberId = nut.model.memberID;
-                                        jsonData.tag = getLabel;
-                                        middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
-                                            if (err) throw err;
-                                            console.log("tag record:" + doc.success);
-                                        }))
-                                        helper.db.coll("welab/customers").update({_id : helper.db.id(wechatid)}, {$addToSet:jsonData},this.hold(function(err,doc){
-                                            if(err ){
-                                                throw err;
-                                            }
-                                        }));
-                                    }
-//                                if (getLabel != "" && getLabel != null) {
-//                                    //发送标签至CRM
-//                                     jsonData = {};
-//                                    jsonData.memberId = nut.model.memberID;
-//                                    jsonData.tag = getLabel;
-//                                    middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
-//                                        if (err) throw err;
-//                                        console.log("tag record:" + doc.success);
-//                                    }))
-//
-//                                }
                                 })
                                 //调用接口结束
                             }
-                            console.log("resultList:"+resultList.length)
                             if(resultList.length==0){
                                 if(i==scoreRange.length-1){
                                     resultList += "{"
@@ -337,6 +287,47 @@ module.exports={
                         console.log("resultList:" + nut.model.jsonResult);
                         nut.model.sta = "false";
 
+                        if (getLabel != "" || getLabel != null || getScore!="") {
+                            //发送标签至CRM
+                            var memoString = "主观题-" + getScore+"积分";
+                            if (themeType == 0) {
+                                memoString = "答题抢积分-" + getScore+"积分";
+                            } else if (themeType == 1) {
+                                memoString = "型男测试-" + getLabel;
+                            }
+                            jsonData = {};
+                            jsonData.memberId = memberid;
+                            jsonData.tag = memoString;
+                            console.log("sa")
+                            console.log(jsonData)
+                            middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                                if (err) throw err;
+                                console.log("tag record:" + doc);
+                            }))
+                            var tag = "{tags:["+memoString+"]}";
+
+                            helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+                                if(err ){
+                                    throw err;
+                                }
+                            }));
+                        }
+//                        if (typeof(custLabel) != "undefined") {
+//                            //存在,录入customer
+//                            var customerLab = "{tags:[";
+//                            var choArr = custLabel.split(',');
+//                            if (choArr.length <= 1) {
+//                                choArr = custLabel.split(' ');
+//                            }
+//                            //记录至customers表
+//                            for (var j = 0; j < choArr.length; j++) {
+//                                customerLab += "'" + choArr[j] + "'" + ",";
+//                            }
+//                            var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',') + "]}";
+//                            customerLab = eval('(' + jsonStr + ')');
+//                            helper.db.coll("welab/customers").update({wechatid: wechatid}, {$set: customerLab}, function (err, doc) {
+//                            });
+//                        }
                     })
                 }else {
                     //停止标签过来
@@ -357,7 +348,6 @@ module.exports={
                         "themetype":themetype
                     }, function (err, doc) {
                     });
-
                     //查找单题组,获取分值范围数组
                     var scoreRange;
                     var docTheme;
@@ -371,7 +361,6 @@ module.exports={
                             nut.model.themeType = themeType;
                         }));
                     });
-
                     //查找全部券
                     var doc_json;
                     this.step(function () {
@@ -383,18 +372,13 @@ module.exports={
                             doc_json = eval('(' + doc + ')');
                         }))
                     });
-
                     var resultList = "[";
                     this.step(function () {
-                        console.log("sa")
-                        console.log("scoreRange.length:"+scoreRange.length)
                         for (var i = 0; i < scoreRange.length; i++) {
                             //session上的停止标签和db中的设置标签一致
-                            console.log(then.req.session.stopLabel)
-                            console.log(scoreRange[i].conditionLabel)
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
-                                var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 var getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                 var getTipContent = scoreRange[i].tipContent == "" ? 0 : scoreRange[i].tipContent;
                                 var nowPromotion;
@@ -423,7 +407,6 @@ module.exports={
                                         jsonData.memberId = memberId;
                                         jsonData.qty = getScore;
                                         jsonData.memo = '问答测试:' + '-' + nut.model.themeTitle;
-                                        //console.log("jsonData:"+jsonData.memberId,jsonData.qty)
                                         middleware.request('Point/Change', jsonData,
                                             this.hold(function (err, doc) {
                                                 if (err) throw err;
@@ -452,11 +435,11 @@ module.exports={
                                     if (typeof(getActivities) != "undefined" || getActivities != "") {
                                         var newActivity//服务器返回的券
                                         //调用接口开始
-                                        var memoString = "主观题-" + docTheme.theme;
+                                        var memoString = "主观题-" + getScore+"积分";
                                         if (themeType == 0) {
-                                            memoString = "答题抢积分-" + docTheme.theme;
+                                            memoString = "答题抢积分-" + getScore+"积分";
                                         } else if (themeType == 1) {
-                                            memoString = "型男测试-" + docTheme.theme;
+                                            memoString = "型男测试-" + getLabel;
                                         }
                                         //调用接口开始
                                         var jsonData = {
@@ -473,12 +456,6 @@ module.exports={
                                             {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                             this.hold(function (err, doc) {
                                             }))
-
-                                        middleware.request("Tag/Add", {"memberId": nut.model.memberID,"tag":memoString}, this.hold(function (err, doc) {
-                                            if (err) throw err;
-                                            console.log("tag record:" + doc.success);
-                                        }))
-
                                         then.step(function () {
                                             middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                 if (err) throw err;
@@ -494,7 +471,6 @@ module.exports={
                                                 }
                                             }));
                                         })
-
 
                                         then.step(function () {
                                             helper.db.coll("lavico/custReceive").insert({
@@ -528,44 +504,35 @@ module.exports={
                                                     + "',getScore:" + getScore
                                                     + ",getTipContent:'" + getTipContent
                                                     + "',getActivities:'" + newActivity + "'}";
-//                                            if (getLabel != "" || getLabel != null) {
-//                                                //发送标签至CRM
-//                                                jsonData = {};
-//                                                jsonData.memberId = nut.model.memberID;
-//                                                jsonData.tag = getLabel;
-//                                                middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
-//                                                    if (err) throw err;
-//                                                    console.log("tag record:" + doc.success);
-//                                                }))
-//                                            }
                                             }
                                         })
                                         //调用接口结束
                                     }
                                 }
                             }
-
                             //判断是否有session自定义标签
-                            var custLabel = then.req.session.customerLabel
-
-                            if (typeof(custLabel) != "undefined") {
-                                //存在,录入customer
-                                var customerLab = "{tags:[";
-                                var choArr = custLabel.split(',');
-                                if (choArr.length <= 1) {
-                                    choArr = custLabel.split(' ');
-                                }
-                                //记录至customers表
-                                for (var j = 0; j < choArr.length; j++) {
-                                    customerLab += "'" + choArr[j] + "'" + ",";
-                                }
-                                var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',') + "]}";
-                                customerLab = eval('(' + jsonStr + ')');
-                                helper.db.coll("welab/customers").update({wechatid: wechatid}, {$set: customerLab}, function (err, doc) {
-                                });
-                            }
-
-                            if(resultList.length==0){
+//                            var custLabel = then.req.session.customerLabel
+//                            if (typeof(custLabel) != "undefined") {
+//                                //存在,录入customer
+//                                var customerLab;
+//                                var choArr = custLabel.split(',');
+//                                if (choArr.length <= 1) {
+//                                    choArr = custLabel.split(' ');
+//                                }
+//                                //记录至customers表
+//                                for (var j = 0; j < choArr.length; j++) {
+//                                    customerLab += "'" + choArr[j] + "'" + ",";
+//                                }
+//                                var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',');
+//                                customerLab = eval('(' + jsonStr + ')');
+//                                helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:customerLab}},this.hold(function(err,doc){
+//                                    if(err ){
+//                                        throw err;
+//                                    }
+//                                    console.log("doc:"+doc)
+//                                }));
+//                            }
+//                            if(resultList.length==0){
                                 if(i==scoreRange.length-1){
                                     resultList += "{"
                                         + "getLabel:'" + "对不起,您没有获得任何奖励"
@@ -585,6 +552,32 @@ module.exports={
                         nut.model.result = resultList;
                         nut.model.jsonResult = eval('(' + resultList + ')');
                         nut.model.sta = "false";
+
+                        if (getLabel != "" || getLabel != null || getScore!="") {
+                            //发送标签至CRM
+                            var memoString = "主观题-" + getScore+"积分";
+                            if (themeType == 0) {
+                                memoString = "答题抢积分-" + getScore+"积分";
+                            } else if (themeType == 1) {
+                                memoString = "型男测试-" + getLabel;
+                            }
+                            jsonData = {};
+                            jsonData.memberId = memberid;
+                            jsonData.tag = memoString;
+                            console.log("sa")
+                            console.log(jsonData)
+                            middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                                if (err) throw err;
+                                console.log("tag record:" + doc);
+                            }))
+
+                            helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+                                if(err ){
+                                    throw err;
+                                }
+                                console.log("doc:"+doc)
+                            }));
+                        }
                     })
                 }
             }

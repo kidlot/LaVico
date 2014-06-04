@@ -34,7 +34,7 @@
 
 <if condition="@lookbookType == '列表型'">
     <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num2.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
-        <div class="wrapper" style="background-color: #e4e4e4;">
+        <div class="wrapper" style="background-color: #fff;">
             <foreach for="@allPage.page" var="page" key="key">
                 <div class="elite_list">
                     <div class="small_list_top">
@@ -158,25 +158,19 @@
     function flipsnapRoll() {        
         var itemWin = wrapper.offsetWidth / 3;
         var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
-        var temWin8;
         for (var i = 0; i < flipsnapLen.length; i++) {
             flipsnapLen[i].style.width = itemWin + "px";
-            temWin8 = flipsnapLen[i].style.width = itemWin + "px" + 8;
         }
-        console.log(temWin8)
+        var temWin8 = flipsnapLen[0].offsetWidth + 9;
         var flipsnap = document.getElementById("flipsnap");
-        flipsnap.style.width = itemWin * flipsnapLen.length + "px";
-
-        //var itemWin = $(".wrapper").width() / 3;
-        //var flip_num = $(".flipsnap").find(".item").length;
-        //$(".item").css("width", itemWin );
-        //var itemotWin = $(".item").outerWidth(true);
-        //$(".flipsnap").css("width", itemotWin * flip_num + 4);
+        flipsnap.style.width = temWin8 * flipsnapLen.length + "px";
     }
 
     if (wrapper != undefined) {
         flipsnapRoll();
-        Flipsnap('#flipsnap');
+        window.onload = function () {
+            Flipsnap('.flipsnap');
+        }      
 
         window.onresize = function () {
             flipsnapRoll();
