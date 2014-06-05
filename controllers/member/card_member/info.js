@@ -392,9 +392,12 @@ module.exports = {
 
                 if(data.success == true){
 
-                  window.popupStyle2.on("提交成功，积分将在信息审核通过后发放到您的账户中",function(event){
+                  window.popupStyle2.on("资料提交成功，请等待审核。首次完善个人资料可获50积分奖励，审核通过后，积分将存入您个人帐户内。",function(event){
                       window.location.href="/lavico/member/index?wxid="+wxid;
                   });
+                    /*资料提交成功，请等待审核。
+                     首次完善个人资料可获50积分奖励，审核通过后，积分将存入您个人帐户内。
+                    * */
 
                 }else if(data.success == false){
                    if((/[\u4e00-\u9fa5]+/).test(data.info)){
