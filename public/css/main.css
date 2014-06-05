@@ -340,7 +340,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .match{width:100%; background-color:#fff;}
 .match .banner{width:96%; height:auto; margin:0 auto; padding:2% 2% 0; }
 .match .banner img { width:100%; }
-.match .roll-banner{width:96%; height:auto; overflow:hidden; position:relative; padding:2%;}
+.match .roll-banner{width:96%; height:auto; overflow:hidden; position:relative; padding:6% 2%;}
 .match .roll-banner .img{width:100%;height:auto; }
 .match .roll-banner img{ width:100% ;}
 .match .intro-text{width:100%; height:auto; background:url(../images/match_bg.jpg) no-repeat; position:relative; margin-bottom:50px;}
@@ -418,6 +418,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .small_middle{ padding:2% 0; overflow:hidden;}
 .small_middle img{ width:100%; }
 
+#samll_50 {float:right; }
+
 .shoucang_foot{ position:absolute; bottom:0; z-index:100; margin:0 auto; text-align:left; height:100px; width:540px; padding: 40px 50px; background:url(../images/member_shoucang_foot.jpg) no-repeat;}
 .shoucang_foot .title{font-size: 25px;color: #B9954D;line-height: 45px;}
 .shoucang_foot .content{font-size: 20px;color: #B9954D;}
@@ -464,7 +466,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
     font-size: 50px;
     text-align: center;
     padding-right:8px;
-    background:url(../images/elite_home_j.png) bottom center repeat-x; padding-bottom:16px;
+    background:url(../images/elite_home_j.png) bottom center repeat-x; padding-bottom:6px;
 }
 
 

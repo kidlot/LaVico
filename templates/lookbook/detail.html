@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="small_list">
+                <div class="small_list" id="small_list">
                     <foreach for="@page.product" var="product">
                         <div class="small_image">
                             <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}&onlyProduct=true">
@@ -58,6 +58,14 @@
                 <div class="small_middle"><img src="/lavico/public/images/small_list_middle.png" class="exchangebtn"></div>
             </foreach>
         </div>
+        <script>
+            function smallList() {
+                var smallL = document.getElementById("small_list").getElementsByTagName("div");
+                if (smallL.length == 2) {
+                    smallL[2].id = 'samll_50';
+                }
+            }
+        </script>
     </div>
 </if>
 
@@ -182,6 +190,7 @@
 
         window.onresize = function () {
             flipsnapRoll();
+            flipH();
         }
     }
 </script>
