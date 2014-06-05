@@ -78,14 +78,12 @@
         <script>
             function wrapWin() {
                 var wrap = document.getElementById("wrap");
-                var itemHig = document.getElementById("flipsnap").offsetHeight;
                 var wrapWin = wrap.offsetWidth / 2.2;
-                console.log(itemHig)
+                //console.log(wrapWin)
                 var elite_list = document.getElementById("wrap").getElementsByTagName("div");
                 for (var i = 0; i < elite_list.length; i++) {
                     elite_list[i].style.width = wrapWin + "px";
-                    elite_list[i].style.height = itemHig + "px";
-                }               
+                }
             }
 
             if (wrap != undefined) {
@@ -160,10 +158,12 @@
     function flipsnapRoll() {        
         var itemWin = wrapper.offsetWidth / 3;
         var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
+        var flipsnapH = document.getElementById("flipsnap").offsetHeight;
         for (var i = 0; i < flipsnapLen.length; i++) {
             flipsnapLen[i].style.width = itemWin + "px";
+            flipsnapLen[i].style.height = flipsnapH + "px";
         }
-        var temWin8 = flipsnapLen[0].offsetWidth + 9;
+        var temWin8 = flipsnapLen[0].offsetWidth + 2;
         var flipsnap = document.getElementById("flipsnap");
         flipsnap.style.width = temWin8 * flipsnapLen.length + "px";
     }
