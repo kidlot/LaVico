@@ -61,11 +61,13 @@
         <script>
             function smallList() {
                 var smallL = document.getElementById("small_list").getElementsByTagName("div");
-                if (smallL.length == 2) {
-                    smallL[2].id = 'samll_50';
+                if (smallL.length == 1) {
+                    smallL[1].id = 'samll_50';
                 }
             }
-            smallList();
+            window.onload = function () {
+                smallList();
+            }            
         </script>
     </div>
 </if>
