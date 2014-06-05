@@ -60,11 +60,12 @@
         </div>
         <script>
             function smallList() {
-                var classElements = [], allElements = document.getElementsByTagName("div");
+                var classElements = document.getElementsByTagName("div");
+                console.log(classElements.length)
                 for (var i = 0; i < classElements.length; i++) {
                     if (classElements[i].className == 'small_list') {
-                        classElements[classElements.length] = allElements[i];
-                        console.log(classElements[classElements.length] = allElements[i];)
+                        classElements[i].getElementsByTagName("div");
+                        console.log(classElements[i].getElementsByTagName("div"))
                     }
                 }
                 return classElements;
