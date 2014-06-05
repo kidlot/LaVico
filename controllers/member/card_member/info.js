@@ -799,6 +799,22 @@ module.exports = {
                                     }));
                                 }
                                 else if(_field_name == 'MEM_PSN_HOPPY'){
+                                    var _favoriteStyle = _new_value;
+                                    if(_favoriteStyle=='01'){
+                                        _favoriteStyle = '简约大方';
+                                    }else if(_favoriteStyle=='02'){
+                                        _favoriteStyle = '传统';
+                                    }else if(_favoriteStyle=='03'){
+                                        _favoriteStyle = '混搭时尚';
+                                    }else if(_favoriteStyle=='04'){
+                                        _favoriteStyle = '职业商务';
+                                    }else if(_favoriteStyle=='05'){
+                                        _favoriteStyle = '高端奢华';
+                                    }else if(_favoriteStyle=='06') {
+                                        _favoriteStyle = '休闲';
+                                    }else{
+                                        _favoriteStyle = '简约大方';
+                                    }
                                     helper.db.coll('welab/customers').find(
                                         {
                                             $and:
@@ -809,7 +825,7 @@ module.exports = {
                                         }
                                     ).update({"HaiLanMemberInfo.memberID":memberIDArr[_i]},{
                                             $set:{
-                                                'favoriteStyle':_new_value,
+                                                'favoriteStyle':_favoriteStyle,
                                                 'lastModified':new Date().getTime()
                                             }
                                         },this.hold(function(err, doc) {
