@@ -418,7 +418,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .small_middle{ padding:2% 0; overflow:hidden;}
 .small_middle img{ width:100%; }
 
-#samll_50 {float:right; }
+#samll_50 {float:right; margin:1.16% 8%; }
 
 .shoucang_foot{ position:absolute; bottom:0; z-index:100; margin:0 auto; text-align:left; height:100px; width:540px; padding: 40px 50px; background:url(../images/member_shoucang_foot.jpg) no-repeat;}
 .shoucang_foot .title{font-size: 25px;color: #B9954D;line-height: 45px;}
