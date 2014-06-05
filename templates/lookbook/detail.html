@@ -169,9 +169,10 @@
     }
 
     var wrapper = document.getElementById("wrapper");
-    var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
+    
 
-    function flipsnapRoll() {        
+    function flipsnapRoll() {
+        flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
         var itemWin = wrapper.offsetWidth / 3;           
         for (var i = 0; i < flipsnapLen.length; i++) {
             flipsnapLen[i].style.width = itemWin + "px";
