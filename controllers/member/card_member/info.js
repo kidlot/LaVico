@@ -908,6 +908,31 @@ module.exports = {
               this.step(function(){
 
                 nut.disabled = true ;
+                /*industry*/
+                /*
+                01简约大方
+                02传统
+                03混搭时尚
+                04职业商务
+                05高端奢华
+                06休闲
+                 */
+                var _favoriteStyle;
+                if(seed.favoriteStyle=='简约大方'){
+                    _favoriteStyle = '01';
+                }else if(seed.favoriteStyle=='传统'){
+                    _favoriteStyle = '02';
+                }else if(seed.favoriteStyle=='混搭时尚'){
+                    _favoriteStyle = '03';
+                }else if(seed.favoriteStyle=='职业商务'){
+                    _favoriteStyle = '04';
+                }else if(seed.favoriteStyle=='高端奢华'){
+                    _favoriteStyle = '05';
+                }else if(seed.favoriteStyle=='休闲') {
+                    _favoriteStyle = '06';
+                }else{
+                    _favoriteStyle = '01';
+                }
 
                 var data_submit_checekd = {
                     'email':seed.email,
@@ -915,7 +940,7 @@ module.exports = {
                     'province':seed.province,
                     'city':seed.city,
                     'addr':seed.address,
-                    'hoppy':seed.favoriteStyle,
+                    'hoppy':_favoriteStyle,
                     'color':seed.favoriteColor
                 }
                 var data_submit_inserted = {
@@ -943,7 +968,7 @@ module.exports = {
                               'memberid':seed.memberID,
                               'action':"info",
                               'user':"welab",
-                              'request':data_submit_checekd,
+                              'request':data_submit_inserted,
                               'reponse':dataJson
                           },
                           function(err, doc){
