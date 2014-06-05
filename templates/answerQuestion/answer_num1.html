@@ -39,6 +39,18 @@ var isReg=function(){
         })
         return false;
     }
+
+    var choose="{@choose}";
+    if(choose!="-1")
+    {
+
+        window.popupStyle2.on("您已经答过此题,您将接着继续答题",function(event){
+            if(event == "confirm"){
+                location.href="/lavico/answerQuestion/answer?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&optionId="+choose;
+            }
+        })
+        return false;
+    }
 }
 </script>
 <if condition="@ !isFollow">
