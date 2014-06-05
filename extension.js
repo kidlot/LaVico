@@ -8,7 +8,8 @@ var shake = require("./weixinReply/shake.js") ;
 var lookbook = require("./weixinReply/lookbook.js") ;
 var maps = require("./weixinReply/maps.js") ;
 var rewriteWelab = require("./rewriteWelab.js") ;
-var sportsman = require("./weixinReply/sportsman.js")
+var sportsman = require("./weixinReply/sportsman.js");
+var wechatapi = require("welab/lib/wechat-api.js") ;
 exports.onload = function(application){
 
 
@@ -116,6 +117,31 @@ exports.onload = function(application){
         }
         return ret ;
     }
+
+
+    /**
+     * welcome
+     */
+
+    wechatapi.registerReply(9,function(msg,req,res,next){
+
+        if( msg.MsgType == "event" && msg.EventKey && msg.Event=='subscribe'){
+
+            if(msg.Event=='subscribe'){
+
+                var eventkey = /^qrscene_(.*)/i.exec(msg.EventKey)[1]
+            }
+
+            helper.db.coll('welab/customers').update({wechatid: msg.FromUserName}, {$addToSet: {source: eventkey}}, function (err, doc) {
+                err && console.log(doc);
+            });
+
+        }else{
+            next()
+        }
+    })
+    wechatapi.makeQueue() ;
+
 
 
     /*
