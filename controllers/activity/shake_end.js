@@ -62,6 +62,8 @@ module.exports = {
                     this.terminate();
                 }else{
                     nut.model.doc = doc;
+                    var display_name = doc.display_name || '';
+                    nut.model.display_name = display_name;
                     aid = doc.aid;//数据格式：L2013112709，在lavico/activity中唯一确定活动
                     console.log(doc);
                 }
