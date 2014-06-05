@@ -44,7 +44,8 @@ module.exports={
                 //helper.db.coll("jinqiao/garage").update({"sid": doc[i].sid}, {$set: {"sid": doc[i].sid}}, {upsert: true},function(err,doc){
 //                    if(err) throw err;
 //                })
-                if(type==0){//单选
+                if(type==0){
+                //单选
                     //积分在数字情况下记录
                     if(!isNaN(score)){
                         //session累加
@@ -56,7 +57,8 @@ module.exports={
                             then.req.session.scoreAll+=parseInt(score);
                         }
                         //记录积分
-                        helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,"themetype":themetype,"memberId":""+memberid},
+                        helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                                "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
                             {$set: {
                                 "wechatid": wechatid,
                                 "themeId": helper.db.id(_id),
@@ -140,7 +142,8 @@ module.exports={
                     var selectChooseIdArr=seed.chooseId;
                     var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
                     var selId="["+selectChooseId.replace("_",",")+"]";
-                    helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,"themetype":themetype,"memberId":""+memberid},
+                    helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                            "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
                         {$set: {
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),

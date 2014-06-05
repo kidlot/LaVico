@@ -34,7 +34,7 @@ module.exports={
                         docs = doc;
                     }))
             }
-        })
+        }
 
         this.step(function(){
             if(stutas=="true"){

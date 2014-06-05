@@ -9,6 +9,14 @@ module.exports= {
         nut.model.fromWelab = seed.fromWelab || ""
         var _id = seed._id;
         var memberid;
+        var themetype;
+        var results;
+        var isok = true;
+        var max;
+        var chooseNext;
+        var themeQuestion;
+        var chooseId;
+        var chooseNextArr;
 
         this.step(function(){
             if(wechatid == undefined){
@@ -45,7 +53,7 @@ module.exports= {
             if(wechatid != undefined){
                 helper.db.coll('welab/customers').findOne({wechatid:wechatid},this.hold(function(err, doc){
 
-                    console.log(doc)
+
                     var doc = doc || {};
                     console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
@@ -55,13 +63,10 @@ module.exports= {
             }
         })
 
-
         this.step(function(){
             nut.model._id = seed._id || ""
             nut.model.wechatId = wechatid
         })
-
-
 
         this.step(function(){
 
@@ -89,15 +94,71 @@ module.exports= {
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(seed._id)},this.hold(function(err,doc){
                 if(err) throw err
                 if(doc){
+                    themeQuestion = doc.options;
+                    themetype = doc.themeType;
                     nut.model.docs=doc;
                     nut.model.themeQuestion = JSON.stringify(doc);
                 }
             }));
         })
 
+
+        this.step(function(){
+            console.log(themetype)
+            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                if(err) throw err;
+                if(result){
+                    results = result;
+                }
+            }))
+        })
+
+        this.step(function(){
+            if(results){
+                for(var i=0;i<results.length;i++){
+                    max = results[0].optionId;
+                    if(results[i].optionId>max){
+                        max = results[i].optionId;
+                        chooseId = results[i].chooseId;
+                    }else{
+                        max = results[i].optionId;
+                        chooseId = results[i].chooseId;
+                    }
+                }
+            }
+            console.log(results)
+        })
+
+        this.step(function(){
+            if(themeQuestion){
+                for(var i=0;i<themeQuestion.length;i++){
+                    if(themeQuestion[i].optionId==max ){
+                        chooseNextArr = themeQuestion[i].choose;
+                    }
+                }
+            }
+
+        })
+
+        this.step(function(){
+            if(chooseNextArr){
+                for(var i=0;i<chooseNextArr.length;i++){
+                    if(chooseNextArr[i].chooseID==chooseId){
+                        chooseNext = chooseNextArr[i].chooseNext
+                    }
+                }
+            }else{
+                chooseNext = "-1";
+            }
+            console.log(chooseNext)
+            nut.model.choose = chooseNext;
+        })
+
         this.step(function(){
             //if(memberid!="undefined"){
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid},this.hold(function(err,doc){
+                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),
+                    "memberId":""+memberid,"isFinish":true},this.hold(function(err,doc){
                     if(err) throw err;
                     if(doc){
                         nut.model.isok = "0";
