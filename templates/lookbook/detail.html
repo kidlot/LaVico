@@ -8,7 +8,7 @@
         <div class="match">
             <div class="banner"><img src="{@doc.pic||'/lavico/public/images/elite_home_top.gif'}"></div>
             <div class="roll-banner">
-                <div class="viewport">
+                <div class="viewport" id="viewport">
                     <div class="flipsnap" id="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
                         <foreach for="@doc.product" var="doc2">
                             <div class="item">
@@ -58,6 +58,27 @@
                 <div class="small_middle"><img src="/lavico/public/images/small_list_middle.png" class="exchangebtn"></div>
             </foreach>
         </div>
+        <script>
+            function smallList() {
+                var classElements = document.getElementsByTagName("div");
+                for (var i = 0; i < classElements.length; i++) {
+                    if (classElements[i].className == 'small_list') {
+                        var nameDiv = classElements[i].getElementsByTagName("div");
+                        if (nameDiv.length === 2) {
+                            //console.log(nameDiv[0])
+                            nameDiv[1].id = 'samll_50';
+                            nameDiv[0].style.marginLeft = '8%';
+                        }
+                        //console.log(classElements[i].getElementsByTagName("div").length)
+                        //console.log(classElements[i].getElementsByTagName("div"))
+                    }
+                }
+                return classElements;
+            }
+            window.onload = function () {
+                smallList();
+            }            
+        </script>
     </div>
 </if>
 
@@ -154,26 +175,36 @@
     }
 
     var wrapper = document.getElementById("wrapper");
+    
 
-    function flipsnapRoll() {        
-        var itemWin = wrapper.offsetWidth / 3;
-        var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
+    function flipsnapRoll() {
+        flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
+        var itemWin = wrapper.offsetWidth / 3;           
         for (var i = 0; i < flipsnapLen.length; i++) {
             flipsnapLen[i].style.width = itemWin + "px";
         }
-        var temWin8 = flipsnapLen[0].offsetWidth + 9;
+        var temWin8 = flipsnapLen[0].offsetWidth + 2;
         var flipsnap = document.getElementById("flipsnap");
         flipsnap.style.width = temWin8 * flipsnapLen.length + "px";
+    }
+
+    function flipH() {
+        var flipsnapH = document.getElementById("flipsnap").offsetHeight;
+        for (var i = 0; i < flipsnapLen.length; i++) {
+            flipsnapLen[i].style.height = flipsnapH + "px";
+        }
     }
 
     if (wrapper != undefined) {
         flipsnapRoll();
         window.onload = function () {
             Flipsnap('.flipsnap');
+            flipH();
         }      
 
         window.onresize = function () {
             flipsnapRoll();
+            flipH();
         }
     }
 </script>
