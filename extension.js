@@ -118,6 +118,31 @@ exports.onload = function(application){
     }
 
 
+    /**
+     * welcome
+     */
+
+    wechatapi.registerReply(9,function(msg,req,res,next){
+
+        if( msg.MsgType == "event" && msg.EventKey && msg.Event=='subscribe'){
+
+            if(msg.Event=='subscribe'){
+
+                var eventkey = /^qrscene_(.*)/i.exec(msg.EventKey)[1]
+            }
+
+            helper.db.coll('welab/customers').update({wechatid: msg.FromUserName}, {$addToSet: {source: eventkey}}, function (err, doc) {
+                err && console.log(doc);
+            });
+
+        }else{
+            next()
+        }
+    })
+    wechatapi.makeQueue() ;
+
+
+
     /*
     * 更新个人信息资料
     * */
