@@ -65,10 +65,11 @@
                     if (classElements[i].className == 'small_list') {
                         var nameDiv = classElements[i].getElementsByTagName("div");
                         if (nameDiv.length == 1) {
-                            console.log(nameDiv[1])
+                            console.log(nameDiv)
                             nameDiv[1].id = 'samll_50';                           
                         }
                         console.log(classElements[i].getElementsByTagName("div").length)
+                        console.log(classElements[i].getElementsByTagName("div"))
                     }
                 }
                 return classElements;
