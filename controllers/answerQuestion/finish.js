@@ -207,12 +207,12 @@ module.exports={
                                             var jsonData = {
                                                 openid: wechatid,
                                                 otherPromId: _id,
-                                                //PROMOTION_CODE: getActivities,
-                                                PROMOTION_CODE:"L2013112709",
+                                                PROMOTION_CODE: getActivities,
+                                                //PROMOTION_CODE:"L2013112709",
                                                 memo: memoString,
                                                 point: 0
                                             }
-                                            console.log("hello:"+JSON.stringify(jsonData));
+                                            console.log(jsonData)
                                             middleware.request("Point/Change",
                                                 {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                                 this.hold(function (err, doc) {
@@ -223,6 +223,7 @@ module.exports={
                                                 var docJson = JSON.parse(doc)
                                                 if (docJson.success) {
                                                     newActivity = docJson.coupon_no
+                                                    console.log(docJson)
                                                     nut.model.err = docJson.success
                                                     if (docJson.coupon_no) {
                                                         nut.model.errString = "无";
@@ -280,6 +281,7 @@ module.exports={
                     this.step(function () {
                         resultList += "]";
                         //返回显示
+                        console.log(resultList)
                         console.log("___________resultList:"+resultList);
                         then.req.session.optionId = ""
                         nut.model.result = resultList;
@@ -298,6 +300,8 @@ module.exports={
                             jsonData = {};
                             jsonData.memberId = memberid;
                             jsonData.tag = memoString;
+                            console.log("sa")
+                            console.log(jsonData)
                             middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                 if (err) throw err;
                                 console.log("tag record:" + doc);
@@ -375,8 +379,8 @@ module.exports={
                         for (var i = 0; i < scoreRange.length; i++) {
                             //session上的停止标签和db中的设置标签一致
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
-                                var getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                var getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 var getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                 var getTipContent = scoreRange[i].tipContent == "" ? 0 : scoreRange[i].tipContent;
                                 var nowPromotion;
@@ -444,12 +448,12 @@ module.exports={
                                             memo: memoString,
                                             openid: wechatid,
                                             otherPromId: _id,
-                                            //PROMOTION_CODE:getActivities,
-                                            PROMOTION_CODE: 'L2013112709',
+                                            PROMOTION_CODE:getActivities,
+                                            //PROMOTION_CODE: 'L2013112709',
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
-
+console.log(jsonData)
                                         middleware.request("Point/Change",
                                             {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                             this.hold(function (err, doc) {
@@ -491,10 +495,15 @@ module.exports={
                                             if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
                                                 (typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
                                                 resultList += "{"
-                                                    + "getLabel:'" + "null"
+                                                    + "getLabel:'" + "对不起,您没有获得任何奖励"
                                                     + "',getScore:" + 0
-                                                    + ",getTipContent:'" + "null"
-                                                    + "',getActivities:'" + "null" + "'}";
+                                                    + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                                    + "',getActivities:'" + "您没有获得任何礼券" + "'}";
+//                                                resultList += "{"
+//                                                    + "getLabel:'" + "null"
+//                                                    + "',getScore:" + 0
+//                                                    + ",getTipContent:'" + "null"
+//                                                    + "',getActivities:'" + "null" + "'}";
                                             } else {
                                                 //记录json准备显示
                                                 resultList += "{"
@@ -509,28 +518,27 @@ module.exports={
                                 }
                             }
                             //判断是否有session自定义标签
-                            var custLabel = then.req.session.customerLabel
-                            console.log("custLabel:"+custLabel)
-                            if (typeof(custLabel) != "undefined") {
-                                //存在,录入customer
-                                var customerLab;
-                                var choArr = custLabel.split(',');
-                                if (choArr.length <= 1) {
-                                    choArr = custLabel.split(' ');
-                                }
-                                //记录至customers表
-                                for (var j = 0; j < choArr.length; j++) {
-                                    customerLab += "'" + choArr[j] + "'" + ",";
-                                }
-                                var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',');
-                                customerLab = eval('(' + jsonStr + ')');
-                                helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:customerLab}},this.hold(function(err,doc){
-                                    if(err ){
-                                        throw err;
-                                    }
-                                    console.log("doc:"+doc)
-                                }));
-                            }
+//                            var custLabel = then.req.session.customerLabel
+//                            if (typeof(custLabel) != "undefined") {
+//                                //存在,录入customer
+//                                var customerLab;
+//                                var choArr = custLabel.split(',');
+//                                if (choArr.length <= 1) {
+//                                    choArr = custLabel.split(' ');
+//                                }
+//                                //记录至customers表
+//                                for (var j = 0; j < choArr.length; j++) {
+//                                    customerLab += "'" + choArr[j] + "'" + ",";
+//                                }
+//                                var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',');
+//                                customerLab = eval('(' + jsonStr + ')');
+//                                helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:customerLab}},this.hold(function(err,doc){
+//                                    if(err ){
+//                                        throw err;
+//                                    }
+//                                    console.log("doc:"+doc)
+//                                }));
+//                            }
                             if(resultList.length==0){
                                 if(i==scoreRange.length-1){
                                     resultList += "{"
@@ -563,10 +571,19 @@ module.exports={
                             jsonData = {};
                             jsonData.memberId = memberid;
                             jsonData.tag = memoString;
+                            console.log("sa")
+                            console.log(jsonData)
                             middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                 if (err) throw err;
                                 console.log("tag record:" + doc);
                             }))
+
+                            helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+                                if(err ){
+                                    throw err;
+                                }
+                                console.log("doc:"+doc)
+                            }));
                         }
                     })
                 }

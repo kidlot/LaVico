@@ -9,7 +9,7 @@ module.exports={
             nut.model.docs=doc;
         }))
 
-        var perPage = 4;
+        var perPage = 1000;
         var pageNum = seed.page ? seed.page : 1;
 
         this.step(function(){
