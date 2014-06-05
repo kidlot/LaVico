@@ -448,6 +448,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 .flipsnap {
     width: 100%; /* 180px(item width) * 3(item count) */
+    height:auto;
 }
 
 .flipsnap:after {
