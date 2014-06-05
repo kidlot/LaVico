@@ -13,8 +13,6 @@ module.exports = {
     layout:'lavico/layout',
     view:'lavico/templates/member/card_member/coupon/index.html',
     process:function(seed, nut){
-        var wxid = seed.wxid;
-        nut.model.wxid = wxid;
         var member_id;
         var then = this;
         var ineffectiveCoupons = [];//未生效的 01
@@ -26,6 +24,45 @@ module.exports = {
         var couponArr;
 
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
+
+        if(!wxid){
+
+            if(this.req.session.oauthTokenInfo){
+
+                console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
+                wxid = this.req.session.oauthTokenInfo.openid
+            }else{
+
+                // 通过oauth获取OPENID
+                if(process.wxOauth){
+
+                    if(!seed.code){
+
+                        var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.url,"123","snsapi_base")
+                        console.log("通过oauth获得CODE的url",url)
+                        this.res.writeHeader(302, {'location': url }) ;
+
+                        nut.disable();//不显示模版
+                        this.res.end();
+                        this.terminate();
+
+                    }else{
+
+                        process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+
+                            if(!err){
+                                var openid = doc.openid
+                                wxid = openid || undefined;
+                                console.log("通过oauth获得信息",doc)
+                                this.req.session.oauthTokenInfo = doc;
+                            }
+                        }))
+                    }
+
+                }
+            }
+        }
+
 
         this.step(function(){
             if(wxid == 'undefined'){
@@ -39,6 +76,7 @@ module.exports = {
 
         this.step(function(){
 
+            nut.model.wxid = wxid;
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
 
                 if(!doc){
