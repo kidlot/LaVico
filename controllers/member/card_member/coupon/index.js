@@ -325,17 +325,10 @@ module.exports = {
                         var _PROMOTION_CODE = _coupons[_i].PROMOTION_CODE;
                         var _COUPON_NO = _coupons[_i].COUPON_NO;
                         var _COUPON_QTY = _coupons[_i].COUPON_QTY;
-                        var _COUPON_TYPE;
+                        var _COUPON_TYPE = _coupons[_i].COUPON_TYPE;
+                        var _TYPE_CODE = _coupons[_i].TYPE_CODE;
                         var _COUPON_NAME = _coupons[_i].COUPON_NAME;
 
-
-                        if(_coupons[_i].COUPON_TYPE =='01'){
-                            _COUPON_TYPE ="现金抵用券";
-                        }else if(_coupons[_i].COUPON_TYPE =='02'){
-                            _COUPON_TYPE ="礼品券";
-                        }else{
-                            _COUPON_TYPE ="未识别";
-                        }
 
                         var _data = {
                             "BEGIN_DATE":_BEGIN_DATE,
@@ -345,6 +338,7 @@ module.exports = {
                             "COUPON_CLASS": _coupons[_i].COUPON_CLASS,
                             "COUPON_QTY": _coupons[_i].COUPON_QTY,
                             "CREAT_DATE": _CREAT_DATE,
+                            "TYPE_CODE": _TYPE_CODE,
                             "BIND_DATE": _BIND_DATE,
                             "USED_DATE": _USED_DATE,
                             "PROMOTION_CODE": _PROMOTION_CODE,

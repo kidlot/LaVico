@@ -29,11 +29,7 @@
                         {@ doc.QTY}
                     </td>
                     <td style="text-align: center;">
-                        <if condition="{@doc.TYPE == '01'}">现金抵用券
-                            <elseif condition="{@doc.TYPE == '02'}"/>礼品券</if>&nbsp;
-                        <if condition="{@doc.CLS == '101'}">现金抵用券
-                            <elseif condition="{@doc.CLS == '102'}"/>礼品券
-                            <elseif condition="{@doc.CLS == '103'}"/>生日券</if>
+                        {@doc.TYPE}
                     </td>
                     <td style="text-align: center;">
                         {@doc.USED}/{@doc.TOTAL}
