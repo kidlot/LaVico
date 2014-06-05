@@ -52,8 +52,6 @@ module.exports= {
             console.log("wechatid:"+wechatid)
             if(wechatid != undefined){
                 helper.db.coll('welab/customers').findOne({wechatid:wechatid},this.hold(function(err, doc){
-
-
                     var doc = doc || {};
                     console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
@@ -105,16 +103,19 @@ module.exports= {
 
         this.step(function(){
             console.log(themetype)
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
                 "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
                     results = result;
+                    console.log("result")
+                    console.log(result)
                 }
             }))
         })
 
         this.step(function(){
+            console.log("results")
             if(results){
                 for(var i=0;i<results.length;i++){
                     max = results[0].optionId;
@@ -131,6 +132,8 @@ module.exports= {
         })
 
         this.step(function(){
+            console.log("themeQuestion")
+            console.log(themeQuestion)
             if(themeQuestion){
                 for(var i=0;i<themeQuestion.length;i++){
                     if(themeQuestion[i].optionId==max ){
@@ -142,6 +145,8 @@ module.exports= {
         })
 
         this.step(function(){
+            console.log("chooseBextArr")
+            console.log(chooseNextArr)
             if(chooseNextArr){
                 for(var i=0;i<chooseNextArr.length;i++){
                     if(chooseNextArr[i].chooseID==chooseId){
@@ -151,7 +156,7 @@ module.exports= {
             }else{
                 chooseNext = "-1";
             }
-            console.log(chooseNext)
+            console.log("chooseNext:"+chooseNext)
             nut.model.choose = chooseNext;
         })
 
