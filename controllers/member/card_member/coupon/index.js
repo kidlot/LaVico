@@ -23,7 +23,7 @@ module.exports = {
         var couponData;
         var couponArr;
 
-        var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
+        var wxid = seed.wxid ? seed.wxid : false;//预先定义微信ID
 
         if(!wxid){
 
@@ -65,7 +65,7 @@ module.exports = {
 
 
         this.step(function(){
-            if(wxid == 'undefined'){
+            if(!wxid){
                 nut.disable();//不显示模版
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
                 this.res.write('{"error":"wxid_is_empty"}');
