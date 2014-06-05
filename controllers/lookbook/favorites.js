@@ -115,13 +115,24 @@ module.exports = {
             process: function(seed,nut)
             {
                 nut.disable();
+                var memberid = false;
 
                 try{
 
+                    // wxid => memberid
                     this.step(function(){
 
-                        if(seed.wxid && seed.pid){
-                            helper.db.coll("lavico/favorites").findOne({productId:seed.pid,wxid:seed.wxid},this.hold(function(err,_doc){
+                        helper.db.coll('welab/customers').findOne({wechatid:seed.wxid},this.hold(function(err,doc) {
+
+                            memberid = doc.HaiLanMemberInfo ? doc.HaiLanMemberInfo.memberID : "";
+
+                        }))
+
+                    })
+                    this.step(function(){
+
+                        if(memberid && seed.pid){
+                            helper.db.coll("lavico/favorites").findOne({productId:seed.pid,memberID:memberid},this.hold(function(err,_doc){
 
                                 if(err) console.log(err)
 
@@ -131,7 +142,7 @@ module.exports = {
                                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
                                     this.res.write(data);
                                     this.res.end();
-                                    this.terminate()
+                                    this.terminate();
                                 }
                             }))
 
