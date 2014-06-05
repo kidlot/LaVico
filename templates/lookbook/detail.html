@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="small_list" id="small_list">
+                <div class="small_list">
                     <foreach for="@page.product" var="product">
                         <div class="small_image">
                             <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}&onlyProduct=true">
@@ -59,14 +59,18 @@
             </foreach>
         </div>
         <script>
-            function smallList() {
-                var smallL = document.getElementById("small_list").getElementsByTagName("div");
-                if (smallL.length == 1) {
-                    smallL[1].id = 'samll_50';
+            function smallList(small) {
+                var classElements = [], allElements = document.getElementsByTagName("div");
+                for (var i = 0; i < classElements.length; i++) {
+                    if (classElements[i].className == small) {
+                        classElements[classElements.length] = allElements[i];
+                        console.log(allElements[i])
+                    }
                 }
+                return classElements;
             }
             window.onload = function () {
-                smallList();
+                smallList("small_list");
             }            
         </script>
     </div>
