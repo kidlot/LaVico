@@ -252,7 +252,8 @@ module.exports={
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
                                         "memberId":memberid,
-                                        "themetype":themetype
+                                        "themetype":themetype,
+                                        "promotioncode":getActivities
                                     }, function (err, doc) {
                                     });
                                     //记录json准备显示
@@ -260,6 +261,7 @@ module.exports={
                                         + "getLabel:'" + getLabel
                                         + "',getScore:" + getScore
                                         + ",getTipContent:'" + getTipContent
+                                        + ",promotioncode:'" + getActivities
                                         + "',getActivities:'" + newActivity + "'}";
                                 })
                                 //调用接口结束
@@ -270,7 +272,8 @@ module.exports={
                                         + "getLabel:'" + "对不起,您没有获得任何奖励"
                                         + "',getScore:" + 0
                                         + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                        + "',getActivities:'" + "您没有获得任何礼券" + "'}";
+                                        + ",promotioncode:'" + "对不起,您没有获得任何奖励"
+                                        + "',getActivities:'" + "null" + "'}";
                                     nut.model.stutas = "true";
                                     nut.model.score = "0";
                                     nut.model.getScores ="0";
@@ -370,6 +373,7 @@ module.exports={
                             perPage: 1000,
                             pageNum: 1
                         }, this.hold(function (err, doc) {
+                            console.log(doc)
                             doc = doc.replace(/[\n\r\t]/, '');
                             doc_json = eval('(' + doc + ')');
                         }))
@@ -421,6 +425,7 @@ module.exports={
                                             + "getLabel:'" + "对不起,您没有获得任何奖励"
                                             + "',getScore:" + 0
                                             + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                            + ",promotioncode:'" + "对不起,您没有获得任何奖励"
                                             + "',getActivities:'" + "null" + "'}";
                                     } else {
                                         //记录json准备显示
@@ -428,6 +433,7 @@ module.exports={
                                             + "getLabel:'" + getLabel
                                             + "',getScore:" + getScore
                                             + ",getTipContent:'" + getTipContent
+                                            + ",promotioncode:'" + getActivities
                                             + "',getActivities:'" + newActivity + "'}";
                                     }
                                     if(resultList){
@@ -453,7 +459,6 @@ module.exports={
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
-console.log(jsonData)
                                         middleware.request("Point/Change",
                                             {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                             this.hold(function (err, doc) {
@@ -489,16 +494,19 @@ console.log(jsonData)
                                                 "getTipContent": getTipContent,
                                                 "createTime": new Date().getTime(),
                                                 "memberId":memberid,
-                                                "themetype":themetype
+                                                "themetype":themetype,
+                                                "promotioncode":getActivities
                                             }, function (err, doc) {
                                             });
                                             if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
                                                 (typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
+
                                                 resultList += "{"
                                                     + "getLabel:'" + "对不起,您没有获得任何奖励"
                                                     + "',getScore:" + 0
                                                     + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                                    + "',getActivities:'" + "您没有获得任何礼券" + "'}";
+                                                    + ",promotioncode:'" + "对不起,您没有获得任何奖励"
+                                                    + "',getActivities:'" + "null" + "'}";
 //                                                resultList += "{"
 //                                                    + "getLabel:'" + "null"
 //                                                    + "',getScore:" + 0
@@ -510,6 +518,7 @@ console.log(jsonData)
                                                     + "getLabel:'" + getLabel
                                                     + "',getScore:" + getScore
                                                     + ",getTipContent:'" + getTipContent
+                                                    + ",promotioncode:'" + getActivities
                                                     + "',getActivities:'" + newActivity + "'}";
                                             }
                                         })
@@ -545,7 +554,8 @@ console.log(jsonData)
                                         + "getLabel:'" + "对不起,您没有获得任何奖励"
                                         + "',getScore:" + 0
                                         + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                        + "',getActivities:'" + "您没有获得任何礼券" + "'}";
+                                        + ",promotioncode:'" + "对不起,您没有获得任何奖励"
+                                        + "',getActivities:'" + "null" + "'}";
                                     nut.model.stutas = "true";
                                     nut.model.score = "0";
                                     nut.model.getScores ="0";

@@ -81,9 +81,9 @@ window.onload=function(){
             <div class="line"></div>
             <if condition="{@resultString.getActivities!=''}">
                 <if condition="{@sta=='true'}">
-                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wechatid}&stuas=true">领取优惠券</a></div>
+                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.promotioncode}&wxid={@wechatid}&stuas=true">领取优惠券</a></div>
                     <else/>
-                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wechatid}">领取优惠券</a></div>
+                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.promotioncode}&wxid={@wechatid}">领取优惠券</a></div>
                 </if>
 
                 <else/>
