@@ -154,11 +154,10 @@
     }
 
     var wrapper = document.getElementById("wrapper");
+    var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
 
     function flipsnapRoll() {        
-        var itemWin = wrapper.offsetWidth / 3;
-        var flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
-        var flipsnapH = document.getElementById("flipsnap").offsetHeight;
+        var itemWin = wrapper.offsetWidth / 3;           
         for (var i = 0; i < flipsnapLen.length; i++) {
             flipsnapLen[i].style.width = itemWin + "px";
             flipsnapLen[i].style.height = flipsnapH + "px";
@@ -168,10 +167,18 @@
         flipsnap.style.width = temWin8 * flipsnapLen.length + "px";
     }
 
+    function flipH() {
+        var flipsnapH = document.getElementById("flipsnap").offsetHeight;
+        for (var i = 0; i < flipsnapLen.length; i++) {
+            flipsnapLen[i].style.height = flipsnapH + "px";
+        }
+    }
+
     if (wrapper != undefined) {
         flipsnapRoll();
         window.onload = function () {
             Flipsnap('.flipsnap');
+            flipH();
         }      
 
         window.onresize = function () {
