@@ -64,8 +64,11 @@
                 console.log(classElements.length)
                 for (var i = 0; i < classElements.length; i++) {
                     if (classElements[i].className == 'small_list') {
-                        classElements[i].getElementsByTagName("div");
-                        console.log(classElements[i].getElementsByTagName("div"))
+                        var nameDiv = classElements[i].getElementsByTagName("div");
+                        if (nameDiv.length == 2) {
+                            nameDiv[2].id = 'samll_50';
+                        }
+                        console.log(classElements[i].getElementsByTagName("div").length)
                     }
                 }
                 return classElements;
