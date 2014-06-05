@@ -8,7 +8,8 @@ var shake = require("./weixinReply/shake.js") ;
 var lookbook = require("./weixinReply/lookbook.js") ;
 var maps = require("./weixinReply/maps.js") ;
 var rewriteWelab = require("./rewriteWelab.js") ;
-var sportsman = require("./weixinReply/sportsman.js")
+var sportsman = require("./weixinReply/sportsman.js");
+var wechatapi = require("welab/lib/wechat-api.js") ;
 exports.onload = function(application){
 
 
