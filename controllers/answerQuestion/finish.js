@@ -247,7 +247,7 @@ module.exports={
                                         "getChooseScore": parseInt(then.req.session.scoreAll),
                                         "getChooseLabel": "",
                                         "getLabel": getLabel,
-                                        "getActivities": getActivities,
+                                        "getActivities": newActivity,
                                         "getScore": getScore,
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
@@ -260,7 +260,7 @@ module.exports={
                                         + "getLabel:'" + getLabel
                                         + "',getScore:" + getScore
                                         + ",getTipContent:'" + getTipContent
-                                        + "',getActivities:'" + getActivities + "'}";
+                                        + "',getActivities:'" + newActivity + "'}";
                                 })
                                 //调用接口结束
                             }
@@ -484,7 +484,7 @@ console.log(jsonData)
                                                 "getChooseScore": parseInt(then.req.session.scoreAll),
                                                 "getChooseLabel": "",
                                                 "getLabel": getLabel,
-                                                "getActivities": getActivities,
+                                                "getActivities": newActivity,
                                                 "compScore": getScore,
                                                 "getTipContent": getTipContent,
                                                 "createTime": new Date().getTime(),
@@ -510,7 +510,7 @@ console.log(jsonData)
                                                     + "getLabel:'" + getLabel
                                                     + "',getScore:" + getScore
                                                     + ",getTipContent:'" + getTipContent
-                                                    + "',getActivities:'" + getActivities + "'}";
+                                                    + "',getActivities:'" + newActivity + "'}";
                                             }
                                         })
                                         //调用接口结束
