@@ -2,7 +2,13 @@
 <div class="wrapper">
     <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
     <div class="coupon">
-        <div class="coupon-content"><img src="/lavico/public/images/liquan.jpg" /></div>
+        <div class="coupon-content">
+            <if condition="{@pic=='undefined'}">
+                <img src="/lavico/public/images/liquan.jpg" />
+                <else/>
+                <img src="{@pic}" />
+            </if>
+        </div>
     </div>
     <div class="look-text">
         <if condition="{@getActivities!='no'}">

@@ -8,5 +8,15 @@ module.exports={
         nut.model.getActivities=seed.getActivities;
         nut.model.wxid = seed.wxid;
         nut.model.stuas= seed.stuas ? seed.stuas :"false";
+
+        this.step(function(){
+            helper.db.coll("lavico/activity").findOne({"aid":seed.getActivities},this.hold(function(err,result){
+                if(err) throw err;
+                console.log(result);
+                nut.model.docs = result;
+                nut.model.pic = result.pic || "undefined";
+                console.log(nut.model.pic);
+            }))
+        })
     }
 }

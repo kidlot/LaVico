@@ -212,7 +212,7 @@ module.exports={
                                                 memo: memoString,
                                                 point: 0
                                             }
-                                            console.log("hello:"+JSON.stringify(jsonData));
+                                            console.log(jsonData)
                                             middleware.request("Point/Change",
                                                 {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                                 this.hold(function (err, doc) {
@@ -223,6 +223,7 @@ module.exports={
                                                 var docJson = JSON.parse(doc)
                                                 if (docJson.success) {
                                                     newActivity = docJson.coupon_no
+                                                    console.log(docJson)
                                                     nut.model.err = docJson.success
                                                     if (docJson.coupon_no) {
                                                         nut.model.errString = "无";
@@ -246,7 +247,7 @@ module.exports={
                                         "getChooseScore": parseInt(then.req.session.scoreAll),
                                         "getChooseLabel": "",
                                         "getLabel": getLabel,
-                                        "getActivities": newActivity,
+                                        "getActivities": getActivities,
                                         "getScore": getScore,
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
@@ -259,7 +260,7 @@ module.exports={
                                         + "getLabel:'" + getLabel
                                         + "',getScore:" + getScore
                                         + ",getTipContent:'" + getTipContent
-                                        + "',getActivities:'" + newActivity + "'}";
+                                        + "',getActivities:'" + getActivities + "'}";
                                 })
                                 //调用接口结束
                             }
@@ -280,6 +281,7 @@ module.exports={
                     this.step(function () {
                         resultList += "]";
                         //返回显示
+                        console.log(resultList)
                         console.log("___________resultList:"+resultList);
                         then.req.session.optionId = ""
                         nut.model.result = resultList;
@@ -451,7 +453,7 @@ module.exports={
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
-
+console.log(jsonData)
                                         middleware.request("Point/Change",
                                             {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                             this.hold(function (err, doc) {
@@ -482,7 +484,7 @@ module.exports={
                                                 "getChooseScore": parseInt(then.req.session.scoreAll),
                                                 "getChooseLabel": "",
                                                 "getLabel": getLabel,
-                                                "getActivities": newActivity,
+                                                "getActivities": getActivities,
                                                 "compScore": getScore,
                                                 "getTipContent": getTipContent,
                                                 "createTime": new Date().getTime(),
@@ -493,17 +495,22 @@ module.exports={
                                             if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
                                                 (typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
                                                 resultList += "{"
-                                                    + "getLabel:'" + "null"
+                                                    + "getLabel:'" + "对不起,您没有获得任何奖励"
                                                     + "',getScore:" + 0
-                                                    + ",getTipContent:'" + "null"
-                                                    + "',getActivities:'" + "null" + "'}";
+                                                    + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                                    + "',getActivities:'" + "您没有获得任何礼券" + "'}";
+//                                                resultList += "{"
+//                                                    + "getLabel:'" + "null"
+//                                                    + "',getScore:" + 0
+//                                                    + ",getTipContent:'" + "null"
+//                                                    + "',getActivities:'" + "null" + "'}";
                                             } else {
                                                 //记录json准备显示
                                                 resultList += "{"
                                                     + "getLabel:'" + getLabel
                                                     + "',getScore:" + getScore
                                                     + ",getTipContent:'" + getTipContent
-                                                    + "',getActivities:'" + newActivity + "'}";
+                                                    + "',getActivities:'" + getActivities + "'}";
                                             }
                                         })
                                         //调用接口结束
