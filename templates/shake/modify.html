@@ -368,7 +368,7 @@ function save(){
     aFormInput['createTime'] = new Date().getTime();
     aFormInput['points'] = parseInt($("#points").val()) || 0;//每次游戏，所消耗的积分
     aFormInput['content'] = content;
-    aFormInput['display_name'] = display_name;//券名称
+    aFormInput['display_name'] = $("#display_name").val();//券名称
 
 
 
