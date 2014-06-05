@@ -59,18 +59,18 @@
             </foreach>
         </div>
         <script>
-            function smallList(small) {
+            function smallList() {
                 var classElements = [], allElements = document.getElementsByTagName("div");
                 for (var i = 0; i < classElements.length; i++) {
-                    if (classElements[i].className == small) {
+                    if (classElements[i].className == 'small_list') {
                         classElements[classElements.length] = allElements[i];
-                        console.log(allElements[i])
+                        console.log(classElements[classElements.length] = allElements[i];)
                     }
                 }
                 return classElements;
             }
             window.onload = function () {
-                smallList("small_list");
+                smallList();
             }            
         </script>
     </div>
