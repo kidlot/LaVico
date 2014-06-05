@@ -78,12 +78,14 @@
         <script>
             function wrapWin() {
                 var wrap = document.getElementById("wrap");
+                var itemHig = document.getElementById("flipsnap").offsetHeight;
                 var wrapWin = wrap.offsetWidth / 2.2;
                 //console.log(wrapWin)
                 var elite_list = document.getElementById("wrap").getElementsByTagName("div");
                 for (var i = 0; i < elite_list.length; i++) {
                     elite_list[i].style.width = wrapWin + "px";
-                }
+                    elite_list[i].style.height = itemHig + "px";
+                }               
             }
 
             if (wrap != undefined) {
