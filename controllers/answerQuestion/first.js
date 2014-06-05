@@ -151,7 +151,7 @@ module.exports= {
             }else{
                 chooseNext = "-1";
             }
-            console.log(chooseNext)
+            console.log("chooseNext:"+chooseNext)
             nut.model.choose = chooseNext;
         })
 
