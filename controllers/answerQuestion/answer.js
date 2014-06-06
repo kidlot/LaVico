@@ -16,8 +16,7 @@ module.exports={
         var memberId;
 
         nut.model.isok = "0";
-        nut.model.conent = "undefined";
-
+        nut.model.conent = "undefined"
 
         this.step(function(){
             //查找此会员是否存在
@@ -30,16 +29,16 @@ module.exports={
                         member_id ="undefined";
                     }
                 }else{
-                    nut.model.isok = "2";
-                    nut.model.conent ="您还不是LaVico的会员，请先注册会员!";
+                    nut.model.isok = "1";
+                    nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
                     //nut.disable();
                     //write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
                 }
                 if(member_id=="undefined"){
-                    nut.model.isok = "2";
-                    nut.model.conent ="您还不是LaVico的会员，请先注册会员!";
+                    nut.model.isok = "1";
+                    nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
                     //nut.view.disable();
-                    //nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
+                   // nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
 
                 }
                 memberId = member_id;
@@ -81,8 +80,8 @@ module.exports={
             //判断活动是否开启或到期1-2
             if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
                 if(isOpen==0){
-                    nut.model.isok = "1";
-                    nut.model.conent ="很抱歉，活动已经停止";
+                    nut.model.isok = "2";
+                    nut.model.conent = "很抱歉，活动已经停止"
                     //nut.view.disable();
                     //nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
                 }else{
@@ -103,17 +102,17 @@ module.exports={
 
                         }
                         if(optionId>cursor.options.length){
-                            nut.model.isok = "1";
-                            nut.model.conent ="无此题，联系管理员";
+                            nut.model.isok = "2";
+                            nut.model.conent = "无此题，联系管理员"
                             //异常情况：当optionId大于题数时
                             //nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，联系管理员',function(event){history.back()})}</script>");
-                           // nut.view.disable();
+                            //nut.view.disable();
                         }
                     }));
                 }
             }else{
-                nut.model.isok = "1";
-                nut.model.conent ="很抱歉，活动已经停止";
+                nut.model.isok = "2";
+                nut.model.conent = "很抱歉，活动已经停止"
                 //nut.view.disable();
                 //nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
             }

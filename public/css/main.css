@@ -239,8 +239,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift-bottom .left,.gift-bottom .right{height:40px; line-height:40px;font-size:1.4rem; text-align:center; cursor:pointer;}
 .gift-bottom .left{width:50%;color:#fff; background:url(../images/pre3.png) no-repeat;background-size:100% 100%; }
 .gift-bottom .right{width:44%;color:#291b00; background:url(../images/click_btn.jpg) no-repeat; margin-left:6%;background-size:100% 100%;}
-.gift-bottom .right a{color:#291b00;}
-.gift-bottom .left a{ color:#fff;}
+.gift-bottom .right a{color:#291b00; display:block;}
+.gift-bottom .left a{ color:#fff; display:block;}
 /*积分兑换*/
 .points2{ background-color:#fff;}
 .points2 .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.6rem; color:#000;}

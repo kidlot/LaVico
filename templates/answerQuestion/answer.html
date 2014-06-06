@@ -32,23 +32,35 @@ if(window.name != "bencalie"){
     window.name = "";
 }
 
+var isok = '{@isok}';
+var conent = '{@conent}'
 
-//初始化事件
-function build(){
 
-    var isok="{@isok}";
-    var conent="{@conent}";
+function check(){
     if(isok=="2")
     {
 
-        window.popupStyle2.on(conent!,function(event){
+        window.popupStyle2.on(conent,function(event){
+            if(event == "confirm"){
+            }
+        })
+        return false;
+    }
+}
+
+
+//初始化事件
+function build(){
+    if(isok=="1")
+    {
+
+        window.popupStyle2.on(conent,function(event){
             if(event == "confirm"){
                 location.href="/lavico/member/card_blank/register?wxid={@wechatid}";
             }
         })
         return false;
     }
-
 
 
     if(member_id=='undefined'){
@@ -261,8 +273,6 @@ function showCorrents(t){
 //finish完成按钮“触发"事件
 function finish(){
 
-    check();
-
     var isRecord = '{@isRecord}';
     if(isRecord=="1")
     {
@@ -451,21 +461,6 @@ function nextChoose(){
         window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
         })
     }
-}
-
-function check(){
-    var isok="{@isok}";
-    var conent="{@conent}";
-    if(isok=="1")
-    {
-
-        window.popupStyle2.on(conent,function(event){
-        if(event == "confirm"){
-
-        }
-    })
-    return false;
-}
 }
 
 window.onload =function() {
