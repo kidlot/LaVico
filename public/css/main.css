@@ -40,7 +40,7 @@ a.tel{color:#2d2d2d;}
 .bargin{width:100%;background-color:#ededed;}
 .bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:4%; overflow:hidden; position:relative; }
 .bargin-left{ width:100%; display:block; }
-.bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-top:2%; }
+.bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-bottom:2%; }
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .bargin-right .color{padding-top:5px;}
 .bargin-right .color .color-title{ color:#404040;}
@@ -49,8 +49,8 @@ a.tel{color:#2d2d2d;}
 .bargin-right .rules .rules-title{ color:#404040;}
 .bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464;}
 .bargin-right .pice{color:#AF8B4D;}
-.bargin-content .look_store{ width:130px; height:auto; padding:2% 0; }
-.bargin-content .look_store a{width:130px; height:40px; display:inline-block; margin-top:20px; color:#291b00;font-size:1.4rem; line-height:40px; text-align:center;
+.bargin-content .look_store{ width:120px; height:auto; padding-top:2%; clear:both }
+.bargin-content .look_store a{width:120px; height:30px; display:inline-block; color:#291b00;font-size:1.4rem; line-height:40px; text-align:center;
                              background:url(../images/look_storebg.jpg) center center no-repeat; background-size:100% 100%; }
 .bargin .border{  border-bottom:1px #c1c1c1 solid;}
 .bargin-mod{width:92%; margin:0 auto; padding:4% 4% 50px; }
