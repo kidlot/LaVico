@@ -634,7 +634,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 }
 
 #indicator > li.active {
-	background:#888;
+	background:#B9954D;
 }
 
 #indicator > li:last-child {

@@ -31,11 +31,11 @@
     </div>
     <article class="article" id="article"><h3>多色POLO衫</h3><p>热情洋溢的彩色polo衫，如同夏季香甜果汁，沁人心脾；舒适透气面料加以简洁时尚的设计，清新灵动。</p></article>
     <div id="nav">
-        <div id="prev" onclick="leftPage();return false">prev</div>
+        <!--<div id="prev" onclick="leftPage();return false">prev</div>-->
         <ul id="indicator">
             
         </ul>
-        <div id="next" onclick="rightPage();return false">next</div>
+        <!--<div id="next" onclick="rightPage();return false">next</div>-->
     </div>
 
     <div class="fade2">
@@ -54,7 +54,6 @@
 
             $("#article").find("h3").text(data[0].name)
             $("#article").find("p").text(data[0].detail)
-
 
             myScroll = new iScroll('wrapMain', {
                 snap: true,

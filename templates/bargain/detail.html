@@ -1,38 +1,33 @@
 <div class="wrapper">
     <div class="bargin">
         <div class="bargin-content">
+            <p class="title name">{@ doc.name}</p>
+            <p class="color">
+                <span class="color-title">颜色：</span><span class="color-con">{@ doc.colors}</span>
+            </p>
+
+            <p class="rules">
+                <!--<span class="rules-title fl"></span>-->
+                <span class="rules-con fl">尺码：{@ doc.sizes}</span>
+            </p>
+
+            <p class="color">
+                <span class="color-title">剩余：</span><span class="color-con">{@ doc.surplus}件</span>
+            </p>
+
+            <p class="color">
+                <span class="color-title">市场零售价：</span><span class="color-con">
+                    <span class="pice">{@ doc.price}</span>元
+                </span>
+            </p>
             <div class="fl bargin-left"><img src="{@ doc.pic}"/></div>
             <div class="fl bargin-right">
-
-
                 <input type="hidden" value="{@ doc._id}" id="_id">
                 <input type="hidden" value="{@ wxid}" id="wxid">
                 <input type="hidden" value="{@ doc.promotionsCode}" id="promotionsCode">
                 <input type="hidden" value="{@ doc.deductionIntegral}" id="point">
                 <input type="hidden" value="{@ isVip}" id="isVip">
-                <input type="hidden" value="{@ memberID}" id="memberID">
-
-
-                <p class="title name" >{@ doc.name}</p>
-
-                <p class="color">
-                    <span class="color-title">颜色：</span><span class="color-con">{@ doc.colors}</span>
-                </p>
-
-                <p class="rules">
-                    <!--<span class="rules-title fl"></span>-->
-                    <span class="rules-con fl">尺码：{@ doc.sizes}</span>
-                </p>
-
-                <p class="color">
-                    <span class="color-title">剩余：</span><span class="color-con">{@ doc.surplus}件</span>
-                </p>
-
-                <p class="color">
-                    <span class="color-title">市场零售价：</span><span class="color-con"><span
-                        class="pice">{@ doc.price}</span>元</span>
-                </p>
-
+                <input type="hidden" value="{@ memberID}" id="memberID">              
                 <p class="look_store"><a href="/lavico/bargain/maps?_id={@doc._id}&wxid={@wxid}">查看活动参与门店 > </a></p>
             </div>
         </div>
