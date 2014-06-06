@@ -23,7 +23,8 @@ module.exports={
         var getLabel;
         var getScore;
         var scoreArr;
-        var score=0;;
+        var score=0;
+        var volumename;
 
 
         var docs;
@@ -94,14 +95,6 @@ module.exports={
             }
         })
 
-//        this.step(function(){
-//            if(isRecord=="yes"){
-//                nut.view.disable();
-//                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，您已经回答过此题',function(event){location.href='/lavico/member/index?wxid="+seed.wechatid+"'})}</script>");
-//                go=false;
-//            }
-//        })
-
         //查询每道题获得的积分
         this.step(function(){
             if(go){
@@ -155,6 +148,12 @@ module.exports={
                         helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
                             if (err) throw err;
                             scoreRange = doc.scoreMinMax;
+                            if(doc.volumename){
+                                volumename = doc.volumename;
+                            }else{
+                                volumename = "undefined";
+                            }
+
                             docTheme = doc;
                             themeType = doc.themeType;
                             nut.model.themeType = themeType;
@@ -174,7 +173,8 @@ module.exports={
 
                     });
 
-                    var resultList = "[";
+                    var resultList = [];
+
                     this.step(function () {
                         for (var i = 0; i < scoreRange.length; i++) {
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
@@ -280,42 +280,50 @@ module.exports={
                                         "createTime": new Date().getTime(),
                                         "memberId":memberid,
                                         "themetype":themetype,
-                                        "code":getActivities
+                                        "code":getActivities,
+                                        "volumename":volumename
                                     }, function (err, doc) {
                                     });
                                     //记录json准备显示
-                                    resultList += "{"
-                                        + "getLabel:'" + getLabel
-                                        + "',getScore:" + getScore
-                                        + ",getTipContent:'" + getTipContent
-                                        + "',code:'" + getActivities
-                                        + "',getActivities:'" + newActivity + "'}";
+                                    var results={};
+                                    results.getLabel = getLabel;
+                                    results.getScore = getScore;
+                                    results.getTipContent = getTipContent;
+                                    results.code = getActivities;
+                                    results.getActivities = getActivities;
+                                    results.volumename = volumename;
+                                    resultList.push(results);
                                 })
                                 //调用接口结束
                             }
-                            if(resultList.length==0){
-                                if(i==scoreRange.length-1){
-                                    resultList += "{"
-                                        + "getLabel:'" + "对不起,您没有获得任何奖励"
-                                        + "',getScore:" + 0
-                                        + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                        + "',getScore:'" + "undefined"
-                                        + "',getActivities:'" + "您没有获得任何礼券" + "'}";
-                                    nut.model.stutas = "true";
-                                    nut.model.score = "0";
-                                    nut.model.getScores ="0";
-                                }
-                            }
                         }
                     })
+
+                    this.step(function(){
+                        console.log("length:"+resultList.length);
+                        if(resultList.length==0){
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = volumename;
+                            resultList.push(results)
+
+                            nut.model.stutas = "true";
+                            nut.model.score = "0";
+                            nut.model.getScores ="0";
+                        }
+                    })
+
                     this.step(function () {
-                        resultList += "]";
                         //返回显示
                         console.log(resultList)
                         console.log("___________resultList:"+resultList);
                         then.req.session.optionId = ""
                         nut.model.result = resultList;
-                        nut.model.jsonResult = eval('(' + resultList + ')');
+                        nut.model.jsonResult = resultList
                         console.log("resultList:" + nut.model.jsonResult);
                         nut.model.sta = "false";
 
@@ -344,22 +352,6 @@ module.exports={
                                 }
                             }));
                         }
-//                        if (typeof(custLabel) != "undefined") {
-//                            //存在,录入customer
-//                            var customerLab = "{tags:[";
-//                            var choArr = custLabel.split(',');
-//                            if (choArr.length <= 1) {
-//                                choArr = custLabel.split(' ');
-//                            }
-//                            //记录至customers表
-//                            for (var j = 0; j < choArr.length; j++) {
-//                                customerLab += "'" + choArr[j] + "'" + ",";
-//                            }
-//                            var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',') + "]}";
-//                            customerLab = eval('(' + jsonStr + ')');
-//                            helper.db.coll("welab/customers").update({wechatid: wechatid}, {$set: customerLab}, function (err, doc) {
-//                            });
-//                        }
                     })
                 }else {
                     //停止标签过来
@@ -388,6 +380,11 @@ module.exports={
                         helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
                             if (err) throw err;
                             scoreRange = doc.scoreMinMax;
+                            if(doc.volumename){
+                                volumename = doc.volumename;
+                            }else{
+                                volumename = "undefined";
+                            }
                             docTheme = doc;
                             themeType = doc.themeType;
                             nut.model.themeType = themeType;
@@ -404,9 +401,12 @@ module.exports={
                             doc_json = eval('(' + doc + ')');
                         }))
                     });
-                    var resultList = "[";
+                    var resultList = [];
+
                     this.step(function () {
+
                         for (var i = 0; i < scoreRange.length; i++) {
+
                             //session上的停止标签和db中的设置标签一致
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
@@ -434,6 +434,7 @@ module.exports={
                                     })
 
                                     then.step(function (memberId) {
+                                        console.log("memberId:"+memberId)
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
                                         jsonData.memberId = memberId;
@@ -445,26 +446,36 @@ module.exports={
                                             })
                                         )
                                     })
+
                                     if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
                                         (typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
-                                        resultList += "{"
-                                            + "getLabel:'" + "对不起,您没有获得任何奖励"
-                                            + "',getScore:" + 0
-                                            + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                            + "',code:'" + "undefined"
-                                            + "',getActivities:'" + "null" + "'}";
+                                        console.log("getlabel1:"+getLabel)
+                                        var results={};
+                                        results.getLabel = "对不起,您没有获得任何奖励";
+                                        results.getScore = 0;
+                                        results.getTipContent = "对不起,您没有获得任何奖励";
+                                        results.code = "undefined";
+                                        results.getActivities = "您没有获得任何礼券";
+                                        results.volumename = volumename;
+                                        resultList.push(results);
                                     } else {
+                                        console.log("getlabel:"+getLabel)
                                         //记录json准备显示
-                                        resultList += "{"
-                                            + "getLabel:'" + getLabel
-                                            + "',getScore:" + getScore
-                                            + ",getTipContent:'" + getTipContent
-                                            + "',code:'" + getActivities
-                                            + "',getActivities:'" + newActivity + "'}";
+                                        var results={};
+                                        results.getLabel = getLabel;
+                                        results.getScore = getScore;
+                                        results.getTipContent = getTipContent;
+                                        results.code = getActivities;
+                                        results.getActivities = getActivities;
+                                        results.volumename = volumename;
+                                        resultList.push(results);
                                     }
-                                    if(resultList){
+
+                                    console.log("i:"+i)
+                                    if(resultList.length>0){
                                         break;
                                     }
+
                                 } else {
                                     if (typeof(getActivities) != "undefined" || getActivities != "") {
                                         var newActivity//服务器返回的券
@@ -485,10 +496,12 @@ module.exports={
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
+
                                         middleware.request("Point/Change",
                                             {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                             this.hold(function (err, doc) {
                                             }))
+
                                         then.step(function () {
                                             middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                 if (err) throw err;
@@ -521,78 +534,63 @@ module.exports={
                                                 "createTime": new Date().getTime(),
                                                 "memberId":memberid,
                                                 "themetype":themetype,
-                                                "code":getActivities
-                                            }, function (err, doc) {
-                                            });
-                                            if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
-                                                (typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
-                                                resultList += "{"
-                                                    + "getLabel:'" + "对不起,您没有获得任何奖励"
-                                                    + "',getScore:" + 0
-                                                    + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                                    + "',code:'" + "undefined"
-                                                    + "',getActivities:'" + "您没有获得任何礼券" + "'}";
-//                                                resultList += "{"
-//                                                    + "getLabel:'" + "null"
-//                                                    + "',getScore:" + 0
-//                                                    + ",getTipContent:'" + "null"
-//                                                    + "',getActivities:'" + "null" + "'}";
+                                                "code":getActivities,
+                                                "volumename":volumename
+                                            }, function (err, doc) {});
+
+                                            if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "")
+                                                &&(typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
+                                                var results={};
+                                                results.getLabel = "对不起,您没有获得任何奖励";
+                                                results.getScore = 0;
+                                                results.getTipContent = "对不起,您没有获得任何奖励";
+                                                results.code = "undefined";
+                                                results.getActivities = "您没有获得任何礼券";
+                                                results.volumename = volumename;
+                                                resultList.push(results)
+
                                             } else {
                                                 //记录json准备显示
-                                                resultList += "{"
-                                                    + "getLabel:'" + getLabel
-                                                    + "',getScore:" + getScore
-                                                    + ",getTipContent:'" + getTipContent
-                                                    + "',code:'" + getActivities
-                                                    + "',getActivities:'" + newActivity + "'}";
+                                                var results={};
+                                                results.getLabel = getLabel;
+                                                results.getScore = getScore;
+                                                results.getTipContent = getTipContent;
+                                                results.code = getActivities;
+                                                results.getActivities = getActivities;
+                                                results.volumename = volumename;
+                                                resultList.push(results);
                                             }
                                         })
                                         //调用接口结束
                                     }
                                 }
                             }
-                            //判断是否有session自定义标签
-//                            var custLabel = then.req.session.customerLabel
-//                            if (typeof(custLabel) != "undefined") {
-//                                //存在,录入customer
-//                                var customerLab;
-//                                var choArr = custLabel.split(',');
-//                                if (choArr.length <= 1) {
-//                                    choArr = custLabel.split(' ');
-//                                }
-//                                //记录至customers表
-//                                for (var j = 0; j < choArr.length; j++) {
-//                                    customerLab += "'" + choArr[j] + "'" + ",";
-//                                }
-//                                var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',');
-//                                customerLab = eval('(' + jsonStr + ')');
-//                                helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:customerLab}},this.hold(function(err,doc){
-//                                    if(err ){
-//                                        throw err;
-//                                    }
-//                                    console.log("doc:"+doc)
-//                                }));
-//                            }
-                            if(resultList.length==0){
-                                if(i==scoreRange.length-1){
-                                    resultList += "{"
-                                        + "getLabel:'" + "对不起,您没有获得任何奖励"
-                                        + "',getScore:" + 0
-                                        + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                        + "',code:'" + "undefined"
-                                        + "',getActivities:'" + "您没有获得任何礼券" + "'}";
-                                    nut.model.stutas = "true";
-                                    nut.model.score = "0";
-                                    nut.model.getScores ="0";
-                                }
-                            }
                         }
                     })
+
+                    this.step(function(){
+                        console.log("length:"+resultList.length);
+                        if(resultList.length==0){
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = volumename;
+                            resultList.push(results)
+
+                            nut.model.stutas = "true";
+                            nut.model.score = "0";
+                            nut.model.getScores ="0";
+                        }
+                    })
+
                     this.step(function () {
-                        resultList += "]";
                         then.req.session.optionId = ""
                         nut.model.result = resultList;
-                        nut.model.jsonResult = eval('(' + resultList + ')');
+                        nut.model.jsonResult = resultList
+                        console.log(resultList)
                         nut.model.sta = "false";
 
                         if (getLabel != "" || getLabel != null || getScore!="") {
@@ -606,8 +604,6 @@ module.exports={
                             jsonData = {};
                             jsonData.memberId = memberid;
                             jsonData.tag = memoString;
-                            console.log("sa")
-                            console.log(jsonData)
                             middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                 if (err) throw err;
                                 console.log("tag record:" + doc);
@@ -617,7 +613,6 @@ module.exports={
                                 if(err ){
                                     throw err;
                                 }
-                                console.log("doc:"+doc)
                             }));
                         }
                     })

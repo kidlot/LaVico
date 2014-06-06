@@ -39,7 +39,7 @@
                 <div class="elite_list">
                     <div class="small_list_top">
                         <img src="{@page.pic||'/lavico/public/images/small_list_top.jpg'}">
-                        <span class="content_up"><a href="javascript:;" onclick="showContent('{@key}');" class="ui-link"><img class="img_1" src="/lavico/public/images/up.png"></a></span>
+                        <span class="content_up"><a href="javascript:;" onclick="showContent('{@key}');" class="ui-link"></a></span>
                         <div class="small_content num_{@key}" style="display: none;">
                             {@ page.detail}
                         </div>
@@ -59,25 +59,22 @@
             </foreach>
         </div>
         <script>
-            function smallList() {
-                var classElements = document.getElementsByTagName("div");
-                for (var i = 0; i < classElements.length; i++) {
-                    if (classElements[i].className == 'small_list') {
-                        var nameDiv = classElements[i].getElementsByTagName("div");
-                        if (nameDiv.length === 2) {
-                            //console.log(nameDiv[0])
-                            nameDiv[1].id = 'samll_50';
-                            nameDiv[0].style.marginLeft = '8%';
-                        }
-                        //console.log(classElements[i].getElementsByTagName("div").length)
-                        //console.log(classElements[i].getElementsByTagName("div"))
-                    }
-                }
-                return classElements;
-            }
-            window.onload = function () {
-                smallList();
-            }            
+            //function smallList() {
+            //    var classElements = document.getElementsByTagName("div");
+            //    for (var i = 0; i < classElements.length; i++) {
+            //        if (classElements[i].className == 'small_list') {
+            //            var nameDiv = classElements[i].getElementsByTagName("div");
+            //            if (nameDiv.length === 2) {
+            //                nameDiv[1].id = 'samll_50';
+            //                nameDiv[0].style.marginLeft = '8%';
+            //            }
+            //        }
+            //    }
+            //    return classElements;
+            //}
+            //window.onload = function () {
+            //    smallList();
+            //}            
         </script>
     </div>
 </if>

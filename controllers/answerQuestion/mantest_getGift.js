@@ -8,17 +8,27 @@ module.exports={
         nut.model.getActivities=seed.getActivities;
         nut.model.wxid = seed.wxid;
         nut.model.stuas= seed.stuas ? seed.stuas :"false";
+        var volumename = seed.volumename;
+        var promotion_name;
 
         this.step(function(){
-            if(seed.getActivities!="undefined"||seed.getActivities!="no"){
+            if(seed.getActivities!="undefined" && seed.getActivities!="no" && seed.getActivities!="-1"){
                 helper.db.coll("lavico/activity").findOne({"aid":seed.getActivities},this.hold(function(err,result){
                     if(err) throw err;
                     nut.model.pic = result.pic;
-                    nut.model.name = result.promotion_name;
+                    promotion_name = result.promotion_name;
                 }))
             }else{
                 nut.model.pic = "undefined";
-                nut.model.name = "您没有获得任何礼券";
+                promotion_name = "您没有获得任何礼券";
+            }
+        })
+
+        this.step(function(){
+            if(volumename=="undefined"){
+                nut.model.name = promotion_name;
+            }else{
+                nut.model.name = volumename;
             }
         })
     }

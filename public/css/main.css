@@ -4,7 +4,7 @@ a, button, input { -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highl
 /*个人中心*/
 a.tel{color:#2d2d2d;}
 /*活动规则*/
-.wrapper{width:100%; height:auto;min-height:100%; max-width:640px; margin:0 auto; position:relative; background-color:#e4e4e4; }
+.wrapper{width:100%; height:auto;min-height:100%; max-width:640px; margin:0 auto; position:relative; background-color:#e4e4e4; overflow-x:hidden; }
 .wrapper .vip-card { position:relative; }
 .wrapper .vip-card img { width:100%; }
 .coupon-banner{width:100%; height:auto; padding:4% 0;}
@@ -268,7 +268,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points3-content .text .title3 a{ color:#000;}
 .points3-content .con{ color:#646464; padding:2%;}
 .points3-content .con a{ color:#646464;}
-.points3-content .text .btn{width:120px; height:30px; line-height:30px;color:#281a00; text-align:center; position:absolute; bottom:0px; right:2%;
+.points3-content .text .btn{width:100px; height:25px; line-height:25px;color:#281a00; text-align:center; position:absolute; bottom:0px; right:2%;
                             background:url(../images/next.png) center center no-repeat; background-size:100% 100%;}
 /*消费记录*/
 .points4{ /*background-color:#eee;*/}
@@ -409,11 +409,13 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 .small_list_top{ width:96%; height:auto; margin:0 2%; text-align:center; position:relative }
 .small_list_top img { width:100%;}
-.small_content{ position:absolute; top:0px; left:0px;width:90%; height:90%; padding:5%; text-align:center; display:none; line-height:1.5em; 
+.small_content{ position:absolute; top:0px; left:0px;width:90%; height:100%; padding:5% 5% 0; text-align:center; display:none; line-height:1.5em; 
                 background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; color:#B9954D; font-size:1.6rem;}
-.content_up{ position:absolute; width:40px; height:40px; bottom:1px; z-index:100; display:block; margin-left:-20px; left:50%; }
-.small_list{ width:96%; padding:2% 2% 0; height:auto; overflow:hidden;}
-.small_image{ float:left; width:31%; height:auto; margin:1.16%;}
+.content_up{ position:absolute; width:100%; height:36px; bottom:0px; z-index:100; display:block; left:0px; border-top:1px solid #B9954D;
+              background:none repeat scroll 0px 0px rgba(0, 0, 0, 0.8); }
+.content_up a { height:36px; display:block; background:url(../images/match_bottom.png) center no-repeat; background-size:20px; }
+.small_list{ width:100%; padding:2% 2% 0; height:auto; overflow:hidden;}
+.small_image{ float:left; width:30%; height:auto; padding:3%; border:1px solid #B9954D; box-sizing:border-box;}
 .small_image img { width:100%; }
 .small_middle{ padding:2% 0; overflow:hidden;}
 .small_middle img{ width:100%; }
