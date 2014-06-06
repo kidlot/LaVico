@@ -36,7 +36,6 @@ module.exports={
                 }
                 memberId = member_id;
                 nut.model.member_id =member_id;
-
             }))
         });
 
@@ -53,11 +52,28 @@ module.exports={
         })
 
         this.step(function(){
+            if(member_id!="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+member_id,"wechatid":wechatid,
+                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            nut.model.isRecord = "1";
+                        }else{
+                            nut.model.isRecord = "0";
+                        }
+                    }))
+            }else{
+                nut.model.isRecord = "0";
+            }
+        })
+
+
+
+        this.step(function(){
             //判断活动是否开启或到期1-2
             if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
                 if(isOpen==0){
                     nut.view.disable();
-                    //nut.write("<script>alert('很抱歉，活动已经停止');history.back();</script>");
                     nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
                 }else{
                     //显示题目
@@ -78,7 +94,6 @@ module.exports={
                         }
                         if(optionId>cursor.options.length){
                             //异常情况：当optionId大于题数时
-                            //nut.write("<script>alert('无此题，联系管理员');history.back();</script>");
                             nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，联系管理员',function(event){history.back()})}</script>");
                             nut.view.disable();
                         }
@@ -87,7 +102,6 @@ module.exports={
             }else{
                 nut.view.disable();
                 nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
-               // nut.write("<script>alert('很抱歉，活动已经停止');history.back();</script>");
             }
         });
 

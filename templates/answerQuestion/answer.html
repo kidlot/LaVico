@@ -246,6 +246,19 @@ function showCorrents(t){
 //finish完成按钮“触发"事件
 function finish(){
 
+    var isRecord = '{@isRecord}';
+    if(isRecord=="1")
+    {
+
+        window.popupStyle2.on("您已经答过此题,不能再答题!",function(event){
+            if(event == "confirm"){
+                location.href="/lavico/answerQuestion/finish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true";
+            }
+        })
+        return;
+    }
+
+
     var value=0;
     var valueArr="";
     var score=0;

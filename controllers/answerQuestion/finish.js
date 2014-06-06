@@ -94,13 +94,13 @@ module.exports={
             }
         })
 
-        this.step(function(){
-            if(isRecord=="yes"){
-                nut.view.disable();
-                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，您已经回答过此题',function(event){location.href='/lavico/member/index?wxid="+seed.wechatid+"'})}</script>");
-                go=false;
-            }
-        })
+//        this.step(function(){
+//            if(isRecord=="yes"){
+//                nut.view.disable();
+//                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，您已经回答过此题',function(event){location.href='/lavico/member/index?wxid="+seed.wechatid+"'})}</script>");
+//                go=false;
+//            }
+//        })
 
         //查询每道题获得的积分
         this.step(function(){
@@ -116,8 +116,10 @@ module.exports={
         })
 
         this.step(function(){
-            for(var i=0;i<scoreArr.length;i++){
-                score+=scoreArr[i].getChooseScore;
+            if(go){
+                for(var i=0;i<scoreArr.length;i++){
+                    score+=scoreArr[i].getChooseScore;
+                }
             }
         })
 
