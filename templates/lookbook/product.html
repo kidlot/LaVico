@@ -80,18 +80,13 @@
         function wrapWin() {
             var wrapMain = document.getElementById("wrapMain");
             var MainWin = wrapMain.offsetWidth;
-            var listLi = document.getElementById("thelist").getElementsByTagName("li");
-            var indicator = document.getElementById("indicator");
-            var indicatorTwo = document.getElementById("indicator").getElementsByTagName("li");
+            listLi = document.getElementById("thelist").getElementsByTagName("li");
+            indicator = document.getElementById("indicator");
             var article = document.getElementById("article").offsetHeight;
             var theLength = document.getElementById("thelist").getElementsByTagName("li").length;
 
             for (var i = 0; i < listLi.length; i++) {
                 listLi[i].style.width = MainWin + "px";
-
-                var indicatorLi = document.createElement("li")
-                indicator.appendChild(indicatorLi);
-                indicatorTwo[0].className = 'active';
             }
             
             document.getElementById("scroller").style.width = MainWin * theLength + "px";
@@ -99,7 +94,21 @@
             indicator.style.bottom = article + 10 + "px";
         }
 
+        function indicatorAct() {
+            var indicatorTwo = document.getElementById("indicator").getElementsByTagName("li");
+            for (var i = 0; i < listLi.length; i++) {
+                var indicatorLi = document.createElement("li")
+                indicator.appendChild(indicatorLi);
+                indicatorTwo[0].className = 'active';
+            }
+        }
+
         wrapWin();
+        indicatorAct();
+
+        window.onresize = function () {
+            wrapWin();
+        }
     </script>
 </section>
 
