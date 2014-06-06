@@ -615,8 +615,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 }
 
 #indicator {
-	width:110px;
-	padding:12px 0 0 30px;
+	width:auto;
+    position:absolute;
+    right:2%;
+    z-index:999;
 }
 
 #indicator > li {
