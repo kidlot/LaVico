@@ -9,7 +9,7 @@ module.exports= {
         var _id = seed._id;
         var memberid;
         var themetype;
-        var results;
+        var result_false;
         var isok = true;
         var max;
         var chooseNext;
@@ -67,7 +67,6 @@ module.exports= {
         })
 
         this.step(function(){
-
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,doc){
                 if(err) throw err;
 
@@ -105,7 +104,7 @@ module.exports= {
                 "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    results = result;
+                    result_false = result;
                 }
             }))
         })
@@ -121,15 +120,15 @@ module.exports= {
         })
 
         this.step(function(){
-            if(results  && (!result_true)){
-                for(var i=0;i<results.length;i++){
-                    max = results[0].optionId;
-                    if(results[i].optionId>max){
-                        max = results[i].optionId;
-                        chooseId = results[i].chooseId;
+            if(result_false.length>0 && result_true.length==0){
+                max = result_false[0].optionId;
+                for(var i=0;i<result_false.length;i++){
+                    if(result_false[i].optionId>max){
+                        max = result_false[i].optionId;
+                        chooseId = result_false[i].chooseId;
                     }else{
-                        max = results[i].optionId;
-                        chooseId = results[i].chooseId;
+                        max = result_false[i].optionId;
+                        chooseId = result_false[i].chooseId;
                     }
                 }
             }
@@ -138,14 +137,13 @@ module.exports= {
         this.step(function(){
             console.log("themeQuestion")
             console.log(themeQuestion)
-            if(themeQuestion){
+            if(themeQuestion.length>0 && result_false.length>0){
                 for(var i=0;i<themeQuestion.length;i++){
                     if(themeQuestion[i].optionId==max ){
                         chooseNextArr = themeQuestion[i].choose;
                     }
                 }
             }
-
         })
 
         this.step(function(){

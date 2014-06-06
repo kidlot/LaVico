@@ -22,6 +22,8 @@ module.exports={
         nut.model.getScores ="1";
         var getLabel;
         var getScore;
+        var scoreArr;
+        var score=0;;
 
 
         var docs;
@@ -100,6 +102,25 @@ module.exports={
             }
         })
 
+        //查询每道题获得的积分
+        this.step(function(){
+            if(go){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            scoreArr = result;
+                        }
+                    }))
+            }
+        })
+
+        this.step(function(){
+            for(var i=0;i<scoreArr.length;i++){
+                score+=scoreArr[i].getChooseScore;
+            }
+        })
+
         this.step(function(){
             if(go) {
                 //非停止标签过来
@@ -111,7 +132,8 @@ module.exports={
                         "isFinish": true,
                         "optionId": 0,
                         "chooseId": 0,
-                        "getChooseScore": parseInt(scoreAll),
+                        //"getChooseScore": parseInt(scoreAll),
+                        "getChooseScore":parseInt(score),
                         "getChooseLabel": "",
                         "getLabel": "",
                         "getActivities": "",
@@ -154,7 +176,7 @@ module.exports={
                         for (var i = 0; i < scoreRange.length; i++) {
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                            if (scoreAll >= minlen && scoreAll <= maxlen) {//在分值范围中
+                            if (score >= minlen && score <= maxlen) {//在分值范围中
                                 //获取三个奖励
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                 getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
@@ -246,7 +268,7 @@ module.exports={
                                         "isFinish": true,
                                         "optionId": 0,
                                         "chooseId": 0,
-                                        "getChooseScore": parseInt(then.req.session.scoreAll),
+                                        "getChooseScore": parseInt(score),
                                         "getChooseLabel": "",
                                         "getLabel": getLabel,
                                         "getActivities": newActivity,
@@ -345,7 +367,7 @@ module.exports={
                         "isFinish": true,
                         "optionId": 0,
                         "chooseId": 0,
-                        "getChooseScore": parseInt(then.req.session.scoreAll),
+                        "getChooseScore": parseInt(score),
                         "getChooseLabel": "",
                         "getLabel": "",
                         "getActivities": "",
@@ -460,7 +482,6 @@ module.exports={
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
-console.log(jsonData)
                                         middleware.request("Point/Change",
                                             {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                             this.hold(function (err, doc) {
@@ -488,7 +509,7 @@ console.log(jsonData)
                                                 "isFinish": true,
                                                 "optionId": 0,
                                                 "chooseId": 0,
-                                                "getChooseScore": parseInt(then.req.session.scoreAll),
+                                                "getChooseScore": parseInt(score),
                                                 "getChooseLabel": "",
                                                 "getLabel": getLabel,
                                                 "getActivities": newActivity,
