@@ -526,8 +526,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 /*转屏*/
 .backdrop-orientation,.backdrop-follow{display:none;position:fixed;top:0;left:0;z-index:99998;height:100%;width:100%;background:#fff}
-.modal-orientation{display:none;position:fixed;left:50%;top:50%;z-index:99999;width:auto;height:auto;background:rgba(0,0,0,0.3);border-radius:20px}
-.modal-orientation img { width:100%; }
+.modal-orientation{display:none;position:fixed;left:50%;top:50%;z-index:99999;width:200px;height:200px;background:rgba(0,0,0,0.3);border-radius:20px; margin:-100px 0 0 -100px; }
 .modal-orientation p{margin:10px 0 0}
 .modal-orientation .btn-close{position:absolute;top:3px;right:3px;width:24px;height:24px;/*background:url(../img/icon-close.png) no-repeat 50% 50%; background-size:80%;*/}
 
