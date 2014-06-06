@@ -51,7 +51,7 @@ module.exports = {
                 console.log(doc)
                 if(doc.length > 0){
 
-                    nut.model.res = {err:1,msg:"您已成功侃价，请查看您的“专属礼券”",url:"/lavico/member/card_member/coupon/index?wxid="+seed.wxid};
+                    nut.model.res = {err:1,msg:"恭喜您，您已成功砍价，获得现金抵用券一张，请至“专属礼券”查看",url:"/lavico/member/card_member/coupon/index?wxid="+seed.wxid};
                 }
                 return;
             }))
