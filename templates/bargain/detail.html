@@ -78,7 +78,7 @@
 
         <div class="fade4 channel" id="_win_success">
             <div class="first-price">
-                <p class="msg">您已成功侃价，请查看您的“专属礼券”</p>
+                <p class="msg">恭喜您，您已成功砍价，获得现金抵用券一张，请至“专属礼券”查看</p>
 
                 <p class="confirm"><input class="goconfirmBtn" style="background: url('/lavico/public/images/click_btn.jpg'); background-size: 100% 100%;"
                                           type="submit" border="0" value="确认" onclick="location.href='/lavico/member/card_member/coupon/index?wxid='+$('#wxid').val()"/></p>
@@ -206,7 +206,7 @@ function _step(channelName){
     }
     if(channelName == "success"){
         deal(function(){
-            $("#fixed").text("恭喜您，您已成功砍价，获得现金抵用券一张，请至“专属礼券”查看")
+            $("#fixed").text("您已成功侃价，请查看您的“专属礼券”")
             $("#fixed").attr('href',"/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
             _func()
         })
