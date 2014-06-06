@@ -415,7 +415,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
               background:none repeat scroll 0px 0px rgba(0, 0, 0, 0.8); }
 .content_up a { height:36px; display:block; background:url(../images/match_bottom.png) center no-repeat; background-size:20px; }
 .small_list{ width:100%; padding:2% 2% 0; height:auto; overflow:hidden;}
-.small_image{ float:left; width:30%; height:auto; padding-right:3%; border:1px solid #B9954D; box-sizing:border-box;}
+.small_image{ float:left; width:30%; height:auto; margin-right:3%; border:1px solid #B9954D; box-sizing:border-box;}
 .small_image img { width:100%; }
 .small_middle{ padding:2% 0; overflow:hidden;}
 .small_middle img{ width:100%; }

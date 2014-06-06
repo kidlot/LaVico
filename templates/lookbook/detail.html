@@ -125,8 +125,11 @@
             n = 1;
         }else{
             $(".num_"+m).hide();
-            $(".img_"+m).attr("src","/lavico/public/images/up.png");
             n = 0;
+            if ($(this).parent(".content_up").next(".small_content").css('display') == 'block') {
+                $(this).css("background", "url(/lavico/public/images/match_top.png) center no-repeat");
+            }
+
         }
 
     }
