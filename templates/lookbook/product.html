@@ -83,7 +83,7 @@
             var MainWin = wrapMain.offsetWidth;
             var listLi = document.getElementById("thelist").getElementsByTagName("li");
             var indicator = document.getElementById("indicator");
-            var indicatorLi=document.createElement("li")
+            
             var n = 1;
             var article = document.getElementById("article").offsetHeight;
             var theLength = document.getElementById("thelist").getElementsByTagName("li").length;
@@ -91,6 +91,7 @@
             for (var i = 0; i < listLi.length; i++) {
                 listLi[i].style.width = MainWin + "px";
 
+                var indicatorLi = document.createElement("li")
                 indicator.appendChild(indicatorLi);
                            
             }
