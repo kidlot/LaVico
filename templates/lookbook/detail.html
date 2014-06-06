@@ -65,12 +65,9 @@
                     if (classElements[i].className == 'small_list') {
                         var nameDiv = classElements[i].getElementsByTagName("div");
                         if (nameDiv.length === 2) {
-                            //console.log(nameDiv[0])
                             nameDiv[1].id = 'samll_50';
-                            nameDiv[0].style.marginLeft = '8%';
+                            nameDiv[0].style.width = '40%';
                         }
-                        //console.log(classElements[i].getElementsByTagName("div").length)
-                        //console.log(classElements[i].getElementsByTagName("div"))
                     }
                 }
                 return classElements;
@@ -124,11 +121,12 @@
     function showContent(m){
         if(n==0){
             $(".num_"+m).show();
-            $(".img_"+m).attr("src","/lavico/public/images/down.png");
+            $(".img_" + m).attr("src", "/lavico/public/images/down.png");
+            $(".num_" + m).siblings(".content_up").find("a").css({ "background": "url(/lavico/public/images/match_top.png) center no-repeat", "background-size": "20px" });
             n = 1;
         }else{
-            $(".num_"+m).hide();
-            $(".img_"+m).attr("src","/lavico/public/images/up.png");
+            $(".num_" + m).hide();
+            $(".num_" + m).siblings(".content_up").find("a").css({ "background": "url(/lavico/public/images/match_bottom.png) center no-repeat", "background-size": "20px" });
             n = 0;
         }
 
