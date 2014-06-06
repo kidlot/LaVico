@@ -206,7 +206,7 @@ function _step(channelName){
     }
     if(channelName == "success"){
         deal(function(){
-            $("#fixed").text("您已成功侃价，请查看您的“专属礼券”")
+            $("#fixed").text("恭喜您，您已成功砍价，获得现金抵用券一张，请至“专属礼券”查看")
             $("#fixed").attr('href',"/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
             _func()
         })

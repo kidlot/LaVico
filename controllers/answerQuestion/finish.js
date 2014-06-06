@@ -25,18 +25,24 @@ module.exports={
         var scoreArr;
         var score=0;
         var volumename;
+        var isok = true;
 
 
         var docs;
         this.step(function(){
-            if(stutas=="true"){
-                go = false;
+            //if(stutas=="true"){
+                //go = false;
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
                     "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
                         if(err) throw err;
-                        docs = doc;
+                        if(doc){
+                            docs = doc;
+                            isok = false;
+                        }else{
+                            isok = true;
+                        }
                     }))
-            }
+            //}
         })
 
         this.step(function(){
@@ -67,6 +73,7 @@ module.exports={
                             nut.model.jsonResult = eval('(' + resultList + ')');
                             nut.model.score = "0";
                             nut.model.sta = "true";
+                            nut.model.label =resultList[0].getLabel;
                         }
                     }else{
                         for(var i=0;i<docs.length;i++){
@@ -89,6 +96,7 @@ module.exports={
                                 + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
                             nut.model.score = "0";
+                            nut.model.label =resultList[0].getLabel;
                         }
                     }
                 }
@@ -208,11 +216,14 @@ module.exports={
                                         jsonData.memo = '问答测试' + '-' + nut.model.themeTitle;
 
                                         console.log("问答测试:"+JSON.stringify(jsonData));
-                                        middleware.request('Point/Change', jsonData,
-                                            this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                            })
-                                        )
+                                        if(isok==true){
+                                            middleware.request('Point/Change', jsonData,
+                                                this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                })
+                                            )
+                                        }
+
                                     })
                                 } else {
                                     for (var j = 0; j < doc_json.list.length; j++) {
@@ -240,27 +251,30 @@ module.exports={
                                                 point: 0
                                             }
                                             console.log(jsonData)
-                                            middleware.request("Point/Change",
-                                                {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
-                                                this.hold(function (err, doc) {
-                                                }))
+                                            if(isok == true){
+                                                middleware.request("Point/Change",
+                                                    {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
+                                                    this.hold(function (err, doc) {
+                                                    }))
 
-                                            middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                var docJson = JSON.parse(doc)
-                                                if (docJson.success) {
-                                                    newActivity = docJson.coupon_no
-                                                    console.log(docJson)
-                                                    nut.model.err = docJson.success
-                                                    if (docJson.coupon_no) {
-                                                        nut.model.errString = "无";
+                                                middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                    var docJson = JSON.parse(doc)
+                                                    if (docJson.success) {
+                                                        newActivity = docJson.coupon_no
+                                                        console.log(docJson)
+                                                        nut.model.err = docJson.success
+                                                        if (docJson.coupon_no) {
+                                                            nut.model.errString = "无";
+                                                        }
+                                                        return docJson.coupon_no
+                                                    } else {
+                                                        nut.model.err = docJson.success;
+                                                        nut.model.errString = docJson.error;
                                                     }
-                                                    return docJson.coupon_no
-                                                } else {
-                                                    nut.model.err = docJson.success;
-                                                    nut.model.errString = docJson.error;
-                                                }
-                                            }));
+                                                }));
+                                            }
+
                                         })
                                     }
                                 }
@@ -326,6 +340,9 @@ module.exports={
                         nut.model.jsonResult = resultList
                         console.log("resultList:" + nut.model.jsonResult);
                         nut.model.sta = "false";
+                        console.log("sa")
+                        console.log(resultList[0].getLabel)
+                        nut.model.label =resultList[0].getLabel;
 
                         if (getLabel != "" || getLabel != null || getScore!="") {
                             //发送标签至CRM
@@ -440,11 +457,14 @@ module.exports={
                                         jsonData.memberId = memberId;
                                         jsonData.qty = getScore;
                                         jsonData.memo = '问答测试:' + '-' + nut.model.themeTitle;
-                                        middleware.request('Point/Change', jsonData,
-                                            this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                            })
-                                        )
+                                        if(isok==true){
+                                            middleware.request('Point/Change', jsonData,
+                                                this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                })
+                                            )
+                                        }
+
                                     })
 
                                     if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
@@ -496,27 +516,29 @@ module.exports={
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
+                                        if(isok==true){
+                                            middleware.request("Point/Change",
+                                                {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
+                                                this.hold(function (err, doc) {
+                                                }))
 
-                                        middleware.request("Point/Change",
-                                            {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
-                                            this.hold(function (err, doc) {
-                                            }))
+                                            then.step(function () {
+                                                middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                    var docJson = JSON.parse(doc)
+                                                    if (docJson.success) {
+                                                        newActivity = docJson.coupon_no
+                                                        nut.model.err = docJson.success
+                                                        nut.model.errString = docJson.coupon_no;
+                                                        return docJson.coupon_no
+                                                    } else {
+                                                        nut.model.err = docJson.success;
+                                                        nut.model.errString = docJson.error;
+                                                    }
+                                                }));
+                                            })
+                                        }
 
-                                        then.step(function () {
-                                            middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                var docJson = JSON.parse(doc)
-                                                if (docJson.success) {
-                                                    newActivity = docJson.coupon_no
-                                                    nut.model.err = docJson.success
-                                                    nut.model.errString = docJson.coupon_no;
-                                                    return docJson.coupon_no
-                                                } else {
-                                                    nut.model.err = docJson.success;
-                                                    nut.model.errString = docJson.error;
-                                                }
-                                            }));
-                                        })
 
                                         then.step(function () {
                                             helper.db.coll("lavico/custReceive").insert({
@@ -592,6 +614,7 @@ module.exports={
                         nut.model.jsonResult = resultList
                         console.log(resultList)
                         nut.model.sta = "false";
+                        nut.model.label =resultList[0].getLabel;
 
                         if (getLabel != "" || getLabel != null || getScore!="") {
                             //发送标签至CRM
