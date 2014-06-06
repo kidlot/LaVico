@@ -4,6 +4,16 @@ window.hideShareButtion.on()
 
 window.onload=function(){
 
+    var label ='{@label}'
+    var str = label.substr(0,1);
+    var getlabel;
+    if(str=="A"||str=="B"||str=="C"||str=="D"||str=="E"||str=="F"){
+        getlabel=label.substr(1);
+    }else{
+        getlabel=label;
+    }
+    $("#getlabel").html(getlabel);
+
     var tipDiv="no";
         if(tipDiv=="yes"){
             window.popupStyle2.on("您已经答过次提",function(event){
@@ -13,6 +23,7 @@ window.onload=function(){
         })
     }
 }
+
 </script>
 
 
@@ -67,8 +78,9 @@ window.onload=function(){
                             <if condition="{@stutas=='true'}">
 
                                 <else/>
-                                您是
-                            </if>{@resultString.getLabel}</p>
+                                您是 <label id="getlabel"></label>
+                            </if>
+                        </p>
                     </foreach>
                 </div>
             </div>
