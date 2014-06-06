@@ -120,6 +120,8 @@ module.exports= {
         })
 
         this.step(function(){
+            console.log("result_false")
+            console.log(result_false)
             if(result_false.length>0 && result_true.length==0){
                 max = result_false[0].optionId;
                 for(var i=0;i<result_false.length;i++){
@@ -151,8 +153,12 @@ module.exports= {
         })
 
         this.step(function(){
+            console.log("chooseNextArr")
+            console.log(chooseNextArr)
             if(chooseNextArr){
                 for(var i=0;i<chooseNextArr.length;i++){
+                    console.log("chooseNextArr[i].chooseID")
+                    console.log(chooseNextArr[i].chooseID)
                     if(chooseNextArr[i].chooseID==chooseId){
                         chooseNext = chooseNextArr[i].chooseNext
                     }
