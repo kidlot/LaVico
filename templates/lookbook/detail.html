@@ -39,7 +39,7 @@
                 <div class="elite_list">
                     <div class="small_list_top">
                         <img src="{@page.pic||'/lavico/public/images/small_list_top.jpg'}">
-                        <span class="content_up"><a href="javascript:;" onclick="showContent('{@key}');" class="ui-link"></a></span>
+                        <span class="content_up"><a href="javascript:;" class="ui-link"></a></span> <!--onclick="showContent('{@key}');"-->
                         <div class="small_content num_{@key}" style="display: none;">
                             {@ page.detail}
                         </div>
@@ -117,19 +117,27 @@
 <script src="/lavico/public/js/flipsnap.js"></script>
 <script type="text/javascript" src="/lavico/public/js/jquery.touchwipe.1.1.1.js"></script>
 <script>
-    var n = 0;
-    function showContent(m){
-        if(n==0){
-            $(".num_"+m).show();
-            $(".img_"+m).attr("src","/lavico/public/images/down.png");
-            n = 1;
-        }else{
-            $(".num_"+m).hide();
-            $(".img_"+m).attr("src","/lavico/public/images/up.png");
-            n = 0;
-        }
+    //var n = 0;
+    //function showContent(m){
+    //    if(n==0){
+    //        $(".num_"+m).show();
+    //        $(".img_"+m).attr("src","/lavico/public/images/down.png");
+    //        n = 1;
+    //    }else{
+    //        $(".num_"+m).hide();
+    //        $(".img_"+m).attr("src","/lavico/public/images/up.png");
+    //        n = 0;
+    //    }
 
-    }
+    //}
+    $(function () {
+        $(".ui-link").click(function () {
+            if ($(this).parent(".content_up").next(".small_content").css('display') == 'block') {
+                $(this).css("background", "url(/lavico/public/images/match_top.png) center no-repeat");
+            }
+        })
+    })
+
     
     function leftPage(){
 
