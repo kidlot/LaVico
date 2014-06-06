@@ -122,11 +122,11 @@
         if(n==0){
             $(".num_"+m).show();
             $(".img_" + m).attr("src", "/lavico/public/images/down.png");
-            $(".num_" + m).parent(".content_up").find("a").css("background", "url(/lavico/public/images/match_bottom.png) center no-repeat");
+            $(".num_" + m).siblings(".content_up").find("a").css("background", "url(/lavico/public/images/match_top.png) center no-repeat");
             n = 1;
         }else{
             $(".num_" + m).hide();
-            $(".num_" + m).parent(".content_up").find("a").css("background", "url(/lavico/public/images/match_top.png) center no-repeat");
+            $(".num_" + m).siblings(".content_up").find("a").css("background", "url(/lavico/public/images/match_bottom.png) center no-repeat");
             n = 0;
         }
 
