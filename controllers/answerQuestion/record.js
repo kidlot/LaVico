@@ -181,7 +181,8 @@ module.exports={
 
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                             "&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
-                        this.res.end(); if(then.req.session.isFinish){
+                        this.res.end();
+                        if(then.req.session.isFinish){
                             this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                                 "&_id="+_id+"&optionId="+then.req.session.optionId+"&memberid="+memberid+"&themetype="+themetype});
                             this.res.end();

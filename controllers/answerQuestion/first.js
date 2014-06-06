@@ -125,13 +125,14 @@ module.exports= {
                 for(var i=0;i<result_false.length;i++){
                     if(result_false[i].optionId>max){
                         max = result_false[i].optionId;
-                        chooseId = result_false[i].chooseId;
+                        chooseId = result_false[i].chooseID;
                     }else{
                         max = result_false[i].optionId;
-                        chooseId = result_false[i].chooseId;
+                        chooseId = result_false[i].chooseID;
                     }
                 }
             }
+            console.log("chooseId:"+chooseId)
         })
 
         this.step(function(){
