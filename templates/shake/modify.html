@@ -64,7 +64,7 @@
                             <option value="3">1月</option>
                             <option value="100">永久</option>
                         </select>
-                        <input type="text" id='lottery_count' class="form-control" name="name" placeholder="抽奖次数" style="width: 300px;display:inline-block;" value="{@ shake.lottery_count}" oninput="$('#pagename').text(this.value)">
+                        <input type="text" id='lottery_count' class="form-control" name="name" placeholder="抽奖频率如果设置为0，则不限制次数" style="width: 300px;display:inline-block;" value="{@ shake.lottery_count}" oninput="$('#pagename').text(this.value)">
                     </div>
 
                 </div>
@@ -308,15 +308,15 @@ function save(){
 
         _inputCheck = false;
         $.globalMessenger().post({
-            message: "抽奖次数的值必须是数字！",
+            message: "抽奖频率的值必须是数字！",
             type: 'error',
             showCloseButton: true});
     }else{
 
-        if(parseInt($('#lottery_count').val()) <= 0){
+        if(parseInt($('#lottery_count').val()) < 0){
             _inputCheck = false;
             $.globalMessenger().post({
-                message: "抽奖次数的值必须是正整数！",
+                message: "抽奖频率的值不能是负数！",
                 type: 'error',
                 showCloseButton: true});
         }else{
@@ -324,7 +324,7 @@ function save(){
 
                 _inputCheck = false;
                 $.globalMessenger().post({
-                    message: "抽奖次数的值必须是整数！",
+                    message: "抽奖频率的值必须是整数！",
                     type: 'error',
                     showCloseButton: true});
 

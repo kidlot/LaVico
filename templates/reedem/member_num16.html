@@ -74,10 +74,9 @@ window.onload=function(){
                         <li>
                             <div class="gift-box">
                                 <div class="gift-box-content">
-                                    <div class="gift-top clear">
+                                    <div class="gift-top clear" onclick="jump('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">
                                         <div class="fl">
-                                            <a href="/lavico/reedem/reedemdetail?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}&wxid={@wxid}">
-                                                <img src="{@canUseOne.smallPic}" /></a>
+                                                <img src="{@canUseOne.smallPic}" />
                                         </div>
                                         <div class="fl gift-top-right">
                                             <div class="name">{@canUseOne.name}</div>
@@ -111,7 +110,7 @@ window.onload=function(){
                         <li>
                             <div class="gift-box">
                                 <div class="gift-box-content">
-                                    <div class="gift-top clear">
+                                    <div class="gift-top clear" onclick="jump('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">
                                         <div class="fl">
                                             <a href="/lavico/reedem/reedemdetail?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}&wxid={@wxid}">
                                                 <img src="{@canUseOne.smallPic}" /></a>
@@ -135,3 +134,9 @@ window.onload=function(){
         </div>
     </div>
 </div>
+<script>
+    function jump(memberid,needScore,wxid,point,aid,id){
+        location.href="/lavico/reedem/reedemdetail?memberId="+memberid+
+                "&needScore="+needScore+"&wechatId="+wxid+"&point="+point+"&aid="+aid+"&_id="+id;
+    }
+</script>
