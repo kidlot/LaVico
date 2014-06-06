@@ -89,12 +89,16 @@
             document.getElementById("scroller").style.width = MainWin * theLength + "px";
 
             var indicator = document.getElementById("indicator");
+            var n = 1;
             for (var i = 0; i < listLi.length; i++) {
-                indicator.innerHTML = '<li></li>';
+                if (listLi == -1) {
+                    indicator.innerHTML = "<li>" + n + "</li>";
+                    n++;
+                }
             }
 
             var article = document.getElementById("article").offsetHeight;
-            indicator.style.bottom = article + "px" + 10;
+            indicator.style.bottom = article + "px";
         }
 
         wrapWin();
