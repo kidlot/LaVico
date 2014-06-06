@@ -158,8 +158,8 @@ module.exports= {
             if(chooseNextArr){
                 for(var i=0;i<chooseNextArr.length;i++){
                     console.log("chooseNextArr[i].chooseID")
-                    console.log(chooseNextArr[i].chooseId)
-                    if(chooseNextArr[i].chooseId==chooseId){
+                    console.log(chooseNextArr[i].chooseID)
+                    if(chooseNextArr[i].chooseID==chooseId){
                         chooseNext = chooseNextArr[i].chooseNext
                     }
                 }
