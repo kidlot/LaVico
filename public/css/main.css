@@ -50,7 +50,7 @@ a.tel{color:#2d2d2d;}
 .bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464;}
 .bargin-right .pice{color:#AF8B4D;}
 .bargin-content .look_store{ width:120px; height:auto; padding-top:2%; clear:both }
-.bargin-content .look_store a{width:120px; height:30px; display:inline-block; color:#291b00;font-size:1.4rem; line-height:40px; text-align:center;
+.bargin-content .look_store a{width:130px; height:34px; display:inline-block; color:#291b00;font-size:1.4rem; line-height:34px; text-align:center;
                              background:url(../images/look_storebg.jpg) center center no-repeat; background-size:100% 100%; }
 .bargin .border{  border-bottom:1px #c1c1c1 solid;}
 .bargin-mod{width:92%; margin:0 auto; padding:4% 4% 50px; }
