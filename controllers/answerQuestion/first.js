@@ -166,6 +166,9 @@ module.exports= {
             }else{
                 chooseNext = "-1";
             }
+            if(chooseNext==""){
+                chooseNext = parseInt(max)+1
+            }
             nut.model.choose = chooseNext;
         })
 
