@@ -646,6 +646,7 @@ module.exports = {
                             var checkCaptcha = seed.checkCaptcha;
                             var memberId = seed.memberId || 'undefined';
                             var card_number;//显示在会员中心的帐号
+                            var old_name;//以前保存的姓名
 
                             /*
                             * 'wxid':wxid,
@@ -804,6 +805,7 @@ module.exports = {
                                         address = member_info.info.MEM_PSN_ADDRESS;
                                         favoriteStyle = member_info.info.MEM_PSN_HOPPY;
                                         favoriteColor = member_info.info.MEM_PSN_COLOR;
+                                        old_name = member_info.info.MEM_PSN_CNAME || 'undefined';
 
                                         if(member_info.info.MEM_PSN_BIRTHDAY < 0){
                                             birthday = 0;
@@ -821,6 +823,12 @@ module.exports = {
                             this.step(function(doc){
                                 var dataJson = JSON.parse(data_doc);
                                 if(dataJson.success == true){
+
+                                    /*如果以前保存的真实姓名不是空的时候，保留以前的真实姓名*/
+                                    if(old_name != 'undefined'){
+                                        userName = old_name;
+                                    }
+
                                     this.req.session.id_code = '';
                                     helper.db.coll('welab/customers').update({wechatid:wxid},{
                                         $set:{
