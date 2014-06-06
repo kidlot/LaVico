@@ -7,6 +7,7 @@ $(function () {
         var isOpen=$("select[name='isOpen']").val();
         var theme=$("input[name='title']").val();
         var themeType=$("select[name='themeType']").val();//0答题抢积分 1型男测试 2调查问卷
+        var volumename=$("input[name='volumename']").val();
         var url=$("input[name='url']").val();
 
         var _inputCheck = true;
@@ -39,7 +40,7 @@ $(function () {
 
 
 
-        jsonData += "url:'"+url+"',themeType:"+themeType+",isOpen:'"+isOpen+"',endTime:'"+endTime+"',beginTime:'"+beginTime+"',createTime:'"+createTime()+"',theme:\'" + theme + "\',";
+        jsonData +="volumename:'"+volumename+ "',url:'"+url+"',themeType:"+themeType+",isOpen:'"+isOpen+"',endTime:'"+endTime+"',beginTime:'"+beginTime+"',createTime:'"+createTime()+"',theme:\'" + theme + "\',";
         jsonData += "description:\'奖项设置\',relief:\'免责声明\',themePicUrl:\'主题图片路径\',themeUrl:\'主题点击链接\',options:[";
 
         //题目数
@@ -156,7 +157,7 @@ $(function () {
                 getScore+"',getActivities:'"+getActivities+"',tipContent:'"+tipContent+"'}";
             if (v < count - 1) {jsonData += ','}
         }
-        //jsonData+="]}";
+        jsonData+="]}";
 
         //document.write(jsonData);
 
