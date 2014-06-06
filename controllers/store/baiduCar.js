@@ -9,20 +9,15 @@ module.exports= {
         var lng,lat;
 
         this.step(function(){
-            console.log(seed.wxid);
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wxid},this.hold(function(err,doc){
                 if(err) throw err;
-                console.log("abc");
                 if(doc){
                     if(doc.location!=null) {
-                        console.log("aa");
                         nut.model.userLng = doc.location[1];
                         nut.model.userLat = doc.location[0];
                     }else{
-                        console.log("bb");
                         nut.model.userLng="";
                         nut.model.userLat="";
-
                     }
                 }
             }));
