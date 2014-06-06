@@ -59,25 +59,22 @@
             </foreach>
         </div>
         <script>
-            function smallList() {
-                var classElements = document.getElementsByTagName("div");
-                for (var i = 0; i < classElements.length; i++) {
-                    if (classElements[i].className == 'small_list') {
-                        var nameDiv = classElements[i].getElementsByTagName("div");
-                        if (nameDiv.length === 2) {
-                            //console.log(nameDiv[0])
-                            nameDiv[1].id = 'samll_50';
-                            nameDiv[0].style.marginLeft = '8%';
-                        }
-                        //console.log(classElements[i].getElementsByTagName("div").length)
-                        //console.log(classElements[i].getElementsByTagName("div"))
-                    }
-                }
-                return classElements;
-            }
-            window.onload = function () {
-                smallList();
-            }            
+            //function smallList() {
+            //    var classElements = document.getElementsByTagName("div");
+            //    for (var i = 0; i < classElements.length; i++) {
+            //        if (classElements[i].className == 'small_list') {
+            //            var nameDiv = classElements[i].getElementsByTagName("div");
+            //            if (nameDiv.length === 2) {
+            //                nameDiv[1].id = 'samll_50';
+            //                nameDiv[0].style.marginLeft = '8%';
+            //            }
+            //        }
+            //    }
+            //    return classElements;
+            //}
+            //window.onload = function () {
+            //    smallList();
+            //}            
         </script>
     </div>
 </if>
