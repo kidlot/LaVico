@@ -14,7 +14,7 @@ module.exports= {
         var max;
         var chooseNext;
         var themeQuestion;
-        var chooseId;
+        var chooseId=0;
         var chooseNextArr;
         var result_true;
 
@@ -123,12 +123,15 @@ module.exports= {
             if(result_false.length>0 && result_true.length==0){
                 max = result_false[0].optionId;
                 for(var i=0;i<result_false.length;i++){
+                    console.log("max:"+max)
                     if(result_false[i].optionId>max){
                         max = result_false[i].optionId;
                         chooseId = result_false[i].chooseID;
+                        console.log("result_false[i].chooseIDSS:"+result_false[i].chooseID)
                     }else{
                         max = result_false[i].optionId;
                         chooseId = result_false[i].chooseID;
+                        console.log("result_false[i].chooseIDAA:"+result_false[i].chooseID)
                     }
                 }
             }
