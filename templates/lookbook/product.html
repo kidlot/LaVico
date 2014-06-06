@@ -32,6 +32,15 @@
     <article class="article" id="article"><h3>多色POLO衫</h3><p>热情洋溢的彩色polo衫，如同夏季香甜果汁，沁人心脾；舒适透气面料加以简洁时尚的设计，清新灵动。</p></article>
     <div id="nav">
         <div id="prev" onclick="leftPage();return false">prev</div>
+        <ul id="indicator">
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+        </ul>
         <div id="next" onclick="rightPage();return false">next</div>
     </div>
 
@@ -57,7 +66,10 @@
                 snap: true,
                 momentum: false,
                 hScrollbar: false,
-                onScrollEnd: onScrollEnd
+                onScrollEnd: function () {
+                    document.querySelector('#indicator > li.active').className = '';
+                    document.querySelector('#indicator > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
+                }
             });
         }
 
