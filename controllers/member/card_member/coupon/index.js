@@ -325,7 +325,7 @@ module.exports = {
                         var _PROMOTION_CODE = _coupons[_i].PROMOTION_CODE;
                         var _COUPON_NO = _coupons[_i].COUPON_NO;
                         var _COUPON_QTY = _coupons[_i].COUPON_QTY;
-                        var _COUPON_TYPE;
+                        var _COUPON_TYPE ;
                         var _COUPON_NAME = _coupons[_i].COUPON_NAME;
 
 
