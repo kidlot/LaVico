@@ -121,15 +121,13 @@
     function showContent(m){
         if(n==0){
             $(".num_"+m).show();
-            $(".img_"+m).attr("src","/lavico/public/images/down.png");
+            $(".img_" + m).attr("src", "/lavico/public/images/down.png");
+            $(this).css("background", "url(/lavico/public/images/match_bottom.png) center no-repeat");
             n = 1;
         }else{
-            $(".num_"+m).hide();
+            $(".num_" + m).hide();
+            $(this).css("background", "url(/lavico/public/images/match_top.png) center no-repeat");
             n = 0;
-            if ($(this).parent(".content_up").next(".small_content").css('display') == 'block') {
-                $(this).css("background", "url(/lavico/public/images/match_top.png) center no-repeat");
-            }
-
         }
 
     }
