@@ -115,6 +115,7 @@ module.exports={
             }
         })
 
+        //分数累加
         this.step(function(){
             if(go){
                 for(var i=0;i<scoreArr.length;i++){

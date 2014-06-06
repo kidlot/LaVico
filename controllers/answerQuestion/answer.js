@@ -56,7 +56,9 @@ module.exports={
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+member_id,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
-                        if(result){
+                        console.log("sa:"+result.length);
+                        console.log(result)
+                        if(result.length>0){
                             nut.model.isRecord = "1";
                         }else{
                             nut.model.isRecord = "0";
