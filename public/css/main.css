@@ -619,7 +619,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 #indicator {
 	width:auto;
     position:absolute;
-    right:2%;
+    left:50%;
     z-index:999;
 }
 
