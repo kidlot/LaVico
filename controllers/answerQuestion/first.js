@@ -128,12 +128,12 @@ module.exports= {
                     console.log("max:"+max)
                     if(result_false[i].optionId>max){
                         max = result_false[i].optionId;
-                        chooseId = result_false[i].chooseID;
-                        console.log("result_false[i].chooseIDSS:"+result_false[i].chooseID)
+                        chooseId = result_false[i].chooseId;
+                        console.log("result_false[i].chooseIDSS:"+result_false[i].chooseId)
                     }else{
                         max = result_false[i].optionId;
-                        chooseId = result_false[i].chooseID;
-                        console.log("result_false[i].chooseIDAA:"+result_false[i].chooseID)
+                        chooseId = result_false[i].chooseId;
+                        console.log("result_false[i].chooseIDAA:"+result_false[i].chooseId)
                     }
                 }
             }
@@ -158,13 +158,16 @@ module.exports= {
             if(chooseNextArr){
                 for(var i=0;i<chooseNextArr.length;i++){
                     console.log("chooseNextArr[i].chooseID")
-                    console.log(chooseNextArr[i].chooseID)
-                    if(chooseNextArr[i].chooseID==chooseId){
+                    console.log(chooseNextArr[i].chooseId)
+                    if(chooseNextArr[i].chooseId==chooseId){
                         chooseNext = chooseNextArr[i].chooseNext
                     }
                 }
             }else{
                 chooseNext = "-1";
+            }
+            if(chooseNext==""){
+                chooseNext = parseInt(max)+1
             }
             nut.model.choose = chooseNext;
         })
