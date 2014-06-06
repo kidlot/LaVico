@@ -250,7 +250,7 @@ function finish(){
     if(isRecord=="1")
     {
 
-        window.popupStyle2.on("您已经答过此题,不能再答题!",function(event){
+        window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!",function(event){
             if(event == "confirm"){
                 location.href="/lavico/answerQuestion/finish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true";
             }
@@ -270,7 +270,7 @@ function finish(){
         var content=$("textarea[name='descContent']").val();
 
         if(content==""){
-            window.popupStyle2.on("请先完成此题",function(event){
+            window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
             })
             return;
         }
@@ -283,7 +283,7 @@ function finish(){
         if($("input[name='singleChooseInput']").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("请先完成此题",function(event){
+                window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
                 })
                 return;
             }
@@ -298,7 +298,7 @@ function finish(){
         }else if($("input[name='mutilChooseInput']:checked").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("请先完成此题",function(event){
+                window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
                 })
                 return;
             }
@@ -391,7 +391,7 @@ function nextChoose(){
     }else if($("input[name='singleChooseInput']").length>0){
         //
         if($("input[name='singleChooseInput']:checked").length==0) {
-            window.popupStyle2.on("请先完成此题",function(event){
+            window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
             })
             return;
         }
@@ -408,7 +408,7 @@ function nextChoose(){
     }else if($("input[name='mutilChooseInput']:checked").length>0){
         //
         if($("input[name='mutilChooseInput']:checked").length==0) {
-            window.popupStyle2.on("请先完成此题",function(event){
+            window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
             })
             return;
         }
@@ -430,7 +430,7 @@ function nextChoose(){
         location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=1&optionId="+valueArr[0]+"&_id="+_id+
                 "&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
     }else{
-        window.popupStyle2.on("请先完成此题",function(event){
+        window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
         })
     }
 }
