@@ -239,8 +239,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .gift-bottom .left,.gift-bottom .right{height:40px; line-height:40px;font-size:1.4rem; text-align:center; cursor:pointer;}
 .gift-bottom .left{width:50%;color:#fff; background:url(../images/pre3.png) no-repeat;background-size:100% 100%; }
 .gift-bottom .right{width:44%;color:#291b00; background:url(../images/click_btn.jpg) no-repeat; margin-left:6%;background-size:100% 100%;}
-.gift-bottom .right a{color:#291b00;}
-.gift-bottom .left a{ color:#fff;}
+.gift-bottom .right a{color:#291b00; display:block;}
+.gift-bottom .left a{ color:#fff; display:block;}
 /*积分兑换*/
 .points2{ background-color:#fff;}
 .points2 .title{width:100%; height:50px; background:url(../images/head_bg.jpg) center center no-repeat; font-size:1.6rem; color:#000;}
@@ -474,10 +474,10 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 .elite_intro{ text-decoration:none; color:#BA9E70;}
 
-.input_select_div{ width:100%; height:40px;}
+.input_select_div{ width:100%; height:40px; position:relative}
 .input_select{width:100%;height:40px;border:0;font-size:1.4rem;line-height:40px;position:relative; background-size:100% 100%; padding:0 2%; border:1px solid #999; }
 #model-name{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
-#select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:100%;opacity:0;-moz-opacity:0;position:relative;top:-40px;border: 1px solid #999;}
+#select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:100%;opacity:0;-moz-opacity:0;position:absolute;top:0px;border: 1px solid #999;display:block; left:0px; }
 .input_select_sex{width:96%;height:40px; padding-left:4%; border:0;padding:0 2%;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
 #select_sex{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;left:-123px;}
 #select_month,#select_day{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
