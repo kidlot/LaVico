@@ -149,13 +149,13 @@
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2">券名称（用户获取时的名称）</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control display_name" name="display_name" placeholder="券名称" style="width: 300px;" value="{@ doc.display_name}" oninput="$('#pagename').text(this.value)">
+                                                <input id="{@doc.PROMOTION_CODE}-display_name" type="text" class="form-control display_name" name="display_name" placeholder="券名称" style="width: 300px;" value="{@ doc.display_name}" oninput="$('#pagename').text(this.value)">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2">抽奖概率</label>
                                             <div class="col-sm-10">
-                                                <input type="text" value='' class="form-control postData lottery_chance" style="width:150px;display:inline-block"/>%
+                                                <input id="{@doc.PROMOTION_CODE}-lottery_chance" type="text" value='' class="form-control postData lottery_chance" style="width:150px;display:inline-block"/>%
                                             </div>
                                         </div>
                                     </div>
@@ -181,24 +181,22 @@
 
 <script>
 /*点击复制按钮*/
+
 var init = function (){
-    $('#btnCopy').click(function(){
-        copyToClipboard($(this).val());
-    });
-    var _lottery = {@lottery};
-    console.log(_lottery);
+
+    var _lottery = JSON.parse('{@lottery}');
     for(var _i=0;_i<_lottery.length;_i++){
         var _PROMOTION_CODE = _lottery[_i].PROMOTION_CODE;
         var _display_name = _lottery[_i].display_name;
         var _lottery_chance = _lottery[_i].lottery_chance;
-        $('#'+_PROMOTION_CODE).show();
-        $('#'+_PROMOTION_CODE).find('.display_name').val(_display_name);
-        $('#'+_PROMOTION_CODE).find('.lottery_chance').val(_lottery_chance);
-
+        document.getElementById(_PROMOTION_CODE).style.display = 'block';
+        console.log(document.getElementById(_PROMOTION_CODE+'-display_name').value = _display_name);
+        console.log(document.getElementById(_PROMOTION_CODE+'-lottery_chance').value = _lottery_chance);
     }
 }
 init();
 /*编辑器*/
+
 //var content = decodeURIComponent('{@shake.content}');
 //
 //console.log(content);
@@ -416,7 +414,7 @@ function save(){
         $.request(oLinkOptions,function(err,nut){
             if(err) throw err ;
             nut.msgqueue.popup();
-            //$.controller("/lavico/shake",null,"lazy");
+            $.controller("/lavico/shake",null,"lazy");
         }) ;
     }
 }
