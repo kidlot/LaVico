@@ -18,6 +18,8 @@ module.exports={
         nut.model.isok = "0";
         nut.model.conent = "undefined"
 
+        var status = seed.status ? seed.status : "false";
+
         this.step(function(){
             //查找此会员是否存在
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
@@ -38,13 +40,27 @@ module.exports={
                     nut.model.isok = "1";
                     nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
                     //nut.view.disable();
-                   // nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
+                    // nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
 
                 }
                 memberId = member_id;
                 nut.model.member_id =member_id;
             }))
         });
+
+        this.step(function(){
+            console.log(typeof (status))
+            if(status=="true"){
+                helper.db.coll("lavico/custReceive").remove({"wechatid":wechatid,"themeId":helper.db.id(_id),"memberId":""+memberId},this.hold(function(err,doc){
+                    if(err)
+                    throw err;
+                }))
+
+            }
+        })
+
+
+
 
         this.step(function(){
             //判断活动是否开启或到期1-1
@@ -73,8 +89,6 @@ module.exports={
                 nut.model.isRecord = "0";
             }
         })
-
-
 
         this.step(function(){
             //判断活动是否开启或到期1-2
