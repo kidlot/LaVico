@@ -82,23 +82,21 @@
             var wrapMain = document.getElementById("wrapMain");
             var MainWin = wrapMain.offsetWidth;
             var listLi = document.getElementById("thelist").getElementsByTagName("li");
-            for (var i = 0; i < listLi.length; i++) {
-                listLi[i].style.width = MainWin + "px";
-            }
-            var theLength = document.getElementById("thelist").getElementsByTagName("li").length;
-            document.getElementById("scroller").style.width = MainWin * theLength + "px";
-
             var indicator = document.getElementById("indicator");
             var n = 1;
-            for (var i = 0; i < listLi.length; i++) {
-                if (listLi == -1) {
-                    indicator.innerHTML = "<li>" + n + "</li>";
-                    n++;
-                }
-            }
-
             var article = document.getElementById("article").offsetHeight;
-            indicator.style.bottom = article + "px";
+            var theLength = document.getElementById("thelist").getElementsByTagName("li").length;
+
+            for (var i = 0; i < listLi.length; i++) {
+                listLi[i].style.width = MainWin + "px";
+
+                indicator.innerHTML = "<li>" + n + "</li>";
+                n++;
+            }
+            
+            document.getElementById("scroller").style.width = MainWin * theLength + "px";
+          
+            indicator.style.bottom = article + 10 + "px";
         }
 
         wrapWin();
