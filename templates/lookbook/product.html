@@ -101,6 +101,10 @@
                 indicator.appendChild(indicatorLi);
                 indicatorTwo[0].className = 'active';
             }
+
+            var indicatorW = document.getElementById("indicator").offsetWidth;
+            indicator.style.marginLeft = -indicatorW / 2 + "px";
+
         }
 
         wrapWin();
