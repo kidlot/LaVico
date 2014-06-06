@@ -9,12 +9,12 @@ module.exports= {
         var _id = seed._id;
         var memberid;
         var themetype;
-        var results;
+        var result_false;
         var isok = true;
         var max;
         var chooseNext;
         var themeQuestion;
-        var chooseId;
+        var chooseId=0;
         var chooseNextArr;
         var result_true;
 
@@ -67,7 +67,6 @@ module.exports= {
         })
 
         this.step(function(){
-
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,doc){
                 if(err) throw err;
 
@@ -105,7 +104,7 @@ module.exports= {
                 "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
-                    results = result;
+                    result_false = result;
                 }
             }))
         })
@@ -121,42 +120,54 @@ module.exports= {
         })
 
         this.step(function(){
-            if(results  && (!result_true)){
-                for(var i=0;i<results.length;i++){
-                    max = results[0].optionId;
-                    if(results[i].optionId>max){
-                        max = results[i].optionId;
-                        chooseId = results[i].chooseId;
+            console.log("result_false")
+            console.log(result_false)
+            if(result_false.length>0 && result_true.length==0){
+                max = result_false[0].optionId;
+                for(var i=0;i<result_false.length;i++){
+                    console.log("max:"+max)
+                    if(result_false[i].optionId>max){
+                        max = result_false[i].optionId;
+                        chooseId = result_false[i].chooseId;
+                        console.log("result_false[i].chooseIDSS:"+result_false[i].chooseId)
                     }else{
-                        max = results[i].optionId;
-                        chooseId = results[i].chooseId;
+                        max = result_false[i].optionId;
+                        chooseId = result_false[i].chooseId;
+                        console.log("result_false[i].chooseIDAA:"+result_false[i].chooseId)
                     }
                 }
             }
+            console.log("chooseId:"+chooseId)
         })
 
         this.step(function(){
             console.log("themeQuestion")
             console.log(themeQuestion)
-            if(themeQuestion){
+            if(themeQuestion.length>0 && result_false.length>0){
                 for(var i=0;i<themeQuestion.length;i++){
                     if(themeQuestion[i].optionId==max ){
                         chooseNextArr = themeQuestion[i].choose;
                     }
                 }
             }
-
         })
 
         this.step(function(){
+            console.log("chooseNextArr")
+            console.log(chooseNextArr)
             if(chooseNextArr){
                 for(var i=0;i<chooseNextArr.length;i++){
+                    console.log("chooseNextArr[i].chooseID")
+                    console.log(chooseNextArr[i].chooseID)
                     if(chooseNextArr[i].chooseID==chooseId){
                         chooseNext = chooseNextArr[i].chooseNext
                     }
                 }
             }else{
                 chooseNext = "-1";
+            }
+            if(chooseNext==""){
+                chooseNext = parseInt(max)+1
             }
             nut.model.choose = chooseNext;
         })

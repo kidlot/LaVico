@@ -31,8 +31,11 @@
     </div>
     <article class="article" id="article"><h3>多色POLO衫</h3><p>热情洋溢的彩色polo衫，如同夏季香甜果汁，沁人心脾；舒适透气面料加以简洁时尚的设计，清新灵动。</p></article>
     <div id="nav">
-        <div id="prev" onclick="leftPage();return false">prev</div>
-        <div id="next" onclick="rightPage();return false">next</div>
+        <!--<div id="prev" onclick="leftPage();return false">prev</div>-->
+        <ul id="indicator">
+            
+        </ul>
+        <!--<div id="next" onclick="rightPage();return false">next</div>-->
     </div>
 
     <div class="fade2">
@@ -52,12 +55,14 @@
             $("#article").find("h3").text(data[0].name)
             $("#article").find("p").text(data[0].detail)
 
-
             myScroll = new iScroll('wrapMain', {
                 snap: true,
                 momentum: false,
                 hScrollbar: false,
-                onScrollEnd: onScrollEnd
+                onScrollEnd: function () {
+                    document.querySelector('#indicator > li.active').className = '';
+                    document.querySelector('#indicator > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
+                }
             });
         }
 
@@ -75,15 +80,31 @@
         function wrapWin() {
             var wrapMain = document.getElementById("wrapMain");
             var MainWin = wrapMain.offsetWidth;
-            var listLi = document.getElementById("thelist").getElementsByTagName("li");
+            listLi = document.getElementById("thelist").getElementsByTagName("li");
+            indicator = document.getElementById("indicator");
+            var article = document.getElementById("article").offsetHeight;
+            var theLength = document.getElementById("thelist").getElementsByTagName("li").length;
+
             for (var i = 0; i < listLi.length; i++) {
                 listLi[i].style.width = MainWin + "px";
             }
-            var theLength = document.getElementById("thelist").getElementsByTagName("li").length;
+            
             document.getElementById("scroller").style.width = MainWin * theLength + "px";
+          
+            indicator.style.bottom = article + 10 + "px";
+        }
+
+        function indicatorAct() {
+            var indicatorTwo = document.getElementById("indicator").getElementsByTagName("li");
+            for (var i = 0; i < listLi.length; i++) {
+                var indicatorLi = document.createElement("li")
+                indicator.appendChild(indicatorLi);
+                indicatorTwo[0].className = 'active';
+            }
         }
 
         wrapWin();
+        indicatorAct();
 
         window.onresize = function () {
             wrapWin();
