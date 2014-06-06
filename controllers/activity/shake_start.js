@@ -291,6 +291,7 @@ module.exports = {
 
                 var countUserByPoints;//根据积分计算多少次数
                 var returnCount;//根据系统后台设置，返回多少次机会
+                var PROMOTION_CODE;
 
                 this.step(function(){
                     helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
@@ -418,12 +419,10 @@ module.exports = {
                     activity.createDate = new Date().getTime();
                     activity.memo = '摇一摇'+'-'+shakeActivityName;
                     console.log(activity.memo);
-                    console.log('random:'+Math.floor(Math.random()*100+1));
                     console.log(shake);
                     console.log(shake.lottery);
 
                     var _random = Math.floor(Math.random()*100+1);//产生一个随机数字，100以内的数字
-                    console.log('random:'+_random);
                     var _flag = 0;//0表示不中奖，1表示中奖
                     var _chance = 0;
                     var _aid;
@@ -437,19 +436,23 @@ module.exports = {
                     for(var _i=0;_i<shake.lottery.length;_i++){
 
                         if(_i==0){
-                            _chance = shake.lottery[0].lottery_chance;
+                            _chance = parseInt(shake.lottery[0].lottery_chance);
                         }else{
-                            _chance = _chance + shake.lottery[_i].lottery_chance;
+                            _chance = _chance + parseInt(shake.lottery[_i].lottery_chance);
                         }
                         console.log(_chance)
                         if(_random <= _chance){
-                            _PROMOTION_CODE = shake.lottery[_i].PROMOTION_CODE;
+                            PROMOTION_CODE = shake.lottery[_i].PROMOTION_CODE;
                             _lotteryInfo = shake.lottery[_i];
                             _flag = 1;
-                            console.log(_aid);
+                            console.log('--------------');
+                            console.log(_chance);
+                            console.log('--------------');
+                            break;
                         }
 
                     }
+                    console.log('random:'+_random);
 
 
                     if(_flag == 1){
@@ -461,10 +464,10 @@ module.exports = {
                         activity.lottery_chance = _lotteryInfo.lottery_chance;
 
                         console.log("摇一摇领取优惠券");
-                        console.log("PROMOTION_CODE:"+_aid);
+                        console.log("PROMOTION_CODE:"+PROMOTION_CODE);
                         middleware.request('Coupon/FetchCoupon',{
                             openid:seed.uid,
-                            PROMOTION_CODE:_PROMOTION_CODE, //海澜CRM 活动代码，由 Promotions 接口返回
+                            PROMOTION_CODE:PROMOTION_CODE, //海澜CRM 活动代码，由 Promotions 接口返回
                             point:0,//每次摇一摇，消耗积分
                             otherPromId:seed.aid, //微信活动识别ID
                             memo:activity.memo
@@ -488,7 +491,7 @@ module.exports = {
                                 helper.db.coll('welab/customers').update({wechatid:seed.uid},{$addToSet:{shake:activity}},function(err,doc){err&&console.log(doc);});
 
                                 helper.db.coll("lavico/shake/logs").insert(activity,function(err,doc){err&&console.log(doc);});
-                                write_info(then,'{"result":"win","PROMOTION_CODE":"'+_PROMOTION_CODE+'","coupon_no":"'+doc.coupon_no+'"}');
+                                write_info(then,'{"result":"win","PROMOTION_CODE":"'+PROMOTION_CODE+'","coupon_no":"'+doc.coupon_no+'"}');
 
                             }else{
                                 write_info(then,'{"result":"'+doc.error+'"}');
