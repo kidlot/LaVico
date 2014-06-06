@@ -4,7 +4,7 @@
     <li class="active"><span>详细</span></li>
 </ul>
 <style>
-    /*.btn-edit,.btn-warning{display:none;}*/
+    .btn-edit,.btn-warning{display:none;}
 </style>
 <div class="panel panel-default">
 <div class="panel-heading">
@@ -314,7 +314,7 @@
     <td colspan="3" class="editAndView">
         <div>
             <span style="float: left">{@data.remarks||'--'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button" style="display:inline;">修改</button>
         </div>
         <div style="display: none">
             <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.remarks}">
