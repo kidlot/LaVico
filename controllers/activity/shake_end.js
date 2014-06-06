@@ -8,9 +8,10 @@ module.exports = {
     process:function(seed,nut){
 
         var uid = seed.uid || 'undefined';//用户微信ID
-        var _id = seed._id || 'undefined';//表lavico/shake，唯一确定shake的活动
-        var aid;//在表lavico/activity唯一确定活动ID
+        var aid = seed.aid || 'undefined';//表lavico/shake，唯一确定shake的活动,也就是_id
+        var PROMOTION_CODE = seed.activity || 'undefined';
         var coupon_no = seed.coupon_no || 'undefined';//优惠券
+        var lottery_info = {};
         var time = (new Date()).getTime();
         nut.model.time = time;
 
@@ -23,10 +24,10 @@ module.exports = {
                 this.terminate();
             }
 
-            if(_id == 'undefined'){
+            if(aid == 'undefined'){
                 nut.disable();//不显示模版
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                this.res.write('{"error":"_id_is_empty"}');
+                this.res.write('{"error":"aid_is_empty"}');
                 this.res.end();
                 this.terminate();
             }
@@ -53,7 +54,7 @@ module.exports = {
 
         this.step(function(){
 
-            helper.db.coll('lavico/shake').findOne({_id:helper.db.id(_id)},this.hold(function(err, doc){
+            helper.db.coll('lavico/shake').findOne({_id:helper.db.id(aid)},this.hold(function(err, doc){
                 if(!doc){
                     nut.disable();//不显示模版
                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -61,34 +62,19 @@ module.exports = {
                     this.res.end();
                     this.terminate();
                 }else{
-                    nut.model.doc = doc;
-                    var display_name = doc.display_name || '';
-                    nut.model.display_name = display_name;
-                    aid = doc.aid;//数据格式：L2013112709，在lavico/activity中唯一确定活动
-                    console.log(doc);
+
+                    for(var _i=0;_i<doc.lottery.length;_i++){
+                        if(doc.lottery[_i].PROMOTION_CODE == PROMOTION_CODE){
+                            lottery_info = doc.lottery[_i];
+                        }
+                    }
+                    nut.model.lottery_info = lottery_info;
                 }
             }));
         });
 
         this.step(function(){
-
-            helper.db.coll('lavico/activity').findOne({aid:aid},this.hold(function(err, doc){
-                if(!doc){
-                    nut.disable();//不显示模版
-                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                    this.res.write('{"error":"aid_no_bind_to_welab"}');
-                    this.res.end();
-                    this.terminate();
-                }else{
-                    nut.model.picUrl = doc.pic || '/lavico/public/images/coupon.jpg';
-                }
-            }));
-        });
-
-
-        this.step(function(){
-            nut.model.uid = uid ;
-            nut.model.aid = _id;
+            nut.model.uid = uid;
         });
 
 

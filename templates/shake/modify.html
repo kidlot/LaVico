@@ -47,30 +47,14 @@
                         <input type="text" class="form-control postData" id='name' name="name" placeholder="名称" style="width: 300px;" value="{@ shake.name}" oninput="$('#pagename').text(this.value)">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2">券名称（用户获取时的名称）</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control postData" id='display_name' name="display_name" placeholder="券名称" style="width: 300px;" value="{@ shake.display_name}" oninput="$('#pagename').text(this.value)">
-                    </div>
-                </div>
+
                 <div class="form-group">
                     <label for="points" class="col-sm-2">积分消耗/每次</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control postData" id='points' name="points" placeholder="0" style="width: 300px;" value="{@ shake.points}" oninput="$('#pagename').text(this.value)">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2">券</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" style="width: 150px" id='activity_select' name="type">
-                          <option value="0">请选择优惠券</option>
-                          <foreach for="@list" var="doc">
-                            <option value="{@doc.PROMOTION_CODE}">{@doc.PROMOTION_NAME}</option>
-                          </foreach>
-                        </select>
-                        <span id="add_coupons">添加</span>
-                    </div>
-                </div>
+
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">抽奖频率</label>
                     <div class="col-sm-10">
@@ -82,9 +66,7 @@
                         </select>
                         <input type="text" id='lottery_count' class="form-control" name="name" placeholder="抽奖次数" style="width: 300px;display:inline-block;" value="{@ shake.lottery_count}" oninput="$('#pagename').text(this.value)">
                     </div>
-                    <div class="col-sm-10">
 
-                    </div>
                 </div>
 
                 <div class="form-group">
@@ -93,58 +75,99 @@
                         <textarea type="text" class="form-control postData" id='content' name="content" style="width: 80%;height:300px;" oninput="$('#pagename').text(this.value)">{@shake.content}</textarea>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">券</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" style="width: 150px;display:inline;" id='activity_select' name="type">
+                            <option value="0">请选择优惠券</option>
+                            <foreach for="@list" var="doc">
+                                <option value="{@doc.PROMOTION_CODE}">{@doc.PROMOTION_NAME}</option>
+                            </foreach>
+                        </select>
+                        <button type="button" id="add-coupons" name="add-coupons" class="btn btn-primary" style="margin-left: 0" >添加</button>
+                        <button type="button" id="del-coupons" name="del-coupons" class="btn btn-primary" style="margin-left: 0" >删除</button>
+                    </div>
+                </div>
 
                 <br>
                 <h6>内容</h6>
                 <br>
+                <div id="promotions">
+                    <foreach for="@list" var="doc">
+                        <div id='{@doc.PROMOTION_CODE}' class="promotion_detail" style="display:none;">
 
+                            <div class="panel panel-default formText pagePanel">
+                                <div class="panel-body">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">券号</label>
+                                            <div class="col-sm-10">
+                                                <span class="PROMOTION_CODE" data="{@doc.PROMOTION_CODE}">{@doc.PROMOTION_CODE}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">券名</label>
+                                            <div class="col-sm-10">
+                                                <span class="PROMOTION_NAME" data="{@doc.PROMOTION_NAME}">{@doc.PROMOTION_NAME}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">券描述</label>
+                                            <div class="col-sm-10">
+                                                <span class="PROMOTION_DESC" data="{@doc.PROMOTION_DESC}">{@doc.PROMOTION_DESC}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">券类型</label>
+                                            <div class="col-sm-10">
+                                                <span class="PROMOTION_TYPE" data="{@doc.TYPE}">{@doc.TYPE}</span>
+                                            </div>
+                                        </div>
 
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">面值</label>
+                                            <div class="col-sm-10">
+                                                <span class="PROMOTION_QTY" data="{@doc.QTY}">{@doc.QTY}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">券图</label>
+                                            <div class="col-sm-10">
+                                                <if condition="@doc.pic">
+                                                    <img class="PROMOTION_PIC" data="{@doc.pic}" src="{@doc.pic}" style="max-width:60%; "/>
+                                                    <else/>
+                                                    空(请到应用管理中的“活动券”设置)
+                                                </if>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">已发放/总数</label>
+                                            <div class="col-sm-10">
+                                                <span class="PROMOTION_USED_TOTAL" data="{@ doc.USED}/{@doc.TOTAL}">{@ doc.USED}/{@doc.TOTAL}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">券名称（用户获取时的名称）</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control display_name" name="display_name" placeholder="券名称" style="width: 300px;" value="{@ doc.display_name}" oninput="$('#pagename').text(this.value)">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2">抽奖概率</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" value='' class="form-control postData lottery_chance" style="width:150px;display:inline-block"/>%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <foreach for="@list" var="doc">
-                  <div id='{@doc.PROMOTION_CODE}' class="promotion_detail" style='display:none;'>
-
-                      <div class="panel panel-default formText pagePanel">
-                          <div class="panel-body">
-                              <div class="col-md-9">
-                                  <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2">面值</label>
-                                      <div class="col-sm-10">
-                                          <span data="{@doc.QTY}">{@doc.QTY}</span>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2">券图</label>
-                                      <div class="col-sm-10">
-                                          <if condition="@doc.pic">
-                                          <img src="{@doc.pic}" />
-                                          <else/>
-                                          空(请到应用管理中的“活动券”设置)
-                                          </if>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2">已发放/总数</label>
-                                      <div class="col-sm-10">
-                                          <span>{@ doc.USED}/{@doc.TOTAL}</span>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2">抽奖概率</label>
-                                      <div class="col-sm-10">
-                                          <input type="text" data="{@doc.QTY}" coupon_name="{@doc.PROMOTION_NAME}" value='' class="form-control postData lottery_chance" style="width:150px;display:inline-block"/>%
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-
-                  </div>
-                </foreach>
+                        </div>
+                    </foreach>
+                </div>
 
                 <input type='hidden' id='lottery_input' value='{@shake.lottery_cycle}' />
                 <input type='hidden' id='_id' value='{@shake._id}' />
-                <input type='hidden' id='aid' value='{@shake.aid}' />
                 <input type='hidden' id='lottery_chance' value='{@ shake.lottery && shake.lottery[0] && shake.lottery[0].lottery_chance}' />
             </form>
         </div>
@@ -154,14 +177,27 @@
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <script src="/welab/public/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/opencomb/public/lib/3party/jquery-1.9.1.min.js"></script>
 
 <script>
 /*点击复制按钮*/
-window.onload = function(){
+var init = function (){
     $('#btnCopy').click(function(){
         copyToClipboard($(this).val());
     });
+    var _lottery = {@lottery};
+    console.log(_lottery);
+    for(var _i=0;_i<_lottery.length;_i++){
+        var _PROMOTION_CODE = _lottery[_i].PROMOTION_CODE;
+        var _display_name = _lottery[_i].display_name;
+        var _lottery_chance = _lottery[_i].lottery_chance;
+        $('#'+_PROMOTION_CODE).show();
+        $('#'+_PROMOTION_CODE).find('.display_name').val(_display_name);
+        $('#'+_PROMOTION_CODE).find('.lottery_chance').val(_lottery_chance);
+
+    }
 }
+init();
 /*编辑器*/
 //var content = decodeURIComponent('{@shake.content}');
 //
@@ -213,6 +249,7 @@ function save(){
     endDateTimeStamp = Date.parse(endDate);//毫秒级
 
 
+    var aid = $('#aid').val();
     if(startDateTimeStamp > endDateTimeStamp){
         _inputCheck = false;
         $.globalMessenger().post({
@@ -246,24 +283,8 @@ function save(){
           message: "请填写名称！",
           type: 'error',
           showCloseButton: true})      
-    }    
-    //display_name
-    if(!$("#display_name").val()){
-        _inputCheck = false;
-        $.globalMessenger().post({
-            message: "请填写券名称！",
-            type: 'error',
-            showCloseButton: true})
     }
 
-    if(!aid){
-      _inputCheck = false;
-      $.globalMessenger().post({
-          message: "请选择券！",
-          type: 'error',
-          showCloseButton: true})      
-    }
-    
     
     if(!$('#lottery_cycle').val()){
       _inputCheck = false;
@@ -345,15 +366,29 @@ function save(){
     }
     
     aFormInput['lottery'] = new Array();
-    $("#"+aid+" .postData").each(function(i,o){
-        if(! $(o).val()){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: $(o).parent().prev().text() + " 不能为空！",
-                type: 'error',
-                showCloseButton: true})
-        }else{
-          aFormInput['lottery'].push({'QTY':$(o).attr('data'),'lottery_chance':$(o).val(),'coupon_name':$(o).attr('coupon_name')});
+    $(".promotion_detail").each(function(i,object){
+        console.log($(object).is(':visible'));
+        if($(object).is(':visible')){
+            if(!$(object).find('.lottery_chance').val()){
+                var _PROMOTION_NAME = $(object).find('.PROMOTION_NAME').attr('data');
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: _PROMOTION_NAME + "的抽奖概率不能为空！",
+                    type: 'error',
+                    showCloseButton: true})
+            }else{
+                var _lottery = {};
+                _lottery.PROMOTION_CODE = $(object).find('.PROMOTION_CODE').attr('data');
+                _lottery.PROMOTION_NAME = $(object).find('.PROMOTION_NAME').attr('data');
+                _lottery.PROMOTION_DESC = $(object).find('.PROMOTION_DESC').attr('data');
+                _lottery.PROMOTION_TYPE = $(object).find('.PROMOTION_TYPE').attr('data');
+                _lottery.PROMOTION_QTY = $(object).find('.PROMOTION_QTY').attr('data') || null;
+                _lottery.PROMOTION_PIC = $(object).find('.PROMOTION_PIC').attr('data') || null;
+                _lottery.PROMOTION_USED_TOTAL = $(object).find('.PROMOTION_USED_TOTAL').attr('data');
+                _lottery.display_name = $(object).find('.display_name').val();
+                _lottery.lottery_chance = $(object).find('.lottery_chance').val();
+                aFormInput['lottery'].push(_lottery);
+            }
         }
     })
 
@@ -361,7 +396,6 @@ function save(){
     var content = $('#content').val();
     aFormInput['startDate'] = new Date($("#startDate").val()).getTime();
     aFormInput['endDate'] = new Date($("#endDate").val()).getTime();
-    aFormInput['aid'] = aid;
     aFormInput['name'] = $("#name").val();
     aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
     aFormInput['lottery_count'] = $("#lottery_count").val();
@@ -370,7 +404,7 @@ function save(){
     aFormInput['points'] = parseInt($("#points").val()) || 0;//每次游戏，所消耗的积分
     aFormInput['content'] = content;
     aFormInput['display_name'] = $("#display_name").val();//券名称
-
+    console.log(aFormInput)
 
 
     if(_inputCheck){
@@ -382,7 +416,7 @@ function save(){
         $.request(oLinkOptions,function(err,nut){
             if(err) throw err ;
             nut.msgqueue.popup();
-            $.controller("/lavico/shake",null,"lazy");
+            //$.controller("/lavico/shake",null,"lazy");
         }) ;
     }
 }
