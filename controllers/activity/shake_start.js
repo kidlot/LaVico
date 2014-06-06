@@ -132,6 +132,8 @@ module.exports = {
 
                 var countUserByPoints;//根据积分计算多少次数
                 var returnCount;//根据系统后台设置，返回多少次机会
+                var lottery_count;//保存后台设置，限制用户玩多少次机会
+
 
 
                 this.step(function(){
@@ -235,16 +237,25 @@ module.exports = {
                         console.log('+++++++++++++++++');
                     }));
                 })
-                this.step(function(){
 
-                    returnCount = shake.lottery_count - count;//shake.lottery_count 允许的摇一摇次数
-                    console.log('now '+seed.aid+' can:'+shake.lottery_count);
-                    console.log('now '+seed.aid+' go on getting:'+returnCount);
-                    console.log('has-count:'+count);
-                    console.log('system-count:'+shake.lottery_count);
-                    if(count >= shake.lottery_count){
-                        write_info(then,'{"result":"has-no-chance"}');
+                this.step(function(){
+                    if(parseInt(shake.lottery_count)==0){
+                        //不限制次数
+                        lottery_count = 0;
+
+                    }else{
+                        lottery_count = parseInt(shake.lottery_count);
+                        returnCount = shake.lottery_count - count;//shake.lottery_count 允许的摇一摇次数
+                        console.log('now '+seed.aid+' can:'+shake.lottery_count);
+                        console.log('now '+seed.aid+' go on getting:'+returnCount);
+                        console.log('has-count:'+count);
+                        console.log('system-count:'+shake.lottery_count);
+                        if(count >= shake.lottery_count){
+
+                            write_info(then,'{"result":"has-no-chance"}');
+                        }
                     }
+
                 })
 
                 this.step(function(){
@@ -264,11 +275,14 @@ module.exports = {
                     console.log("countUserByPoints:"+countUserByPoints);
                     console.log("returnCount:"+returnCount);
                     console.log("count:"+_count);
-                    if(costPerShake>0){
-                        write_info(then,'{"result":"unwin","points":"'+shake.points+'","count":"'+_count+'"}');
+
+                    if(lottery_count == 0){
+                        //不限制次数
+                        write_info(then,'{"result":"unwin","limit":"no","points":"'+shake.points+'","count":"'+lottery_count+'"}');
                     }else{
-                        write_info(then,'{"result":"unwin","points":"'+shake.points+'","count":"'+_count+'"}');
+                        write_info(then,'{"result":"unwin","limit":"yes","points":"'+shake.points+'","count":"'+_count+'"}');
                     }
+
                 })
             }
         },
@@ -287,6 +301,7 @@ module.exports = {
                 var memberId;//用户memberID
                 var wxid = seed.uid;//用户微信ID
                 var shakeActivityName;//摇一摇活动名称
+                var lottery_count;//保存后台设置，限制用户玩多少次机会
 
 
                 var countUserByPoints;//根据积分计算多少次数
@@ -395,16 +410,23 @@ module.exports = {
                     }));
                 })
                 this.step(function(){
+                    if(parseInt(shake.lottery_count)==0){
+                        //不限制次数
+                        lottery_count = 0;
 
-                    returnCount = shake.lottery_count - count;//shake.lottery_count 允许的摇一摇次数
-                    console.log('now '+seed.aid+' can:'+shake.lottery_count);
-                    console.log('now '+seed.aid+' go on getting:'+returnCount);
-                    console.log('has-count:'+count);
-                    console.log('system-count:'+shake.lottery_count);
-                    if(count >= shake.lottery_count){
+                    }else{
+                        lottery_count = parseInt(shake.lottery_count);
+                        returnCount = shake.lottery_count - count;//shake.lottery_count 允许的摇一摇次数
+                        console.log('now '+seed.aid+' can:'+shake.lottery_count);
+                        console.log('now '+seed.aid+' go on getting:'+returnCount);
+                        console.log('has-count:'+count);
+                        console.log('system-count:'+shake.lottery_count);
+                        if(count >= shake.lottery_count){
 
-                        write_info(then,'{"result":"has-no-chance"}');
+                            write_info(then,'{"result":"has-no-chance"}');
+                        }
                     }
+
                 })
 
                 this.step(function(){
@@ -527,7 +549,13 @@ module.exports = {
 
                         _count = _count - 1;
 
-                        write_info(then,'{"result":"unwin","points":"'+shake.points+'","count":"'+_count+'"}');
+                        if(lottery_count == 0){
+                            //不限制次数
+                            write_info(then,'{"result":"unwin","limit":"no","points":"'+shake.points+'","count":"'+lottery_count+'"}');
+
+                        }else{
+                            write_info(then,'{"result":"unwin","limit":"yes","points":"'+shake.points+'","count":"'+_count+'"}');
+                        }
 
 
                     }
@@ -577,17 +605,26 @@ module.exports = {
                     //每次摇一摇将消耗20积分，你当前还有10次机会
                     var _i = data.count;//你当前还有次机会的次数
                     var _points = parseInt(data.points);//每次摇一摇将消耗的积分
-
-                    if(_points == 0){
-                        window.popupStyle2.on('您当前还有'+_i+'次机会',function(event){
-                            flag = 1;
-                        });
+                    var _limit = data.limit;
+                    if(_limit == 'yes'){
+                        if(_points == 0){
+                            window.popupStyle2.on('您当前还有'+_i+'次机会',function(event){
+                                flag = 1;
+                            });
+                        }else{
+                            window.popupStyle2.on('每次摇一摇将消耗'+_points+'积分，您当前还有'+_i+'次机会',function(event){
+                                flag = 1;
+                            });
+                        }
                     }else{
-                        window.popupStyle2.on('每次摇一摇将消耗'+_points+'积分，您当前还有'+_i+'次机会',function(event){
+                        if(_points == 0){
                             flag = 1;
-                        });
+                        }else{
+                            window.popupStyle2.on('每次摇一摇将消耗'+_points+'积分',function(event){
+                                flag = 1;
+                            });
+                        }
                     }
-
 
                 }else if((/[\u4e00-\u9fa5]+/).test(data.result)){
 
@@ -746,33 +783,33 @@ module.exports = {
 
                     }else if(data.result == 'unwin'){
 
-//                    var _i = data.count;
-//                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会！',function(event){
-//                        flag = 1;
-//                    });
+                        var _limit = data.limit;
 
-                        //每次摇一摇将消耗20积分，你当前还有10次机会
-                        var _i = data.count;//你当前还有次机会的次数
-                        if(_i > 0){
-                            var _points = parseInt(data.points);//每次摇一摇将消耗的积分
-                            if(_points == 0){
-                                window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
-                                    flag = 1;
-                                });
+                        if(_limit == 'yes'){
+                            //每次摇一摇将消耗20积分，你当前还有10次机会
+                            var _i = data.count;//你当前还有次机会的次数
+                            if(_i > 0){
+                                var _points = parseInt(data.points);//每次摇一摇将消耗的积分
+                                if(_points == 0){
+                                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                        flag = 1;
+                                    });
+                                }else{
+                                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                        flag = 1;
+                                    });
+                                }
                             }else{
-                                window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                window.popupStyle2.on('这次没摇到，今天没机会了，明天再来试一试吧！',function(event){
                                     flag = 1;
                                 });
+
                             }
+
                         }else{
-
-//                            window.popupStyle2.on('您的积分不够了，赶紧去参加抢积分活动吧！',function(event){
-//                                flag = 1;
-//                            });
-                              window.popupStyle2.on('这次没摇到，今天没机会了，明天再来试一试吧！',function(event){
+                            window.popupStyle2.on('这次没摇到，要不再试一试？',function(event){
                                 flag = 1;
-                              });
-
+                            });
                         }
 
 
