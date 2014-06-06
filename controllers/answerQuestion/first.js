@@ -2,7 +2,6 @@ module.exports= {
     layout: "lavico/layout",
     view:"lavico/templates/answerQuestion/answer_num1.html",
     process:function(seed,nut){
-
         nut.model.wechatId=seed.wechatid;
         nut.model._id=seed.wechatid;
         var wechatid=seed.wechatid || undefined;
@@ -17,6 +16,7 @@ module.exports= {
         var themeQuestion;
         var chooseId;
         var chooseNextArr;
+        var result_true;
 
         this.step(function(){
             if(wechatid == undefined){
@@ -100,23 +100,28 @@ module.exports= {
             }));
         })
 
-
         this.step(function(){
-            console.log(themetype)
             helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
                 "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
                 if(err) throw err;
                 if(result){
                     results = result;
-                    console.log("result")
-                    console.log(result)
                 }
             }))
         })
 
         this.step(function(){
-            console.log("results")
-            if(results){
+            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
+                if(err) throw err;
+                if(result){
+                    result_true = result;
+                }
+            }))
+        })
+
+        this.step(function(){
+            if(results  && (!result_true)){
                 for(var i=0;i<results.length;i++){
                     max = results[0].optionId;
                     if(results[i].optionId>max){
@@ -128,7 +133,6 @@ module.exports= {
                     }
                 }
             }
-            console.log(results)
         })
 
         this.step(function(){
@@ -145,8 +149,6 @@ module.exports= {
         })
 
         this.step(function(){
-            console.log("chooseBextArr")
-            console.log(chooseNextArr)
             if(chooseNextArr){
                 for(var i=0;i<chooseNextArr.length;i++){
                     if(chooseNextArr[i].chooseID==chooseId){
@@ -156,27 +158,20 @@ module.exports= {
             }else{
                 chooseNext = "-1";
             }
-            console.log("chooseNext:"+chooseNext)
             nut.model.choose = chooseNext;
         })
 
         this.step(function(){
-            //if(memberid!="undefined"){
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),
-                    "memberId":""+memberid,"isFinish":true},this.hold(function(err,doc){
+            helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid,"isFinish":true},
+                this.hold(function(err,doc){
                     if(err) throw err;
                     if(doc){
                         nut.model.isok = "0";
                     }else{
                         nut.model.isok = "1";
                     }
-                }))
-
-           // }else{
-                //nut.model.isok = "1";
-            //}
+                })
+            )
         })
-
     }
-
 }

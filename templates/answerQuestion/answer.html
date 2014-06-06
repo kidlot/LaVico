@@ -257,7 +257,7 @@ function finish(){
         var content=$("textarea[name='descContent']").val();
 
         if(content==""){
-            window.popupStyle2.on("您忘记填写了～",function(event){
+            window.popupStyle2.on("请先完成此题",function(event){
             })
             return;
         }
@@ -270,7 +270,7 @@ function finish(){
         if($("input[name='singleChooseInput']").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("您忘记选择了～",function(event){
+                window.popupStyle2.on("请先完成此题",function(event){
                 })
                 return;
             }
@@ -285,7 +285,7 @@ function finish(){
         }else if($("input[name='mutilChooseInput']:checked").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("您忘记选择了～",function(event){
+                window.popupStyle2.on("请先完成此题",function(event){
                 })
                 return;
             }
@@ -378,7 +378,7 @@ function nextChoose(){
     }else if($("input[name='singleChooseInput']").length>0){
         //
         if($("input[name='singleChooseInput']:checked").length==0) {
-            window.popupStyle2.on("您忘记选择了～",function(event){
+            window.popupStyle2.on("请先完成此题",function(event){
             })
             return;
         }
@@ -395,7 +395,7 @@ function nextChoose(){
     }else if($("input[name='mutilChooseInput']:checked").length>0){
         //
         if($("input[name='mutilChooseInput']:checked").length==0) {
-            window.popupStyle2.on("您忘记选择了～",function(event){
+            window.popupStyle2.on("请先完成此题",function(event){
             })
             return;
         }
@@ -417,7 +417,7 @@ function nextChoose(){
         location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=1&optionId="+valueArr[0]+"&_id="+_id+
                 "&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
     }else{
-        window.popupStyle2.on("您忘记填写了～",function(event){
+        window.popupStyle2.on("请先完成此题",function(event){
         })
     }
 }

@@ -59,6 +59,7 @@ module.exports={
                                 + "getLabel:'" + "您上次未能完成答题"
                                 + "',getScore:" + "0"
                                 + ",getTipContent:'" + "您上次未能完成答题"
+                                + "',code:'" + "undefined"
                                 + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
                             nut.model.score = "0";
@@ -81,6 +82,7 @@ module.exports={
                                 + "getLabel:'" + "您上次未能完成答题"
                                 + "',getScore:" + "0"
                                 + ",getTipContent:'" + "您上次未能完成答题"
+                                + "',code:'" + "undefined"
                                 + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
                             nut.model.jsonResult = eval('(' + resultList + ')');
                             nut.model.score = "0";
@@ -252,7 +254,8 @@ module.exports={
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
                                         "memberId":memberid,
-                                        "themetype":themetype
+                                        "themetype":themetype,
+                                        "code":getActivities
                                     }, function (err, doc) {
                                     });
                                     //记录json准备显示
@@ -260,6 +263,7 @@ module.exports={
                                         + "getLabel:'" + getLabel
                                         + "',getScore:" + getScore
                                         + ",getTipContent:'" + getTipContent
+                                        + "',code:'" + getActivities
                                         + "',getActivities:'" + newActivity + "'}";
                                 })
                                 //调用接口结束
@@ -270,6 +274,7 @@ module.exports={
                                         + "getLabel:'" + "对不起,您没有获得任何奖励"
                                         + "',getScore:" + 0
                                         + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                        + "',getScore:'" + "undefined"
                                         + "',getActivities:'" + "您没有获得任何礼券" + "'}";
                                     nut.model.stutas = "true";
                                     nut.model.score = "0";
@@ -421,6 +426,7 @@ module.exports={
                                             + "getLabel:'" + "对不起,您没有获得任何奖励"
                                             + "',getScore:" + 0
                                             + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                            + "',code:'" + "undefined"
                                             + "',getActivities:'" + "null" + "'}";
                                     } else {
                                         //记录json准备显示
@@ -428,6 +434,7 @@ module.exports={
                                             + "getLabel:'" + getLabel
                                             + "',getScore:" + getScore
                                             + ",getTipContent:'" + getTipContent
+                                            + "',code:'" + getActivities
                                             + "',getActivities:'" + newActivity + "'}";
                                     }
                                     if(resultList){
@@ -489,7 +496,8 @@ console.log(jsonData)
                                                 "getTipContent": getTipContent,
                                                 "createTime": new Date().getTime(),
                                                 "memberId":memberid,
-                                                "themetype":themetype
+                                                "themetype":themetype,
+                                                "code":getActivities
                                             }, function (err, doc) {
                                             });
                                             if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
@@ -498,6 +506,7 @@ console.log(jsonData)
                                                     + "getLabel:'" + "对不起,您没有获得任何奖励"
                                                     + "',getScore:" + 0
                                                     + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                                    + "',code:'" + "undefined"
                                                     + "',getActivities:'" + "您没有获得任何礼券" + "'}";
 //                                                resultList += "{"
 //                                                    + "getLabel:'" + "null"
@@ -510,6 +519,7 @@ console.log(jsonData)
                                                     + "getLabel:'" + getLabel
                                                     + "',getScore:" + getScore
                                                     + ",getTipContent:'" + getTipContent
+                                                    + "',code:'" + getActivities
                                                     + "',getActivities:'" + newActivity + "'}";
                                             }
                                         })
@@ -545,6 +555,7 @@ console.log(jsonData)
                                         + "getLabel:'" + "对不起,您没有获得任何奖励"
                                         + "',getScore:" + 0
                                         + ",getTipContent:'" + "对不起,您没有获得任何奖励"
+                                        + "',code:'" + "undefined"
                                         + "',getActivities:'" + "您没有获得任何礼券" + "'}";
                                     nut.model.stutas = "true";
                                     nut.model.score = "0";

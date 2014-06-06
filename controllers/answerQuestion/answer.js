@@ -6,7 +6,10 @@ module.exports={
         var _id=seed._id;//获取题目ID
         var optionId=seed.optionId;//获取题号
         var wechatid=seed.wechatid;//获取微信ID
-        if(optionId==1)this.req.session.scoreAll=0;//初始化session
+
+        if(optionId==1)
+            this.req.session.scoreAll=0;//初始化session
+
         var member_id;
         nut.model.wxid = wechatid;
         nut.model.optionId = optionId;
@@ -47,7 +50,8 @@ module.exports={
                 nut.model.themeType = doc.themeType;
                 nut.model.themequestion = JSON.stringify(doc.options);
             }));
-        });
+        })
+
         this.step(function(){
             //判断活动是否开启或到期1-2
             if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
@@ -93,46 +97,10 @@ module.exports={
                 nut.model.custReceive = JSON.stringify(doc);
             }));
         })
-
-        //nut.model.wechatid=wechatid;
     },
     viewIn:function(){
         $('#loading').hide();//隐藏加载框
-//        $.ajax({
-//            type: "GET",
-//            url: "/lavico/answerQuestion/answer:detail",
-//            data: {"id":_id},
-//            dataType: "json",
-//            success: function(data){
-//                if(data.error == "false"){
-//                    var dates = data.dates;
-//
-//                }else{
-//                    $('#count').html('');
-//                }
-//            }
-//        });
     },
-//    actions:{
-//        detail:{
-//            layout:null,
-//            view:null,
-//            process:function(seed,nut){
-//                var id = seed._id;
-//                this.step(function(){
-//                    //判断活动是否开启或到期1-1
-//                    helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(id)},this.hold(function(err,doc){
-//                        if(err)throw err;
-//                        nut.disable();//不显示模版
-//                        this.res.writeHead(200, { 'Content-Type': 'application/json' });
-//                        this.res.write('{"error":"false","dates":"'+JSON.stringify(doc.options)+'"}');
-//                        this.res.end();
-//                        //nut.model.themequestion = JSON.stringify(doc.options);
-//                    }));
-//                });
-//            }
-//        }
-//    }
 }
 
 function createTime(){

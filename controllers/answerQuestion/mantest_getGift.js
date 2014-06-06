@@ -10,11 +10,16 @@ module.exports={
         nut.model.stuas= seed.stuas ? seed.stuas :"false";
 
         this.step(function(){
-            helper.db.coll("lavico/activity").findOne({"aid":seed.getActivities},this.hold(function(err,result){
-                if(err) throw err;
-                console.log(result);
-                nut.model.docs = result;
-            }))
+            if(seed.getActivities!="undefined"||seed.getActivities!="no"){
+                helper.db.coll("lavico/activity").findOne({"aid":seed.getActivities},this.hold(function(err,result){
+                    if(err) throw err;
+                    nut.model.pic = result.pic;
+                    nut.model.name = result.promotion_name;
+                }))
+            }else{
+                nut.model.pic = "undefined";
+                nut.model.name = "您没有获得任何礼券";
+            }
         })
     }
 }
