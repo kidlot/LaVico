@@ -156,6 +156,14 @@ module.exports = {
                     nut.model.list = list;
                     nut.model.shake = shake;
                     nut.model.doc = doc;
+                    nut.model.lottery = JSON.stringify(shake.lottery);
+
+//                    var _lottery = shake.lottery;
+//                    for(var _i;_i<_lottery.length;_i++){
+//                        var _str = _lottery[_i].aid;
+//                        _lottery[_i]._str = _lottery[_i].aid;
+//                    }
+
                 });
             },
             viewIn: function () {
@@ -192,13 +200,22 @@ module.exports = {
                     });
                 }
 
-
-                $('#activity_select').change(function () {
-                    aid = $(this).val();
-
-                    $(".promotion_detail").css('display', 'none');
-                    $("#" + $(this).val()).css('display', 'block');
+                //添加
+                $('#add-coupons').click(function(){
+                    console.log($('#activity_select').val());
+                    var _PROMOTION_CODE = $('#activity_select').val();//_PROMOTION_CODE
+                    $("#" + _PROMOTION_CODE).css('display','block').find('.panel-body').css("background-color", "#eeeeee");
                 });
+
+                //删除
+                $('#del-coupons').click(function(){
+                    console.log($('#activity_select').val());
+                    var _PROMOTION_CODE = $('#activity_select').val();//_PROMOTION_CODE
+                    $("#" + _PROMOTION_CODE).css('display', 'none');
+                });
+                //
+
+
             }
         },
         save: {
