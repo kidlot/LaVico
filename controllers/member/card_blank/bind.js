@@ -829,7 +829,7 @@ module.exports = {
                                         }else{
                                             _favoriteStyle = '简约大方';
                                         }
-                                            
+
                                         favoriteStyle = _favoriteStyle;
 
                                     }));
