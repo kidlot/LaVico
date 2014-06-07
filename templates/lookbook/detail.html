@@ -85,15 +85,13 @@
 <if condition="@lookbookType == '瀑布流型'">
     <section id="section" style="background-color: #e4e4e4;">
         <div class="elite" id="wrap">
-            <foreach for="@allPage.page" var="page" key="key">
-                <if condition="@key%2 == 0">
-                    <div class="elite_list_lw">
-                        <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@page.product[0]._id}">
-                            <span class="elite_img"><img src="{@page.pic||'/lavico/public/images/elite_home_top.gif'}" /></span>
-                            <span class="elite_details">{@page.name}</span>
-                        </a>
-                    </div>
-                </if>
+            <foreach for="@allPage.page" var="item" key="key">
+                <div class="elite_list_lw">
+                    <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@item._id}">
+                        <span class="elite_img"><img src="{@item.pic||'/lavico/public/images/elite_home_top.gif'}" /></span>
+                        <span class="elite_details">{@item.name}</span>
+                    </a>
+                </div>
             </foreach>
         </div>
         <script>
