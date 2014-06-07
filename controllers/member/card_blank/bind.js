@@ -646,6 +646,7 @@ module.exports = {
                             var checkCaptcha = seed.checkCaptcha;
                             var memberId = seed.memberId || 'undefined';
                             var card_number;//显示在会员中心的帐号
+                            var old_name;//以前保存的姓名
 
                             /*
                             * 'wxid':wxid,
@@ -804,12 +805,32 @@ module.exports = {
                                         address = member_info.info.MEM_PSN_ADDRESS;
                                         favoriteStyle = member_info.info.MEM_PSN_HOPPY;
                                         favoriteColor = member_info.info.MEM_PSN_COLOR;
+                                        old_name = member_info.info.MEM_PSN_CNAME || 'undefined';
 
-                                        if(member_info.info.MEM_PSN_BIRTHDAY < 0){
+                                        if(parseInt(member_info.info.MEM_PSN_BIRTHDAY) < 0){
                                             birthday = 0;
                                         }else{
                                             birthday = member_info.info.MEM_PSN_BIRTHDAY;
                                         }
+
+                                        var _favoriteStyle = favoriteStyle;
+                                        if(_favoriteStyle=='01'){
+                                            _favoriteStyle = '简约大方';
+                                        }else if(_favoriteStyle=='02'){
+                                            _favoriteStyle = '传统';
+                                        }else if(_favoriteStyle=='03'){
+                                            _favoriteStyle = '混搭时尚';
+                                        }else if(_favoriteStyle=='04'){
+                                            _favoriteStyle = '职业商务';
+                                        }else if(_favoriteStyle=='05'){
+                                            _favoriteStyle = '高端奢华';
+                                        }else if(_favoriteStyle=='06') {
+                                            _favoriteStyle = '休闲';
+                                        }else{
+                                            _favoriteStyle = '简约大方';
+                                        }
+
+                                        favoriteStyle = _favoriteStyle;
 
                                     }));
 
@@ -821,6 +842,13 @@ module.exports = {
                             this.step(function(doc){
                                 var dataJson = JSON.parse(data_doc);
                                 if(dataJson.success == true){
+
+                                    /*如果以前保存的真实姓名不是空的时候，保留以前的真实姓名*/
+                                    if(old_name != 'undefined'){
+                                        userName = old_name;
+                                    }
+
+
                                     this.req.session.id_code = '';
                                     helper.db.coll('welab/customers').update({wechatid:wxid},{
                                         $set:{

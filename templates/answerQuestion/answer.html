@@ -24,7 +24,7 @@ var optionId = '{@optionId}';
 var themequestion = JSON.parse('{@themequestion}')
 var custReceive = JSON.parse('{@custReceive}')
 var themetype = '{@themeType}'
-
+//alert(typeof (themetype))
 if(window.name != "bencalie"){
     location.reload();
     window.name = "bencalie";
@@ -33,16 +33,16 @@ if(window.name != "bencalie"){
 }
 
 
+
 //初始化事件
 function build(){
 
     if(member_id=='undefined'){
-//        alert('请先申请会员卡或者绑定会员,然后参加活动!');
-//        window.location.href='/lavico/member/card_blank/register?wxid='+wxid
+        alert('请先申请会员卡或者绑定会员,然后参加活动!');
+        window.location.href='/lavico/member/card_blank/register?wxid='+wxid
     }else{
         //添加标题显示
         $(".title").append(jsonObject.title);
-
         //判断是否为“主观题”
         if(jsonObject.type==2){
             $(".content").append("<div style='padding-top: 15px;'><textarea cols='20' rows='12' name='descContent' class='textarea' ></textarea></div>");
@@ -107,10 +107,12 @@ function build(){
             if(custReceive[i].optionId==value){
                 if(custReceive[i].chooseId == "主观题"){
                     $("textarea[name='descContent']").val(custReceive[i].resultValue);
+                    $("#tip").html("您已经答过此题");
                 }else if(custReceive[i].type==0){
                     $("#for"+custReceive[i].chooseId).attr('checked','checked');
                     $("#chooseNa"+custReceive[i].chooseId).removeClass("select1");
                     $("#chooseNa"+custReceive[i].chooseId).addClass("select");
+                    $("#tip").html("您已经答过此题");
                 }else if(custReceive[i].type==1){
                     var chooseid=custReceive[i].chooseId;
                     var arry=chooseid.split(",");
@@ -128,6 +130,7 @@ function build(){
                         $("#for"+str[s]).attr('checked','checked');
                         $("#chooseNa"+str[s]).removeClass("selects1");
                         $("#chooseNa"+str[s]).addClass("selects");
+                        $("#tip").html("您已经答过此题");
                     }
                 }
             }
@@ -136,11 +139,13 @@ function build(){
                 if(custReceive[i].chooseId == "主观题"){
                     $("textarea[name='descContent']").val(custReceive[i].resultValue);
                     $("textarea[name='descContent']").attr("readonly","readonly");
+                    $("#tip").html("您已经答过此题");
                 }else if(custReceive[i].type==0){
                     $("#for"+custReceive[i].chooseId).attr('checked','checked');
                     var leng = $("input[name='singleChooseInput']").length;
                     for(var h = 0;h<leng;h++){
                         $("#for"+h).attr('disabled',true);
+                        $("#tip").html("您已经答过此题");
                     }
                     $("span[name='correntImg']").css("visibility","visible");
                     $("#chooseNa"+custReceive[i].chooseId).removeClass("select1");
@@ -163,6 +168,7 @@ function build(){
                         var length = $("input[name='mutilChooseInput']").length;
                         for(var h=0;h<length;h++){
                             $("#for"+h).attr('disabled',true);
+                            $("#tip").html("您已经答过此题");
                         }
                         $("#chooseNa"+str[s]).removeClass("selects1");
                         $("#chooseNa"+str[s]).addClass("selects");
@@ -175,14 +181,14 @@ function build(){
 
 //判断开还关
     //alert(document.cookie);
-    var strCookie=document.cookie;
-    var arrCookie=strCookie.split(",");
-    for(var i=0;i<arrCookie.length;i++){
-        var arr=arrCookie[i].split("=");
-        if(arr[1]==jsonObject.optionId){
-            $("#tip").html("您已经答过此题");
-        }
-    }
+//    var strCookie=document.cookie;
+//    var arrCookie=strCookie.split(",");
+//    for(var i=0;i<arrCookie.length;i++){
+//        var arr=arrCookie[i].split("=");
+//        if(arr[1]==jsonObject.optionId){
+//            $("#tip").html("您已经答过此题");
+//        }
+//    }
 
     //当前显示编号是否已经至最后一题，显示“下一题”或“完成”
     if(jsonObject.optionId<optionCount){
@@ -245,6 +251,21 @@ function showCorrents(t){
 
 //finish完成按钮“触发"事件
 function finish(){
+//check();
+    //alert(typeof (jsonObject.type))
+    if(themetype == "0" || themetype =="2"){
+        var isRecord = '{@isRecord}';
+        if(isRecord=="1"){
+            window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!",function(event){
+                if(event == "confirm"){
+                    location.href="/lavico/answerQuestion/finish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true";
+                }
+            })
+            return;
+        }
+    }
+
+
 
     var value=0;
     var valueArr="";
@@ -257,7 +278,7 @@ function finish(){
         var content=$("textarea[name='descContent']").val();
 
         if(content==""){
-            window.popupStyle2.on("您忘记填写了～",function(event){
+            window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
             })
             return;
         }
@@ -270,7 +291,7 @@ function finish(){
         if($("input[name='singleChooseInput']").length>0){
             //
             if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("您忘记选择了～",function(event){
+                window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
                 })
                 return;
             }
@@ -284,8 +305,8 @@ function finish(){
                     "&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
         }else if($("input[name='mutilChooseInput']:checked").length>0){
             //
-            if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("您忘记选择了～",function(event){
+            if($("input[name='mutilChooseInput']:checked").length==0) {
+                window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
                 })
                 return;
             }
@@ -360,6 +381,7 @@ function choose(){
 
 //next下一题按钮“触发”事件
 function nextChoose(){
+    //check();
     var value=0;
     var valueArr="";
     var score=0;
@@ -378,7 +400,7 @@ function nextChoose(){
     }else if($("input[name='singleChooseInput']").length>0){
         //
         if($("input[name='singleChooseInput']:checked").length==0) {
-            window.popupStyle2.on("您忘记选择了～",function(event){
+            window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
             })
             return;
         }
@@ -395,7 +417,7 @@ function nextChoose(){
     }else if($("input[name='mutilChooseInput']:checked").length>0){
         //
         if($("input[name='mutilChooseInput']:checked").length==0) {
-            window.popupStyle2.on("您忘记选择了～",function(event){
+            window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
             })
             return;
         }
@@ -417,13 +439,29 @@ function nextChoose(){
         location.href="/lavico/answerQuestion/record?wechatid="+wechatid+"&type=1&optionId="+valueArr[0]+"&_id="+_id+
                 "&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+"&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
     }else{
-        window.popupStyle2.on("您忘记填写了～",function(event){
+        window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
         })
     }
 }
 
+//function check(){
+//    var ok = '{@isok}';
+//    var conent = '{@conent}'
+//    if(ok=="2")
+//    {
+//
+//        window.popupStyle2.on(conent,function(event){
+//            if(event == "confirm"){
+//                location.href='/lavico/member/card_blank/register?wxid='+wxid
+//            }
+//        })
+//        return false;
+//    }
+//}
+
 window.onload =function() {
     build();
+    //check();
 }
 </script>
 
@@ -446,11 +484,20 @@ window.onload =function() {
     <div class="pages">
         <div class="pages-content" >
             <!--<input type="button" onclick="self.location=document.referrer" name="btnBack" value=" 上一题" class="fl pre"/>-->
-            <a class="fl pre" onclick="javascript:history.go(-1);">上一题</a>
-            <if condition="{@optionCount!=optionId}">
-                <a class="fr next" href="javascript:nextChoose()" style="float:none;">下一题</a>
+            <if condition="{@optionId==1}">
+                <a class="fl pre" onclick="javascript:history.go(-1);" style="display:none">上一题</a>
+                    <if condition="{@optionCount!=optionId}">
+                        <a class="fr next" href="javascript:nextChoose()" style="float:none; display:block;margin:0 auto;">下一题</a>
+                    <else/>
+                        <a class="fr next" href="javascript:finish()" style="float:none;">完&nbsp;&nbsp;成 > </a>
+                    </if>
                 <else/>
-                <a class="fr next" href="javascript:finish()" style="float:none;">完&nbsp;&nbsp;成 > </a>
+                <a class="fl pre" onclick="javascript:history.go(-1);">上一题</a>
+                    <if condition="{@optionCount!=optionId}">
+                        <a class="fr next" href="javascript:nextChoose()" style="float:none;">下一题</a>
+                    <else/>
+                        <a class="fr next" href="javascript:finish()" style="float:none;">完&nbsp;&nbsp;成 > </a>
+                    </if>
             </if>
         </div>
     </div>

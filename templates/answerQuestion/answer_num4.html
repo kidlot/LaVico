@@ -4,6 +4,17 @@ window.hideShareButtion.on()
 
 window.onload=function(){
 
+    var label ='{@label}'
+    var str = label.substr(0,1);
+    var getlabel;
+    if(str=="A"||str=="B"||str=="C"||str=="D"||str=="E"||str=="F"){
+        getlabel=label.substr(1);
+    }else{
+        getlabel=label;
+    }
+    $("#getlabel").html(getlabel);
+
+
     var tipDiv="no";
         if(tipDiv=="yes"){
             window.popupStyle2.on("您已经答过次提",function(event){
@@ -13,6 +24,7 @@ window.onload=function(){
         })
     }
 }
+
 </script>
 
 
@@ -65,10 +77,11 @@ window.onload=function(){
                     <foreach for="{@jsonResult}" var="resultString">
                         <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
                             <if condition="{@stutas=='true'}">
-
+                                <label id="getlabel"></label>
                                 <else/>
-                                您是
-                            </if>{@resultString.getLabel}</p>
+                                您是 <label id="getlabel"></label>
+                            </if>
+                        </p>
                     </foreach>
                 </div>
             </div>
@@ -81,13 +94,13 @@ window.onload=function(){
             <div class="line"></div>
             <if condition="{@resultString.getActivities!=''}">
                 <if condition="{@sta=='true'}">
-                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wechatid}&stuas=true">领取优惠券</a></div>
+                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}">领取优惠券</a></div>
                     <else/>
-                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.getActivities}&wxid={@wechatid}">领取优惠券</a></div>
+                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}">领取优惠券</a></div>
                 </if>
 
                 <else/>
-                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&wxid={@wechatid}">领取优惠券</a></div>
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}">领取优惠券</a></div>
             </if>
         </div>
     </div>

@@ -12,10 +12,34 @@
 //            })
 //        }
 //    }
+function load(){
+    if(window.name != "bencalie"){
+        location.reload();
+        window.name = "bencalie";
+    }else{
+        window.name = "";
+    }
+}
+
+
+window.onload =function() {
+    load();
+}
 var doc = JSON.parse('{@themeQuestion}');
 var wechatId = '{@wechatId}';
 var memberid = '{@memberid}';
 var isReg=function(){
+    var ok = '{@ok}';
+    var conent = '{@conent}'
+    if(ok=="1")
+    {
+        window.popupStyle2.on(conent,function(event){
+            if(event == "confirm"){
+            }
+        })
+        return false;
+    }
+
 
     var flag="{@flag}";
         if(flag=="1")
@@ -44,9 +68,10 @@ var isReg=function(){
     if(choose!="-1")
     {
 
-        window.popupStyle2.on("您之前未能完成答题，请继续答题",function(event){
+        window.popupStyle2.on("您之前未能完成答题，请重新答题",function(event){
             if(event == "confirm"){
-                location.href="/lavico/answerQuestion/answer?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&optionId="+choose;
+                //location.href="/lavico/answerQuestion/answer?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&optionId="+choose;
+                location.href="/lavico/answerQuestion/answer?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&optionId=1&status=true";
             }
         })
         return false;

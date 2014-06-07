@@ -24,8 +24,7 @@
                 <th>状态</th>
                 <th>开始时间</th>
                 <th>结束时间</th>
-                <th>面值</th>
-                <th>已发放/总数</th>
+
                 <th>参与人数</th>
                 <th>获得人数</th>
                 <th></th>
@@ -40,13 +39,12 @@
                     <td>{@ doc.status}</td>
                     <td>{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}</td>
-                    <td>{@ doc.QTY}</td>
-                    <td>{@ doc.USED}/{@ doc.TOTAL}</td>
-                    <td>
-                        {@doc.total}
-                    </td>   
+
                     <td>
                         {@doc.count}
+                    </td>   
+                    <td>
+                        {@doc.total}
                     </td>                                     
                     <td>
                         <div class="switch has-switch way">

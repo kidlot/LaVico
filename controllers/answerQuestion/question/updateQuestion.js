@@ -4,9 +4,13 @@ module.exports={
     view:"lavico/templates/answerQuestion/question/updateQuestion.html",
     process:function(seed,nut){
         id=seed._id;
+        var scoreMinMaxs;
+        var list;
         helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(id)},this.hold(function(err,doc){
             if(err) throw err;
             nut.model.docs=doc;
+            nut.model.scoreMinMax = doc.scoreMinMax;
+            scoreMinMaxs = doc.scoreMinMax;
         }))
 
         var perPage = 1000;
@@ -21,9 +25,41 @@ module.exports={
                 doc = doc.replace(/[\n\r\t]/,'');
                 var doc_json = eval('(' + doc + ')');
                 nut.model.doc_json=doc_json;
-
+                list =  doc
             })
         )})
+
+        this.step(function(){
+            var resultlist = [];
+            var mix = list.indexOf("[")
+            var max = list.lastIndexOf("]")
+            var code = list.substr(parseInt(mix),parseInt(max));
+            var mixs = code.indexOf("[")
+            var maxs = code.lastIndexOf("]")
+            var sa = code.substr(parseInt(mixs),parseInt(maxs));
+            var result = sa+"]";
+            var resultlist = JSON.parse(result)
+            var codelist=[];
+            for(var j=0;j<resultlist.length;j++){
+                for(var i=0;i<scoreMinMaxs.length;i++){
+                    var ls = {};
+                    if(scoreMinMaxs[i].getActivities == resultlist[j].PROMOTION_CODE){
+                        ls.code = resultlist[j].PROMOTION_CODE;
+                        ls.name = resultlist[j].PROMOTION_NAME
+                        ls.selected = "selected";
+                        codelist.push(ls)
+                    }else{
+                        ls.code = resultlist[j].PROMOTION_CODE;
+                        ls.name = resultlist[j].PROMOTION_NAME
+                        ls.selected = "";
+                        codelist.push(ls)
+                    }
+                    break;
+                }
+            }
+            nut.model.list = codelist;
+            console.log(codelist);
+        })
 
     },
     actions:{
@@ -52,7 +88,7 @@ module.exports={
             }
         }
     },
-    viewIn:function(){
+    viewIn:function() {
         $('#datetimepicker_s').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,

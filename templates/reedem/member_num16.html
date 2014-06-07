@@ -74,9 +74,9 @@ window.onload=function(){
                         <li>
                             <div class="gift-box">
                                 <div class="gift-box-content">
-                                    <div class="gift-top clear">
+                                    <div class="gift-top clear" onclick="jump('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">
                                         <div class="fl">
-                                            <img src="{@canUseOne.smallPic}" />
+                                                <img src="{@canUseOne.smallPic}" />
                                         </div>
                                         <div class="fl gift-top-right">
                                             <div class="name">{@canUseOne.name}</div>
@@ -92,7 +92,8 @@ window.onload=function(){
                                                 礼品介绍及兑换细则</a> >
                                         </div>
                                         <div class="fr right">
-                                            <a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"   name="nowGet">立即兑换</a>
+                                            <a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"
+                                               name="nowGet">立即兑换</a>
                                             <!--<a href="#" name="nowGet" onclick="exchange('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">立即兑换</a>-->
                                         </div>
                                     </div>
@@ -109,8 +110,11 @@ window.onload=function(){
                         <li>
                             <div class="gift-box">
                                 <div class="gift-box-content">
-                                    <div class="gift-top clear">
-                                        <div class="fl"><img src="{@canUseOne.smallPic}" /></div>
+                                    <div class="gift-top clear" onclick="jump('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">
+                                        <div class="fl">
+                                            <a href="/lavico/reedem/reedemdetail?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}&wxid={@wxid}">
+                                                <img src="{@canUseOne.smallPic}" /></a>
+                                        </div>
                                         <div class="fl gift-top-right">
                                             <div class="name">{@canUseOne.name}</div>
                                             <div class="intro">{@canUseOne.introduction}</div>
@@ -130,3 +134,9 @@ window.onload=function(){
         </div>
     </div>
 </div>
+<script>
+    function jump(memberid,needScore,wxid,point,aid,id){
+        location.href="/lavico/reedem/reedemdetail?memberId="+memberid+
+                "&needScore="+needScore+"&wechatId="+wxid+"&point="+point+"&aid="+aid+"&_id="+id;
+    }
+</script>

@@ -321,21 +321,12 @@ module.exports = {
                         var _END_DATE = formatDate(_coupons[_i].END_DATE);
                         var _CREAT_DATE  = formatTime(_coupons[_i].CREAT_DATE);
                         var _BIND_DATE  = formatDate(_coupons[_i].BIND_DATE);
-                        var _USED_DATE = _coupons[_i].USED_DATE;
+                        var _USED_DATE = formatTime(_coupons[_i].USED_DATE);
                         var _PROMOTION_CODE = _coupons[_i].PROMOTION_CODE;
                         var _COUPON_NO = _coupons[_i].COUPON_NO;
                         var _COUPON_QTY = _coupons[_i].COUPON_QTY;
-                        var _COUPON_TYPE ;
+                        var _COUPON_TYPE = _coupons[_i].BASE_CODE_NAME;
                         var _COUPON_NAME = _coupons[_i].COUPON_NAME;
-
-
-                        if(_coupons[_i].COUPON_TYPE =='01'){
-                            _COUPON_TYPE ="现金抵用券";
-                        }else if(_coupons[_i].COUPON_TYPE =='02'){
-                            _COUPON_TYPE ="礼品券";
-                        }else{
-                            _COUPON_TYPE ="未识别";
-                        }
 
                         var _data = {
                             "BEGIN_DATE":_BEGIN_DATE,
@@ -435,7 +426,8 @@ module.exports = {
     },
     action:{
         getUserCoupons:function(seed,nut){
-
+            var type = seed.type||'02';
+            
         }
     }
 }

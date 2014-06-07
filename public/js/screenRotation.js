@@ -15,7 +15,7 @@ var ua = navigator.userAgent;
 	$(window).on('orientationchange', function() {
 		if (deviceType === 'isIphone') {
 			if (Math.abs(window.orientation) === 90) {
-				$('.backdrop-orientation, .modal-orientation').show();
+			    $('.backdrop-orientation, .modal-orientation').show();
 			}
 			else {
 				$('.backdrop-orientation, .modal-orientation').hide();

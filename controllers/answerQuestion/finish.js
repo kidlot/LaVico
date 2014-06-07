@@ -22,16 +22,20 @@ module.exports={
         nut.model.getScores ="1";
         var getLabel;
         var getScore;
+        var scoreArr;
+        var score=0;
+        var volumename;
 
 
         var docs;
         this.step(function(){
             if(stutas=="true"){
-                go = false;
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
                     "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
                         if(err) throw err;
-                        docs = doc;
+                        if(doc){
+                            docs = doc;
+                        }
                     }))
             }
         })
@@ -40,6 +44,7 @@ module.exports={
             if(stutas=="true"){
                 go = false;
                 var sa;
+                var resultList=[];
                 if(docs){
                     if(themetype==1){
                         for(var i=0;i<docs.length;i++){
@@ -51,18 +56,23 @@ module.exports={
                         if(sa){
                             ssa.push(sa);
                             nut.model.jsonResult =ssa;
+                            nut.model.label =ssa[0].getLabel;
                             nut.model.score = "0";
                             nut.model.sta = "false";
+                            console.log(nut.model.label)
                         }else{
-                            var resultList;
-                            resultList = "[{"
-                                + "getLabel:'" + "您上次未能完成答题"
-                                + "',getScore:" + "0"
-                                + ",getTipContent:'" + "您上次未能完成答题"
-                                + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
-                            nut.model.jsonResult = eval('(' + resultList + ')');
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = "您没有获得任何礼券";
+                            resultList.push(results);
+                            nut.model.jsonResult =  resultList
                             nut.model.score = "0";
                             nut.model.sta = "true";
+                            nut.model.label =resultList[0].getLabel;
                         }
                     }else{
                         for(var i=0;i<docs.length;i++){
@@ -74,32 +84,51 @@ module.exports={
                         if(sa){
                             ssa.push(sa);
                             nut.model.jsonResult =ssa;
+                            nut.model.label =ssa[0].getLabel;
+                            console.log(nut.model.label)
                             nut.model.score = "1";
                         }else{
-                            var resultList;
-                            resultList = "[{"
-                                + "getLabel:'" + "您上次未能完成答题"
-                                + "',getScore:" + "0"
-                                + ",getTipContent:'" + "您上次未能完成答题"
-                                + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
-                            nut.model.jsonResult = eval('(' + resultList + ')');
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = "您没有获得任何礼券";
+                            resultList.push(results);
+                            nut.model.jsonResult = resultList
                             nut.model.score = "0";
+                            nut.model.label =resultList[0].getLabel;
                         }
                     }
                 }
             }
         })
 
+        //查询每道题获得的积分
         this.step(function(){
-            if(isRecord=="yes"){
-                nut.view.disable();
-                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，您已经回答过此题',function(event){location.href='/lavico/member/index?wxid="+seed.wechatid+"'})}</script>");
-                go=false;
+            if(go){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            scoreArr = result;
+                        }
+                    }))
+            }
+        })
+
+        //分数累加
+        this.step(function(){
+            if(go){
+                for(var i=0;i<scoreArr.length;i++){
+                    score+=scoreArr[i].getChooseScore;
+                }
             }
         })
 
         this.step(function(){
-            if(go) {
+            if(go && stutas!="true") {
                 //非停止标签过来
                 if (stopLab != "true") {
                     //插入总积分
@@ -109,7 +138,8 @@ module.exports={
                         "isFinish": true,
                         "optionId": 0,
                         "chooseId": 0,
-                        "getChooseScore": parseInt(scoreAll),
+                        //"getChooseScore": parseInt(scoreAll),
+                        "getChooseScore":parseInt(score),
                         "getChooseLabel": "",
                         "getLabel": "",
                         "getActivities": "",
@@ -128,6 +158,12 @@ module.exports={
                         helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
                             if (err) throw err;
                             scoreRange = doc.scoreMinMax;
+                            if(doc.volumename){
+                                volumename = doc.volumename;
+                            }else{
+                                volumename = "undefined";
+                            }
+
                             docTheme = doc;
                             themeType = doc.themeType;
                             nut.model.themeType = themeType;
@@ -147,12 +183,13 @@ module.exports={
 
                     });
 
-                    var resultList = "[";
+                    var resultList = [];
+
                     this.step(function () {
                         for (var i = 0; i < scoreRange.length; i++) {
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                            if (scoreAll >= minlen && scoreAll <= maxlen) {//在分值范围中
+                            if (score >= minlen && score <= maxlen) {//在分值范围中
                                 //获取三个奖励
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                 getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
@@ -213,27 +250,28 @@ module.exports={
                                                 point: 0
                                             }
                                             console.log(jsonData)
-                                            middleware.request("Point/Change",
-                                                {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
-                                                this.hold(function (err, doc) {
-                                                }))
+                                                middleware.request("Point/Change",
+                                                    {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
+                                                    this.hold(function (err, doc) {
+                                                    }))
 
-                                            middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                var docJson = JSON.parse(doc)
-                                                if (docJson.success) {
-                                                    newActivity = docJson.coupon_no
-                                                    console.log(docJson)
-                                                    nut.model.err = docJson.success
-                                                    if (docJson.coupon_no) {
-                                                        nut.model.errString = "无";
+                                                middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                    var docJson = JSON.parse(doc)
+                                                    if (docJson.success) {
+                                                        newActivity = docJson.coupon_no
+                                                        console.log(docJson)
+                                                        nut.model.err = docJson.success
+                                                        if (docJson.coupon_no) {
+                                                            nut.model.errString = "无";
+                                                        }
+                                                        return docJson.coupon_no
+                                                    } else {
+                                                        nut.model.err = docJson.success;
+                                                        nut.model.errString = docJson.error;
                                                     }
-                                                    return docJson.coupon_no
-                                                } else {
-                                                    nut.model.err = docJson.success;
-                                                    nut.model.errString = docJson.error;
-                                                }
-                                            }));
+                                                }));
+                                                console.log("2")
                                         })
                                     }
                                 }
@@ -244,7 +282,7 @@ module.exports={
                                         "isFinish": true,
                                         "optionId": 0,
                                         "chooseId": 0,
-                                        "getChooseScore": parseInt(then.req.session.scoreAll),
+                                        "getChooseScore": parseInt(score),
                                         "getChooseLabel": "",
                                         "getLabel": getLabel,
                                         "getActivities": newActivity,
@@ -252,42 +290,56 @@ module.exports={
                                         "getTipContent": getTipContent,
                                         "createTime": new Date().getTime(),
                                         "memberId":memberid,
-                                        "themetype":themetype
+                                        "themetype":themetype,
+                                        "code":getActivities,
+                                        "volumename":volumename
                                     }, function (err, doc) {
                                     });
                                     //记录json准备显示
-                                    resultList += "{"
-                                        + "getLabel:'" + getLabel
-                                        + "',getScore:" + getScore
-                                        + ",getTipContent:'" + getTipContent
-                                        + "',getActivities:'" + newActivity + "'}";
+                                    var results={};
+                                    results.getLabel = getLabel;
+                                    results.getScore = getScore;
+                                    results.getTipContent = getTipContent;
+                                    results.code = getActivities;
+                                    results.getActivities = newActivity;
+                                    results.volumename = volumename;
+                                    resultList.push(results);
                                 })
                                 //调用接口结束
                             }
-                            if(resultList.length==0){
-                                if(i==scoreRange.length-1){
-                                    resultList += "{"
-                                        + "getLabel:'" + "对不起,您没有获得任何奖励"
-                                        + "',getScore:" + 0
-                                        + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                        + "',getActivities:'" + "您没有获得任何礼券" + "'}";
-                                    nut.model.stutas = "true";
-                                    nut.model.score = "0";
-                                    nut.model.getScores ="0";
-                                }
-                            }
                         }
                     })
+
+                    this.step(function(){
+                        console.log("length:"+resultList.length);
+                        if(resultList.length==0){
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = volumename;
+                            resultList.push(results)
+
+                            nut.model.stutas = "true";
+                            nut.model.score = "0";
+                            nut.model.getScores ="0";
+                        }
+                    })
+
                     this.step(function () {
-                        resultList += "]";
                         //返回显示
                         console.log(resultList)
                         console.log("___________resultList:"+resultList);
                         then.req.session.optionId = ""
                         nut.model.result = resultList;
-                        nut.model.jsonResult = eval('(' + resultList + ')');
+                        nut.model.jsonResult = resultList
                         console.log("resultList:" + nut.model.jsonResult);
                         nut.model.sta = "false";
+                        console.log("sa")
+                        console.log(resultList[0].getLabel)
+                        nut.model.label =resultList[0].getLabel;
 
                         if (getLabel != "" || getLabel != null || getScore!="") {
                             //发送标签至CRM
@@ -314,22 +366,6 @@ module.exports={
                                 }
                             }));
                         }
-//                        if (typeof(custLabel) != "undefined") {
-//                            //存在,录入customer
-//                            var customerLab = "{tags:[";
-//                            var choArr = custLabel.split(',');
-//                            if (choArr.length <= 1) {
-//                                choArr = custLabel.split(' ');
-//                            }
-//                            //记录至customers表
-//                            for (var j = 0; j < choArr.length; j++) {
-//                                customerLab += "'" + choArr[j] + "'" + ",";
-//                            }
-//                            var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',') + "]}";
-//                            customerLab = eval('(' + jsonStr + ')');
-//                            helper.db.coll("welab/customers").update({wechatid: wechatid}, {$set: customerLab}, function (err, doc) {
-//                            });
-//                        }
                     })
                 }else {
                     //停止标签过来
@@ -340,7 +376,7 @@ module.exports={
                         "isFinish": true,
                         "optionId": 0,
                         "chooseId": 0,
-                        "getChooseScore": parseInt(then.req.session.scoreAll),
+                        "getChooseScore": parseInt(score),
                         "getChooseLabel": "",
                         "getLabel": "",
                         "getActivities": "",
@@ -358,6 +394,11 @@ module.exports={
                         helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
                             if (err) throw err;
                             scoreRange = doc.scoreMinMax;
+                            if(doc.volumename){
+                                volumename = doc.volumename;
+                            }else{
+                                volumename = "undefined";
+                            }
                             docTheme = doc;
                             themeType = doc.themeType;
                             nut.model.themeType = themeType;
@@ -374,9 +415,12 @@ module.exports={
                             doc_json = eval('(' + doc + ')');
                         }))
                     });
-                    var resultList = "[";
+                    var resultList = [];
+
                     this.step(function () {
+
                         for (var i = 0; i < scoreRange.length; i++) {
+
                             //session上的停止标签和db中的设置标签一致
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
@@ -404,38 +448,52 @@ module.exports={
                                     })
 
                                     then.step(function (memberId) {
+                                        console.log("memberId:"+memberId)
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
                                         jsonData.memberId = memberId;
                                         jsonData.qty = getScore;
                                         jsonData.memo = '问答测试:' + '-' + nut.model.themeTitle;
-                                        middleware.request('Point/Change', jsonData,
-                                            this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                            })
-                                        )
+                                            middleware.request('Point/Change', jsonData,
+                                                this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                })
+                                            )
+
                                     })
+
                                     if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
                                         (typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
-                                        resultList += "{"
-                                            + "getLabel:'" + "对不起,您没有获得任何奖励"
-                                            + "',getScore:" + 0
-                                            + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                            + "',getActivities:'" + "null" + "'}";
+                                        console.log("getlabel1:"+getLabel)
+                                        var results={};
+                                        results.getLabel = "对不起,您没有获得任何奖励";
+                                        results.getScore = 0;
+                                        results.getTipContent = "对不起,您没有获得任何奖励";
+                                        results.code = "undefined";
+                                        results.getActivities = "您没有获得任何礼券";
+                                        results.volumename = volumename;
+                                        resultList.push(results);
                                     } else {
+                                        console.log("getlabel:"+getLabel)
                                         //记录json准备显示
-                                        resultList += "{"
-                                            + "getLabel:'" + getLabel
-                                            + "',getScore:" + getScore
-                                            + ",getTipContent:'" + getTipContent
-                                            + "',getActivities:'" + newActivity + "'}";
+                                        var results={};
+                                        results.getLabel = getLabel;
+                                        results.getScore = getScore;
+                                        results.getTipContent = getTipContent;
+                                        results.code = getActivities;
+                                        results.getActivities = newActivity;
+                                        results.volumename = volumename;
+                                        resultList.push(results);
                                     }
-                                    if(resultList){
+
+                                    console.log("i:"+i)
+                                    if(resultList.length>0){
                                         break;
                                     }
+
                                 } else {
                                     if (typeof(getActivities) != "undefined" || getActivities != "") {
-                                        var newActivity//服务器返回的券
+                                       var newActivity=""//服务器返回的券
                                         //调用接口开始
                                         var memoString = "主观题-" + getScore+"积分";
                                         if (themeType == 0) {
@@ -453,26 +511,27 @@ module.exports={
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
-console.log(jsonData)
-                                        middleware.request("Point/Change",
-                                            {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
-                                            this.hold(function (err, doc) {
-                                            }))
-                                        then.step(function () {
-                                            middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                var docJson = JSON.parse(doc)
-                                                if (docJson.success) {
-                                                    newActivity = docJson.coupon_no
-                                                    nut.model.err = docJson.success
-                                                    nut.model.errString = docJson.coupon_no;
-                                                    return docJson.coupon_no
-                                                } else {
-                                                    nut.model.err = docJson.success;
-                                                    nut.model.errString = docJson.error;
-                                                }
-                                            }));
-                                        })
+                                            middleware.request("Point/Change",
+                                                {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
+                                                this.hold(function (err, doc) {
+                                                }))
+
+                                            then.step(function () {
+                                                middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                    var docJson = JSON.parse(doc)
+                                                    if (docJson.success) {
+                                                        newActivity = docJson.coupon_no
+                                                        nut.model.err = docJson.success
+                                                        nut.model.errString = docJson.coupon_no;
+                                                        return docJson.coupon_no
+                                                    } else {
+                                                        nut.model.err = docJson.success;
+                                                        nut.model.errString = docJson.error;
+                                                    }
+                                                }));
+                                            })
+
 
                                         then.step(function () {
                                             helper.db.coll("lavico/custReceive").insert({
@@ -481,7 +540,7 @@ console.log(jsonData)
                                                 "isFinish": true,
                                                 "optionId": 0,
                                                 "chooseId": 0,
-                                                "getChooseScore": parseInt(then.req.session.scoreAll),
+                                                "getChooseScore": parseInt(score),
                                                 "getChooseLabel": "",
                                                 "getLabel": getLabel,
                                                 "getActivities": newActivity,
@@ -489,76 +548,66 @@ console.log(jsonData)
                                                 "getTipContent": getTipContent,
                                                 "createTime": new Date().getTime(),
                                                 "memberId":memberid,
-                                                "themetype":themetype
-                                            }, function (err, doc) {
-                                            });
-                                            if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "") &&
-                                                (typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
-                                                resultList += "{"
-                                                    + "getLabel:'" + "对不起,您没有获得任何奖励"
-                                                    + "',getScore:" + 0
-                                                    + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                                    + "',getActivities:'" + "您没有获得任何礼券" + "'}";
-//                                                resultList += "{"
-//                                                    + "getLabel:'" + "null"
-//                                                    + "',getScore:" + 0
-//                                                    + ",getTipContent:'" + "null"
-//                                                    + "',getActivities:'" + "null" + "'}";
+                                                "themetype":themetype,
+                                                "code":getActivities,
+                                                "volumename":volumename
+                                            }, function (err, doc) {});
+
+                                            if ((typeof(getLabel) == "undefined" || getLabel == "") && (typeof(getScore) == "undefined" || getScore == "")
+                                                &&(typeof(getTipContent) == "undefined" || getTipContent == "") && (typeof(newActivity) == "undefined" || newActivity == "")) {
+                                                var results={};
+                                                results.getLabel = "对不起,您没有获得任何奖励";
+                                                results.getScore = 0;
+                                                results.getTipContent = "对不起,您没有获得任何奖励";
+                                                results.code = "undefined";
+                                                results.getActivities = "您没有获得任何礼券";
+                                                results.volumename = volumename;
+                                                resultList.push(results)
+
                                             } else {
                                                 //记录json准备显示
-                                                resultList += "{"
-                                                    + "getLabel:'" + getLabel
-                                                    + "',getScore:" + getScore
-                                                    + ",getTipContent:'" + getTipContent
-                                                    + "',getActivities:'" + newActivity + "'}";
+                                                var results={};
+                                                results.getLabel = getLabel;
+                                                results.getScore = getScore;
+                                                results.getTipContent = getTipContent;
+                                                results.code = getActivities;
+                                                results.getActivities = newActivity;
+                                                results.volumename = volumename;
+                                                resultList.push(results);
                                             }
                                         })
                                         //调用接口结束
                                     }
                                 }
                             }
-                            //判断是否有session自定义标签
-//                            var custLabel = then.req.session.customerLabel
-//                            if (typeof(custLabel) != "undefined") {
-//                                //存在,录入customer
-//                                var customerLab;
-//                                var choArr = custLabel.split(',');
-//                                if (choArr.length <= 1) {
-//                                    choArr = custLabel.split(' ');
-//                                }
-//                                //记录至customers表
-//                                for (var j = 0; j < choArr.length; j++) {
-//                                    customerLab += "'" + choArr[j] + "'" + ",";
-//                                }
-//                                var jsonStr = customerLab.substring(0, customerLab.lastIndexOf(',')).replace(' ', ',');
-//                                customerLab = eval('(' + jsonStr + ')');
-//                                helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:customerLab}},this.hold(function(err,doc){
-//                                    if(err ){
-//                                        throw err;
-//                                    }
-//                                    console.log("doc:"+doc)
-//                                }));
-//                            }
-                            if(resultList.length==0){
-                                if(i==scoreRange.length-1){
-                                    resultList += "{"
-                                        + "getLabel:'" + "对不起,您没有获得任何奖励"
-                                        + "',getScore:" + 0
-                                        + ",getTipContent:'" + "对不起,您没有获得任何奖励"
-                                        + "',getActivities:'" + "您没有获得任何礼券" + "'}";
-                                    nut.model.stutas = "true";
-                                    nut.model.score = "0";
-                                    nut.model.getScores ="0";
-                                }
-                            }
                         }
                     })
+
+                    this.step(function(){
+                        console.log("length:"+resultList.length);
+                        if(resultList.length==0){
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = volumename;
+                            resultList.push(results)
+
+                            nut.model.stutas = "true";
+                            nut.model.score = "0";
+                            nut.model.getScores ="0";
+                        }
+                    })
+
                     this.step(function () {
-                        resultList += "]";
                         then.req.session.optionId = ""
                         nut.model.result = resultList;
-                        nut.model.jsonResult = eval('(' + resultList + ')');
+                        nut.model.jsonResult = resultList
+                        console.log(resultList)
                         nut.model.sta = "false";
+                        nut.model.label =resultList[0].getLabel;
 
                         if (getLabel != "" || getLabel != null || getScore!="") {
                             //发送标签至CRM
@@ -571,8 +620,6 @@ console.log(jsonData)
                             jsonData = {};
                             jsonData.memberId = memberid;
                             jsonData.tag = memoString;
-                            console.log("sa")
-                            console.log(jsonData)
                             middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                                 if (err) throw err;
                                 console.log("tag record:" + doc);
@@ -582,7 +629,6 @@ console.log(jsonData)
                                 if(err ){
                                     throw err;
                                 }
-                                console.log("doc:"+doc)
                             }));
                         }
                     })
