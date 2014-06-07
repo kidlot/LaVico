@@ -309,14 +309,25 @@ module.exports={
                                         }, function (err, doc) {
                                         });
                                         //记录json准备显示
-                                        var results={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = newActivity;
-                                        results.volumename = volumename;
-                                        resultList.push(results);
+                                        if(ok){
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = newActivity;
+                                            results.volumename = volumename;
+                                            resultList.push(results);
+                                        }else{
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = "true";
+                                            results.volumename = volumename;
+                                            resultList.push(results);
+                                        }
                                     })
                                     //调用接口结束
                                 }
@@ -585,14 +596,26 @@ module.exports={
 
                                                 } else {
                                                     //记录json准备显示
-                                                    var results={};
-                                                    results.getLabel = getLabel;
-                                                    results.getScore = getScore;
-                                                    results.getTipContent = getTipContent;
-                                                    results.code = getActivities;
-                                                    results.getActivities = newActivity;
-                                                    results.volumename = volumename;
-                                                    resultList.push(results);
+                                                    if(ok){
+                                                        var results={};
+                                                        results.getLabel = getLabel;
+                                                        results.getScore = getScore;
+                                                        results.getTipContent = getTipContent;
+                                                        results.code = getActivities;
+                                                        results.getActivities = newActivity;
+                                                        results.volumename = volumename;
+                                                        resultList.push(results);
+                                                    }else{
+                                                        var results={};
+                                                        results.getLabel = getLabel;
+                                                        results.getScore = getScore;
+                                                        results.getTipContent = getTipContent;
+                                                        results.code = getActivities;
+                                                        results.getActivities = "true";
+                                                        results.volumename = volumename;
+                                                        resultList.push(results);
+                                                    }
+
                                                 }
                                             })
                                             //调用接口结束
