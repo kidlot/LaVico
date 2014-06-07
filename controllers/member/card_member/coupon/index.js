@@ -435,7 +435,8 @@ module.exports = {
     },
     action:{
         getUserCoupons:function(seed,nut){
-
+            var type = seed.type||'02';
+            
         }
     }
 }
