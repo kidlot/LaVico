@@ -134,6 +134,7 @@
     <div>图文URL:&nbsp;&nbsp;<input type="text" name="url" value="http://{host}/lavico/answerQuestion/first?_id={@docs._id}&optionId=1&wechatid={wxid}" class="form-control input-sm" style="width: 350px">&nbsp;<input type="button" name="btnCopy" value="复制" class="btn btn-embossed btn-primary"></div>
     <div>开始/结束:&nbsp;<input type="text" value="{@docs.beginTime}" class="form-control input-sm input-date" style="border: 2px solid #bdc3c7;" id="datetimepicker_s" name="beginTime">&nbsp;&nbsp;<input type="text" value="{@docs.endTime}" class="form-control input-sm input-date" style="border: 2px solid #bdc3c7;" id="datetimepicker_t" name="endTime"></div>
     <div>题目名称:&nbsp;&nbsp;<input type="text" value="{@docs.theme}"  name="title" class="form-control input-sm" style="width: 350px"></div>
+    <div>卷&nbsp;名&nbsp;称:&nbsp;&nbsp;<input type="text" value="{@docs.volumename}"  name="volumename" class="form-control input-sm" style="width: 350px"></div>
     <div>题目类型:&nbsp;&nbsp;<select name="themeType" class="form-control input-sm" style="width: 150px">
         <if condition="{@docs.themeType==0}">
             <option value="0" selected="selected">对错型</option>

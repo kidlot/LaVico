@@ -24,7 +24,7 @@ module.exports = {
                 nut.model.doc = doc.page[nut.model.pageNum-1]
                 nut.model.lookbookType = doc.type
                 nut.model.sumPageNum = doc.page.length
-                console.log(nut.model.doc)
+                console.log(nut.model.allPage)
             }))
         }else{
             nut.disable();
