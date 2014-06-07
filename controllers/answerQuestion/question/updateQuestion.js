@@ -88,7 +88,7 @@ module.exports={
             }
         }
     },
-    viewIn:function(){
+    viewIn:function() {
         $('#datetimepicker_s').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
