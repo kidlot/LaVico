@@ -51,25 +51,13 @@ function check(){
 
 //初始化事件
 function build(){
-    if(isok=="1")
-    {
-
-        window.popupStyle2.on(conent,function(event){
-            if(event == "confirm"){
-                location.href="/lavico/member/card_blank/register?wxid={@wechatid}";
-            }
-        })
-        return false;
-    }
-
 
     if(member_id=='undefined'){
-//        alert('请先申请会员卡或者绑定会员,然后参加活动!');
-//        window.location.href='/lavico/member/card_blank/register?wxid='+wxid
+        alert('请先申请会员卡或者绑定会员,然后参加活动!');
+        window.location.href='/lavico/member/card_blank/register?wxid='+wxid
     }else{
         //添加标题显示
         $(".title").append(jsonObject.title);
-
         //判断是否为“主观题”
         if(jsonObject.type==2){
             $(".content").append("<div style='padding-top: 15px;'><textarea cols='20' rows='12' name='descContent' class='textarea' ></textarea></div>");

@@ -49,6 +49,7 @@ module.exports={
             if(stutas=="true"){
                 go = false;
                 var sa;
+                var resultList=[];
                 if(docs){
                     if(themetype==1){
                         for(var i=0;i<docs.length;i++){
@@ -60,17 +61,20 @@ module.exports={
                         if(sa){
                             ssa.push(sa);
                             nut.model.jsonResult =ssa;
+                            nut.model.label =ssa[0].getLabel;
                             nut.model.score = "0";
                             nut.model.sta = "false";
+                            console.log(nut.model.label)
                         }else{
-                            var resultList;
-                            resultList = "[{"
-                                + "getLabel:'" + "您上次未能完成答题"
-                                + "',getScore:" + "0"
-                                + ",getTipContent:'" + "您上次未能完成答题"
-                                + "',code:'" + "undefined"
-                                + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
-                            nut.model.jsonResult = eval('(' + resultList + ')');
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = "您没有获得任何礼券";
+                            resultList.push(results);
+                            nut.model.jsonResult =  resultList
                             nut.model.score = "0";
                             nut.model.sta = "true";
                             nut.model.label =resultList[0].getLabel;
@@ -85,16 +89,19 @@ module.exports={
                         if(sa){
                             ssa.push(sa);
                             nut.model.jsonResult =ssa;
+                            nut.model.label =ssa[0].getLabel;
+                            console.log(nut.model.label)
                             nut.model.score = "1";
                         }else{
-                            var resultList;
-                            resultList = "[{"
-                                + "getLabel:'" + "您上次未能完成答题"
-                                + "',getScore:" + "0"
-                                + ",getTipContent:'" + "您上次未能完成答题"
-                                + "',code:'" + "undefined"
-                                + "',getActivities:'" + "您没有获得任何礼券" + "'}]";
-                            nut.model.jsonResult = eval('(' + resultList + ')');
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = "您没有获得任何礼券";
+                            resultList.push(results);
+                            nut.model.jsonResult = resultList
                             nut.model.score = "0";
                             nut.model.label =resultList[0].getLabel;
                         }

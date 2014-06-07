@@ -12,6 +12,17 @@
 //            })
 //        }
 //    }
+function load(){
+    if(window.name != "bencalie"){
+        location.reload();
+        window.name = "bencalie";
+    }else{
+        window.name = "";
+    }
+}
+window.load=function(){
+    load();
+}
 var doc = JSON.parse('{@themeQuestion}');
 var wechatId = '{@wechatId}';
 var memberid = '{@memberid}';
