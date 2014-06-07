@@ -503,7 +503,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .city-listContent ul li a .tel{ padding-top:5px;}
 #fixed{ position:fixed; bottom:0; width:100%; left:0px; }
 .bargin_content{width: 92%; padding:0 4%; }
-.bargin_content .wei_name{color: #BA954F;font-size: 1.4rem;padding-top: 10px;}
+.bargin_content .wei_name{color: #BA954F;font-size: 1.4rem;padding-top: 15px;}
 .bargin_content .wei_text{color: #646464;font-size: 1.4rem;padding-top: 10px;}
 
 /*loading*/
