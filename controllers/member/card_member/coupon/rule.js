@@ -20,7 +20,8 @@ module.exports = {
             this.step(function (activity) {
                 helper.db.coll('lavico/activity').findOne({aid: code}, this.hold(function (err, doc) {
                     if (doc) {
-                        nut.model.info = doc;
+                        info = doc;
+                        info.introduction = decodeURIComponent(info.introduction);
                     }
                 }));
             });
