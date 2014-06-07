@@ -58,8 +58,6 @@
             }
 
         });
-
-
     }
 
     function addTheme(){
@@ -839,8 +837,8 @@
                             所获奖券:
                             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
                                 <option value="-1">无卷</option>
-                                <foreach for="{@doc_json.list}" var="docListOne">
-                                    <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
+                                <foreach for="{@list}" var="doc">
+                                    <option value="{@doc.code}" selected="{@doc.selected}">{@doc.name}</option>
                                 </foreach>
                             </select>
                             <br>标签文本设置:
@@ -1201,8 +1199,8 @@
             所获奖券:
             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
                 <option value="-1">无卷</option>
-                <foreach for="{@doc_json.list}" var="docListOne">
-                    <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
+                <foreach for="{@list}" var="doc">
+                    <option value="{@doc.code}" selected="{@doc.selected}">{@doc.name}</option>
                 </foreach>
             </select>
             <br>标签文本设置:
