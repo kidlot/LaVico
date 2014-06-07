@@ -31,6 +31,7 @@ module.exports={
         })
 
         this.step(function(doc){
+            console.log("1")
             for(var i=0;i<doc.options.length;i++){
                 if(doc.options[i].type==2 && doc.options[i].optionId==optionId){
 
@@ -57,13 +58,14 @@ module.exports={
                         nut.view.disable();
                         //nut.write("<script>alert('字数不符合要求，请重填');history.back()</script>");
                         nut.write("<script>window.onload=function(){window.popupStyle2.on('字数不符合要求，请重填',function(event){history.back()})}</script>");
-                        then.terminate();
+                        //then.terminate();
                     }
                 }
             }
         })
 
         this.step(function(docOne){
+            console.log("2")
             if(docOne){
                 then.req.session.scoreAll+=parseInt(docOne.answerScore);
                 helper.db.coll("lavico/custReceive").insert({
