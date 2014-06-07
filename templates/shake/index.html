@@ -35,16 +35,16 @@
             <tbody>
             <foreach for="@list.docs" var="doc">
                 <tr>
-                    <td><a href="/lavico/shake/index:modify_html?_id={@ doc._id}" class='mhm stay' target="_blank">{@ doc.name}</a></td>
+                    <td><a href="/lavico/shake/index:modify_html?_id={@ doc._id}" class='mhm stay'>{@ doc.name}</a></td>
                     <td>{@ doc.status}</td>
                     <td>{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}</td>
 
                     <td>
-                        {@doc.total}
+                        {@doc.count}
                     </td>   
                     <td>
-                        {@doc.count}
+                        {@doc.total}
                     </td>                                     
                     <td>
                         <div class="switch has-switch way">

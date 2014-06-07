@@ -82,34 +82,11 @@
         var content;
         var editor;
 
-       // content = decodeURIComponent('{@activity.introduction}');
-
-        /*编辑器*/
-//        editor = CKEDITOR.replace( 'introduction', {
-//            toolbar: [
-//                ['Source','-','Save','NewPage','Preview','-','Templates'],
-//                ['Undo', 'Redo', '-', 'SelectAll', 'RemoveFormat'],
-//                ['Styles','Format','Font','FontSize'],
-//                ['TextColor','BGColor'],
-//                ['Maximize', 'ShowBlocks'],
-//                '/',
-//                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-//                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-//                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-//                ['Link','Unlink','Anchor'],
-//                ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
-//                ['Code']
-//            ]
-//        });
-        if(content){
-            //editor.setData(content);
-        }
-
 
         function save(){
 
             //var content = editor.document.getBody().getHtml();encodeURIComponent(content)
-            var content = $('#introduction').val();
+            var content = encodeURIComponent($('#introduction').val());
             var _inputCheck = true;
             var _json = {};
             console.log(content);
@@ -135,9 +112,6 @@
             }
 
         }
-
-
-
 
       
       var lastPic = ""
@@ -197,4 +171,9 @@
       function uploadCanceled(evt) {
           alert("已经取消上传");
       }
-</script>     
+</script>
+<script>
+    var content;
+    content = decodeURIComponent('{@activity.introduction}');
+    document.getElementById("introduction").value = content;
+</script>
