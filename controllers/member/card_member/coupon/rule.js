@@ -230,7 +230,7 @@ module.exports = {
                     if(coupon.success == true){
                         var _info = coupon.info;
                         $('#coupon_des').find('.MEMO').html(_info.MEMO);
-                        $('#coupon_des').find('.TYPE').html(_info.MEMO);
+                        $('#coupon_des').find('.TYPE').html(_info.TYPE);
 
                         $('#coupon_des').find('.COUPON_NO').html(_info.COUPON_NO);
                         $('#coupon_des').find('.COUPON_QTY').html(_info.COUPON_QTY);
