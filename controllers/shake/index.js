@@ -205,6 +205,7 @@ module.exports = {
                     console.log($('#activity_select').val());
                     var _PROMOTION_CODE = $('#activity_select').val();//_PROMOTION_CODE
                     $("#" + _PROMOTION_CODE).css('display','block').find('.panel-body').css("background-color", "#eeeeee");
+                    $("#" + _PROMOTION_CODE).find('.display_name').focus();
                 });
 
                 //删除
