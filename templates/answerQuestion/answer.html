@@ -312,7 +312,7 @@ function finish(){
                     "&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype;
         }else if($("input[name='mutilChooseInput']:checked").length>0){
             //
-            if($("input[name='singleChooseInput']:checked").length==0) {
+            if($("input[name='mutilChooseInput']:checked").length==0) {
                 window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
                 })
                 return;

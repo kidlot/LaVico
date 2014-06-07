@@ -49,7 +49,6 @@ module.exports={
         });
 
         this.step(function(){
-            console.log(typeof (status))
             if(status=="true"){
                 helper.db.coll("lavico/custReceive").remove({"wechatid":wechatid,"themeId":helper.db.id(_id),"memberId":""+memberId},this.hold(function(err,doc){
                     if(err)
@@ -102,9 +101,6 @@ module.exports={
                     //显示题目
                     helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,cursor){
                         if(err) throw err;
-                        console.log(cursor)
-                        console.log(optionId)
-                        console.log(cursor.options.length)
                         for(var i=0;i<cursor.options.length;i++){
                             //循环题数
                             if(optionId==cursor.options[i].optionId){
