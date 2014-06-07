@@ -17,6 +17,34 @@ module.exports= {
         var chooseId=0;
         var chooseNextArr;
         var result_true;
+        var beginTime="",endTime="",isOpen="";
+
+        nut.model.ok = "0";
+        nut.model.conent = "undefined"
+
+        this.step(function(){
+            //判断活动是否开启或到期1-1
+            helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
+                if(err)throw err;
+                beginTime=doc.beginTime;
+                endTime=doc.endTime;
+                isOpen=doc.isOpen;
+                nut.model.themeType = doc.themeType;
+                nut.model.themequestion = JSON.stringify(doc.options);
+            }));
+        })
+
+        this.step(function(){
+            if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
+                if(isOpen==0){
+                    nut.model.ok = "1";
+                    nut.model.conent = "很抱歉，活动已结束"
+                }
+            }else{
+                nut.model.ok = "1";
+                nut.model.conent = "很抱歉，活动已结束"
+            }
+        })
 
         this.step(function(){
             if(wechatid == undefined){
@@ -185,4 +213,13 @@ module.exports= {
             )
         })
     }
+}
+
+function createTime(){
+    var d = new Date();
+    var vYear = d.getFullYear();
+    var vMon = d.getMonth() + 1;
+    var vDay = d.getDate();
+    s=vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay);
+    return s;
 }

@@ -25,24 +25,19 @@ module.exports={
         var scoreArr;
         var score=0;
         var volumename;
-        var isok = true;
 
 
         var docs;
         this.step(function(){
-            //if(stutas=="true"){
-                //go = false;
+            if(stutas=="true"){
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
                     "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
                         if(err) throw err;
                         if(doc){
                             docs = doc;
-                            isok = false;
-                        }else{
-                            isok = true;
                         }
                     }))
-            //}
+            }
         })
 
         this.step(function(){
@@ -133,7 +128,7 @@ module.exports={
         })
 
         this.step(function(){
-            if(go) {
+            if(go && stutas!="true") {
                 //非停止标签过来
                 if (stopLab != "true") {
                     //插入总积分
@@ -223,14 +218,11 @@ module.exports={
                                         jsonData.memo = '问答测试' + '-' + nut.model.themeTitle;
 
                                         console.log("问答测试:"+JSON.stringify(jsonData));
-                                        if(isok==true){
-                                            middleware.request('Point/Change', jsonData,
-                                                this.hold(function (err, doc) {
-                                                    if (err) throw err;
-                                                })
-                                            )
-                                        }
-
+                                        middleware.request('Point/Change', jsonData,
+                                            this.hold(function (err, doc) {
+                                                if (err) throw err;
+                                            })
+                                        )
                                     })
                                 } else {
                                     for (var j = 0; j < doc_json.list.length; j++) {
@@ -258,7 +250,6 @@ module.exports={
                                                 point: 0
                                             }
                                             console.log(jsonData)
-                                            if(isok == true){
                                                 middleware.request("Point/Change",
                                                     {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                                     this.hold(function (err, doc) {
@@ -280,8 +271,7 @@ module.exports={
                                                         nut.model.errString = docJson.error;
                                                     }
                                                 }));
-                                            }
-
+                                                console.log("2")
                                         })
                                     }
                                 }
@@ -311,7 +301,7 @@ module.exports={
                                     results.getScore = getScore;
                                     results.getTipContent = getTipContent;
                                     results.code = getActivities;
-                                    results.getActivities = getActivities;
+                                    results.getActivities = newActivity;
                                     results.volumename = volumename;
                                     resultList.push(results);
                                 })
@@ -464,13 +454,11 @@ module.exports={
                                         jsonData.memberId = memberId;
                                         jsonData.qty = getScore;
                                         jsonData.memo = '问答测试:' + '-' + nut.model.themeTitle;
-                                        if(isok==true){
                                             middleware.request('Point/Change', jsonData,
                                                 this.hold(function (err, doc) {
                                                     if (err) throw err;
                                                 })
                                             )
-                                        }
 
                                     })
 
@@ -493,7 +481,7 @@ module.exports={
                                         results.getScore = getScore;
                                         results.getTipContent = getTipContent;
                                         results.code = getActivities;
-                                        results.getActivities = getActivities;
+                                        results.getActivities = newActivity;
                                         results.volumename = volumename;
                                         resultList.push(results);
                                     }
@@ -505,7 +493,7 @@ module.exports={
 
                                 } else {
                                     if (typeof(getActivities) != "undefined" || getActivities != "") {
-                                        var newActivity//服务器返回的券
+                                       var newActivity=""//服务器返回的券
                                         //调用接口开始
                                         var memoString = "主观题-" + getScore+"积分";
                                         if (themeType == 0) {
@@ -523,7 +511,6 @@ module.exports={
                                             //qty:nowPromotion.coupons[0].QTY,
                                             point: 0
                                         }
-                                        if(isok==true){
                                             middleware.request("Point/Change",
                                                 {"memberId": nut.model.memberID, "qty": getScore, "memo": memoString},
                                                 this.hold(function (err, doc) {
@@ -544,7 +531,6 @@ module.exports={
                                                     }
                                                 }));
                                             })
-                                        }
 
 
                                         then.step(function () {
@@ -585,7 +571,7 @@ module.exports={
                                                 results.getScore = getScore;
                                                 results.getTipContent = getTipContent;
                                                 results.code = getActivities;
-                                                results.getActivities = getActivities;
+                                                results.getActivities = newActivity;
                                                 results.volumename = volumename;
                                                 resultList.push(results);
                                             }
