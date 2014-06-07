@@ -24,7 +24,7 @@ var optionId = '{@optionId}';
 var themequestion = JSON.parse('{@themequestion}')
 var custReceive = JSON.parse('{@custReceive}')
 var themetype = '{@themeType}'
-
+//alert(typeof (themetype))
 if(window.name != "bencalie"){
     location.reload();
     window.name = "bencalie";
@@ -107,10 +107,12 @@ function build(){
             if(custReceive[i].optionId==value){
                 if(custReceive[i].chooseId == "主观题"){
                     $("textarea[name='descContent']").val(custReceive[i].resultValue);
+                    $("#tip").html("您已经答过此题");
                 }else if(custReceive[i].type==0){
                     $("#for"+custReceive[i].chooseId).attr('checked','checked');
                     $("#chooseNa"+custReceive[i].chooseId).removeClass("select1");
                     $("#chooseNa"+custReceive[i].chooseId).addClass("select");
+                    $("#tip").html("您已经答过此题");
                 }else if(custReceive[i].type==1){
                     var chooseid=custReceive[i].chooseId;
                     var arry=chooseid.split(",");
@@ -128,6 +130,7 @@ function build(){
                         $("#for"+str[s]).attr('checked','checked');
                         $("#chooseNa"+str[s]).removeClass("selects1");
                         $("#chooseNa"+str[s]).addClass("selects");
+                        $("#tip").html("您已经答过此题");
                     }
                 }
             }
@@ -136,11 +139,13 @@ function build(){
                 if(custReceive[i].chooseId == "主观题"){
                     $("textarea[name='descContent']").val(custReceive[i].resultValue);
                     $("textarea[name='descContent']").attr("readonly","readonly");
+                    $("#tip").html("您已经答过此题");
                 }else if(custReceive[i].type==0){
                     $("#for"+custReceive[i].chooseId).attr('checked','checked');
                     var leng = $("input[name='singleChooseInput']").length;
                     for(var h = 0;h<leng;h++){
                         $("#for"+h).attr('disabled',true);
+                        $("#tip").html("您已经答过此题");
                     }
                     $("span[name='correntImg']").css("visibility","visible");
                     $("#chooseNa"+custReceive[i].chooseId).removeClass("select1");
@@ -163,6 +168,7 @@ function build(){
                         var length = $("input[name='mutilChooseInput']").length;
                         for(var h=0;h<length;h++){
                             $("#for"+h).attr('disabled',true);
+                            $("#tip").html("您已经答过此题");
                         }
                         $("#chooseNa"+str[s]).removeClass("selects1");
                         $("#chooseNa"+str[s]).addClass("selects");
@@ -175,14 +181,14 @@ function build(){
 
 //判断开还关
     //alert(document.cookie);
-    var strCookie=document.cookie;
-    var arrCookie=strCookie.split(",");
-    for(var i=0;i<arrCookie.length;i++){
-        var arr=arrCookie[i].split("=");
-        if(arr[1]==jsonObject.optionId){
-            $("#tip").html("您已经答过此题");
-        }
-    }
+//    var strCookie=document.cookie;
+//    var arrCookie=strCookie.split(",");
+//    for(var i=0;i<arrCookie.length;i++){
+//        var arr=arrCookie[i].split("=");
+//        if(arr[1]==jsonObject.optionId){
+//            $("#tip").html("您已经答过此题");
+//        }
+//    }
 
     //当前显示编号是否已经至最后一题，显示“下一题”或“完成”
     if(jsonObject.optionId<optionCount){
@@ -246,17 +252,19 @@ function showCorrents(t){
 //finish完成按钮“触发"事件
 function finish(){
 //check();
-//    var isRecord = '{@isRecord}';
-//    if(isRecord=="1")
-//    {
-//
-//        window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!",function(event){
-//            if(event == "confirm"){
-//                location.href="/lavico/answerQuestion/finish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true";
-//            }
-//        })
-//        return;
-//    }
+    //alert(typeof (jsonObject.type))
+    if(themetype == "0" || themetype =="2"){
+        var isRecord = '{@isRecord}';
+        if(isRecord=="1"){
+            window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!",function(event){
+                if(event == "confirm"){
+                    location.href="/lavico/answerQuestion/finish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true";
+                }
+            })
+            return;
+        }
+    }
+
 
 
     var value=0;
