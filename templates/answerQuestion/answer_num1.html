@@ -20,13 +20,27 @@ function load(){
         window.name = "";
     }
 }
-window.load=function(){
+
+
+window.onload =function() {
     load();
 }
 var doc = JSON.parse('{@themeQuestion}');
 var wechatId = '{@wechatId}';
 var memberid = '{@memberid}';
 var isReg=function(){
+    var ok = '{@ok}';
+    var conent = '{@conent}'
+    if(ok=="1")
+    {
+        window.popupStyle2.on(conent,function(event){
+            if(event == "confirm"){
+                location.href='/lavico/member/card_blank/register?wxid={@wechatId}';
+            }
+        })
+        return false;
+    }
+
 
     var flag="{@flag}";
         if(flag=="1")

@@ -10,10 +10,11 @@ module.exports={
         nut.model.stuas= seed.stuas ? seed.stuas :"false";
         var volumename = seed.volumename;
         var promotion_name;
+        var code = seed.code ? seed.code :"undefined";
 
         this.step(function(){
-            if(seed.getActivities!="undefined" && seed.getActivities!="no" && seed.getActivities!="-1"){
-                helper.db.coll("lavico/activity").findOne({"aid":seed.getActivities},this.hold(function(err,result){
+            if(code!="undefined" && code!="no" && code!="-1"){
+                helper.db.coll("lavico/activity").findOne({"aid":code},this.hold(function(err,result){
                     if(err) throw err;
                     nut.model.pic = result.pic;
                     promotion_name = result.promotion_name;

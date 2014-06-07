@@ -128,7 +128,7 @@ module.exports={
         })
 
         this.step(function(){
-            if(go) {
+            if(go && stutas!="true") {
                 //非停止标签过来
                 if (stopLab != "true") {
                     //插入总积分

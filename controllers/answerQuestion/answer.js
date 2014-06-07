@@ -58,9 +58,6 @@ module.exports={
             }
         })
 
-
-
-
         this.step(function(){
             //判断活动是否开启或到期1-1
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
@@ -89,48 +86,75 @@ module.exports={
             }
         })
 
-        this.step(function(){
-            //判断活动是否开启或到期1-2
-            if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
-                if(isOpen==0){
-                    //nut.model.isok = "2";
-                    //nut.model.conent = "很抱歉，活动已经停止"
-                    nut.view.disable();
-                    nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
-                }else{
-                    //显示题目
-                    helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,cursor){
-                        if(err) throw err;
-                        for(var i=0;i<cursor.options.length;i++){
-                            //循环题数
-                            if(optionId==cursor.options[i].optionId){
-                                //传入题号和当前题号相同,记录题目
-                                console.log("sa")
-                                console.log(JSON.stringify(cursor.options[i]))
-                                nut.model.option=JSON.stringify(cursor.options[i]);//以json字符串格式记录,当前此题
-                                nut.model.optionId=i+1;
-                                nut.model._id=_id;
-                                nut.model.optionCount=cursor.options.length;//此题目总共有题数
-                                nut.model.wechatid=wechatid;
-                                nut.model.themeType =cursor.themeType;
-                            }
+//        this.step(function(){
+//            if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
+//                if(isOpen==0){
+//                    nut.model.isok = "2";
+//                    nut.model.conent = "很抱歉，活动已经停止"
+//                }
+//            }else{
+//                nut.model.isok = "2";
+//                nut.model.conent = "很抱歉，活动已经停止"
+//            }
+//        })
 
-                        }
-                        if(optionId>cursor.options.length){
-                            //nut.model.isok = "2";
-                            //nut.model.conent = "无此题，联系管理员"
-                            //异常情况：当optionId大于题数时
-                            nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，联系管理员',function(event){history.back()})}</script>");
-                            nut.view.disable();
-                        }
-                    }));
+        this.step(function(){
+            helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,cursor){
+                if(err) throw err;
+                console.log(cursor)
+                if(optionId>cursor.options.length){
+                    nut.model.isok = "2";
+                    nut.model.conent = "无此题，联系管理员"
+                    //异常情况：当optionId大于题数时
+                    nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，联系管理员',function(event){history.back()})}</script>");
+                    nut.view.disable();
                 }
-            }else{
-                //nut.model.isok = "3";
-                //nut.model.conent = "很抱歉，活动已经停止"
-                nut.view.disable();
-                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
-            }
+            }));
+        })
+
+        this.step(function(){
+
+            helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,cursor){
+                if(err) throw err;
+                for(var i=0;i<cursor.options.length;i++){
+                    //循环题数
+                    if(optionId==cursor.options[i].optionId){
+                        //传入题号和当前题号相同,记录题目
+                        console.log(JSON.stringify(cursor.options[i]))
+                        nut.model.option=JSON.stringify(cursor.options[i]);//以json字符串格式记录,当前此题
+                        nut.model.optionId=i+1;
+                        nut.model._id=_id;
+                        nut.model.optionCount=cursor.options.length;//此题目总共有题数
+                        nut.model.wechatid=wechatid;
+                        nut.model.themeType =cursor.themeType;
+                    }
+
+                }
+//                if(optionId>cursor.options.length){
+//                    nut.model.isok = "2";
+//                    nut.model.conent = "无此题，联系管理员"
+//                    //异常情况：当optionId大于题数时
+//                    //nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，联系管理员',function(event){history.back()})}</script>");
+//                    //nut.view.disable();
+//                }
+            }));
+            //判断活动是否开启或到期1-2
+//            if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
+//                if(isOpen==0){
+//                    //nut.model.isok = "2";
+//                    //nut.model.conent = "很抱歉，活动已经停止"
+//                    nut.view.disable();
+//                    nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
+//                }else{
+//                    //显示题目
+//
+//                }
+//            }else{
+//                //nut.model.isok = "3";
+//                //nut.model.conent = "很抱歉，活动已经停止"
+//                nut.view.disable();
+//                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
+//            }
         });
 
         this.step(function(){
