@@ -374,6 +374,7 @@ function save(){
                     message: _PROMOTION_NAME + "的抽奖概率不能为空！",
                     type: 'error',
                     showCloseButton: true})
+                $(object).find('.lottery_chance').focus().css('background-color','#f9fafb');
             }else{
                 var _lottery = {};
                 _lottery.PROMOTION_CODE = $(object).find('.PROMOTION_CODE').attr('data');
