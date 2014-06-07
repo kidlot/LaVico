@@ -140,7 +140,50 @@ module.exports = {
                         then.terminate();
                     }
                 });
+                this.step(function(){
 
+
+                    var requestData02 = {
+                        'memberId' : member_id,
+                        'perPage':0,
+                        'pageNum':0,
+                        'status':'02'//已生效
+                    };
+                    middleware.request( "Coupon/GetCoupons", requestData02,this.hold(function(err,doc){
+
+                        couponData = JSON.parse(doc);
+                        nut.model.effectiveCouponsLength = couponData.total;
+                        //记录用户动作
+                    }));
+
+                    var requestData03 = {
+                        'memberId' : member_id,
+                        'perPage':0,
+                        'pageNum':0,
+                        'status':'03'//已使用
+                    };
+                    middleware.request( "Coupon/GetCoupons", requestData03,this.hold(function(err,doc){
+
+                        couponData = JSON.parse(doc);
+                        nut.model.usedCouponsLength = couponData.total;
+                        //记录用户动作
+                    }));
+
+                    var requestData04 = {
+                        'memberId' : member_id,
+                        'perPage':0,
+                        'pageNum':0,
+                        'status':'04'//已过期
+                    };
+                    middleware.request( "Coupon/GetCoupons", requestData04,this.hold(function(err,doc){
+
+                        couponData = JSON.parse(doc);
+                        nut.model.overdueCouponsLength = couponData.total;
+                        //记录用户动作
+                    }));
+
+
+                });
                 this.step(function(){
 
                     var requestData01 = {
@@ -373,23 +416,14 @@ module.exports = {
                         }
                     }
 
-                    nut.model.ineffectiveCoupons = ineffectiveCoupons;
-                    nut.model.ineffectiveCouponsLength = ineffectiveCoupons.length;
-
                     //可使用
                     nut.model.effectiveCoupons = effectiveCoupons;
-                    nut.model.effectiveCouponsLength = effectiveCoupons.length;
-
-                    //console.log("effectiveCoupons:");
-                    //console.log(effectiveCoupons);
 
                     //已使用
                     nut.model.usedCoupons = usedCoupons;
-                    nut.model.usedCouponsLength = usedCoupons.length;
 
                     //已过期
                     nut.model.overdueCoupons = overdueCoupons;
-                    nut.model.overdueCouponsLength = overdueCoupons.length;
 
                 });
             }

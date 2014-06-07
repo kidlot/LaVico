@@ -5,6 +5,15 @@
     <div class="sc_ticket"><img id="promotion_image" src="{@info.pic}" /></div>
     <div class="use-rules">
         <div class="use-rulesContent">
+            <div id="coupon_des" style="color: #646464;display: none; font-size: 1.6rem;padding:2%">
+                <span>活动名称：</span><span class="MEMO"></span><br/>
+                <span>券类型：</span><span class="TYPE"></span><br/>
+                <span>券号：</span><span class="COUPON_NO"></span><br/>
+                <span>金额：</span><span class="COUPON_QTY"></span><br/>
+                <span>获取时间：</span><span class="CREAT_DATE"></span><br/>
+                <span>使用时间：</span><span class="USED_DATE"></span><br/>
+                <span>有效期：</span><span class="BEGIN_DATE"></span>-<span class="END_DATE"></span><br/>
+            </div>
             <div id="promotion_des" class="text">
                 {@info.introduction}
             </div>
@@ -16,3 +25,4 @@
 <div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
 <input id="wxid" type="hidden" value="{@ wxid}"/>
 <input id="code" type="hidden" value="{@ code}"/>
+<input id="coupon_no" type="hidden" value="{@ coupon_no}"/>
