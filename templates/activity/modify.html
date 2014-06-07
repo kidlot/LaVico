@@ -81,8 +81,7 @@
         var _inputCheck = true;
         var content;
         var editor;
-        content = decodeURIComponent('{@activity.introduction}');
-        document.getElementById("introduction").value = content;
+
 
         function save(){
 
@@ -172,4 +171,9 @@
       function uploadCanceled(evt) {
           alert("已经取消上传");
       }
-</script>     
+</script>
+<script>
+    var content;
+    content = decodeURIComponent('{@activity.introduction}');
+    document.getElementById("introduction").value = content;
+</script>
