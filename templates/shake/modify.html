@@ -180,47 +180,7 @@
 <script type="text/javascript" src="/opencomb/public/lib/3party/jquery-1.9.1.min.js"></script>
 
 <script>
-/*点击复制按钮*/
-
-var init = function (){
-
-    var _lottery = JSON.parse('{@lottery}');
-    for(var _i=0;_i<_lottery.length;_i++){
-        var _PROMOTION_CODE = _lottery[_i].PROMOTION_CODE;
-        var _display_name = _lottery[_i].display_name;
-        var _lottery_chance = _lottery[_i].lottery_chance;
-        document.getElementById(_PROMOTION_CODE).style.display = 'block';
-        console.log(document.getElementById(_PROMOTION_CODE+'-display_name').value = _display_name);
-        console.log(document.getElementById(_PROMOTION_CODE+'-lottery_chance').value = _lottery_chance);
-    }
-}
-init();
 /*编辑器*/
-
-//var content = decodeURIComponent('{@shake.content}');
-//
-//console.log(content);
-///*编辑器*/
-//editor = CKEDITOR.replace( 'content', {
-//    toolbar: [
-//        ['Source','-','Save','NewPage','Preview','-','Templates'],
-//        ['Undo', 'Redo', '-', 'SelectAll', 'RemoveFormat'],
-//        ['Styles','Format','Font','FontSize'],
-//        ['TextColor','BGColor'],
-//        ['Maximize', 'ShowBlocks'],
-//        '/',
-//        ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-//        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-//        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-//        ['Link','Unlink','Anchor'],
-//        ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
-//        ['Code']
-//    ]
-//});
-//if(content){
-//    editor.setData(content);
-//}
-
 function save(){
 
     var aFormInput = {}
@@ -401,7 +361,7 @@ function save(){
     aFormInput['switcher'] = 'on';
     aFormInput['createTime'] = new Date().getTime();
     aFormInput['points'] = parseInt($("#points").val()) || 0;//每次游戏，所消耗的积分
-    aFormInput['content'] = content;
+    aFormInput['content'] = encodeURIComponent(content);
     aFormInput['display_name'] = $("#display_name").val();//券名称
     console.log(aFormInput)
 
@@ -461,6 +421,24 @@ function copyToClipboard(txt) {
         alert("浏览器不支持,请手动复制。"+txt)
     }
 }
+/*点击复制按钮*/
 
+var init = function (){
+
+    var _lottery = JSON.parse('{@lottery}');
+    for(var _i=0;_i<_lottery.length;_i++){
+        var _PROMOTION_CODE = _lottery[_i].PROMOTION_CODE;
+        var _display_name = _lottery[_i].display_name;
+        var _lottery_chance = _lottery[_i].lottery_chance;
+        document.getElementById(_PROMOTION_CODE).style.display = 'block';
+        console.log(document.getElementById(_PROMOTION_CODE+'-display_name').value = _display_name);
+        console.log(document.getElementById(_PROMOTION_CODE+'-lottery_chance').value = _lottery_chance);
+    }
+}
+init();
 </script>
-
+<script>
+    var content;
+    content = decodeURIComponent('{@shake.content}');
+    document.getElementById("content").value = content;
+</script>
