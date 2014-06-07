@@ -367,6 +367,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite_title .title6 { display:block; position:absolute; right:0px; z-index:1; padding-right:4%;  }
 .elite_title .title6 a{ width:auto; margin-top:0;vertical-align:middle; text-align:right; padding-right:12px; display:block;
                         color:#fff; font-size:1.2rem;  height:50px; line-height:52px; background:url(../images/store_rt.jpg) right center no-repeat; background-size:10px;}
+//heart_store_rt.jpg
+.elite_title .heart_title6 a{background:url(../images/heart_store_rt.jpg) right center no-repeat;}
 
 .intros{ position:fixed; bottom:0; z-index:100; margin:0 auto; text-align:left; height:auto; width:100%; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding:2% 0; left:0px;}
 .intros .title{font-size: 1.6rem;color: #B9954D; padding:0 4%; }
