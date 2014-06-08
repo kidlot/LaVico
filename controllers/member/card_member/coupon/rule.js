@@ -160,7 +160,7 @@ module.exports = {
                     _couponArr.COUPON_QTY = couponArr.COUPON_QTY;//金额
                     _couponArr.TYPE = couponArr.BASE_CODE_NAME;//券类别
                     _couponArr.COUPON_NO = couponArr.COUPON_NO;//券号
-                    _couponArr.MEMO = couponArr.MEMO;//活动名称
+                    _couponArr.PROMOTION_NAME = couponArr.PROMOTION_NAME;//活动名称
                     _couponArr = JSON.stringify(_couponArr);
                 });
 
@@ -229,7 +229,7 @@ module.exports = {
                     var coupon = data;
                     if(coupon.success == true){
                         var _info = coupon.info;
-                        $('#coupon_des').find('.MEMO').html(_info.MEMO);
+                        $('#coupon_des').find('.PROMOTION_NAME').html(_info.PROMOTION_NAME);
                         $('#coupon_des').find('.TYPE').html(_info.TYPE);
 
                         $('#coupon_des').find('.COUPON_NO').html(_info.COUPON_NO);
