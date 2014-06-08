@@ -473,18 +473,21 @@ module.exports={
                                         }else{
                                             newActivity="已领过此卷";
                                         }
+
                                     })
-                                    console.log("newActivity:"+newActivity)
-                                    results.getLabel = getLabel;
-                                    results.getScore = getScore;
-                                    results.getTipContent = getTipContent;
-                                    results.code = getActivities;
-                                    results.getActivities = "sa";
-                                    results.volumename = volumename;
-                                    nut.model.sta = "false";
-                                    nut.model.score = "1";
-                                    nut.model.getScores ="1";
-                                    nut.model.type = type;
+                                    then.step(function(Activity){
+                                        console.log("newActivity:"+newActivity)
+                                        results.getLabel = getLabel;
+                                        results.getScore = getScore;
+                                        results.getTipContent = getTipContent;
+                                        results.code = getActivities;
+                                        results.getActivities = Activity;
+                                        results.volumename = volumename;
+                                        nut.model.sta = "false";
+                                        nut.model.score = "1";
+                                        nut.model.getScores ="1";
+                                        nut.model.type = type;
+                                    })
 
                                 }else{
                                     results.getLabel = "对不起,您没有获得任何奖励";
