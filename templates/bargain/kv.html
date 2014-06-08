@@ -7,6 +7,9 @@
             <if condition="@doc.length == 1">
                 <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@doc[0]._id}')">立即开始</a></div>
             </if>
+            <if condition="@doc.length == 0">
+                <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','')">立即开始</a></div>
+            </if>
         </if>
         <div class="text">
             <div class="title">活动及使用规则</div>
@@ -30,6 +33,20 @@
 </if>
 <script>
     function _isVip(wxid,_id){
+
+        var length='{@doc.length}';
+        if(length=='0'){
+            window.popupStyle2.on("很抱歉，活动已结束",function(event){
+                if(event == "confirm"){
+
+                }
+            })
+            return false;
+        }
+
+
+
+
         var isvip = '{@ isVip}'
         if(isvip == "true"){
 
