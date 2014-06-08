@@ -4,7 +4,7 @@
         <if condition="@ _id">
             <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@ _id}')">立即开始</a></div>
         <else/>
-            <if condition="@doc.length == 1">
+            <if condition="@doc.length <= 1">
                 <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@doc[0]._id}')">立即开始</a></div>
             </if>
         </if>
@@ -32,8 +32,7 @@
     function _isVip(wxid,_id){
 
         var length='{@doc.length}';
-        var switcher='{@doc[0].switcher}';
-        if(length=='1' && switcher=="off"){
+        if(length=='0'){
             window.popupStyle2.on("很抱歉，活动已结束",function(event){
                 if(event == "confirm"){
 
@@ -41,6 +40,7 @@
             })
             return false;
         }
+
 
 
 
