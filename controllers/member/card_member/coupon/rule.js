@@ -155,8 +155,8 @@ module.exports = {
 
                     _couponArr.CREAT_DATE = formatTime(couponArr.CREAT_DATE);//获得时间
                     _couponArr.USED_DATE = couponArr.USED_DATE ? formatTime(couponArr.USED_DATE) : null;//已使用时间
-                    _couponArr.BEGIN_DATE = formatTime(couponArr.BEGIN_DATE);//有效期开始时间
-                    _couponArr.END_DATE = formatTime(couponArr.END_DATE);//有效期结束时间
+                    _couponArr.BEGIN_DATE = formatDate(couponArr.BEGIN_DATE);//有效期开始时间
+                    _couponArr.END_DATE = formatDate(couponArr.END_DATE);//有效期结束时间
                     _couponArr.COUPON_QTY = couponArr.COUPON_QTY;//金额
                     _couponArr.TYPE = couponArr.BASE_CODE_NAME;//券类别
                     _couponArr.COUPON_NO = couponArr.COUPON_NO;//券号
@@ -259,16 +259,6 @@ module.exports = {
     }
 }
 
-function  formatDate(now){
-    var   now = new Date(now);
-    var   year=now.getFullYear();
-    var   month=now.getMonth()+1;
-    var   date=now.getDate();
-    var   hour=now.getHours();
-    var   minute=now.getMinutes();
-    var   second=now.getSeconds();
-    return   year+"-"+month+"-"+date;
-}
 function   formatTime(now){
     var   now = new Date(now);
     var   year=now.getFullYear();
@@ -278,4 +268,14 @@ function   formatTime(now){
     var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
     var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
     return   year+"年"+month+"月"+date+"日 "+hour+":"+minute+':'+second;
+}
+function   formatDate(now){
+    var   now = new Date(now);
+    var   year=now.getFullYear();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+    return   year+"年"+month+"月"+date+"日";
 }
