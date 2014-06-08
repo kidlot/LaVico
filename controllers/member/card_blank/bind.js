@@ -142,7 +142,7 @@ module.exports = {
                                 $('#tel_checked_status').val('tel_checked_false');
                                 $('#true_card_number').show();
                                 $('#userCardNumber').focus();
-                                //bindPosition('#true_card_number');
+                                bindPosition('#true_card_number');
 
 
                             }else{
