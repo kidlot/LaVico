@@ -102,15 +102,24 @@ var isReg=function(){
         <div class="text">
             <div class="title">活动及使用规则</div>
             <div class="title1">活动说明：</div>
-            <div class="subtext">{@docs.explanation}
+            <div class="subtext"><div id="explanation"></div>
                 <p>该活动只有朗维高会员才有权限参与，如果你还不是会员,请点击菜单-我的会员卡-<a href="/lavico/member/card_blank/register?wxid={@wechatId}" target="_blank" class="login_size">注册会员
                 </a></p></div>
             <div class="title1">奖项设置：</div>
-            <div class="subtext">{@docs.description}</div>
+            <div id="description" class="subtext"></div>
             <div class="title1">免责声明：</div>
-            <div class="subtext"><p>{@docs.relief}</p>
+            <div id="relief" class="subtext">
             </div>
         </div>
     </div>
 </div>
+<script>
 
+    var description = decodeURIComponent('{@docs.description}');
+    var relief = decodeURIComponent('{@docs.relief}');
+    var explanation = decodeURIComponent('{@docs.explanation}');
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("relief").innerHTML = relief;
+    document.getElementById("explanation").innerHTML = explanation;
+
+</script>
