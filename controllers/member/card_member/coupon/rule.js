@@ -13,9 +13,11 @@ module.exports = {
         var wxid = seed.wxid;
         var code = seed.code;
         var coupon_no = seed.coupon_no;
+        var status = seed.status;
         nut.model.wxid = wxid;//WXID
         nut.model.code = code;//活动ID
         nut.model.coupon_no = coupon_no;//优惠券码
+        nut.model.status = status;
         this.step(function(){
             this.step(function (activity) {
                 helper.db.coll('lavico/activity').findOne({aid: code}, this.hold(function (err, doc) {
@@ -77,6 +79,7 @@ module.exports = {
                 var member_id;
                 var success = 'true';
                 var coupon_no = seed.coupon_no;
+                var status = seed.status;
                 var couponData;
                 var couponArr;
                 var info;
@@ -105,6 +108,7 @@ module.exports = {
                         'coupon_no' : coupon_no,
                         'perPage':1,
                         'pageNum':1,
+                        'status':status
                     };
                     middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
 
@@ -222,7 +226,8 @@ module.exports = {
                 data:{
                     'wxid':$('#wxid').val(),
                     'code':$('#code').val(),
-                    'coupon_no':$('#coupon_no').val()
+                    'coupon_no':$('#coupon_no').val(),
+                    'status':$('#status').val()
                 },
                 success:function(data){
                     $('#loading').hide();//隐藏加载框
