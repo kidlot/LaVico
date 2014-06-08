@@ -61,13 +61,13 @@
                     <a href="javascript:;" class="bargainBtn" id="fixed" >{@res.msg}</a>
                 </if>
             <else/>
-                <a href="javascript:;" class="bargainBtn" id="fixed" onclick="_step('bargain')">立即侃价</a>
+                <a href="javascript:;" class="bargainBtn" id="fixed" onclick="_check();">立即侃价</a>
             </if>
         </div>
     </div>
 
     <div id="_alert">
-        <div class="fade channel" id="_win_bargain">
+        <div class="fade channel" id="_win_bargain" style="z-index: 997">
             <div class="input-price">
                 <p class="msg">请在下方输入您的心理价位<br/>
                     (精确到元，例如1200)</p>
@@ -194,30 +194,6 @@ function _close(){
 
 function _step(channelName){
 
-
-    if($("#isVip").val() == "false"){
-
-        window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
-
-            if(event == "confirm"){
-                location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
-            }
-        })
-
-        return false;
-    }
-
-
-
-    var bargainStatus = '{@ bargainStatus}'
-    if(bargainStatus){
-
-        window.popupStyle2.on(bargainStatus,function(event){
-
-        })
-        return false;
-    }
-
     var _func = function(){
 
         $("#_alert .channel").hide()
@@ -232,6 +208,44 @@ function _step(channelName){
         })
     }else{
         _func()
+    }
+}
+
+function _check(){
+
+
+    if($("#isVip").val() == "false"){
+
+        window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
+
+            if(event == "confirm"){
+                location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
+            }
+        })
+
+        return false;
+    }
+
+
+    var bargainStatus = '{@ bargainStatus}'
+    if(bargainStatus){
+        window.popupStyle2.on(bargainStatus,function(event){
+
+        })
+        return false;
+    }
+
+
+    var jf = '{@jf}';
+    if(parseInt(jf) > 0){
+        window.popupStyle2.on("成功侃价后将扣除"+jf+"积分",function(event){
+
+            if(event == "confirm"){
+
+                // 开始
+                _step('bargain');
+            }
+        })
     }
 }
 
