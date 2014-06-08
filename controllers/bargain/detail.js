@@ -63,7 +63,7 @@ module.exports = {
                         console.log("剩余积分",doc)
                         if(parseInt(JSON.parse(doc).point) < parseInt(nut.model.doc.deductionIntegral)){
 
-                            nut.model.bargainStatus = "很抱歉，您的积分不足"
+                            nut.model.bargainStatus = "您的积分不够了，快去朗维高门店消费或者参加抢积分活动吧！"
                         }
                     }));
             }

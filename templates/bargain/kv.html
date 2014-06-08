@@ -72,22 +72,19 @@
             return false;
         }
 
-
-
-
         var isvip = '{@ isVip}'
         if(isvip == "true"){
 
-            var jf = '{@jf}';
-            if(parseInt(jf) > 0){
-                window.popupStyle2.on("成功侃价后将扣除"+jf+"个积分",function(event){
-
-                    if(event == "confirm"){
-                        location.href = "/lavico/bargain/detail?wxid="+wxid+"&_id="+_id;
-                    }
-                })
-            }
-
+            location.href = "/lavico/bargain/detail?wxid="+wxid+"&_id="+_id;
+//            var jf = '{@jf}';
+//            if(parseInt(jf) > 0){
+//                window.popupStyle2.on("成功侃价后将扣除"+jf+"积分",function(event){
+//
+//                    if(event == "confirm"){
+//                        location.href = "/lavico/bargain/detail?wxid="+wxid+"&_id="+_id;
+//                    }
+//                })
+//            }
 
         }else{
 
