@@ -125,7 +125,7 @@ module.exports = {
 
         this.step(function(){
             if(!shake){
-                aid == 'undefined';//活动未找到，或者超期，或者被关闭
+                aid = 'undefined';//活动未找到，或者超期，或者被关闭
             }
         });
 
