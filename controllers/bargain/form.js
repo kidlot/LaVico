@@ -143,30 +143,71 @@ module.exports = {
             }
         }
 
+        // 成功
         , deal:{
             process: function(seed,nut){
 
-                middleware.request("Coupon/FetchCoupon",
-                    {openid: seed.wxid, otherPromId: seed.promotionsCode, PROMOTION_CODE: seed.promotionsCode, qty: seed.price, point: 0, memo:"侃价"},
-                    this.hold(function (err, doc) {
-                        console.log(doc)
-                    }));
+                var bargain;
+                var then = this;
 
-                var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
-                helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
-                    if(err ){
-                        console.log(err)
-                    }
-                })) ;
+                this.step(function(){
 
-                _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
+                    // 获得砍价信息
+                    helper.db.coll("lavico/bargain").findOne({_id : helper.db.id(seed._id)},this.hold(function(err,doc){
+                        if(err ){
+                            console.log(err)
+                        }
+                        bargain = doc || {}
+                    })) ;
+                })
 
-                helper.db.coll("lavico/bargain").update({_id : helper.db.id(seed._id)}, {$inc:{surplus:-1}},this.hold(function(err,doc){
-                    if(err ){
-                        console.log(err)
-                    }
-                })) ;
-                this.req.session._bargain_step = 1;
+                // 减少积分
+                this.step(function(){
+
+                    var qty = "-"+bargain.deductionIntegral;
+                    middleware.request("Point/Change",
+                        {memberId: seed.memberID, qty:qty, memo:"侃价"},
+                        this.hold(function (err, doc) {
+                            if(err){
+                                console.log(err)
+                                console.log(doc)
+                            }
+                            return bargain
+                        }));
+                })
+
+                this.step(function(bargain){
+
+                    // 差价
+                    var qty = parseInt(bargain.price) - parseInt(seed.price);
+
+                    // 获得券
+                    middleware.request("Coupon/FetchCoupon",
+                        {openid: seed.wxid, otherPromId: seed.promotionsCode, PROMOTION_CODE: seed.promotionsCode, qty: qty, point: 0, memo:"侃价"},
+                        this.hold(function (err, doc) {
+                            console.log(doc)
+                        }));
+
+                    // 更新用户表中的记录。用于统计
+                    var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
+                    helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
+                        if(err ){
+                            console.log(err)
+                        }
+                    })) ;
+
+                    // 更新用户记录表
+                    _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
+
+                    // 更新侃价
+                    helper.db.coll("lavico/bargain").update({_id : helper.db.id(seed._id)}, {$inc:{surplus:-1}},this.hold(function(err,doc){
+                        if(err ){
+                            console.log(err)
+                        }
+                    })) ;
+                    this.req.session._bargain_step = 1;
+                })
+
                 this.step(function(){
                     nut.disable();
                     var data = JSON.stringify({err:0});
@@ -174,6 +215,7 @@ module.exports = {
                     this.res.write(data);
                     this.res.end();
                 })
+
             }
         }
         , giveup:{

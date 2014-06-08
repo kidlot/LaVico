@@ -1,3 +1,4 @@
+var middleware = require('lavico/lib/middleware.js');//引入中间件
 module.exports = {
 
     layout: "lavico/layout"
@@ -33,16 +34,51 @@ module.exports = {
                 doc = _doc || {}
                 nut.model.doc = doc
             }))
+
+
         }else{
             nut.disable();
             var data = JSON.stringify({err:1,msg:"没有微信ID或产品ID"});
             this.res.writeHead(200, { 'Content-Type': 'application/json' });
             this.res.write(data);
             this.res.end();
+            this.terminate()
         }
 
-        nut.model.res = {}
 
+
+        // 查询剩余积分
+        this.step(function(){
+
+            var then = this;
+            if(nut.model.doc.deductionIntegral){
+
+                middleware.request("Point/" + nut.model.memberID,
+                    {memberId: nut.model.memberID},
+                    this.hold(function (err, doc) {
+                        if(parseInt(JSON.parse(doc).point) < parseInt(nut.model.doc.deductionIntegral)){
+
+                            nut.model.bargainStatus = "很抱歉，您的积分不足"
+                        }
+                    }));
+            }
+
+        })
+
+        // 判断有效期
+        this.step(function(){
+
+            if(new Date().getTime() > nut.model.doc.stopDate ){
+
+                nut.model.bargainStatus = "很抱歉，活动已结束"
+            }
+            if(new Date().getTime() < nut.model.doc.startDate ){
+
+                nut.model.bargainStatus = "很抱歉，活动还没有开始"
+            }
+        })
+
+        nut.model.res = {}
         // repeat
         this.step(function(){
 
