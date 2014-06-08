@@ -82,7 +82,7 @@ console.log("welab/customers")
             console.log("_id:"+seed._id);
             if(seed._id){
 
-                nut.model.wxid = seed.wxid
+                //nut.model.wxid = seed.wxid
                 nut.model._id = seed._id
                 nut.model.pageNum = parseInt(seed.pageNum) || 1
                 nut.model.fromWelab = seed.fromWelab || ""
@@ -104,6 +104,11 @@ console.log("welab/customers")
                 this.res.write(data);
                 this.res.end();
             }
+        })
+
+        this.step(function(){
+            //nut.model._id = seed._id || ""
+            nut.model.wxid = wxid
         })
     }
 }
