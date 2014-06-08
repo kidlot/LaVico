@@ -42,9 +42,9 @@
 </div>
 <script>
     function save(){
-        var description = encodeURIComponent($("#description")).val());
-        var relief = $("#relief").val();
-        var explanation = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');
+        var description = encodeURIComponent($("#description").val());
+        var relief = encodeURIComponent($("#relief").val());
+        var explanation = encodeURIComponent($("#explanation").val());
         $.get("/lavico/answerQuestion/RuleDescription:save",{description:description,relief:relief,explanation:explanation},function(result){
             alert("保存成功");
         })
