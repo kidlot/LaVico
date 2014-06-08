@@ -1,21 +1,22 @@
 <script>
     function check(){
+        var wxid = '{@wxid}';
         var flag="{@flag}";
         if(flag=="1")
         {
 
             window.popupStyle2.on("您还不是LaVico的会员，请先注册会员!",function(event){
                 if(event == "confirm"){
-                    location.href="/lavico/member/card_blank/register?wxid={@wxid}";
+                    location.href="/lavico/member/card_blank/register?wxid="+wxid;
                 }
             })
             return false;
         }
     }
 
-    window.onload =function() {
-        check();
-    }
+//    window.onload =function() {
+//        check();
+//    }
 </script>
 
 <if condition="@ !isFollow">
@@ -35,7 +36,7 @@
                     <div class="flipsnap" id="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
                         <foreach for="@doc.product" var="doc2">
                             <div class="item">
-                                <span class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></span>
+                                <span class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true" onclick="check()"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></span>
                             </div>
                         </foreach>
                     </div>
@@ -71,7 +72,7 @@
                 <div class="small_list">
                     <foreach for="@page.product" var="product">
                         <div class="small_image">
-                            <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}&onlyProduct=true">
+                            <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}&onlyProduct=true" onclick="check()">
                                 <img src="{@ product.pic}" class="exchangebtn">
                             </a>
                         </div>
@@ -107,7 +108,7 @@
         <div class="elite" id="wrap">
             <foreach for="@allPage.page" var="item" key="key">
                 <div class="elite_list_lw">
-                    <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@item._id}">
+                    <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@item._id}"  onclick="check()">
                         <span class="elite_img"><img src="{@item.pic||'/lavico/public/images/elite_home_top.gif'}" /></span>
                         <span class="elite_details">{@item.name}</span>
                     </a>

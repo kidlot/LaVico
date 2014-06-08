@@ -5,6 +5,7 @@ module.exports = {
 
     , process: function(seed,nut){
         var wxid=seed.wxid || undefined;
+
         var doc = {};
 
         this.res.setHeader("Cache-Control", "no-cache");
@@ -57,7 +58,8 @@ module.exports = {
         this.step(function(){
             helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
                 if(err) throw err;
-
+console.log("welab/customers")
+                console.log(doc)
                 if(doc && doc.HaiLanMemberInfo){
                     if(doc.HaiLanMemberInfo.action=='bind') {
                         memberid = doc.HaiLanMemberInfo.memberID;
