@@ -44,7 +44,7 @@ module.exports = {
         this.step(function(){
             console.log("wechatid:"+wxid)
             if(wxid != undefined){
-                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                helper.db.coll('welab/customers').findOne({"wechatid":wxid},this.hold(function(err, doc){
                     var doc = doc || {};
                     console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
@@ -76,7 +76,9 @@ module.exports = {
         })
 
         this.step(function(){
-            if(seed.wxid && seed._id){
+            console.log("wxid:"+seed.wxid)
+            console.log("_id:"+seed._id);
+            if(seed._id){
 
                 nut.model.wxid = seed.wxid
                 nut.model._id = seed._id
@@ -92,6 +94,8 @@ module.exports = {
                     console.log(nut.model.allPage)
                 }))
             }else{
+                console.log("wxid:"+seed.wxid)
+                console.log("_id:"+seed._id);
                 nut.disable();
                 var data = JSON.stringify({err:1,msg:"没有微信ID或产品ID"});
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -99,8 +103,6 @@ module.exports = {
                 this.res.end();
             }
         })
-
-
     }
 }
 
