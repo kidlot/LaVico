@@ -4,7 +4,10 @@
         <if condition="@ _id">
             <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@ _id}')">立即开始</a></div>
         <else/>
-            <if condition="@doc.length <= 1">
+            <if condition="@doc.length == 1">
+                <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@doc[0]._id}')">立即开始</a></div>
+            </if>
+            <if condition="@doc.length == 0">
                 <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@doc[0]._id}')">立即开始</a></div>
             </if>
         </if>
