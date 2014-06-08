@@ -222,7 +222,7 @@ module.exports={
                                             var jsonData = {};
                                             jsonData.memberId = memberId;
                                             jsonData.qty = getScore;
-                                            jsonData.memo = '问答测试' + '-' + nut.model.themeTitle;
+                                            jsonData.memo = nut.model.themeTitle;
 
                                             console.log("问答测试:"+JSON.stringify(jsonData));
                                             if(ok){
@@ -477,7 +477,7 @@ module.exports={
                                             var jsonData = {};
                                             jsonData.memberId = memberId;
                                             jsonData.qty = getScore;
-                                            jsonData.memo = '问答测试:' + '-' + nut.model.themeTitle;
+                                            jsonData.memo = nut.model.themeTitle;
                                             if(ok){
                                                 middleware.request('Point/Change', jsonData,
                                                     this.hold(function (err, doc) {
