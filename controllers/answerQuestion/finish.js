@@ -77,7 +77,7 @@ module.exports={
                         resultList.push(sa);
                         nut.model.jsonResult =resultList;
                         nut.model.label =resultList[0].getLabel;
-                        nut.model.code =resultList[0].type;
+                        nut.model.type =resultList[0].type;
                         nut.model.score = "0";
                         nut.model.sta = "false";
                     }else{
@@ -93,7 +93,7 @@ module.exports={
                         nut.model.score = "0";
                         nut.model.sta = "true";
                         nut.model.label =resultList[0].getLabel;
-                        nut.model.code =resultList[0].type;
+                        nut.model.type =resultList[0].type;
                     }
                 }
             }
@@ -301,6 +301,7 @@ module.exports={
                                 nut.model.sta = "false";
                                 nut.model.score = "1";
                                 nut.model.getScores ="1";
+                                nut.model.type = type;
                             }else{
                                 results.getLabel = "对不起,您没有获得任何奖励";
                                 results.getScore = 0;
@@ -311,6 +312,7 @@ module.exports={
                                 nut.model.stutas = "true";
                                 nut.model.score = "0";
                                 nut.model.getScores ="0";
+                                nut.model.type = type;
                             }
                         }
                     }
@@ -347,13 +349,20 @@ module.exports={
                 //停止标签过来
                 if (stopLab == "true") {
                     for (var i = 0; i < scoreRange.length; i++) {
+
                         if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
+                            console.log(then.req.session.stopLabel)
+                            console.log(scoreRange[i].conditionLabel)
+                            console.log(scoreRange)
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             //判断是否是发放卷
                             if(scoreRange[i].getActivities=="-1"){
                                 type = scoreRange[i].getActivities;
                                 //在分值范围中
+                                console.log("score:"+score);
+                                console.log("minlen:"+minlen);
+                                console.log("maxlen:"+maxlen);
                                 if(score >= minlen && score <= maxlen){
 
                                     //获取奖励
@@ -387,6 +396,7 @@ module.exports={
                                     nut.model.sta = "false";
                                     nut.model.score = "1";
                                     nut.model.getScores ="1";
+                                    nut.model.type = type;
                                 }else{
                                     results.getLabel = "对不起,您没有获得任何奖励";
                                     results.getScore = 0;
@@ -397,6 +407,7 @@ module.exports={
                                     nut.model.stutas = "true";
                                     nut.model.score = "0";
                                     nut.model.getScores ="0";
+                                    nut.model.type = type;
                                 }
                             }else{
                                 type = scoreRange[i].getActivities;
@@ -455,6 +466,8 @@ module.exports={
                                     nut.model.sta = "false";
                                     nut.model.score = "1";
                                     nut.model.getScores ="1";
+                                    nut.model.type = type;
+
                                 }else{
                                     results.getLabel = "对不起,您没有获得任何奖励";
                                     results.getScore = 0;
@@ -465,6 +478,7 @@ module.exports={
                                     nut.model.stutas = "true";
                                     nut.model.score = "0";
                                     nut.model.getScores ="0";
+                                    nut.model.type = type;
                                 }
                             }
                         }
@@ -502,6 +516,7 @@ module.exports={
             if(go){
                 resultList.push(results)
                 nut.model.code = type;
+                nut.model.type = type;
                 then.req.session.optionId = ""
                 nut.model.result = resultList;
                 nut.model.jsonResult = resultList
