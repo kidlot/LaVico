@@ -16,6 +16,7 @@ a.tel{color:#2d2d2d;}
 .activity-rules .text .title{text-align:center; color:#000; font-size:1.4rem;}
 .activity-rules .text .title1{color:#bda172; font-size:1.4rem; padding-top:4%;}
 .subtext{ color:#646464; font-size:1.4rem; padding-top:2%;}
+.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; }
 /*Member*/
 .vip_card_num{text-align: center; color:#999; font-size: 1.2rem; position: absolute; left:50%; top:78%; }
 /*礼品券*/
