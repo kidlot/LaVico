@@ -36,6 +36,44 @@ window.onload=function(){
 }
 
 </script>
+<if condition="{@type=='-1'}">
+<div class="wrapper">
+    <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
+    <div class="coupon">
+        <div class="points-content">
+            <img src="/lavico/public/images/points_banner-604X319.jpg" />
+            <div class="points_txt">
+
+                <foreach for="{@jsonResult}" var="resultString">
+                    <label style="font-size: 2.4rem">{@resultString.getScore}积分</label>
+                </foreach>
+            </div>
+        </div>
+    </div>
+    <foreach for="{@jsonResult}" var="resultString">
+        <div class="look-text">
+            <p class="get">
+                <if condition="{@stutas=='true'}">
+                    <if condition="{@score=='0'}">
+                        <if condition="{@getScores=='0'}">
+                            对不起,您获得:
+                            <else/>
+                            您上次答题获得
+                        </if>
+                        <else/>
+                        您上次答题获得
+                    </if>
+
+                    <else/>
+                    恭喜您获得
+                </if>
+                {@resultString.getScore}积分<br />
+                可在“积分明细”内查询</p>
+            <p class="click-look"><a href="/lavico/member/card_member/points/index?wxid={@wechatid}">点击查看</a></p>
+        </div>
+    </foreach>
+</div>
+<else/>
 <div class="wrapper">
     <div class="mobile">
         <div class="points-content">
@@ -62,19 +100,15 @@ window.onload=function(){
         <div class="line">
         </div>
         <if condition="{@code=='-1'}">
-
                 <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&type={@code}&themetype={@themeType}&id={@id}">领取积分</a></div>
-
             <else/>
             <if condition="{@resultString.getActivities!=''}">
-
                     <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&type={@code}">领取优惠券</a></div>
-
-
                 <else/>
                 <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&type={@code}">领取优惠券</a></div>
             </if>
         </if>
     </div>
 </div>
+    </if>
 

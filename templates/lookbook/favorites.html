@@ -7,16 +7,18 @@
         <if condition="@ $helper.gt(docs.length,0)">
 
             <foreach for="@docs" var="fav" key="key">
-            <div class="points3-box">
-                <div class="points3-content clear">
-                    <div class="fl"><a href="javascript:;" onclick="_gotoProductPage('{@ fav.lookbookid}','{@fav.pageNum}','{@fav.product._id}')"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" ></a></div>
-                    <div class="fl text">
-                        <div class="title3"><a href="javascript:;">{@fav.product.name}</a></div>
-                        <div class="con"><a href="javascript:;">{@fav.product.detail}</a></div>
-                        <div class="btn subbtn" onclick="cancelFav('{@ fav._id}')">取消收藏</div>
+            <if condition="@ fav.product">
+                <div class="points3-box">
+                    <div class="points3-content clear">
+                        <div class="fl"><a href="javascript:;" onclick="_gotoProductPage('{@ fav.lookbookid}','{@fav.pageNum}','{@fav.product._id}')"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" ></a></div>
+                        <div class="fl text">
+                            <div class="title3"><a href="javascript:;">{@fav.product.name}</a></div>
+                            <div class="con"><a href="javascript:;">{@fav.product.detail}</a></div>
+                            <div class="btn subbtn" onclick="cancelFav('{@ fav._id}')">取消收藏</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </if>
             </foreach>
 
         <else/>
@@ -41,18 +43,12 @@
 
         <script>
 
-
-
             function _gotoProductPage(p1,p2,p3){
                 var url = "/lavico/lookbook/product?_id="+p1+"&wxid={@ wxid}&pageNum="+p2+"&productId="+p3+"&source=view&cb="+encodeURIComponent('{'+location.href+'}')
                 location.href = url
             }
 
-
-
             function cancelFav(_id){
-
-
                 window.popupStyle3.on("您确定要取消收藏吗？",function(event){
 
                     if(event == "yes"){
