@@ -42,7 +42,7 @@ a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; font-w
 .bargin-left{ width:100%; display:block; }
 .bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-bottom:4%; position:relative; }
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
-.bargin-right .color{padding-top:5px; display: inline-flex;}
+.bargin-right .color{padding-top:5px; display: inline-flex; line-height:20px;}
 .bargin-right .color .color-title{ color:#404040; display: inline-table;}
 .bargin-right .color .color-con{ color:#646464;}
 .bargin-right .rules{padding-top:5px; word-break: break-all; line-height:20px;display: -webkit-flex;color:#646464; width:99%;}
