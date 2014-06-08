@@ -167,7 +167,7 @@ module.exports = {
                     if(bargain.deductionIntegral && bargain.deductionIntegral!=""){
                         var qty = "-"+bargain.deductionIntegral;
                         middleware.request("Point/Change",
-                            {memberId: seed.memberID, qty:qty, memo:"侃价"},
+                            {memberId: seed.memberID, qty:qty, memo:"我要侃价"},
                             this.hold(function (err, doc) {
                                 if(err){
                                     console.log(err)
