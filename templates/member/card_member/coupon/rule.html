@@ -3,18 +3,19 @@
         <p><span class="title1"><a href="/lavico/member/card_member/coupon/index?wxid={@wxid}">专属礼券</a></span><span class="title2">使用细则</span></p>
     </div>
     <div class="sc_ticket"><img id="promotion_image" src="{@info.pic}" /></div>
-    <div class="use-rules">
+    <div class="use-rules" style="padding-top:0px;">
         <div class="use-rulesContent">
-            <div id="coupon_des" style="color: #646464;display: none; font-size: 1.6rem;padding:2%">
-                <span>活动名称：</span><span class="PROMOTION_NAME"></span><br/>
-                <span>券类型：</span><span class="TYPE"></span><br/>
-                <span>券号：</span><span class="COUPON_NO"></span><br/>
-                <span>金额：</span><span class="COUPON_QTY"></span><br/>
-                <span>获取时间：</span><span class="CREAT_DATE"></span><br/>
-                <span>使用时间：</span><span class="USED_DATE"></span><br/>
-                <span>有效期：</span><span class="BEGIN_DATE"></span>-<span class="END_DATE"></span><br/>
-            </div>
-            <div id="promotion_des" class="text">
+            <div id="promotion_des" class="text" style="padding-top:0px;">
+            	<div class="title2 new_title">优惠券详情：</div>
+                <div class="subtext" id="coupon_des">
+                    <p>活动名称：<span class="PROMOTION_NAME"></span></p>
+                    <p>券类型：<span class="TYPE"></span></p>
+                    <p>券号：<span class="COUPON_NO"></span></p>
+                    <p>金额：<span class="COUPON_QTY"></span></p>
+                    <p>获取时间：<span class="CREAT_DATE"></span></p>
+                    <p><span>使用时间：</span><span class="USED_DATE"></span></p>
+                    <p>有效期：<span class="BEGIN_DATE"></span>-<span class="END_DATE"></span></p>
+                </div>
                 {@info.introduction}
             </div>
         </div>
