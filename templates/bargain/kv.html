@@ -30,6 +30,21 @@
 </if>
 <script>
     function _isVip(wxid,_id){
+
+
+
+        var val='{@doc.length}';
+        if(val=='0'){
+            window.popupStyle2.on("很抱歉，活动已结束",function(event){
+                if(event == "confirm"){
+
+                }
+            })
+            return false;
+        }
+
+
+
         var isvip = '{@ isVip}'
         if(isvip == "true"){
 
