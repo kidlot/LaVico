@@ -31,7 +31,9 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
     <p>导航：<a href="/lavico/store/baiduCar?wxid={@wxid}&shopLng={@searchCity.LOG}&shopLat={@searchCity.LAT}&address='{@searchCity.ADDR}'" style="display:inline-block;">行车线路</a></p>
     电话：{@searchCity.TEL}<br />
 </div>
+
 <div class="activity-detail">
+    <p class="store-name">促销活动</p>
     <if condition="{@searchCity.ACT==null}">
         <div class="title">暂无活动，敬请期待！</div>
         <else/>

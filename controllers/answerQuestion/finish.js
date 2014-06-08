@@ -269,6 +269,7 @@ module.exports={
                                                     middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                         if (err) throw err;
                                                         var docJson = JSON.parse(doc)
+                                                        console.log(docJson)
                                                         if (docJson.success) {
                                                             newActivity = docJson.coupon_no
                                                             console.log(docJson)
@@ -282,6 +283,8 @@ module.exports={
                                                             nut.model.errString = docJson.error;
                                                         }
                                                     }));
+                                                }else{
+                                                    newActivity="已领过此卷";
                                                 }
 
                                                 console.log("2")
@@ -309,7 +312,7 @@ module.exports={
                                         }, function (err, doc) {
                                         });
                                         //记录json准备显示
-                                        if(ok){
+
                                             var results={};
                                             results.getLabel = getLabel;
                                             results.getScore = getScore;
@@ -318,16 +321,7 @@ module.exports={
                                             results.getActivities = newActivity;
                                             results.volumename = volumename;
                                             resultList.push(results);
-                                        }else{
-                                            var results={};
-                                            results.getLabel = getLabel;
-                                            results.getScore = getScore;
-                                            results.getTipContent = getTipContent;
-                                            results.code = getActivities;
-                                            results.getActivities = "true";
-                                            results.volumename = volumename;
-                                            resultList.push(results);
-                                        }
+
                                     })
                                     //调用接口结束
                                 }
@@ -548,6 +542,7 @@ module.exports={
                                                     middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                         if (err) throw err;
                                                         var docJson = JSON.parse(doc)
+                                                        console.log(docJson)
                                                         if (docJson.success) {
                                                             newActivity = docJson.coupon_no
                                                             nut.model.err = docJson.success
@@ -559,6 +554,8 @@ module.exports={
                                                         }
                                                     }));
                                                 })
+                                            }else{
+                                                newActivity="已领过此卷";
                                             }
 
 
@@ -596,7 +593,9 @@ module.exports={
 
                                                 } else {
                                                     //记录json准备显示
-                                                    if(ok){
+
+                                                        console.log(ok)
+                                                        console.log(newActivity)
                                                         var results={};
                                                         results.getLabel = getLabel;
                                                         results.getScore = getScore;
@@ -605,16 +604,7 @@ module.exports={
                                                         results.getActivities = newActivity;
                                                         results.volumename = volumename;
                                                         resultList.push(results);
-                                                    }else{
-                                                        var results={};
-                                                        results.getLabel = getLabel;
-                                                        results.getScore = getScore;
-                                                        results.getTipContent = getTipContent;
-                                                        results.code = getActivities;
-                                                        results.getActivities = "true";
-                                                        results.volumename = volumename;
-                                                        resultList.push(results);
-                                                    }
+
 
                                                 }
                                             })
