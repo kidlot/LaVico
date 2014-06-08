@@ -456,11 +456,98 @@ module.exports = {
 
         /*掩藏分享按钮*/
         window.hideShareButtion.on();
+        /*优惠券分页*/
+        /*已过期04-可使用02-已使用03*/
+        var pageNum04 = 1;
+        var perPage04 = 5;
+
+        var pageNum02 = 1;
+        var perPage02 = 5;
+
+        var pageNum03 = 1;
+        var perPage03 = 5;
+        var type;
+        window.getUserCoupons = function(pageNum,perPage,type){
+            $.ajax({
+                    url:'/lavico/member/card_member/coupon/rule:getCouponInfo',
+                    type:'GET',
+                    dataType:'json',
+                    data:{
+                        'wxid':$('#wxid').val(),
+                        'pageNum':pageNum,
+                        'perPage':perPage
+                    },
+                    success:function(data){
+                        console.log(data);
+                    }
+                }
+            );
+        }
 
     },
     action:{
         getUserCoupons:function(seed,nut){
-            var type = seed.type||'02';
+
+            var status = seed.status||'02';
+            var pageNum = seed.pageNum;
+            var perPage = seed.perPage;
+            var wxid = seed.wxid;
+            var couponArr;
+            var error;
+            var success = 'false';
+            var couponData;
+            var member_id;
+            var requestData = {};
+
+            this.step(function(){
+                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+
+                    if (doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action == 'bind') {
+                        member_id = doc.HaiLanMemberInfo.memberID;
+                        success = 'true';
+                        error = "null";
+                    } else {
+                        error = "member_id_undefined";
+                        success = 'false';
+                    }
+
+                }));
+            });
+
+            this.step(function(){
+                var requestData = {
+                    'memberId':member_id,
+                    'perPage':perPage,
+                    'pageNum':pageNum,
+                    'status':status
+                };
+                middleware.request( "Coupon/GetCoupons", requestData,this.hold(function(err,doc){
+
+                    couponData = JSON.parse(doc);
+                    couponArr = couponData.list;
+                    couponArr = JSON.stringify(couponArr);
+                    if(couponArr){
+                        success = 'true';
+                    }else{
+                        success = 'false';
+                        error = 'coupon_is_null';
+                    }
+                    console.log(couponArr);
+
+                }));
+            });
+
+            this.step(function(){
+                if(success == 'true'){
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"success":true,"info":'+couponArr+'}');
+                    this.res.end();
+                }else{
+                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
+                    this.res.write('{"success":false,"info":"'+error+'"}');
+                    this.res.end();
+                }
+            });
             
         }
     }

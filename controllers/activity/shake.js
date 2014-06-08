@@ -11,9 +11,11 @@ module.exports = {
 
         var wxid = seed.uid ? seed.uid : 'undefined';//uid是用户的wechatid
         var aid = seed.aid ? seed.aid : 'undefined';//摇一摇活动ID
+        var error;
         nut.model.fromWelab = seed.fromWelab || ""
 
         var member_id;
+        var shake;
 
         this.step(function(){
             //oauth认证
@@ -78,6 +80,8 @@ module.exports = {
             }));
         });
 
+
+
         this.step(function(){
 
             if(wxid == 'undefined'){
@@ -113,19 +117,42 @@ module.exports = {
 
         });
 
+        this.step(function(){
+            helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid)},this.hold(function(err,doc){
+                shake = doc;
+                if(doc){
+                    if(new Date().getTime() < doc.startDate){
+                        error = 'activity_no_start';
+                        aid = "undefined";
+
+                    }else if (new Date().getTime() > doc.endDate || doc.switcher == 'off'){
+                        error = 'activity_was_end';
+                        aid = "undefined";
+
+                    }else{
+                        error = 'null';
+                    }
+                }else{
+                    aid = "undefined";
+                    error = 'activity_no_found';
+                }
+                console.log(doc);
+            }));
+        });
 
         this.step(function(){
             if(aid == 'undefined'){
                 nut.model.aid = "undefined";
             }else{
-                nut.model.aid = "normal";
+                nut.model.aid = aid;//摇一摇活动ID
             }
         });
 
 
         this.step(function(){
-            nut.model.uid = wxid ;//uid是用户的wechatid
-            nut.model.aid = aid;//摇一摇活动ID
+            nut.model.uid = wxid;//uid是用户的wechatid
+            nut.model.error = error;
+
         });
     },
     viewIn:function(){
@@ -133,6 +160,7 @@ module.exports = {
         var member_id = $("#member_id").val();
         var uid = $("#uid").val();
         var aid = $("#aid").val();
+        var error = $('#error').val();
         $("#shake_start").click(function(){
             if(member_id != 'normal'){
                 window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
@@ -141,10 +169,23 @@ module.exports = {
             }else{
 
                 if(aid == 'undefined'){
-                    window.popupStyle2.on('活动已经被结束了，以后再来参加吧!',function(event){});
+                    if(error == 'activity_no_start'){
+                        window.popupStyle2.on('很抱歉，活动未开始，敬请期待',function(event){});
+
+                    }else if(error == 'activity_was_end'||error == 'activity_no_found'){
+
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){});
+
+                    }else{
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){});
+                    }
                     return false;
                 }else{
-                    window.location.href = "/lavico/activity/shake_start?uid="+uid+"&aid="+aid;
+                    if( error == 'null'){
+                        window.location.href = "/lavico/activity/shake_start?uid="+uid+"&aid="+aid;
+                    }else{
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){});
+                    }
                 }
             }
         });
