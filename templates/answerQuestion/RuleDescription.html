@@ -4,6 +4,7 @@
     <li class="active"><span>规则说明</span></li>
 </ul>
 <script src="/welab/public/ckeditor/ckeditor.js"></script>
+<input type="hidden" id="_id" value="{@_id}"/>
 <style>
 
 </style>
@@ -54,12 +55,16 @@
         aFormInput.explanation = explanation;
 
         var post = {} ;
-        post.data = [{name:'postData',value:JSON.stringify(aFormInput)}];
+        post.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
         post.type = "POST";
         post.url = "/lavico/answerQuestion/RuleDescription:save";
 
         $.request(post,function(err,nut){
             if(err) throw err ;
+            $.globalMessenger().post({
+                message: "保存成功",
+                type: 'error',
+                showCloseButton: true});
             //nut.msgqueue.popup();
             //$.controller("/lavico/shake",null,"lazy");
         }) ;
