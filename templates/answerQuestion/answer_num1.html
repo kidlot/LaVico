@@ -56,7 +56,7 @@ var isReg=function(){
     if(flag=="0")
     {
 
-        window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果",function(event){
+        window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到上次答题的结果",function(event){
             if(event == "confirm"){
                 location.href="/lavico/answerQuestion/finish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true";
             }

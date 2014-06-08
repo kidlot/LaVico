@@ -74,10 +74,23 @@ module.exports = {
                     var customers = customers || {}
 
                     nut.model.isVip = false
-                    if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
-                        nut.model.isVip = true
-                        nut.model.memberID = customers.HaiLanMemberInfo.memberID
+                    if(customers && customers.HaiLanMemberInfo){
+                        if(customers.HaiLanMemberInfo.action=="bind"){
+                            nut.model.isVip = true;
+                            nut.model.memberID = customers.HaiLanMemberInfo.memberID
+                        }else{
+                            nut.model.isVip = false;
+                            nut.model.memberID = customers.HaiLanMemberInfo.memberID
+                        }
+                    }else{
+                        nut.model.memberID= "undefined";
+                        nut.model.isVip = false;
                     }
+//                    if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
+//                        nut.model.isVip = true
+//                        nut.model.memberID = customers.HaiLanMemberInfo.memberID
+//
+//                    }
                 }))
 
 
