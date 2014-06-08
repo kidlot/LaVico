@@ -458,8 +458,14 @@ module.exports = {
         window.hideShareButtion.on();
         /*优惠券分页*/
         /*已过期04-可使用02-已使用03*/
-        var pageNum;
-        var perPage;
+        var pageNum04 = 1;
+        var perPage04 = 5;
+
+        var pageNum02 = 1;
+        var perPage02 = 5;
+
+        var pageNum03 = 1;
+        var perPage03 = 5;
         var type;
         window.getUserCoupons = function(pageNum,perPage,type){
             $.ajax({

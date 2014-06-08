@@ -14,6 +14,7 @@ module.exports = {
         nut.model.fromWelab = seed.fromWelab || ""
 
         var member_id;
+        var shake;
 
         this.step(function(){
             //oauth认证
@@ -78,6 +79,8 @@ module.exports = {
             }));
         });
 
+
+
         this.step(function(){
 
             if(wxid == 'undefined'){
@@ -113,19 +116,30 @@ module.exports = {
 
         });
 
+        this.step(function(){
+            helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
+                shake = doc;
+                console.log(doc);
+            }));
+        });
+
+        this.step(function(){
+            if(!shake){
+                aid = 'undefined';//活动未找到，或者超期，或者被关闭
+            }
+        });
 
         this.step(function(){
             if(aid == 'undefined'){
                 nut.model.aid = "undefined";
             }else{
-                nut.model.aid = "normal";
+                nut.model.aid = aid;//摇一摇活动ID
             }
         });
 
 
         this.step(function(){
-            nut.model.uid = wxid ;//uid是用户的wechatid
-            nut.model.aid = aid;//摇一摇活动ID
+            nut.model.uid = wxid;//uid是用户的wechatid
         });
     },
     viewIn:function(){
@@ -141,7 +155,7 @@ module.exports = {
             }else{
 
                 if(aid == 'undefined'){
-                    window.popupStyle2.on('活动已经被结束了，以后再来参加吧!',function(event){});
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){});
                     return false;
                 }else{
                     window.location.href = "/lavico/activity/shake_start?uid="+uid+"&aid="+aid;
