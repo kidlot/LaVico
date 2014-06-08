@@ -44,7 +44,7 @@
             return false;
         }
 
-        var stopDate=parseInt('{@doc[0].stopDate}');
+        var stopDate=parseInt('{@doc.length > 0 ? doc[0].stopDate : 0}');
         if(new Date().getTime() > stopDate){
             window.popupStyle2.on("很抱歉，活动已结束",function(event){
                 if(event == "confirm"){
