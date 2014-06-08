@@ -98,7 +98,20 @@ var isReg=function(){
         <!--<if condition="@ fromWelab==''">-->
         	<!--<div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()" style="text-decoration: underline">立即开始</a></div>-->
 		<!--</if>-->
-
+        <if condition="@themetype == 1">
+        <div class="text">
+            <div class="title">活动及使用规则</div>
+            <div class="title1">活动说明：</div>
+            <div class="subtext">
+                父亲总是代表着特殊的含义；责任、奉献、伟大…可能不知不觉中你也已是为人父，话说做老爸的男人最有魅力，干得了家务带得了萌娃，酷帅有型却又温情脉脉。除了责任感， 家庭重任外你还是那个昔日型男吗？点击下方“阅读全文”或者选择>菜单栏中><a href="/lavico/answerQuestion/first?_id=53734ac3a22738b033000c7f&optionId=1&wechatid={@wechatId}">型爸测试</a>开始游戏，快来测测你究竟是哪种型爸？”赢取朗维高2014父亲节积分好礼！
+            </div>
+            <div class="title1">奖项设置：</div>
+            <div id="description" class="subtext"></div>
+            <div class="title1">免责声明：</div>
+            <div id="relief" class="subtext">
+            </div>
+        </div>
+        <else/>
         <div class="text">
             <div class="title">活动及使用规则</div>
             <div class="title1">活动说明：</div>
@@ -111,10 +124,12 @@ var isReg=function(){
             <div id="relief" class="subtext">
             </div>
         </div>
+        </if>
+
     </div>
 </div>
 <script>
-
+    
     var description = decodeURIComponent('{@docs.description}');
     var relief = decodeURIComponent('{@docs.relief}');
     var explanation = decodeURIComponent('{@docs.explanation}');
