@@ -247,9 +247,11 @@ module.exports = {
                         $('#coupon_des').show();
 
                     }else if(activity.success == false){
-                        window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
+                        $('#coupon_des').hide();
+                        //window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
                     }else{
-                        window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
+                        $('#coupon_des').hide();
+                        //window.popupStyle2.on("网络不稳定，请稍后再尝试",function(event){});
                     }
 
                 }
