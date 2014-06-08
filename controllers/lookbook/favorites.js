@@ -132,7 +132,7 @@ module.exports = {
                     this.step(function(){
 
                         if(memberid && seed.pid){
-                            helper.db.coll("lavico/favorites").findOne({productId:seed.pid,memberID:memberid},this.hold(function(err,_doc){
+                            helper.db.coll("lavico/favorites").findOne({productId:seed.pid,wxid:memberid},this.hold(function(err,_doc){
 
                                 if(err) console.log(err)
 
@@ -142,7 +142,7 @@ module.exports = {
                                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
                                     this.res.write(data);
                                     this.res.end();
-                                    this.terminate();
+                                    this.terminate()
                                 }
                             }))
 

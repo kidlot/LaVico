@@ -78,6 +78,7 @@ module.exports={
                         nut.model.jsonResult =resultList;
                         nut.model.label =resultList[0].getLabel;
                         nut.model.type =resultList[0].type;
+                        nut.model.code =resultList[0].type;
                         nut.model.score = "0";
                         nut.model.sta = "false";
                     }else{
@@ -94,6 +95,7 @@ module.exports={
                         nut.model.sta = "true";
                         nut.model.label =resultList[0].getLabel;
                         nut.model.type =resultList[0].type;
+                        nut.model.code =resultList[0].type;
                     }
                 }
             }
@@ -377,8 +379,8 @@ module.exports={
                                     //获取奖励
                                     getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                     getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                    var getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                    var getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
 
                                     then.step(function (memberID) {
                                         //根据memberId调用接口给账户加分
@@ -423,8 +425,8 @@ module.exports={
                                 //获取奖励
                                 getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                var getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                var getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 if (typeof(getActivities) != "undefined" && getActivities != "") {
                                     newActivity = ""
                                     //服务器返回的券
