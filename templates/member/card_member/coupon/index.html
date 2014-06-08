@@ -17,7 +17,7 @@
                     <foreach for="@overdueCoupons" key="key">
                         <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}&code={@overdueCoupons[key].PROMOTION_CODE}&coupon_no={@overdueCoupons[key].COUPON_NO}&status={@overdueCoupons[key].COUPON_STATUS}'">
                             <div class="pre_title">
-                                <h2>{@overdueCoupons[key].COUPON_NAME}<em>{@overdueCoupons[key].COUPON_TYPE}</em><if condition="@overdueCoupons[key].COUPON_TYPE =='现金券'"> - {@overdueCoupons[key].COUPON_QTY}元</if></h2>
+                                <h2>{@overdueCoupons[key].COUPON_NAME}<em>{@overdueCoupons[key].COUPON_TYPE}</em><if condition="@overdueCoupons[key].COUPON_TYPE =='现金券'">&nbsp;{@overdueCoupons[key].COUPON_QTY}元</if></h2>
                                 <h3>{@overdueCoupons[key].CREAT_DATE}</h3>
                             </div>
                             <div class="pre-top clear">
@@ -36,7 +36,7 @@
                     <foreach for="@effectiveCoupons" key="key">
                         <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}&code={@effectiveCoupons[key].PROMOTION_CODE}&coupon_no={@effectiveCoupons[key].COUPON_NO}&status={@effectiveCoupons[key].COUPON_STATUS}'">
                             <div class="pre_title">
-                                <h2>{@effectiveCoupons[key].COUPON_NAME}<em>{@effectiveCoupons[key].COUPON_TYPE}</em><if condition="@effectiveCoupons[key].COUPON_TYPE =='现金券'"> - {@effectiveCoupons[key].COUPON_QTY}元</if></h2>
+                                <h2>{@effectiveCoupons[key].COUPON_NAME}<em>{@effectiveCoupons[key].COUPON_TYPE}</em><if condition="@effectiveCoupons[key].COUPON_TYPE =='现金券'">&nbsp;{@effectiveCoupons[key].COUPON_QTY}元</if></h2>
                                 <h3>{@effectiveCoupons[key].CREAT_DATE}</h3>
                             </div>
                             <div class="pre-top clear">
@@ -55,7 +55,7 @@
                     <foreach for="@usedCoupons" key="key">
                         <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_member/coupon/rule?wxid={@wxid}&code={@usedCoupons[key].PROMOTION_CODE}&coupon_no={@usedCoupons[key].COUPON_NO}&status={@usedCoupons[key].COUPON_STATUS}'">
                             <div class="pre_title">
-                                <h2>{@usedCoupons[key].COUPON_NAME}<em>{@usedCoupons[key].COUPON_TYPE}</em><if condition="@usedCoupons[key].COUPON_TYPE =='现金券'"> - {@usedCoupons[key].COUPON_QTY}元</if></h2>
+                                <h2>{@usedCoupons[key].COUPON_NAME}<em>{@usedCoupons[key].COUPON_TYPE}</em><if condition="@usedCoupons[key].COUPON_TYPE =='现金券'">&nbsp;{@usedCoupons[key].COUPON_QTY}元</if></h2>
                                 <h3>{@usedCoupons[key].CREAT_DATE}</h3>
                             </div>
                             <div class="pre-top clear">
