@@ -43,7 +43,7 @@ small { font-size: 10px; } /* 小于 12px 的中文很难阅读，让 small 正�
 /** 重置列表元素 **/
 ul, ol { list-style: none outside none;margin: 0;padding: 0;}
 button, input {line-height: normal;}
-button, input, select, textarea {font-size: 100%;margin: 0;outline:none;vertical-align: baseline; 
+button, select, textarea {font-size: 100%;margin: 0;outline:none;vertical-align: baseline; 
                                  -webkit-appearance: none; 
                                 -webkit-tap-highlight-color: rgba(0,0,0,0);
                                     -webkit-user-modify: read-write-plaintext-only; }
