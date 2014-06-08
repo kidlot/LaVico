@@ -521,6 +521,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .popup .popup_but a { width:40%; height:30px; line-height:30px;text-align:center;background:url(../images/click_btn.jpg) no-repeat;
                       background-size:100% 100%;font-size:1.4rem; color:#3C3C3C; margin-left:7%; display:inline-block; vertical-align: top;}
 
+.popup.fade3 input{background:url(0) no-repeat;}/*David.Xu-modify-input-background*/
 /*后期增加*/
 .outlet_bottom { background:url(../images/outlet_bottom.png) 96% center no-repeat; background-size:16px; }
 .points5-content .pre_title { width:100%; height:auto; padding-bottom:2%; }
