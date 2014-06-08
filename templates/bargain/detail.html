@@ -1,3 +1,4 @@
+<input type="hidden" id="setPriceV" value="{@ doc.price}">
 <div class="wrapper">
     <div class="bargin">
         <div class="bargin-content">
@@ -146,6 +147,13 @@
                 <p class="confirm"><input class="restconfirmBtn" type="submit" border="0" value="好吧"/></p>
             </div>
         </div>
+        <div class="fade5">
+            <div class="first-price">
+                <p class="msg">太高</p>
+
+                <p class="confirm"><input type="button" border="0" value="好吧" onclick="$('.fade5').hide()"/></p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -199,14 +207,14 @@ function _step(channelName){
         return false;
     }
 
-    var bargainStatus = '{@ bargainStatus}'
-    if(bargainStatus){
-
-        window.popupStyle2.on(bargainStatus,function(event){
-
-        })
-        return false;
-    }
+//    var bargainStatus = '{@ bargainStatus}'
+//    if(bargainStatus){
+//
+//        window.popupStyle2.on(bargainStatus,function(event){
+//
+//        })
+//        return false;
+//    }
 
     var _func = function(){
 
@@ -255,14 +263,27 @@ function deal(cb){
 function bargain(){
 
     if(!$("#price").val()){
-        alert("请输入您心目中的价格！")
-        return
+        $(".fade5").find(".msg").text("请输入您心目中的价格！");
+        $(".fade5").show();
+        return false;
     }
 
     if(isNaN($("#price").val())){
-        alert("请输入数字！")
-        return
+        $(".fade5").find(".msg").text("请输入数字！");
+        $(".fade5").show();
+        return false;
     }
+
+
+    if(parseInt($("#price").val()) > parseInt($("#setPriceV").val())){
+        //alert("亲，您的出价高于市场零售价，建议重新出价！")
+        $(".fade5").find(".msg").text("亲，您的出价高于市场零售价，建议重新出价！");
+        $(".fade5").show();
+        return false;
+    }
+
+
+
     $.ajax({
         url:'/lavico/bargain/form:bargain',
         type:'POST',
