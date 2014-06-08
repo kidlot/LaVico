@@ -76,6 +76,10 @@ module.exports = {
 
                 nut.model.bargainStatus = "很抱歉，活动还没有开始"
             }
+            if(nut.model.doc.switcher=="off" ){
+
+                nut.model.bargainStatus = "很抱歉，活动已经关闭"
+            }
         })
 
         nut.model.res = {}
