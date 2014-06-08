@@ -36,7 +36,17 @@
 
         var length='{@doc.length}';
         if(length=='0'){
-            window.popupStyle2.on("很抱歉，活动已结束",function(event){
+            window.popupStyle2.on("很抱歉，活动已关闭",function(event){
+                if(event == "confirm"){
+
+                }
+            })
+            return false;
+        }
+
+        var startDate=parseInt('{@doc.length > 0 ? doc[0].startDate : 0}');
+        if(new Date().getTime() < startDate){
+            window.popupStyle2.on("很抱歉，活动未开始，敬请期待",function(event){
                 if(event == "confirm"){
 
                 }
