@@ -31,10 +31,9 @@
 <script>
     function _isVip(wxid,_id){
 
-
-
-        var val='{@doc.length}';
-        if(val=='0'){
+        var length='{@doc.length}';
+        var switcher='{@doc[0].switcher}';
+        if(length=='1' && switcher=="off"){
             window.popupStyle2.on("很抱歉，活动已结束",function(event){
                 if(event == "confirm"){
 
