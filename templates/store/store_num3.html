@@ -32,7 +32,7 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
     电话：{@searchCity.TEL}<br />
 </div>
 <div class="activity-detail">
-    <if condition="{@searchCity.ACT!=''}||{@searchCity.ACT!='undefined'}">
+    <if condition="{@searchCity.ACT==''}||{@searchCity.ACT=='undefined'}">
         <div class="title">暂无活动，敬请期待！</div>
         <else/>
         <div class="title">促销活动</div>
