@@ -503,7 +503,7 @@ module.exports = {
                                 middleware.request('Point/Change',{
                                     memberId:memberId,
                                     qty:_points,//每次摇一摇，消耗积分
-                                    memo:'摇一摇'+'-'+shakeActivityName
+                                    memo:shakeActivityName
                                 },then.hold(function(err,doc){
                                     console.log(doc);
                                 }));
