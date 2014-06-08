@@ -5,72 +5,95 @@ module.exports = {
 
     , process: function(seed,nut)
     {
-        if(seed.wxid){
+        var wxid = seed.wxid || undefined;
 
-            var docs = [];
-
-
-            nut.model.memberID = false;
-            nut.model.fromWelab = seed.fromWelab || ""
-
-            helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
-                var customers = customers || {}
-
-                if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
-                    nut.model.memberID = customers.HaiLanMemberInfo.memberID
+        this.step(function(){
+            if(wxid == undefined){
+                if(this.req.session.oauthTokenInfo){
+                    console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
+                    wxid = this.req.session.oauthTokenInfo.openid
+                }else{
+                    // 通过oauth获取OPENID
+                    if(process.wxOauth){
+                        if(!seed.code){
+                            var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.url,"123","snsapi_base")
+                            console.log("通过oauth获得CODE的url",url)
+                            this.res.writeHeader(302, {'location': url }) ;
+                            nut.disable();//不显示模版
+                            this.res.end();
+                            this.terminate();
+                        }else{
+                            process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+                                if(!err){
+                                    var openid = doc.openid
+                                    wxid = openid || undefined;
+                                    console.log("通过oauth获得信息",doc)
+                                    this.req.session.oauthTokenInfo = doc;
+                                }
+                            }))
+                        }
+                    }
                 }
-            }))
+            }
+        })
 
-            this.step(function(){
 
-                helper.db.coll("lavico/favorites").find({memberID:nut.model.memberID}).toArray(this.hold(function(err,_doc){
+        var docs = [];
 
-                    if(err) console.log(err);
-                    var then = this;
-                    docs = _doc
-                    if(_doc){
-                        for(var i=0 ; i<_doc.length ; i++){
+        nut.model.memberID = false;
+        nut.model.fromWelab = seed.fromWelab || ""
 
-                            (function(i){
+        helper.db.coll("welab/customers").findOne({wechatid:wxid},this.hold(function(err,customers){
+            var customers = customers || {}
 
-                                helper.db.coll("lavico/lookbook").findOne({_id:_doc[i].lookbookid},then.hold(function(err,_docLookBook){
+            if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
+                nut.model.memberID = customers.HaiLanMemberInfo.memberID
+            }
+        }))
 
-                                    if(err) console.log(err)
+        this.step(function(){
 
-                                    if(_docLookBook){
+            helper.db.coll("lavico/favorites").find({memberID:nut.model.memberID}).toArray(this.hold(function(err,_doc){
 
-                                        for(var ii=0 ; ii < _docLookBook.page.length ; ii++){
-                                            if(_docLookBook.page[ii]._id == _doc[i].pageid){
-                                                for(var iii=0 ; iii < _docLookBook.page[ii].product.length ; iii++){
-                                                    if(_docLookBook.page[ii].product[iii]._id == _doc[i].productId){
-                                                        _doc[i].pageNum = ii+1
-                                                        _doc[i].product = _docLookBook.page[ii].product[iii]
-                                                    }
+                if(err) console.log(err);
+                var then = this;
+                docs = _doc
+                if(_doc){
+                    for(var i=0 ; i<_doc.length ; i++){
+
+                        (function(i){
+
+                            helper.db.coll("lavico/lookbook").findOne({_id:_doc[i].lookbookid},then.hold(function(err,_docLookBook){
+
+                                if(err) console.log(err)
+
+                                if(_docLookBook){
+
+                                    for(var ii=0 ; ii < _docLookBook.page.length ; ii++){
+                                        if(_docLookBook.page[ii]._id == _doc[i].pageid){
+                                            for(var iii=0 ; iii < _docLookBook.page[ii].product.length ; iii++){
+                                                if(_docLookBook.page[ii].product[iii]._id == _doc[i].productId){
+                                                    _doc[i].pageNum = ii+1
+                                                    _doc[i].product = _docLookBook.page[ii].product[iii]
                                                 }
                                             }
                                         }
                                     }
-                                }))
-                            })(i)
-                        }
+                                }
+                            }))
+                        })(i)
                     }
-                }))
-            })
+                }
+            }))
+        })
 
 
-            this.step(function(){
+        this.step(function(){
 
-                console.log(docs)
-                nut.model.wxid = seed.wxid
-                nut.model.docs = docs||[]
-            })
-
-        }else{
-            var data = JSON.stringify({err:1,msg:"没有微信ID"});
-            this.res.writeHead(200, { 'Content-Type': 'application/json' });
-            this.res.write(data);
-            this.res.end();
-        }
+            console.log(docs)
+            nut.model.wxid = wxid
+            nut.model.docs = docs||[]
+        })
     }
     , actions: {
 
