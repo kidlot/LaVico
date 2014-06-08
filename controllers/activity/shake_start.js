@@ -638,13 +638,13 @@ module.exports = {
 
                 }else if(data.result == 'activity_is_over'){
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){
                         flag = 1;
                     });
 
                 }else if(data.result == 'something-error'){
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){
                         flag = 1;
                     });
 
@@ -818,13 +818,13 @@ module.exports = {
 
                     }else if(data.result == 'activity_is_over'){
 
-                        window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){
                             flag = 1;
                         });
 
                     }else if(data.result == 'something-error'){
 
-                        window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){
                             flag = 1;
                         });
 
