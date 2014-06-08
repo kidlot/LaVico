@@ -68,7 +68,7 @@ module.exports = {
         // 判断有效期
         this.step(function(){
 
-            nut.model.bargainStatus = ""
+            nut.model.bargainStatus = "";
 
             if(new Date().getTime() > nut.model.doc.stopDate ){
 
