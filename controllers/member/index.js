@@ -286,7 +286,7 @@ module.exports = {
 
                     var requestData = {
                         'memberId' : member_id,
-                        'perPage':10000,
+                        'perPage':0,
                         'pageNum':1
                     };
 
@@ -310,24 +310,12 @@ module.exports = {
                 });
                 this.step(function(){
 
-                    var coupons = couponData.list;
-                    var effectiveCouponsCount = 0;
-                    //console.log(couponData.list);
-
-                    /*
-                     优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02
-                     */
-                    for(var _i in coupons){
-                        if(coupons[_i].COUPON_STATUS == '02'){
-                            effectiveCouponsCount ++;
-                        }
-                    }
+                    var effectiveCouponsCount = couponData.total;
                     nut.disable();//不显示模版
                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
                     this.res.write('{"error":"false","count":"'+effectiveCouponsCount+'"}');
                     this.res.end();
                 });
-
 
             }
         }
