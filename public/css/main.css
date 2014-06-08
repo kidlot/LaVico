@@ -626,6 +626,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
     position:absolute;
     left:50%;
     z-index:999;
+	top:60px;
 }
 
 #indicator > li {

@@ -81,7 +81,7 @@
             var MainWin = wrapMain.offsetWidth;
             listLi = document.getElementById("thelist").getElementsByTagName("li");
             indicator = document.getElementById("indicator");
-            var article = document.getElementById("article").offsetHeight;
+            <!--var article = document.getElementById("article").offsetHeight;-->
             var theLength = document.getElementById("thelist").getElementsByTagName("li").length;
 
             for (var i = 0; i < listLi.length; i++) {
@@ -89,9 +89,8 @@
             }
             
             document.getElementById("scroller").style.width = MainWin * theLength + "px";
-			alert(article)
           	
-            indicator.style.bottom = article + 10 + "px";
+            <!--indicator.style.top = article + 10 + "px";-->
         }
 
         function indicatorAct() {
