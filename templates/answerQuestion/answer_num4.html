@@ -36,118 +36,45 @@ window.onload=function(){
 }
 
 </script>
-
-
-<if condition="{@themeType==0}" xmlns="http://www.w3.org/1999/html">
-    <!--答题抢积分-->
-    <div class="wrapper">
-        <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
-        <div class="coupon">
-            <div class="points-content">
-                <img src="/lavico/public/images/points_banner-604X319.jpg" />
-                <div class="points_txt">
-
-                    <foreach for="{@jsonResult}" var="resultString">
-                        <label style="font-size: 2.4rem">{@resultString.getScore}积分</label>
-                    </foreach>
-                </div>
+<div class="wrapper">
+    <div class="mobile">
+        <div class="points-content">
+            <img src="/lavico/public/images/man_test_result-642X385.png" />
+            <div style="text-align: left;position:absolute; top: 20%; left: 18%;width:30%">
+                <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
+                <foreach for="{@jsonResult}" var="resultString">
+                    <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
+                        <if condition="{@stutas=='true'}">
+                            <label id="getlabel"></label>
+                            <else/>
+                            您是<label id="getlabel"></label>
+                        </if>
+                    </p>
+                </foreach>
             </div>
         </div>
         <foreach for="{@jsonResult}" var="resultString">
-            <div class="look-text">
-                <p class="get">
-                    <if condition="{@stutas=='true'}">
-                        <if condition="{@score=='0'}">
-                            <if condition="{@getScores=='0'}">
-                                对不起,您获得:
-                                <else/>
-                                您上次答题获得
-                            </if>
-                            <else/>
-                            您上次答题获得
-                        </if>
-
-                        <else/>
-                        恭喜您获得
-                    </if>
-                    {@resultString.getScore}积分<br />
-                    可在“积分明细”内查询</p>
-                <p class="click-look"><a href="/lavico/member/card_member/points/index?wxid={@wechatid}">点击查看</a></p>
+            <div class="man-test-content">
+                <div class="title1">{@resultString.getLabel}</div>
+                <div class="subtext">{@resultString.getTipContent}</div>
             </div>
         </foreach>
-    </div>
-    <elseif condition="{@themeType==1}"/>
-    <!--型男测试-->
-    <div class="wrapper">
-        <div class="mobile">
-            <div class="points-content">
-                <img src="/lavico/public/images/man_test_result-642X385.png" />
-                <div style="text-align: left;position:absolute; top: 20%; left: 18%;width:30%">
-                    <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
-                    <foreach for="{@jsonResult}" var="resultString">
-                        <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
-                            <if condition="{@stutas=='true'}">
-                                <label id="getlabel"></label>
-                                <else/>
-                                您是<label id="getlabel"></label>
-                            </if>
-                        </p>
-                    </foreach>
-                </div>
-            </div>
-            <foreach for="{@jsonResult}" var="resultString">
-                <div class="man-test-content">
-                    <div class="title1">{@resultString.getLabel}</div>
-                    <div class="subtext">{@resultString.getTipContent}</div>
-                </div>
-            </foreach>
-            <div class="line"></div>
+        <div class="line">
+        </div>
+        <if condition="{@code=='-1'}">
+
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&type={@code}&themetype={@themeType}&id={@id}">领取积分</a></div>
+
+            <else/>
             <if condition="{@resultString.getActivities!=''}">
-                <if condition="{@sta=='true'}">
-                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}">领取优惠券</a></div>
-                    <else/>
-                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}">领取优惠券</a></div>
-                </if>
+
+                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&type={@code}">领取优惠券</a></div>
+
 
                 <else/>
-                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}">领取优惠券</a></div>
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&type={@code}">领取优惠券</a></div>
             </if>
-        </div>
+        </if>
     </div>
-    <else/>
-    <!--主观题-->
-    <div class="wrapper">
-        <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
-        <div class="coupon">
-            <div class="points-content">
-                <img src="/lavico/public/images/points_banner-604X319.jpg" />
-                <div class="points_txt">
-                    <foreach for="{@jsonResult}" var="resultString">
-                        <label style="font-size: 2.4rem">{@resultString.getScore}积分</label>
-                    </foreach>
-                </div>
-            </div>
-        </div>
-        <foreach for="{@jsonResult}" var="resultString">
-            <div class="look-text">
-                <p class="get">
-                    <if condition="{@stutas=='true'}">
-                        <if condition="{@score=='0'}">
-                            <if condition="{@getScores=='0'}">
-                                对不起,您获得:
-                                <else/>
-                                您上次答题获得
-                            </if>
-                            <else/>
-                            您上次答题获得
-                        </if>
+</div>
 
-                        <else/>
-                        恭喜您获得
-                    </if>{@resultString.getScore}积分<br />
-                    可在“积分明细”内查询</p>
-                <p class="click-look"><a href="/lavico/member/card_member/points/index?wxid={@wechatid}">点击查看</a></p>
-            </div>
-        </foreach>
-    </div>
-</if>

@@ -44,7 +44,7 @@ a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; font-w
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .bargin-right .color{padding-top:5px; display: -webkit-flex; line-height:20px;}
 .bargin-right .color .color-title{ color:#404040; display: inline-table;}
-.bargin-right .color .color-con{ color:#AF8B4D;}
+.bargin-right .color .color-con{ color:#646464;}
 .bargin-right .rules{padding-top:5px; word-break: break-all; line-height:20px;display: -webkit-flex;color:#646464; width:99%;}
 .bargin-right .rules .rules_sp { display: inline-table;color:#404040; }
 .bargin-right .rules .rules-title{ color:#404040;}
@@ -114,7 +114,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .answer-content .content { }
 .answer-content .content ul li { padding:3% 0 3% 4%; }
 
-.answer-content .title{ font-size:1.4rem; color:#B08C4D;}
+.answer-content .title{ font-size:1.4rem; color:#B08C4D; line-height:20px;}
 .answer-content .select,.answer-content .select1,.answer-content .selects,.answer-content .selects1{ width:60%;height:auto;line-height:22px; font-size:1.4rem; color:#2D2D2D; padding-left:16%; position:relative; display:inline-block; vertical-align:top; }
 .answer-content .select{background:url(../images/select_btnOn.jpg) no-repeat; background-size:23px; }
 .answer-content .select1{background:url(../images/select_btn.jpg) no-repeat; background-size:22px;}
