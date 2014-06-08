@@ -12,6 +12,7 @@ module.exports = {
         this.res.setHeader("Cache-Control", "no-store");
         this.res.setHeader("Pragma","no-cache");
 
+
         this.step(function(){
             if(wxid == undefined){
                 if(this.req.session.oauthTokenInfo){
@@ -45,7 +46,7 @@ module.exports = {
         this.step(function(){
             console.log("wechatid:"+wxid)
             if(wxid != undefined){
-                helper.db.coll('welab/customers').findOne({"wechatid":wxid},this.hold(function(err, doc){
+                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
                     var doc = doc || {};
                     console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
@@ -58,7 +59,7 @@ module.exports = {
         this.step(function(){
             helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
                 if(err) throw err;
-console.log("welab/customers")
+                console.log("welab/customers")
                 console.log(doc)
                 if(doc && doc.HaiLanMemberInfo){
                     if(doc.HaiLanMemberInfo.action=='bind') {
@@ -78,11 +79,13 @@ console.log("welab/customers")
         })
 
         this.step(function(){
+            nut.model.wxid = wxid
+        })
+
+        this.step(function(){
             console.log("wxid:"+seed.wxid)
             console.log("_id:"+seed._id);
             if(seed._id){
-
-                nut.model.wxid = seed.wxid
                 nut.model._id = seed._id
                 nut.model.pageNum = parseInt(seed.pageNum) || 1
                 nut.model.fromWelab = seed.fromWelab || ""

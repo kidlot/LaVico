@@ -14,9 +14,9 @@ a.tel{color:#2d2d2d;}
 .begin a,.mobile-btn a{text-align:center; display:inline-block;width:100%; height:40px; line-height:40px; font-size:1.8rem; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; background-size:100% 100%;}
 .activity-rules .text{width:92%; margin:0 auto;padding:4%;}
 .activity-rules .text .title{text-align:center; color:#000; font-size:1.4rem;}
-.activity-rules .text .title1{color:#bda172; font-size:1.4rem; padding-top:4%;}
+.activity-rules .title1{color:#bda172; font-size:1.4rem; padding-top:4%;}
 .subtext{ color:#646464; font-size:1.4rem; padding-top:2%;}
-a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; }
+a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; font-weight:bold; }
 /*Member*/
 .vip_card_num{text-align: center; color:#999; font-size: 1.2rem; position: absolute; left:50%; top:78%; }
 /*礼品券*/
@@ -46,8 +46,8 @@ a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; }
 .bargin-right .color{padding-top:5px;}
 .bargin-right .color .color-title{ color:#404040;}
 .bargin-right .color .color-con{ color:#646464;}
-.bargin-right .rules{padding-top:5px; overflow:hidden; }
-.bargin-right .rules .rules_sp { display:inline; }
+.bargin-right .rules{padding-top:5px; overflow:hidden; word-break: break-all; line-height:20px;display: -webkit-flex;}
+.bargin-right .rules .rules_sp { display: inline-table; }
 .bargin-right .rules .rules-title{ color:#404040;}
 .bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464; word-wrap:break-word;}
 .bargin-right .pice{color:#AF8B4D;}
@@ -508,7 +508,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 #fixed{ position:fixed; bottom:0; width:100%; left:0px; }
 .bargin_content{width: 92%; padding:0 4%; }
 .bargin_content .wei_name{color: #BA954F;font-size: 1.4rem;padding-top: 20px;}
-.bargin_content .wei_text{color: #646464;font-size: 1.4rem;padding-top: 10px;}
+.bargin_content .wei_text{color: #646464;font-size: 1.4rem;padding-top: 10px; line-height:20px; }
 
 /*loading*/
 .loading { position:fixed; z-index: 10000000; left: 50%; top: 50%; width:64px; height:64px; margin:-32px 0 0 -32px; }
