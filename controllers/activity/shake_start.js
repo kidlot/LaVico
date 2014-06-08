@@ -687,7 +687,7 @@ module.exports = {
 
                 }else{
 
-                    window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){
                         flag = 1;
                     });
 
@@ -874,7 +874,7 @@ module.exports = {
 
                     }else{
 
-                        window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){
                             flag = 1;
                         });
 
