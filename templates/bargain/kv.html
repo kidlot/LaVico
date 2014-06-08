@@ -1,22 +1,10 @@
-<script>
-window.onload=function(){
-    var val='{@doc.length}';
-    if(val=='0'){
-        window.popupStyle2.on("侃价活动已经停止",function(event){
-            if(event == "confirm"){
-                location.href="/lavico/member/index?wxid={@wxid}";
-            }
-        })
-    }
-}
-</script>
 <div class="wrapper">
     <div class="coupon-banner"><img src="/lavico/public/images/bargain_banner.jpg"></div>
     <div class="activity-rules">
         <if condition="@ _id">
             <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@ _id}')">立即开始</a></div>
         <else/>
-            <if condition="@doc.length == 1">
+            <if condition="@doc.length <= 1">
                 <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@doc[0]._id}')">立即开始</a></div>
             </if>
         </if>
@@ -42,6 +30,20 @@ window.onload=function(){
 </if>
 <script>
     function _isVip(wxid,_id){
+
+        var length='{@doc.length}';
+        if(length=='0'){
+            window.popupStyle2.on("很抱歉，活动已结束",function(event){
+                if(event == "confirm"){
+
+                }
+            })
+            return false;
+        }
+
+
+
+
         var isvip = '{@ isVip}'
         if(isvip == "true"){
 
