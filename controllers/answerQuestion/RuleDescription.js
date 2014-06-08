@@ -11,7 +11,12 @@ module.exports={
     actions:{
         save:{
             process:function(seed,nut){
-                helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(id)},{$set:{description:seed.description,relief:seed.relief,explanation:seed.explanation}},
+                var postData = JSON.parse(seed.postData);
+                // seed.description = postData.description;
+                // seed.relief = postData.relief;
+                // seed.explanation = postData.explanation;
+                //{description:seed.description,relief:seed.relief,explanation:seed.explanation}=postData
+                helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(id)},{$set:postData},
                     this.hold(function(err,doc){
                         if(err){
                             throw err;
