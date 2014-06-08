@@ -46,29 +46,32 @@ module.exports = {
         }
 
 
+        nut.model.bargainStatus = "";
 
         // 查询剩余积分
         this.step(function(){
 
             var then = this;
+            nut.model.jf = nut.model.doc.deductionIntegral || 0;
+
             if(nut.model.doc.deductionIntegral){
 
                 middleware.request("Point/" + nut.model.memberID,
                     {memberId: nut.model.memberID},
                     this.hold(function (err, doc) {
+
+                        console.log("剩余积分",doc)
                         if(parseInt(JSON.parse(doc).point) < parseInt(nut.model.doc.deductionIntegral)){
 
                             nut.model.bargainStatus = "很抱歉，您的积分不足"
                         }
                     }));
             }
-
         })
 
         // 判断有效期
         this.step(function(){
 
-            nut.model.bargainStatus = "";
 
             if(new Date().getTime() > nut.model.doc.stopDate ){
 

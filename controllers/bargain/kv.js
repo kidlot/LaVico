@@ -1,3 +1,4 @@
+var middleware = require('lavico/lib/middleware.js');//引入中间件
 module.exports = {
 
     layout: "lavico/layout"
@@ -69,12 +70,42 @@ module.exports = {
                     nut.model.isFollow = customers.isFollow ? true : false;
                     if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
                         nut.model.isVip = true
+                        nut.model.memberID = customers.HaiLanMemberInfo.memberID
                     }
                 }))
             }
 
         })
 
+
+        nut.model.bargainStatus = "";
+
+        // 查询剩余积分
+        this.step(function(){
+
+            var then = this;
+            nut.model.jf = 0;
+
+            if(nut.model.doc.length > 0){
+
+                nut.model.jf = nut.model.doc[0].deductionIntegral || 0;
+
+                if(nut.model.doc[0].deductionIntegral){
+
+                    middleware.request("Point/" + nut.model.memberID,
+                        {memberId: nut.model.memberID},
+                        this.hold(function (err, doc) {
+
+                            console.log("剩余积分",doc)
+                            if(parseInt(JSON.parse(doc).point) < parseInt(nut.model.doc[0].deductionIntegral)){
+
+                                nut.model.bargainStatus = "很抱歉，您的积分不足"
+                            }
+                        }));
+                }
+            }
+
+        })
 
         this.step(function(){
 
