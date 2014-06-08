@@ -123,22 +123,21 @@ module.exports = {
                 if(doc){
                     if(new Date().getTime() < doc.startDate){
                         error = 'activity_no_start';
+                        aid = "undefined";
+
                     }else if (new Date().getTime() > doc.endDate || doc.switcher == 'off'){
                         error = 'activity_was_end';
+                        aid = "undefined";
+
                     }else{
                         error = 'null';
                     }
                 }else{
+                    aid = "undefined";
                     error = 'activity_no_found';
                 }
                 console.log(doc);
             }));
-        });
-
-        this.step(function(){
-            if(!shake){
-                aid = 'undefined';//活动未找到，或者超期，或者被关闭
-            }
         });
 
         this.step(function(){
@@ -170,10 +169,10 @@ module.exports = {
             }else{
 
                 if(aid == 'undefined'){
-                    if(error=='activity_no_start'){
+                    if(error == 'activity_no_start'){
                         window.popupStyle2.on('很抱歉，活动未开始，敬请期待',function(event){});
 
-                    }else if(error=='activity_was_end'||error=='activity_no_found'){
+                    }else if(error == 'activity_was_end'||error == 'activity_no_found'){
 
                         window.popupStyle2.on('很抱歉，活动已结束',function(event){});
 
@@ -182,7 +181,7 @@ module.exports = {
                     }
                     return false;
                 }else{
-                    if(error=='null'){
+                    if( error == 'null'){
                         window.location.href = "/lavico/activity/shake_start?uid="+uid+"&aid="+aid;
                     }else{
                         window.popupStyle2.on('很抱歉，活动已结束',function(event){});
