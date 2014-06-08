@@ -11,6 +11,9 @@ module.exports={
     actions:{
         save:{
             process:function(seed,nut){
+                seed.description = decodeURIComponent(seed.description);
+                seed.relief = decodeURIComponent(seed.relief);
+                seed.explanation = decodeURIComponent(seed.explanation);
                 helper.db.coll("lavico/themeQuestion").update({_id:helper.db.id(id)},{$set:{description:seed.description,relief:seed.relief,explanation:seed.explanation}},
                     this.hold(function(err,doc){
                         if(err){
