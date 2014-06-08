@@ -12,6 +12,7 @@ module.exports={
             if(doc){
 
                 nut.model.doc=doc;
+                nut.model.id=seed.id;
             };
         });
     },
