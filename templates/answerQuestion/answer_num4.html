@@ -82,11 +82,9 @@ window.onload=function(){
                 <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
                 <foreach for="{@jsonResult}" var="resultString">
                     <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
-                        <if condition="{@stutas=='true'}">
-                            <label id="getlabel"></label>
-                            <else/>
+
                             您是<label id="getlabel"></label>
-                        </if>
+
                     </p>
                 </foreach>
             </div>

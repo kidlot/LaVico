@@ -188,6 +188,7 @@ module.exports={
         })
 
         this.step(function(){
+            console.log(ok)
             if(go){
                 //非停止标签过来
                 if (stopLab != "true") {
@@ -195,9 +196,16 @@ module.exports={
                         var minlen = scoreRange[i].conditionMinScore;//获取低分值
                         var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                         //判断是否是发放卷
+
                         if(scoreRange[i].getActivities=="-1"){
                             type = scoreRange[i].getActivities;
                             //在分值范围中
+                            console.log("score:"+score);
+                            console.log("minlen:"+minlen);
+                            console.log("maxlen:"+maxlen);
+                            console.log(then.req.session.stopLabel)
+                            console.log(scoreRange[i].conditionLabel)
+                            console.log(scoreRange)
                             if(score >= minlen && score <= maxlen){
 
                                 //获取奖励
@@ -208,7 +216,7 @@ module.exports={
                                 then.step(function (memberID) {
                                     //根据memberId调用接口给账户加分
                                     var jsonData = {};
-                                    jsonData.memberId = memberID;
+                                    jsonData.memberId = nut.model.memberID;
                                     jsonData.qty = getScore;
                                     jsonData.memo = nut.model.themeTitle;
                                     console.log("问答测试:"+JSON.stringify(jsonData));
@@ -216,6 +224,7 @@ module.exports={
                                         middleware.request('Point/Change', jsonData,
                                             this.hold(function (err, doc) {
                                                 if (err) throw err;
+                                                console.log(doc);
                                             })
                                         )
                                     }
@@ -374,7 +383,7 @@ module.exports={
                                     then.step(function (memberID) {
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
-                                        jsonData.memberId = memberID;
+                                        jsonData.memberId = nut.model.memberID;
                                         jsonData.qty = getScore;
                                         jsonData.memo = nut.model.themeTitle;
                                         console.log("问答测试:"+JSON.stringify(jsonData));
