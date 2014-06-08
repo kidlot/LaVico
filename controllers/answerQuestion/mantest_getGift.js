@@ -52,8 +52,14 @@ module.exports={
                 if(code!="undefined" && code!="no" && code!="-1"){
                     helper.db.coll("lavico/activity").findOne({"aid":code},this.hold(function(err,result){
                         if(err) throw err;
-                        nut.model.pic = result.pic;
-                        promotion_name = result.promotion_name;
+                        if(result){
+                            nut.model.pic = result.pic;
+                            promotion_name = result.promotion_name;
+                        }else{
+                            nut.model.pic = "undefined";
+                            promotion_name = "您没有获得任何礼券";
+                        }
+
                     }))
                 }else{
                     nut.model.pic = "undefined";
@@ -76,6 +82,7 @@ module.exports={
                         nut.model.score = "0";
                         nut.model.sta = "false";
                         nut.model.name = "";
+                        nut.model.pic = "undefined";
                     }else{
                         var results={};
                         results.getLabel = "对不起,您没有获得任何奖励";
@@ -91,6 +98,7 @@ module.exports={
                         nut.model.label =resultList[0].getLabel;
                         nut.model.code =resultList[0].type;
                         nut.model.name = "";
+                        nut.model.pic = "undefined";
                     }
                 }
             }
