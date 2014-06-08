@@ -164,16 +164,18 @@ module.exports = {
                 // 减少积分
                 this.step(function(){
 
-                    var qty = "-"+bargain.deductionIntegral;
-                    middleware.request("Point/Change",
-                        {memberId: seed.memberID, qty:qty, memo:"侃价"},
-                        this.hold(function (err, doc) {
-                            if(err){
-                                console.log(err)
-                                console.log(doc)
-                            }
-                            return bargain
-                        }));
+                    if(bargain.deductionIntegral && bargain.deductionIntegral!=""){
+                        var qty = "-"+bargain.deductionIntegral;
+                        middleware.request("Point/Change",
+                            {memberId: seed.memberID, qty:qty, memo:"侃价"},
+                            this.hold(function (err, doc) {
+                                if(err){
+                                    console.log(err)
+                                    console.log(doc)
+                                }
+                                return bargain
+                            }));
+                    }
                 })
 
                 this.step(function(bargain){
