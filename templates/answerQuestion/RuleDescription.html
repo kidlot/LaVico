@@ -39,8 +39,8 @@
 </div>
 <script>
     function save(){
-        var description = $("#description").val().replace(/[\n\r\t]/,'<br/>');
-        var relief = $("#relief").val().replace(/[\n\r\t]/,'<br/>');
+        var description = encodeURIComponent($("#description")).val());
+        var relief = $("#relief").val();
         var explanation = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');
         $.get("/lavico/answerQuestion/RuleDescription:save",{description:description,relief:relief,explanation:explanation},function(result){
             alert("保存成功");
@@ -55,7 +55,6 @@
     document.getElementById("description").value = description;
     document.getElementById("relief").value = relief;
     document.getElementById("explanation").value = explanation;
-
 
 </script>
         <!--<script>-->
@@ -73,6 +72,6 @@
                     <!--if(err) throw err;-->
                     <!--nut.msgqueue.popup();-->
                     <!--$.controller("/lavico/answerQuestion/themeList",null,"lazy");-->
-                <!--});-->
+                <!--});/*.replace(/[\n\r\t]/,'<br/>');*/-->
             <!--}-->
         <!--</script>-->
