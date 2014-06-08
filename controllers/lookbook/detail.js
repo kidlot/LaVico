@@ -5,6 +5,7 @@ module.exports = {
 
     , process: function(seed,nut){
         var wxid=seed.wxid || undefined;
+
         var doc = {};
 
         this.res.setHeader("Cache-Control", "no-cache");
@@ -57,7 +58,8 @@ module.exports = {
         this.step(function(){
             helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
                 if(err) throw err;
-
+console.log("welab/customers")
+                console.log(doc)
                 if(doc && doc.HaiLanMemberInfo){
                     if(doc.HaiLanMemberInfo.action=='bind') {
                         memberid = doc.HaiLanMemberInfo.memberID;
@@ -78,7 +80,7 @@ module.exports = {
         this.step(function(){
             console.log("wxid:"+seed.wxid)
             console.log("_id:"+seed._id);
-            if(seed.wxid && seed._id){
+            if(seed._id){
 
                 nut.model.wxid = seed.wxid
                 nut.model._id = seed._id
@@ -103,8 +105,6 @@ module.exports = {
                 this.res.end();
             }
         })
-
-
     }
 }
 
