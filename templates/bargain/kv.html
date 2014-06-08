@@ -4,8 +4,11 @@
         <if condition="@ _id">
             <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@ _id}')">立即开始</a></div>
         <else/>
-            <if condition="@doc.length <= 1">
+            <if condition="@doc.length == 1">
                 <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@doc[0]._id}')">立即开始</a></div>
+            </if>
+            <if condition="@doc.length == 0">
+                <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','')">立即开始</a></div>
             </if>
         </if>
         <div class="text">
@@ -41,6 +44,15 @@
             return false;
         }
 
+        var stopDate=parseInt('{@doc.length > 0 ? doc[0].stopDate : 0}');
+        if(new Date().getTime() > stopDate){
+            window.popupStyle2.on("很抱歉，活动已结束",function(event){
+                if(event == "confirm"){
+
+                }
+            })
+            return false;
+        }
 
 
 
