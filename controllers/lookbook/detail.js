@@ -4,7 +4,7 @@ module.exports = {
 	, view: "lavico/templates/lookbook/detail.html"
 
     , process: function(seed,nut){
-        var wechatid=seed.wxid || undefined;
+        var wxid=seed.wxid || undefined;
         var doc = {};
 
         this.res.setHeader("Cache-Control", "no-cache");
@@ -12,10 +12,10 @@ module.exports = {
         this.res.setHeader("Pragma","no-cache");
 
         this.step(function(){
-            if(wechatid == undefined){
+            if(wxid == undefined){
                 if(this.req.session.oauthTokenInfo){
                     console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
-                    wechatid = this.req.session.oauthTokenInfo.openid
+                    wxid = this.req.session.oauthTokenInfo.openid
                 }else{
                     // 通过oauth获取OPENID
                     if(process.wxOauth){
@@ -30,7 +30,7 @@ module.exports = {
                             process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
                                 if(!err){
                                     var openid = doc.openid
-                                    wechatid = openid || undefined;
+                                    wxid = openid || undefined;
                                     console.log("通过oauth获得信息",doc)
                                     this.req.session.oauthTokenInfo = doc;
                                 }
@@ -42,9 +42,9 @@ module.exports = {
         })
 
         this.step(function(){
-            console.log("wechatid:"+wechatid)
-            if(wechatid != undefined){
-                helper.db.coll('welab/customers').findOne({wechatid:wechatid},this.hold(function(err, doc){
+            console.log("wechatid:"+wxid)
+            if(wxid != undefined){
+                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
                     var doc = doc || {};
                     console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
@@ -55,7 +55,7 @@ module.exports = {
         })
 
         this.step(function(){
-            helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,doc){
+            helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
                 if(err) throw err;
 
                 if(doc && doc.HaiLanMemberInfo){
