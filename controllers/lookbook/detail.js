@@ -76,6 +76,8 @@ module.exports = {
         })
 
         this.step(function(){
+            console.log("wxid:"+seed.wxid)
+            console.log("_id:"+seed._id);
             if(seed.wxid && seed._id){
 
                 nut.model.wxid = seed.wxid
@@ -92,6 +94,8 @@ module.exports = {
                     console.log(nut.model.allPage)
                 }))
             }else{
+                console.log("wxid:"+seed.wxid)
+                console.log("_id:"+seed._id);
                 nut.disable();
                 var data = JSON.stringify({err:1,msg:"没有微信ID或产品ID"});
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });
