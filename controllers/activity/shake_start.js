@@ -439,7 +439,7 @@ module.exports = {
                     activity.points = _points;//每次摇一摇，所需要的积分多少
                     activity.memberID = memberId;//用户
                     activity.createDate = new Date().getTime();
-                    activity.memo = '摇一摇'+'-'+shakeActivityName;
+                    activity.memo = shakeActivityName;
                     console.log(activity.memo);
                     console.log(shake);
                     console.log(shake.lottery);
@@ -498,31 +498,78 @@ module.exports = {
                             err&&console.log(doc);
                             doc = JSON.parse(doc);
                             console.log(doc);
-                            if(doc.success == true){
+                            if(doc.success == true) {
                                 //减去积分
-                                middleware.request('Point/Change',{
-                                    memberId:memberId,
-                                    qty:_points,//每次摇一摇，消耗积分
-                                    memo:'摇一摇'+'-'+shakeActivityName
-                                },then.hold(function(err,doc){
+                                middleware.request('Point/Change', {
+                                    memberId: memberId,
+                                    qty: _points,//每次摇一摇，消耗积分
+                                    memo: shakeActivityName
+                                }, then.hold(function (err, doc) {
                                     console.log(doc);
                                 }));
 
                                 activity.coupon_no = doc.coupon_no;//优惠券号码
 
-                                helper.db.coll('welab/customers').update({wechatid:seed.uid},{$addToSet:{shake:activity}},function(err,doc){err&&console.log(doc);});
+                                helper.db.coll('welab/customers').update({wechatid: seed.uid}, {$addToSet: {shake: activity}}, function (err, doc) {
+                                    err && console.log(doc);
+                                });
 
-                                helper.db.coll("lavico/shake/logs").insert(activity,function(err,doc){err&&console.log(doc);});
-                                write_info(then,'{"result":"win","PROMOTION_CODE":"'+PROMOTION_CODE+'","coupon_no":"'+doc.coupon_no+'"}');
-
+                                helper.db.coll("lavico/shake/logs").insert(activity, function (err, doc) {
+                                    err && console.log(doc);
+                                });
+                                write_info(then, '{"result":"win","PROMOTION_CODE":"' + PROMOTION_CODE + '","coupon_no":"' + doc.coupon_no + '"}');
                             }else{
-                                write_info(then,'{"result":"'+doc.error+'"}');
+
+                                if(doc.error=='此活动优惠券已发完！'){
+
+                                    /*摇一摇-活动券发放完毕处理-start*/
+
+                                     console.log("shake fail");
+                                     helper.db.coll('lavico/shake/logs').insert(activity,function(err,doc){
+                                     err&&console.log(doc);
+                                     });
+                                     if(costPerShake > 0){
+                                     middleware.request('Point/Change',{
+                                     memberId:memberId,
+                                     qty:_points,//每次摇一摇，消耗积分
+                                     memo:shakeActivityName
+                                     },then.hold(function(err,doc){
+                                     console.log(doc);
+                                     }));
+                                     }
+
+                                     if(costPerShake > 0){
+                                     if(countUserByPoints>returnCount){
+                                     var _count = returnCount;//系统设置允许多少次
+                                     }else{
+                                     var _count = countUserByPoints;//根据用户积分设置允许多少次
+                                     }
+                                     }else{
+                                     var _count = returnCount;//系统设置允许多少次
+                                     }
+
+                                     _count = _count - 1;
+
+                                     if(lottery_count == 0){
+                                     //不限制次数
+                                     write_info(then,'{"result":"unwin","limit":"no","points":"'+shake.points+'","count":"'+lottery_count+'"}');
+
+                                     }else{
+                                     write_info(then,'{"result":"unwin","limit":"yes","points":"'+shake.points+'","count":"'+_count+'"}');
+                                     }
+                                     /*摇一摇-活动券发放完毕处理-end*/
+                                }
+                                else{
+                                    write_info(then,'{"result":"'+doc.error+'"}');
+                                }
+
                             }
 
                         }));
 
                     }else{
 
+                        /*摇一摇失败处理*/
                         console.log("shake fail");
                         helper.db.coll('lavico/shake/logs').insert(activity,function(err,doc){
                             err&&console.log(doc);
@@ -531,7 +578,7 @@ module.exports = {
                             middleware.request('Point/Change',{
                                 memberId:memberId,
                                 qty:_points,//每次摇一摇，消耗积分
-                                memo:'摇一摇'+'-'+shakeActivityName
+                                memo:shakeActivityName
                             },then.hold(function(err,doc){
                                 console.log(doc);
                             }));
@@ -591,13 +638,13 @@ module.exports = {
 
                 }else if(data.result == 'activity_is_over'){
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){
                         flag = 1;
                     });
 
                 }else if(data.result == 'something-error'){
 
-                    window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){
                         flag = 1;
                     });
 
@@ -640,7 +687,7 @@ module.exports = {
 
                 }else{
 
-                    window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){
                         flag = 1;
                     });
 
@@ -771,13 +818,13 @@ module.exports = {
 
                     }else if(data.result == 'activity_is_over'){
 
-                        window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧！',function(event){
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){
                             flag = 1;
                         });
 
                     }else if(data.result == 'something-error'){
 
-                        window.popupStyle2.on('活动到期关闭了，下次再来参加活动吧',function(event){
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){
                             flag = 1;
                         });
 
@@ -827,7 +874,7 @@ module.exports = {
 
                     }else{
 
-                        window.popupStyle2.on('今天的机会被其他伙伴们抢光了，明天再来试一试吧！',function(event){
+                        window.popupStyle2.on('很抱歉，活动已结束',function(event){
                             flag = 1;
                         });
 

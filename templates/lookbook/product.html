@@ -1,3 +1,7 @@
+
+<if condition="@ !isFollow">
+    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
+</if>
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="productId" value={@productId}>
 <div style="display: none" id="jsonPage">{@jsonDoc}</div>
@@ -11,12 +15,10 @@
                 <span class="title5"><a href="javascript:;" onclick="_cb()">返回列表</a></span>
             </if>
             <span class="title2">单品</span>
-            <span class="title6">
-                <if condition="@ fromWelab==''">
-                    <if condition="@ source!='view'">
+            <span class="title6 heart_title6">
+                <!--<if condition="@ fromWelab==''">-->
                         <a href="javascript:;" class="collectionbtn" onclick="favorites('{@ wxid}')">收藏</a>
-                    </if>
-                </if>
+                <!--</if>-->
             </span>
         </p>
     </div>
@@ -163,7 +165,7 @@
         }
 
         var data = JSON.parse($("#jsonPage").text())
-        var pid = data[myScroll.currPageX]._id
+        var pid = $("#productId").val();
 
         $.ajax({
             url:'/lavico/lookbook/favorites:save',

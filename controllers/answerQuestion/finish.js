@@ -222,7 +222,7 @@ module.exports={
                                             var jsonData = {};
                                             jsonData.memberId = memberId;
                                             jsonData.qty = getScore;
-                                            jsonData.memo = '问答测试' + '-' + nut.model.themeTitle;
+                                            jsonData.memo = nut.model.themeTitle;
 
                                             console.log("问答测试:"+JSON.stringify(jsonData));
                                             if(ok){
@@ -309,14 +309,25 @@ module.exports={
                                         }, function (err, doc) {
                                         });
                                         //记录json准备显示
-                                        var results={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = newActivity;
-                                        results.volumename = volumename;
-                                        resultList.push(results);
+                                        if(ok){
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = newActivity;
+                                            results.volumename = volumename;
+                                            resultList.push(results);
+                                        }else{
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = "true";
+                                            results.volumename = volumename;
+                                            resultList.push(results);
+                                        }
                                     })
                                     //调用接口结束
                                 }
@@ -466,7 +477,7 @@ module.exports={
                                             var jsonData = {};
                                             jsonData.memberId = memberId;
                                             jsonData.qty = getScore;
-                                            jsonData.memo = '问答测试:' + '-' + nut.model.themeTitle;
+                                            jsonData.memo = nut.model.themeTitle;
                                             if(ok){
                                                 middleware.request('Point/Change', jsonData,
                                                     this.hold(function (err, doc) {
@@ -585,14 +596,26 @@ module.exports={
 
                                                 } else {
                                                     //记录json准备显示
-                                                    var results={};
-                                                    results.getLabel = getLabel;
-                                                    results.getScore = getScore;
-                                                    results.getTipContent = getTipContent;
-                                                    results.code = getActivities;
-                                                    results.getActivities = newActivity;
-                                                    results.volumename = volumename;
-                                                    resultList.push(results);
+                                                    if(ok){
+                                                        var results={};
+                                                        results.getLabel = getLabel;
+                                                        results.getScore = getScore;
+                                                        results.getTipContent = getTipContent;
+                                                        results.code = getActivities;
+                                                        results.getActivities = newActivity;
+                                                        results.volumename = volumename;
+                                                        resultList.push(results);
+                                                    }else{
+                                                        var results={};
+                                                        results.getLabel = getLabel;
+                                                        results.getScore = getScore;
+                                                        results.getTipContent = getTipContent;
+                                                        results.code = getActivities;
+                                                        results.getActivities = "true";
+                                                        results.volumename = volumename;
+                                                        resultList.push(results);
+                                                    }
+
                                                 }
                                             })
                                             //调用接口结束

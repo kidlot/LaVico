@@ -14,8 +14,9 @@ a.tel{color:#2d2d2d;}
 .begin a,.mobile-btn a{text-align:center; display:inline-block;width:100%; height:40px; line-height:40px; font-size:1.8rem; color:#3C3C3C; background:url(../images/click_btn.jpg) center center no-repeat; background-size:100% 100%;}
 .activity-rules .text{width:92%; margin:0 auto;padding:4%;}
 .activity-rules .text .title{text-align:center; color:#000; font-size:1.4rem;}
-.activity-rules .text .title1{color:#bda172; font-size:1.4rem; padding-top:4%;}
+.activity-rules .title1{color:#bda172; font-size:1.4rem; padding-top:4%;}
 .subtext{ color:#646464; font-size:1.4rem; padding-top:2%;}
+a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; font-weight:bold; }
 /*Member*/
 .vip_card_num{text-align: center; color:#999; font-size: 1.2rem; position: absolute; left:50%; top:78%; }
 /*礼品券*/
@@ -40,20 +41,21 @@ a.tel{color:#2d2d2d;}
 .bargin{width:100%;background-color:#ededed;}
 .bargin-content{width:92%; height:auto; background-color:#fff; margin:0 auto; padding:4%; overflow:hidden; position:relative; }
 .bargin-left{ width:100%; display:block; }
-.bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-bottom:2%; }
+.bargin-right{width:98%; padding-left:2%;font-size:1.4rem; padding-bottom:2%; position:relative; }
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .bargin-right .color{padding-top:5px;}
 .bargin-right .color .color-title{ color:#404040;}
 .bargin-right .color .color-con{ color:#646464;}
-.bargin-right .rules{padding-top:5px; overflow:hidden; }
+.bargin-right .rules{padding-top:5px; word-break: break-all; line-height:20px;display: -webkit-flex;color:#646464; width:99%;}
+.bargin-right .rules .rules_sp { display: inline-table;color:#404040; }
 .bargin-right .rules .rules-title{ color:#404040;}
-.bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464;}
+.bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464; word-wrap:break-word;}
 .bargin-right .pice{color:#AF8B4D;}
-.bargin-content .look_store{ width:120px; height:auto; padding-top:4%; clear:both }
+.bargin-content .look_store{ width:auto; height:auto; padding-top:4%; clear:both ; position:absolute; bottom:2%; right:0px}
 .bargin-content .look_store a{width:130px; height:34px; display:inline-block; color:#291b00;font-size:1.4rem; line-height:34px; text-align:center;
                              background:url(../images/look_storebg.jpg) center center no-repeat; background-size:100% 100%; }
 .bargin .border{  border-bottom:1px #c1c1c1 solid;}
-.bargin-mod{width:92%; margin:0 auto; padding:4% 4% 50px; }
+.bargin-mod{width:92%; margin:0 auto; padding:20px 4% 50px; }
 .bargin-mod img {width:100%; }
 .foot a{width:100%; height:50px; display:inline-block; line-height:50px; font-size:1.6rem; text-align:center; color:#281B00; background:url(../images/foot_bg.jpg) center center no-repeat; background-size:100% 100%; }
 /*门店*/
@@ -266,9 +268,9 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .points3-content .text{ width:56%; padding:2%; font-size:1.4rem;}
 .points3-content .text .title3{height:25px; line-height:25px; font-size:1.6rem; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .points3-content .text .title3 a{ color:#000;}
-.points3-content .con{ color:#646464; padding:2%;}
+.points3-content .con{ color:#646464; padding:2% 2% 25px;}
 .points3-content .con a{ color:#646464;}
-.points3-content .text .btn{width:100px; height:25px; line-height:25px;color:#281a00; text-align:center; position:absolute; bottom:0px; right:2%;
+.points3-content .text .btn{width:100px; height:25px; line-height:25px;color:#281a00; text-align:center; position:absolute; bottom:2%; right:2%;
                             background:url(../images/next.png) center center no-repeat; background-size:100% 100%;}
 /*消费记录*/
 .points4{ /*background-color:#eee;*/}
@@ -367,6 +369,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite_title .title6 { display:block; position:absolute; right:0px; z-index:1; padding-right:4%;  }
 .elite_title .title6 a{ width:auto; margin-top:0;vertical-align:middle; text-align:right; padding-right:12px; display:block;
                         color:#fff; font-size:1.2rem;  height:50px; line-height:52px; background:url(../images/store_rt.jpg) right center no-repeat; background-size:10px;}
+
+.elite_title .heart_title6 a{background:url(../images/heart_store_rt.jpg) right center no-repeat;padding-right:20px; }
 
 .intros{ position:fixed; bottom:0; z-index:100; margin:0 auto; text-align:left; height:auto; width:100%; background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.8) !important; padding:2% 0; left:0px;}
 .intros .title{font-size: 1.6rem;color: #B9954D; padding:0 4%; }
@@ -503,8 +507,8 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .city-listContent ul li a .tel{ padding-top:5px;}
 #fixed{ position:fixed; bottom:0; width:100%; left:0px; }
 .bargin_content{width: 92%; padding:0 4%; }
-.bargin_content .wei_name{color: #BA954F;font-size: 1.4rem;padding-top: 15px;}
-.bargin_content .wei_text{color: #646464;font-size: 1.4rem;padding-top: 10px;}
+.bargin_content .wei_name{color: #BA954F;font-size: 1.4rem;padding-top: 20px;}
+.bargin_content .wei_text{color: #646464;font-size: 1.4rem;padding-top: 10px; line-height:20px; }
 
 /*loading*/
 .loading { position:fixed; z-index: 10000000; left: 50%; top: 50%; width:64px; height:64px; margin:-32px 0 0 -32px; }
@@ -517,6 +521,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .popup .popup_but a { width:40%; height:30px; line-height:30px;text-align:center;background:url(../images/click_btn.jpg) no-repeat;
                       background-size:100% 100%;font-size:1.4rem; color:#3C3C3C; margin-left:7%; display:inline-block; vertical-align: top;}
 
+.popup.fade3 input{background:url(0) no-repeat;}/*David.Xu-modify-input-background*/
 /*后期增加*/
 .outlet_bottom { background:url(../images/outlet_bottom.png) 96% center no-repeat; background-size:16px; }
 .points5-content .pre_title { width:100%; height:auto; padding-bottom:2%; }
