@@ -206,16 +206,27 @@ module.exports = {
                     var _PROMOTION_CODE = $('#activity_select').val();//_PROMOTION_CODE
                     $("#" + _PROMOTION_CODE).css('display','block').find('.panel-body').css("background-color", "#eeeeee");
                     $("#" + _PROMOTION_CODE).find('.display_name').focus();
+                    var _PROMOTION_NAME = $("#" + _PROMOTION_CODE).find('.PROMOTION_NAME').attr('data');
+                    //PROMOTION_NAME
+
+                    $.globalMessenger().post({
+                        message: "添加"+_PROMOTION_NAME+"优惠券成功",
+                        type: 'error',
+                        showCloseButton: true});
                 });
 
                 //删除
                 $('#del-coupons').click(function(){
                     console.log($('#activity_select').val());
                     var _PROMOTION_CODE = $('#activity_select').val();//_PROMOTION_CODE
-                    $("#" + _PROMOTION_CODE).css('display', 'none');
-                });
-                //
+                    var _PROMOTION_NAME = $("#" + _PROMOTION_CODE).find('.PROMOTION_NAME').attr('data');
 
+                    $("#" + _PROMOTION_CODE).css('display', 'none');
+                    $.globalMessenger().post({
+                        message: "删除"+_PROMOTION_NAME+"优惠券成功",
+                        type: 'error',
+                        showCloseButton: true});
+                });
 
             }
         },

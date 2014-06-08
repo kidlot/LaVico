@@ -137,11 +137,12 @@ module.exports = {
 
                                 //无验证的手机号码，需要输入卡号
 
-                                jQuery('#maskdiv').show();//显示遮层
-
+                                //$('#maskdiv').show();//显示遮层
+                                document.getElementById('maskdiv').style.display="block"
                                 $('#tel_checked_status').val('tel_checked_false');
                                 $('#true_card_number').show();
-                                bindPosition('#true_card_number');
+                                $('#userCardNumber').focus();
+                                //bindPosition('#true_card_number');
 
 
                             }else{

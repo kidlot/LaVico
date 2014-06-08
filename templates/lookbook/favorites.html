@@ -1,3 +1,6 @@
+<if condition="@ !isFollow">
+    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
+</if>
 <div class="wrapper">
     <div class="store-title">
         <p><span class="title1"><a href="javascript:;" onclick="_cb()">返回</a></span><span class="title2">收藏清单</span></p>
@@ -12,11 +15,9 @@
                     <div class="fl"><a href="javascript:;" onclick="_gotoProductPage('{@ fav.lookbookid}','{@fav.pageNum}','{@fav.product._id}')"><img src="{@fav.product.pic||'/lavico/public/images/elite_home_list_1.png'}" ></a></div>
                     <div class="fl text">
                         <div class="title3"><a href="javascript:;">{@fav.product.name}</a></div>
+                        <div class="con"><a href="javascript:;">{@fav.product.detail}</a></div>
                         <div class="btn subbtn" onclick="cancelFav('{@ fav._id}')">取消收藏</div>
                     </div>
-                </div>
-                <div class="points3-content clear">
-                    <div class="con"><a href="javascript:;">{@fav.product.detail}</a></div>
                 </div>
             </div>
             </foreach>
@@ -42,8 +43,22 @@
 </div>
 
         <script>
+            function check(){
+                var flag="{@flag}";
+                if(flag=="1"){
+                    window.popupStyle2.on("您还不是LaVico的会员，请先注册会员!",function(event){
+                        if(event == "confirm"){
+                            location.href="/lavico/member/card_blank/register?wxid={@wechatId}";
+                        }
+                    })
+                    return false;
+                }
+            }
 
-
+            window.onload =function() {
+                //build();
+                check();
+            }
 
             function _gotoProductPage(p1,p2,p3){
                 var url = "/lavico/lookbook/product?_id="+p1+"&wxid={@ wxid}&pageNum="+p2+"&productId="+p3+"&source=view&cb="+encodeURIComponent('{'+location.href+'}')
