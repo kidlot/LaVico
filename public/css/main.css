@@ -48,13 +48,13 @@ a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; }
 .bargin-right .color .color-con{ color:#646464;}
 .bargin-right .rules{padding-top:5px; overflow:hidden; }
 .bargin-right .rules .rules-title{ color:#404040;}
-.bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464;}
+.bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464; word-wrap:break-word;}
 .bargin-right .pice{color:#AF8B4D;}
 .bargin-content .look_store{ width:120px; height:auto; padding-top:4%; clear:both }
 .bargin-content .look_store a{width:130px; height:34px; display:inline-block; color:#291b00;font-size:1.4rem; line-height:34px; text-align:center;
                              background:url(../images/look_storebg.jpg) center center no-repeat; background-size:100% 100%; }
 .bargin .border{  border-bottom:1px #c1c1c1 solid;}
-.bargin-mod{width:92%; margin:0 auto; padding:4% 4% 50px; }
+.bargin-mod{width:92%; margin:0 auto; padding:20px 4% 50px; }
 .bargin-mod img {width:100%; }
 .foot a{width:100%; height:50px; display:inline-block; line-height:50px; font-size:1.6rem; text-align:center; color:#281B00; background:url(../images/foot_bg.jpg) center center no-repeat; background-size:100% 100%; }
 /*门店*/
@@ -506,7 +506,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .city-listContent ul li a .tel{ padding-top:5px;}
 #fixed{ position:fixed; bottom:0; width:100%; left:0px; }
 .bargin_content{width: 92%; padding:0 4%; }
-.bargin_content .wei_name{color: #BA954F;font-size: 1.4rem;padding-top: 15px;}
+.bargin_content .wei_name{color: #BA954F;font-size: 1.4rem;padding-top: 20px;}
 .bargin_content .wei_text{color: #646464;font-size: 1.4rem;padding-top: 10px;}
 
 /*loading*/
