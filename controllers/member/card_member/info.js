@@ -316,7 +316,7 @@ module.exports = {
             }
         });
         var init = function(){
-            var _value = $('#select_province').val();
+            var _value = $('#province').val();
             if(_value.length>0){
                 for(var _i = 0;_i < cityArr.length; _i ++){
                     if(_value == cityArr[_i][0]){
