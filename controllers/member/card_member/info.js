@@ -314,13 +314,41 @@ module.exports = {
                 }
             }
         });
+        var init = function(){
+            var _value = $('#select_province').val();
+            if(_value.length>0){
+                for(var _i = 0;_i < cityArr.length; _i ++){
+                    if(_value == cityArr[_i][0]){
+                        var _cityArr = cityArr[_i];
+                        for(var _j = 1; _j < _cityArr.length;_j++){
+                            $("#select_city").prepend("<option value='"+_cityArr[_j]+"'>"+_cityArr[_j]+"</option>")
+                        }
+                    }
+                }
+            }
+        }
         $("#select_city").click(function(){
-            $(this).parent().find("input").val($(this).val());
+            if($(this).find("option").length == 0){
+                if($("#province").val().length==0){
+                    window.popupStyle2.on("请先输入省份",function(event){});
+                }else{
+                    $(this).parent().find("input").val($(this).val());
+                }
+            }else{
+                $(this).parent().find("input").val($(this).val());
+            }
         });
         $("#select_city").change(function(){
-            $(this).parent().find("input").val($(this).val());
+            if($(this).find("option").length == 0){
+                if($("#province").val().length==0){
+                    window.popupStyle2.on("请先输入省份",function(event){});
+                }else{
+                    $(this).parent().find("input").val($(this).val());
+                }
+            }else{
+                $(this).parent().find("input").val($(this).val());
+            }
         });
-
         /*后端开发JS*/
         $('#submit').click(function(){
 
