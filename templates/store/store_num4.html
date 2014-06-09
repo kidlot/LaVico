@@ -36,19 +36,16 @@
 <script type="text/javascript">
     var doc = JSON.parse('{@list}');
     function checkout(city){
-        var sta=true;
-        console.log(doc)
+        var sta=false;
+        console.log("doc:",doc)
         var sa = city.substring(0,city.length-1);
         for(var i=0;i<doc.length;i++){
            // if(doc.city!=null){
-                if(sa !=doc[i].city){
-                    sta = false;
-                }else{
-                    sta=true;
+                if(sa == doc[i].city){
+                    sta = true;
                 }
             //}
         }
-        console.log(sa);
         console.log(sta)
         if(sta){
             location.href="/lavico/store/searchByCity:search?city="+city+"&wxid={@wxid}";
