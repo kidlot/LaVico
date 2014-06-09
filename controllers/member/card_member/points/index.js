@@ -16,6 +16,14 @@ module.exports = {
         var member_id;
         var total;//用户明细记录数
         var remaining;//用户积分
+
+        this.setp(function(){
+            helper.db.coll("lavico/announcement").findOne({"isTop":true},this.hold(function(err,doc){
+                if(err) throw err;
+                nut.model.isTop=doc;
+            }))
+        })
+
         this.step(function(){
 
 
