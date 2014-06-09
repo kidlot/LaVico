@@ -23,7 +23,7 @@ module.exports = {
 
             this.step(function(){
 
-                helper.db.coll("lavico/favorites").find({memberID:nut.model.memberID}).toArray(this.hold(function(err,_doc){
+                helper.db.coll("lavico/favorites").find({memberID:nut.model.memberID}).sort({createDate:-1}).toArray(this.hold(function(err,_doc){
 
                     if(err) console.log(err);
                     var then = this;
