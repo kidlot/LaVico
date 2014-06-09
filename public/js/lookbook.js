@@ -210,13 +210,61 @@ window.lookbook = {
         })
         $(o).find(".glyphicon-chevron-down").click(function(){
 
+
             var oPanel = $(this).parents(".panel").eq(0)
+
+
+            // 向下移动数据
+            var oPanelCode = oPanel.find("code");
+
+            // 产品
+            if(oPanelCode.length == 1){
+                var nowRowProduce = parseInt(oPanelCode.eq(0).text());
+                var nowRowPage = parseInt($(this).parents(".pagePanel").find("code").eq(0).text())
+
+                var tmpRow = lookbook.page[nowRowPage-1].product[nowRowProduce-1];
+                lookbook.page[nowRowPage-1].product.splice(nowRowProduce-1,1);
+                lookbook.page[nowRowPage-1].product.splice(nowRowProduce,0,tmpRow);
+            }else{
+                // page
+                var nowRow = parseInt(oPanelCode.eq(0).text());
+
+                var tmpRow = lookbook.page[nowRow-1];
+                lookbook.page.splice(nowRow-1,1);
+                lookbook.page.splice(nowRow,0,tmpRow);
+            }
+
+
+            // 移动DIV
             oPanel.next().after(oPanel)
             lookbook.refreshCode()
+
         })
         $(o).find(".glyphicon-chevron-up").click(function(){
 
             var oPanel = $(this).parents(".panel").eq(0)
+
+
+            // 向上移动数据
+            var oPanelCode = oPanel.find("code");
+
+            // 产品
+            if(oPanelCode.length == 1){
+                var nowRowProduce = parseInt(oPanelCode.eq(0).text());
+                var nowRowPage = parseInt($(this).parents(".pagePanel").find("code").eq(0).text())
+
+                var tmpRow = lookbook.page[nowRowPage-1].product[nowRowProduce-1];
+                lookbook.page[nowRowPage-1].product.splice(nowRowProduce-1,1);
+                lookbook.page[nowRowPage-1].product.splice(nowRowProduce-2,0,tmpRow);
+            }else{
+                // page
+                var nowRow = parseInt(oPanelCode.eq(0).text());
+
+                var tmpRow = lookbook.page[nowRow-1];
+                lookbook.page.splice(nowRow-1,1);
+                lookbook.page.splice(nowRow-2,0,tmpRow);
+            }
+
             oPanel.prev().before(oPanel)
             lookbook.refreshCode()
         })
