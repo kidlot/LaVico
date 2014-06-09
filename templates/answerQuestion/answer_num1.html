@@ -107,8 +107,10 @@ var isReg=function(){
 <div class="wrapper">
     <div class="coupon-banner">
         <if condition="@docs.themeType=='1'">
-            <img src="http://test.welab.lavicouomo.com/public/files/2014/6/9/~!dad3765ef671652fe592caf9e0c294e5!E5A4B4E59BBE4.jpg" style="text-align:center;" />
+            <input type="hidden" id="themetitle" value="型男测试">
+            <img src="/public/files/2014/6/9/~!dad3765ef671652fe592caf9e0c294e5!E5A4B4E59BBE4.jpg" style="text-align:center;" />
             <else/>
+            <input type="hidden" id="themetitle" value="答题抢积分">
             <img src="/lavico/public/images/answer_banner.jpg" />
         </if>
     </div>
