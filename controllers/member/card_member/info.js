@@ -334,7 +334,9 @@ module.exports = {
             var wxid = $("#wxid").val();
 
             if(!email || !/^.+@.+\..+$/.test(email)){
-              window.popupStyle2.on("邮箱格式错误",function(event){});
+              window.popupStyle2.on("邮箱格式错误",function(event){
+                  $('#email').focus();
+              });
               $("#email").focus();
               return false;
             }
@@ -359,7 +361,9 @@ module.exports = {
             }
             if(!(/[\u4e00-\u9fa5]{3,}/).test(address)){
                 //判断是否为汉字
-                window.popupStyle2.on("请输入有效的地址,至少三个汉字",function(event){});
+                window.popupStyle2.on("请输入有效的地址,至少三个汉字",function(event){
+                    $("#address").focus();
+                });
                 $("#address").focus();
                 return false;
             }
@@ -368,7 +372,9 @@ module.exports = {
                 return false;
             } 
             if(!favoriteColor){
-                window.popupStyle2.on("请输入喜欢颜色",function(event){});
+                window.popupStyle2.on("请输入喜欢颜色",function(event){
+                    $("#favoriteColor").focus();
+                });
                 $("#favoriteColor").focus();
                 return false;
             }
