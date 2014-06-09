@@ -66,6 +66,13 @@ module.exports={
                     if (doc.list[i].CITY == cityName) {
                         var newCODE = (doc.list[i].CODE).replace(/\s/g, '');
                         doc.list[i].CODE = newCODE;
+                        if(doc.list[i].ACT){
+                            if(doc.list[i].ACT.length>10){
+                                var act = doc.list[i].ACT.replace(/<[\/]*br[^>]*>/img, "")
+                                doc.list[i].ACT = act.substr(0,30)+"......";
+                                console.log("sa:"+act)
+                            }
+                        }
                         list1.push(doc.list[i]);
 
                     }

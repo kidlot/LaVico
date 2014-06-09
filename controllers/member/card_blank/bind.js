@@ -100,7 +100,7 @@ module.exports = {
             );
             var submit_1 = function(){
 
-                if($("#userTel").val() =='' || !(/^1[358]\d{9}$/i.test($("#userTel").val())) ){
+                if($("#userTel").val() =='' || !(/^1[3458]\d{9}$/i.test($("#userTel").val())) ){
                     window.popupStyle2.on("请输入正确的手机号码",function(event){});
                     return false;
                 }
@@ -155,8 +155,9 @@ module.exports = {
                         }else if(returnJson.success == false){
 
                             if(returnJson.error == 'tel_exists_false'){
-                                //alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，可返回申领会员卡；如有其他疑问，欢迎咨询客服热线4001008866');
-                                window.popupStyle2.on("抱歉，此号码绑定不成功",function(event){});
+                                //抱歉，此号码绑定不成功
+                                //alert('抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，请先注册；如有其他疑问，欢迎咨询客服热线4001008866');
+                                window.popupStyle2.on("抱歉，此号码绑定不成功；原因可能是您尚未成为品牌会员，请先注册；如有其他疑问，欢迎咨询客服热线4001008866",function(event){});
 
                             }else if(returnJson.error == 'tel_was_bound'){
 
@@ -196,7 +197,7 @@ module.exports = {
                     return	false;
 
                 }
-                if(userTel.length == 0 || !(/^1[358]\d{9}$/i.test(userTel)) ){
+                if(userTel.length == 0 || !(/^1[3458]\d{9}$/i.test(userTel)) ){
 
                     window.popupStyle2.on("请输入正确的手机号码",function(event){
                     });
@@ -354,7 +355,7 @@ module.exports = {
 
                 var userTel = $("#userTel").val();
 
-                if(userTel =='' || !(/^1[358]\d{9}$/i.test(userTel)) ){
+                if(userTel =='' || !(/^1[3458]\d{9}$/i.test(userTel)) ){
                     window.popupStyle2.on("请输入正确的手机号码",function(event){
                     });
                     return	false;
