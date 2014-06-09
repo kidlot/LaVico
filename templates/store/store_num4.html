@@ -14,7 +14,7 @@
                   <if condition="{@city[0]==province}">
                       <foreach for="{@city}" var="cityOne" key="key">
                           <if condition="@key!=0">
-                              <li id="c"><a href="/lavico/store/searchByCity:search?city={@cityOne}&wxid={@wxid}" id="ci" style="font-size: 1.4rem;padding:4% 0 4% 4%;display: block; color:#000; ">{@cityOne}</a></li>
+                              <li id="c"><a href="javascript:;" onclick="checkout('{@cityOne}','{@cityOne}')" id="ci" style="font-size: 1.4rem;padding:4% 0 4% 4%;display: block; color:#000; ">{@cityOne}</a></li>
                           </if>
                       </foreach>
                   </if>
@@ -34,6 +34,32 @@
 </div>
 </div>
 <script type="text/javascript">
+    var doc = JSON.parse('{@list}');
+    function checkout(city){
+        var sta=true;
+        console.log(doc)
+        var sa = city.substring(0,city.length-1);
+        for(var i=0;i<doc.length;i++){
+           // if(doc.city!=null){
+                if(sa !=doc[i].city){
+                    sta = false;
+                }else{
+                    sta=true;
+                }
+            //}
+        }
+        console.log(sa);
+        console.log(sta)
+        if(sta){
+            location.href="/lavico/store/searchByCity:search?city="+city+"&wxid={@wxid}";
+        }else{
+            window.popupStyle2.on("很抱歉，本城市没有LaVico品牌专柜，请选择其他城市查询",function(event){
+                if(event == "confirm"){
+                }
+            })
+
+        }
+    }
     window.onload=function(){
         var i="";
         $("h3").click(function () {
