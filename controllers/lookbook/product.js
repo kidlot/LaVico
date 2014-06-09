@@ -67,7 +67,7 @@ module.exports = {
                 nut.model.productId = seed.productId
                 nut.model.source = seed.source||""
                 nut.model.memberID = false
-                nut.model.fromWelab = seed.fromWelab || ""
+                nut.model.fromWelab = seed.fromWelab || undefined
                 nut.model.pageNum = seed.pageNum || 1
 
                 helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
