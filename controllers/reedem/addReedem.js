@@ -114,8 +114,8 @@ module.exports={
                                 count ++ ;
                                 if(detail){
                                     doc[i].pic = detail.pic;
-                                    doc[i].introduction=detail.introduction
-                                    nut.model.introduction=detail.introduction
+                                    doc[i].introduction=decodeURIComponent(detail.introduction);
+                                    nut.model.introduction=decodeURIComponent(detail.introduction);
                                 }
                                 if(count == doc.length){
                                     list = doc
