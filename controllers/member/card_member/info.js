@@ -174,6 +174,7 @@ module.exports = {
             var email = $(this).val();
             if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
                 window.popupStyle2.on("邮箱格式错误",function(event){});
+                $("#email").focus();
                 return false;
             }
         });
