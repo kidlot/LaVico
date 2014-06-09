@@ -211,7 +211,7 @@
         // 自动提取分享内容。
         //// 侃价
         if(location.pathname == "/lavico/bargain/kv"){
-            shareTitle = "我要侃价";
+            shareTitle = "侃价是门技术更是门艺术，既要有吃定你不放弃的决心，更要练就三寸不烂的嘴上功夫。生活中的你也是侃价达人吗？马上参与朗维高“我要侃价”活动，点击“立即侃价”，输入你心目中的理想价位，给力优惠，惊喜无限！";
             shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
         }
         //// 产品
@@ -222,20 +222,10 @@
 
         //// 优惠券
         if(location.pathname == "/lavico/activity/shake"){
-            shareTitle = "来张优惠券";
+            shareTitle = "朗维高“来张优惠券”不止是摇出各种额度的优惠券那么简单，还有意想不到的专属礼遇特别奉献。就像潘多拉的魔盒充满着不可获知的惊喜！";
             shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
         }
 
-        //// 抢积分，型男
-        if(location.pathname == "/lavico/answerQuestion/first"){
-            shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
-            if(jQuery(".coupon-banner").find("img").attr("src") == "/lavico/public/images/test-man.jpg"){
-
-                shareTitle = "型男测试";
-            }else{
-                shareTitle = "答题抢积分";
-            }
-        }
 
         shareTitle = jQuery("#shareTitle").val() || shareTitle;
         shareIcon = jQuery("#shareIcon").val() || shareIcon;

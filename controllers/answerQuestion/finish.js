@@ -602,7 +602,7 @@ module.exports={
                             memoString = "型男测试-" + getLabel;
                         }
                         jsonData = {};
-                        jsonData.memberId = memberid;
+                        jsonData.memberId = nut.model.memberID;
                         jsonData.tag = memoString;
                         middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                             if (err) throw err;
