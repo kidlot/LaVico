@@ -13,6 +13,20 @@
 //        }
 //    }
 function load(){
+
+
+    //// 抢积分，型男
+    if(location.pathname == "/lavico/answerQuestion/first"){
+        shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
+        if(jQuery(".coupon-banner").find("img").attr("src") == "/lavico/public/images/test-man.jpg"){
+
+            shareTitle = "型男测试";
+        }else{
+            shareTitle = "答题抢积分";
+        }
+    }
+
+
     if(window.name != "bencalie"){
         location.reload();
         window.name = "bencalie";
