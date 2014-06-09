@@ -17,15 +17,13 @@ module.exports = {
         var total;//用户明细记录数
         var remaining;//用户积分
 
-        this.step(function(){
-            helper.db.coll("lavico/announcement").findOne({"isTop":true},this.hold(function(err,doc){
-                if(err) throw err;
-                nut.model.isTop=doc;
-            }))
-        })
+        /*积分明细-上面积分活动公告设置*/
+        helper.db.coll("lavico/announcement").findOne({"isTop":true},this.hold(function(err,doc){
+            if(err) throw err;
+            nut.model.isTop=doc;
+        }));
 
         this.step(function(){
-
 
             if(wxid == 'undefined'){
                 //缺少微信ID参数，强制中断
@@ -43,9 +41,7 @@ module.exports = {
                         member_id = 'undefined';
                     }
                 }));
-
             }
-
         });
 
         //接口处理-个人积分接口
@@ -53,25 +49,17 @@ module.exports = {
 
             if(member_id == "undefined"){
                 //缺少微信ID参数，强制中断
-
                 //直接跳转
                 this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
                 this.res.end();
 
-                nut.disable();//不显示模版
-                this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                this.res.write('{"error":"memberid_not_found"}');
-                this.res.end();
-                this.terminate();
             }else{
                 nut.model.wxid = wxid ;
                 nut.model.member_ID = member_id;
                 middleware.request( "Point/"+member_id,{},this.hold(function(err,doc){
 
                     var dataJson = JSON.parse(doc);
-                    //console.log("aaa"+dataJson);
-                    //console.log("doc"+doc);
-                    console.log("adasd:"+parseInt(dataJson.point))
+
                     if(dataJson.hasOwnProperty('point')){
                         //当前积分
                         if(parseInt(dataJson.point) === 0){
