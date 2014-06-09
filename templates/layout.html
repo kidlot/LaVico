@@ -140,6 +140,7 @@
 
     // 记录分享数
     var shareTitle = "朗维高"
+    var shareContent = "朗维高";
     var shareIcon = location.origin + "/lavico/public/images/logo.png"
 
     var timeid = setInterval(function(){
@@ -168,8 +169,8 @@
             WeixinJSBridge.invoke('shareTimeline',{
                 "img_url":shareIcon,
                 "link":replaceWxid(location.href) + "&fromWelab=timeline",
-                "desc":shareTitle,
-                "title":shareTitle
+                "desc":shareContent,
+                "title":shareContent
             }, function(res) {
 
             });
@@ -196,7 +197,7 @@
             var contentModel = {
                 "img_url":shareIcon,
                 "link":replaceWxid(location.href) + "&fromWelab=friend",
-                "desc":shareTitle,
+                "desc":shareContent,
                 "title":shareTitle
             }
             WeixinJSBridge.invoke('sendAppMessage',contentModel, function(res) {
@@ -211,18 +212,21 @@
         // 自动提取分享内容。
         //// 侃价
         if(location.pathname == "/lavico/bargain/kv"){
-            shareTitle = "侃价是门技术更是门艺术，既要有吃定你不放弃的决心，更要练就三寸不烂的嘴上功夫。生活中的你也是侃价达人吗？马上参与朗维高“我要侃价”活动，点击“立即侃价”，输入你心目中的理想价位，给力优惠，惊喜无限！";
+            shareTitle = "我要侃价";
+            shareContent = "侃价是门技术更是门艺术，既要有吃定你不放弃的决心，更要练就三寸不烂的嘴上功夫。生活中的你也是侃价达人吗？马上参与朗维高“我要侃价”活动，点击“立即侃价”，输入你心目中的理想价位，给力优惠，惊喜无限！";
             shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
         }
         //// 产品
         if(location.pathname == "/lavico/lookbook/product"){
-            shareTitle = jQuery("#article").find("h3").text();
+            shareTitle = "精英搭配";
+            shareContent = jQuery("#article").find("h3").text();
             shareIcon = location.origin + ( JSON.parse(jQuery("#jsonPage").text())[myScroll.currPageX].pic )
         }
 
         //// 优惠券
         if(location.pathname == "/lavico/activity/shake"){
-            shareTitle = "朗维高“来张优惠券”不止是摇出各种额度的优惠券那么简单，还有意想不到的专属礼遇特别奉献。就像潘多拉的魔盒充满着不可获知的惊喜！";
+            shareTitle = "来张优惠券"
+            shareContent = "朗维高“来张优惠券”不止是摇出各种额度的优惠券那么简单，还有意想不到的专属礼遇特别奉献。就像潘多拉的魔盒充满着不可获知的惊喜！";
             shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
         }
 

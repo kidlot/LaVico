@@ -244,14 +244,19 @@ window.lookbook = {
 
             var oPanel = $(this).parents(".panel").eq(0)
 
-
             // 向上移动数据
             var oPanelCode = oPanel.find("code");
+
+
 
             // 产品
             if(oPanelCode.length == 1){
                 var nowRowProduce = parseInt(oPanelCode.eq(0).text());
                 var nowRowPage = parseInt($(this).parents(".pagePanel").find("code").eq(0).text())
+
+                if(nowRowProduce == 1){
+                    return false;
+                }
 
                 var tmpRow = lookbook.page[nowRowPage-1].product[nowRowProduce-1];
                 lookbook.page[nowRowPage-1].product.splice(nowRowProduce-1,1);
@@ -259,6 +264,10 @@ window.lookbook = {
             }else{
                 // page
                 var nowRow = parseInt(oPanelCode.eq(0).text());
+
+                if(nowRow==1){
+                    return false;
+                }
 
                 var tmpRow = lookbook.page[nowRow-1];
                 lookbook.page.splice(nowRow-1,1);
