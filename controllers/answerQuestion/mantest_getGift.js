@@ -16,10 +16,11 @@ module.exports={
         var memberID;//memberID
         var themetype = seed.themetype ? seed.themetype :"undefined";
         var id = seed.id ? seed.id :"undefined";
+        var docs;
 
 
         this.step(function () {
-            helper.db.coll("welab/customers").findOne({wechatid: seed.wechatid},
+            helper.db.coll("welab/customers").findOne({wechatid: seed.wxid},
                 this.hold(function (err, result) {
                     if (err) throw err;
                     if (result) {
@@ -31,8 +32,12 @@ module.exports={
         })
 
         this.step(function(){
+            console.log(seed.wxid)
+            console.log(themetype)
+            console.log(id)
+            console.log(typeof (nut.model.memberID))
             if(themetype!="undefined" && id !="undefined"){
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(id),"memberId":memberID,"wechatid":seed.wxid,
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(id),"memberId":""+nut.model.memberID,"wechatid":seed.wxid,
                     "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
                     if(err) throw err;
                     if(doc){
@@ -68,13 +73,16 @@ module.exports={
             }else{
                 var sa;
                 var resultList=[];
+                console.log(docs)
                 if(docs){
                     for(var i=0;i<docs.length;i++){
                         if(docs.type!="0"){
                             sa = docs[i];
                         }
                     }
+                    console.log(sa)
                     if(sa){
+
                         resultList.push(sa);
                         nut.model.jsonResult =resultList;
                         nut.model.label =resultList[0].getLabel;

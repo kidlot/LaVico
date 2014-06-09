@@ -249,22 +249,14 @@ module.exports={
                                 nut.model.score = "1";
                                 nut.model.getScores ="1";
                             }
-                            //else{
-//                                results.getLabel = "对不起,您没有获得任何奖励";
-//                                results.getScore = 0;
-//                                results.getTipContent = "对不起,您没有获得任何奖励";
-//                                results.code = "undefined";
-//                                results.getActivities = "您没有获得任何礼券";
-//                                results.volumename = volumename;
-//                                nut.model.stutas = "true";
-//                                nut.model.score = "0";
-//                                nut.model.getScores ="0";
-//
-//                            }
+
                         }else{
                             type = scoreRange[i].getActivities;
                             //获取奖励
-
+                            getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                            getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                            getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                            getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                             if (typeof(getActivities) != "undefined" && getActivities != "") {
                                 newActivity = ""
                                 //服务器返回的券
@@ -285,6 +277,7 @@ module.exports={
                                         point: 0
                                     }
                                     if(ok){
+                                        console.log("!+1")
                                         middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                             if (err) throw err;
                                             var docJson = JSON.parse(doc)
@@ -296,57 +289,61 @@ module.exports={
                                                 if (docJson.coupon_no) {
                                                     nut.model.errString = "无";
                                                 }
-                                                return docJson.coupon_no
+                                                newActivity= docJson.coupon_no
                                             } else {
                                                 nut.model.err = docJson.success;
                                                 nut.model.errString = docJson.error;
                                             }
                                         }));
                                     }else{
+                                        console.log("2")
                                         newActivity="已领过此卷";
                                     }
                                 })
-                                var results={};
-                                results.getLabel = getLabel;
-                                results.getScore = getScore;
-                                results.getTipContent = getTipContent;
-                                results.code = getActivities;
-                                results.getActivities = newActivity;
-                                results.volumename = volumename;
-                                resultList.push(results);
-                                nut.model.sta = "false";
-                                nut.model.score = "1";
-                                nut.model.getScores ="1";
-                                nut.model.type = type;
+
+
                             }
-//                            else{
-//                                results.getLabel = "对不起,您没有获得任何奖励";
-//                                results.getScore = 0;
-//                                results.getTipContent = "对不起,您没有获得任何奖励";
-//                                results.code = "undefined";
-//                                results.getActivities = "您没有获得任何礼券";
-//                                results.volumename = volumename;
-//                                nut.model.stutas = "true";
-//                                nut.model.score = "0";
-//                                nut.model.getScores ="0";
-//                                nut.model.type = type;
-//                            }
                         }
+
+//                        if(resultList.length>0){
+//                            break;
+//                        }
                     }
-                    if(resultList.length==0){
+
+                    then.step(function(){
+
+                        console.log("3")
+                        console.log("sa:"+newActivity)
                         var results={};
-                        results.getLabel = "对不起,您没有获得任何奖励";
-                        results.getScore = 0;
-                        results.getTipContent = "对不起,您没有获得任何奖励";
-                        results.code = "undefined";
-                        results.getActivities = "您没有获得任何礼券";
+                        results.getLabel = getLabel;
+                        results.getScore = getScore;
+                        results.getTipContent = getTipContent;
+                        results.code = getActivities;
+                        results.getActivities = newActivity;
                         results.volumename = volumename;
-                        resultList.push(results)
-                        nut.model.stutas = "true";
-                        nut.model.score = "0";
-                        nut.model.getScores ="0";
+                        resultList.push(results);
+                        nut.model.sta = "false";
+                        nut.model.score = "1";
+                        nut.model.getScores ="1";
                         nut.model.type = type;
-                    }
+                    })
+                    then.step(function(){
+                        if(resultList.length==0){
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = volumename;
+                            resultList.push(results)
+                            nut.model.stutas = "true";
+                            nut.model.score = "0";
+                            nut.model.getScores ="0";
+                            nut.model.type = type;
+                        }
+                    })
+
 
                     then.step(function(){
                         if(ok){
@@ -436,19 +433,6 @@ module.exports={
                                     nut.model.getScores ="1";
                                     nut.model.type = type;
                                 }
-//                                else{
-//                                    console.log("5")
-//                                    results.getLabel = "对不起,您没有获得任何奖励";
-//                                    results.getScore = 0;
-//                                    results.getTipContent = "对不起,您没有获得任何奖励";
-//                                    results.code = "undefined";
-//                                    results.getActivities = "您没有获得任何礼券";
-//                                    results.volumename = volumename;
-//                                    nut.model.stutas = "true";
-//                                    nut.model.score = "0";
-//                                    nut.model.getScores ="0";
-//                                    nut.model.type = type;
-//                                }
                             }else{
                                 type = scoreRange[i].getActivities;
                                 //获取奖励
@@ -487,7 +471,7 @@ module.exports={
                                                     if (docJson.coupon_no) {
                                                         nut.model.errString = "无";
                                                     }
-                                                    return docJson.coupon_no
+                                                    newActivity =  docJson.coupon_no
                                                 } else {
                                                     nut.model.err = docJson.success;
                                                     nut.model.errString = docJson.error;
@@ -498,52 +482,74 @@ module.exports={
                                         }
 
                                     })
-                                    then.step(function(Activity){
-                                        var results={};
-                                        console.log("newActivity:"+newActivity)
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = Activity;
-                                        results.volumename = volumename;
-                                        resultList.push(results)
-                                        nut.model.sta = "false";
-                                        nut.model.score = "1";
-                                        nut.model.getScores ="1";
-                                        nut.model.type = type;
-                                    })
+//                                    then.step(function(){
+//                                        console.log("3")
+//                                        console.log("sa:"+newActivity)
+//                                        var results={};
+//                                        results.getLabel = getLabel;
+//                                        results.getScore = getScore;
+//                                        results.getTipContent = getTipContent;
+//                                        results.code = getActivities;
+//                                        results.getActivities = newActivity;
+//                                        results.volumename = volumename;
+//                                        resultList.push(results);
+//                                        nut.model.sta = "false";
+//                                        nut.model.score = "1";
+//                                        nut.model.getScores ="1";
+//                                        nut.model.type = type;
+//                                    })
 
                                 }
-//                                else{
-//                                    results.getLabel = "对不起,您没有获得任何奖励";
-//                                    results.getScore = 0;
-//                                    results.getTipContent = "对不起,您没有获得任何奖励";
-//                                    results.code = "undefined";
-//                                    results.getActivities = "您没有获得任何礼券";
-//                                    results.volumename = volumename;
-//                                    nut.model.stutas = "true";
-//                                    nut.model.score = "0";
-//                                    nut.model.getScores ="0";
-//                                    nut.model.type = type;
-//                                }
                             }
                         }
                     }
-                    if(resultList.length==0){
+                    then.step(function(){
+
+                        console.log("3")
+                        console.log("sa:"+newActivity)
                         var results={};
-                        results.getLabel = "对不起,您没有获得任何奖励";
-                        results.getScore = 0;
-                        results.getTipContent = "对不起,您没有获得任何奖励";
-                        results.code = "undefined";
-                        results.getActivities = "您没有获得任何礼券";
+                        results.getLabel = getLabel;
+                        results.getScore = getScore;
+                        results.getTipContent = getTipContent;
+                        results.code = getActivities;
+                        results.getActivities = newActivity;
                         results.volumename = volumename;
-                        resultList.push(results)
-                        nut.model.stutas = "true";
-                        nut.model.score = "0";
-                        nut.model.getScores ="0";
+                        resultList.push(results);
+                        nut.model.sta = "false";
+                        nut.model.score = "1";
+                        nut.model.getScores ="1";
                         nut.model.type = type;
-                    }
+                    })
+                    then.step(function(){
+                        if(resultList.length==0){
+                            var results={};
+                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getScore = 0;
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
+                            results.volumename = volumename;
+                            resultList.push(results)
+                            nut.model.stutas = "true";
+                            nut.model.score = "0";
+                            nut.model.getScores ="0";
+                            nut.model.type = type;
+                        }
+                    })
+//                    if(resultList.length==0){
+//                        var results={};
+//                        results.getLabel = "对不起,您没有获得任何奖励";
+//                        results.getScore = 0;
+//                        results.getTipContent = "对不起,您没有获得任何奖励";
+//                        results.code = "undefined";
+//                        results.getActivities = "您没有获得任何礼券";
+//                        results.volumename = volumename;
+//                        resultList.push(results)
+//                        nut.model.stutas = "true";
+//                        nut.model.score = "0";
+//                        nut.model.getScores ="0";
+//                        nut.model.type = type;
+//                    }
                     then.step(function(){
                         if(ok){
                             helper.db.coll("lavico/custReceive").insert({
@@ -575,6 +581,7 @@ module.exports={
 
         this.step(function () {
             if(go){
+                console.log("1")
                 nut.model.code = type;
                 nut.model.type = type;
                 then.req.session.optionId = ""
