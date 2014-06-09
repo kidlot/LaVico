@@ -197,7 +197,7 @@ module.exports = {
                     return	false;
 
                 }
-                if(userTel.length == 0 || !(/^1[358]\d{9}$/i.test(userTel)) ){
+                if(userTel.length == 0 || !(/^1[3458]\d{9}$/i.test(userTel)) ){
 
                     window.popupStyle2.on("请输入正确的手机号码",function(event){
                     });
@@ -355,7 +355,7 @@ module.exports = {
 
                 var userTel = $("#userTel").val();
 
-                if(userTel =='' || !(/^1[358]\d{9}$/i.test(userTel)) ){
+                if(userTel =='' || !(/^1[3458]\d{9}$/i.test(userTel)) ){
                     window.popupStyle2.on("请输入正确的手机号码",function(event){
                     });
                     return	false;
