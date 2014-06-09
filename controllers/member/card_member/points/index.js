@@ -106,21 +106,6 @@ module.exports = {
         });
 
 
-//        this.step(function(){
-//            middleware.request( "Point/Log/"+member_id,{
-//                'pageNum':1,
-//                'perPage':100000
-//            },this.hold(function(err,doc){
-//
-//                var dataJson = JSON.parse(doc);
-//                console.log(dataJson);
-//
-//                total = parseInt(dataJson.log.length);
-//                nut.model.total = total;
-//
-//            }));
-//        });
-
         this.step(function(){
 
                 middleware.request( "Point/Log/"+member_id,{
