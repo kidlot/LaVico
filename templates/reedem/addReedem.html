@@ -41,7 +41,12 @@
                         <input type="text" id="endDate" name="endDate" class="form-control" style="width: 150px;display:inline-block;" value="">
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">礼品描述</label>
+                    <div class="col-sm-10">
+                        <textarea id="des" name="des" class="form-control postData" rows="3" style="width: 400px;height:200px;">{@reedem.des}</textarea>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">券</label>
                     <div class="col-sm-10">
@@ -53,7 +58,7 @@
                             </foreach>
                         </select>
                         </div >
-                        <div style="float: left; padding-top: 30px;"><a href="" id="showDetails" TARGET="_blank">查看详情</a></div>
+                        <!--div style="float: left; padding-top: 30px;"><a href="" id="showDetails" TARGET="_blank">查看详情</a></div-->
                     </div>
                 </div>
                 <!--
@@ -108,9 +113,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品描述</label>
+                                            <label for="inputEmail3" class="col-sm-2 control-label">券描述</label>
                                             <div class="col-sm-10">
-                                                <input id="introduction" type="text" readonly="readonly" value="{@doc.introduction}" class="form-control postData" style="width:250px;height:80px;display:inline-block;color:#000000">
+                                                <textarea class="form-control postData" rows="3" style="width: 400px;height:200px;" readonly="readonly">{@doc.introduction}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -315,6 +320,8 @@ function save ( ){
     aFormInput['endDate'] = new Date($("#endDate").val()).getTime();//结束时间
     aFormInput['aid'] = aid;//券号
     aFormInput['name'] = $("#name").val();//名称
+    aFormInput['des'] = $('#des').val();
+
     //aFormInput['lottery_cycle'] = $("#lottery_cycle").val();//抽奖频率
     aFormInput['introduction'] = $("#introduction").val();//描述
     //aFormInput['lottery_count'] = $("#lottery_count").val();//频率中的次数
