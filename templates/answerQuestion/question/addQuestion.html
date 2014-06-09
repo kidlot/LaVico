@@ -434,7 +434,7 @@
                 所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px">
                 所获奖券:
                 <select name="getActivities"  class="form-control input-sm" style="width: 150px">
-                    <option value="-1">无卷</option>
+                    <option value="-1" selected="selected">无卷</option>
                     <foreach for="{@doc_json.list}" var="docListOne">
                         <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
                     </foreach>
@@ -788,7 +788,7 @@
             所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px">
             所获奖券:
             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
-                <option value="-1">无卷</option>
+                <option value="-1" selected="selected">无卷</option>
                 <foreach for="{@doc_json.list}" var="docListOne">
                     <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
                 </foreach>
