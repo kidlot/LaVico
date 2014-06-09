@@ -53,6 +53,16 @@
             WeixinJSBridge.call('hideOptionMenu');
         },300) ;
     }
+    window.showShareButtion.on = function(){
+
+        var timeid = setInterval(function(){
+            if(typeof WeixinJSBridge =="undefined")
+                return ;
+
+            clearTimeout(timeid) ;
+            WeixinJSBridge.call('showOptionMenu');
+        },300) ;
+    }
     /*掩藏分享按钮End*/
 
 

@@ -203,11 +203,13 @@ module.exports={
                             type = scoreRange[i].getActivities;
                             //在分值范围中
 
-                            getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                            getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                            getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                            getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+
+
                             if(score >= minlen && score <= maxlen){
+                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 console.log("score:"+score);
                                 console.log("minlen:"+minlen);
                                 console.log("maxlen:"+maxlen);
@@ -402,23 +404,25 @@ module.exports={
                                 console.log("score:"+score);
                                 console.log("minlen:"+minlen);
                                 console.log("maxlen:"+maxlen);
-                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+//                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+//                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+//                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+//                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 if(score >= minlen && score <= maxlen){
-
+                                    getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                     //获取奖励
-
-
                                     then.step(function (memberID) {
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
                                         jsonData.memberId = nut.model.memberID;
                                         jsonData.qty = getScore;
                                         jsonData.memo = nut.model.themeTitle;
-                                        console.log("问答测试:"+JSON.stringify(jsonData));
+
                                         if(ok){
+                                            console.log("问答测试:"+JSON.stringify(jsonData));
                                             middleware.request('Point/Change', jsonData,
                                                 this.hold(function (err, doc) {
                                                     if (err) throw err;
