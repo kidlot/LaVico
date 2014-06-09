@@ -208,13 +208,17 @@ module.exports={
                             console.log(then.req.session.stopLabel)
                             console.log(scoreRange[i].conditionLabel)
                             console.log(scoreRange)
+                            getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                            getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                            getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                            getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                             if(score >= minlen && score <= maxlen){
 
                                 //获取奖励
-                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+//                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+//                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+//                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+//                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 then.step(function (memberID) {
                                     //根据memberId调用接口给账户加分
                                     var jsonData = {};
@@ -238,7 +242,7 @@ module.exports={
                                 results.getScore = getScore;
                                 results.getTipContent = getTipContent;
                                 results.code = getActivities;
-                                results.getActivities = newActivity;
+                                results.getActivities = "您没有获得任何礼券";
                                 results.volumename = volumename;
                                 nut.model.sta = "false";
                                 nut.model.score = "1";
@@ -258,10 +262,7 @@ module.exports={
                         }else{
                             type = scoreRange[i].getActivities;
                             //获取奖励
-                            getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                            getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                            getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                            getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+
                             if (typeof(getActivities) != "undefined" && getActivities != "") {
                                 newActivity = ""
                                 //服务器返回的券
@@ -358,9 +359,10 @@ module.exports={
         this.step(function(){
             if(go){
                 //停止标签过来
+                console.log("1")
                 if (stopLab == "true") {
                     for (var i = 0; i < scoreRange.length; i++) {
-
+                        console.log("2")
                         if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
                             console.log(then.req.session.stopLabel)
                             console.log(scoreRange[i].conditionLabel)
@@ -369,18 +371,20 @@ module.exports={
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             //判断是否是发放卷
                             if(scoreRange[i].getActivities=="-1"){
+                                console.log("3")
                                 type = scoreRange[i].getActivities;
                                 //在分值范围中
                                 console.log("score:"+score);
                                 console.log("minlen:"+minlen);
                                 console.log("maxlen:"+maxlen);
+                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 if(score >= minlen && score <= maxlen){
 
                                     //获取奖励
-                                    getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+
 
                                     then.step(function (memberID) {
                                         //根据memberId调用接口给账户加分
@@ -398,17 +402,19 @@ module.exports={
                                         }
                                     })
                                     //记录json准备显示
+                                    console.log("4")
                                     results.getLabel = getLabel;
                                     results.getScore = getScore;
                                     results.getTipContent = getTipContent;
                                     results.code = getActivities;
-                                    results.getActivities = newActivity;
+                                    results.getActivities = "您没有获得任何礼券";
                                     results.volumename = volumename;
                                     nut.model.sta = "false";
                                     nut.model.score = "1";
                                     nut.model.getScores ="1";
                                     nut.model.type = type;
                                 }else{
+                                    console.log("5")
                                     results.getLabel = "对不起,您没有获得任何奖励";
                                     results.getScore = 0;
                                     results.getTipContent = "对不起,您没有获得任何奖励";
@@ -467,17 +473,21 @@ module.exports={
                                         }else{
                                             newActivity="已领过此卷";
                                         }
+
                                     })
-                                    results.getLabel = getLabel;
-                                    results.getScore = getScore;
-                                    results.getTipContent = getTipContent;
-                                    results.code = getActivities;
-                                    results.getActivities = newActivity;
-                                    results.volumename = volumename;
-                                    nut.model.sta = "false";
-                                    nut.model.score = "1";
-                                    nut.model.getScores ="1";
-                                    nut.model.type = type;
+                                    then.step(function(Activity){
+                                        console.log("newActivity:"+newActivity)
+                                        results.getLabel = getLabel;
+                                        results.getScore = getScore;
+                                        results.getTipContent = getTipContent;
+                                        results.code = getActivities;
+                                        results.getActivities = Activity;
+                                        results.volumename = volumename;
+                                        nut.model.sta = "false";
+                                        nut.model.score = "1";
+                                        nut.model.getScores ="1";
+                                        nut.model.type = type;
+                                    })
 
                                 }else{
                                     results.getLabel = "对不起,您没有获得任何奖励";
