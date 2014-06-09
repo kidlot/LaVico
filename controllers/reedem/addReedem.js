@@ -46,7 +46,7 @@ module.exports={
                         count ++ ;
                         if(detail){
                             doc[i].pic = detail.pic;
-                            doc[i].introduction=decodeURIComponent(detail.introduction);
+                            doc[i].introduction='test';
                         }
                         if(count == doc.length){
                             list = doc;
