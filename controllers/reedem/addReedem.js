@@ -139,6 +139,8 @@ module.exports={
 
                 this.step(function(){
                     nut.model.list = list;//全部券名
+                    console.log("list")
+                    console.log(list)
                     nut.model.reedem = redem;
                 });
             },
