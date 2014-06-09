@@ -9,7 +9,10 @@
 <section id="section">
     <div class="elite_title">
         <p>
+            <!-- 收藏夹过来的 source = view -->
             <if condition="@ source!='view'">
+                <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}">{@ pageName}</a></span>
+            <elseif condition="@ fromWelab" />
                 <span class="title5"><a href="/lavico/lookbook/detail?_id={@ _id}&wxid={@ wxid}&fromWelab={@fromWelab}">{@ pageName}</a></span>
             <else />
                 <span class="title5"><a href="javascript:;" onclick="_cb()">返回列表</a></span>
