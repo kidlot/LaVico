@@ -47,6 +47,15 @@ module.exports= {
         })
 
         this.step(function(){
+            if(new Date(beginTime).getTime()>new Date(createTime()).getTime()){
+                //if(isOpen==0){
+                    nut.model.ok = "3";
+                    nut.model.conent = "很抱歉，活动未开始，敬请期待"
+                //}
+            }
+        })
+
+        this.step(function(){
             if(wechatid == undefined){
                 if(this.req.session.oauthTokenInfo){
                     console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)

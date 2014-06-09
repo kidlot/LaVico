@@ -205,7 +205,7 @@
         }
         //// 产品
         if(location.pathname == "/lavico/lookbook/product"){
-            shareTitle = jQuery("#article").val();
+            shareTitle = jQuery("#article").find("h3").text();
             shareIcon = location.origin + ( JSON.parse(jQuery("#jsonPage").text())[myScroll.currPageX].pic )
         }
 
@@ -224,11 +224,6 @@
             }else{
                 shareTitle = "答题抢积分";
             }
-        }
-
-        //// 精英
-        if(location.pathname == "/lavico/lookbook/detail"){
-            shareTitle = "精英搭配";
         }
 
         shareTitle = jQuery("#shareTitle").val() || shareTitle;
