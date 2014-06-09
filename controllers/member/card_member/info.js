@@ -170,14 +170,14 @@ module.exports = {
             $(".fade2").css("display","none");
         });
 
-        $("#email").blur(function(){
-            var email = $(this).val();
-            if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
-                window.popupStyle2.on("邮箱格式错误",function(event){});
-                $("#email").focus();
-                return false;
-            }
-        });
+//        $("#email").blur(function(){
+//            var email = $(this).val();
+//            if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
+//                window.popupStyle2.on("邮箱格式错误",function(event){});
+//                $("#email").focus();
+//                return false;
+//            }
+//        });
 
         $('#goon_btn').click(function(){
             window.location.href ="/lavico/member/index?wxid="+$('#wxid').val();
@@ -314,13 +314,41 @@ module.exports = {
                 }
             }
         });
+        var init = function(){
+            var _value = $('#select_province').val();
+            if(_value.length>0){
+                for(var _i = 0;_i < cityArr.length; _i ++){
+                    if(_value == cityArr[_i][0]){
+                        var _cityArr = cityArr[_i];
+                        for(var _j = 1; _j < _cityArr.length;_j++){
+                            $("#select_city").prepend("<option value='"+_cityArr[_j]+"'>"+_cityArr[_j]+"</option>")
+                        }
+                    }
+                }
+            }
+        }
         $("#select_city").click(function(){
-            $(this).parent().find("input").val($(this).val());
+            if($(this).find("option").length == 0){
+                if($("#province").val().length==0){
+                    window.popupStyle2.on("请先输入省份",function(event){});
+                }else{
+                    $(this).parent().find("input").val($(this).val());
+                }
+            }else{
+                $(this).parent().find("input").val($(this).val());
+            }
         });
         $("#select_city").change(function(){
-            $(this).parent().find("input").val($(this).val());
+            if($(this).find("option").length == 0){
+                if($("#province").val().length==0){
+                    window.popupStyle2.on("请先输入省份",function(event){});
+                }else{
+                    $(this).parent().find("input").val($(this).val());
+                }
+            }else{
+                $(this).parent().find("input").val($(this).val());
+            }
         });
-
         /*后端开发JS*/
         $('#submit').click(function(){
 
@@ -334,7 +362,10 @@ module.exports = {
             var wxid = $("#wxid").val();
 
             if(!email || !/^.+@.+\..+$/.test(email)){
-              window.popupStyle2.on("邮箱格式错误",function(event){});
+              window.popupStyle2.on("邮箱格式错误",function(event){
+                  $('#email').focus();
+              });
+              $("#email").focus();
               return false;
             }
             if(!profession || profession == "请选择行业"){
@@ -353,11 +384,15 @@ module.exports = {
             } 
             if(!address){
               window.popupStyle2.on("请输入地址",function(event){});
+              $("#address").focus();
               return false;
             }
             if(!(/[\u4e00-\u9fa5]{3,}/).test(address)){
                 //判断是否为汉字
-                window.popupStyle2.on("请输入有效的地址,至少三个汉字",function(event){});
+                window.popupStyle2.on("请输入有效的地址,至少三个汉字",function(event){
+                    $("#address").focus();
+                });
+                $("#address").focus();
                 return false;
             }
             if(!favoriteStyle){
@@ -365,13 +400,17 @@ module.exports = {
                 return false;
             } 
             if(!favoriteColor){
-                window.popupStyle2.on("请输入喜欢颜色",function(event){});
+                window.popupStyle2.on("请输入喜欢颜色",function(event){
+                    $("#favoriteColor").focus();
+                });
+                $("#favoriteColor").focus();
                 return false;
             }
 
             if(!(/[\u4e00-\u9fa5]+/).test(favoriteColor)){
                 //判断是否为汉字
                 window.popupStyle2.on("请输入有效的颜色，如黑色",function(event){});
+                $("#favoriteColor").focus();
                 return false;
             }
 
