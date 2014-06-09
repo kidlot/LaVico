@@ -122,6 +122,7 @@ module.exports= {
                     themeQuestion = doc.options;
                     themetype = doc.themeType;
                     nut.model.docs=doc;
+                    nut.model.themetype = themetype;
                     nut.model.themeQuestion = JSON.stringify(doc);
                 }
             }));

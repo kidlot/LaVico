@@ -36,7 +36,7 @@ window.onload=function(){
 }
 
 </script>
-<if condition="{@type=='-1'}">
+<if condition="{@themeType!='1'}">
 <div class="wrapper">
     <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
     <div class="coupon">
@@ -82,9 +82,7 @@ window.onload=function(){
                 <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
                 <foreach for="{@jsonResult}" var="resultString">
                     <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
-
                             您是<label id="getlabel"></label>
-
                     </p>
                 </foreach>
             </div>
@@ -108,5 +106,5 @@ window.onload=function(){
         </if>
     </div>
 </div>
-    </if>
+</if>
 

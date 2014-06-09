@@ -16,7 +16,13 @@
                         <p class="name">{@docs.NAME}</p>
                         <p class="adree"><span>地址：</span>{@docs.ADDR}</p>
                         <p class="tel">电话：{@docs.TEL}</p>
-                        <p class="tel"><span>活动：</span>{@docs.ACT}</p>
+                        <p class="tel"><span>活动：</span>
+                            <if condition="{@searchCity.ACT==null}">
+                                <div class="title">暂无活动，敬请期待！</div>
+                                <else/>
+                                {@docs.ACT}
+                            </if>
+                            </p>
                     </a></li>
                 </foreach>
             </ul>

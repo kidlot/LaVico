@@ -128,6 +128,9 @@
 
 
     // 记录分享数
+    var shareTitle = "朗维高"
+    var shareIcon = location.origin + "/lavico/public/images/logo.png"
+
     var timeid = setInterval(function(){
         if(typeof WeixinJSBridge =="undefined")
             return ;
@@ -135,7 +138,6 @@
         clearTimeout(timeid) ;
 
         WeixinJSBridge.on('menu:share:timeline', function(argv){
-
 
             $.ajax({
                 url:'/lavico/log',
@@ -153,10 +155,10 @@
             });
 
             WeixinJSBridge.invoke('shareTimeline',{
-                "img_url":location.origin + "/lavico/public/images/logo.png",
+                "img_url":shareIcon,
                 "link":replaceWxid(location.href) + "&fromWelab=timeline",
-                "desc":"朗维高",
-                "title":"朗维高"
+                "desc":shareTitle,
+                "title":shareTitle
             }, function(res) {
 
             });
@@ -181,10 +183,10 @@
 
 
             var contentModel = {
-                "img_url":location.origin + "/lavico/public/images/logo.png",
+                "img_url":shareIcon,
                 "link":replaceWxid(location.href) + "&fromWelab=friend",
-                "desc":"朗维高",
-                "title":"朗维高"
+                "desc":shareTitle,
+                "title":shareTitle
             }
             WeixinJSBridge.invoke('sendAppMessage',contentModel, function(res) {
 
@@ -194,6 +196,44 @@
     },300) ;
 
     window.onload = function(){
+
+        // 自动提取分享内容。
+        //// 侃价
+        if(location.pathname == "/lavico/bargain/kv"){
+            shareTitle = "我要侃价";
+            shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
+        }
+        //// 产品
+        if(location.pathname == "/lavico/lookbook/product"){
+            shareTitle = jQuery("#article").val();
+            shareIcon = location.origin + ( JSON.parse(jQuery("#jsonPage").text())[myScroll.currPageX].pic )
+        }
+
+        //// 优惠券
+        if(location.pathname == "/lavico/activity/shake"){
+            shareTitle = "来张优惠券";
+            shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
+        }
+
+        //// 抢积分，型男
+        if(location.pathname == "/lavico/answerQuestion/first"){
+            shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
+            if(jQuery(".coupon-banner").find("img").attr("src") == "/lavico/public/images/test-man.jpg"){
+
+                shareTitle = "型男测试";
+            }else{
+                shareTitle = "答题抢积分";
+            }
+        }
+
+        //// 精英
+        if(location.pathname == "/lavico/lookbook/detail"){
+            shareTitle = "精英搭配";
+        }
+
+        shareTitle = jQuery("#shareTitle").val() || shareTitle;
+        shareIcon = jQuery("#shareIcon").val() || shareIcon;
+
 
         var fromWelab = location.search.match(/fromWelab=(.*)$/);
         if(fromWelab){
