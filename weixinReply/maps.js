@@ -149,7 +149,7 @@ exports.load = function () {
                                 lng=doc.location[1];
                                 console.log("lat:"+lat);
                                 console.log("lng:"+lng);
-                                next();
+                                //next();
                             }
 
                         }
