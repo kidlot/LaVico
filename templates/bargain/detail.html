@@ -249,31 +249,41 @@ function _check(){
     }
 }
 
+window._loading = false;
 function deal(cb){
-    $.ajax({
-        url:'/lavico/bargain/form:deal',
-        type:'POST',
-        data:{
-            'price':$("#price").val(),
-            'name':$(".name").text(),
-            '_id':$("#_id").val(),
-            'wxid':$("#wxid").val(),
-            'memberID':$("#memberID").val(),
-            'productID':$("#_id").val(),
-            'promotionsCode':$("#promotionsCode").val(),
-            'point':$("#point").val()
-        },
-        success:function(data){
-            if(data.err == 0){
-                cb()
-            }else{
-                alert(data.msg)
+
+    if(window._loading == false){
+
+        window._loading = true;
+
+        $.ajax({
+            url:'/lavico/bargain/form:deal',
+            type:'POST',
+            data:{
+                'price':$("#price").val(),
+                'name':$(".name").text(),
+                '_id':$("#_id").val(),
+                'wxid':$("#wxid").val(),
+                'memberID':$("#memberID").val(),
+                'productID':$("#_id").val(),
+                'promotionsCode':$("#promotionsCode").val(),
+                'point':$("#point").val()
+            },
+            success:function(data){
+
+                window._loading = false;
+
+                if(data.err == 0){
+                    cb()
+                }else{
+                    alert(data.msg)
+                }
+            },
+            error:function(msg){
+                console.log(msg);
             }
-        },
-        error:function(msg){
-            console.log(msg);
-        }
-    });
+        });
+    }
 }
 
 function bargain(){
