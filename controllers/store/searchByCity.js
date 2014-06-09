@@ -85,6 +85,30 @@ module.exports={
         nut.model.cityArr=cityArr;
 
         nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
+        //var list;
+        var then = this;
+        this.step(function(){
+            var jsonData={};
+            jsonData.perPage=1000;
+            jsonData.pageNum=1;
+            middleware.request('Shops',jsonData,
+                then.hold(function(err,doc){
+                    if(err) throw err;
+                   return  JSON.parse(doc);
+                    console.log(doc)
+                })
+            )
+        })
+
+        this.step(function(doc){
+            var resultList=[];
+            for(var i=0;i<doc.list.length;i++){
+                var result={};
+                result.city = doc.list[i].CITY;
+                resultList.push(result);
+            }
+            nut.model.list = JSON.stringify(resultList);
+        })
 
     },
     actions:{
@@ -204,6 +228,7 @@ module.exports={
                         then.hold(function(err,doc){
                             if(err) throw err;
                             return JSON.parse(doc);
+                            nut.model.list = JSON.parse(doc);
                         })
                     )
                 })
