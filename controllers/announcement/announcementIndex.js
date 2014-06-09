@@ -42,6 +42,24 @@ module.exports={
         }
     },
     actions:{
+        isTop:{
+            process:function(seed,nut){
+                this.step(function(){
+                    helper.db.coll("lavico/announcement").update({},{$set:{isTop:false}},{multi: true, upsert: true},this.hold(function(err,doc){
+                        if(err) throw err;
+                    }))
+                })
+
+                this.step(function(){
+                    helper.db.coll("lavico/announcement").update({_id:helper.db.id(seed._id)},{$set:{isTop:true}},this.hold(function(err,doc){
+                        if(err) throw err;
+                        nut.message("设置成功",null,'success');
+                    }))
+                })
+
+
+            }
+        },
         //click the button of close or open(单击关闭或开启按钮)
         close:{
             process:function(seed,nut){
