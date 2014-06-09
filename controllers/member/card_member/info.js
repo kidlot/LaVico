@@ -170,14 +170,14 @@ module.exports = {
             $(".fade2").css("display","none");
         });
 
-        $("#email").blur(function(){
-            var email = $(this).val();
-            if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
-                window.popupStyle2.on("邮箱格式错误",function(event){});
-                $("#email").focus();
-                return false;
-            }
-        });
+//        $("#email").blur(function(){
+//            var email = $(this).val();
+//            if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
+//                window.popupStyle2.on("邮箱格式错误",function(event){});
+//                $("#email").focus();
+//                return false;
+//            }
+//        });
 
         $('#goon_btn').click(function(){
             window.location.href ="/lavico/member/index?wxid="+$('#wxid').val();
@@ -335,6 +335,7 @@ module.exports = {
 
             if(!email || !/^.+@.+\..+$/.test(email)){
               window.popupStyle2.on("邮箱格式错误",function(event){});
+              $("#email").focus();
               return false;
             }
             if(!profession || profession == "请选择行业"){
@@ -353,11 +354,13 @@ module.exports = {
             } 
             if(!address){
               window.popupStyle2.on("请输入地址",function(event){});
+              $("#address").focus();
               return false;
             }
             if(!(/[\u4e00-\u9fa5]{3,}/).test(address)){
                 //判断是否为汉字
                 window.popupStyle2.on("请输入有效的地址,至少三个汉字",function(event){});
+                $("#address").focus();
                 return false;
             }
             if(!favoriteStyle){
@@ -366,12 +369,14 @@ module.exports = {
             } 
             if(!favoriteColor){
                 window.popupStyle2.on("请输入喜欢颜色",function(event){});
+                $("#favoriteColor").focus();
                 return false;
             }
 
             if(!(/[\u4e00-\u9fa5]+/).test(favoriteColor)){
                 //判断是否为汉字
                 window.popupStyle2.on("请输入有效的颜色，如黑色",function(event){});
+                $("#favoriteColor").focus();
                 return false;
             }
 
