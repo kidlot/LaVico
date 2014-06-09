@@ -8,7 +8,7 @@
                 <foreach for="@doc.shops2" var="doc">
                 <li><a href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@doc.CODE}&_id={@_id}&wxid={@wxid}'">
                     <p class="name">{@ doc.name}</p>
-                    <p class="adree" style="max-width: 500px;">地址：{@ doc.address}</p>
+                    <p class="adree" style="max-width: 500px;"><span>地址：</span>{@ doc.address}</p>
                     <p class="tel">电话：{@ doc.tel}</p>
                 </a></li>
                 </foreach>
