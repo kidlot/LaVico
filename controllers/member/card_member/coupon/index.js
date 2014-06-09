@@ -466,10 +466,10 @@ module.exports = {
 
         var pageNum03 = 1;
         var perPage03 = 5;
-        var type;
+        var type = '02';
         window.getUserCoupons = function(pageNum,perPage,type){
             $.ajax({
-                    url:'/lavico/member/card_member/coupon/rule:getCouponInfo',
+                    url:'/lavico/member/card_member/coupon/index:getUserCoupons',
                     type:'GET',
                     dataType:'json',
                     data:{
@@ -479,18 +479,20 @@ module.exports = {
                     },
                     success:function(data){
                         console.log(data);
+
                     }
                 }
             );
-        }
+        };
+        window.getUserCoupons();
 
     },
     action:{
         getUserCoupons:function(seed,nut){
 
             var status = seed.status||'02';
-            var pageNum = seed.pageNum;
-            var perPage = seed.perPage;
+            var pageNum = seed.pageNum || 1;
+            var perPage = seed.perPage || 5;
             var wxid = seed.wxid;
             var couponArr;
             var error;
