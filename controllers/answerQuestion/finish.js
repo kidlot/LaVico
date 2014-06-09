@@ -202,18 +202,20 @@ module.exports={
                         if(scoreRange[i].getActivities=="-1"){
                             type = scoreRange[i].getActivities;
                             //在分值范围中
-                            console.log("score:"+score);
-                            console.log("minlen:"+minlen);
-                            console.log("maxlen:"+maxlen);
-                            console.log(then.req.session.stopLabel)
-                            console.log(scoreRange[i].conditionLabel)
-                            console.log(scoreRange)
-                            getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                            getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                            getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                            getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                            if(score >= minlen && score <= maxlen){
 
+
+
+                            if(score >= minlen && score <= maxlen){
+                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+                                console.log("score:"+score);
+                                console.log("minlen:"+minlen);
+                                console.log("maxlen:"+maxlen);
+                                console.log(then.req.session.stopLabel)
+                                console.log(scoreRange[i].conditionLabel)
+                                console.log(scoreRange[i])
                                 //获取奖励
 //                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
 //                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
@@ -234,20 +236,32 @@ module.exports={
                                             })
                                         )
                                     }
+                                    var results={};
+                                    results.getLabel = getLabel;
+                                    results.getScore = getScore;
+                                    results.getTipContent = getTipContent;
+                                    results.code = getActivities;
+                                    results.getActivities = "您没有获得任何礼券";
+                                    results.volumename = volumename;
+                                    resultList.push(results);
+                                    nut.model.sta = "false";
+                                    nut.model.score = "1";
+                                    nut.model.getScores ="1";
                                 })
 
+                                console.log("111:"+getScore);
                                 //记录json准备显示
-                                var results={};
-                                results.getLabel = getLabel;
-                                results.getScore = getScore;
-                                results.getTipContent = getTipContent;
-                                results.code = getActivities;
-                                results.getActivities = "您没有获得任何礼券";
-                                results.volumename = volumename;
-                                resultList.push(results);
-                                nut.model.sta = "false";
-                                nut.model.score = "1";
-                                nut.model.getScores ="1";
+//                                var results={};
+//                                results.getLabel = getLabel;
+//                                results.getScore = getScore;
+//                                results.getTipContent = getTipContent;
+//                                results.code = getActivities;
+//                                results.getActivities = "您没有获得任何礼券";
+//                                results.volumename = volumename;
+//                                resultList.push(results);
+//                                nut.model.sta = "false";
+//                                nut.model.score = "1";
+//                                nut.model.getScores ="1";
                             }
 
                         }else{
@@ -374,10 +388,8 @@ module.exports={
         this.step(function(){
             if(go){
                 //停止标签过来
-                console.log("1")
                 if (stopLab == "true") {
                     for (var i = 0; i < scoreRange.length; i++) {
-                        console.log("2")
                         if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
                             console.log(then.req.session.stopLabel)
                             console.log(scoreRange[i].conditionLabel)
@@ -392,44 +404,47 @@ module.exports={
                                 console.log("score:"+score);
                                 console.log("minlen:"+minlen);
                                 console.log("maxlen:"+maxlen);
-                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+//                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+//                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+//                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+//                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 if(score >= minlen && score <= maxlen){
-
+                                    getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                     //获取奖励
-
-
                                     then.step(function (memberID) {
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
                                         jsonData.memberId = nut.model.memberID;
                                         jsonData.qty = getScore;
                                         jsonData.memo = nut.model.themeTitle;
-                                        console.log("问答测试:"+JSON.stringify(jsonData));
+
                                         if(ok){
+                                            console.log("问答测试:"+JSON.stringify(jsonData));
                                             middleware.request('Point/Change', jsonData,
                                                 this.hold(function (err, doc) {
                                                     if (err) throw err;
                                                 })
                                             )
                                         }
+                                        var results ={};
+                                        results.getLabel = getLabel;
+                                        results.getScore = getScore;
+                                        results.getTipContent = getTipContent;
+                                        results.code = getActivities;
+                                        results.getActivities = "您没有获得任何礼券";
+                                        results.volumename = volumename;
+                                        resultList.push(results)
+                                        nut.model.sta = "false";
+                                        nut.model.score = "1";
+                                        nut.model.getScores ="1";
+                                        nut.model.type = type;
                                     })
                                     //记录json准备显示
 //                                    console.log("4")
-                                    var results ={};
-                                    results.getLabel = getLabel;
-                                    results.getScore = getScore;
-                                    results.getTipContent = getTipContent;
-                                    results.code = getActivities;
-                                    results.getActivities = "您没有获得任何礼券";
-                                    results.volumename = volumename;
-                                    resultList.push(results)
-                                    nut.model.sta = "false";
-                                    nut.model.score = "1";
-                                    nut.model.getScores ="1";
-                                    nut.model.type = type;
+
                                 }
                             }else{
                                 if(score >= minlen && score <= maxlen){

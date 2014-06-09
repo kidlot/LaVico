@@ -36,12 +36,17 @@
 
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">开始/结束</label>
-                    <div class="col-sm-10">
+                    <div class="col-sdesm-10">
                         <input type="text" id="startDate" name="startDate" class="form-control" style="width: 150px;display:inline-block;" value="">
                         <input type="text" id="endDate" name="endDate" class="form-control" style="width: 150px;display:inline-block;" value="">
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">礼品描述</label>
+                    <div class="col-sm-10">
+                        <textarea id="des" name="des" class="form-control postData" rows="3" style="width: 400px;height:200px;"></textarea>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">券</label>
                     <div class="col-sm-10">
@@ -53,28 +58,9 @@
                             </foreach>
                         </select>
                         </div >
-                        <div style="float: left; padding-top: 30px;"><a href="" id="showDetails" TARGET="_blank">查看详情</a></div>
                     </div>
                 </div>
-                <!--
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2">抽奖频率</label>
-                    <div class="col-sm-10">
 
-                        <select class="form-control" id='lottery_cycle' style="width: 150px;display:inline-block;" name="type">
-                            <option value="1">1天</option>
-                            <option value="2">1周</option>
-                            <option value="3">2周</option>
-                            <option value="4">1月</option>
-                            <option value="100">永久</option>
-                        </select>
-                        <input type="text" id='lottery_count' class="form-control" name="name" placeholder="抽奖次数" style="width: 300px;display:inline-block;" value="" oninput="$('#pagename').text(this.value)">
-                    </div>
-                    <div class="col-sm-10">
-
-                    </div>
-                </div>
-                -->
                 <br>
                 <h6>内容设置</h6>
                 <br>
@@ -108,9 +94,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品描述</label>
+                                            <label for="inputEmail3" class="col-sm-2 control-label">券描述</label>
                                             <div class="col-sm-10">
-                                                <input id="introduction" type="text" readonly="readonly" value="{@doc.introduction}" class="form-control postData" style="width:250px;height:80px;display:inline-block;color:#000000">
+                                                <textarea class="form-control postData" rows="3" style="width: 400px;height:200px;" readonly="readonly">{@doc.introduction}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -120,24 +106,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2">商品描述</label>
-                                            <div class="col-sm-10">
-                                                <textarea class="form-control postData" rows="3"  id="description" style="width: 300px" placeholder="商品描述">{@doc.description}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2">活动说明</label>
-                                            <div class="col-sm-10">
-                                                <textarea class="form-control postData" rows="3"  id="explanation" style="width: 300px" placeholder="活动说明">{@doc.explanation}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2">免责声明</label>
-                                            <div class="col-sm-10">
-                                                <textarea class="form-control postData" rows="3"  id="relief" style="width: 300px" placeholder="免责声明">{@doc.relief}</textarea>
-                                            </div>
-                                        </div>
+
 
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">礼品小图400*400</label>
@@ -315,6 +284,8 @@ function save ( ){
     aFormInput['endDate'] = new Date($("#endDate").val()).getTime();//结束时间
     aFormInput['aid'] = aid;//券号
     aFormInput['name'] = $("#name").val();//名称
+    aFormInput['des'] = $('#des').val();
+
     //aFormInput['lottery_cycle'] = $("#lottery_cycle").val();//抽奖频率
     aFormInput['introduction'] = $("#introduction").val();//描述
     //aFormInput['lottery_count'] = $("#lottery_count").val();//频率中的次数
@@ -324,9 +295,9 @@ function save ( ){
     aFormInput['needScore']=$("#"+aid).first().find("#needScore").val();//所需积分
     aFormInput['smallPic']=$("#"+aid).first().find("#smallPic").val();//小图片
     aFormInput['bigPic']=$("#"+aid).first().find("#bigPic").val();//大图片
-    aFormInput['description'] = $("#description").val().replace(/[\n\r\t]/,'<br/>');
-    aFormInput['relief'] = $("#relief").val().replace(/[\n\r\t]/,'<br/>');
-    aFormInput['explanation'] = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');
+    //aFormInput['description'] = $("#description").val().replace(/[\n\r\t]/,'<br/>');
+    //aFormInput['relief'] = $("#relief").val().replace(/[\n\r\t]/,'<br/>');
+    //aFormInput['explanation'] = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');
 
     if(_inputCheck){
         var oLinkOptions = {} ;

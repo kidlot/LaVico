@@ -54,6 +54,15 @@ var isReg=function(){
         return false;
     }
 
+    if(ok=="3")
+    {
+        window.popupStyle2.on(conent,function(event){
+            if(event == "confirm"){
+            }
+        })
+        return false;
+    }
+
 
     var flag="{@flag}";
         if(flag=="1")
@@ -98,7 +107,7 @@ var isReg=function(){
 <div class="wrapper">
     <div class="coupon-banner">
         <if condition="@docs.themeType=='1'">
-            <img src="/lavico/public/images/test-man.jpg" style="text-align:center;" />
+            <img src="http://test.welab.lavicouomo.com/public/files/2014/6/9/~!dad3765ef671652fe592caf9e0c294e5!E5A4B4E59BBE4.jpg" style="text-align:center;" />
             <else/>
             <img src="/lavico/public/images/answer_banner.jpg" />
         </if>
@@ -123,12 +132,12 @@ var isReg=function(){
             <div class="subtext">1、关注LaVico朗维高官方微信；<br/>
                 2、注册LaVico朗维高会员或VIP绑定成功后参与测试；<br/>
                 3、完成测试即可获得LaVico朗维高积分好礼；<br/>
-                4、2014年6月11日—2014年6月15日</div>
+                4、活动时间：2014年6月11日—2014年6月15日。</div>
+
             <div class="title1">免责声明：</div>
             <div class="subtext">
                 1、每位会员或VIP均可参与一次测试，获得一次积分；<br/>
-                2、分享图文均可获得一次奖励积分，重复分享无效；<br/>
-                3、本活动最终解释权归上海克瑞特所有。<br/>
+                2、本活动最终解释权归上海克瑞特所有。<br/>
             </div>
         </div>
         <else/>
@@ -138,7 +147,7 @@ var isReg=function(){
             <div class="subtext"><div id="explanation"></div>
                 <p>该活动只有朗维高会员才有权限参与，如果你还不是会员,请点击菜单-我的会员卡-<a href="/lavico/member/card_blank/register?wxid={@wechatId}" target="_blank" class="login_size">注册会员
                 </a></p></div>
-            <div class="title1">奖项设置：</div>
+            <div class="title1">活动规则：</div>
             <div id="description" class="subtext"></div>
             <div class="title1">免责声明：</div>
             <div id="relief" class="subtext">

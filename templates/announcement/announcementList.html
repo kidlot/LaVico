@@ -1,4 +1,16 @@
 <script>
+    function isTop(id){
+
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [{name:'_id',value:id}];
+        oLinkOptions.type = "POST";
+        oLinkOptions.url = "/lavico/announcement/announcementIndex:isTop";
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+            nut.msgqueue.popup();//调用welab前台提示控件
+        }) ;
+    }
+
     function audioClick(o){
         var flag = '';
         if ($(o).hasClass("switch-off")){
@@ -33,12 +45,14 @@
     <tr>
         <th style="width:200px">名称</th>
         <th style="width:50px">时间</th>
+        <th style="width: 50px">是否置顶</th>
         <th style="width:50px">操作</th>
     </tr>
     <foreach for="@page.docs" var="doc">
     <tr>
         <td><input type="hidden" name="anno_id" value="{@doc._id}"><a href="/lavico/announcement/updateAnnouncement?id={@doc._id}" style="text-decoration: underline">{@doc.title}</a></td>
         <td>{@(new Date(doc.createTime)).getFullYear()}-{@(new Date(doc.createTime)).getMonth()}-{@(new Date(doc.createTime)).getDate()}</td>
+        <td><input type="radio" name="is_top" id="is_top" onclick="isTop('{@doc._id}')" checked="{@doc.isTop==true?'checked':''}"></td>
         <td>
             <div class="switch has-switch way">
                 <if condition="{@doc.isOpen==1}">
@@ -57,6 +71,9 @@
                     </div>
                 </if>
             </div>
+
+
+
             <div style="float:right">
                 <input type="image" data="{@doc._id.toString()}" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
             </div>
