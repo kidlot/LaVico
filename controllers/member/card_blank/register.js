@@ -321,7 +321,7 @@ module.exports = {
                 window.popupStyle2.on("请选择出生年月日",function(event){});
                 return	false;
             }
-            if($("#mobile").val() =='' || !(/^1[358]\d{9}$/i.test($("#mobile").val())) ){
+            if($("#mobile").val() =='' || !(/^1[3458]\d{9}$/i.test($("#mobile").val())) ){
                 window.popupStyle2.on("请输入正确的手机号码",function(event){});
                 return	false;
             }

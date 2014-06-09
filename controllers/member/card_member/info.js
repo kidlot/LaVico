@@ -327,6 +327,7 @@ module.exports = {
                 }
             }
         }
+        init();
         $("#select_city").click(function(){
             if($(this).find("option").length == 0){
                 if($("#province").val().length==0){
