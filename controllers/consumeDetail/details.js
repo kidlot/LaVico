@@ -53,8 +53,8 @@ module.exports={
 
                     if(err) throw err
                     var docsJson=JSON.parse(doc);
-                    console.log(doc);
-                    for(var i in docsJson.log){
+                    console.log(docsJson);
+                    for(var i=0;i<docsJson.log.length;i++){
                         var yearAll={}
                         //从消费记录中获取年份
                         var year= new Date(docsJson.log[i].date).getFullYear()
@@ -101,6 +101,7 @@ module.exports={
 
 
         this.step(function(){
+            console.log(arr)
             nut.model.arr=arr;
             nut.model.saleAllMoney=saleAllMoney;
         })
