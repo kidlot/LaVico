@@ -706,26 +706,53 @@ module.exports = {
                                     //格式：05-3月 -14 04.51.44.000000000 下午
                                     //格式：13-3月 -14 09.02.46.000000000 上午
                                     var _time = _new_value;
-                                    var _time = "05-3月 -14 04.51.44.000000000 下午";
+                                    var nowYear = (String(new Date().getFullYear())).substr(2,2);
+                                    //var _time = "05-3月 -14 04.51.44.000000000 下午";
                                     var _timeArr = _time.split(" ");// 在每个逗号(,)处进行分解
+                                    var _h_m_s = _timeArr[2].split(".");
                                     console.log(_timeArr);//["05-3月", "-14", "04.51.44.000000000", "下午"];
+                                    var _dayMonthArr = _timeArr[0].split('-');
+                                    _dayMonthArr[0] = parseInt(_dayMonthArr[0]);//日
+                                    _dayMonthArr[1] = parseInt(_dayMonthArr[1])-1;//月
+                                    _timeArr[1] = parseInt(String(_timeArr[1]).substr(1,2));
+                                    if(_timeArr[1]<=nowYear){
+                                        _timeArr[1] = '20'+parseInt(_timeArr[1]);//年
+                                    }else{
+                                        _timeArr[1] = '19'+parseInt(_timeArr[1]);//年
+                                    }
+                                    _h_m_s[0] = parseInt(_h_m_s[0]);//hour
+                                    _h_m_s[1] = parseInt(_h_m_s[1]);//minute
+                                    _h_m_s[2] = parseInt(_h_m_s[2]);//second
+                                    if(_timeArr[3]=='下午'){
+                                        _h_m_s[0] = _h_m_s[0] + 12;
+                                    }
+                                    var time = new Date();
+                                    time.setDate(_dayMonthArr[0]);
+                                    time.setFullYear(_timeArr[1]);
+                                    time.setMonth(_dayMonthArr[1]);
+                                    time.setHours(_h_m_s[0],_h_m_s[1],_h_m_s[2],0);
 
-//                                    helper.db.coll('welab/customers').find(
-//                                        {
-//                                            $and:
-//                                                [
-//                                                    {"HaiLanMemberInfo":{$exists:true}},
-//                                                    {"HaiLanMemberInfo.memberID":{$exists:true}}
-//                                                ]
-//                                        }
-//                                    ).update({"HaiLanMemberInfo.memberID":memberIDArr[_i]},{
-//                                            $set:{
-//                                                'birthday':_new_value,
-//                                                'lastModified':new Date().getTime()
-//                                            }
-//                                        },this.hold(function(err, doc) {
-//                                        err&&console.log(err);
-//                                    }));
+                                    console.log(_dayMonthArr);
+                                    console.log(_timeArr);
+                                    console.log(_h_m_s);
+                                    console.log(time.getTime());
+                                    console.log(time);
+                                    helper.db.coll('welab/customers').find(
+                                        {
+                                            $and:
+                                                [
+                                                    {"HaiLanMemberInfo":{$exists:true}},
+                                                    {"HaiLanMemberInfo.memberID":{$exists:true}}
+                                                ]
+                                        }
+                                    ).update({"HaiLanMemberInfo.memberID":memberIDArr[_i]},{
+                                            $set:{
+                                                'birthday':time.getTime(),
+                                                'lastModified':new Date().getTime()
+                                            }
+                                        },this.hold(function(err, doc) {
+                                        err&&console.log(err);
+                                    }));
 
                                 }
                                 else if(_field_name == 'MOBILE_TELEPHONE_NO'){
