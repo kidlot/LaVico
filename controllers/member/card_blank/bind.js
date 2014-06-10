@@ -436,7 +436,7 @@ module.exports = {
                                 flag = 0;
                             }else if(data.result == 'ok'){
                                 set_interval();
-                                $('#userCaptcha').val(data.id_code);
+                                //$('#userCaptcha').val(data.id_code);
                                 $('#id_code').val('send_captcha_success');
                                 console.log('验证码发送成功，请在2分钟内输入！');
                                 $(".popup").hide();

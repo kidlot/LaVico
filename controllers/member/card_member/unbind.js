@@ -91,7 +91,7 @@ module.exports = {
                         flag = 0;
                     }else if(data.result == 'ok'){
                         set_interval();
-                        $('#userCaptcha').val(data.id_code);
+                        //$('#userCaptcha').val(data.id_code);
                         console.log('验证码发送成功，请在2分钟内输入');
                     }else{
                         //alert('网络不稳定，请稍后再试');
