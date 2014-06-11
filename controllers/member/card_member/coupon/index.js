@@ -371,6 +371,12 @@ module.exports = {
                         var _COUPON_TYPE = _coupons[_i].BASE_CODE_NAME;
                         var _COUPON_NAME = _coupons[_i].COUPON_NAME;
 
+                        if(_coupons[_i].COUPON_QTY){
+                            _coupons[_i].COUPON_QTY = _coupons[_i].COUPON_QTY +'元';
+                        }else{
+                            _coupons[_i].COUPON_QTY = '';
+                        }
+
                         var _data = {
                             "BEGIN_DATE":_BEGIN_DATE,
                             "END_DATE": _END_DATE,
