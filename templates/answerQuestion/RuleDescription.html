@@ -1,0 +1,66 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/themeList" class="stay">问答管理</a> <em></em></li>
+    <li class="active"><span>规则说明</span></li>
+</ul>
+
+<div class="panel panel-default formText" >
+    <div class="panel-heading clearfix">
+    </div>
+    <div class="panel-body" style="background:#f9fafb;">
+        <div class="col-md-12">
+            <br>
+            <div style="min-height: 70px;">
+                <input type="button" value="保存" name="btnSave" class="btn btn-embossed btn-primary" onclick="save()" style="float: right; margin-left: 300px;">
+            </div>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">活动规则</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control postData" rows="3"  id="description" style="width: 300px" placeholder="活动规则">{@doc.description}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">免责声明</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control postData" rows="3"  id="relief" style="width: 300px" placeholder="免责声明">{@doc.relief}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">说明</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control postData" rows="3"  id="explanation" style="width: 300px" placeholder="说明">{@doc.explanation}</textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function save(){
+        var description = $("#description").val().replace(/[\n\r\t]/,'<br/>');
+        var relief = $("#relief").val().replace(/[\n\r\t]/,'<br/>');
+        var explanation = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');
+        $.get("/lavico/answerQuestion/RuleDescription:save",{description:description,relief:relief,explanation:explanation},function(result){
+            alert("保存成功");
+        })
+    }
+</script>
+<!--<script>-->
+<!--function save(){-->
+<!--var oLinkOptions = {};-->
+<!--var description = $("#description").val().replace(/[\n\r\t]/,'<br/>');-->
+<!--var relief = $("#relief").val().replace(/[\n\r\t]/,'<br/>');-->
+<!--var explanation = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');-->
+<!--oLinkOptions.data = [{name:'description',value:description},-->
+<!--{name:"relief",value:relief},-->
+<!--{name:"explanation",value:explanation}];-->
+<!--oLinkOptions.type = "POST";-->
+<!--oLinkOptions.url = "/lavico/answerQuestion/RuleDescription:save";-->
+<!--$.request(oLinkOptions,function(err,nut){-->
+<!--if(err) throw err;-->
+<!--nut.msgqueue.popup();-->
+<!--$.controller("/lavico/answerQuestion/themeList",null,"lazy");-->
+<!--});-->
+<!--}-->
+<!--</script>-->

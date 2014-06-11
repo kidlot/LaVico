@@ -39,13 +39,13 @@
                     <td>{@ doc.status}</td>
                     <td>{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}</td>
                     <td>{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}</td>
-
+                    <td>
+                        {@doc.total}
+                    </td>
                     <td>
                         {@doc.count}
                     </td>   
-                    <td>
-                        {@doc.total}
-                    </td>                                     
+
                     <td>
                         <div class="switch has-switch way">
                             <div class="switch-animate switch-{@ doc.switcher}" data="{@ doc._id}" onclick="audioClick(this)">
