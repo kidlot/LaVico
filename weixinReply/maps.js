@@ -40,6 +40,7 @@ exports.load = function () {
                             if(err) throw err;
                             console.log("******Shops info come back*********");
                             docJson=JSON.parse(doc);
+                            console.log(docJson)
                         })
                     )
                 },
@@ -73,6 +74,14 @@ exports.load = function () {
 
                 function(){
                     for(var i=0;i<storeList.length;i++){
+                        var city;
+                        if(storeList[i].CITY==null){
+                            city = storeList[i].CITY;
+                        }else{
+                            city="上海";
+                        }
+                        console.log(city)
+                        console.log(storeList[i].CITY);
                         reply={};
                         reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
                         reply.description=storeList[i].ADDR;
@@ -82,7 +91,7 @@ exports.load = function () {
                             reply.picurl=storeList[i].PICURL;
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
                             //reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
-                            reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                            reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName+"&city="+city+"市";
 
                         if(i<10)
                             replyArr.push(reply);
@@ -217,7 +226,7 @@ exports.load = function () {
 
                             var newCODE2=(storeList[i].CODE).replace(/\s/g,'');
                             //reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
-                            reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
+                            reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName+"&city="+storeList[i].CITY+"市";
 
                         if(i<10)
                             replyArr.push(reply);
