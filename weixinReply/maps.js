@@ -11,6 +11,11 @@ exports.load = function () {
         var storeDistance=[];
         var storeList=[];
         var replyArr=[];
+
+
+        var then = this;
+
+
         //手动发送地址
         var lat,lng;
         console.log("msg.MsgType:"+msg.MsgType);
@@ -77,12 +82,12 @@ exports.load = function () {
                         reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
                         reply.description=storeList[i].ADDR;
                         if(storeList[i].PICURL==null)
-                            reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
+                            reply.picurl="http://"+then.req.headers.host+"/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
                             //reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
-                            reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                            reply.url='http://'+then.req.headers.host+'/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);
@@ -210,14 +215,14 @@ exports.load = function () {
 
 
                         if(storeList[i].PICURL==null)
-                            reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
+                            reply.picurl="http://"+then.req.headers.host+"/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
 
 
                             var newCODE2=(storeList[i].CODE).replace(/\s/g,'');
                             //reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
-                            reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
+                            reply.url="http://"+then.req.headers.host+"/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);

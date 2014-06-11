@@ -9,6 +9,7 @@ module.exports = {
     {
         var doc = {};
 
+
         if(seed._id){
 
             nut.model.wxid = seed.wxid
