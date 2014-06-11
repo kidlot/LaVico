@@ -89,7 +89,7 @@ module.exports = {
 
             if(doc.hasOwnProperty('profession')){
                 //行业
-                nut.model.profession = doc.profession;
+                nut.model.profession = doc.profession || '请选择行业';
             }else{
                 nut.model.profession = '请选择行业';
             }
@@ -117,7 +117,7 @@ module.exports = {
 
             if(doc.hasOwnProperty('favoriteStyle')){
                 //喜好款式
-                nut.model.favoriteStyle = doc.favoriteStyle;
+                nut.model.favoriteStyle = doc.favoriteStyle || '请选择';
             }else{
                 nut.model.favoriteStyle = '请选择';
             }
