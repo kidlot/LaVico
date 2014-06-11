@@ -121,6 +121,23 @@ module.exports={
                 console.log("seed.wxid:"+seed.wxid);
                 //设置id从砍价过来
                 //没设置id查询过来的
+
+                this.step(function(){
+                    helper.db.coll("welab/customers").findOne({"wechatid":seed.wxid},this.hold(function(err,doc){
+                        if(err) throw err;
+                        console.log(doc)
+                        if(doc){
+                            if(doc.location!=null) {
+                                nut.model.userLng = doc.location[1];
+                                nut.model.userLat = doc.location[0];
+                            }else{
+                                nut.model.userLng="null";
+                                nut.model.userLat="null";
+                            }
+                        }
+                    }));
+                });
+
                 if(seed._id) {
                     nut.model._id = seed._id;
                 }else{
@@ -168,11 +185,11 @@ module.exports={
 
             },
             viewIn:function(){
-                if(log!=""){
+                if(logs!=""){
 
                     var map = new BMap.Map("allmap");
                     //var point = new BMap.Point(116.331398,39.897445);
-                    var point = new BMap.Point(log,lat);
+                    var point = new BMap.Point(logs,lats);
 
                     map.centerAndZoom(point,17);
 
@@ -180,8 +197,8 @@ module.exports={
 
                     geolocation.getCurrentPosition(function(r){
 
-                        r.point.lng=log;
-                        r.point.lat=lat;
+                        r.point.lng=logs;
+                        r.point.lat=lats;
                         if(this.getStatus() == BMAP_STATUS_SUCCESS){
                             var mk = new BMap.Marker(r.point);
                             map.addOverlay(mk);

@@ -1,6 +1,9 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=88318be4b6609ecec7e76169932d0b77"></script>
 <script>
-var log={@searchCity.LOG},lat={@searchCity.LAT};
+var logs ='{@searchCity.LOG}';
+var lats = '{@searchCity.LAT}';
+var userLng='{@userLng}';
+var userLat='{@userLat}';
 
 
 </script>
@@ -8,12 +11,13 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
   <div class="store-title">
     <p><span class="title1">
 
-    <if condition="{@_id!=null}">
-        <a href="/lavico/bargain/maps?_id={@_id}&wxid={@wxid}">返回</a>
-    <else/>
-        <a href="/lavico/store/currentCustomerLocation?wxid={@wxid}">返回</a>
-        <!--<a href="/lavico/store/searchByCity?wxid={@wxid}">返回</a>-->
-    </if>
+    <!--<if condition="{@_id!=null}">-->
+        <!--<a href="/lavico/bargain/maps?_id={@_id}&wxid={@wxid}">返回</a>-->
+    <!--<else/>-->
+        <!--<a href="/lavico/store/currentCustomerLocation?wxid={@wxid}">返回</a>-->
+        <!--&lt;!&ndash;<a href="/lavico/store/searchByCity?wxid={@wxid}">返回</a>&ndash;&gt;-->
+    <!--</if>-->
+        <a href="javascript:history.back()">其他门店查询</a>
     </span><span class="title2">门店详情</span></p>
   </div>
   <div class="look-map">
@@ -28,16 +32,18 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
 </div>
 <div class="way">
     <p class="text"><span>地址：</span>{@searchCity.ADDR}</p>
-    <p>导航：<a href="/lavico/store/baiduCar?wxid={@wxid}&shopLng={@searchCity.LOG}&shopLat={@searchCity.LAT}&address='{@searchCity.ADDR}'" style="display:inline-block;">行车线路</a></p>
+    <p>导航：<a href="javascript:;" onclick="baidumap('{@searchCity.LOG}','{@searchCity.LAT}','{@searchCity.ADDR}')" style="display:inline-block;">行车线路</a></p>
     电话：{@searchCity.TEL}<br />
 </div>
-
 <div class="activity-detail">
-    <p class="store-name">促销活动</p>
-    <if condition="{@searchCity.ACT==null}">
-        <div class="title">暂无活动，敬请期待！</div>
-    </if>
-    <p class="text">{@searchCity.ACT}</p>
+    <p class="text">
+        <if condition="{@searchCity.ACT==null}">
+            <div class="title">暂无促销活动</div>
+            <else/>
+            <div class="title">促销活动</div>
+        </if>
+        {@searchCity.ACT}
+    </p>
 </div>
 </div>
 </div>
@@ -47,3 +53,18 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
 <div class="fl footer-right"><p><a href="tel:4001008866">400-100-8866</a></p></div>
 </div> 
 </div>
+<script type="text/javascript">
+    function baidumap(log,lat,address){
+        console.log(log)
+        console.log(lat)
+        console.log(address)
+        if(log!="" && userLng!="null" && userLat!="null"){
+            console.log("1")
+            location.href = "http://api.map.baidu.com/direction?region=ss&origin=latlng:"+userLat+","+userLng+"|name:您所在位置&destination=latlng:"+lat+","+log+"|name:LaVico专柜&mode=driving&output=html&src=yourCompanyName|yourAppName";
+        }else{
+            console.log("2")
+            location.href="http://api.map.baidu.com/geocoder?address="+address+"&output=html&src=yourCompanyName|yourAppName";
+        }
+    }
+</script>
+<!--/lavico/store/baiduCar?wxid={@wxid}&shopLng={@searchCity.LOG}&shopLat={@searchCity.LAT}&address={@searchCity.ADDR}-->
