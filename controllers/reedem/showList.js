@@ -3,10 +3,8 @@ module.exports={
     layout: "lavico/layout",
     view:"lavico/templates/reedem/member_num16.html",
     viewIn:function(){
-
         /*掩藏分享按钮*/
         window.hideShareButtion.on();
-
     },
     process:function(seed,nut){
         var reedemJson={};
@@ -17,6 +15,7 @@ module.exports={
         var memberId = false;
         nut.model.isBind = true;
         nut.model.time = new Date().getTime();
+        var points;//记录积分
 
         this.step(function(){
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
@@ -45,19 +44,21 @@ module.exports={
                     }
 
                     if(result){
+
                         var resultJson=JSON.parse(result);
+                        points = resultJson.point;
                         return [resultJson.point,memberId]//json数组双传值，数组格式
                     }else{
-                        nut.view.disable();
-                        nut.write("<script>window.onload=function(){window.popupStyle2.on('没有查到您的积分，请联系我们',function(event){history.back()})}</script>");
+                        points = "0";
                     }
                 })
                 )
+            }else{
+                points = "0";
             }
         });
 
         this.step(function(resultPoint){
-
             if(memberId){
                 var currentTime=new Date().getTime();
                 //查找积分兑换表,获取所有所有兑换商品
@@ -88,8 +89,8 @@ module.exports={
                                             reedemJson.canUse.push(result[i]);//追加数组
                                         }
                                     }else{
-                                        nut.view.disable();
-                                        nut.write("<script>window.onload=function(){window.popupStyle2.on('商家没有提供可兑换券',function(event){history.back()})}</script>");
+                                        //nut.view.disable();
+                                        //nut.write("<script>window.onload=function(){window.popupStyle2.on('商家没有提供可兑换券',function(event){history.back()})}</script>");
                                     }
                                 }))
                             })(i)
@@ -121,8 +122,20 @@ module.exports={
 
             }
         })
-        this.step(function(){
 
+        this.step(function(){
+            middleware.request('Coupon/Promotions', {
+                perPage: 1000,
+                pageNum: 1
+            }, this.hold(function (err, doc) {
+                doc = doc.replace(/[\n\r\t]/, '');
+                doc_json = eval('(' + doc + ')');
+                nut.model.json = doc_json;
+            }))
+        })
+
+        this.step(function(){
+            nut.model.point = points;
             nut.model.reedemJson=reedemJson;
             nut.model.wechatId=seed.wechatId;
         })
@@ -302,9 +315,7 @@ module.exports={
                                 return record;
                             }else{
                                 nut.view.disable();
-                                nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误2',function(event){history.back()})}</script>");
-
-
+                                nut.write("<script>window.onload=function(){window.popupStyle2.on('找不到对应的兑换商品',function(event){history.back()})}</script>");
                             }
                         }))
                     }
