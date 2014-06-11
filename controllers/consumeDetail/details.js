@@ -48,6 +48,7 @@ module.exports={
 
         //调接口完成返回消费记录
         this.step(function(){
+            console.log("memberID:"+member)
             middleware.request("Member/Spending/"+member,data_request,
                 this.hold(function(err,doc){
 
@@ -55,11 +56,12 @@ module.exports={
                     var docsJson=JSON.parse(doc);
                     console.log(docsJson);
                     for(var i=0;i<docsJson.log.length;i++){
+                        fa=false;
                         var yearAll={}
                         //从消费记录中获取年份
                         var year= new Date(docsJson.log[i].date).getFullYear()
-                        //货币的累加(每年消费额)
-                        moneyAll=moneyAll+docsJson.log[i].AMT
+                        //
+                        moneyAll=docsJson.log[i].AMT
                         //消费总金额
                         saleAllMoney=saleAllMoney+docsJson.log[i].AMT
 
@@ -76,18 +78,21 @@ module.exports={
                             for(var j=0;j<arr.length;j++){
                                 if(arr[j].year==year){
                                     arr[j].val.push(docsJson.log[i]);
-                                    arr[j].moneyAll=moneyAll;
-                                }else{
-                                    var yearJ={};
-                                    yearJ.year=year;
-                                    yearJ.moneyAll=moneyAll;
-                                    yearJ.val=[];
-                                    yearJ.val.push(docsJson.log[i]);
-                                    arr.push(yearJ);
+                                    arr[j].moneyAll+=moneyAll;
+                                    //yearMoney=yearMoney+moneyAll;
+                                    fa=true;
                                 }
                             }
-                        }
+                            if(!fa){
+                                var yearJ={};
+                                yearJ.year=year;
+                                yearJ.moneyAll=moneyAll;
+                                yearJ.val=[];
+                                yearJ.val.push(docsJson.log[i]);
+                                arr.push(yearJ);
+                            }
 
+                        }
                     }
                 })
             )
