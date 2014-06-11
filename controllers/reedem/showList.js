@@ -130,7 +130,7 @@ module.exports={
             }, this.hold(function (err, doc) {
                 doc = doc.replace(/[\n\r\t]/, '');
                 doc_json = eval('(' + doc + ')');
-                nut.model.json = doc_json;
+                nut.model.json = JSON.stringify(doc_json);
             }))
         })
 
