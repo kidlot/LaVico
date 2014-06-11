@@ -33,11 +33,13 @@ var log={@searchCity.LOG},lat={@searchCity.LAT};
 </div>
 
 <div class="activity-detail">
-    <p class="store-name">促销活动</p>
-    <if condition="{@searchCity.ACT==null}">
-        <div class="title">暂无活动，敬请期待！</div>
-    </if>
-    <p class="text">{@searchCity.ACT}</p>
+    <p class="text">
+        <if condition="{@docs.ACT==null}">
+            暂无活动，敬请期待！
+            <else/>
+            {@docs.ACT}
+        </if>
+    </p>
 </div>
 </div>
 </div>
