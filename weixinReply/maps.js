@@ -82,7 +82,7 @@ exports.load = function () {
                             reply.picurl=storeList[i].PICURL;
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
                             //reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
-                            reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                            reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName+"&city="+storeList[i].CITY+"市";
 
                         if(i<10)
                             replyArr.push(reply);
