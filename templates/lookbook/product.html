@@ -58,7 +58,7 @@
             var data = JSON.parse($("#jsonPage").text())
 
             $("#article").find("h3").text(data[0].name)
-            $("#article").find("p").text(data[0].detail)
+            $("#article").find("p").html(data[0].detail.replace(/\n/ig,"</br>"))
 
             myScroll = new iScroll('wrapMain', {
                 snap: true,
@@ -71,7 +71,7 @@
                     var data = JSON.parse($("#jsonPage").text())
 
                     $("#article").find("h3").text(data[myScroll.currPageX].name)
-                    $("#article").find("p").text(data[myScroll.currPageX].detail)
+                    $("#article").find("p").html(data[myScroll.currPageX].detail.replace(/\n/ig,"</br>"))
                 }
             });
         }
