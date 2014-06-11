@@ -89,7 +89,7 @@ module.exports = {
 
             if(doc.hasOwnProperty('profession')){
                 //行业
-                nut.model.profession = doc.profession;
+                nut.model.profession = doc.profession || '请选择行业';
             }else{
                 nut.model.profession = '请选择行业';
             }
@@ -117,7 +117,7 @@ module.exports = {
 
             if(doc.hasOwnProperty('favoriteStyle')){
                 //喜好款式
-                nut.model.favoriteStyle = doc.favoriteStyle;
+                nut.model.favoriteStyle = doc.favoriteStyle || '请选择';
             }else{
                 nut.model.favoriteStyle = '请选择';
             }
@@ -143,11 +143,11 @@ module.exports = {
 
         /*设计前端JS*/
         if($("#profession").val()=='请选择行业'){
-            $("#select_profession").parent().find("input").val($("#select_profession").val());
+            //$("#select_profession").parent().find("input").val($("#select_profession").val());
         }
 
         if($("#select_favoriteStyle").val()=='请选择'){
-            $("#select_favoriteStyle").parent().find("input").val($("#select_favoriteStyle").val());
+            //$("#select_favoriteStyle").parent().find("input").val($("#select_favoriteStyle").val());
         }
 
         $("#select_profession").change(function(){
@@ -169,15 +169,6 @@ module.exports = {
         $(".goon_btn").click(function(){
             $(".fade2").css("display","none");
         });
-
-//        $("#email").blur(function(){
-//            var email = $(this).val();
-//            if(!email || !/^[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/.test(email)){
-//                window.popupStyle2.on("邮箱格式错误",function(event){});
-//                $("#email").focus();
-//                return false;
-//            }
-//        });
 
         $('#goon_btn').click(function(){
             window.location.href ="/lavico/member/index?wxid="+$('#wxid').val();
@@ -885,7 +876,7 @@ module.exports = {
                                     }else if(_favoriteStyle=='06') {
                                         _favoriteStyle = '休闲';
                                     }else{
-                                        _favoriteStyle = '简约大方';
+                                        _favoriteStyle = '';
                                     }
                                     helper.db.coll('welab/customers').find(
                                         {
