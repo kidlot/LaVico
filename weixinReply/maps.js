@@ -11,11 +11,6 @@ exports.load = function () {
         var storeDistance=[];
         var storeList=[];
         var replyArr=[];
-
-
-        var then = this;
-
-
         //手动发送地址
         var lat,lng;
         console.log("msg.MsgType:"+msg.MsgType);
@@ -82,12 +77,12 @@ exports.load = function () {
                         reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
                         reply.description=storeList[i].ADDR;
                         if(storeList[i].PICURL==null)
-                            reply.picurl="http://"+then.req.headers.host+"/lavico/public/images/lavico_default.png";
+                            reply.picurl="http://wx.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
-                            //reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
-                            reply.url='http://'+then.req.headers.host+'/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                            //reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
+                            reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);
@@ -118,13 +113,8 @@ exports.load = function () {
     })
 
     wechatapi.registerReply(9,function(msg,req,res,next){
-
-
-        var then = this;
-
-
         //点击“附近门店”
-        if((msg.EventKey == "shop" && msg.Event=="CLICK") || msg.Content=="shop"){
+        if(msg.EventKey == "shop" && msg.Event=="CLICK"){
             console.log("*******shop search start********");
             var lat,lng;
 
@@ -148,8 +138,8 @@ exports.load = function () {
 //                                res.reply([{
 //                                    title: '门店查询',
 //                                    description:请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。 '请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。',
-//                                    picurl: 'http://test.welab.lavicouomo.com/public/files/2014/5/12/~!77a37b225d61a40f84fb32468c81ba00!map.jpg',
-//                                    url: 'http://test.welab.lavicouomo.com/lavico/store/currentCustomerLocation?wxid='+msg.FromUserName
+//                                    picurl: 'http://wx.lavicouomo.com/public/files/2014/5/12/~!77a37b225d61a40f84fb32468c81ba00!map.jpg',
+//                                    url: 'http://wx.lavicouomo.com/lavico/store/currentCustomerLocation?wxid='+msg.FromUserName
 //                                }])
 
                                 res.reply('请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。');
@@ -159,7 +149,7 @@ exports.load = function () {
                                 lng=doc.location[1];
                                 console.log("lat:"+lat);
                                 console.log("lng:"+lng);
-                                //next();
+                                next();
                             }
 
                         }
@@ -220,14 +210,14 @@ exports.load = function () {
 
 
                         if(storeList[i].PICURL==null)
-                            reply.picurl="http://"+then.req.headers.host+"/lavico/public/images/lavico_default.png";
+                            reply.picurl="http://wx.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else
                             reply.picurl=storeList[i].PICURL;
 
 
                             var newCODE2=(storeList[i].CODE).replace(/\s/g,'');
-                            //reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
-                            reply.url="http://"+then.req.headers.host+"/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
+                            //reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
+                            reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);
