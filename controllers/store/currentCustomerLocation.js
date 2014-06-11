@@ -38,6 +38,8 @@ module.exports={
     },
    actions:{
         show: {
+//            layout:null,
+//            view:null,
             layout:"lavico/layout",
             view:"lavico/templates/store/store_num2.html",
             process: function (seed, nut){
@@ -78,7 +80,8 @@ module.exports={
                     }
                 }
 
-
+                console.log("list1")
+                console.log(list1);
                 if(list1.length>0){
                     nut.model.cityName=seed.cityName;
                     nut.model.city_docs = list1;
