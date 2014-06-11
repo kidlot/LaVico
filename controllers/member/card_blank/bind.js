@@ -830,7 +830,7 @@ module.exports = {
                                         }else if(_favoriteStyle=='06') {
                                             _favoriteStyle = '休闲';
                                         }else{
-                                            _favoriteStyle = '简约大方';
+                                            _favoriteStyle = '';
                                         }
 
                                         favoriteStyle = _favoriteStyle;
@@ -850,9 +850,8 @@ module.exports = {
                                     if(old_name != 'undefined'){
                                         userName = old_name;
                                     }
-
-
                                     this.req.session.id_code = '';
+
                                     helper.db.coll('welab/customers').update({wechatid:wxid},{
                                         $set:{
                                             'realname':userName,
