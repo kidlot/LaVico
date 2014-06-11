@@ -142,14 +142,6 @@ module.exports = {
         window.hideShareButtion.on();
 
         /*设计前端JS*/
-        if($("#profession").val()=='请选择行业'){
-            //$("#select_profession").parent().find("input").val($("#select_profession").val());
-        }
-
-        if($("#select_favoriteStyle").val()=='请选择'){
-            //$("#select_favoriteStyle").parent().find("input").val($("#select_favoriteStyle").val());
-        }
-
         $("#select_profession").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
@@ -178,15 +170,6 @@ module.exports = {
         var province = document.getElementById('select_province');
         var province_input = document.getElementById('province');
         var city     = document.getElementById('select_city');
-        /*设置默认数值*/
-        if($("#province").val()=='请选择'){
-            //请选择
-            $("#province").val("北京");
-        }
-        if($("#city").val()=='请选择'){
-            //请选择
-            $("#city").val("北京");
-        }
 
         //省份
         var provinceArr = [];
