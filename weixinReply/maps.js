@@ -118,6 +118,11 @@ exports.load = function () {
     })
 
     wechatapi.registerReply(9,function(msg,req,res,next){
+
+
+        var then = this;
+
+
         //点击“附近门店”
         if((msg.EventKey == "shop" && msg.Event=="CLICK") || msg.Content=="shop"){
             console.log("*******shop search start********");
