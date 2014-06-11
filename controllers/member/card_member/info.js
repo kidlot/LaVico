@@ -885,7 +885,7 @@ module.exports = {
                                     }else if(_favoriteStyle=='06') {
                                         _favoriteStyle = '休闲';
                                     }else{
-                                        _favoriteStyle = '简约大方';
+                                        _favoriteStyle = '';
                                     }
                                     helper.db.coll('welab/customers').find(
                                         {
