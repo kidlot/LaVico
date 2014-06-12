@@ -53,11 +53,11 @@ module.exports={
         })
 
         this.step(function(){
+            var results=[];
             var docs=[];
             if(newArr.length>0){
                 for(var i=0;i<newArr.length;i++){
-                for(var j=0;j<resultlist.length;j++){
-
+                    for(var j=0;j<resultlist.length;j++){
                         var result={};
                         console.log("i:"+i)
                         console.log("j:"+j)
@@ -66,17 +66,11 @@ module.exports={
                             result.title = resultlist[j].title;
                             result.createTime = resultlist[j].createTime;
                             result.read = "true";
-                            docs.push(result);
-                        }else{
-                            result._id = resultlist[j]._id;
-                            result.title = resultlist[j].title;
-                            result.createTime = resultlist[j].createTime;
-                            result.read = "false";
-                            docs.push(result);
+                            results.push(result);
                         }
-                        //break;
                     }
                 }
+                for(var )
             }else{
                 for(var j=0;j<resultlist.length;j++){
                     var result={};
