@@ -82,6 +82,7 @@ module.exports = {
                         if (doc) {
                             activity.pic = doc.pic;
                             activity.introduction = doc.introduction;
+                            activity.thumb = doc.thumb;
                         }
                         return activity;
                     }));
@@ -105,6 +106,7 @@ module.exports = {
             },
             viewIn: function () {
 
+                //日期设置
                 $('#start_date').datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
@@ -118,6 +120,78 @@ module.exports = {
                     endDate: new Date()
                 });
 
+                //编辑器
+                var editor = CKEDITOR.replace( 'introduction', {
+                    toolbar: [
+                        [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+                    ]
+                });
+                editor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+                editor.config.enterMode = CKEDITOR.ENTER_BR;
+                editor.config.language = 'zh-cn';
+                editor.config.width = 600;
+                editor.config.height = 400;
+
+                //保存功能
+                window.save = function (){
+
+                    var aItemList = {};
+                    var flag = 0;
+                    var _inputCheck = true;
+                    var _json = {};
+
+                    var content = encodeURIComponent(editor.document.getBody().getHtml());
+
+                    console.log(content);
+                    _json.introduction = content;//券详细描述
+                    _json.promotion_name = $('#PROMOTION_NAME').val();
+                    _json.promotion_desc = $('#PROMOTION_DESC').val();
+                    _json.thumb = $('#thumb_upload').attr('src');//小图
+                    _json.pic = $('#image_upload').attr('src');//大图
+                    _json.QTY = $('#PROMOTION_QTY').val() || null;
+
+                    aItemList[0] = _json;
+
+
+                    if(!_json.thumb){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请上传券小图",
+                            type: 'error',
+                            showCloseButton: true});
+                    }
+
+                    if(!_json.pic){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请上传券大图",
+                            type: 'error',
+                            showCloseButton: true});
+                    }
+
+                    if(!_json.promotion_desc){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请填写券描述",
+                            type: 'error',
+                            showCloseButton: true});
+                    }
+
+                    if(_inputCheck){
+                        var oLinkOptions = {} ;
+                        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'aid',value:$("#aid").val()}];
+                        oLinkOptions.type = "POST";
+                        oLinkOptions.url = "/lavico/activity/index:save";
+                        flag = 1;
+                        $.request(oLinkOptions,function(err,nut){
+                            if(err) throw err ;
+                            flag = 0;
+                            nut.msgqueue.popup() ;
+                            $.controller("/lavico/activity",null,"lazy");
+                        }) ;
+                    }
+
+                }
             }
         },
         save: {
@@ -143,6 +217,7 @@ module.exports = {
                     for (var o in postData) {
                         activity['QTY'] = postData[o].QTY;
                         activity['pic'] = postData[o].pic;
+                        activity['thumb'] = postData[o].thumb;
                         activity['introduction'] = postData[o].introduction;
                         activity['promotion_name'] = postData[o].promotion_name;
                         activity['promotion_desc'] = postData[o].promotion_desc;
