@@ -45,6 +45,7 @@ module.exports = {
         shareIcon = jQuery("#shareIcon").val() || shareIcon;
 
 
+        // 浏览统计
         var fromWelab = location.search.match(/fromWelab=(.*)$/);
         if(fromWelab){
 
@@ -67,7 +68,7 @@ module.exports = {
             });
         }else{
 
-            // 记录浏览数
+            // 浏览数
             $.ajax({
                 url:'/lavico/log',
                 type:'POST',
