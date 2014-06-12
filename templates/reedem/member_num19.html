@@ -1,5 +1,6 @@
 <script>
-var isReg=function() {
+    var json =JSON.parse('{@json}');
+var isReg=function(aid) {
     var isReg={@isReg};
     if(isReg=="0") {
         window.popupStyle2.on('您还不是LaVico的会员，请先注册会员', function (event) {
@@ -12,6 +13,25 @@ var isReg=function() {
         })
         return false;
     }
+var sta=false;
+var ss = false;
+for(var i=0;i<json.list.length;i++){
+    if(json.list[i].PROMOTION_CODE==aid){
+        console.log(json.list[i].TOTAL)
+        console.log(json.list[i].USED)
+        if(json.list[i].TOTAL==json.list[i].USED){
+            sta=true;
+        }
+    }
+    if(aid==json.list[i].PROMOTION_CODE){
+        ss = true;
+    }
+}
+if(sta ||(!ss)){
+    window.popupStyle2.on('对不起,没有可以兑换的优惠劵',function(event){
+    })
+    return false;
+}
 }
 </script>
 
@@ -25,7 +45,7 @@ var isReg=function() {
             <div class="gift-bottom" style="width:60%; padding:2% 20% 2%;">
                 <div class="fr right" style="width:100%">
                     <a href="/lavico/reedem/showList:exchange?memberId={@memberId}&needScore={@needScore}&wechatId={@wechatId}&point={@point}&aid={@aid}&_id={@_id}"
-                       name="nowGet" onclick="return isReg()">立即兑换</a>
+                       name="nowGet" onclick="return isReg('{@aid}')">立即兑换</a>
                 </div>
             </div>
         </div>

@@ -92,7 +92,7 @@ window.onload=function(){
                                         </div>
                                         <div class="fr right">
                                             <a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"
-                                               name="nowGet" onclick="exchange('{@canUseOne.needScore}','{@canUseOne.aid}')">立即兑换</a>
+                                               name="nowGet" onclick="return exchange('{@canUseOne.needScore}','{@canUseOne.aid}')">立即兑换</a>
                                             <!--<a href="#" name="nowGet" onclick="exchange('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">立即兑换</a>-->
                                         </div>
                                     </div>
@@ -136,30 +136,45 @@ window.onload=function(){
 <script>
 
 
-    var json =JSON('{@json}');
+    var json =JSON.parse('{@json}');
     function jump(memberid,needScore,wxid,point,aid,id){
         location.href="/lavico/reedem/reedemdetail?memberId="+memberid+
                 "&needScore="+needScore+"&wechatId="+wxid+"&point="+point+"&aid="+aid+"&_id="+id;
     }
 
-    function exchange(needscore,aid){
+ var  exchange= function (needscore,aid){
+     console.log(aid)
         var points = '{@point}';
-        if(parseInt(points)<parseInt(needscore)){
+        var score;
+        if(needscore==""){
+            score=0;
+        }else{
+            score = needscore;
+        }
+        if(parseInt(points)<parseInt(score)){
             window.popupStyle2.on('对不起,您的积分不足',function(event){
             })
             return false;
         }
-        console.log(aid);
         var sta=false;
-        for(var i=0;i<json.length;i++){
+        var ss = false;
+        for(var i=0;i<json.list.length;i++){
             if(json.list[i].PROMOTION_CODE==aid){
-                sta=true;
+                console.log(json.list[i].TOTAL)
+                console.log(json.list[i].USED)
+                if(json.list[i].TOTAL==json.list[i].USED){
+                    sta=true;
+                }
+            }
+            if(aid==json.list[i].PROMOTION_CODE){
+                ss = true;
             }
         }
-        if(!sta){
+        if(sta ||(!ss)){
             window.popupStyle2.on('对不起,没有可以兑换的优惠劵',function(event){
             })
             return false;
         }
+
     }
 </script>

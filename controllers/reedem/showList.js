@@ -186,28 +186,28 @@ module.exports={
 
 //                //判断
 //                //活动时间范围判断
-//                this.step(function(){
-//                    helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(id)},this.hold(function(err,result){
-//                        if(err) throw err;
-//                        if(result){
-//                            QTY=result.QTY;//面值
-//                            t_name=result.name;//商品名
-//                            var currentTime=new Date().getTime();
-//                            if(currentTime<result.startDate || currentTime>result.endDate){
-//                                //超出
-//                                nut.view.disable();
-//                                nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动已经下架',function(event){history.back()})}</script>");
-//                                isok=false;
-//                            }else{
-//                                if(result.switcher=="Off" || result.switcher=="off"){
-//                                    nut.view.disable();
-//                                    nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动关闭中，请重新选择',function(event){history.back()})}</script>");
-//                                    isok=false;
-//                                }
-//                            }
-//                        }
-//                    }))
-//                })
+                this.step(function(){
+                    helper.db.coll("lavico/reddem").findOne({_id:helper.db.id(id)},this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            QTY=result.QTY;//面值
+                            t_name=result.name;//商品名
+                            var currentTime=new Date().getTime();
+                            if(currentTime<result.startDate || currentTime>result.endDate){
+                                //超出
+                                nut.view.disable();
+                                nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动已经下架',function(event){history.back()})}</script>");
+                                isok=false;
+                            }else{
+                                if(result.switcher=="Off" || result.switcher=="off"){
+                                    nut.view.disable();
+                                    nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动关闭中，请重新选择',function(event){history.back()})}</script>");
+                                    isok=false;
+                                }
+                            }
+                        }
+                    }))
+                })
                 //是否已经兑换过
                 /*
                 this.step(function(){
@@ -245,10 +245,10 @@ module.exports={
                     //扣积分接口
 
                     if(isok){
-                        middleware.request("Point/Change",
-                            {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
-                            this.hold(function (err, doc) {
-                            }))
+//                        middleware.request("Point/Change",
+//                            {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
+//                            this.hold(function (err, doc) {
+//                            }))
 
                         //得券
                         middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
@@ -262,8 +262,8 @@ module.exports={
                                 return docJson
 
                             }else{
-                                middleware.request("Point/Change",{"memberId": memberId, "qty": (needScore), "memo": '积分兑换-'+t_name},this.hold(function (err, doc) {
-                                    }))
+//                                middleware.request("Point/Change",{"memberId": memberId, "qty": (needScore), "memo": '积分兑换-'+t_name},this.hold(function (err, doc) {
+//                                    }))
                                 nut.view.disable();
                                 nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此商品暂停兑换',function(event){history.back()})}</script>");
                             }
@@ -287,6 +287,11 @@ module.exports={
                             record.name=t_name;
                             record.QTY=QTY;
                             record.codeByCRM=docJson.coupon_no;//接口返回的券号
+
+                            middleware.request("Point/Change",
+                                {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
+                                this.hold(function (err, doc) {
+                                }))
                             //记录会员表
                             helper.db.coll('welab/customers').update({"wechatid":wechatId,"memberId":memberId},{$addToSet:{reedem:record}},function(err,doc){
                             })

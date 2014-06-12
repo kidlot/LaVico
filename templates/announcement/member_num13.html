@@ -8,7 +8,10 @@
       <ul>
         <foreach for="@docs" var="doc">
             <li><a href="/lavico/announcement/showIndex:show?_id={@doc._id}&wxid={@wxid}">
-              <p class="name">{@doc.title}</p>
+              <p class="name">{@doc.title}
+
+              </p>
+
               <p>{@(new Date(doc.createTime)).getFullYear()}-{@(new Date(doc.createTime)).getMonth()+1}-{@(new Date(doc.createTime)).getDate()}</p>
               </a>
             </li>

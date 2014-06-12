@@ -33,14 +33,17 @@ function load(){
 window.onload =function() {
     load();
 }
+var ok = '{@ok}';
+var conent = '{@conent}'
 var doc = JSON.parse('{@themeQuestion}');
 var wechatId = '{@wechatId}';
 var memberid = '{@memberid}';
-var isReg=function(){
-    var ok = '{@ok}';
-    var conent = '{@conent}'
+function isReg(){
+    //alert("ssss")
+    console.log("eeeeeee")
     if(ok=="1")
     {
+        //alert("sa")
         window.popupStyle2.on(conent,function(event){
             if(event == "confirm"){
             }
