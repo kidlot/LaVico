@@ -10,6 +10,7 @@ module.exports={
                 helper.db.coll("lavico/themeQuestion").find({themeType:1}).toArray(this.hold(function(err,docs){
                     if(err) throw  err;
                     return docs;
+                    console.log("dd",docs)
                 }))
             }else{
                 helper.db.coll("lavico/themeQuestion").find({themeType:{$ne:1}}).toArray(this.hold(function(err,docs){
@@ -42,13 +43,17 @@ module.exports={
                             }catch(e){
                                 jsonOne.totalPop=0;
                             }
+                            console.log("doc[0].count.length",doc[0])
+
                         }));
 
                 })(doc[e]._id,jsonOne);
 
                 //完成人数
                 (function(i,jsonOne){
-                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(doc[e]._id),"isFinish":true,"optionId":0,"getLabel":"","getGift":"","compScore":""})
+                    console.log("i",i)
+                    //helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(i),"isFinish":true,"optionId":0,"getLabel":null,"getGift":"","compScore":""})
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(i),"isFinish":true,"optionId":0,"getLabel":"","getScore":""})
                         .count(
                             then.hold(function(err,doc){
                                 if(err)throw err;
@@ -58,10 +63,13 @@ module.exports={
                                 else{
                                     jsonOne.finishCount=doc;
                                 }
+                                console.log("count",jsonOne)
+                                console.log("doc",doc)
                             })
                         )
                     themeArr.push(jsonOne);
                 })(doc[e]._id,jsonOne);
+                console.log("ss:", themeArr)
             }
         })
 
