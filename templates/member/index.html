@@ -43,7 +43,13 @@
             <if condition="@bindStatus == 'bind'">
                 <div class="radius">
                     <ul class="list">
-                        <li><a id="announcement" href="{@announcement}">会员公告</a></li>
+                        <li><a id="announcement" href="{@announcement}">会员公告
+                            <if condition="{@count==0}">
+                                <label style="color: red;font-style:italic;">new</label>
+                                <else/>
+                            </if>
+                        </a>
+                        </li>
                         <li><a id="coupon" href="{@coupon}">专属礼券<span id="count" class="suba">(正加载)</span></a></li>
                         <li><a id="points" href="{@reedem}">积分/兑换</a></li>
                         <li><a id="buy" href="{@buy}">消费记录</a></li>
