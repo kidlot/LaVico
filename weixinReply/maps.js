@@ -79,8 +79,10 @@ exports.load = function () {
                         reply.description=storeList[i].ADDR;
                         if(storeList[i].PICURL==null)
                             reply.picurl="http://wx.lavicouomo.com/lavico/public/images/lavico_default.png";
-                        else
+                        else{
                             reply.picurl=storeList[i].PICURL;
+                        }
+
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
                             //reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
                             reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
@@ -90,7 +92,9 @@ exports.load = function () {
                     }
                 },
                 function(){
+                    console.log(replyArr)
                     res.reply(replyArr);
+
                 }
             )()
 

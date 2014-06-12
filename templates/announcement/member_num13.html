@@ -9,7 +9,10 @@
         <foreach for="@docs" var="doc">
             <li><a href="/lavico/announcement/showIndex:show?_id={@doc._id}&wxid={@wxid}">
               <p class="name">{@doc.title}
-
+                  <if condition="{@doc.read=='false'}">
+                      <label style="color: red;font-style:italic;">new</label>
+                      <else/>
+                  </if>
               </p>
 
               <p>{@(new Date(doc.createTime)).getFullYear()}-{@(new Date(doc.createTime)).getMonth()+1}-{@(new Date(doc.createTime)).getDate()}</p>

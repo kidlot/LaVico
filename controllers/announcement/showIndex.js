@@ -11,6 +11,7 @@ module.exports={
         nut.model.wxid = seed.wxid ? seed.wxid : 'undefined'
         var announcement;
         var resultlist;
+        var then = this;
 
         this.step(function(){
 
@@ -27,7 +28,7 @@ module.exports={
 
         var newArr=[];
         this.step(function(doc){
-            if(announcement!=null){
+            if(announcement!="null"){
                 for(var i=0;i<announcement.length;i++){
                     var flag=true;
                     for(var j=0;j<newArr.length;j++){
@@ -44,52 +45,52 @@ module.exports={
             }
         })
 
-
         this.step(function(){
             helper.db.coll("lavico/announcement").find({isOpen:true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
                 if(err) throw err;
-                nut.model.docs = doc;
+                resultlist = doc;
             }));
         })
 
-//        this.step(function(){
-//            var docs=[];
-//            if(newArr.length>0){
-//                for(var i=0;i<newArr.length;i++){
-//                for(var j=0;j<resultlist.length;j++){
-//
-//                        var result={};
-//                        console.log("i:"+i)
-//                        console.log("j:"+j)
-//                        if(newArr[i]==resultlist[j]._id){
-//                            result._id = resultlist[j]._id;
-//                            result.title = resultlist[j].title;
-//                            result.createTime = resultlist[j].createTime;
-//                            result.read = "true";
-//                            docs.push(result);
-//                        }else{
-//                            result._id = resultlist[j]._id;
-//                            result.title = resultlist[j].title;
-//                            result.createTime = resultlist[j].createTime;
-//                            result.read = "false";
-//                            docs.push(result);
-//                        }
-//                        //break;
-//                    }
-//                }
-//            }else{
-//                for(var j=0;j<resultlist.length;j++){
-//                    var result={};
-//                    result._id = resultlist[j]._id;
-//                    result.title = resultlist[j].title;
-//                    result.createTime = resultlist[j].createTime;
-//                    result.read = "false";
-//                    docs.push(result);
-//                }
-//            }
-//            console.log(docs)
-//            nut.model.docs = docs;
-//        })
+        this.step(function(){
+            var docs=[];
+            if(newArr.length>0){
+                for(var j=0;j<resultlist.length;j++){
+                    for(var i=0;i<newArr.length;i++){
+                        if(newArr[i]==resultlist[j]._id){
+                            resultlist[j].read="true";
+                        }
+                    }
+                }
+                for(var j=0;j<resultlist.length;j++){
+                    if(resultlist[j].read && resultlist[j].read=="true"){
+                        var result={};
+                        result._id = resultlist[j]._id;
+                        result.title = resultlist[j].title;
+                        result.createTime = resultlist[j].createTime;
+                        result.read = resultlist[j].read
+                        docs.push(result);
+                    }else{
+                        var result={};
+                        result._id = resultlist[j]._id;
+                        result.title = resultlist[j].title;
+                        result.createTime = resultlist[j].createTime;
+                        result.read ="false"
+                        docs.push(result);
+                    }
+                }
+            }else{
+                for(var j=0;j<resultlist.length;j++){
+                    var results={};
+                    results._id = resultlist[j]._id;
+                    results.title = resultlist[j].title;
+                    results.createTime = resultlist[j].createTime;
+                    results.read = "false";
+                    docs.push(results);
+                }
+            }
+            nut.model.docs = docs;
+        })
 
     },
     actions:{
