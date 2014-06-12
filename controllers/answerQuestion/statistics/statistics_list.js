@@ -43,7 +43,7 @@ module.exports={
                             }catch(e){
                                 jsonOne.totalPop=0;
                             }
-                            console.log("doc[0].count.length",doc[0])
+                            console.log("doc[0].count.length",doc)
 
                         }));
 
@@ -52,8 +52,9 @@ module.exports={
                 //完成人数
                 (function(i,jsonOne){
                     console.log("i",i)
+                    //,"optionId":0,"getLabel":"","getScore":"","type":{$ne : "0"
                     //helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(i),"isFinish":true,"optionId":0,"getLabel":null,"getGift":"","compScore":""})
-                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(i),"isFinish":true,"optionId":0,"getLabel":"","getScore":""})
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(i),"isFinish":true,"type":{$ne : "0"}})
                         .count(
                             then.hold(function(err,doc){
                                 if(err)throw err;
