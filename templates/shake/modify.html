@@ -66,11 +66,32 @@
                     </div>
 
                 </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">活动小图<span>(50×27)</span></label>
+                    <div class="col-sm-10" style="padding-top: 8px;">
+                        <input id="thumb"  name="thumb" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
+                        &nbsp;<span calss="progressNumber"></span>
 
+                        <div class="alert alert-success picView file_box">
+                            <img id="thumb_upload" class="media-object image_data" style="height: 128px;" src="{@shake.thumb}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2">活动大图<span>(500×277)</span></label>
+                    <div class="col-sm-10" style="padding-top: 8px;">
+                        <input id="pic"  name="pic" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
+                        &nbsp;<span calss="progressNumber"></span>
+
+                        <div class="alert alert-success picView file_box">
+                            <img id="pic_upload" class="media-object image_data" style="height: 128px;" src="{@shake.pic}">
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">详细介绍</label>
                     <div class="col-sm-10">
-                        <textarea type="text" class="form-control postData" id='content' name="content" style="width: 80%;height:300px;" oninput="$('#pagename').text(this.value)">{@shake.content}</textarea>
+                        <textarea type="text" class="form-control postData" id='content' name="mainContent" style="width: 80%;height:600px;" oninput="$('#pagename').text(this.value)">{@shake.content}</textarea>
                     </div>
                 </div>
 
@@ -187,246 +208,8 @@
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <script src="/welab/public/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/opencomb/public/lib/3party/jquery-1.9.1.min.js"></script>
 
 <script>
-/*编辑器*/
-function save(){
-
-    var aFormInput = {}
-
-    var _inputCheck = true;
-
-    /*日期判断*/
-    var _startDate = $('#startDate').val();
-    var startDate = new Date();
-    var startDateTimeStamp;
-    startDate.setFullYear(_startDate.substring(0,4));
-    startDate.setMonth((parseInt(_startDate.substr(5,2))-1));
-    startDate.setDate((parseInt(_startDate.substr(8,2))));
-    startDate.setHours(0,0,0);
-    startDateTimeStamp = Date.parse(startDate);//毫秒级
-
-    var _endDate =$('#endDate').val();
-    var endDate = new Date();
-    var endDateTimeStamp;
-    endDate.setFullYear(_endDate.substring(0,4));
-    endDate.setMonth((parseInt(_endDate.substr(5,2))-1));
-    endDate.setDate((parseInt(_endDate.substr(8,2))));
-    endDate.setHours(0,0,0);
-    endDateTimeStamp = Date.parse(endDate);//毫秒级
-
-
-    var aid = $('#aid').val();
-    if(startDateTimeStamp > endDateTimeStamp){
-        _inputCheck = false;
-        $.globalMessenger().post({
-            message: "开始时间必须比结束时间早！",
-            type: 'error',
-            showCloseButton: true})
-    }
-
-
-
-    if(!$("#startDate").val()){
-      _inputCheck = false;
-      $.globalMessenger().post({
-          message: "请选择开始时间！",
-          type: 'error',
-          showCloseButton: true})
-      
-    }
-    if(!$("#endDate").val()){
-      _inputCheck = false;
-      $.globalMessenger().post({
-          message: "请选择结束时间！",
-          type: 'error',
-          showCloseButton: true})
-      
-    }
-    
-    if(!$("#name").val()){
-      _inputCheck = false;
-      $.globalMessenger().post({
-          message: "请填写名称！",
-          type: 'error',
-          showCloseButton: true})      
-    }
-
-    
-    if(!$('#lottery_cycle').val()){
-      _inputCheck = false;
-      $.globalMessenger().post({
-          message: "请选择抽奖频率！",
-          type: 'error',
-          showCloseButton: true})       
-    }
-    if(!$('#lottery_count').val()){
-
-      _inputCheck = false;
-      $.globalMessenger().post({
-          message: "请填写抽奖次数！",
-          type: 'error',
-          showCloseButton: true})       
-    }
-
-    var reg = /^\d+$/;//数字正则
-
-    if(!$.isNumeric($('#lottery_count').val())){
-
-        _inputCheck = false;
-        $.globalMessenger().post({
-            message: "抽奖频率的值必须是数字！",
-            type: 'error',
-            showCloseButton: true});
-    }else{
-
-        if(parseInt($('#lottery_count').val()) < 0){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "抽奖频率的值不能是负数！",
-                type: 'error',
-                showCloseButton: true});
-        }else{
-            if(parseInt($('#lottery_count').val()) != $('#lottery_count').val()){
-
-                _inputCheck = false;
-                $.globalMessenger().post({
-                    message: "抽奖频率的值必须是整数！",
-                    type: 'error',
-                    showCloseButton: true});
-
-            }
-        }
-    }
-
-    if(!$.isNumeric($('#points').val())){
-
-        _inputCheck = false;
-        $.globalMessenger().post({
-            message: "积分消耗的值必须是数字！",
-            type: 'error',
-            showCloseButton: true});
-    }else{
-
-        if(parseInt($('#points').val()) < 0){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "积分消耗的值必须是零或者正整数！",
-                type: 'error',
-                showCloseButton: true});
-        }else{
-            if(parseInt($('#points').val()) != $('#points').val()){
-
-                _inputCheck = false;
-                $.globalMessenger().post({
-                    message: "积分消耗的值必须是整数！",
-                    type: 'error',
-                    showCloseButton: true});
-
-            }
-        }
-    }
-
-
-    if(!_inputCheck){
-      return false;
-    }
-    
-    aFormInput['lottery'] = new Array();
-    var _lottery_sum = 0;//所有的优惠券总概率必须小于等于100
-    $(".promotion_detail").each(function(i,object){
-        console.log($(object).is(':visible'));
-        if($(object).is(':visible')){
-
-            var _PROMOTION_NAME = $(object).find('.PROMOTION_NAME').attr('data');
-
-            if(!$(object).find('.display_name').val()){
-                _inputCheck = false;
-                $.globalMessenger().post({
-                    message: _PROMOTION_NAME + "的券名称不能为空！",
-                    type: 'error',
-                    showCloseButton: true})
-                $(object).find('.display_name').focus().css('background-color','#1abc9c');
-
-            }else{
-
-                if(!$(object).find('.lottery_chance').val()){
-                    _inputCheck = false;
-                    $.globalMessenger().post({
-                        message: _PROMOTION_NAME + "的抽奖概率不能为空！",
-                        type: 'error',
-                        showCloseButton: true})
-                    $(object).find('.lottery_chance').focus().css('background-color','#1abc9c');
-
-                }else{
-
-                    var _lottery_chance = parseInt($(object).find('.lottery_chance').val());//抽奖概率
-                    _lottery_sum = _lottery_sum + _lottery_chance;
-
-                    if(_lottery_chance >100 || _lottery_chance <0){
-                        _inputCheck = false;
-                        $.globalMessenger().post({
-                            message: _PROMOTION_NAME + "的抽奖概率必须大于等于0，小于等于100！",
-                            type: 'error',
-                            showCloseButton: true})
-                        $(object).find('.lottery_chance').focus().css('background-color','#1abc9c');
-                    }
-
-                    var _lottery = {};
-                    _lottery.PROMOTION_CODE = $(object).find('.PROMOTION_CODE').attr('data');
-                    _lottery.PROMOTION_NAME = $(object).find('.PROMOTION_NAME').attr('data');
-                    _lottery.PROMOTION_DESC = $(object).find('.PROMOTION_DESC').attr('data');
-                    _lottery.PROMOTION_TYPE = $(object).find('.PROMOTION_TYPE').attr('data');
-                    _lottery.PROMOTION_QTY = $(object).find('.PROMOTION_QTY').attr('data') || null;
-                    _lottery.PROMOTION_PIC = $(object).find('.PROMOTION_PIC').attr('data') || null;
-                    _lottery.PROMOTION_USED_TOTAL = $(object).find('.PROMOTION_USED_TOTAL').attr('data');
-                    _lottery.display_name = $(object).find('.display_name').val();
-                    _lottery.lottery_chance = $(object).find('.lottery_chance').val();
-                    aFormInput['lottery'].push(_lottery);
-                }
-            }
-        }
-    })
-
-    if(_lottery_sum < 0 || _lottery_sum > 100){
-        _inputCheck = false;
-        $.globalMessenger().post({
-            message: "所有的优惠券的总概率必须小于等于100！",
-            type: 'error',
-            showCloseButton: true});
-    }
-
-    //var content = editor.document.getBody().getHtml();
-    var content = $('#content').val();
-    aFormInput['startDate'] = new Date($("#startDate").val()).getTime();
-    aFormInput['endDate'] = new Date($("#endDate").val()).getTime();
-    aFormInput['name'] = $("#name").val();
-    aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
-    aFormInput['lottery_count'] = $("#lottery_count").val();
-    aFormInput['switcher'] = 'on';
-    aFormInput['createTime'] = new Date().getTime();
-    aFormInput['points'] = parseInt($("#points").val()) || 0;//每次游戏，所消耗的积分
-    aFormInput['content'] = encodeURIComponent(content);
-    aFormInput['display_name'] = $("#display_name").val();//券名称
-    console.log(aFormInput)
-
-
-    if(_inputCheck){
-        var oLinkOptions = {} ;
-        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
-        oLinkOptions.type = "POST";
-        oLinkOptions.url = "/lavico/shake/index:save";
-
-        $.request(oLinkOptions,function(err,nut){
-            if(err) throw err ;
-            nut.msgqueue.popup();
-            $.controller("/lavico/shake",null,"lazy");
-        }) ;
-    }
-}
-
-
 
 function copyToClipboard(txt) {
 
@@ -468,7 +251,6 @@ function copyToClipboard(txt) {
     }
 }
 /*点击复制按钮*/
-
 var init = function (){
 
     var _lottery = JSON.parse('{@lottery}');
@@ -487,4 +269,63 @@ init();
     var content;
     content = decodeURIComponent('{@shake.content}');
     document.getElementById("content").value = content;
+</script>
+<script>
+    var lastPic = ""
+    function fileSelected(inputid) {
+
+        $("#"+inputid).next(".progressNumber").text("")
+        var file = document.getElementById(inputid).files[0];
+        if (file) {
+
+            var fileSize = 0;
+            if (file.size > 1024 * 1024)
+                fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            else
+                fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+
+            lastPic = inputid
+
+
+            uploadFile();
+
+        }
+    }
+
+    function uploadFile() {
+        var fd = new FormData();
+        fd.append(lastPic, document.getElementById(lastPic).files[0]);
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener("progress", uploadProgress, false);
+        xhr.addEventListener("load", uploadComplete, false);
+        xhr.addEventListener("error", uploadFailed, false);
+        xhr.addEventListener("abort", uploadCanceled, false);
+        xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
+        xhr.send(fd);
+    }
+
+    function uploadProgress(evt) {
+        if (evt.lengthComputable) {
+            var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+
+            $("#"+lastPic).next(".progressNumber").text(percentComplete.toString() + '%')
+        }
+        else {
+            $("#"+lastPic).next(".progressNumber").text('无法计算出图片的大小')
+        }
+    }
+
+    function uploadComplete(evt) {
+        var json = eval('(' + evt.target.responseText + ')');
+        var filename = json.model.fileName;
+        $("#"+lastPic+"_upload").attr("src",filename)
+    }
+
+    function uploadFailed(evt) {
+        alert("上传失败");
+    }
+
+    function uploadCanceled(evt) {
+        alert("已经取消上传");
+    }
 </script>
