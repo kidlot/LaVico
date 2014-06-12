@@ -48,42 +48,48 @@ module.exports={
         this.step(function(){
             helper.db.coll("lavico/announcement").find({isOpen:true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
                 if(err) throw err;
-                resultlist = doc;
+                nut.model.docs = doc;
             }));
         })
 
-        this.step(function(){
-            var results=[];
-            var docs=[];
-            if(newArr.length>0){
-                for(var i=0;i<newArr.length;i++){
-                    for(var j=0;j<resultlist.length;j++){
-                        var result={};
-                        console.log("i:"+i)
-                        console.log("j:"+j)
-                        if(newArr[i]==resultlist[j]._id){
-                            result._id = resultlist[j]._id;
-                            result.title = resultlist[j].title;
-                            result.createTime = resultlist[j].createTime;
-                            result.read = "true";
-                            results.push(result);
-                        }
-                    }
-                }
-                for(var )
-            }else{
-                for(var j=0;j<resultlist.length;j++){
-                    var result={};
-                    result._id = resultlist[j]._id;
-                    result.title = resultlist[j].title;
-                    result.createTime = resultlist[j].createTime;
-                    result.read = "false";
-                    docs.push(result);
-                }
-            }
-            console.log(docs)
-            nut.model.docs = docs;
-        })
+//        this.step(function(){
+//            var docs=[];
+//            if(newArr.length>0){
+//                for(var i=0;i<newArr.length;i++){
+//                for(var j=0;j<resultlist.length;j++){
+//
+//                        var result={};
+//                        console.log("i:"+i)
+//                        console.log("j:"+j)
+//                        if(newArr[i]==resultlist[j]._id){
+//                            result._id = resultlist[j]._id;
+//                            result.title = resultlist[j].title;
+//                            result.createTime = resultlist[j].createTime;
+//                            result.read = "true";
+//                            docs.push(result);
+//                        }else{
+//                            result._id = resultlist[j]._id;
+//                            result.title = resultlist[j].title;
+//                            result.createTime = resultlist[j].createTime;
+//                            result.read = "false";
+//                            docs.push(result);
+//                        }
+//                        //break;
+//                    }
+//                }
+//            }else{
+//                for(var j=0;j<resultlist.length;j++){
+//                    var result={};
+//                    result._id = resultlist[j]._id;
+//                    result.title = resultlist[j].title;
+//                    result.createTime = resultlist[j].createTime;
+//                    result.read = "false";
+//                    docs.push(result);
+//                }
+//            }
+//            console.log(docs)
+//            nut.model.docs = docs;
+//        })
 
     },
     actions:{
