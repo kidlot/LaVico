@@ -41,20 +41,31 @@
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2 control-label">券图<span>(500×277)</span></label>
+                                      <label for="inputEmail3" class="col-sm-2 control-label">券小图<span>(50×27)</span></label>
+                                      <div class="col-sm-10" style="padding-top: 8px;">
+                                          <input id="thumb"  name="thumb" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
+                                          &nbsp;<span calss="progressNumber"></span>
+
+                                          <div class="alert alert-success picView file_box">
+                                              <img id="thumb_upload" class="media-object image_data" style="height: 128px;" src="{@activity.thumb}">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="inputEmail3" class="col-sm-2 control-label">券大图<span>(500×277)</span></label>
                                       <div class="col-sm-10" style="padding-top: 8px;">
                                         <input id="image"  name="image" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
                                         &nbsp;<span calss="progressNumber"></span>
 
                                         <div class="alert alert-success picView file_box">
-                                            <img id="image_upload" class="media-object image_data" style="height: 64px;" src="{@activity.pic}">
+                                            <img id="image_upload" class="media-object image_data" style="height: 128px;" src="{@activity.pic}">
                                         </div>
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <label for="inputEmail3" class="col-sm-2 control-label">详细介绍</label>
+                                      <label for="inputEmail3" class="col-sm-2 control-label">券详细描述</label>
                                       <div class="col-sm-10" style="padding-top: 8px;">
-                                          <textarea id="introduction" class="form-control input-sm" rows="3" name="introduction"  placeholder="请输入..." style="height:400px;">{@activity.introduction}</textarea>
+                                          <textarea id="introduction" class="form-control input-sm" rows="3" name="introduction"  placeholder="请输入..." style="height:400px;width:600px;">{@activity.introduction}</textarea>
                                           <input id="PROMOTION_NAME" type="hidden" value="{@activity.PROMOTION_NAME}"/>
                                           <input id="PROMOTION_DESC" type="hidden" value="{@activity.PROMOTION_DESC}"/>
                                           <input name='aid' id='aid' type="hidden" value='{@activity.PROMOTION_CODE}' />
@@ -72,47 +83,10 @@
 </div>
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-
+<script src="/welab/public/ckeditor/ckeditor.js"></script>
 
 <script>
-        var aItemList = {};
-        var flag = 0;
-        var _inputCheck = true;
-        var content;
-        var editor;
-
-
-        function save(){
-
-            //var content = editor.document.getBody().getHtml();encodeURIComponent(content)
-            var content = encodeURIComponent($('#introduction').val());
-            var _inputCheck = true;
-            var _json = {};
-            console.log(content);
-            _json.introduction = content;
-            _json.promotion_name = $('#PROMOTION_NAME').val();
-            _json.promotion_desc = $('#PROMOTION_DESC').val();
-            _json.pic = $('#image_upload').attr('src') || null;
-            _json.QTY = $('#PROMOTION_QTY').val() || null;
-
-            aItemList[0] = _json;
-            if(_inputCheck){
-                var oLinkOptions = {} ;
-                oLinkOptions.data = [{name:'postData',value:JSON.stringify(aItemList)},{name:'aid',value:$("#aid").val()}];
-                oLinkOptions.type = "POST";
-                oLinkOptions.url = "/lavico/activity/index:save";
-                flag = 1;
-                $.request(oLinkOptions,function(err,nut){
-                    if(err) throw err ;
-                    flag = 0;
-                    nut.msgqueue.popup() ;
-                    $.controller("/lavico/activity",null,"lazy");
-                }) ;
-            }
-
-        }
-
-      
+      //图片上传功能
       var lastPic = ""
       function fileSelected(inputid) {
 
@@ -127,10 +101,7 @@
                   fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 
               lastPic = inputid
-
-
               uploadFile();
-
           }
       }
 

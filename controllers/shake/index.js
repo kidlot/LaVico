@@ -228,6 +228,269 @@ module.exports = {
                         showCloseButton: true});
                 });
 
+                //编辑器
+                var editor = CKEDITOR.replace( 'mainContent', {
+                    toolbar: [
+                        [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+                    ]
+                });
+                editor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+                editor.config.enterMode = CKEDITOR.ENTER_BR;
+                editor.config.language = 'zh-cn';
+                editor.config.width = '80%';
+                editor.config.height = 600;
+
+//                CKEDITOR.config.toolbar_Full = [
+//                    ['Source','-','Save','NewPage','Preview','-','Templates'],
+//                    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+//                    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+//                    ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+//                    '/',
+//                    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+//                    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+//                    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+//                    ['Link','Unlink','Anchor'],
+//                    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+//                    '/',
+//                    ['Styles','Format','Font','FontSize'],
+//                    ['TextColor','BGColor']
+//                ];
+
+                //保存按钮
+                window.save = function (){
+
+                    var aFormInput = {}
+
+                    var _inputCheck = true;
+
+                    /*日期判断*/
+                    var _startDate = $('#startDate').val();
+                    var startDate = new Date();
+                    var startDateTimeStamp;
+                    startDate.setFullYear(_startDate.substring(0,4));
+                    startDate.setMonth((parseInt(_startDate.substr(5,2))-1));
+                    startDate.setDate((parseInt(_startDate.substr(8,2))));
+                    startDate.setHours(0,0,0);
+                    startDateTimeStamp = Date.parse(startDate);//毫秒级
+
+                    var _endDate =$('#endDate').val();
+                    var endDate = new Date();
+                    var endDateTimeStamp;
+                    endDate.setFullYear(_endDate.substring(0,4));
+                    endDate.setMonth((parseInt(_endDate.substr(5,2))-1));
+                    endDate.setDate((parseInt(_endDate.substr(8,2))));
+                    endDate.setHours(0,0,0);
+                    endDateTimeStamp = Date.parse(endDate);//毫秒级
+
+
+                    var aid = $('#aid').val();
+                    if(startDateTimeStamp > endDateTimeStamp){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "开始时间必须比结束时间早！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+
+
+
+                    if(!$("#startDate").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择开始时间！",
+                            type: 'error',
+                            showCloseButton: true})
+
+                    }
+                    if(!$("#endDate").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择结束时间！",
+                            type: 'error',
+                            showCloseButton: true})
+
+                    }
+
+                    if(!$("#name").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请填写名称！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+
+
+                    if(!$('#lottery_cycle').val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择抽奖频率！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+                    if(!$('#lottery_count').val()){
+
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请填写抽奖次数！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+
+                    var reg = /^\d+$/;//数字正则
+
+                    if(!$.isNumeric($('#lottery_count').val())){
+
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "抽奖频率的值必须是数字！",
+                            type: 'error',
+                            showCloseButton: true});
+                    }else{
+
+                        if(parseInt($('#lottery_count').val()) < 0){
+                            _inputCheck = false;
+                            $.globalMessenger().post({
+                                message: "抽奖频率的值不能是负数！",
+                                type: 'error',
+                                showCloseButton: true});
+                        }else{
+                            if(parseInt($('#lottery_count').val()) != $('#lottery_count').val()){
+
+                                _inputCheck = false;
+                                $.globalMessenger().post({
+                                    message: "抽奖频率的值必须是整数！",
+                                    type: 'error',
+                                    showCloseButton: true});
+
+                            }
+                        }
+                    }
+
+                    if(!$.isNumeric($('#points').val())){
+
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "积分消耗的值必须是数字！",
+                            type: 'error',
+                            showCloseButton: true});
+                    }else{
+
+                        if(parseInt($('#points').val()) < 0){
+                            _inputCheck = false;
+                            $.globalMessenger().post({
+                                message: "积分消耗的值必须是零或者正整数！",
+                                type: 'error',
+                                showCloseButton: true});
+                        }else{
+                            if(parseInt($('#points').val()) != $('#points').val()){
+
+                                _inputCheck = false;
+                                $.globalMessenger().post({
+                                    message: "积分消耗的值必须是整数！",
+                                    type: 'error',
+                                    showCloseButton: true});
+
+                            }
+                        }
+                    }
+
+
+                    if(!_inputCheck){
+                        return false;
+                    }
+
+                    aFormInput['lottery'] = new Array();
+                    var _lottery_sum = 0;//所有的优惠券总概率必须小于等于100
+                    $(".promotion_detail").each(function(i,object){
+                        console.log($(object).is(':visible'));
+                        if($(object).is(':visible')){
+
+                            var _PROMOTION_NAME = $(object).find('.PROMOTION_NAME').attr('data');
+
+                            if(!$(object).find('.display_name').val()){
+                                _inputCheck = false;
+                                $.globalMessenger().post({
+                                    message: _PROMOTION_NAME + "的券名称不能为空！",
+                                    type: 'error',
+                                    showCloseButton: true})
+                                $(object).find('.display_name').focus().css('background-color','#1abc9c');
+
+                            }else{
+
+                                if(!$(object).find('.lottery_chance').val()){
+                                    _inputCheck = false;
+                                    $.globalMessenger().post({
+                                        message: _PROMOTION_NAME + "的抽奖概率不能为空！",
+                                        type: 'error',
+                                        showCloseButton: true})
+                                    $(object).find('.lottery_chance').focus().css('background-color','#1abc9c');
+
+                                }else{
+
+                                    var _lottery_chance = parseInt($(object).find('.lottery_chance').val());//抽奖概率
+                                    _lottery_sum = _lottery_sum + _lottery_chance;
+
+                                    if(_lottery_chance >100 || _lottery_chance <0){
+                                        _inputCheck = false;
+                                        $.globalMessenger().post({
+                                            message: _PROMOTION_NAME + "的抽奖概率必须大于等于0，小于等于100！",
+                                            type: 'error',
+                                            showCloseButton: true})
+                                        $(object).find('.lottery_chance').focus().css('background-color','#1abc9c');
+                                    }
+
+                                    var _lottery = {};
+                                    _lottery.PROMOTION_CODE = $(object).find('.PROMOTION_CODE').attr('data');
+                                    _lottery.PROMOTION_NAME = $(object).find('.PROMOTION_NAME').attr('data');
+                                    _lottery.PROMOTION_DESC = $(object).find('.PROMOTION_DESC').attr('data');
+                                    _lottery.PROMOTION_TYPE = $(object).find('.PROMOTION_TYPE').attr('data');
+                                    _lottery.PROMOTION_QTY = $(object).find('.PROMOTION_QTY').attr('data') || null;
+                                    _lottery.PROMOTION_PIC = $(object).find('.PROMOTION_PIC').attr('data') || null;
+                                    _lottery.PROMOTION_USED_TOTAL = $(object).find('.PROMOTION_USED_TOTAL').attr('data');
+                                    _lottery.display_name = $(object).find('.display_name').val();
+                                    _lottery.lottery_chance = $(object).find('.lottery_chance').val();
+                                    aFormInput['lottery'].push(_lottery);
+                                }
+                            }
+                        }
+                    })
+
+                    if(_lottery_sum < 0 || _lottery_sum > 100){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "所有的优惠券的总概率必须小于等于100！",
+                            type: 'error',
+                            showCloseButton: true});
+                    }
+
+                    var content = editor.document.getBody().getHtml();//编辑器内容
+                    aFormInput['startDate'] = new Date($("#startDate").val()).getTime();
+                    aFormInput['endDate'] = new Date($("#endDate").val()).getTime();
+                    aFormInput['name'] = $("#name").val();
+                    aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
+                    aFormInput['lottery_count'] = $("#lottery_count").val();
+                    aFormInput['switcher'] = 'on';
+                    aFormInput['thumb'] = $('#thumb_upload').attr('src');//活动小图
+                    aFormInput['pic'] = $('#pic_upload').attr('src');//活动大图
+                    aFormInput['createTime'] = new Date().getTime();
+                    aFormInput['points'] = parseInt($("#points").val()) || 0;//每次游戏，所消耗的积分
+                    aFormInput['content'] = encodeURIComponent(content);
+                    aFormInput['display_name'] = $("#display_name").val();//券名称
+                    console.log(aFormInput)
+
+                    if(_inputCheck){
+                        var oLinkOptions = {} ;
+                        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+                        oLinkOptions.type = "POST";
+                        oLinkOptions.url = "/lavico/shake/index:save";
+
+                        $.request(oLinkOptions,function(err,nut){
+                            if(err) throw err ;
+                            nut.msgqueue.popup();
+                            //$.controller("/lavico/shake",null,"lazy");
+                        }) ;
+                    }
+                }
             }
         },
         save: {
@@ -244,7 +507,7 @@ module.exports = {
 
                 postData.startDate = postData.startDate-8*3600*1000;
                 postData.endDate = postData.endDate-8*3600*1000+24*3600*1000-1000;
-
+                console.log(postData);
                 if (postData.length == 0) {
                     nut.message("保存失败。数据不能为空", null, 'error');
                     return;

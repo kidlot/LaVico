@@ -25,7 +25,7 @@ exports.load = function () {
                 function(){
                     postData={"location":[msg.Location_X,msg.Location_Y]};
                     helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
-                        {multi: false, upsert: true},function(err,doc){
+                        {multi: false},function(err,doc){
                             if(err)throw err;
                             console.log("*******change position record*******");
                         });
@@ -108,7 +108,7 @@ exports.load = function () {
             console.log("******get user position******");
             postData={"location":[msg.Latitude,msg.Longitude]};
             helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
-                {multi: false, upsert: true},function(err,doc){
+                {multi: false},function(err,doc){
                     if(err)throw err;
                     console.log("*******update db*******");
                 });
