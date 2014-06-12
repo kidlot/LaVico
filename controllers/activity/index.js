@@ -186,8 +186,8 @@ module.exports = {
                         $.request(oLinkOptions,function(err,nut){
                             if(err) throw err ;
                             flag = 0;
-                            nut.msgqueue.popup() ;
-                            $.controller("/lavico/activity",null,"lazy");
+                            nut.msgqueue.popup();
+                            //$.controller("/lavico/answerQuestion/themeList",null,"lazy");
                         }) ;
                     }
 
