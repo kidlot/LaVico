@@ -14,6 +14,9 @@ module.exports = {
         var memberInfo;//用户信息
         var card_number;//显示在会员中心的帐号
         nut.model.error = 'false';
+        var announcement;
+        var resultlist;
+        var readcount=0;
 
         if(!wxid){
 
@@ -200,6 +203,44 @@ module.exports = {
 
         });
 
+        this.step(function(){
+            helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
+                if(err) throw err;
+                if(doc && doc.announcement){
+                    announcement = doc.announcement;
+                }else{
+                    announcement="null";
+                }
+            }));
+        })
+
+        this.step(function(){
+            helper.db.coll("lavico/announcement").find({isOpen:true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
+                if(err) throw err;
+                resultlist = doc;
+            }));
+        })
+
+        this.step(function(){
+            console.log(announcement)
+            console.log(resultlist.length)
+            if(announcement!="null" && resultlist.length>0){
+                for(var i=0;i<resultlist.length;i++){
+                    for(var j=0;j<announcement.length;j++){
+                        console.log(announcement[j])
+                        console.log(resultlist[i]._id)
+                        if(announcement[j]==resultlist[i]._id){
+                            readcount++;
+                        }
+                    }
+                }
+                if(readcount!=resultlist.length){
+                    readcount=0;
+                }
+            }
+            console.log("readcount:"+readcount)
+            nut.model.count = readcount;
+        })
 
     },
     viewIn:function(){
