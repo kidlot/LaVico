@@ -53,7 +53,7 @@ module.exports = {
                 url:'/lavico/log',
                 type:'POST',
                 data:{
-                    'wxid':getWxid(),
+                    'wxid':$("#wxid").val() || getWxid(),
                     'url':location.href,
                     'action' : "好友浏览",
                     'fromWelab' : location.search.match(/fromWelab=(.*)$/)[1].split("&")[0]
@@ -72,7 +72,7 @@ module.exports = {
                 url:'/lavico/log',
                 type:'POST',
                 data:{
-                    'wxid':getWxid(),
+                    'wxid':$("#wxid").val() || getWxid(),
                     'url':location.href,
                     'action' : "浏览"
                 },
