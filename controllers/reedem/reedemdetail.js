@@ -26,6 +26,18 @@ module.exports = {
 
 
         this.step(function(){
+            middleware.request('Coupon/Promotions', {
+                perPage: 1000,
+                pageNum: 1
+            }, this.hold(function (err, doc) {
+                doc = doc.replace(/[\n\r\t]/, '');
+                doc_json = eval('(' + doc + ')');
+                nut.model.json = JSON.stringify(doc_json);
+            }))
+        })
+
+
+        this.step(function(){
             helper.db.coll("welab/customers").findOne({"wechatid":seed.wechatId},this.hold(function(err,doc){
                 if(err) throw err;
                 if(doc){
@@ -53,7 +65,5 @@ module.exports = {
                 }
             }
         })
-
-
     }
 }

@@ -51,7 +51,7 @@
     <foreach for="@page.docs" var="doc">
     <tr>
         <td><input type="hidden" name="anno_id" value="{@doc._id}"><a href="/lavico/announcement/updateAnnouncement?id={@doc._id}" style="text-decoration: underline">{@doc.title}</a></td>
-        <td>{@(new Date(doc.createTime)).getFullYear()}-{@(new Date(doc.createTime)).getMonth()}-{@(new Date(doc.createTime)).getDate()}</td>
+        <td>{@(new Date(doc.createTime)).getFullYear()}-{@(new Date(doc.createTime)).getMonth()+1}-{@(new Date(doc.createTime)).getDate()}</td>
         <td><input type="radio" name="is_top" id="is_top" onclick="isTop('{@doc._id}')" checked="{@doc.isTop==true?'checked':''}"></td>
         <td>
             <div class="switch has-switch way">

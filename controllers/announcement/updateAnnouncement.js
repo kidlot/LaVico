@@ -27,7 +27,7 @@ module.exports={
                 doc.content=seed.content;
                 nut.model.doc=doc;
 
-                helper.db.coll("lavico/announcement").update({_id:helper.db.id(seed._id)},{$set:{title:seed.title,content:seed.content}},
+                helper.db.coll("lavico/announcement").update({_id:helper.db.id(seed._id)},{$set:{title:seed.title,content:seed.content,createTime:new Date().getTime()}},
                     this.hold(function(err,doc){
                         nut.message("数据修改成功",null,"success");
                     })
@@ -47,6 +47,7 @@ module.exports={
             $.request(oLinkOptions,function(err,nut){
                 if(err) throw err ;
                 nut.msgqueue.popup();//调用welab前台提示控件
+                location.href='/lavico/announcement/announcementIndex'
             }) ;
         });
 

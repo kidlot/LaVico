@@ -35,15 +35,28 @@ module.exports= {
         })
 
         this.step(function(){
-            if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
+            console.log(endTime)
+            console.log(createTime())
+            if(new Date(endTime).getTime()<new Date(createTime()).getTime()){
                 if(isOpen==0){
                     nut.model.ok = "1";
                     nut.model.conent = "很抱歉，活动已结束"
+                }else{
+                    nut.model.ok = "1";
+                    nut.model.conent = "很抱歉，活动已结束"
                 }
-            }else{
-                nut.model.ok = "1";
-                nut.model.conent = "很抱歉，活动已结束"
             }
+//            console.log("saas"+new Date(endTime).getTime())
+//            console.log("sss:"+new Date(createTime()).getTime())
+//            if(new Date(endTime).getTime()<new Date(createTime()).getTime()){
+//                if(isOpen==0){
+//                    nut.model.ok = "1";
+//                    nut.model.conent = "很抱歉，活动已结束"
+//                }
+//            }else{
+//                nut.model.ok = "1";
+//                nut.model.conent = "很抱歉，活动已结束"
+//            }
         })
 
         this.step(function(){

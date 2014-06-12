@@ -118,6 +118,8 @@ module.exports={
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
                 nut.model.wxid = seed.wxid;
+                nut.model.city = seed.city;
+                console.log(seed.city);
                 console.log("seed.wxid:"+seed.wxid);
                 //设置id从砍价过来
                 //没设置id查询过来的
@@ -235,7 +237,8 @@ module.exports={
             process:function(seed,nut){
                 var then=this;
                 var cityName= seed.city.substring(0,seed.city.length-1);
-                nut.model.cityName=cityName;
+                nut.model.city = cityName;
+                nut.model.cityName=cityName+"市";
                 nut.model.wxid = seed.wxid;
                 this.step(function(){
                     var jsonData={};

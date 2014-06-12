@@ -574,6 +574,7 @@ module.exports = {
                         then.res.writeHead(200, { 'Content-Type': 'text/plain' });
                         then.res.write('{"success":false,"error":"network_error"}');
                         then.res.end();
+                        then.terminate();
 
                     }
 

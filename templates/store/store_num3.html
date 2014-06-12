@@ -12,12 +12,12 @@ var userLat='{@userLat}';
     <p><span class="title1">
 
     <!--<if condition="{@_id!=null}">-->
-        <!--<a href="/lavico/bargain/maps?_id={@_id}&wxid={@wxid}">返回</a>-->
+        <!--<a href="/lavico/bargain/maps?_id={@_id}&wxid={@wxid}">其他门店查询</a>-->
     <!--<else/>-->
-        <!--<a href="/lavico/store/currentCustomerLocation?wxid={@wxid}">返回</a>-->
+        <!--<a href="/lavico/store/currentCustomerLocation?wxid={@wxid}">其他门店查询</a>-->
         <!--&lt;!&ndash;<a href="/lavico/store/searchByCity?wxid={@wxid}">返回</a>&ndash;&gt;-->
     <!--</if>-->
-        <a href="javascript:history.back()">其他门店查询</a>
+        <a href="/lavico/store/searchByCity?wxid={@wxid}&city={@city}">其他门店查询</a>
     </span><span class="title2">门店详情</span></p>
   </div>
   <div class="look-map">
@@ -38,7 +38,7 @@ var userLat='{@userLat}';
 <div class="activity-detail">
     <p class="text">
         <if condition="{@searchCity.ACT==null}">
-            <div class="title">暂无促销活动</div>
+            <!--<div class="title">暂无促销活动</div>-->
             <else/>
             <div class="title">促销活动</div>
         </if>

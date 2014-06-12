@@ -40,6 +40,7 @@ exports.load = function () {
                             if(err) throw err;
                             console.log("******Shops info come back*********");
                             docJson=JSON.parse(doc);
+                            console.log(docJson)
                         })
                     )
                 },
