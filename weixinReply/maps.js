@@ -85,7 +85,7 @@ exports.load = function () {
 
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
                             //reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
-                            reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName+"&city="+storeList[i].CITY;
+                            reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);
@@ -222,7 +222,7 @@ exports.load = function () {
 
                             var newCODE2=(storeList[i].CODE).replace(/\s/g,'');
                             //reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
-                            reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName+"&city="+storeList[i].CITY;
+                            reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
 
                         if(i<10)
                             replyArr.push(reply);
