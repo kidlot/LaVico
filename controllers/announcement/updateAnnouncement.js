@@ -47,6 +47,7 @@ module.exports={
             $.request(oLinkOptions,function(err,nut){
                 if(err) throw err ;
                 nut.msgqueue.popup();//调用welab前台提示控件
+                location.href='/lavico/announcement/announcementIndex'
             }) ;
         });
 

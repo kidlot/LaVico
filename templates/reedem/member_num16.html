@@ -92,7 +92,7 @@ window.onload=function(){
                                         </div>
                                         <div class="fr right">
                                             <a href="/lavico/reedem/showList:exchange?memberId={@canUseOne.memberId}&needScore={@canUseOne.needScore}&wechatId={@canUseOne.wechatId}&point={@reedemJson.point}&aid={@canUseOne.aid}&_id={@canUseOne._id}"
-                                               name="nowGet" onclick="exchange('{@canUseOne.needScore}')">立即兑换</a>
+                                               name="nowGet" onclick="exchange('{@canUseOne.needScore}','{@canUseOne.aid}')">立即兑换</a>
                                             <!--<a href="#" name="nowGet" onclick="exchange('{@canUseOne.memberId}','{@canUseOne.needScore}','{@canUseOne.wechatId}','{@reedemJson.point}','{@canUseOne.aid}','{@canUseOne._id}')">立即兑换</a>-->
                                         </div>
                                     </div>
@@ -134,17 +134,32 @@ window.onload=function(){
     </div>
 </div>
 <script>
-    var json = '{@json}';
+
+
+    var json =JSON('{@json}');
     function jump(memberid,needScore,wxid,point,aid,id){
         location.href="/lavico/reedem/reedemdetail?memberId="+memberid+
                 "&needScore="+needScore+"&wechatId="+wxid+"&point="+point+"&aid="+aid+"&_id="+id;
     }
 
-    function exchange(needscore){
+    function exchange(needscore,aid){
         var points = '{@point}';
         if(parseInt(points)<parseInt(needscore)){
             window.popupStyle2.on('对不起,您的积分不足',function(event){
             })
+            return false;
+        }
+        console.log(aid);
+        var sta=false;
+        for(var i=0;i<json.length;i++){
+            if(json.list[i].PROMOTION_CODE==aid){
+                sta=true;
+            }
+        }
+        if(!sta){
+            window.popupStyle2.on('对不起,没有可以兑换的优惠劵',function(event){
+            })
+            return false;
         }
     }
 </script>

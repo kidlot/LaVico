@@ -263,15 +263,22 @@ function save ( ){
             showCloseButton: true})
 
     }
-
-
-    if(!aid){
+    if($("#activity_select").val()=="0"){
         _inputCheck = false;
         $.globalMessenger().post({
-            message: "请选择券！",
+            message: "请选择优惠劵！",
             type: 'error',
             showCloseButton: true})
     }
+
+
+//    if(!aid){
+//        _inputCheck = false;
+//        $.globalMessenger().post({
+//            message: "请选择券！",
+//            type: 'error',
+//            showCloseButton: true})
+//    }
 
 
     if(!_inputCheck){
