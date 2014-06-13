@@ -19,7 +19,7 @@ module.exports={
 
         //参与
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(themeId),isFinish:false,"optionId":1}).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(themeId),isFinish:false,"optionId":1,"type":"0"}).toArray(this.hold(function(err,doc){
                 if(err) throw  err;
                 if(doc){
                     no_finishdoc = doc;
@@ -47,13 +47,13 @@ module.exports={
         this.step(function(){
             console.log(no_finishdoc.length)
             console.log(finishdoc.length)
-            for(var i=0;i<no_finishdoc.length-1;i++){
+            for(var i=0;i<no_finishdoc.length;i++){
                 year = no_finishdoc[i].createTime;
                 fa=false;
                 if(arr.length==0){
                     var yearJ={};
                     yearJ.year=year;
-                    yearJ.count=0;
+                    yearJ.count=1;
                     arr.push(yearJ);
                 }else{
                     for(var j=0;j<arr.length;j++){
@@ -65,19 +65,19 @@ module.exports={
                     if(!fa){
                         var yearJ={};
                         yearJ.year=year;
-                        yearJ.count=0;
+                        yearJ.count=1;
                         arr.push(yearJ);
                     }
                 }
             }
 
-            for(var i=0;i<finishdoc.length-1;i++){
+            for(var i=0;i<finishdoc.length;i++){
                 year = finishdoc[i].createTime;
                 fa=false;
                 if(arr1.length==0){
                     var yearJ={};
                     yearJ.year=year;
-                    yearJ.count=0;
+                    yearJ.count=1;
                     arr1.push(yearJ);
                 }else{
                     for(var j=0;j<arr1.length;j++){
@@ -89,7 +89,7 @@ module.exports={
                     if(!fa){
                         var yearJ={};
                         yearJ.year=year;
-                        yearJ.count=0;
+                        yearJ.count=1;
                         arr1.push(yearJ);
                     }
                 }
@@ -98,6 +98,8 @@ module.exports={
         })
 
         this.step(function(){
+            console.log(arr)
+            console.log(arr1)
             for(var i=0;i<arr.length;i++){
                 for(var j=0;j<arr1.length;j++){
                     if(arr[i].year == arr1[i].year){
