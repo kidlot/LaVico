@@ -30,7 +30,7 @@ module.exports={
         var docs=[];
         this.step(function(){
             for(var i=0;i<no_finishdoc.length;i++){
-                if(no_finishdoc[i].createTime.indexOf("-")>0){
+                if(no_finishdoc[i].createTime.length>10){
                     no_finishdoc[i].createTime =no_finishdoc[i].createTime
 
                 }else{
