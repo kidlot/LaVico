@@ -14,13 +14,12 @@
 
 <div class="panel panel-default formText" >
     <div class="panel-heading clearfix">
+        <a class="btn btn-defalut btn-social-googleplus pull-left" href="/lavico/reedem/reedem_list"><i class="fui-arrow-left"></i> 返回</a>
+        <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
     </div>
     <div class="panel-body" style="background:#f9fafb;">
         <div class="col-md-12">
-            <br>
-            <div style="min-height: 70px;">
-                <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
-            </div>
+
 
             <form class="form-horizontal" role="form">
                 <h6>基础设置</h6>
@@ -36,7 +35,7 @@
 
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">开始/结束</label>
-                    <div class="col-sdesm-10">
+                    <div class="col-sm-10">
                         <input type="text" id="startDate" name="startDate" class="form-control" style="width: 150px;display:inline-block;" value="">
                         <input type="text" id="endDate" name="endDate" class="form-control" style="width: 150px;display:inline-block;" value="">
                     </div>
@@ -78,12 +77,22 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">券图</label>
+                                            <label for="inputEmail3" class="col-sm-2 control-label">券小图</label>
                                             <div class="col-sm-10">
-                                                <if condition="{@doc.pic!=''}">
-                                                        <img src="{@doc.pic}" style="width: 150px;height: 60"/>
+                                                <if condition="{@doc.thumb!=''}">
+                                                        <img src="{@doc.thumb}" style="width: 150px;"/>
                                                 <else/>
                                                         无图
+                                                </if>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-2 control-label">券大图</label>
+                                            <div class="col-sm-10">
+                                                <if condition="{@doc.pic!=''}">
+                                                    <img src="{@doc.pic}" style="width: 150px;"/>
+                                                    <else/>
+                                                    无图
                                                 </if>
                                             </div>
                                         </div>
@@ -96,7 +105,7 @@
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">券描述</label>
                                             <div class="col-sm-10">
-                                                <textarea class="form-control postData" rows="3" style="width: 400px;height:200px;" readonly="readonly">{@doc.introduction}</textarea>
+                                                <textarea class="form-control postData" rows="3" style="width: 600px;height:400px;" readonly="readonly">{@doc.introduction}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -109,7 +118,7 @@
 
 
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品小图400*400</label>
+                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品小图</label>
                                             <div class="col-sm-10">
                                                 <div style="float:left;width:150px;height: 60px;padding-top: 30px">
                                                     <input type="hidden" id="smallPic" value="" name="uploadFile"/>
@@ -125,7 +134,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品详细图400*</label>
+                                            <label for="inputEmail3" class="col-sm-2 control-label">礼品大图</label>
                                             <div class="col-sm-10">
                                                 <div class="col-sm-10">
                                                     <div style="float:left;width:150px;height: 60px;padding-top: 30px">
@@ -153,21 +162,14 @@
             </form>
         </div>
     </div>
+    <div class="panel-heading clearfix">
+        <a class="btn btn-defalut btn-social-googleplus pull-left" href="/lavico/reedem/reedem_list"><i class="fui-arrow-left"></i> 返回</a>
+        <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()" src="/lavico/reedem/addReedem:save?_id={@reedem._id}"><i class="fui-check-inverted"></i>保存</a>
+    </div>
 </div>
+<script src="/welab/public/ckeditor/ckeditor.js"></script>
 
 <script>
-var aid=0;
-window.onload = function(){
-    $('#activity_select').change(function(){
-        aid = $(this).val();
-        $(".promotion_detail").css('display','none');
-        $("#"+$(this).val()).css('display','block');
-//        $("a[id=showDetails]").attr("href","/lavico/activity/index:modify_html?aid="+aid)
-        $("a[id=showDetails]").attr("href","/lavico/reedem/addReedem:modify_html?aid="+aid)
-    });
-}
-
-
 /*
  * 图片上传开始
  */
@@ -240,84 +242,4 @@ function delPic (then){
 /*
  *图片上传结束
  */
-
-
-function save ( ){
-
-    var aFormInput = {}
-    var _inputCheck = true;
-
-    if(!$("#startDate").val()){
-        _inputCheck = false;
-        $.globalMessenger().post({
-            message: "请选择开始时间！",
-            type: 'error',
-            showCloseButton: true})
-
-    }
-    if(!$("#endDate").val()){
-        _inputCheck = false;
-        $.globalMessenger().post({
-            message: "请选择结束时间！",
-            type: 'error',
-            showCloseButton: true})
-
-    }
-    if($("#activity_select").val()=="0"){
-        _inputCheck = false;
-        $.globalMessenger().post({
-            message: "请选择优惠劵！",
-            type: 'error',
-            showCloseButton: true})
-    }
-
-
-//    if(!aid){
-//        _inputCheck = false;
-//        $.globalMessenger().post({
-//            message: "请选择券！",
-//            type: 'error',
-//            showCloseButton: true})
-//    }
-
-
-    if(!_inputCheck){
-        return false;
-    }
-    //alert($("#"+aid).find("#needScore").val())
-    //aFormInput['coupons'] = new Array();//
-
-    aFormInput['startDate'] = new Date($("#startDate").val()).getTime();//开始时间
-    aFormInput['endDate'] = new Date($("#endDate").val()).getTime();//结束时间
-    aFormInput['aid'] = aid;//券号
-    aFormInput['name'] = $("#name").val();//名称
-    aFormInput['des'] = $('#des').val();
-
-    //aFormInput['lottery_cycle'] = $("#lottery_cycle").val();//抽奖频率
-    aFormInput['introduction'] = $("#introduction").val();//描述
-    //aFormInput['lottery_count'] = $("#lottery_count").val();//频率中的次数
-    aFormInput['switcher'] = 'on';//
-    aFormInput['createTime'] = new Date().getTime();//创建时间
-    aFormInput['QTY']=$("#"+aid).first().find("#QTY").val();//面值
-    aFormInput['needScore']=$("#"+aid).first().find("#needScore").val();//所需积分
-    aFormInput['smallPic']=$("#"+aid).first().find("#smallPic").val();//小图片
-    aFormInput['bigPic']=$("#"+aid).first().find("#bigPic").val();//大图片
-    //aFormInput['description'] = $("#description").val().replace(/[\n\r\t]/,'<br/>');
-    //aFormInput['relief'] = $("#relief").val().replace(/[\n\r\t]/,'<br/>');
-    //aFormInput['explanation'] = $("#explanation").val().replace(/[\n\r\t]/,'<br/>');
-
-    if(_inputCheck){
-        var oLinkOptions = {} ;
-        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
-        oLinkOptions.type = "POST";
-        oLinkOptions.url = "/lavico/reedem/addReedem:insert";
-
-        $.request(oLinkOptions,function(err,nut){
-            if(err) throw err ;
-            nut.msgqueue.popup() ;
-            $.controller("/lavico/reedem/reedem_list",null,"lazy");
-        });
-
-    }
-}
 </script>

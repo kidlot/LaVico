@@ -46,8 +46,10 @@ module.exports={
                         count ++ ;
                         if(detail){
                             doc[i].pic = detail.pic;
+                            doc[i].thumb = detail.thumb;
                             doc[i].introduction=decodeURIComponent(detail.introduction);
                         }
+                        console.log(detail);
                         if(count == doc.length){
                             list = doc;
                             return doc;
@@ -114,8 +116,8 @@ module.exports={
                                 count ++ ;
                                 if(detail){
                                     doc[i].pic = detail.pic;
+                                    doc[i].thumb = detail.thumb;
                                     doc[i].introduction=decodeURIComponent(detail.introduction);
-                                    nut.model.introduction=decodeURIComponent(detail.introduction);
                                 }
                                 if(count == doc.length){
                                     list = doc
@@ -157,7 +159,7 @@ module.exports={
                     minView: 2
                 })
 
-
+                var aid;
                 if($("#aid").val()){
                     aid = $("#aid").val();
                     $("#activity_select option").each(function(){ if($(this).val() == aid){ $(this).attr("selected","true");
@@ -175,6 +177,104 @@ module.exports={
                     $(".promotion_detail").css('display','none');
                     $("#"+$(this).val()).css('display','block');
                 });
+
+                //编辑器-礼品描述
+                var desEditor = CKEDITOR.replace( 'des', {
+                    toolbar: [
+                        [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+                    ]
+                });
+                desEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+                desEditor.config.enterMode = CKEDITOR.ENTER_BR;
+                desEditor.config.language = 'zh-cn';
+                desEditor.config.width = 600;
+                desEditor.config.height = 400;
+                //保存功能
+                window.save = function (){
+
+                    var aFormInput = {}
+                    var _inputCheck = true;
+                    var smallPic = $("#"+aid).first().find("#smallPic").val();
+                    var bigPic = $("#"+aid).first().find("#bigPic").val();
+                    var qty = $("#"+aid).first().find("#QTY").val();
+
+                    if(!$("#startDate").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择开始时间！",
+                            type: 'error',
+                            showCloseButton: true})
+
+                    }
+                    if(!$("#endDate").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择结束时间！",
+                            type: 'error',
+                            showCloseButton: true})
+
+                    }
+                    if($("#activity_select").val()=="0"){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择优惠劵！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+                    if(!qty){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请填写所需积分！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+                    if(!smallPic){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请上传小图！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+                    if(!bigPic){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请上传大图！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+                    if(!_inputCheck){
+                        return false;
+                    }
+
+                    aFormInput['startDate'] = new Date($("#startDate").val()).getTime();//开始时间
+                    aFormInput['endDate'] = new Date($("#endDate").val()).getTime();//结束时间
+                    aFormInput['aid'] = aid;//券号
+                    aFormInput['name'] = $("#name").val();//名称
+                    aFormInput['des'] = encodeURIComponent(desEditor.document.getBody().getHtml());
+                    aFormInput['introduction'] = $("#introduction").val();//描述
+                    aFormInput['switcher'] = 'on';//
+                    aFormInput['createTime'] = new Date().getTime();//创建时间
+                    aFormInput['QTY']=$("#"+aid).first().find("#QTY").val();//面值
+                    aFormInput['needScore']=$("#"+aid).first().find("#needScore").val();//所需积分
+                    aFormInput['smallPic']=smallPic || null;//小图片
+                    aFormInput['bigPic']=bigPic || null;//大图片
+
+
+                    if(_inputCheck){
+                        var oLinkOptions = {} ;
+                        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+                        oLinkOptions.type = "POST";
+                        oLinkOptions.url = "/lavico/reedem/addReedem:update";
+
+                        $.request(oLinkOptions,function(err,nut){
+                            if(err) throw err ;
+                            console.log(err);
+                            nut.msgqueue.popup() ;
+                            $.controller("/lavico/reedem/reedem_list",null,"lazy");
+                        });
+
+                    }
+                }
             }
         },
         update:{
@@ -220,6 +320,8 @@ module.exports={
         }
     },
     viewIn:function(){
+
+        var aid;
         //日历控件
         $('#startDate').datetimepicker({
             format: 'yyyy-mm-dd',
@@ -232,6 +334,134 @@ module.exports={
             autoclose: true,
             minView: 2
         })
+
+        //编辑器-礼品描述
+        var desEditor = CKEDITOR.replace( 'des', {
+            toolbar: [
+                [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+            ]
+        });
+        desEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+        desEditor.config.enterMode = CKEDITOR.ENTER_BR;
+        desEditor.config.language = 'zh-cn';
+        desEditor.config.width = 600;
+        desEditor.config.height = 400;
+
+        //券选择
+        $('#activity_select').change(function(){
+            aid = $(this).val();
+            $(".promotion_detail").css('display','none');
+            $("#"+aid).css('display','block');
+        });
+
+        //保存功能
+        window.save = function (){
+            var aFormInput = {}
+            var _inputCheck = true;
+            var des = encodeURIComponent(desEditor.document.getBody().getHtml());//礼品描述
+            var name = $("#name").val();
+
+
+            if(!name){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "请填写礼品名称！",
+                    type: 'error',
+                    showCloseButton: true})
+
+            }
+            if(!$("#startDate").val()){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "请选择开始时间！",
+                    type: 'error',
+                    showCloseButton: true})
+
+            }
+            if(!$("#endDate").val()){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "请选择结束时间！",
+                    type: 'error',
+                    showCloseButton: true})
+
+            }
+            if(!des){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "请填写礼品描述！",
+                    type: 'error',
+                    showCloseButton: true});
+                return false;
+
+            }
+            if($("#activity_select").val()=="0"){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "请选择优惠劵！",
+                    type: 'error',
+                    showCloseButton: true})
+                return false;
+            }
+
+            var smallPic = $("#"+aid).first().find("#smallPic").val();
+            var bigPic = $("#"+aid).first().find("#bigPic").val();
+            var needScore = $("#"+aid).first().find("#needScore").val();
+            if(!needScore){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "请填写所需积分！",
+                    type: 'error',
+                    showCloseButton: true})
+            }
+            if(!smallPic){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "请上传小图！",
+                    type: 'error',
+                    showCloseButton: true})
+            }
+            if(!bigPic){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "请上传大图！",
+                    type: 'error',
+                    showCloseButton: true})
+            }
+
+            if(!_inputCheck){
+                return false;
+            }
+
+            aFormInput['startDate'] = new Date($("#startDate").val()).getTime();//开始时间
+            aFormInput['endDate'] = new Date($("#endDate").val()).getTime();//结束时间
+            aFormInput['aid'] = aid;//券号
+            aFormInput['name'] = name;//名称
+            aFormInput['des'] = des;
+            aFormInput['introduction'] = $("#introduction").val();//描述
+            aFormInput['switcher'] = 'on';//
+            aFormInput['createTime'] = new Date().getTime();//创建时间
+            aFormInput['QTY']=$("#"+aid).first().find("#QTY").val()||null;//面值
+            aFormInput['needScore']=needScore;//所需积分
+            aFormInput['smallPic']=smallPic;//小图片
+            aFormInput['bigPic']=bigPic;//大图片
+
+
+            if(_inputCheck){
+                var oLinkOptions = {} ;
+                oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+                oLinkOptions.type = "POST";
+                oLinkOptions.url = "/lavico/reedem/addReedem:insert";
+
+                $.request(oLinkOptions,function(err,nut){
+                    if(err) throw err ;
+                    nut.msgqueue.popup() ;
+                    $.controller("/lavico/reedem/reedem_list",null,"lazy");
+                });
+
+            }
+        }
+
     }
 
 }

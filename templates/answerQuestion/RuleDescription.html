@@ -62,6 +62,8 @@
           </div>
       </div>
     </div>
+    <script src="/welab/public/ckeditor/ckeditor.js"></script>
+
     <script>
     //图片上传功能
     var lastPic = ""
@@ -118,31 +120,8 @@
     function uploadCanceled(evt) {
         alert("已经取消上传");
     }
-</script>
-    <script>
-      window.save = function(){
-
-              var description = encodeURIComponent($("#description").val());
-              var relief = encodeURIComponent($("#relief").val());
-              var explanation = encodeURIComponent($("#explanation").val());
-
-              var aFormInput = {};
-              aFormInput.thumb = $('#thumb_upload').attr('src');
-              aFormInput.pic = $('#pic_upload').attr('src');
-              aFormInput.description = description;
-              aFormInput.relief = relief;
-              aFormInput.explanation = explanation;
-              var post = {} ;
-              post.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
-              post.type = "POST";
-              post.url = "/lavico/answerQuestion/RuleDescription:save";
-
-              $.request(post,function(err,nut){
-                  nut.msgqueue.popup();
-                  //$.controller("/lavico/answerQuestion/themeList",null,"lazy");
-              }) ;
-      }
     </script>
+
     <script>
 
       var description = decodeURIComponent('{@doc.description}');
