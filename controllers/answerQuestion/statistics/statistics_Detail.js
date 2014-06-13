@@ -135,6 +135,20 @@ module.exports={
         })
 
         this.step(function(){
+            var i = 0, len = newArr.length,
+                j, d;
+            for(; i<len; i++){
+                for(j=0; j<len; j++){
+                    if(newArr[i].year > newArr[j].year){
+                        d = newArr[j];
+                        newArr[j] = newArr[i];
+                        newArr[i] = d;
+                    }
+                }
+            }
+        })
+
+        this.step(function(){
             nut.model.newArr = newArr;
         })
 
