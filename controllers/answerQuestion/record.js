@@ -71,7 +71,7 @@ module.exports={
                                 "getGift":  "",
                                 "getScore": "",
                                 "type":type,
-                                "createTime": createTime(),
+                                "createTime": new Date().getTime(),
                                 "memberId":memberid,
                                 "themetype":themetype
                             }}, {upsert: true},function(err,doc){
@@ -155,7 +155,7 @@ module.exports={
                             "getLabel": "",
                             "getGift":  "",
                             "getScore": "",
-                            "createTime": createTime(),
+                            "createTime": new Date().getTime(),
                             "type":type,
                             "memberId":memberid,
                             "themetype":themetype
@@ -227,7 +227,7 @@ module.exports={
                             "getGift":  "",
                             "getScore": "",
                             "type":type,
-                            "createTime": createTime(),
+                            "createTime":new Date().getTime(),
                             "memberId":memberid,
                             "themetype":themetype
                         },function(err,doc){
@@ -307,7 +307,7 @@ module.exports={
                         "getLabel": "",
                         "getGift":  "",
                         "getScore": "",
-                        "createTime": createTime(),
+                        "createTime": new Date().getTime(),
                         "type":type,
                         "memberId":memberid,
                         "themetype":themetype

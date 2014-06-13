@@ -28,7 +28,7 @@
         <div name="getMember" class="maginTop20">
             <table class="tableSty">
                 <tr class="staCount borderBtm">
-                    <td class="width150">名称</td>
+                    <td style="width: 70px;">名称</td>
                     <td class="width50">状态</td>
                     <td class="width50">开始时间</td>
                     <td class="width50">结束时间</td>
@@ -39,7 +39,7 @@
                 </tr>
             <foreach for="@docs" var="doc" key="key">
                 <tr class="borderBtm">
-                    <td class="width150"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
+                    <td style="width: 70px;"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
                     <td class="width50" id="openClose">
                         <input type="hidden" name="id" id="docId" value="{@doc.themeId}">
                         <if condition="{@doc.isOpen==1}">
@@ -64,7 +64,7 @@
                      <if condition="{@doc.totalPop==0}">
                         0%
                      <else/>
-                        {@(parseInt(doc.finishCount)/parseInt(doc.totalPop))*100}%
+                        {@((parseInt(doc.finishCount)/parseInt(doc.totalPop))).toFixed(4)*100}%
                      </if>
                     </td>
                     <td class="width150">
@@ -89,10 +89,11 @@
                             </div>
 
                             <input type="button"  class="btn btn-xs btn-primary mhm" style=" margin-top: -18px"  name="btnStatistics"  value="统计">
-                            <input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}"
+                            <input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}"/>
                         </div>
                         <div style="float:left; padding-top: 25px;">
                             <input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
+                            <input type="hidden" name="del" id="del" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}"/>
                         </div>
                     </td>
                 </tr>

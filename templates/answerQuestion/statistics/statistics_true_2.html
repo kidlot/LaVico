@@ -9,7 +9,13 @@
             <tr class="borderBtm">
                 <td class="width250">{@doc.getScore}</td>
                 <td class="width50">{@doc.sinScore}</td>
-                <td class="width50">{@parseInt(doc.sinScore/all2*100)}%</td>
+                <td class="width50">
+                    <if condition="{@doc.sinScore==''}">
+                        0%
+                        <else/>
+                        {@parseInt(doc.sinScore/all2*100)}%
+                    </if>
+                </td>
             </tr>
         </foreach>
     </table>

@@ -11,7 +11,12 @@
                     <td class="width250">{@doc.getLabel}</td>
                     <td class="width50">{@doc.sinCount}</td>
                     <td class="width50" name="alltd">
-                        {@parseInt(doc.sinCount/all*100)}%
+                        <if condition="{@doc.sinCount==null}">
+                            0%
+                            <else/>
+                            {@parseInt(doc.sinCount/all*100)}%
+                        </if>
+
                     </td>
                 </tr>
             </if>

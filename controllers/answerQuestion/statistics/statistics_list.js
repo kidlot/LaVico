@@ -114,9 +114,10 @@ module.exports={
     },
     viewIn:function(){
         $("input[name='btnDel']").click(function(){
-            var id=$(this).parent().prev().prev("input[type=hidden]").val();
-            $.get("/lavico/answerQuestion/statistics/statistics_list:del",{_id:id} ,function(result){
-                location.href='/lavico/answerQuestion/statistics/statistics_list';
+            var themeVal = $("#del").val();
+            var themeValArr= themeVal.split("_");
+            $.get("/lavico/answerQuestion/statistics/statistics_list:del?_id="+themeValArr[2] ,function(result){
+                location.href='/lavico/answerQuestion/statistics/statistics_list?themetype=1';
             });
         });
 

@@ -12,12 +12,14 @@ module.exports={
         this.req.session.allCountPeople=0
         var allRight=[]
 
+
+
         docOne.finishCount=seed.finishCount
         docOne.totalPop=seed.totalPop
-        //父进程变量传入字变量
+        //父进程变量传入子变量
         seed["$lab"]= {_id:seed._id}
         seed["$score"]={_id:seed._id}
-        seed["$finishPeople"]= {_id:seed._id}
+        seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop}
         seed["$exportXsl"]={_id:seed._id}
 
         then.step(function(){
@@ -96,6 +98,9 @@ module.exports={
             nut.model.docs=docOne;
 
         })
+
+        nut.model.finishCount=seed.finishCount
+        nut.model.totalPop=seed.totalPop
 
     },
     actions:{
@@ -220,11 +225,21 @@ module.exports={
                 var then=this;
                 var docs_themeQuestion3;
                 var _id=seed._id;
+
+                var finishCount=seed.finishCount;
+                var totalPop=seed.totalPop;
+                nut.model._id=_id;
+
+                nut.model.finishCount=finishCount
+                nut.model.totalPop=totalPop;
+                console.log(_id)
+
                 var finishMan=[];
                 try{
                     then.step(function(){
-                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,getLabel:"",getGift:"",compScore:""})
+                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":"0"})
                             .toArray(then.hold(function(err,doc){
+                                console.log("1",doc)
                                 for(var i in doc){
                                     var manInfo={};
                                     manInfo.name=doc[i].wechatid;
@@ -232,23 +247,24 @@ module.exports={
                                 }
                             }))
                     });
+
                     then.step(function(){
                         for(var i in finishMan){
                             (function(i){
-                                helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name})
+                                helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name,"type":{$ne:"0"}})
                                     .toArray(then.hold(function(err,doc){
-                                        for(var i in doc){
 
                                             for(var j in finishMan){
-                                                if(finishMan[j].name==doc[i].wechatid){
-                                                    finishMan[j].getLabel=doc[i].getLabel
-                                                    finishMan[j].getGift=doc[i].getGift
-                                                    finishMan[j].compScore=doc[i].compScore
-                                                    finishMan[j].createTime=doc[i].createTime;
+                                                if(finishMan[j].name==doc[0].wechatid){
+                                                    finishMan[j].getLabel=doc[0].getLabel
+                                                    finishMan[j].getGift=doc[0].getGift
+                                                    finishMan[j].compScore=doc[0].getScore
+                                                    finishMan[j].createTime=doc[0].createTime;
 
                                                     (function(j){
                                                         helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
                                                             if(err) throw err
+                                                            console.log("doc",doc)
                                                             if(doc){
                                                                  finishMan[j].realname=doc.realname
                                                                  finishMan[j].gender=doc.gender
@@ -259,7 +275,7 @@ module.exports={
                                                     })(j)
                                                 }
                                             }
-                                        }
+                                        //}
                                     }))
                             })(i)
                         }
@@ -269,22 +285,35 @@ module.exports={
                         pageSize=10
                         page={}
                         page.lastPage=finishMan.length%pageSize==0 ? parseInt(finishMan.length/pageSize) : parseInt(finishMan.length/pageSize)+1;
-                        page.currentPage=typeof(seed.page)=="undefined"?1:seed.page
-                        page.totalCount=finishMan.length
-                        page.docs=[]
+                        page.currentPage = typeof(seed.page)=="undefined"?1:parseInt(seed.page);
+                        page.totalCount=finishMan.length;
+                        var data=[];
 
-                        for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+10;j++){
-                            if(typeof(finishMan[j])!="undefined")
-                                page.docs.push(finishMan[j])
+                        for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+pageSize;j++){
+                                if(typeof finishMan[j] !='undefined'){
+                                    data.push(finishMan[j])
+                                }
                         }
-                        nut.model.page=page.docs
-                        nut.model._id=_id
-                        //nut.model.optionId=optionId
+                        nut.model.page=page || {};
+                        for(var _i=0;_i<data.length;_i++){
+                            data[_i].realname =data[_i].realname || "姓名不详";
+                            data[_i].getLabel = data[_i].getLabel || "暂无";
+                            data[_i].getGift = data[_i].getGift || "暂无";
+                            data[_i].compScore = data[_i].compScore || "暂无";
+                            data[_i].createTime = formatTime(data[_i].createTime) || null;
+                            data[_i].gender = sex(data[_i].gender) || null;
+                            data[_i].birthday =year(data[_i].birthday)  || "";
+                            data[_i].city = data[_i].city || "暂无";
+
+                        }
+                        nut.model.data=data;
+
                     })
                 }catch(e){
                     if(e) throw e;
                 }
             },
+
             viewIn:function(){
                 $("input[name=btnExcel]").click(function(){
                     $.get("statistics_true:exportXsl",{_id:$("input[name=_id]").val()},function(result){
@@ -385,4 +414,49 @@ module.exports={
                 },'.childview:last()>.ocview') ;
             });
     }
+}
+function   formatTime(now){
+    var   now = new Date(now);
+    var   year=now.getFullYear();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+    return   year+"-"+month+"-"+date;
+}
+
+function sex(sex){
+    if(typeof (sex)!="undefined")
+        if(sex=="male"){
+            return "男";
+        }
+        if(sex=="female"){
+            return "女";
+        }
+    else{
+        return "性别不详";
+    }
+}
+
+function year(time){
+    if(typeof (time)!="undefined" ){
+        var   now = new Date(time);
+        var   year=now.getFullYear();
+
+        var date=new Date;
+        var years=date.getFullYear();
+        var sa = parseInt(years) -year;
+        return sa || "0";
+    }else{
+        return "年龄不详";
+    }
+//    var   now = new Date(now);
+//    var   year=now.getFullYear();
+//    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+//    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+//    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+//    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+//    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+//    return   year;
 }

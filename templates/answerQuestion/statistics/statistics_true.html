@@ -12,7 +12,6 @@
     .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
     .borderBtm{border-bottom:1px solid darkgray;}
 </style>
-
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
     <li class="b02"><a href="/lavico/answerQuestion/statistics/statistics_list" class="stay">问答测试</a> <em></em></li>
@@ -37,6 +36,7 @@
                 <td class="width50">全对</td>
                 <td class="width50">完成率</td>
                 <td class="width50">全对率</td>
+                <!--<td class="width50">操作</td>-->
             </tr>
             <tr class="borderBtm">
                 <td class="width250" id="abc">{@docs.doc.theme}</td>
@@ -66,6 +66,7 @@
                         {@parseInt(docs.totalPop/allCountPeople*100)}%
                     </if>
                 </td>
+                <!--<td class="width50"><a href="statistics_Detail?themeId={@docs.doc._id}">查看详情</a></td>-->
             </tr>
         </table>
         </div>
