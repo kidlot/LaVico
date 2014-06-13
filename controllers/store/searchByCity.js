@@ -120,10 +120,10 @@ module.exports={
                 nut.model.wxid = seed.wxid;
                 var city;
                 console.log(typeof (seed.city))
-                if(seed.city!="null"){
-                    nut.model.city = seed.city+"市";
-                }else{
+                if(seed.city == "null"){
                     nut.model.city = seed.city
+                }else{
+                    nut.model.city = seed.city+"市";
                 }
 
                 console.log(seed.city);
