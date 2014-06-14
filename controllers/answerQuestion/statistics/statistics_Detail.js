@@ -6,6 +6,8 @@ module.exports={
         var themeId = seed.themeId;
         var finishdoc=[];
         var no_finishdoc;
+        var themetype = seed.themetype ? seed.themetype : 0;
+        nut.model.themetype = themetype;
 
         //完成
         this.step(function(){

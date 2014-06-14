@@ -149,7 +149,7 @@ module.exports={
         $("input[name='btnStatistics']").click(function(){
             var themeVal=$(this).next("input[name='tongji']").val();
             var themeValArr= themeVal.split("_");
-            location.href="/lavico/answerQuestion/statistics/statistics_true?_id="+themeValArr[2]+"&finishCount="+themeValArr[0]+"&totalPop="+themeValArr[1];
+            location.href="/lavico/answerQuestion/statistics/statistics_true?_id="+themeValArr[2]+"&finishCount="+themeValArr[0]+"&totalPop="+themeValArr[1]+"&themetype="+themeValArr[3];
         });
     }
 }

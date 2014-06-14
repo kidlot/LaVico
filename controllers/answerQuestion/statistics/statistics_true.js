@@ -10,6 +10,8 @@ module.exports={
         var _id=seed._id
         var docOne={}
         this.req.session.allCountPeople=0
+        var themetype = seed.themetype ? seed.themetype : 0;
+        nut.model.themetype = themetype;
         var allRight=[]
 
 

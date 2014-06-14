@@ -14,7 +14,7 @@
 </style>
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/statistics/statistics_list" class="stay">问答测试</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/statistics/statistics_list?themetype={@themetype}" class="stay">问答测试</a> <em></em></li>
     <li class="active"><span>统计</span></li>
 </ul>
 
@@ -69,7 +69,7 @@
                         {@parseInt(docs.totalPop/allCountPeople*100)}%
                     </if>
                 </td>
-                <td class="width50"><a href="statistics_Detail?themeId={@docs.doc._id}">查看详情</a></td>
+                <td class="width50"><a href="statistics_Detail?themeId={@docs.doc._id}&themetype={@themetype}">查看详情</a></td>
             </tr>
                 </tbody>
         </table>
@@ -112,7 +112,7 @@
                             </if>
                         </foreach>
                     </td>
-                    <td class="width50"><a href="statistics_oneDetail?themeId={@docs.doc._id}&optionId={@doc3.optionId}">统计</a></td>
+                    <td class="width50"><a href="statistics_oneDetail?themeId={@docs.doc._id}&optionId={@doc3.optionId}&themetype={@themetype}">统计</a></td>
                 </tr>
              </foreach>
                 </tbody>

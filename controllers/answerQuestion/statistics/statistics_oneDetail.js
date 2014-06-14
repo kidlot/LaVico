@@ -7,6 +7,8 @@ module.exports={
         var optionId=seed.optionId
         var resultJson
         var allPartakeNum=0;
+        var themetype = seed.themetype ? seed.themetype : 0;
+        nut.model.themetype = themetype;
 
         seed["$visitedPartake"]={_id:themeId,optionId:optionId}
 
