@@ -4,7 +4,8 @@
         <div style="margin-left: 17px;"><a href="/lavico/answerQuestion/statistics/statistics_true:exportXsl?_id={@_id}">全部导出</a></div>
     </div>
 
-    <table class="tableSty">
+    <table class="table table-hover" id="tagList">
+        <thead>
         <tr class="staCount borderBtm">
             <td style="width: 30px;"><input type="checkbox" name="all"></input></td>
             <td class="width50">时间</td>
@@ -16,6 +17,8 @@
             <td class="width50">获得标签</td>
             <td class="width50">奖励积分</td>
         </tr>
+        </thead>
+        <tbody>
     <foreach for="@data" var="onef">
         <tr class="borderBtm">
             <td style="width: 30px;"><input type="checkbox" name="all"></input></td>
@@ -29,6 +32,7 @@
             <td class="width50">{@onef.compScore}</td>
         </tr>
     </foreach>
+        </tbody>
     </table>
     <div style="margin-left: 17px;">
         <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_true:finishPeople?_id={@_id}&finishCount={@finishCount}&totalPop={@totalPop}&page=%pagenum%" />
