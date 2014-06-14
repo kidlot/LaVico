@@ -35,7 +35,7 @@
                             <td class="width50">结束时间</td>
                             <td class="width50">类型</td>
                             <td class="width50">完/参</td>
-                            <td style="width: 30px">完成率</td>
+                            <td style="width: 50px">完成率</td>
                             <td class="width100">操作</td>
                         </tr>
                     </thead>
@@ -63,11 +63,11 @@
                         </if>
                     </td>
                             <td class="width50">&nbsp;&nbsp;{@doc.finishCount}/{@doc.totalPop}</td>
-                            <td style="width: 30px">
+                            <td style="width: 50px">
                      <if condition="{@doc.totalPop==0}">
                         0%
                      <else/>
-                        {@((parseInt(doc.finishCount)/parseInt(doc.totalPop))).toFixed(3)*100}%
+                         {@doc.count}
                      </if>
                     </td>
                             <td class="width100">

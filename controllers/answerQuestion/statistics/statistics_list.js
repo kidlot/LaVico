@@ -80,6 +80,28 @@ module.exports={
                     page.docs.push(themeArr[j])
             }
 
+            for(var i=0;i<page.docs.length;i++){
+                /*
+                 beginTime: '2014-06-11',
+                 endTime: '2014-06-15',
+                 isOpen: '1',
+                 theme: '型爸测试',
+                 themeType: 1,
+                 themeId: 53734ac3a22738b033000c7f,
+                 totalPop: 27,
+                 finishCount: 26
+                * */
+                page.docs[i].beginTime = page.docs[i].beginTime;
+                page.docs[i].endTime = page.docs[i].endTime;
+                page.docs[i].isOpen = page.docs[i].isOpen;
+                page.docs[i].theme = page.docs[i].theme;
+                page.docs[i].themeType = page.docs[i].themeType;
+                page.docs[i].themeId = page.docs[i].themeId;
+                page.docs[i].totalPop = page.docs[i].totalPop;
+                page.docs[i].finishCount = page.docs[i].finishCount;
+                page.docs[i].count = ForDight(page.docs[i].totalPop,page.docs[i].finishCount)
+              }
+
             nut.model.docs=page.docs;
             console.log("docs",page.docs)
         })
@@ -129,4 +151,9 @@ module.exports={
             location.href="/lavico/answerQuestion/statistics/statistics_true?_id="+themeValArr[2]+"&finishCount="+themeValArr[0]+"&totalPop="+themeValArr[1];
         });
     }
+}
+function   ForDight(Dight,How)
+{
+    var num   =   (How/Dight).toFixed(3)*100+"%";
+    return   num;
 }
