@@ -154,6 +154,6 @@ module.exports={
 }
 function   ForDight(Dight,How)
 {
-    var num   =   (How/Dight).toFixed(3)*100+"%";
+    var num   =   Math.round(How/Dight*100)+"%";
     return   num;
 }
