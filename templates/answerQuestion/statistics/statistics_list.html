@@ -14,7 +14,7 @@
 </style>
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/themeList" class="stay">问答测试</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/themeList?themetype={@themetype}" class="stay">问答测试</a> <em></em></li>
     <li class="active"><span>统计</span></li>
 </ul>
 
@@ -96,14 +96,14 @@
                         </div>
                         <div style="float:left; padding-top: 25px;">
                             <input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
-                            <input type="hidden" name="del" id="del" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}"/>
+                            <input type="hidden" name="del" id="del" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>
                         </div>
                     </td>
                         </tr>
                     </foreach>
                     </tbody>
                 </table>
-            <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@docs" model.url="/lavico/answerQuestion/statistics/statistics_list?page=%pagenum%" /></div>
+            <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@docs" model.url="/lavico/answerQuestion/statistics/statistics_list?themetype={@themetype}&page=%pagenum%" /></div>
         </div>
     </div>
 </div>

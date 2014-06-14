@@ -5,6 +5,7 @@ module.exports={
         var then=this;
         var themeArr=[];
         var themetype = seed.themetype ? seed.themetype : 0;
+        nut.model.themetype = themetype;
         this.step(function(){
             if(themetype==1){
                 helper.db.coll("lavico/themeQuestion").find({themeType:1}).toArray(this.hold(function(err,docs){
@@ -136,10 +137,10 @@ module.exports={
     },
     viewIn:function(){
         $("input[name='btnDel']").click(function(){
-            var themeVal = $("#del").val();
+            var themeVal = $(this).next("input[name='del']").val();
             var themeValArr= themeVal.split("_");
             $.get("/lavico/answerQuestion/statistics/statistics_list:del?_id="+themeValArr[2] ,function(result){
-                location.href='/lavico/answerQuestion/statistics/statistics_list?themetype=1';
+                location.href='/lavico/answerQuestion/statistics/statistics_list?themetype='+themeValArr[3];
             });
         });
 
