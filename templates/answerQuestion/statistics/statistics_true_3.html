@@ -3,11 +3,13 @@
         <input type="hidden" name="_id" value="{@_id}">
         <div style="margin-left: 17px;"><a href="/lavico/answerQuestion/statistics/statistics_true:exportXsl?_id={@_id}">全部导出</a></div>
     </div>
-    <table class="tableSty">
+
+    <table class="table table-hover" id="tagList">
+        <thead>
         <tr class="staCount borderBtm">
-            <td class="width50"><input type="checkbox" name="all"></input></td>
+            <td style="width: 30px;"><input type="checkbox" name="all"></input></td>
             <td class="width50">时间</td>
-            <td class="width100">姓名</td>
+            <td class="width50">姓名</td>
             <td class="width50">性别</td>
             <td class="width50">年龄</td>
             <td class="width50">城市</td>
@@ -15,23 +17,24 @@
             <td class="width50">获得标签</td>
             <td class="width50">奖励积分</td>
         </tr>
-    <foreach for="@page" var="onef">
+        </thead>
+        <tbody>
+    <foreach for="@data" var="onef">
         <tr class="borderBtm">
-            <td class="width50"><input type="checkbox" name="all"></input></td>
-            <td class="width50">{@(new Date(onef.createTime)).getFullYear()}-{@(new Date(onef.createTime)).getMonth()}-{@(new Date(onef.createTime)).getDate()}</td>
-            <td class="width100">{@onef.realname}</td>
-            <td class="width50">{@onef.gender=="male"?"男":"女"}</td>
-            <td class="width50">
-            <script>
-                document.write(new Date().getFullYear()-{@(new Date(onef.birthday)).getFullYear()})
-            </script>
-            </td>
+            <td style="width: 30px;"><input type="checkbox" name="all"></input></td>
+            <td class="width50">{@onef.createTime}</td>
+            <td class="width50"> {@onef.realname}</td>
+            <td class="width50">{@onef.gender}</td>
+            <td class="width50">{@onef.birthday}</td>
             <td class="width50">{@onef.city}</td>
             <td class="width50">{@onef.getGift}</td>
             <td class="width50">{@onef.getLabel}</td>
             <td class="width50">{@onef.compScore}</td>
         </tr>
     </foreach>
+        </tbody>
     </table>
-    <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_true:finishPeople?_id={@_id}&page=%pagenum%" /></div>
+    <div style="margin-left: 17px;">
+        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_true:finishPeople?_id={@_id}&finishCount={@finishCount}&totalPop={@totalPop}&page=%pagenum%" />
+    </div>
 </div>

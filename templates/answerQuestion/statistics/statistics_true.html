@@ -12,10 +12,9 @@
     .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
     .borderBtm{border-bottom:1px solid darkgray;}
 </style>
-
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/statistics/statistics_list" class="stay">问答测试</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/statistics/statistics_list?themetype={@themetype}" class="stay">问答测试</a> <em></em></li>
     <li class="active"><span>统计</span></li>
 </ul>
 
@@ -28,26 +27,30 @@
 
     <div nam="main">
         <div name="getCount">
-        <table class="tableSty">
-            <tr class="staCount borderBtm">
-                <td class="width250">名称</td>
-                <td class="width50">类型</td>
-                <td class="width50">参与</td>
-                <td class="width50">完成</td>
-                <td class="width50">全对</td>
-                <td class="width50">完成率</td>
-                <td class="width50">全对率</td>
-            </tr>
-            <tr class="borderBtm">
-                <td class="width250" id="abc">{@docs.doc.theme}</td>
-                <td class="width50">
-                <if condition="{@docs.doc.themeType==0}">
+            <table class="table table-hover" id="tagList">
+                <thead>
+                    <tr class="staCount borderBtm">
+                        <td class="width250">名称</td>
+                        <td class="width50">类型</td>
+                        <td class="width50">参与</td>
+                        <td class="width50">完成</td>
+                        <td class="width50">全对</td>
+                        <td class="width50">完成率</td>
+                        <td class="width50">全对率</td>
+                        <td class="width50">操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr class="borderBtm">
+                    <td class="width250" id="abc">{@docs.doc.theme}</td>
+                    <td class="width50">
+                    <if condition="{@docs.doc.themeType==0}">
                     对错型
-                <elseif condition="{@docs.doc.themeType==1"/>
+                    <elseif condition="{@docs.doc.themeType==1"/>
                     测试型
-                <else/>
+                    <else/>
                     主观型
-                </if>
+                     </if>
                 </td>
                 <td class="width50">{@docs.totalPop}</td>
                 <td class="width50">{@docs.finishCount}</td>
@@ -66,7 +69,9 @@
                         {@parseInt(docs.totalPop/allCountPeople*100)}%
                     </if>
                 </td>
+                <td class="width50"><a href="statistics_Detail?themeId={@docs.doc._id}&themetype={@themetype}">查看详情</a></td>
             </tr>
+                </tbody>
         </table>
         </div>
 
@@ -75,7 +80,8 @@
 
 
         <div name="getTheme" class="maginTop20">
-            <table class="tableSty">
+            <table class="table table-hover" id="tagList">
+                <thead>
                 <tr class="staCount borderBtm">
                     <td class="width50">序号</td>
                     <td class="width250">题目</td>
@@ -83,6 +89,8 @@
                     <td class="width50">正确率</td>
                     <td class="width50">操作</td>
                 </tr>
+                </thead>
+                <tbody>
              <foreach for="@docs.doc.options" var="doc3">
                  {@docs.options}
                 <tr class="borderBtm">
@@ -104,9 +112,10 @@
                             </if>
                         </foreach>
                     </td>
-                    <td class="width50"><a href="statistics_oneDetail?themeId={@docs.doc._id}&optionId={@doc3.optionId}">统计</a></td>
+                    <td class="width50"><a href="statistics_oneDetail?themeId={@docs.doc._id}&optionId={@doc3.optionId}&themetype={@themetype}">统计</a></td>
                 </tr>
              </foreach>
+                </tbody>
             </table>
         </div>
 

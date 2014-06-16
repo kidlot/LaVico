@@ -14,7 +14,7 @@
 </style>
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/themeList" class="stay">问答测试</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/themeList?themetype={@themetype}" class="stay">问答测试</a> <em></em></li>
     <li class="active"><span>统计</span></li>
 </ul>
 
@@ -23,24 +23,27 @@
         <div class="height35">
             <input type="button" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">所有问答测试</span>
             <a href="/lavico/answerQuestion/question/addQuestion"  name="btnSave" class="btn btn-embossed btn-primary" style="float: right; margin-left: 300px;">新增题目</a>
-    </div>
-    <div nam="main">
-        <div name="getMember" class="maginTop20">
-            <table class="tableSty">
-                <tr class="staCount borderBtm">
-                    <td class="width150">名称</td>
-                    <td class="width50">状态</td>
-                    <td class="width50">开始时间</td>
-                    <td class="width50">结束时间</td>
-                    <td class="width50">类型</td>
-                    <td class="width50">完/参</td>
-                    <td class="width50">完成率</td>
-                    <td class="width150">操作</td>
-                </tr>
-            <foreach for="@docs" var="doc" key="key">
-                <tr class="borderBtm">
-                    <td class="width150"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
-                    <td class="width50" id="openClose">
+        </div>
+        <div nam="main">
+            <div name="getMember" class="maginTop20">
+                <table class="table table-hover" id="tagList">
+                    <thead>
+                        <tr class="staCount borderBtm">
+                            <td style="width: 70px;">名称</td>
+                            <td class="width50">状态</td>
+                            <td class="width50">开始时间</td>
+                            <td class="width50">结束时间</td>
+                            <td class="width50">类型</td>
+                            <td class="width50">完/参</td>
+                            <td style="width: 50px">完成率</td>
+                            <td class="width100">操作</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <foreach for="@docs" var="doc" key="key">
+                        <tr class="borderBtm">
+                            <td style="width: 70px;"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
+                            <td class="width50" id="openClose">
                         <input type="hidden" name="id" id="docId" value="{@doc.themeId}">
                         <if condition="{@doc.isOpen==1}">
                             进行中
@@ -48,9 +51,9 @@
                             已关闭
                         </if>
                     </td>
-                    <td class="width50">{@doc.beginTime}</td>
-                    <td class="width50">{@doc.endTime}</td>
-                    <td class="width50">
+                            <td class="width50">{@doc.beginTime}</td>
+                            <td class="width50">{@doc.endTime}</td>
+                            <td class="width50">
                         <if condition="{@doc.themeType==0}">
                             对错型
                         <elseif condition="{@doc.themeType==1}"/>
@@ -59,15 +62,15 @@
                             调查题
                         </if>
                     </td>
-                    <td class="width50">&nbsp;&nbsp;{@doc.finishCount}/{@doc.totalPop}</td>
-                    <td style="width: 30px">
+                            <td class="width50">&nbsp;&nbsp;{@doc.finishCount}/{@doc.totalPop}</td>
+                            <td style="width: 50px">
                      <if condition="{@doc.totalPop==0}">
                         0%
                      <else/>
-                        {@(parseInt(doc.finishCount)/parseInt(doc.totalPop))*100}%
+                         {@doc.count}
                      </if>
                     </td>
-                    <td class="width150">
+                            <td class="width100">
                         <div style="float:left; padding-top: 20px;">
 
                             <div class="switch has-switch way">
@@ -89,16 +92,18 @@
                             </div>
 
                             <input type="button"  class="btn btn-xs btn-primary mhm" style=" margin-top: -18px"  name="btnStatistics"  value="统计">
-                            <input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}"
+                            <input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>
                         </div>
                         <div style="float:left; padding-top: 25px;">
                             <input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
+                            <input type="hidden" name="del" id="del" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>
                         </div>
                     </td>
-                </tr>
-            </foreach>
-            </table>
-            <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@docs" model.url="/lavico/answerQuestion/statistics/statistics_list?page=%pagenum%" /></div>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@docs" model.url="/lavico/answerQuestion/statistics/statistics_list?themetype={@themetype}&page=%pagenum%" /></div>
         </div>
     </div>
 </div>
