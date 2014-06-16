@@ -115,7 +115,7 @@ module.exports={
                 var finishMan=[]
 
                     then.step(function(){
-                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0})
+                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,"type":"0"})
                             .toArray(then.hold(function(err,doc){
                                 for(var i in doc){
                                     var manInfo={};
@@ -127,7 +127,7 @@ module.exports={
                     then.step(function(){
                         for(var i in finishMan){
                             (function(i){
-                                helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name})
+                                helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name,"type":{$ne:"0"}})
                                     .toArray(then.hold(function(err,doc){
                                         for(var i in doc){
 
@@ -197,6 +197,13 @@ module.exports={
                             }else{
                                 city= finishMan[i].city
                             }
+
+                            var realname
+                            if(typeof (finishMan[i].realname)=="undefined"){
+                                realname=""
+                            }else{
+                                realname= finishMan[i].realname
+                            }
                             var getGift
                             if(typeof (finishMan[i].getGift)=="undefined"){
                                 getGift=""
@@ -215,14 +222,14 @@ module.exports={
                             }else{
                                 getScore= finishMan[i].getScore
                             }
-                           rows = [
-                               createtime,
-                               finishMan[i].realname,
-                               birthday,
-                               city,
-                               getGift,
-                               getLabel,
-                               getScore
+                            rows = [
+                                createtime,
+                                realname,
+                                birthday,
+                                city,
+                                getGift,
+                                getLabel,
+                                getScore
                             ]
                             conf.rows.push(rows)
                         }
