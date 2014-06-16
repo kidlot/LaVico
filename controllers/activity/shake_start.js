@@ -479,9 +479,10 @@ module.exports = {
 
                     if(_flag == 1){
 
-                        activity.PROMOTION_CODE = _lotteryInfo.PROMOTION_CODE;
+                        activity.promotion_code = _lotteryInfo.PROMOTION_CODE;
                         activity.promotion_name = _lotteryInfo.PROMOTION_NAME;
                         activity.promotion_desc = _lotteryInfo.PROMOTION_DESC;
+                        activity.promotion_qty = _lotteryInfo.PROMOTION_QTY || null;
                         activity.display_name = _lotteryInfo.display_name;
                         activity.lottery_chance = _lotteryInfo.lottery_chance;
 

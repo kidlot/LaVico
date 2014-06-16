@@ -12,7 +12,7 @@
     , process: function(seed,nut)
     {
 
-        nut.model._id = seed._id
+        nut.model._id = seed._id;//活动ID
         var then = this
         var docs = {};
 
@@ -27,10 +27,15 @@
                 //docs._id.toString()活动唯一标识
                 helper.db.coll("welab/customers").find({"shake.aid":docs._id.toString()}).toArray(then.hold(function(err,_doc2){
                     docs.sumFavorites = _doc2.length;//用户表里的摇一摇记录
+                    console.log('-------------------------');
+                    console.log(_doc2);
+                    console.log(_doc2.length);
+                    console.log('-------------------------');
+
                     for(var i=0;i<_doc2.length;i++){
                       for(var j=0;j<_doc2[i].shake.length;j++){
                        if(_doc2[i].shake[j].aid == docs._id.toString()){
-                          real_count++;
+                          real_count++;//中奖次数
                         }                        
                       }
                     }
@@ -53,15 +58,28 @@
                         ]
                         ,this.hold(function(err,doc){
                           docs.total = doc.length;
-                          for(var i=0;i<doc.length;i++){
-                            real_total += doc[i].total;
+                          console.log('+++++++++++++++++++');
+                          console.log('real_count:');
+                          console.log(doc);
+                          console.log('+++++++++++++++++++');
+
+                            for(var i=0;i<doc.length;i++){
+                                real_total += doc[i].total;
+                            }
                           }
-                        })
-                    )
+                        ))
         })
 
         this.step(function(){
-            docs.reality_chance = Math.round(real_count/real_total*100);
+            docs.reality_chance = Math.round(real_count/real_total*100);//真实中奖概率
+            var _sum = 0;
+            for(var _i=0;_i<docs.lottery.length;_i++){
+                _sum+=parseInt(docs.lottery[_i].lottery_chance);
+            }
+            docs.lottery_chance = _sum;//中奖概率
+            docs.real_count = real_count;//总共中奖多少次
+            docs.real_total = real_total;//总共参加多少次
+
             nut.model.doc = docs
             console.log(docs);
         })
@@ -110,10 +128,3 @@
 
 
 }
-
-
-
-
-
-
-
