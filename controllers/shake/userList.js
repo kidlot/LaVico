@@ -22,19 +22,22 @@ module.exports = {
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
-                {display: '时间', name : $(".unwind").val()+'.createDate', width : 150, sortable : true},
-                {display: '姓名', name : 'realname', width : 150, sortable : true},
-                {display: '标签', name : 'tags', width : 292, sortable : true},
-                {display: '名称', name : $(".unwind").val()+'.name', width : 150, sortable : true},
-                {display: '面值', name : $(".unwind").val()+'.QTY', width : 150, sortable : true},
-
+                {display: '时间', name : $(".unwind").val()+'.createDate', width : 80, sortable : true},
+                {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true},
+                {display: '姓名', name : 'realname', width : 80, sortable : true},
+                {display: 'memberID', name :$(".unwind").val()+'.memberID', width : 80, sortable : true},
+                {display: '券名', name : $(".unwind").val()+'.promotion_name', width : 100, sortable : true},
+                {display: '券号', name : $(".unwind").val()+'.coupon_no', width : 180, sortable : true},
+                {display: '券中奖率', name : $(".unwind").val()+'.lottery_chance', width : 80, sortable : true},
+                {display: '消耗积分', name : $(".unwind").val()+'.points', width : 80, sortable : true},
+                {display: '券名称', name : $(".unwind").val()+'.display_name', width : 80, sortable : true},
+                {display: '面值', name : $(".unwind").val()+'.qty', width : 30, sortable : true},
                 {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
                 {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
+                {display: '省份', name : 'province', width : 80, sortable : true, hide:true},
                 {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
-                {display: '已关注(天)', name : 'followTime', width : 70, sortable : true, hide:true},
-                {display: '已注册(天)', name : 'registerTime', width : 70, sortable : true, hide:true},
-                {display: '未会话(天)', name : 'lastMessageTime', width : 70, sortable : true, hide:true},
-                {display: '会话数(占比)', name : 'messageCount', width : 100, sortable : true, hide:true}
+                {display: '标签', name : 'tags', width : 292, sortable : true}
+
             ],
             //sortname: "input",
             sortorder: "desc",
