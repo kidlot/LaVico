@@ -135,7 +135,7 @@ module.exports={
                                                 if(finishMan[j].name==doc[i].wechatid){
                                                     finishMan[j].getLabel=doc[i].getLabel
                                                     finishMan[j].getGift=doc[i].getGift
-                                                    finishMan[j].compScore=doc[i].compScore
+                                                    finishMan[j].getScore=doc[i].getScore
                                                     finishMan[j].createTime=doc[i].createTime;
 
                                                     (function(j){
@@ -190,21 +190,39 @@ module.exports={
                         for(var i in finishMan){
                             var rows
                             var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+new Date(finishMan[i].createTime).getMonth()+"-"+new Date(finishMan[i].createTime).getDate();
-                        var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
+                            var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
                             var city
                             if(typeof (finishMan[i].city)=="undefined"){
                                 city=""
                             }else{
                                 city= finishMan[i].city
                             }
+                            var getGift
+                            if(typeof (finishMan[i].getGift)=="undefined"){
+                                getGift=""
+                            }else{
+                                getGift= finishMan[i].getGift
+                            }
+                            var getLabel
+                            if(typeof (finishMan[i].getLabel)=="undefined"){
+                                getLabel=""
+                            }else{
+                                getLabel= finishMan[i].getLabel
+                            }
+                            var getScore
+                            if(typeof (finishMan[i].getScore)=="undefined"){
+                                getScore=""
+                            }else{
+                                getScore= finishMan[i].getScore
+                            }
                            rows = [
                                createtime,
-                                finishMan[i].realname,
+                               finishMan[i].realname,
                                birthday,
                                city,
-                                finishMan[i].getGift,
-                                finishMan[i].getLabel,
-                                finishMan[i].compScore
+                               getGift,
+                               getLabel,
+                               getScore
                             ]
                             conf.rows.push(rows)
                         }

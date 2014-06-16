@@ -212,6 +212,13 @@ module.exports={
                             gender= "男"
                         }
 
+                        var city
+                        if(typeof (visitePeopleList[i].city)=="undefined"){
+                            city=""
+                        }else{
+                            city= visitePeopleList[i].city
+                        }
+
                         rows = [
                             visitePeopleList[i].realname,
                             gender,
