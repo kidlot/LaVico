@@ -62,6 +62,7 @@ module.exports={
 
         this.step(function(list){
             nut.model.list = list;
+            console.log("list",list)
 
         });
     },
