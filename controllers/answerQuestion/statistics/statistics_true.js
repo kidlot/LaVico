@@ -189,43 +189,51 @@ module.exports={
                         conf.rows = [];
                         for(var i in finishMan){
                             var rows
+
                             var realname
                             if(typeof (finishMan[i].realname)=="undefined"){
                                 realname=""
                             }else{
                                 realname= finishMan[i].realname
                             }
+
                             var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+new Date(finishMan[i].createTime).getMonth()+"-"+new Date(finishMan[i].createTime).getDate();
+
                             var birthday ;
                             if(typeof (finishMan[i].birthday)=="undefined"){
                                 birthday="0"
                             }else{
                                 birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
                             }
+
                             var city
                             if(typeof (finishMan[i].city)=="undefined"){
                                 city=""
                             }else{
                                 city= finishMan[i].city
                             }
+
                             var getGift
                             if(typeof (finishMan[i].getGift)=="undefined"){
                                 getGift=""
                             }else{
                                 getGift= finishMan[i].getGift
                             }
+
                             var getLabel
                             if(typeof (finishMan[i].getLabel)=="undefined"){
                                 getLabel=""
                             }else{
                                 getLabel= finishMan[i].getLabel
                             }
+
                             var getScore
                             if(typeof (finishMan[i].getScore)=="undefined"){
                                 getScore=""
                             }else{
                                 getScore= finishMan[i].getScore
                             }
+
                            rows = [
                                createtime,
                                realname,
