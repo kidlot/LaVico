@@ -82,16 +82,6 @@ module.exports={
             }
 
             for(var i=0;i<page.docs.length;i++){
-                /*
-                 beginTime: '2014-06-11',
-                 endTime: '2014-06-15',
-                 isOpen: '1',
-                 theme: '型爸测试',
-                 themeType: 1,
-                 themeId: 53734ac3a22738b033000c7f,
-                 totalPop: 27,
-                 finishCount: 26
-                * */
                 page.docs[i].beginTime = page.docs[i].beginTime;
                 page.docs[i].endTime = page.docs[i].endTime;
                 page.docs[i].isOpen = page.docs[i].isOpen;
@@ -104,7 +94,6 @@ module.exports={
               }
 
             nut.model.docs=page.docs;
-            console.log("docs",page.docs)
         })
     },
     actions:{
@@ -153,8 +142,7 @@ module.exports={
         });
     }
 }
-function   ForDight(Dight,How)
-{
+function   ForDight(Dight,How){
     var num   =   Math.round(How/Dight*100)+"%";
     return   num;
 }
