@@ -135,7 +135,7 @@ module.exports={
                                                 if(finishMan[j].name==doc[i].wechatid){
                                                     finishMan[j].getLabel=doc[i].getLabel
                                                     finishMan[j].getGift=doc[i].getGift
-                                                    finishMan[j].compScore=doc[i].compScore
+                                                    finishMan[j].getScore=doc[i].getScore
                                                     finishMan[j].createTime=doc[i].createTime;
 
                                                     (function(j){
@@ -190,21 +190,39 @@ module.exports={
                         for(var i in finishMan){
                             var rows
                             var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+new Date(finishMan[i].createTime).getMonth()+"-"+new Date(finishMan[i].createTime).getDate();
-                        var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
+                            var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
                             var city
                             if(typeof (finishMan[i].city)=="undefined"){
                                 city=""
                             }else{
                                 city= finishMan[i].city
                             }
+                            var getGift
+                            if(typeof (finishMan[i].getGift)=="undefined"){
+                                getGift=""
+                            }else{
+                                getGift= finishMan[i].getGift
+                            }
+                            var getLabel
+                            if(typeof (finishMan[i].getLabel)=="undefined"){
+                                getLabel=""
+                            }else{
+                                getLabel= finishMan[i].getLabel
+                            }
+                            var getScore
+                            if(typeof (finishMan[i].getScore)=="undefined"){
+                                getScore=""
+                            }else{
+                                getScore= finishMan[i].getScore
+                            }
                            rows = [
                                createtime,
-                                finishMan[i].realname,
+                               finishMan[i].realname,
                                birthday,
                                city,
-                                finishMan[i].getGift,
-                                finishMan[i].getLabel,
-                                finishMan[i].compScore
+                               getGift,
+                               getLabel,
+                               getScore
                             ]
                             conf.rows.push(rows)
                         }
@@ -234,14 +252,12 @@ module.exports={
 
                 nut.model.finishCount=finishCount
                 nut.model.totalPop=totalPop;
-                console.log(_id)
 
                 var finishMan=[];
                 try{
                     then.step(function(){
                         helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":"0"})
                             .toArray(then.hold(function(err,doc){
-                                console.log("1",doc)
                                 for(var i in doc){
                                     var manInfo={};
                                     manInfo.name=doc[i].wechatid;
@@ -266,7 +282,6 @@ module.exports={
                                                     (function(j){
                                                         helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
                                                             if(err) throw err
-                                                            console.log("doc",doc)
                                                             if(doc){
                                                                  finishMan[j].realname=doc.realname
                                                                  finishMan[j].gender=doc.gender
@@ -342,7 +357,7 @@ module.exports={
                     for(var i in docs_themeQuestion2.scoreMinMax){
                         var score=docs_themeQuestion2.scoreMinMax[i].getScore;
                         (function(x,w){
-                            helper.db.coll("lavico/custReceive").count({themeId:helper.db.id(_id),isFinish:true,compScore:x},
+                            helper.db.coll("lavico/custReceive").count({themeId:helper.db.id(_id),isFinish:true,getScore:x},
                               then.hold(function(err,doc){
                                 if(err) throw err;
                                 w.sinScore=doc;
@@ -373,7 +388,7 @@ module.exports={
                 });
 
                 then.step(function(){
-                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,getLabel:"",getGift:"",compScore:""})
+                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":{$ne:"0"}})
                         .toArray(function(err,doc){
 
                             if(err) throw err;
@@ -381,12 +396,8 @@ module.exports={
                             var all=0;
                             for(var i in docs_themeQuestion.scoreMinMax){
                                 for(var j in doc){
-
-
                                     if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=doc[j].getChooseScore &&
-                                        doc[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore)
-                                    {
-
+                                        doc[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore){
                                         if(docs_themeQuestion.scoreMinMax[i].sinCount){
                                             docs_themeQuestion.scoreMinMax[i].sinCount++;
                                         }else{
