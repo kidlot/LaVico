@@ -4,6 +4,14 @@
         margin-bottom: 5px;
         font-weight: bold;
     }
+
+    th,td{
+        text-align: center;
+    }
+
+
+
+
 </style>
 
 <ul class="breadcrumb clearfix">
@@ -39,8 +47,6 @@
             <thead>
             <tr>
                 <th>活动名称</th>
-                <th>优惠券名称</th>
-                <th>面值</th>
                 <th>参与人数</th>
                 <th>获得人数</th>
                 <th>设定中奖率</th>
@@ -50,8 +56,6 @@
             <tbody>
             <tr>
                 <td>{@ doc.name}</td>
-                <td>{@ doc.lottery[0].coupon_name}</td>
-                <td>{@ doc.lottery[0].QTY}</td>
                 <td>{@ doc.total}</td>
                 <td>{@ doc.sumFavorites}</td>
                 <td>{@ doc.lottery[0].lottery_chance}%</td>
