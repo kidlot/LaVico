@@ -115,7 +115,7 @@ module.exports={
                 var finishMan=[]
 
                     then.step(function(){
-                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0})
+                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,"type":"0"})
                             .toArray(then.hold(function(err,doc){
                                 for(var i in doc){
                                     var manInfo={};
@@ -127,7 +127,7 @@ module.exports={
                     then.step(function(){
                         for(var i in finishMan){
                             (function(i){
-                                helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name})
+                                helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name,"type":{$ne:"0"}})
                                     .toArray(then.hold(function(err,doc){
                                         for(var i in doc){
 
@@ -189,23 +189,8 @@ module.exports={
                         conf.rows = [];
                         for(var i in finishMan){
                             var rows
-
-                            var realname
-                            if(typeof (finishMan[i].realname)=="undefined"){
-                                realname=""
-                            }else{
-                                realname= finishMan[i].realname
-                            }
-
                             var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+new Date(finishMan[i].createTime).getMonth()+"-"+new Date(finishMan[i].createTime).getDate();
-
-                            var birthday ;
-                            if(typeof (finishMan[i].birthday)=="undefined"){
-                                birthday="0"
-                            }else{
-                                birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
-                            }
-
+                            var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
                             var city
                             if(typeof (finishMan[i].city)=="undefined"){
                                 city=""
@@ -213,35 +198,38 @@ module.exports={
                                 city= finishMan[i].city
                             }
 
+                            var realname
+                            if(typeof (finishMan[i].realname)=="undefined"){
+                                realname=""
+                            }else{
+                                realname= finishMan[i].realname
+                            }
                             var getGift
                             if(typeof (finishMan[i].getGift)=="undefined"){
                                 getGift=""
                             }else{
                                 getGift= finishMan[i].getGift
                             }
-
                             var getLabel
                             if(typeof (finishMan[i].getLabel)=="undefined"){
                                 getLabel=""
                             }else{
                                 getLabel= finishMan[i].getLabel
                             }
-
                             var getScore
                             if(typeof (finishMan[i].getScore)=="undefined"){
                                 getScore=""
                             }else{
                                 getScore= finishMan[i].getScore
                             }
-
-                           rows = [
-                               createtime,
-                               realname,
-                               birthday,
-                               city,
-                               getGift,
-                               getLabel,
-                               getScore
+                            rows = [
+                                createtime,
+                                realname,
+                                birthday,
+                                city,
+                                getGift,
+                                getLabel,
+                                getScore
                             ]
                             conf.rows.push(rows)
                         }

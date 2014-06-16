@@ -212,10 +212,10 @@ module.exports={
                             profession= visitePeopleList[i].profession
                         }
                         var gender
-                        if(typeof (visitePeopleList[i].gender)=="male"){
-                            gender="男"
+                        if(visitePeopleList[i].gender=="female"){
+                            gender="女"
                         }else{
-                            gender= "女"
+                            gender= "男"
                         }
 
                         var city
