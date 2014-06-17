@@ -285,22 +285,7 @@ module.exports = {
                                 caption: '城市',
                                 type: 'string'
                             }, {
-                                caption: '关注次数',
-                                type: 'string'
-                            }, {
-                                caption: '消息总数',
-                                type: 'string'
-                            }, {
                                 caption: '性别',
-                                type: 'string'
-                            }, {
-                                caption: '生日',
-                                type: 'string'
-                            }, {
-                                caption: '关注时间',
-                                type: 'string'
-                            }, {
-                                caption: '注册时间',
                                 type: 'string'
                             }
                         ];

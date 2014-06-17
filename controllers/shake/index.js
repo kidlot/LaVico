@@ -83,6 +83,7 @@ module.exports = {
 
     },
     actions: {
+
         add: {
             layout: "welab/Layout",
             view: "lavico/templates/shake/add.html",
@@ -147,7 +148,6 @@ module.exports = {
                         }));
                     }
                 })
-
 
                 this.step(function (shake) {
                     shake = shake ? shake : {};
@@ -857,7 +857,7 @@ module.exports = {
                     aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
                     aFormInput['lottery_count'] = $("#lottery_count").val();
                     aFormInput['switcher'] = 'on';
-                    aFormInput['thumb'] = $('#thumb_upload').attr('src');//活动小图
+                    //aFormInput['thumb'] = $('#thumb_upload').attr('src');//活动小图
                     aFormInput['pic'] = $('#pic_upload').attr('src');//活动大图
                     aFormInput['createTime'] = new Date().getTime();
                     aFormInput['points'] = parseInt($("#points").val()) || 0;//每次游戏，所消耗的积分

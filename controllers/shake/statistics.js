@@ -71,7 +71,7 @@
         })
 
         this.step(function(){
-            docs.reality_chance = Math.round(real_count/real_total*100) || 0;//真实中奖概率
+            docs.reality_chance = Math.round(real_count/real_total*100);//真实中奖概率
             var _sum = 0;
             for(var _i=0;_i<docs.lottery.length;_i++){
                 _sum+=parseInt(docs.lottery[_i].lottery_chance);
