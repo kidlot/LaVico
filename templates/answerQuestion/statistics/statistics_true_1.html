@@ -9,8 +9,8 @@
         </thead>
         <tbody>
             <foreach for="@docs_1.scoreMinMax" var="doc">
-                <if condition="@doc.getLabel!=''">
-                    <tr class="borderBtm">
+                <tr class="borderBtm">
+                    <if condition="@doc.getLabel!=''">
                         <td class="width250">{@doc.getLabel}</td>
                         <td class="width50">{@doc.sinCount}</td>
                         <td class="width50" name="alltd">
@@ -19,10 +19,9 @@
                                 <else/>
                                 {@parseInt(doc.sinCount/all*100)}%
                             </if>
-
                         </td>
-                    </tr>
-                </if>
+                    </if>
+                </tr>
             </foreach>
         </tbody>
     </table>

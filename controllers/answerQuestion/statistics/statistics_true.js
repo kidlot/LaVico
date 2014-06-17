@@ -421,13 +421,10 @@ module.exports={
                                     }
                                 }
                             }
-
+                            nut.model.docs_1 =docs_themeQuestion;
                             nut.model.all=all;
+
                         })
-                })
-                then.step(function(){
-                    nut.model.docs_1 =docs_themeQuestion;
-                    console.log("docs_1",docs_themeQuestion.scoreMinMax)
                 })
             }
         }
