@@ -309,20 +309,20 @@ module.exports = {
                 $("#name").focus();
                 return	false;
             }
-            if(sex.length == 0){
+            if(sex.length == 0||sex == '请选择'){
                 window.popupStyle2.on("请选择性别",function(event){});
                 $("#sex").focus();
                 return	false;
             }
-            if($("#year").val() == ''){
+            if($("#year").val() == ''||$("#year").val() == '年'){
                 window.popupStyle2.on("请选择出生年月日",function(event){});
                 return	false;
             }
-            if($("#month").val() == ''){
+            if($("#month").val() == ''||$("#year").val() == '日'){
                 window.popupStyle2.on("请选择出生年月日",function(event){});
                 return	false;
             }
-            if($("#day").val() == ''){
+            if($("#day").val() == ''||$("#year").val() == '年'){
                 window.popupStyle2.on("请选择出生年月日",function(event){});
                 return	false;
             }
