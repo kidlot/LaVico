@@ -23,7 +23,7 @@ isRegister 是否注册：绑定、注册时写入true。解绑时false 单位�
 标签:tags<br/>
 备注：remarks<br/>
 性别：gender     值：male/female<br/>
-生日：birthday   单位是毫秒 getTime（）<br/>
+生日：birthday   单位是毫秒<br/>
 手机号码：mobile<br/>
 关注时间: followTime 单位是秒<br/>
 isFollow:true/false<br/>
@@ -51,8 +51,8 @@ isFollow:true/false<br/>
 		//unbind:解绑状态<br/>
 		}<br/>
 摇一摇活动：shake记录<br/>
-{
-   0:{
+{<br/>
+   0:{<br/>
       "aid": "536f35d08a79fdec096fe1ff",活动ID<br/>
       "uid": "oTVLcjkJrVNhwsUyYBxYHn-NU_Qc",微信ID<br/>
       "points": NumberInt(0),消耗积分<br/>
@@ -66,12 +66,11 @@ isFollow:true/false<br/>
       "display_name": "现金券",后台设置的显示的名称<br/>
       "lottery_chance": "90",当前券的获取概率（最大为100）<br/>
       "coupon_no": "AV1404016103"券号码<br/>
-   },
-   1:{},
-   2:{},
-   ...
-}
-
+   },<br/>
+   1:{},<br/>
+   2:{},<br/>
+   ...<br/>
+}<br/>
 
 <h2>lavico/user/logs表</h2>
 所有日后可能产生数据统计需求的地方，都要预先把数据记录到lavico/user/logs表中。
