@@ -131,9 +131,6 @@ module.exports = {
         });
 
         /*设置默认年月日数值*/
-//        $("#year").parent().find("input").val($("#year").val()+'年');
-//        $("#month").parent().find("input").val($("#month").val()+'月');
-//        $("#day").parent().find("input").val($("#day").val()+'日');
 
         function TGetDaysInMonth(iMonth, iYear) {
             var dPrevDate = new Date(iYear, iMonth, 0);
@@ -314,16 +311,16 @@ module.exports = {
                 $("#sex").focus();
                 return	false;
             }
-            if($("#year").val() == ''||$("#year").val() == '年'){
-                window.popupStyle2.on("请选择出生年月日",function(event){});
+            if($("#year").val().length  == 0||$("#model_year_input").val() == '年'){
+                window.popupStyle2.on("请选择生日的年",function(event){});
                 return	false;
             }
-            if($("#month").val() == ''||$("#year").val() == '日'){
-                window.popupStyle2.on("请选择出生年月日",function(event){});
+            if($("#month").val().length  == 0||$("#model_month_input").val() == '月'){
+                window.popupStyle2.on("请选择生日的月",function(event){});
                 return	false;
             }
-            if($("#day").val() == ''||$("#year").val() == '年'){
-                window.popupStyle2.on("请选择出生年月日",function(event){});
+            if($("#day").val().length  == 0||$("#model_day_input").val() == '日'){
+                window.popupStyle2.on("请选择生日的日",function(event){});
                 return	false;
             }
             if($("#mobile").val() =='' || !(/^1[3458]\d{9}$/i.test($("#mobile").val())) ){
@@ -331,7 +328,7 @@ module.exports = {
                 return	false;
             }
             if($("#id_code").val() == ''){
-                window.popupStyle2.on("验证码错误",function(event){});
+                window.popupStyle2.on("请填写验证码",function(event){});
                 return	false;
             }
             $('#loading').show();//显示加载框
