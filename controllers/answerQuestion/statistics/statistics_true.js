@@ -143,7 +143,7 @@ module.exports={
                                                             if(err) throw err
                                                             if(doc){
                                                                 finishMan[j].realname=doc.realname
-                                                                finishMan[j].gender=doc.gender
+                                                                finishMan[j].gender=doc.sex ||doc.gender
                                                                 finishMan[j].birthday=doc.birthday
                                                                 finishMan[j].city=doc.city
                                                             }
@@ -291,7 +291,7 @@ module.exports={
                                                             if(err) throw err
                                                             if(doc){
                                                                  finishMan[j].realname=doc.realname
-                                                                 finishMan[j].gender=doc.gender
+                                                                 finishMan[j].gender = doc.sex ||doc.gender
                                                                  finishMan[j].birthday=doc.birthday
                                                                  finishMan[j].city=doc.city
                                                             }
