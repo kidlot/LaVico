@@ -231,7 +231,7 @@ module.exports = {
                 editor.config.enterMode = CKEDITOR.ENTER_BR;
                 editor.config.language = 'zh-cn';
                 editor.config.width = '80%';
-                editor.config.height = 600;
+                editor.config.height = 400;
 
                 //保存按钮
                 window.save = function (){
@@ -625,7 +625,7 @@ module.exports = {
                 editor.config.enterMode = CKEDITOR.ENTER_BR;
                 editor.config.language = 'zh-cn';
                 editor.config.width = '80%';
-                editor.config.height = 600;
+                editor.config.height = 400;
 
 //                CKEDITOR.config.toolbar_Full = [
 //                    ['Source','-','Save','NewPage','Preview','-','Templates'],
