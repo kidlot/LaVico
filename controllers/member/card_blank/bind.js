@@ -263,6 +263,14 @@ module.exports = {
                 var tel_checked_status = $.trim($('#tel_checked_status').val());
                 var memberId = $.trim($('#memberId').val());
 
+                if(userTel.length == 0 || !(/^1[3458]\d{9}$/i.test(userTel)) ){
+
+                    window.popupStyle2.on("请输入正确的手机号码",function(event){
+                    });
+                    return	false;
+
+                }
+
                 if(userCaptcha.length == 0){
                     window.popupStyle2.on("请填写验证码",function(event){
                     });
@@ -482,6 +490,7 @@ module.exports = {
     }
     ,actions:{
 
+        /*第一步判断手机号码是否可用*/
         checkTel:{
             layout:null,
             view:null,
@@ -579,6 +588,7 @@ module.exports = {
 
             }
         },
+        /*第二步判断卡号码是否可以绑定*/
         checkCardNum:{
                         layout:null,
                         view:null,

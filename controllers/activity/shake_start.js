@@ -157,7 +157,8 @@ module.exports = {
                 this.step(function(){
                     /*判断用户积分是否足够*/
                     console.log("costPerShake:"+costPerShake);
-                    if(costPerShake >  0){
+                    if(costPerShake >=  0){
+
                         helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
 
                             console.log(doc);
@@ -167,14 +168,16 @@ module.exports = {
                             }else{
                                 memberId = "undefined";
                             }
+                            console.log('****************************************');
                             console.log("memberId:"+memberId);
+                            console.log('****************************************');
 
                             if(memberId == "undefined"){
                                 write_info(then,'{"result":"something-error"}');
                             }
                         }));
-
                     }
+
                 });
 
                 this.step(function(){
@@ -328,7 +331,7 @@ module.exports = {
                 this.step(function(){
                     /*判断用户积分是否足够*/
                     console.log("costPerShake:"+costPerShake);
-                    if(costPerShake >  0){
+                    if(costPerShake >=  0){
                         helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
 
                             console.log(doc);
@@ -559,10 +562,12 @@ module.exports = {
                                      write_info(then,'{"result":"unwin","limit":"yes","points":"'+shake.points+'","count":"'+_count+'"}');
                                      }
                                      /*摇一摇-活动券发放完毕处理-end*/
-                                }
-                                else{
+                                }else if(doc.error=='找不到对应的人员，请检查！'){
+                                    write_info(then,'{"result":"'+'lavico_no_found_wxid'+'"}');
+                                }else{
                                     write_info(then,'{"result":"'+doc.error+'"}');
                                 }
+
 
                             }
 
@@ -870,6 +875,11 @@ module.exports = {
                     }else if(data.result == 'your-points-not-enough'){
 
                         window.popupStyle2.on('您的积分不够了，快去朗维高门店消费或者参加抢积分活动吧！',function(event){
+                            flag = 1;
+                        });
+                    }else if(data.result == 'lavico_no_found_wxid'){
+
+                        window.popupStyle2.on('您的当前微信帐号可能未注册我们的会员，如需帮助，请拨打400-100-8866联系',function(event){
                             flag = 1;
                         });
 

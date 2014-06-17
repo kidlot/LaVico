@@ -83,6 +83,393 @@ module.exports = {
 
     },
     actions: {
+        add: {
+            layout: "welab/Layout",
+            view: "lavico/templates/shake/add.html",
+            process: function (seed, nut) {
+                var perPage = 1000;
+                var pageNum = seed.page ? seed.page : 1;
+                var then = this;
+                nut.model.host = this.req.headers.host;
+
+                this.step(function (doc) {
+                    middleware.request('Coupon/Promotions', {
+                        perPage: perPage,
+                        pageNum: pageNum
+                    }, this.hold(function (err, doc) {
+                        doc = doc.replace(/[\n\r\t]/, '');
+                        var doc_json = eval('(' + doc + ')');
+
+                        var page = {};
+                        page.lastPage = Math.ceil(doc_json.total / perPage);
+                        page.currentPage = pageNum;
+                        page.totalcount = doc_json.total;
+                        nut.model.page = page;
+
+                        //console.log(doc_json);
+
+                        if (doc_json && doc_json.list) {
+                            return doc_json.list;
+                        } else {
+                            return {};
+                        }
+                    }))
+                });
+                var list;
+                this.step(function (doc) {
+                    var count = 0;
+                    for (var i = 0; i < doc.length; i++) {
+                        (function (i) {
+                            helper.db.coll("lavico/activity").findOne({aid: doc[i].PROMOTION_CODE}, then.hold(function (err, detail) {
+                                count++;
+
+                                if (detail) {
+                                    doc[i].pic = detail.pic;
+
+                                }
+                                if (count == doc.length) {
+                                    list = doc
+                                    return doc;
+                                    then.terminate();
+                                }
+                            }));
+                        })(i);
+                    }
+                });
+
+                this.step(function () {
+                    if (seed._id) {
+                        helper.db.coll("lavico/shake").findOne({_id: helper.db.id(seed._id)}, then.hold(function (err, shake) {
+
+                            if (shake) {
+                                return shake;
+                            }
+                        }));
+                    }
+                })
+
+
+                this.step(function (shake) {
+                    shake = shake ? shake : {};
+                    doc = JSON.stringify(list);
+
+                    nut.model.list = list;
+                    nut.model.shake = shake;
+                    nut.model.doc = doc;
+
+                });
+            },
+            viewIn: function () {
+                $('#startDate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
+                })
+
+                $('#endDate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
+                })
+
+                if ($("#aid").val()) {
+                    aid = $("#aid").val();
+                    $("#activity_select  option").each(function () {
+                        if ($(this).val() == aid) {
+                            $(this).attr("selected", "true");
+                        }
+                        $(".promotion_detail").css('display', 'none');
+                        $("#" + aid).css('display', 'block');
+                        $("#" + aid + " .lottery_chance").val($('#lottery_chance').val());
+                    });
+                }
+
+                var lottery_input = $("#lottery_input").val();
+                if (lottery_input) {
+                    $("#lottery_cycle  option").each(function () {
+                        if ($(this).val() == lottery_input) {
+                            $(this).attr("selected", "true");
+                        }
+                    });
+                }
+
+                //添加
+                $('#add-coupons').click(function(){
+                    console.log($('#activity_select').val());
+                    var _PROMOTION_CODE = $('#activity_select').val();//_PROMOTION_CODE
+                    $("#" + _PROMOTION_CODE).css('display','block').find('.panel-body').css("background-color", "#eeeeee");
+                    $("#" + _PROMOTION_CODE).find('.display_name').focus();
+                    var _PROMOTION_NAME = $("#" + _PROMOTION_CODE).find('.PROMOTION_NAME').attr('data');
+                    //PROMOTION_NAME
+
+                    $.globalMessenger().post({
+                        message: "添加"+_PROMOTION_NAME+"优惠券成功",
+                        type: 'error',
+                        showCloseButton: true});
+                });
+
+                //删除
+                $('#del-coupons').click(function(){
+                    console.log($('#activity_select').val());
+                    var _PROMOTION_CODE = $('#activity_select').val();//_PROMOTION_CODE
+                    var _PROMOTION_NAME = $("#" + _PROMOTION_CODE).find('.PROMOTION_NAME').attr('data');
+
+                    $("#" + _PROMOTION_CODE).css('display', 'none');
+                    $.globalMessenger().post({
+                        message: "删除"+_PROMOTION_NAME+"优惠券成功",
+                        type: 'error',
+                        showCloseButton: true});
+                });
+
+                //编辑器
+                var editor = CKEDITOR.replace( 'mainContent', {
+                    toolbar: [
+                        [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+                    ]
+                });
+                editor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+                editor.config.enterMode = CKEDITOR.ENTER_BR;
+                editor.config.language = 'zh-cn';
+                editor.config.width = '80%';
+                editor.config.height = 400;
+
+                //保存按钮
+                window.save = function (){
+
+                    var aFormInput = {}
+
+                    var _inputCheck = true;
+
+                    /*日期判断*/
+                    var _startDate = $('#startDate').val();
+                    var startDate = new Date();
+                    var startDateTimeStamp;
+                    startDate.setFullYear(_startDate.substring(0,4));
+                    startDate.setMonth((parseInt(_startDate.substr(5,2))-1));
+                    startDate.setDate((parseInt(_startDate.substr(8,2))));
+                    startDate.setHours(0,0,0);
+                    startDateTimeStamp = Date.parse(startDate);//毫秒级
+
+                    var _endDate =$('#endDate').val();
+                    var endDate = new Date();
+                    var endDateTimeStamp;
+                    endDate.setFullYear(_endDate.substring(0,4));
+                    endDate.setMonth((parseInt(_endDate.substr(5,2))-1));
+                    endDate.setDate((parseInt(_endDate.substr(8,2))));
+                    endDate.setHours(0,0,0);
+                    endDateTimeStamp = Date.parse(endDate);//毫秒级
+
+
+                    var aid = $('#aid').val();
+                    if(startDateTimeStamp > endDateTimeStamp){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "开始时间必须比结束时间早！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+
+
+
+                    if(!$("#startDate").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择开始时间！",
+                            type: 'error',
+                            showCloseButton: true})
+
+                    }
+                    if(!$("#endDate").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择结束时间！",
+                            type: 'error',
+                            showCloseButton: true})
+
+                    }
+
+                    if(!$("#name").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请填写名称！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+
+
+                    if(!$('#lottery_cycle').val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请选择抽奖频率！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+                    if(!$('#lottery_count').val()){
+
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "请填写抽奖次数！",
+                            type: 'error',
+                            showCloseButton: true})
+                    }
+
+                    var reg = /^\d+$/;//数字正则
+
+                    if(!$.isNumeric($('#lottery_count').val())){
+
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "抽奖频率的值必须是数字！",
+                            type: 'error',
+                            showCloseButton: true});
+                    }else{
+
+                        if(parseInt($('#lottery_count').val()) < 0){
+                            _inputCheck = false;
+                            $.globalMessenger().post({
+                                message: "抽奖频率的值不能是负数！",
+                                type: 'error',
+                                showCloseButton: true});
+                        }else{
+                            if(parseInt($('#lottery_count').val()) != $('#lottery_count').val()){
+
+                                _inputCheck = false;
+                                $.globalMessenger().post({
+                                    message: "抽奖频率的值必须是整数！",
+                                    type: 'error',
+                                    showCloseButton: true});
+
+                            }
+                        }
+                    }
+
+                    if(!$.isNumeric($('#points').val())){
+
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "积分消耗的值必须是数字！",
+                            type: 'error',
+                            showCloseButton: true});
+                    }else{
+
+                        if(parseInt($('#points').val()) < 0){
+                            _inputCheck = false;
+                            $.globalMessenger().post({
+                                message: "积分消耗的值必须是零或者正整数！",
+                                type: 'error',
+                                showCloseButton: true});
+                        }else{
+                            if(parseInt($('#points').val()) != $('#points').val()){
+
+                                _inputCheck = false;
+                                $.globalMessenger().post({
+                                    message: "积分消耗的值必须是整数！",
+                                    type: 'error',
+                                    showCloseButton: true});
+
+                            }
+                        }
+                    }
+
+
+                    if(!_inputCheck){
+                        return false;
+                    }
+
+                    aFormInput['lottery'] = new Array();
+                    var _lottery_sum = 0;//所有的优惠券总概率必须小于等于100
+                    $(".promotion_detail").each(function(i,object){
+                        console.log($(object).is(':visible'));
+                        if($(object).is(':visible')){
+
+                            var _PROMOTION_NAME = $(object).find('.PROMOTION_NAME').attr('data');
+
+                            if(!$(object).find('.display_name').val()){
+                                _inputCheck = false;
+                                $.globalMessenger().post({
+                                    message: _PROMOTION_NAME + "的券名称不能为空！",
+                                    type: 'error',
+                                    showCloseButton: true})
+                                $(object).find('.display_name').focus().css('background-color','#1abc9c');
+
+                            }else{
+
+                                if(!$(object).find('.lottery_chance').val()){
+                                    _inputCheck = false;
+                                    $.globalMessenger().post({
+                                        message: _PROMOTION_NAME + "的抽奖概率不能为空！",
+                                        type: 'error',
+                                        showCloseButton: true})
+                                    $(object).find('.lottery_chance').focus().css('background-color','#1abc9c');
+
+                                }else{
+
+                                    var _lottery_chance = parseInt($(object).find('.lottery_chance').val());//抽奖概率
+                                    _lottery_sum = _lottery_sum + _lottery_chance;
+
+                                    if(_lottery_chance >100 || _lottery_chance <0){
+                                        _inputCheck = false;
+                                        $.globalMessenger().post({
+                                            message: _PROMOTION_NAME + "的抽奖概率必须大于等于0，小于等于100！",
+                                            type: 'error',
+                                            showCloseButton: true})
+                                        $(object).find('.lottery_chance').focus().css('background-color','#1abc9c');
+                                    }
+
+                                    var _lottery = {};
+                                    _lottery.PROMOTION_CODE = $(object).find('.PROMOTION_CODE').attr('data');
+                                    _lottery.PROMOTION_NAME = $(object).find('.PROMOTION_NAME').attr('data');
+                                    _lottery.PROMOTION_DESC = $(object).find('.PROMOTION_DESC').attr('data');
+                                    _lottery.PROMOTION_TYPE = $(object).find('.PROMOTION_TYPE').attr('data');
+                                    _lottery.PROMOTION_QTY = $(object).find('.PROMOTION_QTY').attr('data') || null;
+                                    _lottery.PROMOTION_PIC = $(object).find('.PROMOTION_PIC').attr('data') || null;
+                                    _lottery.PROMOTION_USED_TOTAL = $(object).find('.PROMOTION_USED_TOTAL').attr('data');
+                                    _lottery.display_name = $(object).find('.display_name').val();
+                                    _lottery.lottery_chance = $(object).find('.lottery_chance').val();
+                                    aFormInput['lottery'].push(_lottery);
+                                }
+                            }
+                        }
+                    })
+
+                    if(_lottery_sum < 0 || _lottery_sum > 100){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "所有的优惠券的总概率必须小于等于100！",
+                            type: 'error',
+                            showCloseButton: true});
+                    }
+
+                    var content = editor.document.getBody().getHtml();//编辑器内容
+                    aFormInput['startDate'] = new Date($("#startDate").val()).getTime();
+                    aFormInput['endDate'] = new Date($("#endDate").val()).getTime();
+                    aFormInput['name'] = $("#name").val();
+                    aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
+                    aFormInput['lottery_count'] = $("#lottery_count").val();
+                    aFormInput['switcher'] = 'on';
+                    //aFormInput['thumb'] = $('#thumb_upload').attr('src');//活动小图
+                    aFormInput['pic'] = $('#pic_upload').attr('src');//活动大图
+                    aFormInput['createTime'] = new Date().getTime();
+                    aFormInput['points'] = parseInt($("#points").val()) || 0;//每次游戏，所消耗的积分
+                    aFormInput['content'] = encodeURIComponent(content);
+                    aFormInput['display_name'] = $("#display_name").val();//券名称
+                    console.log(aFormInput)
+
+                    if(_inputCheck){
+                        var oLinkOptions = {} ;
+                        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+                        oLinkOptions.type = "POST";
+                        oLinkOptions.url = "/lavico/shake/index:save";
+
+                        $.request(oLinkOptions,function(err,nut){
+                            if(err) throw err ;
+                            nut.msgqueue.popup();
+                            $.controller("/lavico/shake",null,"lazy");
+                        }) ;
+                    }
+                }
+            }
+        },
         modify_html: {
             layout: "welab/Layout",
             view: "lavico/templates/shake/modify.html",
@@ -238,7 +625,7 @@ module.exports = {
                 editor.config.enterMode = CKEDITOR.ENTER_BR;
                 editor.config.language = 'zh-cn';
                 editor.config.width = '80%';
-                editor.config.height = 600;
+                editor.config.height = 400;
 
 //                CKEDITOR.config.toolbar_Full = [
 //                    ['Source','-','Save','NewPage','Preview','-','Templates'],
@@ -487,7 +874,7 @@ module.exports = {
                         $.request(oLinkOptions,function(err,nut){
                             if(err) throw err ;
                             nut.msgqueue.popup();
-                            //$.controller("/lavico/shake",null,"lazy");
+                            $.controller("/lavico/shake",null,"lazy");
                         }) ;
                     }
                 }

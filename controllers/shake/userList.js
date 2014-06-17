@@ -31,12 +31,12 @@ module.exports = {
                 {display: '券中奖率', name : $(".unwind").val()+'.lottery_chance', width : 80, sortable : true},
                 {display: '消耗积分', name : $(".unwind").val()+'.points', width : 80, sortable : true},
                 {display: '券名称', name : $(".unwind").val()+'.display_name', width : 80, sortable : true},
-                {display: '面值', name : $(".unwind").val()+'.qty', width : 30, sortable : true},
-                {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
-                {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
-                {display: '省份', name : 'province', width : 80, sortable : true, hide:true},
-                {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
-                {display: '标签', name : 'tags', width : 292, sortable : true}
+//                {display: '面值', name : $(".unwind").val()+'.qty', width : 30, sortable : true},
+//                {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
+//                {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
+                {display: '省份', name : 'province', width : 80, sortable : true}
+//                {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
+//                {display: '标签', name : 'tags', width : 292, sortable : true}
 
             ],
             //sortname: "input",

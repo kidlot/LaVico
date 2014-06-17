@@ -57,7 +57,7 @@ module.exports = {
             });
         }
 
-        $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
+//        $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
 
         $("#year").change(function(){
             $(this).parent().find("input").val($(this).val()+'年');
@@ -69,6 +69,11 @@ module.exports = {
 
         $("#day").change(function(){
             $(this).parent().find("input").val($(this).val()+'日');
+        });
+
+        $("#sex").click(function(){
+            var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
+            $(this).parent().find("input").val(_v);
         });
         $("#sex").change(function(){
             var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
@@ -94,7 +99,7 @@ module.exports = {
         });
 
 
-
+        /*年月日*/
         var $day = $("#day"),
             $month = $("#month"),
             $year = $("#year");
@@ -126,9 +131,6 @@ module.exports = {
         });
 
         /*设置默认年月日数值*/
-        $("#year").parent().find("input").val($("#year").val()+'年');
-        $("#month").parent().find("input").val($("#month").val()+'月');
-        $("#day").parent().find("input").val($("#day").val()+'日');
 
         function TGetDaysInMonth(iMonth, iYear) {
             var dPrevDate = new Date(iYear, iMonth, 0);
@@ -234,6 +236,7 @@ module.exports = {
             /*判断手机号码是否验证过*/
 
         });
+
         /*获取验证码*/
         var getCaptcha = function(){
             flag = 1;
@@ -284,7 +287,7 @@ module.exports = {
             flag = 0;
         }
 
-
+        /*提交注册*/
         $("#submit").click(function(){
 
             var name = $.trim($("#name").val());
@@ -303,21 +306,21 @@ module.exports = {
                 $("#name").focus();
                 return	false;
             }
-            if(sex.length == 0){
+            if(sex.length == 0||sex == '请选择'){
                 window.popupStyle2.on("请选择性别",function(event){});
                 $("#sex").focus();
                 return	false;
             }
-            if($("#year").val() == ''){
-                window.popupStyle2.on("请选择出生年月日",function(event){});
+            if($("#year").val().length  == 0||$("#model_year_input").val() == '年'){
+                window.popupStyle2.on("请选择生日的年",function(event){});
                 return	false;
             }
-            if($("#month").val() == ''){
-                window.popupStyle2.on("请选择出生年月日",function(event){});
+            if($("#month").val().length  == 0||$("#model_month_input").val() == '月'){
+                window.popupStyle2.on("请选择生日的月",function(event){});
                 return	false;
             }
-            if($("#day").val() == ''){
-                window.popupStyle2.on("请选择出生年月日",function(event){});
+            if($("#day").val().length  == 0||$("#model_day_input").val() == '日'){
+                window.popupStyle2.on("请选择生日的日",function(event){});
                 return	false;
             }
             if($("#mobile").val() =='' || !(/^1[3458]\d{9}$/i.test($("#mobile").val())) ){
@@ -325,7 +328,7 @@ module.exports = {
                 return	false;
             }
             if($("#id_code").val() == ''){
-                window.popupStyle2.on("验证码错误",function(event){});
+                window.popupStyle2.on("请填写验证码",function(event){});
                 return	false;
             }
             $('#loading').show();//显示加载框
