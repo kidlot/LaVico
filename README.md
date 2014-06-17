@@ -74,7 +74,10 @@ isFollow:true/false<br/>
 
 <b>标签：tags记录</b><br/>
 {
-    "0": "答题抢积分-100积分"
+    "0": "答题抢积分-100积分"<br/>
+    '1':...<br/>
+    '2':...<br/>
+    ...<br/>
 }
 <h2>lavico/user/logs表</h2>
 所有日后可能产生数据统计需求的地方，都要预先把数据记录到lavico/user/logs表中。
