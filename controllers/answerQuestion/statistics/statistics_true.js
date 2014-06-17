@@ -242,6 +242,12 @@ module.exports={
 
                     })
             }
+        },
+        filterexport:{
+            view:null,
+            process:function(seed,nut){
+
+            }
         }
     },
     children:{
@@ -331,6 +337,7 @@ module.exports={
 
                         }
                         nut.model.data=data;
+                        console.log("data",data)
 
                     })
                 }catch(e){

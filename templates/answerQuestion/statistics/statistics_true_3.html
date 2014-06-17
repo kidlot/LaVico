@@ -1,40 +1,61 @@
+<style>
+    .checkbox .icons .first-icon, .radio .icons .first-icon, .checkbox .icons .second-icon, .radio .icons .second-icon {
+        background-color: #E7E7E7;
+    }
+</style>
 <div name="getMember" class="maginTop20">
     <div>
         <input type="hidden" name="_id" value="{@_id}">
         <div style="margin-left: 17px;"><a href="/lavico/answerQuestion/statistics/statistics_true:exportXsl?_id={@_id}">全部导出</a></div>
     </div>
 
-    <table class="table table-hover" id="tagList">
+    <table class="table" id="tagList">
+
         <thead>
-        <tr class="staCount borderBtm">
-            <td style="width: 30px;"><input type="checkbox" name="all"></input></td>
-            <td class="width50">时间</td>
-            <td class="width50">姓名</td>
-            <td class="width50">性别</td>
-            <td class="width50">年龄</td>
-            <td class="width50">城市</td>
-            <td class="width50">获得礼券</td>
-            <td class="width50">获得标签</td>
-            <td class="width50">奖励积分</td>
-        </tr>
+            <tr class="staCount borderBtm">
+                <th style="width: 30px;">
+                    <input type="checkbox" onclick="selectAllUser(this)"/>
+                </th>
+                <th class="width50">时间</th>
+                <th class="width50">姓名</th>
+                <th class="width50">性别</th>
+                <th class="width50">年龄</th>
+                <th class="width50">城市</th>
+                <th class="width50">获得礼券</th>
+                <th class="width50">获得标签</th>
+                <th class="width50">奖励积分</th>
+            </tr>
         </thead>
         <tbody>
-    <foreach for="@data" var="onef">
-        <tr class="borderBtm">
-            <td style="width: 30px;"><input type="checkbox" name="all"></input></td>
-            <td class="width50">{@onef.createTime}</td>
-            <td class="width50"> {@onef.realname}</td>
-            <td class="width50">{@onef.gender}</td>
-            <td class="width50">{@onef.birthday}</td>
-            <td class="width50">{@onef.city}</td>
-            <td class="width50">{@onef.getGift}</td>
-            <td class="width50">{@onef.getLabel}</td>
-            <td class="width50">{@onef.compScore}</td>
-        </tr>
-    </foreach>
+            <foreach for="@data" var="onef">
+                <tr class="borderBtm">
+                    <td style="width: 30px;">
+                        <input type="checkbox" id="{@onef.name}" />
+                    </td>
+                    <td class="width50">{@onef.createTime}</td>
+                    <td class="width50"> {@onef.realname}</td>
+                    <td class="width50">{@onef.gender}</td>
+                    <td class="width50">{@onef.birthday}</td>
+                    <td class="width50">{@onef.city}</td>
+                    <td class="width50">{@onef.getGift}</td>
+                    <td class="width50">{@onef.getLabel}</td>
+                    <td class="width50">{@onef.compScore}</td>
+                </tr>
+            </foreach>
         </tbody>
     </table>
     <div style="margin-left: 17px;">
         <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_true:finishPeople?_id={@_id}&finishCount={@finishCount}&totalPop={@totalPop}&page=%pagenum%" />
     </div>
 </div>
+<script>
+    function selectAllUser(oInput){
+        $("#tagList").find("tr:gt(0)").find("td:eq(0) > input").each(function(i,o){
+            if( oInput.checked){
+                o.checked = true;
+            }else{
+                o.checked = false;
+            }
+        })
+    }
+</script>
