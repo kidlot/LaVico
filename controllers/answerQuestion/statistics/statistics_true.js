@@ -337,7 +337,6 @@ module.exports={
 
                         }
                         nut.model.data=data;
-                        console.log("data",data)
 
                     })
                 }catch(e){
@@ -394,6 +393,7 @@ module.exports={
                 var then=this;
                 var docs_themeQuestion
                 var _id=seed._id;
+                var all=0;
                 then.step(function(){
                     helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},then.hold(function(err,doc){
                         if(err) throw err;
@@ -407,7 +407,7 @@ module.exports={
 
                             if(err) throw err;
                             var xinArr=[];
-                            var all=0;
+
                             for(var i in docs_themeQuestion.scoreMinMax){
                                 for(var j in doc){
                                     if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=doc[j].getChooseScore &&
@@ -421,9 +421,13 @@ module.exports={
                                     }
                                 }
                             }
-                            nut.model.docs_1=docs_themeQuestion;
+
                             nut.model.all=all;
                         })
+                })
+                then.step(function(){
+                    nut.model.docs_1 =docs_themeQuestion;
+                    console.log("docs_1",docs_themeQuestion.scoreMinMax)
                 })
             }
         }
