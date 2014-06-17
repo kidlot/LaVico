@@ -36,7 +36,7 @@ isFollow:true/false<br/>
 喜好款式：favoriteStyle<br/>
 喜好颜色：favoriteColor<br/>
 最近修改时间：lastModified 单位是毫秒<br/>
-会员绑定情况：HaiLanMemberInfo<br/>
+<b>会员绑定情况：HaiLanMemberInfo</b><br/>
 	     {<br/>
 		//HaiLanMemberInfo<br/>
 	        创建时间：createTime 单位是毫秒<br/>
@@ -50,7 +50,7 @@ isFollow:true/false<br/>
 		//bind:绑定状态<br/>
 		//unbind:解绑状态<br/>
 		}<br/>
-摇一摇活动：shake记录<br/>
+<b>摇一摇活动：shake记录</b><br/>
 {<br/>
    0:{<br/>
       "aid": "536f35d08a79fdec096fe1ff",活动ID<br/>
@@ -72,6 +72,10 @@ isFollow:true/false<br/>
    ...<br/>
 }<br/>
 
+<b>标签：tags记录</b><br/>
+{
+    "0": "答题抢积分-100积分"
+}
 <h2>lavico/user/logs表</h2>
 所有日后可能产生数据统计需求的地方，都要预先把数据记录到lavico/user/logs表中。
 
