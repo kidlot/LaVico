@@ -874,7 +874,7 @@ module.exports = {
                         $.request(oLinkOptions,function(err,nut){
                             if(err) throw err ;
                             nut.msgqueue.popup();
-                            //$.controller("/lavico/shake",null,"lazy");
+                            $.controller("/lavico/shake",null,"lazy");
                         }) ;
                     }
                 }
