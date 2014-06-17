@@ -23,14 +23,6 @@
         <div class="col-md-12">
             <form class="form-horizontal" role="form">
                 <h6>基础设置</h6>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2">图文URL</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="host-url" readonly value="http://{@host}/lavico/activity/shake?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
-                        <button type="button" id="btnCopy" name="btnCopy" class="btn btn-primary" style="float: left;margin-left: 6px" >复制</button>
-                    </div>
-                </div>
-
 
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">开始/结束</label>
@@ -201,64 +193,46 @@
 
 <script>
 
-function copyToClipboard(txt) {
+    function copyToClipboard(txt) {
 
-    if (window.clipboardData) {
-        window.clipboardData.clearData();
-        window.clipboardData.setData("Text", txt);
-        alert("复制成功！")
-    } else if (navigator.userAgent.indexOf("Opera") != -1) {
-        window.location = txt;
-        alert("复制成功！");
-    } else if (window.netscape) {
-        try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        } catch (e) {
-            alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将 'signed.applets.codebase_principal_support'设置为'true'");
+        if (window.clipboardData) {
+            window.clipboardData.clearData();
+            window.clipboardData.setData("Text", txt);
+            alert("复制成功！")
+        } else if (navigator.userAgent.indexOf("Opera") != -1) {
+            window.location = txt;
+            alert("复制成功！");
+        } else if (window.netscape) {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            } catch (e) {
+                alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将 'signed.applets.codebase_principal_support'设置为'true'");
+            }
+            var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+            if (!clip)
+                return;
+            var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+            if (!trans)
+                return;
+            trans.addDataFlavor('text/unicode');
+            var str = new Object();
+            var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+            var copytext = txt;
+            str.data = copytext;
+            trans.setTransferData("text/unicode", str, copytext.length * 2);
+            var clipid = Components.interfaces.nsIClipboard;
+            if (!clip)
+                return false;
+            clip.setData(trans, null, clipid.kGlobalClipboard);
+            alert("复制成功！")
+        }else if(typeof(copy) == "function"){
+            copy(txt);
+            alert("复制成功！")
+        }else{
+            alert("浏览器不支持,请手动复制。"+txt)
         }
-        var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
-        if (!clip)
-            return;
-        var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
-        if (!trans)
-            return;
-        trans.addDataFlavor('text/unicode');
-        var str = new Object();
-        var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
-        var copytext = txt;
-        str.data = copytext;
-        trans.setTransferData("text/unicode", str, copytext.length * 2);
-        var clipid = Components.interfaces.nsIClipboard;
-        if (!clip)
-            return false;
-        clip.setData(trans, null, clipid.kGlobalClipboard);
-        alert("复制成功！")
-    }else if(typeof(copy) == "function"){
-        copy(txt);
-        alert("复制成功！")
-    }else{
-        alert("浏览器不支持,请手动复制。"+txt)
     }
-}
-/*点击复制按钮*/
-var init = function (){
-
-    var _lottery = JSON.parse('{@lottery}');
-    for(var _i=0;_i<_lottery.length;_i++){
-        var _PROMOTION_CODE = _lottery[_i].PROMOTION_CODE;
-        var _display_name = _lottery[_i].display_name;
-        var _lottery_chance = _lottery[_i].lottery_chance;
-        document.getElementById(_PROMOTION_CODE).style.display = 'block';
-        console.log(document.getElementById(_PROMOTION_CODE+'-display_name').value = _display_name);
-        console.log(document.getElementById(_PROMOTION_CODE+'-lottery_chance').value = _lottery_chance);
-    }
-}
-init();
-</script>
-<script>
-    var content;
-    content = decodeURIComponent('{@shake.content}');
-    document.getElementById("content").value = content;
+    /*点击复制按钮*/
 </script>
 <script>
     var lastPic = ""
