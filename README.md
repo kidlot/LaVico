@@ -7,10 +7,10 @@
 
 
 <h2>welab/customers 表说明</h2>
-<b>David.xu负责编辑</b>
-registerTime 注册时间:绑定and注册时间写入 单位是毫秒
-unRegisterTime 注销绑定时间：取消时写入 单位是毫秒
-isRegister 是否注册：绑定、注册时写入true。解绑时false 单位是布尔值
+<b>David.xu负责编辑</b><br/>
+registerTime 注册时间:绑定and注册时间写入 单位是毫秒<br/>
+unRegisterTime 注销绑定时间：取消时写入 单位是毫秒<br/>
+isRegister 是否注册：绑定、注册时写入true。解绑时false 单位是布尔值<br/>
 
 注册时间：registerTime 单位是毫秒<br/>
 姓名：realname<br/>
@@ -78,10 +78,14 @@ helper.db.coll("lavico/user/logs").insert({createTime:new Date().getTime(),wxid:
 
 lavico/activity： 记录所有的优惠券的信息，需要从远端拉取出。
 <h2>lavico/user/lastId表</h2>
+<b>David.xu负责编辑</b><br/>
+
 自动更新用户会员信息的记录
 David.xu编辑
 
 <h2>关于“解绑失败”或者获取优惠券“找不到对应的人员，请检查”的问题</h2>
+<b>David.xu负责编辑</b><br/>
+
 此问题往往就是，welab保存的用户信息（绑定memberID的信息），没有和朗维高CRM数据库同步。
 
 如何解决？
