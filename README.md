@@ -64,4 +64,8 @@ helper.db.coll("lavico/user/logs").insert({createTime:new Date().getTime(),wxid:
 lavico/activity： 记录所有的优惠券的信息，需要从远端拉取出。
 
 <h2>关于“解绑失败”或者获取优惠券“找不到对应的人员，请检查”的问题</h2>
-此问题往往就是，welab保存的用户信息（绑定memberID的信息），没有和朗维高CRM数据库同步。可以先帮此用户解绑，然后重新绑定。
+此问题往往就是，welab保存的用户信息（绑定memberID的信息），没有和朗维高CRM数据库同步。
+
+如何解决？
+
+可以先帮此用户解绑，然后重新绑定。
