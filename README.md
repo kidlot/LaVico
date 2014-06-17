@@ -27,7 +27,7 @@ isRegister 是否注册：绑定、注册时写入true。解绑时false 单位�
 手机号码：mobile<br/>
 关注时间: followTime 单位是秒<br/>
 isFollow:true/false<br/>
-排名：ranking<br/>?
+排名：ranking?<br/>
 邮箱：email<br/>
 行业：profession<br/>
 所属省份：province<br/>
@@ -51,20 +51,27 @@ isFollow:true/false<br/>
 		//unbind:解绑状态<br/>
 		}<br/>
 摇一摇活动：shake记录<br/>
-实例:<br/>
-  "aid": "536f35d08a79fdec096fe1ff",活动ID<br/>
-  "uid": "oTVLcjkJrVNhwsUyYBxYHn-NU_Qc",微信ID<br/>
-  "points": NumberInt(0),消耗积分<br/>
-  "memberID": NumberInt(16426780),会员memberID<br/>
-  "createDate": 1402970887391,获取时间<br/>
-  "memo": "来张优惠券",备注<br/>
-  "promotion_code": "CQL201404010004"，活动号码<br/>
-  "promotion_name": "返店券",券名称<br/>
-  "promotion_desc": "无限制现金券通用活动",券描述<br/>
-  "promotion_qty": "500",券金额<br/>
-  "display_name": "现金券",后台设置的显示的名称<br/>
-  "lottery_chance": "90",当前券的获取概率（最大为100）<br/>
-  "coupon_no": "AV1404016103"券号码<br/>
+{
+   0:{
+      "aid": "536f35d08a79fdec096fe1ff",活动ID<br/>
+      "uid": "oTVLcjkJrVNhwsUyYBxYHn-NU_Qc",微信ID<br/>
+      "points": NumberInt(0),消耗积分<br/>
+      "memberID": NumberInt(16426780),会员memberID<br/>
+      "createDate": 1402970887391,获取时间<br/>
+      "memo": "来张优惠券",备注<br/>
+      "promotion_code": "CQL201404010004"，活动号码<br/>
+      "promotion_name": "返店券",券名称<br/>
+      "promotion_desc": "无限制现金券通用活动",券描述<br/>
+      "promotion_qty": "500",券金额<br/>
+      "display_name": "现金券",后台设置的显示的名称<br/>
+      "lottery_chance": "90",当前券的获取概率（最大为100）<br/>
+      "coupon_no": "AV1404016103"券号码<br/>
+   },
+   1:{},
+   2:{},
+   ...
+}
+
 
 <h2>lavico/user/logs表</h2>
 所有日后可能产生数据统计需求的地方，都要预先把数据记录到lavico/user/logs表中。
