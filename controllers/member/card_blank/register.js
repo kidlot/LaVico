@@ -57,7 +57,7 @@ module.exports = {
             });
         }
 
-        $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
+//        $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
 
         $("#year").change(function(){
             $(this).parent().find("input").val($(this).val()+'年');
@@ -69,6 +69,11 @@ module.exports = {
 
         $("#day").change(function(){
             $(this).parent().find("input").val($(this).val()+'日');
+        });
+
+        $("#sex").click(function(){
+            var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
+            $(this).parent().find("input").val(_v);
         });
         $("#sex").change(function(){
             var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
@@ -94,7 +99,7 @@ module.exports = {
         });
 
 
-
+        /*年月日*/
         var $day = $("#day"),
             $month = $("#month"),
             $year = $("#year");
@@ -126,9 +131,9 @@ module.exports = {
         });
 
         /*设置默认年月日数值*/
-        $("#year").parent().find("input").val($("#year").val()+'年');
-        $("#month").parent().find("input").val($("#month").val()+'月');
-        $("#day").parent().find("input").val($("#day").val()+'日');
+//        $("#year").parent().find("input").val($("#year").val()+'年');
+//        $("#month").parent().find("input").val($("#month").val()+'月');
+//        $("#day").parent().find("input").val($("#day").val()+'日');
 
         function TGetDaysInMonth(iMonth, iYear) {
             var dPrevDate = new Date(iYear, iMonth, 0);
@@ -234,6 +239,7 @@ module.exports = {
             /*判断手机号码是否验证过*/
 
         });
+
         /*获取验证码*/
         var getCaptcha = function(){
             flag = 1;
@@ -284,7 +290,7 @@ module.exports = {
             flag = 0;
         }
 
-
+        /*提交注册*/
         $("#submit").click(function(){
 
             var name = $.trim($("#name").val());
