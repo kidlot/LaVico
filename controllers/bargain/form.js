@@ -13,6 +13,10 @@ module.exports = {
         if(seed._id){
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
+                if(err) throw err;
+                if(_doc){
+                    _doc.description = decodeURIComponent(_doc.description);
+                }
                 doc = _doc || {}
                 console.log(doc)
             }))
@@ -25,10 +29,10 @@ module.exports = {
                 nut.model.shops = JSON.parse(doc)
             }));
 
-
         this.step(function(){
             nut.model._id = seed._id
             nut.model.doc = doc
+            nut.model.maps =JSON.stringify(doc.maps);
         })
 
     }
@@ -71,6 +75,85 @@ module.exports = {
                 }
             })
         })
+        //编辑器
+        var desEditor = CKEDITOR.replace( 'des', {
+            toolbar: [
+                [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+            ]
+        });
+        desEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+        desEditor.config.enterMode = CKEDITOR.ENTER_BR;
+        desEditor.config.language = 'zh-cn';
+        desEditor.config.width = 420;
+        desEditor.config.height = 400;
+
+        //保存
+        window.save = function(){
+            var aFormInput = {}
+            var _inputCheck = true;
+            $(".postData").each(function(i,o){
+                if(! $(o).val()){
+                    _inputCheck = false;
+                    $.globalMessenger().post({
+                        message: $(o).parent().prev().text() + " 不能为空！",
+                        type: 'error',
+                        showCloseButton: true})
+                }
+                aFormInput[$(o).attr("id")] = $(o).val()
+            })
+            var maplist=[];
+
+            $('#maps_two option').each(function () {
+                var $option = $(this);
+                maplist.push($option.val())
+            });
+            aFormInput['maps'] = maplist;
+            aFormInput['pic'] = $("#showPic").attr("src")
+            aFormInput['pic_kv'] = $("#pic_upload").attr("src")
+            aFormInput['description'] = encodeURIComponent(desEditor.document.getBody().getHtml());
+            aFormInput['pic_big'] = getBigPicList()
+
+            if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
+            if($("input[name='sizesVal']").val()) aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
+
+            if(_inputCheck){
+                var oLinkOptions = {} ;
+                oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+                oLinkOptions.type = "POST";
+                oLinkOptions.url = "/lavico/bargain/form:save";
+                $.request(oLinkOptions,function(err,nut){
+                    //if(err) throw err ;
+                    nut.msgqueue.popup() ;
+                    $.controller("/lavico/bargain/index",null,"lazy");
+                }) ;
+            }
+        }
+
+        //显示数据库已保存的门店
+        window.load = function (){
+            var maplist=[];
+            $('#maps option').each(function () {
+                var $option = $(this);
+                var map={};
+                map.text = $option.html();
+                map.value = $option.val();
+                maplist.push(map);
+            });
+            console.log(maps);
+            //console.log(maplist);
+            for(var i=0;i<maplist.length;i++){
+                for(var j=0;j<maps.length;j++){
+//                console.log("j",maps[j])
+                    console.log("i",maplist[i].value)
+
+                    if($.trim(maplist[i].value) == $.trim(maps[j])){
+                        $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+                    }
+                }
+            }
+        }
+        window.load();
+
     }
 
     , actions: {

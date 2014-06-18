@@ -16,283 +16,382 @@
         <a class="btn btn-defalut btn-social-googleplus pull-left stay" href="/lavico/bargain/index"><i class="fui-arrow-left"></i> 返回首页</a>
         <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
     </div>
-        <div class="panel-body" style="background:#f9fafb;">
-            <div class="col-md-4">
-                <img id="showPic" style="width: 300; height: 380" src="{@ doc.pic || '/lavico/public/images/u6.jpg'}">
-            </div>
-            <div class="col-md-8">
-
-                <div style="padding: 15px">
-                    <table cellpadding="10">
-                        <tbody>
-                        <tr>
-                            <th style="width: 100px;">产品名称</th>
-                            <td>
-                                <input type="text" id="name" class="form-control input-sm postData" style="width: 150px" value="{@ doc.name}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>产品简介</th>
-                            <td>
-                                <textarea class="form-control postData" rows="3" id="introduction" style="width: 300px">{@ doc.introduction}</textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>市场零售价</th>
-                            <td>
-                                <input type="text" id="price" class="form-control input-sm postData" style="width: 150px" value="{@ doc.price}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>最低价格</th>
-                            <td>
-                                <input type="text" id="minPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.minPrice}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>剩余数量</th>
-                            <td>
-                                <input type="text" id="surplus" class="form-control input-sm postData" style="width: 150px" value="{@ doc.surplus}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>预览图</th>
-                            <td>
-                                <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." id="pic" onchange="fileSelected(this);">
-                                &nbsp;<span class="progressNumber"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>细节图</th>
-                            <td>
-
-                                <span class="glyphicon glyphicon-plus" style="color: #919191;padding: 5px;cursor: pointer;" onclick="createBigPic()">增加细节图</span>
-
-                                <div class="bigPic">
-
-                                    <div style="padding: 5px;display: none" class="rowBigPic">
-                                        <input type="file" class="input-xlarge pull-left" name="bigPic"  style="width:235px" placeholder="请输入...." onchange="fileSelected(this);">
-                                        &nbsp;<span class="progressNumber"></span>
-                                        <span class="glyphicon glyphicon-remove pull-right" style="color: #919191;margin-left: 5px;cursor: pointer;margin-top: 1px;" onclick="removeBigPic(this)"></span>
-                                        <img style="width: 25px; " src="" class="pull-right" >
-                                    </div>
-
-                                    <foreach for="@doc.pic_big" var="bigpicurl">
-                                        <div style="padding: 5px;" class="rowBigPic">
-                                            <input type="file" class="input-xlarge pull-left" name="bigPic"  style="width:235px" placeholder="请输入...." onchange="fileSelected(this);">
-                                            &nbsp;<span class="progressNumber"></span>
-                                            <span class="glyphicon glyphicon-remove pull-right" style="color: #919191;margin-left: 5px;cursor: pointer;margin-top: 1px;" onclick="removeBigPic(this)"></span>
-                                            <img style="width: 25px; " src="{@ bigpicurl}" class="pull-right" >
-                                        </div>
-                                    </foreach>
-
+    <div class="panel-body" style="background:#f9fafb;">
+        <div class="col-md-4">
+            <img id="showPic" style="width: 300; height: 380" src="{@ doc.pic || '/lavico/public/images/u6.jpg'}">
+        </div>
+        <div class="col-md-8">
+            <div style="padding: 15px">
+                <table cellpadding="10">
+                    <tbody>
+                    <tr>
+                        <th style="width: 100px;font-size: 14px;">产品名称</th>
+                        <td colspan="2">
+                            <input type="text" id="name" class="form-control input-sm postData" style="width: 150px" value="{@ doc.name}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">产品简介</th>
+                        <td colspan="2">
+                            <textarea class="form-control postData" rows="3" id="introduction" style="width: 300px">{@ doc.introduction}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">市场零售价</th>
+                        <td colspan="2">
+                            <input type="text" id="price" class="form-control input-sm postData" style="width: 150px" value="{@ doc.price}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">最低价格</th>
+                        <td colspan="2">
+                            <input type="text" id="minPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.minPrice}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">剩余数量</th>
+                        <td colspan="2">
+                            <input type="text" id="surplus" class="form-control input-sm postData" style="width: 150px" value="{@ doc.surplus}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">预览图</th>
+                        <td colspan="2">
+                            <input type="file" class="input-xlarge"  style="width:206px" name="pic" placeholder="请输入...." id="pic" onchange="fileSelected(this);">
+                                &nbsp;
+                            <span class="progressNumber"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">细节图</th>
+                        <td colspan="2">
+                            <span class="glyphicon glyphicon-plus" style="color: #919191;padding: 5px;cursor: pointer;" onclick="createBigPic()">增加细节图</span>
+                            <div class="bigPic">
+                                <div style="padding: 5px;display: none" class="rowBigPic">
+                                    <input type="file" class="input-xlarge pull-left" name="bigPic"  style="width:235px" placeholder="请输入...." onchange="fileSelected(this);">
+                                        &nbsp;
+                                    <span class="progressNumber"></span>
+                                    <span class="glyphicon glyphicon-remove pull-right" style="color: #919191;margin-left: 5px;cursor: pointer;margin-top: 1px;" onclick="removeBigPic(this)"></span>
+                                    <img style="width: 25px; " src="" class="pull-right" >
                                 </div>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>颜色</th>
-                            <td>
-                                <input type="text" class="form-control input-sm tm-input tm-input-info" name="colors" id="colors" dbValue="{@ doc.colors}" placeholder="设置多个标签请用'，'或者'回车'分隔" style="width: 230px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>尺码</th>
-                            <td>
-                                <input type="text" class="form-control input-sm tm-input tm-input-info" name="sizes" id="sizes" dbValue="{@ doc.sizes}" placeholder="设置多个标签请用'，'或者'回车'分隔" style="width: 230px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>活动代码</th>
-                            <td>
-                                <input type="text" id="promotionsCode" class="form-control input-sm postData" style="width: 150px" value="{@ doc.promotionsCode}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>扣除积分</th>
-                            <td>
-                                <input type="text" id="deductionIntegral" class="form-control input-sm postData" style="width: 150px" value="{@ doc.deductionIntegral}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>开始时间</th>
-                            <td>
-                                <input type="text" id="startDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.startDate && new Date(doc.startDate+28800000).toISOString().substr(0,10)}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>结束时间</th>
-                            <td>
-                                <input type="text" id="stopDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.stopDate && new Date(doc.stopDate+28800000).toISOString().substr(0,10)}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>门店</th>
-                            <td>
-                                <select multiple="multiple" size="10" class="form-control postData" style="width: 300px" id="maps">
-                                    <foreach for="@shops.list" var="docmaps">
-                                        <option value="{@docmaps.CODE.replace(/\s*/g, '')}">{@docmaps.NAME}</option>
-                                    </foreach>
-                                </select>
-                                <input type="hidden" id="mapsValue" value="{@ doc.maps}">
-                            </td>
-                        </tr>
-                        <if condition="@doc">
-                        <tr>
-                            <th>链接地址</th>
-                            <td>
-                                http://{host}/lavico/bargain/detail?_id={@ doc._id}&wxid={wxid}
-                            </td>
-                        </tr>
-                        </if>
-                        </tbody></table>
-                        <input type="hidden" id="_id" value="{@_id}">
-                </div>
+                                <foreach for="@doc.pic_big" var="bigpicurl">
+                                    <div style="padding: 5px;" class="rowBigPic">
+                                        <input type="file" class="input-xlarge pull-left" name="bigPic"  style="width:235px" placeholder="请输入...." onchange="fileSelected(this);">
+                                            &nbsp;
+                                        <span class="progressNumber"></span>
+                                        <span class="glyphicon glyphicon-remove pull-right" style="color: #919191;margin-left: 5px;cursor: pointer;margin-top: 1px;" onclick="removeBigPic(this)"></span>
+                                        <img style="width: 25px; " src="{@ bigpicurl}" class="pull-right" >
+                                    </div>
+                                </foreach>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">颜色</th>
+                        <td colspan="2">
+                            <input type="text" class="form-control input-sm tm-input tm-input-info" name="colors" id="colors" dbValue="{@ doc.colors}" placeholder="设置多个标签请用'，'或者'回车'分隔" style="width: 230px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">尺码</th>
+                        <td colspan="2">
+                            <input type="text" class="form-control input-sm tm-input tm-input-info" name="sizes" id="sizes" dbValue="{@ doc.sizes}" placeholder="设置多个标签请用'，'或者'回车'分隔" style="width: 230px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">活动代码</th>
+                        <td colspan="2">
+                            <input type="text" id="promotionsCode" class="form-control input-sm postData" style="width: 150px" value="{@ doc.promotionsCode}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">扣除积分</th>
+                        <td colspan="2">
+                            <input type="text" id="deductionIntegral" class="form-control input-sm postData" style="width: 150px" value="{@ doc.deductionIntegral}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">开始时间</th>
+                        <td colspan="2">
+                            <input type="text" id="startDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.startDate && new Date(doc.startDate+28800000).toISOString().substr(0,10)}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">结束时间</th>
+                        <td colspan="2">
+                            <input type="text" id="stopDate" class="form-control input-sm postData" style="width: 150px" value="{@ doc.stopDate && new Date(doc.stopDate+28800000).toISOString().substr(0,10)}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td><div >
+                            <input type="button" value="全选" onclick="chackall()">&nbsp;&nbsp;<input type="button" onclick="nochackall()" value="反选">
+                        </div></td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">门店</th>
+                        <td>
 
 
+                            <select  size="10" class="form-control " style="width: 200px" id="maps" onchange="chang()">
+                                <foreach for="@shops.list" var="docmaps">
+                                    <option value="{@docmaps.CODE.replace(/\s*/g, '')}">{@docmaps.NAME}</option>
+                                </foreach>
+                            </select>
+                            <input type="hidden" id="mapsValue" value="{@ doc.maps}">
+
+                        </td>
+                        <td style="margin-top: 10px;">
+                            <select  size="10" class="form-control" style="width: 200px;padding-bottom: -28px" id="maps_two" onchange="changmap()">
+
+                            </select>
+                            <input type="hidden" id="mapsValue" value="{@ doc.maps}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">活动图</th>
+                        <td colspan="2">
+                            <div class="col-sm-10" style="padding-top: 8px;">
+                                <input id="pic"  name="pic" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected1(this);">
+                                    &nbsp;
+                                <span calss="progressNumber"></span>
+                                <div class="alert alert-success picView file_box">
+                                    <img id="pic_upload" class="media-object image_data" style="height: 128px;" src="{@doc.pic_kv}">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">详细介绍</th>
+                        <td colspan="2">
+                            <div class="col-sm-10">
+                                <textarea id="des" name="des" class="form-control" rows="3" >{@doc.description}</textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <if condition="@doc">
+                        <tr>
+                            <th style="font-size: 14px;">链接地址</th>
+                            <td colspan="2">http://{host}/lavico/bargain/detail?_id={@ doc._id}&wxid={wxid}</td>
+                        </tr>
+                    </if>
+                    </tbody>
+                </table>
+                <input type="hidden" id="_id" value="{@_id}">
             </div>
         </div>
+    </div>
 </div>
+<script src="/welab/public/ckeditor/ckeditor.js"></script>
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
+<script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
+<script>
+    var maps = JSON.parse('{@maps}');
 
-        <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-        <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        function chang(){
+        var map_text = $("#maps option:selected").text();
+        var map_val = $("#maps option:selected").val();
+        var maplist=[];
 
-        <link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
-        <script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
+        $('#maps_two option').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.html();
+            map.value = $option.val();
+            maplist.push(map)
+        });
 
-        <script>
-
-            var lastPic = ""
-            function save ( ){
-
-                var aFormInput = {}
-
-                var _inputCheck = true;
-                $(".postData").each(function(i,o){
-
-                    if(! $(o).val()){
-
-                        _inputCheck = false;
-                        $.globalMessenger().post({
-                            message: $(o).parent().prev().text() + " 不能为空！",
-                            type: 'error',
-                            showCloseButton: true})
-                    }
-
-                    aFormInput[$(o).attr("id")] = $(o).val()
-                })
-
-                aFormInput['pic'] = $("#showPic").attr("src")
-                aFormInput['pic_big'] = getBigPicList()
-                if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
-                if($("input[name='sizesVal']").val()) aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
-
-                if(_inputCheck){
-                    var oLinkOptions = {} ;
-                    oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
-                    oLinkOptions.type = "POST";
-                    oLinkOptions.url = "/lavico/bargain/form:save";
-
-                    $.request(oLinkOptions,function(err,nut){
-                        if(err) throw err ;
-
-                        nut.msgqueue.popup() ;
-                        $.controller("/lavico/bargain/index",null,"lazy");
-                    }) ;
+        var isok = true;
+        if(maplist.length>0){
+            for(var i=0;i<maplist.length;i++){
+                if(maplist[i].value==map_val){
+                    isok=false;
                 }
             }
+        }
+        if(isok){
+            $("#maps_two").append("<OPTION VALUE="+map_val+">"+map_text+"</OPTION>");
+        }
+    }
 
-            function getBigPicList(){
-                var list = []
-                $(".bigPic").find(".rowBigPic:gt(0)").each(function(i,o){
+    function nochackall(){
+        $("#maps_two").empty();
+    }
+    function chackall(){
+        $("#maps_two").empty();
+        var maplist=[];
+        $('#maps option').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.html();
+            map.value = $option.val();
+            maplist.push(map)
+        });
+        for(var i=0;i<maplist.length;i++){
+            $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+        }
+    }
 
-                    var src = $(o).find("img").attr("src")
-                    if(src){
-                        list.push(src)
-                    }
-                })
-                return list;
+    function changmap(){
+        var  myselect=document.getElementById("maps_two");
+        var index=myselect.selectedIndex ;
+        alert(index)
+        myselect.options.remove(index);
+    }
+
+
+    var lastPic = ""
+//    function save ( ){
+//        var aFormInput = {}
+//        var _inputCheck = true;
+//        $(".postData").each(function(i,o){
+//            if(! $(o).val()){
+//                _inputCheck = false;
+//                $.globalMessenger().post({
+//                    message: $(o).parent().prev().text() + " 不能为空！",
+//                    type: 'error',
+//                    showCloseButton: true})
+//            }
+//            aFormInput[$(o).attr("id")] = $(o).val()
+//        })
+//
+//        aFormInput['pic'] = $("#showPic").attr("src")
+//        aFormInput['pic_kv'] = $("#pic_upload").attr("src")
+//        aFormInput['description'] = encodeURIComponent(desEditor.document.getBody().getHtml());
+//        aFormInput['pic_big'] = getBigPicList()
+//
+//        if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
+//        if($("input[name='sizesVal']").val()) aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
+//
+//        if(_inputCheck){
+//            var oLinkOptions = {} ;
+//            oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];
+//            oLinkOptions.type = "POST";
+//            oLinkOptions.url = "/lavico/bargain/form:save";
+//            $.request(oLinkOptions,function(err,nut){
+//                if(err) throw err ;
+//                nut.msgqueue.popup() ;
+//                $.controller("/lavico/bargain/index",null,"lazy");
+//            }) ;
+//        }
+//    }
+    function getBigPicList(){
+        var list = []
+        $(".bigPic").find(".rowBigPic:gt(0)").each(function(i,o){
+            var src = $(o).find("img").attr("src")
+            if(src){
+                list.push(src)
             }
+        })
+        return list;
+    }
+    function createBigPic(){
+        var oPanel = $(".bigPic").find(".rowBigPic").eq(0).clone()
+        oPanel.show()
+        $(".bigPic").append(oPanel)
+    }
+    function removeBigPic(button){
+        var oPanel = $(button).parents(".rowBigPic")
+        oPanel.fadeOut('normal', function() {
+            oPanel.remove()
+        });
+    }
+    function fileSelected(input) {
+        $(input).next(".progressNumber").text("")
+        var file = input;
+        if (file) {
+            var fileSize = 0;
+            if (file.size > 1024 * 1024)
+                fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            else
+                fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 
-            function createBigPic(){
+            window.oLastInput = input;
+            uploadFile();
+        }
+    }
+    function uploadFile() {
+        var fd = new FormData();
+        fd.append(window.oLastInput.name, window.oLastInput.files[0]);
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener("progress", uploadProgress, false);
+        xhr.addEventListener("load", uploadComplete, false);
+        xhr.addEventListener("error", uploadFailed, false);
+        xhr.addEventListener("abort", uploadCanceled, false);
+        xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
+        xhr.send(fd);
+    }
+    function uploadProgress(evt) {
+        if (evt.lengthComputable) {
+            var percentComplete = Math.round(evt.loaded * 100 / evt.total);
 
-                var oPanel = $(".bigPic").find(".rowBigPic").eq(0).clone()
-                oPanel.show()
-                $(".bigPic").append(oPanel)
-            }
+            $(window.oLastInput).next(".progressNumber").text(percentComplete.toString() + '%')
+        }
+        else {
+            $(window.oLastInput).next(".progressNumber").text('unable to compute')
+        }
+    }
+    function uploadComplete(evt) {
+        var json = eval('(' + evt.target.responseText + ')');
 
-            function removeBigPic(button){
-                var oPanel = $(button).parents(".rowBigPic")
-                oPanel.fadeOut('normal', function() {
-                    oPanel.remove()
-                });
-            }
+        var filename = json.model.fileName;
+        console.log(filename)
+        console.log(window.oLastInput)
 
+        if(window.oLastInput.name == "pic"){
+            $("#showPic").attr("src",filename)
+        }
+        if(window.oLastInput.name == "bigPic"){
 
-            function fileSelected(input) {
+            $(window.oLastInput).parents(".rowBigPic").find("img").attr("src",filename)
 
-                $(input).next(".progressNumber").text("")
-                var file = input;
-                if (file) {
-                    var fileSize = 0;
-                    if (file.size > 1024 * 1024)
-                        fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-                    else
-                        fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+        }
+    }
+    function uploadFailed(evt) {
+        alert("There was an error attempting to upload the file.");
+    }
+    function uploadCanceled(evt) {
+        alert("The upload has been canceled by the user or the browser dropped the connection.");
+    }
+</script>
+<script>
+    var lastPic = ""
+    function fileSelected1(pic) {
+        uploadFile1(pic);
+    }
+    function uploadFile1(pic) {
+        picShowDisc=pic;
+        var fd = new FormData();
+        fd.append("pic",pic.files[0]);
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener("progress", uploadProgress1, false);
+        xhr.addEventListener("load", uploadComplete1, false);
+        xhr.addEventListener("error", uploadFailed1, false);
+        xhr.addEventListener("abort", uploadCanceled1, false);
+        xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
+        xhr.send(fd);
+    }
+    function uploadProgress1(evt) {
+        if (evt.lengthComputable) {
+            var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+        }
+        else {
+        }
+    }
+    function uploadComplete1(evt) {
+        var json = eval('(' + evt.target.responseText + ')');
+        //隐藏域
+        $(picShowDisc).parent().next().show()
+        $("#pic_upload").attr("src",json.model.fileName)
+    }
 
-                    window.oLastInput = input;
-                    uploadFile();
-                }
-            }
+    function uploadFailed1(evt) {
+        alert("上传失败");
+    }
 
-            function uploadFile() {
-
-
-                var fd = new FormData();
-                fd.append(window.oLastInput.name, window.oLastInput.files[0]);
-                var xhr = new XMLHttpRequest();
-                xhr.upload.addEventListener("progress", uploadProgress, false);
-                xhr.addEventListener("load", uploadComplete, false);
-                xhr.addEventListener("error", uploadFailed, false);
-                xhr.addEventListener("abort", uploadCanceled, false);
-                xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
-                xhr.send(fd);
-            }
-
-            function uploadProgress(evt) {
-                if (evt.lengthComputable) {
-                    var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-
-                    $(window.oLastInput).next(".progressNumber").text(percentComplete.toString() + '%')
-                }
-                else {
-                    $(window.oLastInput).next(".progressNumber").text('unable to compute')
-                }
-            }
-
-            function uploadComplete(evt) {
-                var json = eval('(' + evt.target.responseText + ')');
-
-                var filename = json.model.fileName;
-                console.log(filename)
-                console.log(window.oLastInput)
-
-                if(window.oLastInput.name == "pic"){
-                    $("#showPic").attr("src",filename)
-                }
-                if(window.oLastInput.name == "bigPic"){
-
-                    $(window.oLastInput).parents(".rowBigPic").find("img").attr("src",filename)
-
-                }
-            }
-
-            function uploadFailed(evt) {
-                alert("There was an error attempting to upload the file.");
-            }
-
-            function uploadCanceled(evt) {
-                alert("The upload has been canceled by the user or the browser dropped the connection.");
-            }
-
-        </script>
+    function uploadCanceled1(evt) {
+        alert("已经取消上传");
+    }
+</script>
