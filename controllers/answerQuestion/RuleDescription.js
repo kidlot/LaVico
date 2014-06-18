@@ -87,7 +87,7 @@ module.exports={
                  return false;
              }
              var aFormInput = {};
-             aFormInput.thumb = $('#thumb_upload').attr('src');
+             //aFormInput.thumb = $('#thumb_upload').attr('src');
              aFormInput.pic = $('#pic_upload').attr('src');
              aFormInput.description = description;
              aFormInput.relief = relief;
