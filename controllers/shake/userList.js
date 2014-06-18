@@ -16,7 +16,7 @@ module.exports = {
     }
     , viewIn : function(){
 
-        console.log("userList")
+        //console.log("userList")
         $("#userList").flexigrid({
             url: '/lavico/shake/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val()+"&_id="+$("._id").val(),
             dataType: 'json',
@@ -112,7 +112,7 @@ module.exports = {
                         conditions[seed.unwind+".aid"] = seed._id
                     }
                     arrregateParams.push({$match:conditions})
-                    console.log(arrregateParams)
+                    //console.log(arrregateParams)
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
@@ -206,7 +206,7 @@ module.exports = {
 
                 var conditions = search.conditions(seed) || {} ;
                 console.log('---------seed.conditions-----------');
-                console.log(seed.conditions);
+                //console.log(seed.conditions);
                 console.log('---------seed.conditions-----------');
                 //this.terminate();
                 var _data = {};
@@ -230,7 +230,7 @@ module.exports = {
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
                     console.log('---------arrregateParams-----------');
-                    console.log(arrregateParams);
+                    //console.log(arrregateParams);
                     console.log('---------arrregateParams-----------');
 
 
@@ -239,13 +239,17 @@ module.exports = {
                     }
                     arrregateParams.push({$match:conditions})
 
-                    arrregateParams.push({$sort:sort})
+                    arrregateParams.push({$sort:sort});
+                    console.log('---------seed._id-----------');
+                    console.log(seed._id);
+                    console.log('---------seed._id-----------');
+
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
                             if(err) console.log(err) ;
                             console.log('---------docs-----------');
-                            console.log(docs);
+                            //console.log(docs);
                             console.log('---------docs-----------');
                             //this.terminate()
                             try{
@@ -290,7 +294,7 @@ module.exports = {
 
                 this.step(function(){
 
-                    console.log(_data)
+                    //console.log(_data)
 
                     try{
                         var nodeExcel = require('excel-export');
@@ -359,7 +363,7 @@ module.exports = {
                     }
 
 
-                    console.log(conf)
+                    //console.log(conf)
 
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
