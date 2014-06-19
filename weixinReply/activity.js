@@ -16,7 +16,7 @@
       desc: '活动券',
       btns: [
         {
-          title: '活动券',
+          title: '列表',
           controller: '/lavico/activity'
         }
       ],
