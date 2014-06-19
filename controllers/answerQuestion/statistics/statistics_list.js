@@ -48,8 +48,6 @@ module.exports={
                                 }catch(e){
                                     jsonOne.totalPop=0;
                                 }
-                                console.log("i",i)
-                                console.log("doc",doc)
 
                             }));
 
@@ -78,29 +76,31 @@ module.exports={
 
         then.step(function(){
             pageSize=20
+            var data=[];
             page={}
             page.lastPage=themeArr.length%pageSize==0 ? parseInt(themeArr.length/pageSize) : parseInt(themeArr.length/pageSize)+1;
-            page.currentPage=typeof(seed.page)=="undefined"?1:seed.page
+            page.currentPage=typeof(seed.page)=="undefined"?1:parseInt(seed.page);
             page.totalCount=themeArr.length
-            page.docs=[]
-            for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+20;j++){
+
+            for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+pageSize;j++){
                 if(typeof(themeArr[j])!="undefined")
-                    page.docs.push(themeArr[j])
+                    data.push(themeArr[j])
             }
 
-            for(var i=0;i<page.docs.length;i++){
-                page.docs[i].beginTime = page.docs[i].beginTime;
-                page.docs[i].endTime = page.docs[i].endTime;
-                page.docs[i].isOpen = page.docs[i].isOpen;
-                page.docs[i].theme = page.docs[i].theme;
-                page.docs[i].themeType = page.docs[i].themeType;
-                page.docs[i].themeId = page.docs[i].themeId;
-                page.docs[i].totalPop = page.docs[i].totalPop;
-                page.docs[i].finishCount = page.docs[i].finishCount;
-                page.docs[i].count = ForDight(page.docs[i].totalPop,page.docs[i].finishCount)
+            for(var i=0;i<data.length;i++){
+                data[i].beginTime = data[i].beginTime;
+                data[i].endTime = data[i].endTime;
+                data[i].isOpen = data[i].isOpen;
+                data[i].theme = data[i].theme;
+                data[i].themeType = data[i].themeType;
+                data[i].themeId = data[i].themeId;
+                data[i].totalPop = data[i].totalPop;
+                data[i].finishCount = data[i].finishCount;
+                data[i].count = ForDight(data[i].totalPop,data[i].finishCount)
               }
 
-            nut.model.docs=page.docs;
+            nut.model.data = data;
+            nut.model.page=page || {};
         })
     },
     actions:{
