@@ -77,17 +77,7 @@ module.exports = {
                 }
             })
         })
-        //活动说明-编辑器
-        var explanationEditor = CKEDITOR.replace( 'explanation', {
-            toolbar: [
-                [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
-            ]
-        });
-        explanationEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
-        explanationEditor.config.enterMode = CKEDITOR.ENTER_BR;
-        explanationEditor.config.language = 'zh-cn';
-        explanationEditor.config.width = 420;
-        explanationEditor.config.height = 400;
+
         //活动规则-编辑器
         var descriptionEditor = CKEDITOR.replace( 'description', {
             toolbar: [
@@ -99,44 +89,18 @@ module.exports = {
         descriptionEditor.config.language = 'zh-cn';
         descriptionEditor.config.width = 420;
         descriptionEditor.config.height = 400;
-        //免责声明-编辑器
-        var reliefEditor = CKEDITOR.replace( 'relief', {
-            toolbar: [
-                [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
-            ]
-        });
-        reliefEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
-        reliefEditor.config.enterMode = CKEDITOR.ENTER_BR;
-        reliefEditor.config.language = 'zh-cn';
-        reliefEditor.config.width = 420;
-        reliefEditor.config.height = 400;
+
 
         //保存
         window.save = function(){
-            //活动说明
-            var explanation = encodeURIComponent(explanationEditor.document.getBody().getHtml());
+
             //活动规则
             var description = encodeURIComponent(descriptionEditor.document.getBody().getHtml());
-            //免责声明
-            var relief = encodeURIComponent(reliefEditor.document.getBody().getHtml());
 
-            if(!explanation){
-                $.globalMessenger().post({
-                    message: "请填写活动说明",
-                    type: 'error',
-                    showCloseButton: true});
-                return false;
-            }
+
             if(!description){
                 $.globalMessenger().post({
-                    message: "请填写活动规则",
-                    type: 'error',
-                    showCloseButton: true});
-                return false;
-            }
-            if(!relief){
-                $.globalMessenger().post({
-                    message: "请填写免责声明",
+                    message: "请填写详细说明",
                     type: 'error',
                     showCloseButton: true});
                 return false;
@@ -171,9 +135,7 @@ module.exports = {
             aFormInput['maps'] = maplist;
             aFormInput['pic'] = $("#showPic").attr("src")
             aFormInput['pic_kv'] = $("#pic_upload").attr("src")
-            aFormInput['explanation'] = explanation;
             aFormInput['description'] = description;
-            aFormInput['relief'] = relief;
             aFormInput['pic_big'] = getBigPicList()
 
             if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
