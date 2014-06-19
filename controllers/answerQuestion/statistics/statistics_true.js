@@ -23,6 +23,7 @@ module.exports={
         seed["$score"]={_id:seed._id}
         seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop}
         seed["$exportXsl"]={_id:seed._id}
+        seed["filterexport"]={_id:seed._id}
 
         then.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},this.hold(function(err,doc){
@@ -246,7 +247,136 @@ module.exports={
         filterexport:{
             view:null,
             process:function(seed,nut){
+                var filter = seed.filter.split(",");
+                console.log(filter)
+                console.log(filter.length)
+                var _id = seed._id;
+                var then = this;
+                var resultList=[];
 
+                then.step(function(){
+                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,"type":{$ne:"0"}}).toArray(then.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            for(var i=0;i<doc.length;i++){
+                                for(var j=0;j<filter.length;j++){
+                                    if(doc[i].wechatid==filter[j]){
+                                        var result={};
+                                        result.wechatid=doc[i].wechatid
+                                        result.getLabel=doc[i].getLabel
+                                        result.getGift=doc[i].getGift
+                                        result.getScore=doc[i].getScore
+                                        result.createTime=doc[i].createTime;
+                                        resultList.push(result);
+                                    }
+                                }
+                            }
+                        }
+                    }))
+                })
+
+                then.step(function(){
+                    console.log(resultList)
+                    console.log(resultList.length)
+                    for(var i=0;i<resultList.length;i++){
+                        (function(i){
+                            helper.db.coll("welab/customers").findOne({"wechatid":resultList[i].wechatid},then.hold(function(err,doc){
+                                if(err) throw err;
+                                if(doc){
+                                    resultList[i].realname=doc.realname
+                                    resultList[i].gender=doc.sex ||doc.gender
+                                    resultList[i].birthday=doc.birthday
+                                    resultList[i].city=doc.city
+                                }
+                            }))
+                        })(i)
+                    }
+                })
+
+                then.step(function(){
+                    console.log(resultList)
+                    //exportXsl
+                    var nodeExcel = require('excel-export');
+                    var conf = {};
+                    conf.cols = [
+                        {
+                            caption: '时间',
+                            type: 'string'
+                        }, {
+                            caption: '姓名',
+                            type: 'string'
+                        }, {
+                            caption: '年龄',
+                            type: 'string'
+                        }, {
+                            caption: '城市',
+                            type: 'string'
+                        }, {
+                            caption: '获得礼券',
+                            type: 'string'
+                        }, {
+                            caption: '获得标签',
+                            type: 'string'
+                        }, {
+                            caption: '奖励积分',
+                            type: 'string'
+                        }
+                    ];
+                    conf.rows = [];
+                    for(var i in resultList){
+                        var rows
+                        var createtime = new Date(resultList[i].createTime).getFullYear()+"-"+new Date(resultList[i].createTime).getMonth()+"-"+new Date(resultList[i].createTime).getDate();
+                        var birthday = parseInt(new Date().getFullYear()-new Date(resultList[i].birthday).getFullYear());
+                        var city
+                        if(typeof (resultList[i].city)=="undefined"){
+                            city=""
+                        }else{
+                            city= resultList[i].city
+                        }
+
+                        var realname
+                        if(typeof (resultList[i].realname)=="undefined"){
+                            realname=""
+                        }else{
+                            realname= resultList[i].realname
+                        }
+                        var getGift
+                        if(typeof (resultList[i].getGift)=="undefined"){
+                            getGift=""
+                        }else{
+                            getGift= resultList[i].getGift
+                        }
+                        var getLabel
+                        if(typeof (resultList[i].getLabel)=="undefined"){
+                            getLabel=""
+                        }else{
+                            getLabel= resultList[i].getLabel
+                        }
+                        var getScore
+                        if(typeof (resultList[i].getScore)=="undefined"){
+                            getScore=""
+                        }else{
+                            getScore= resultList[i].getScore
+                        }
+                        rows = [
+                            createtime,
+                            realname,
+                            birthday,
+                            city,
+                            getGift,
+                            getLabel,
+                            getScore
+                        ]
+                        conf.rows.push(rows)
+                    }
+
+                    var result = nodeExcel.execute(conf);
+                    this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                    this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                    this.res.write(result, 'binary');
+                    return this.res.end();
+
+                })
             }
         }
     },
@@ -286,24 +416,27 @@ module.exports={
                                     .toArray(then.hold(function(err,doc){
 
                                             for(var j in finishMan){
-                                                if(finishMan[j].name==doc[0].wechatid){
-                                                    finishMan[j].getLabel=doc[0].getLabel
-                                                    finishMan[j].getGift=doc[0].getGift
-                                                    finishMan[j].compScore=doc[0].getScore
-                                                    finishMan[j].createTime=doc[0].createTime;
+                                                for(var k=0;k<doc.length;k++){
+                                                    if(finishMan[j].name==doc[k].wechatid){
+                                                        finishMan[j].getLabel=doc[k].getLabel
+                                                        finishMan[j].getGift=doc[k].getGift
+                                                        finishMan[j].compScore=doc[k].getScore
+                                                        finishMan[j].createTime=doc[k].createTime;
 
-                                                    (function(j){
-                                                        helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
-                                                            if(err) throw err
-                                                            if(doc){
-                                                                 finishMan[j].realname=doc.realname
-                                                                 finishMan[j].gender = doc.sex ||doc.gender
-                                                                 finishMan[j].birthday=doc.birthday
-                                                                 finishMan[j].city=doc.city
-                                                            }
-                                                        }))
-                                                    })(j)
+                                                        (function(j){
+                                                            helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
+                                                                if(err) throw err
+                                                                if(doc){
+                                                                    finishMan[j].realname=doc.realname
+                                                                    finishMan[j].gender = doc.sex ||doc.gender
+                                                                    finishMan[j].birthday=doc.birthday
+                                                                    finishMan[j].city=doc.city
+                                                                }
+                                                            }))
+                                                        })(j)
+                                                    }
                                                 }
+
                                             }
                                         //}
                                     }))

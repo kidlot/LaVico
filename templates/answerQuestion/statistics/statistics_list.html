@@ -52,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <foreach for="@docs" var="doc" key="key">
+                    <foreach for="@data" var="doc" key="key">
                         <tr class="borderBtm">
                             <td class="width50"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
                             <td class="width50" id="openClose">
@@ -113,7 +113,7 @@
                     </foreach>
                     </tbody>
                 </table>
-            <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@docs" model.url="/lavico/answerQuestion/statistics/statistics_list?themetype={@themetype}&page=%pagenum%" /></div>
+            <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_list?themetype={@themetype}&page=%pagenum%" /></div>
         </div>
     </div>
 </div>
