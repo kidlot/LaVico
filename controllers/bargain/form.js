@@ -85,10 +85,14 @@ module.exports = {
         descriptionEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
         descriptionEditor.config.enterMode = CKEDITOR.ENTER_BR;
         descriptionEditor.config.language = 'zh-cn';
+        descriptionEditor.config.allowedContent = true;
+        descriptionEditor.config.enterMode = CKEDITOR.ENTER_DIV;
+        descriptionEditor.config.format_div = { element : 'div', attributes : { class : 'normalDiv' } };
         descriptionEditor.config.width = 420;
         descriptionEditor.config.height = 400;
 
-
+        //http://wx.lavicouomo.com/lavico/bargain/detail?wxid=oTVLcjg1ZZrFhdvuRJuje8zQofKs&_id=532ffaac8af53ef250000c83
+        //http://{host}/lavico/bargain/detail?_id=53a16a8423582a6d65000c72&wxid={wxid}
         //保存
         window.save = function(){
 
@@ -133,11 +137,26 @@ module.exports = {
             aFormInput['maps'] = maplist;
             aFormInput['pic'] = $("#showPic").attr("src")
             aFormInput['pic_kv'] = $("#pic_upload").attr("src")
+
             aFormInput['description'] = description;
             aFormInput['pic_big'] = getBigPicList()
 
             if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
             if($("input[name='sizesVal']").val()) aFormInput['sizes'] = $("input[name='sizesVal']").val().split(",")
+
+            /*David.xu添加最高价格at2014-06-19*/
+            var _minPrice = parseInt($('#minPrice').val());//最低价格
+            var _maxPrice = parseInt($('#maxPrice').val());//最高价格
+            var _price = parseInt($('#price').val());//市场零售价
+
+            if(!(_minPrice <= _maxPrice && _maxPrice <= _price)){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "最高价格必须大于等于最低价格，小于等于市场零售价！",
+                    type: 'error',
+                    showCloseButton: true})
+            }
+            /*David.xu添加最高价格at2014-06-19*/
 
             if(_inputCheck){
                 var oLinkOptions = {} ;
@@ -162,12 +181,12 @@ module.exports = {
                 map.value = $option.val();
                 maplist.push(map);
             });
-            console.log(maps);
+ //           console.log(maps);
             //console.log(maplist);
             for(var i=0;i<maplist.length;i++){
                 for(var j=0;j<maps.length;j++){
 //                console.log("j",maps[j])
-                    console.log("i",maplist[i].value)
+//                    console.log("i",maplist[i].value)
 
                     if($.trim(maplist[i].value) == $.trim(maps[j])){
                         $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");

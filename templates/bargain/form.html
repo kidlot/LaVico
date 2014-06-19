@@ -16,6 +16,8 @@
         <a class="btn btn-defalut btn-social-googleplus pull-left stay" href="/lavico/bargain/index"><i class="fui-arrow-left"></i> 返回首页</a>
         <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
     </div>
+
+
     <div class="panel-body" style="background:#f9fafb;">
         <div class="col-md-4">
             <img id="showPic" style="width: 300; height: 380" src="{@ doc.pic || '/lavico/public/images/u6.jpg'}">
@@ -37,17 +39,25 @@
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 14px;">市场零售价</th>
-                        <td colspan="2">
-                            <input type="text" id="price" class="form-control input-sm postData" style="width: 150px" value="{@ doc.price}">
-                        </td>
-                    </tr>
-                    <tr>
                         <th style="font-size: 14px;">最低价格</th>
-                        <td colspan="2">
+                        <td>
                             <input type="text" id="minPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.minPrice}">
                         </td>
                     </tr>
+                    <tr>
+                        <th style="font-size: 14px;">最高价格</th>
+                        <td>
+                            <input type="text" id="maxPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.maxPrice}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th style="font-size: 14px;">市场零售价</th>
+                        <td>
+                            <input type="text" id="price" class="form-control input-sm postData" style="width: 150px" value="{@ doc.price}">
+                        </td>
+                    </tr>
+
                     <tr>
                         <th style="font-size: 14px;">剩余数量</th>
                         <td colspan="2">
