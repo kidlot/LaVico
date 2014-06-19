@@ -1,4 +1,4 @@
-<input type="hidden" id="setPriceV" value="{@ doc.price}">
+<input type="hidden" id="setPriceV" value="{@ doc.maxPrice}">
 <div class="wrapper">
     <div class="bargin">
         <div class="bargin-content">
@@ -303,7 +303,8 @@ function bargain(){
 
     if(parseInt($("#price").val()) > parseInt($("#setPriceV").val())){
         //alert("亲，您的出价高于市场零售价，建议重新出价！")
-        $(".fade5").find(".msg").text("亲，您的出价高于市场零售价，建议重新出价！");
+        //$(".fade5").find(".msg").text("亲，您的出价高于市场零售价，建议重新出价！");
+        $(".fade5").find(".msg").text("亲，您可以用更低价格来获得更惊喜优惠哦，确认后重新出价！");
         $(".fade5").show();
         return false;
     }
