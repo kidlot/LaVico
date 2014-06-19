@@ -66,6 +66,7 @@ module.exports = {
                         }
                     }
                     doc = _doc || {}
+                    console.log(doc);
                     nut.model.doc = doc
                 }))
 
