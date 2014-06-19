@@ -16,8 +16,6 @@ module.exports = {
                 if(err) throw err;
                 if(_doc){
                     _doc.description = decodeURIComponent(_doc.description);
-                    _doc.explanation = decodeURIComponent(_doc.explanation);
-                    _doc.relief = decodeURIComponent(_doc.relief);
                 }
                 doc = _doc || {}
                 console.log(doc)
