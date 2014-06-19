@@ -91,7 +91,8 @@ module.exports = {
         descriptionEditor.config.width = 420;
         descriptionEditor.config.height = 400;
 
-
+        //http://wx.lavicouomo.com/lavico/bargain/detail?wxid=oTVLcjg1ZZrFhdvuRJuje8zQofKs&_id=532ffaac8af53ef250000c83
+        //http://{host}/lavico/bargain/detail?_id=53a16a8423582a6d65000c72&wxid={wxid}
         //保存
         window.save = function(){
 
