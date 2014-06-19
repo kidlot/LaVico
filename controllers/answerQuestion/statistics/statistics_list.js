@@ -10,63 +10,70 @@ module.exports={
             if(themetype==1){
                 helper.db.coll("lavico/themeQuestion").find({themeType:1}).toArray(this.hold(function(err,docs){
                     if(err) throw  err;
-                    return docs;
+                    if(docs){
+                        return docs;
+                    }
                 }))
             }else{
                 helper.db.coll("lavico/themeQuestion").find({themeType:{$ne:1}}).toArray(this.hold(function(err,docs){
                     if(err) throw  err;
-                    return docs;
+                    if(docs){
+                        return docs;
+                    }
                 }))
             }
         })
 
         this.step(function(doc){
-            for(var e in doc){
-                var jsonOne={};
-                jsonOne.beginTime=doc[e].beginTime;
-                jsonOne.endTime=doc[e].endTime;
-                jsonOne.isOpen=doc[e].isOpen;
-                jsonOne.theme=doc[e].theme;
-                jsonOne.themeType=doc[e].themeType;
-                jsonOne.themeId=doc[e]._id;
+            if(doc){
+                for(var e in doc){
+                    var jsonOne={};
+                    jsonOne.beginTime=doc[e].beginTime;
+                    jsonOne.endTime=doc[e].endTime;
+                    jsonOne.isOpen=doc[e].isOpen;
+                    jsonOne.theme=doc[e].theme;
+                    jsonOne.themeType=doc[e].themeType;
+                    jsonOne.themeId=doc[e]._id;
 
-                //参与人数
-                (function(i,jsonOne){
-                    helper.db.coll("lavico/custReceive").aggregate(
-                        [
-                            {$match:{themeId:i}},
-                            {$group:{_id:"$memberId"}}
-                        ],then.hold(function(err,doc){
-                            if(err) throw err;
-                            try{
-                                jsonOne.totalPop=doc.length;
-                            }catch(e){
-                                jsonOne.totalPop=0;
-                            }
-                            console.log("i",i)
-                            console.log("doc",doc)
-
-                        }));
-
-                })(doc[e]._id,jsonOne);
-
-                //完成人数
-                (function(i,jsonOne){
-                    helper.db.coll("lavico/custReceive").find({"themeId":i,"isFinish":true,"type":"0"})
-                        .count(
-                            then.hold(function(err,doc){
-                                if(err)throw err;
-                                if(doc==0){
-                                    jsonOne.finishCount=0;
+                    //参与人数
+                    (function(i,jsonOne){
+                        helper.db.coll("lavico/custReceive").aggregate(
+                            [
+                                {$match:{themeId:i}},
+                                {$group:{_id:"$memberId"}}
+                            ],then.hold(function(err,doc){
+                                if(err) throw err;
+                                try{
+                                    jsonOne.totalPop=doc.length;
+                                }catch(e){
+                                    jsonOne.totalPop=0;
                                 }
-                                else{
-                                    jsonOne.finishCount=doc;
-                                }
-                            })
-                        )
-                    themeArr.push(jsonOne);
-                })(doc[e]._id,jsonOne);
+                                console.log("i",i)
+                                console.log("doc",doc)
+
+                            }));
+
+                    })(doc[e]._id,jsonOne);
+
+                    //完成人数
+                    (function(i,jsonOne){
+                        helper.db.coll("lavico/custReceive").find({"themeId":i,"isFinish":true,"type":"0"})
+                            .count(
+                                then.hold(function(err,doc){
+                                    if(err)throw err;
+                                    if(doc==0){
+                                        jsonOne.finishCount=0;
+                                    }
+                                    else{
+                                        jsonOne.finishCount=doc;
+                                    }
+                                })
+                            )
+                        themeArr.push(jsonOne);
+                    })(doc[e]._id,jsonOne);
+                }
             }
+
         })
 
         then.step(function(){

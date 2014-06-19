@@ -394,37 +394,76 @@ module.exports={
                 var docs_themeQuestion
                 var _id=seed._id;
                 var all=0;
+                var custReceive;
                 then.step(function(){
                     helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},then.hold(function(err,doc){
                         if(err) throw err;
-                        docs_themeQuestion=doc;
+                        if(doc){
+                            docs_themeQuestion=doc;
+                        }
                     }))
                 });
 
+//                then.step(function(){
+//                    console.log("1",docs_themeQuestion)
+//                    if(docs_themeQuestion){
+//                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":{$ne:"0"}})
+//                            .toArray(function(err,doc){
+//
+//                                if(err) throw err;
+//                                var xinArr=[];
+//                                if(doc){
+//                                    for(var i in docs_themeQuestion.scoreMinMax){
+//                                        for(var j in doc){
+//                                            if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=doc[j].getChooseScore &&
+//                                                doc[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore){
+//                                                if(docs_themeQuestion.scoreMinMax[i].sinCount){
+//                                                    docs_themeQuestion.scoreMinMax[i].sinCount++;
+//                                                }else{
+//                                                    docs_themeQuestion.scoreMinMax[i].sinCount=1;
+//                                                }
+//                                                all++;
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//
+//
+//                                nut.model.all = all||0;
+//                            })
+//                    }
+//
+//                })
                 then.step(function(){
-                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":{$ne:"0"}})
-                        .toArray(function(err,doc){
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"isFinish":true,"type":{$ne:"0"}}).toArray(then.hold(function(err,doc){
+                        if(err) throw  err;
+                        if(doc){
+                            custReceive = doc;
+                        }
+                    }))
+                })
 
-                            if(err) throw err;
-                            var xinArr=[];
-
-                            for(var i in docs_themeQuestion.scoreMinMax){
-                                for(var j in doc){
-                                    if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=doc[j].getChooseScore &&
-                                        doc[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore){
-                                        if(docs_themeQuestion.scoreMinMax[i].sinCount){
-                                            docs_themeQuestion.scoreMinMax[i].sinCount++;
-                                        }else{
-                                            docs_themeQuestion.scoreMinMax[i].sinCount=1;
-                                        }
-                                        all++;
+                then.step(function(){
+                    if(custReceive && docs_themeQuestion){
+                        for(var i in docs_themeQuestion.scoreMinMax){
+                            for(var j in custReceive){
+                                if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=custReceive[j].getChooseScore &&
+                                    custReceive[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore){
+                                    if(docs_themeQuestion.scoreMinMax[i].sinCount){
+                                        docs_themeQuestion.scoreMinMax[i].sinCount++;
+                                    }else{
+                                        docs_themeQuestion.scoreMinMax[i].sinCount=1;
                                     }
+                                    all++;
                                 }
                             }
-                            nut.model.docs_1 =docs_themeQuestion;
-                            nut.model.all=all;
+                        }
+                    }
+                })
 
-                        })
+                then.step(function(){
+                    nut.model.docs_1 =docs_themeQuestion|| {};
+                    nut.model.all = all||0;
                 })
             }
         }
