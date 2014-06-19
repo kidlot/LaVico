@@ -37,6 +37,13 @@
                                 <textarea class="form-control postData" rows="3" id="introduction" style="width: 300px">{@ doc.introduction}</textarea>
                             </td>
                         </tr>
+
+                        <tr>
+                            <th>最低价格</th>
+                            <td>
+                                <input type="text" id="minPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.minPrice}">
+                            </td>
+                        </tr>
                         <tr>
                             <th>市场零售价</th>
                             <td>
@@ -44,11 +51,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>最低价格</th>
+                            <th>最高价格</th>
                             <td>
-                                <input type="text" id="minPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.minPrice}">
+                                <input type="text" id="maxPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.maxPrice}">
                             </td>
                         </tr>
+
                         <tr>
                             <th>剩余数量</th>
                             <td>
