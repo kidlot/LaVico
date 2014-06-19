@@ -162,13 +162,30 @@
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 14px;">详细介绍</th>
+                        <th style="font-size: 14px;">活动说明</th>
                         <td colspan="2">
                             <div class="col-sm-10">
-                                <textarea id="des" name="des" class="form-control" rows="3" >{@doc.description}</textarea>
+                                <textarea class="form-control postData" rows="3"  id="explanation" style="width: 600px;height:400px;"  placeholder="活动说明">{@doc.explanation}</textarea>
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <th style="font-size: 14px;">活动规则</th>
+                        <td colspan="2">
+                            <div class="col-sm-10">
+                                <textarea  class="form-control postData" rows="3"  id="description" style="width: 600px;height:400px;" placeholder="活动规则">{@doc.description}</textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 14px;">免责声明</th>
+                        <td colspan="2">
+                            <div class="col-sm-10">
+                                <textarea class="form-control postData" rows="3"  id="relief" style="width: 600px;height:400px;" placeholder="免责声明">{@doc.relief}</textarea>
+                            </div>
+                        </td>
+                    </tr>
+
                     <if condition="@doc">
                         <tr>
                             <th style="font-size: 14px;">链接地址</th>
@@ -189,8 +206,7 @@
 <script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
 <script>
     var maps = JSON.parse('{@maps}');
-
-        function chang(){
+    function chang(){
         var map_text = $("#maps option:selected").text();
         var map_val = $("#maps option:selected").val();
         var maplist=[];
