@@ -85,6 +85,9 @@ module.exports = {
         descriptionEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
         descriptionEditor.config.enterMode = CKEDITOR.ENTER_BR;
         descriptionEditor.config.language = 'zh-cn';
+        descriptionEditor.config.allowedContent = true;
+        descriptionEditor.config.enterMode = CKEDITOR.ENTER_DIV;
+        descriptionEditor.config.format_div = { element : 'div', attributes : { class : 'normalDiv' } };
         descriptionEditor.config.width = 420;
         descriptionEditor.config.height = 400;
 
