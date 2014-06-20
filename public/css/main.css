@@ -44,11 +44,11 @@ a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; font-w
 .bargin-right .title{ height:25px; line-height:25px; color:#af8b4d; padding-left:12px; background:url(../images/title_bg.jpg) left center no-repeat;}
 .bargin-right .color{padding-top:5px;line-height:20px; overflow: hidden; }
 .bargin-right .color .color-title{ color:#404040;  width: 50px; float: left}
-.bargin-right .color .color-con{ color:#646464; width: 84%; float: left }
+.bargin-right .color .color-con{ color:#646464; width: 82%; float: left }
 .bargin-right .rules{padding-top:5px; line-height:20px;color:#646464; width:100%; overflow: hidden; }
 .bargin-right .rules .rules_sp { color:#404040; width: 50px; float: left }
 .bargin-right .rules .rules-title{ color:#404040;}
-.bargin-right .rules .rules-con{ width:80%; color:#646464; word-wrap:break-word; float: left;}
+.bargin-right .rules .rules-con{ width:82%; color:#646464; word-wrap:break-word; float: left;}
 .bargin-right .pice{color:#AF8B4D;}
 .bargin-content .look_store{ width:auto; height:auto; padding-top:4%; clear:both ; position:absolute; bottom:4%; right:0px}
 .bargin-content .look_store a{width:130px; height:34px; display:inline-block; color:#291b00;font-size:1.4rem; line-height:34px; text-align:center;
