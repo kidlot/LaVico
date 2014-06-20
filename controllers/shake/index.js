@@ -230,8 +230,9 @@ module.exports = {
                 editor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
                 editor.config.enterMode = CKEDITOR.ENTER_BR;
                 editor.config.language = 'zh-cn';
-                editor.config.width = '80%';
+                editor.config.width = 600;
                 editor.config.height = 400;
+                editor.config.allowedContent = true;//防止过滤标签的css-style属性
 
                 //保存按钮
                 window.save = function (){
@@ -624,8 +625,9 @@ module.exports = {
                 editor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
                 editor.config.enterMode = CKEDITOR.ENTER_BR;
                 editor.config.language = 'zh-cn';
-                editor.config.width = '80%';
+                editor.config.width = 600;
                 editor.config.height = 400;
+                editor.config.allowedContent = true;//防止过滤标签的css-style属性
 
 //                CKEDITOR.config.toolbar_Full = [
 //                    ['Source','-','Save','NewPage','Preview','-','Templates'],

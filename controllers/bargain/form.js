@@ -85,14 +85,10 @@ module.exports = {
         descriptionEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
         descriptionEditor.config.enterMode = CKEDITOR.ENTER_BR;
         descriptionEditor.config.language = 'zh-cn';
-        descriptionEditor.config.allowedContent = true;
-        descriptionEditor.config.enterMode = CKEDITOR.ENTER_DIV;
-        descriptionEditor.config.format_div = { element : 'div', attributes : { class : 'normalDiv' } };
+        descriptionEditor.config.allowedContent = true;//防止过滤标签的css-style属性
         descriptionEditor.config.width = 420;
         descriptionEditor.config.height = 400;
 
-        //http://wx.lavicouomo.com/lavico/bargain/detail?wxid=oTVLcjg1ZZrFhdvuRJuje8zQofKs&_id=532ffaac8af53ef250000c83
-        //http://{host}/lavico/bargain/detail?_id=53a16a8423582a6d65000c72&wxid={wxid}
         //保存
         window.save = function(){
 
@@ -110,7 +106,7 @@ module.exports = {
 
             if(!$('#pic_upload').attr('src')){
                 $.globalMessenger().post({
-                    message: "请上传活动大图",
+                    message: "请上传活动图",
                     type: 'error',
                     showCloseButton: true});
                 return false;
