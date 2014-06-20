@@ -119,13 +119,12 @@ module.exports={
             process:function(seed,nut){
                 nut.model.wxid = seed.wxid;
                 var city=decodeURIComponent(seed.city);
-                if(city == "null"){
-                    nut.model.city = city
+                console.log("city",city)
+                if(typeof (city) == undefined){
+                    nut.model.city = "null"
                 }else{
-                    nut.model.city = city+"市";
+                    nut.model.city = city;
                 }
-
-                console.log(seed.city);
                 console.log("seed.wxid:"+seed.wxid);
                 //设置id从砍价过来
                 //没设置id查询过来的

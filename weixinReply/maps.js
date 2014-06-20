@@ -93,7 +93,6 @@ exports.load = function () {
                     }
                 },
                 function(){
-                    console.log(replyArr)
                     res.reply(replyArr);
 
                 }
@@ -231,7 +230,6 @@ exports.load = function () {
                     }
                 },
                 function(){
-                    console.log(replyArr)
                     res.reply(replyArr);
                 }
             )()
