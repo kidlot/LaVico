@@ -18,11 +18,11 @@
             desc: '系统公告',
             btns: [
                 {
-                    title: '添加',
-                    controller: '/lavico/announcement/addAnnouncement.js'
-                }, {
                     title: '列表',
                     controller: '/lavico/announcement/announcementIndex.js'
+                }, {
+                    title: '添加',
+                    controller: '/lavico/announcement/addAnnouncement.js'
                 }
             ],
             start: function() {

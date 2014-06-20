@@ -16,11 +16,11 @@
             desc: '积分兑换',
             btns: [
                 {
+                    title: '列表',
+                    controller: '/lavico/reedem/reedem_list'
+                }, {
                     title: '添加',
                     controller: '/lavico/reedem/addReedem'
-                }, {
-                    title: '管理',
-                    controller: '/lavico/reedem/reedem_list'
                 },{
                     title: '加分',
                     controller: '/lavico/reedem/addCoin_Test'

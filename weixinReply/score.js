@@ -16,11 +16,11 @@
             desc: '答题抢积分',
             btns: [
                 {
-                    title: '添加',
-                    controller: '/lavico/answerQuestion/question/addQuestion'
-                }, {
                     title: '列表',
                     controller: '/lavico/answerQuestion/themeList'
+                }, {
+                    title: '添加',
+                    controller: '/lavico/answerQuestion/question/addQuestion'
                 },{
                     title: '统计',
                     controller: '/lavico/answerQuestion/statistics/statistics_list'

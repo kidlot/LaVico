@@ -16,8 +16,12 @@
       desc: '我要侃价',
       btns: [
         {
-          title: '管理',
+          title: '列表',
           controller: '/lavico/bargain'
+        },
+        {
+          title:'添加',
+          controller:'/lavico/bargain/form'
         }
       ],
       start: function() {

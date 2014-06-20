@@ -11,8 +11,13 @@ exports.load = function () {
       desc: '精英搭配',
       btns: [
         {
-          title: '管理',
+          title: '列表',
           controller: '/lavico/lookbook'
+        },
+        {
+          title:'添加',
+          controller:'/lavico/lookbook/form'
+
         }
       ],
       start: function() {
