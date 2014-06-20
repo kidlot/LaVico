@@ -1,12 +1,9 @@
-
 var domain = require('domain');
-
 /*
  简单题的处理界面
  location.href="/lavico/AnswerQuestion/SimpleQuestion?_id="
         +_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+value;
 */
-
 module.exports={
     layout:null,
     view:null,
@@ -20,6 +17,8 @@ module.exports={
         var memberid = seed.memberid;
         var themetype = seed.themetype;
         var type = seed.type;
+        //判断是否是下一题或完成按钮
+        var status = seed.status ? seed.status : "false";
         //字数判断
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
@@ -31,7 +30,6 @@ module.exports={
         })
 
         this.step(function(doc){
-            console.log("1")
             for(var i=0;i<doc.options.length;i++){
                 if(doc.options[i].type==2 && doc.options[i].optionId==optionId){
 
@@ -56,16 +54,13 @@ module.exports={
                         return doc.options[i];
                     }else{
                         nut.view.disable();
-                        //nut.write("<script>alert('字数不符合要求，请重填');history.back()</script>");
                         nut.write("<script>window.onload=function(){window.popupStyle2.on('字数不符合要求，请重填',function(event){history.back()})}</script>");
-                        //then.terminate();
                     }
                 }
             }
         })
 
         this.step(function(docOne){
-            console.log("2")
             if(docOne){
                 then.req.session.scoreAll+=parseInt(docOne.answerScore);
                 helper.db.coll("lavico/custReceive").insert({
@@ -101,7 +96,5 @@ module.exports={
                 this.res.end();
             }
         })
-
     }
-
 }

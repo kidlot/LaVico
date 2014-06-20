@@ -49,7 +49,7 @@ module.exports={
         var docs;
         this.step(function(){
             helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
-                "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
+                "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
                 if(err) throw err;
                 if(doc){
                     docs = doc;
