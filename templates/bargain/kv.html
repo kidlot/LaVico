@@ -1,7 +1,7 @@
 
 <input type="hidden" id="wxid" value='{@wxid}'>
 <div class="wrapper">
-    <div class="coupon-banner"><img src="{@doc ? doc[0].pic_kv : '/lavico/public/images/bargain_banner.jpg'}"></div>
+    <div class="coupon-banner"><img src="{@doc[0].pic_kv}"></div>
     <div class="activity-rules">
         <if condition="@ _id">
             <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@ _id}')">立即开始</a></div>
