@@ -504,14 +504,16 @@ module.exports = {
                             console.log(doc);
                             if(doc.success == true) {
                                 //减去积分
-                                middleware.request('Point/Change', {
-                                    memberId: memberId,
-                                    qty: _points,//每次摇一摇，消耗积分
-                                    memo: shakeActivityName
-                                }, then.hold(function (err, doc) {
-                                    console.log(doc);
-                                }));
-
+                                //当消耗积分大于零的时候，才消耗积分
+                                if(costPerShake > 0){
+                                    middleware.request('Point/Change', {
+                                        memberId: memberId,
+                                        qty: _points,//每次摇一摇，消耗积分
+                                        memo: shakeActivityName
+                                    }, then.hold(function (err, doc) {
+                                        console.log(doc);
+                                    }));
+                                }
                                 activity.coupon_no = doc.coupon_no;//优惠券号码
 
                                 helper.db.coll('welab/customers').update({wechatid: seed.uid}, {$addToSet: {shake: activity}}, function (err, doc) {
