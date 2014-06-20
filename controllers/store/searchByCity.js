@@ -118,12 +118,11 @@ module.exports={
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
                 nut.model.wxid = seed.wxid;
-                var city;
-                console.log(typeof (seed.city))
-                if(seed.city == "null"){
-                    nut.model.city = seed.city
+                var city=decodeURIComponent(seed.city);
+                if(city == "null"){
+                    nut.model.city = city
                 }else{
-                    nut.model.city = seed.city+"市";
+                    nut.model.city = city+"市";
                 }
 
                 console.log(seed.city);
