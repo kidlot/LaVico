@@ -237,6 +237,8 @@ function _check(){
 
 
     var jf = '{@jf}';
+
+    // 需要扣积分
     if(parseInt(jf) > 0){
         window.popupStyle2.on("成功侃价后将扣除"+jf+"积分",function(event){
 
@@ -246,6 +248,10 @@ function _check(){
                 _step('bargain');
             }
         })
+    }else{
+
+        // 开始
+        _step('bargain');
     }
 }
 
