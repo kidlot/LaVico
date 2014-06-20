@@ -273,6 +273,7 @@ module.exports={
                             }
                         }
                     }))
+
                 })
 
                 then.step(function(){
@@ -416,27 +417,24 @@ module.exports={
                                     .toArray(then.hold(function(err,doc){
 
                                             for(var j in finishMan){
-                                                for(var k=0;k<doc.length;k++){
-                                                    if(finishMan[j].name==doc[k].wechatid){
-                                                        finishMan[j].getLabel=doc[k].getLabel
-                                                        finishMan[j].getGift=doc[k].getGift
-                                                        finishMan[j].compScore=doc[k].getScore
-                                                        finishMan[j].createTime=doc[k].createTime;
+                                                if(finishMan[j].name==doc[0].wechatid){
+                                                    finishMan[j].getLabel=doc[0].getLabel
+                                                    finishMan[j].getGift=doc[0].getGift
+                                                    finishMan[j].compScore=doc[0].getScore
+                                                    finishMan[j].createTime=doc[0].createTime;
 
-                                                        (function(j){
-                                                            helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
-                                                                if(err) throw err
-                                                                if(doc){
-                                                                    finishMan[j].realname=doc.realname
-                                                                    finishMan[j].gender = doc.sex ||doc.gender
-                                                                    finishMan[j].birthday=doc.birthday
-                                                                    finishMan[j].city=doc.city
-                                                                }
-                                                            }))
-                                                        })(j)
-                                                    }
+                                                    (function(j){
+                                                        helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
+                                                            if(err) throw err
+                                                            if(doc){
+                                                                 finishMan[j].realname=doc.realname
+                                                                 finishMan[j].gender = doc.sex ||doc.gender
+                                                                 finishMan[j].birthday=doc.birthday
+                                                                 finishMan[j].city=doc.city
+                                                            }
+                                                        }))
+                                                    })(j)
                                                 }
-
                                             }
                                         //}
                                     }))
@@ -629,14 +627,14 @@ function   formatTime(now){
 }
 
 function sex(sex){
-    if(typeof (sex)!="undefined")
+    if(typeof (sex)!="undefined"){
         if(sex=="male"){
             return "男";
         }
         if(sex=="female"){
             return "女";
         }
-    else{
+    }else{
         return "性别不详";
     }
 }
