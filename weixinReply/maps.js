@@ -82,8 +82,7 @@ exports.load = function () {
                         else{
                             reply.picurl=storeList[i].PICURL;
                         }
-
-                            var newCODE=(storeList[i].CODE).replace(/\s/g,'');
+                        var newCODE=(storeList[i].CODE).replace(/\s/g,'');
                         var city;
                         if(storeList[i].CITY!=null){
                             city = encodeURIComponent(storeList[i].CITY+"市")
@@ -98,6 +97,7 @@ exports.load = function () {
                     }
                 },
                 function(){
+                    console.log(replyArr)
                     res.reply(replyArr);
 
                 }
@@ -239,6 +239,7 @@ exports.load = function () {
                     }
                 },
                 function(){
+                    console.log(replyArr)
                     res.reply(replyArr);
                 }
             )()

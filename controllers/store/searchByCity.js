@@ -245,8 +245,7 @@ module.exports={
             process:function(seed,nut){
                 var then=this;
                 var cityName= seed.city.substring(0,seed.city.length-1);
-                nut.model.city = cityName;
-                nut.model.cityName=cityName;
+                nut.model.city = seed.city;
                 nut.model.wxid = seed.wxid;
                 this.step(function(){
                     var jsonData={};
