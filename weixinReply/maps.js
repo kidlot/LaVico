@@ -84,7 +84,12 @@ exports.load = function () {
                         }
 
                             var newCODE=(storeList[i].CODE).replace(/\s/g,'');
-                        var city = encodeURIComponent(storeList[i].CITY)
+                        var city;
+                        if(storeList[i].CITY!=null){
+                            city = encodeURIComponent(storeList[i].CITY+"市")
+                        }else{
+                            city="null";
+                        }
                             //reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
                             reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName+'&city='+city;
 
@@ -216,12 +221,16 @@ exports.load = function () {
 
                         if(storeList[i].PICURL==null)
                             reply.picurl="http://wx.lavicouomo.com/lavico/public/images/lavico_default.png";
-                        else
+                        else{
                             reply.picurl=storeList[i].PICURL;
-
-
-                            var newCODE2=(storeList[i].CODE).replace(/\s/g,'');
-                        var city = encodeURIComponent(storeList[i].CITY)
+                        }
+                        var newCODE2=(storeList[i].CODE).replace(/\s/g,'');
+                        var city;
+                        if(storeList[i].CITY!=null){
+                            city = encodeURIComponent(storeList[i].CITY+"市")
+                        }else{
+                            city="null";
+                        }
                             //reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
                             reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName+'&city='+city;
 
