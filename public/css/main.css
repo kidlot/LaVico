@@ -48,7 +48,7 @@ a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; font-w
 .bargin-right .rules{padding-top:5px; line-height:20px;color:#646464; width:100%;}
 .bargin-right .rules .rules_sp { color:#404040; width: 16%; float: left }
 .bargin-right .rules .rules-title{ color:#404040;}
-.bargin-right .rules .rules-con{ width:100%; display:inline-block; color:#646464; word-wrap:break-word;}
+.bargin-right .rules .rules-con{ width:84%; color:#646464; word-wrap:break-word; float: left;}
 .bargin-right .pice{color:#AF8B4D;}
 .bargin-content .look_store{ width:auto; height:auto; padding-top:4%; clear:both ; position:absolute; bottom:4%; right:0px}
 .bargin-content .look_store a{width:130px; height:34px; display:inline-block; color:#291b00;font-size:1.4rem; line-height:34px; text-align:center;
