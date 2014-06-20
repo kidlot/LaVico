@@ -66,7 +66,7 @@ module.exports = {
                             _doc[i].pic_kv = _doc[i].pic_kv || '/lavico/public/images/bargain_banner.jpg';//设置默认的kv图
                         }
                     }
-                    doc = _doc.length > 0 ? _doc : [{pic_kv:"/lavico/public/images/bargain_banner.jpg"}]
+                    doc = _doc || {}
                     console.log(doc);
 
                     nut.model.doc = doc
