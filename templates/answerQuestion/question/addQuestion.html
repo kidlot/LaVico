@@ -120,16 +120,15 @@
     <li class="b02"><a href="/lavico/answerQuestion/themeList" class="stay">问答管理</a> <em></em></li>
     <li class="active"><span>新增问答</span></li>
 </ul>
-
-<div name="container" class="panel panel-default padding10">
-<div name="title" style="padding: 10px;">
-    <div class="height35">
-        <input type="button" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">新增问答</span>
-        <input type="button" value="保存" name="save" id="save" class="btn btn-embossed btn-primary" style="float: right; margin-left: 300px;"></div>
-</div>
-<div name="main">
-<!--基础设置-->
-<div name="baseSet" class="baseSetSty">
+<div name="container" class="panel panel-default formText">
+    <div class="panel-heading clearfix">
+        <a class="btn btn-defalut btn-social-googleplus pull-left" href="javascript:history.back();"><i class="fui-arrow-left"></i> 返回</a>
+        <a class="btn btn-success btn-social-googleplus pull-right save" id="save" href="javascript:;" onclick="save()"><i class="fui-arrow-left"></i> 保存</a>
+    </div>
+    <div name="title" style="padding: 10px;">
+    <div name="main">
+    <!--基础设置-->
+    <div name="baseSet" class="baseSetSty">
     <p>基础设置</p>
     <div>图文URL:&nbsp;&nbsp;<input type="text" value="http://{host}/lavico/answerQuestion/first?_id={_id}&optionId=1&wechatid={wxid}" name="url" class="form-control input-sm" style="width: 350px">&nbsp;<input type="button"  value="复制"  class="btn btn-embossed btn-primary"></div>
     <div>开始/结束:&nbsp;<input type="text" class="form-control input-sm input-date" style="border: 2px solid #bdc3c7;" id="datetimepicker_s" name="beginTime">&nbsp;&nbsp;<input style="border: 2px solid #bdc3c7;" type="text" class="form-control input-sm input-date" id="datetimepicker_t" name="endTime"></div>
@@ -147,14 +146,18 @@
 
     </div>
 </div>
-<br>
-<!--内容设置-->
-<div name="contentSet">
-<p>内容设置</p>
-<ul name="btnLab" class="labMenu">
-    <li name="editTheme" style="background-color:#bdc3c7;"><a href="javascript:">编辑题目</a></li>
-    <li name="editGift"><a href="javascript:">编辑奖项</a></li>
-</ul>
+    <br>
+    <!--内容设置-->
+    <div name="contentSet">
+    <p>内容设置</p>
+    <ul name="btnLab" class="labMenu">
+        <li name="editTheme" style="background-color:#bdc3c7;">
+            <a href="javascript:">编辑题目</a>
+        </li>
+        <li name="editGift">
+            <a href="javascript:">编辑奖项</a>
+        </li>
+    </ul>
 <div name="main">
 <div name="mainContent" class="mainContent" >
 <div name="option" class="option">
