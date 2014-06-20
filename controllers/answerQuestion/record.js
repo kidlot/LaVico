@@ -16,6 +16,8 @@ module.exports={
         var memberid=seed.memberid;
         var docvar=null;//是否已经有存储,即，是否已经做过此题
         var themetype = seed.themetype;
+        //判断是否是下一题或完成按钮
+        var status = seed.status ? seed.status : "false";
 
         this.step(function(){
             //判断是否已经记录
@@ -31,7 +33,6 @@ module.exports={
                 if(doc){
                     if(optionId>doc.options.length){
                         nut.view.disable();
-                        //nut.write("<script>alert('无此题，请联系管理员')</script>");
                         nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，请联系管理员',function(event){history.back()})}</script>");
                     }
                     return doc.options;
@@ -41,9 +42,6 @@ module.exports={
 
         this.step(function(docOptions){
             if(themetype==1){
-                //helper.db.coll("jinqiao/garage").update({"sid": doc[i].sid}, {$set: {"sid": doc[i].sid}}, {upsert: true},function(err,doc){
-//                    if(err) throw err;
-//                })
                 if(type==0){
                 //单选
                     //积分在数字情况下记录
@@ -71,7 +69,7 @@ module.exports={
                                 "getGift":  "",
                                 "getScore": "",
                                 "type":type,
-                                "createTime": createTime(),
+                                "createTime": new Date().getTime(),
                                 "memberId":memberid,
                                 "themetype":themetype
                             }}, {upsert: true},function(err,doc){
@@ -155,7 +153,7 @@ module.exports={
                             "getLabel": "",
                             "getGift":  "",
                             "getScore": "",
-                            "createTime": createTime(),
+                            "createTime": new Date().getTime(),
                             "type":type,
                             "memberId":memberid,
                             "themetype":themetype
@@ -202,7 +200,6 @@ module.exports={
                 }
             }else if(docvar==null){
                 //没有记录过
-            //if(1==1){
                 if(type==0){//单选
                     //积分在数字情况下记录
                     if(!isNaN(score)){
@@ -227,7 +224,7 @@ module.exports={
                             "getGift":  "",
                             "getScore": "",
                             "type":type,
-                            "createTime": createTime(),
+                            "createTime":new Date().getTime(),
                             "memberId":memberid,
                             "themetype":themetype
                         },function(err,doc){
@@ -307,7 +304,7 @@ module.exports={
                         "getLabel": "",
                         "getGift":  "",
                         "getScore": "",
-                        "createTime": createTime(),
+                        "createTime": new Date().getTime(),
                         "type":type,
                         "memberId":memberid,
                         "themetype":themetype
@@ -360,7 +357,6 @@ module.exports={
                     var themeQuestionoptionId;
                     var themeQuestionstopLabel
                     var themeQuestionchooseNext
-
                     for(var i=0;i<docOptions.length;i++){
                         if(optionId==docOptions[i].optionId){
                             themeQuestionoptionId=docOptions[i].optionId
@@ -374,51 +370,39 @@ module.exports={
                     }
 
                     if(finish!="true"){
-
                         var next = (parseInt(optionId)+1)
-
                         if(themeQuestionstopLabel==''||typeof(themeQuestionstopLabel)=='undefined'){
-
                             if(themeQuestionchooseNext==''||typeof(themeQuestionstopLabel)=='undefined'){
-
                                 if(next >docOptions.length){
                                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                                         "&_id="+_id+"&optionId="+docOptions.length+"&memberid="+memberid+"&themetype="+themetype});
                                     this.res.end();
                                 }else{
-
                                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
                                         wechatid+"&_id="+_id+
                                         "&optionId="+next});
                                     this.res.end();
                                 }
-
                             }else{
-
                                 this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
                                     wechatid+"&_id="+_id+
                                     "&optionId="+parseInt(themeQuestionchooseNext)});
                                 this.res.end();
                             }
                         }else{
-
                             this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?wechatid="+wechatid+
                                 "&_id="+_id+"&optionId="+optionId});
                             this.res.end();
                         }
                     }else{
                         //单选按钮正常回退，再前进
-
-
                         this.res.writeHead(302, {'Location': "/lavico/answerQuestion/finish?isRecord=yes&wechatid="+wechatid+
                             "&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                         this.res.end();
                     }
                 }
-
             }
         });
-
         function createTime(){
             var d = new Date();
             var vYear = d.getFullYear();
@@ -427,7 +411,5 @@ module.exports={
             s=vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay);
             return s;
         }
-
     }
-
 }

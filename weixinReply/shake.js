@@ -16,8 +16,12 @@
       desc: '摇一摇',
       btns: [
         {
-          title: '摇一摇',
+          title: '列表',
           controller: '/lavico/shake'
+        },
+        {
+          title: '添加',
+          controller: '/lavico/shake/index:add'
         }
       ],
       start: function() {

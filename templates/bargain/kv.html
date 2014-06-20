@@ -1,7 +1,7 @@
 
 <input type="hidden" id="wxid" value='{@wxid}'>
 <div class="wrapper">
-    <div class="coupon-banner"><img src="/lavico/public/images/bargain_banner.jpg"></div>
+    <div class="coupon-banner"><img src="{@doc[0].pic_kv}"></div>
     <div class="activity-rules">
         <if condition="@ _id">
             <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@ _id}')">立即开始</a></div>
@@ -15,17 +15,23 @@
         </if>
         <div class="text">
             <div class="title">活动及使用规则</div>
-            <div class="title1">活动说明：</div>
-            <div class="subtext">侃价是门技术更是门艺术，既要有吃定你不放弃的决心，更要练就三寸不烂的嘴上功夫。生活中的你也是侃价达人吗？马上参与朗维高“我要侃价”活动，点击“立即侃价”，输入你心目中的理想价位，给力优惠，惊喜无限！<br>
+            <if condition="@doc.length != 0">
+                {@doc[0].description}
+                <else/>
+                <div class="title1">活动说明：</div>
+                <div class="subtext">侃价是门技术更是门艺术，既要有吃定你不放弃的决心，更要练就三寸不烂的嘴上功夫。生活中的你也是侃价达人吗？马上参与朗维高“我要侃价”活动，点击“立即侃价”，输入你心目中的理想价位，给力优惠，惊喜无限！<br>
                 该活动只有朗维高会员才有权限参与，如果你还不是会员请点击菜单-我的会员卡-<a href="/lavico/member/card_blank/register?wxid={@ wxid}" class="login_size" >注册会员</a></div>
-            <div class="title1">奖项设置：</div>
-            <div class="subtext">1、不同额度的优惠券 <br>2、每期活动每位会员能参与1次</div>
-            <div class="title1">免责声明：</div>
-            <div class="subtext"><p>1、券请在指定期限内兑换使用，过期作废</p>
+                <div class="title1">奖项设置：</div>
+                <div class="subtext">1、不同额度的优惠券 <br>2、每期活动每位会员能参与1次</div>
+                <div class="title1">免责声明：</div>
+                <div class="subtext"><p>1、券请在指定期限内兑换使用，过期作废</p>
                 <p>2、券仅限会员本人使用，不可借用</p>
                 <p>3、除有特殊说明，否则券不可累积使用</p>
                 <p>4、本活动最终解释权归朗维高品牌所有</p>
-            </div>
+                </div>
+            </if>
+
+
         </div>
     </div>
 </div>

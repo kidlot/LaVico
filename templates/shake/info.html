@@ -1,8 +1,11 @@
 <style>
-    label {
+    label{
         display: inline-block;
         margin-bottom: 5px;
         font-weight: bold;
+    }
+    th,td{
+        text-align: center;
     }
 </style>
 
@@ -39,22 +42,23 @@
             <thead>
             <tr>
                 <th>活动名称</th>
-                <th>优惠券名称</th>
-                <th>面值</th>
                 <th>参与人数</th>
                 <th>获得人数</th>
+                <th>参与次数</th>
+                <th>中奖次数</th>
                 <th>设定中奖率</th>
                 <th>实际中奖率</th>
+
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>{@ doc.name}</td>
-                <td>{@ doc.lottery[0].coupon_name}</td>
-                <td>{@ doc.lottery[0].QTY}</td>
                 <td>{@ doc.total}</td>
                 <td>{@ doc.sumFavorites}</td>
-                <td>{@ doc.lottery[0].lottery_chance}%</td>
+                <td>{@ doc.real_total}</td>
+                <td>{@ doc.real_count}</td>
+                <td>{@ doc.lottery_chance}%</td>
                 <td>{@ doc.reality_chance}%</td>
             </tr>
             </tbody>

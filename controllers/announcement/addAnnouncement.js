@@ -24,8 +24,7 @@ module.exports={
         }
     },
     viewIn:function(){
-
-        $("input[name='btnSave']").click(function(){
+        window.save = function(){
             var jsonData={title:$("input[name='announcementTitle']").val(),content:$("#content").val()}
             $.get("/lavico/announcement/addAnnouncement:save",jsonData,
                 function(data){
@@ -33,10 +32,6 @@ module.exports={
                     location.href='/lavico/announcement/announcementIndex'
                 }
             );
-        });
-
-        $("input[name='btnBack']").click(function(){
-            location.href="/lavico/announcement/announcementIndex";
-        });
+        }
     }
 }

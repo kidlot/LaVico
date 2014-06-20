@@ -35,8 +35,6 @@ module.exports= {
         })
 
         this.step(function(){
-            console.log(endTime)
-            console.log(createTime())
             if(new Date(endTime).getTime()<new Date(createTime()).getTime()){
                 if(isOpen==0){
                     nut.model.ok = "1";
@@ -99,11 +97,9 @@ module.exports= {
         })
 
         this.step(function(){
-            console.log("wechatid:"+wechatid)
             if(wechatid != undefined){
                 helper.db.coll('welab/customers').findOne({wechatid:wechatid},this.hold(function(err, doc){
                     var doc = doc || {};
-                    console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
                 }));
             }else{
@@ -171,29 +167,21 @@ module.exports= {
         })
 
         this.step(function(){
-            console.log("result_false")
-            console.log(result_false)
             if(result_false.length>0 && result_true.length==0){
                 max = result_false[0].optionId;
                 for(var i=0;i<result_false.length;i++){
-                    console.log("max:"+max)
                     if(result_false[i].optionId>max){
                         max = result_false[i].optionId;
                         chooseId = result_false[i].chooseId;
-                        console.log("result_false[i].chooseIDSS:"+result_false[i].chooseId)
                     }else{
                         max = result_false[i].optionId;
                         chooseId = result_false[i].chooseId;
-                        console.log("result_false[i].chooseIDAA:"+result_false[i].chooseId)
                     }
                 }
             }
-            console.log("chooseId:"+chooseId)
         })
 
         this.step(function(){
-            console.log("themeQuestion")
-            console.log(themeQuestion)
             if(themeQuestion.length>0 && result_false.length>0){
                 for(var i=0;i<themeQuestion.length;i++){
                     if(themeQuestion[i].optionId==max ){
@@ -204,12 +192,8 @@ module.exports= {
         })
 
         this.step(function(){
-            console.log("chooseNextArr")
-            console.log(chooseNextArr)
             if(chooseNextArr){
                 for(var i=0;i<chooseNextArr.length;i++){
-                    console.log("chooseNextArr[i].chooseID")
-                    console.log(chooseNextArr[i].chooseID)
                     if(chooseNextArr[i].chooseID==chooseId){
                         chooseNext = chooseNextArr[i].chooseNext
                     }

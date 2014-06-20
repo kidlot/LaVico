@@ -16,25 +16,29 @@ module.exports = {
     }
     , viewIn : function(){
 
-        console.log("userList")
+        //console.log("userList")
         $("#userList").flexigrid({
             url: '/lavico/shake/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val()+"&_id="+$("._id").val(),
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
-                {display: '时间', name : $(".unwind").val()+'.createDate', width : 150, sortable : true},
-                {display: '姓名', name : 'realname', width : 150, sortable : true},
-                {display: '标签', name : 'tags', width : 292, sortable : true},
-                {display: '名称', name : $(".unwind").val()+'.name', width : 150, sortable : true},
-                {display: '面值', name : $(".unwind").val()+'.QTY', width : 150, sortable : true},
+                {display: '时间', name : $(".unwind").val()+'.createDate', width : 80, sortable : true},
+                {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true},
+                {display: '姓名', name : 'realname', width : 80, sortable : true},
+                {display: '手机号吗', name : 'mobile', width : 100, sortable : true},
+                {display: 'memberID', name :$(".unwind").val()+'.memberID', width : 80, sortable : true},
+//                {display: '券名', name : $(".unwind").val()+'.promotion_name', width : 100, sortable : true},
+                {display: '券号', name : $(".unwind").val()+'.coupon_no', width : 180, sortable : true},
+                {display: '券中奖率', name : $(".unwind").val()+'.lottery_chance', width : 80, sortable : true},
+                {display: '消耗积分', name : $(".unwind").val()+'.points', width : 80, sortable : true},
+                {display: '券名称', name : $(".unwind").val()+'.display_name', width : 80, sortable : true},
+//                {display: '面值', name : $(".unwind").val()+'.qty', width : 30, sortable : true},
+//                {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
+//                {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
+//                {display: '省份', name : 'province', width : 80, sortable : true}
+//                {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
+                {display: '标签', name : 'tags', width : 292, sortable : true}
 
-                {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
-                {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
-                {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
-                {display: '已关注(天)', name : 'followTime', width : 70, sortable : true, hide:true},
-                {display: '已注册(天)', name : 'registerTime', width : 70, sortable : true, hide:true},
-                {display: '未会话(天)', name : 'lastMessageTime', width : 70, sortable : true, hide:true},
-                {display: '会话数(占比)', name : 'messageCount', width : 100, sortable : true, hide:true}
             ],
             //sortname: "input",
             sortorder: "desc",
@@ -108,7 +112,7 @@ module.exports = {
                         conditions[seed.unwind+".aid"] = seed._id
                     }
                     arrregateParams.push({$match:conditions})
-                    console.log(arrregateParams)
+                    //console.log(arrregateParams)
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
@@ -201,7 +205,10 @@ module.exports = {
                 nut.disabled = true ;
 
                 var conditions = search.conditions(seed) || {} ;
-
+                console.log('---------seed.conditions-----------');
+                //console.log(seed.conditions);
+                console.log('---------seed.conditions-----------');
+                //this.terminate();
                 var _data = {};
                 var _rows = [];
 
@@ -222,18 +229,36 @@ module.exports = {
                     if(seed.unwind){
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
+                    console.log('---------arrregateParams-----------');
+                    //console.log(arrregateParams);
+                    console.log('---------arrregateParams-----------');
 
-                    arrregateParams.push({$sort:sort})
+
+                    if(seed._id){
+                        conditions[seed.unwind+".aid"] = seed._id
+                    }
+                    arrregateParams.push({$match:conditions})
+
+                    arrregateParams.push({$sort:sort});
+                    console.log('---------seed._id-----------');
+                    console.log(seed._id);
+                    console.log('---------seed._id-----------');
+
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
                             if(err) console.log(err) ;
-
+                            console.log('---------docs-----------');
+                            //console.log(docs);
+                            console.log('---------docs-----------');
+                            //this.terminate()
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
                                     docs[i].realname = docs[i].realname || '未注册用户';
-                                    docs[i].city = docs[i].province + docs[i].city;
+                                    docs[i].province = docs[i].province || '';
+                                    docs[i].mobile = docs[i].mobile || '';
+                                    docs[i].city = docs[i].city || '';
                                     docs[i].followCount = docs[i].followCount || '1';
                                     docs[i].messageCount = docs[i].messageCount;
                                     docs[i].isRegister = docs[i].registerTime ? "是" : "否"
@@ -269,7 +294,7 @@ module.exports = {
 
                 this.step(function(){
 
-                    console.log(_data)
+                    //console.log(_data)
 
                     try{
                         var nodeExcel = require('excel-export');
@@ -279,25 +304,16 @@ module.exports = {
                                 caption: '姓名',
                                 type: 'string'
                             }, {
+                                caption: '省份',
+                                type: 'string'
+                            }, {
                                 caption: '城市',
-                                type: 'string'
-                            }, {
-                                caption: '关注次数',
-                                type: 'string'
-                            }, {
-                                caption: '消息总数',
                                 type: 'string'
                             }, {
                                 caption: '性别',
                                 type: 'string'
-                            }, {
-                                caption: '生日',
-                                type: 'string'
-                            }, {
-                                caption: '关注时间',
-                                type: 'string'
-                            }, {
-                                caption: '注册时间',
+                            },{
+                                caption: '手机号码',
                                 type: 'string'
                             }
                         ];
@@ -318,13 +334,10 @@ module.exports = {
                             var rows;
                             rows = [
                                 _data[i].realname,
+                                _data[i].province,
                                 _data[i].city,
-                                _data[i].followCount,
-                                _data[i].messageCount,
                                 _data[i].gender,
-                                _data[i].birthday,
-                                _data[i].followTime,
-                                _data[i].registerTime
+                                _data[i].mobile
                             ]
 
                             if(seed.unwind && seed.data){
@@ -350,7 +363,7 @@ module.exports = {
                     }
 
 
-                    console.log(conf)
+                    //console.log(conf)
 
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');

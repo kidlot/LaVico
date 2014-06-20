@@ -518,6 +518,9 @@ exports.load = function () {
 
 
         var conditions = search.conditions(seed) ;
+        console.log('--------conditions-------');
+        console.log(conditions);
+        console.log('--------conditions-------');
 
         var _data = {};
         var _rows = [];
@@ -798,10 +801,10 @@ exports.load = function () {
             , {field:'mobile',title:'移动电话',type:'text'}
             , {field:'createtime',title:'注册时间',type:'date'}
             , {field:'followTime',title:'关注时间',type:'date'}
-            , {field:'tags',title:'标签',type:'value'}
-            , {field:'nickname',title:'昵称',type:'value'}
-            , {field:'city',title:'城市',type:'value'}
-            , {field:'profession',title:'行业',type:'value'}
+            , {field:'tags',title:'标签',type:'text'}
+            , {field:'nickname',title:'昵称',type:'text'}
+            , {field:'city',title:'城市',type:'text'}
+            , {field:'profession',title:'行业',type:'text'}
             , {field:'source',title:'关注来源',type:'value'}
             , {field:'HaiLanMemberInfo.action',title:'绑定与否',type:'value'}
             , {field:'HaiLanMemberInfo.cardNumber',title:'会员卡',type:'value'}

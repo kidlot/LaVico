@@ -59,7 +59,16 @@ module.exports = {
 
             if(wxid){
                 helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(this.hold(function(err,_doc){
+                    if(err) throw err;
+                    if(_doc){
+                        for(var i=0;i<_doc.length;i++){
+                            _doc[i].description = decodeURIComponent(_doc[i].description).replace(/\{\@(.?wxid)\}/g, wxid);
+                            _doc[i].pic_kv = _doc[i].pic_kv || '/lavico/public/images/bargain_banner.jpg';//设置默认的kv图
+                        }
+                    }
                     doc = _doc || {}
+                    console.log(doc);
+
                     nut.model.doc = doc
                 }))
 
@@ -115,8 +124,6 @@ module.exports = {
         })
     }
 }
-
-
 
 
 

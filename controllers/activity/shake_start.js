@@ -157,7 +157,8 @@ module.exports = {
                 this.step(function(){
                     /*判断用户积分是否足够*/
                     console.log("costPerShake:"+costPerShake);
-                    if(costPerShake >  0){
+                    if(costPerShake >=  0){
+
                         helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
 
                             console.log(doc);
@@ -167,14 +168,16 @@ module.exports = {
                             }else{
                                 memberId = "undefined";
                             }
+                            console.log('****************************************');
                             console.log("memberId:"+memberId);
+                            console.log('****************************************');
 
                             if(memberId == "undefined"){
                                 write_info(then,'{"result":"something-error"}');
                             }
                         }));
-
                     }
+
                 });
 
                 this.step(function(){
@@ -328,7 +331,7 @@ module.exports = {
                 this.step(function(){
                     /*判断用户积分是否足够*/
                     console.log("costPerShake:"+costPerShake);
-                    if(costPerShake >  0){
+                    if(costPerShake >=  0){
                         helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
 
                             console.log(doc);
@@ -479,9 +482,10 @@ module.exports = {
 
                     if(_flag == 1){
 
-                        activity.PROMOTION_CODE = _lotteryInfo.PROMOTION_CODE;
+                        activity.promotion_code = _lotteryInfo.PROMOTION_CODE;
                         activity.promotion_name = _lotteryInfo.PROMOTION_NAME;
                         activity.promotion_desc = _lotteryInfo.PROMOTION_DESC;
+                        activity.promotion_qty = _lotteryInfo.PROMOTION_QTY || null;
                         activity.display_name = _lotteryInfo.display_name;
                         activity.lottery_chance = _lotteryInfo.lottery_chance;
 
@@ -500,14 +504,16 @@ module.exports = {
                             console.log(doc);
                             if(doc.success == true) {
                                 //减去积分
-                                middleware.request('Point/Change', {
-                                    memberId: memberId,
-                                    qty: _points,//每次摇一摇，消耗积分
-                                    memo: shakeActivityName
-                                }, then.hold(function (err, doc) {
-                                    console.log(doc);
-                                }));
-
+                                //当消耗积分大于零的时候，才消耗积分
+                                if(costPerShake > 0){
+                                    middleware.request('Point/Change', {
+                                        memberId: memberId,
+                                        qty: _points,//每次摇一摇，消耗积分
+                                        memo: shakeActivityName
+                                    }, then.hold(function (err, doc) {
+                                        console.log(doc);
+                                    }));
+                                }
                                 activity.coupon_no = doc.coupon_no;//优惠券号码
 
                                 helper.db.coll('welab/customers').update({wechatid: seed.uid}, {$addToSet: {shake: activity}}, function (err, doc) {
@@ -558,10 +564,12 @@ module.exports = {
                                      write_info(then,'{"result":"unwin","limit":"yes","points":"'+shake.points+'","count":"'+_count+'"}');
                                      }
                                      /*摇一摇-活动券发放完毕处理-end*/
-                                }
-                                else{
+                                }else if(doc.error=='找不到对应的人员，请检查！'){
+                                    write_info(then,'{"result":"'+'lavico_no_found_wxid'+'"}');
+                                }else{
                                     write_info(then,'{"result":"'+doc.error+'"}');
                                 }
+
 
                             }
 
@@ -869,6 +877,11 @@ module.exports = {
                     }else if(data.result == 'your-points-not-enough'){
 
                         window.popupStyle2.on('您的积分不够了，快去朗维高门店消费或者参加抢积分活动吧！',function(event){
+                            flag = 1;
+                        });
+                    }else if(data.result == 'lavico_no_found_wxid'){
+
+                        window.popupStyle2.on('您的当前微信帐号可能未注册我们的会员，如需帮助，请拨打400-100-8866联系',function(event){
                             flag = 1;
                         });
 

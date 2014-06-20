@@ -5,87 +5,106 @@ module.exports={
         var then=this;
         var themeArr=[];
         var themetype = seed.themetype ? seed.themetype : 0;
+        nut.model.themetype = themetype;
         this.step(function(){
             if(themetype==1){
                 helper.db.coll("lavico/themeQuestion").find({themeType:1}).toArray(this.hold(function(err,docs){
                     if(err) throw  err;
-                    return docs;
-                    console.log("dd",docs)
+                    if(docs){
+                        return docs;
+                    }
                 }))
             }else{
                 helper.db.coll("lavico/themeQuestion").find({themeType:{$ne:1}}).toArray(this.hold(function(err,docs){
                     if(err) throw  err;
-                    return docs;
+                    if(docs){
+                        return docs;
+                    }
                 }))
             }
         })
 
         this.step(function(doc){
-            for(var e in doc){
-                var jsonOne={};
-                jsonOne.beginTime=doc[e].beginTime;
-                jsonOne.endTime=doc[e].endTime;
-                jsonOne.isOpen=doc[e].isOpen;
-                jsonOne.theme=doc[e].theme;
-                jsonOne.themeType=doc[e].themeType;
-                jsonOne.themeId=doc[e]._id;
+            console.log(doc)
+            if(doc){
+                for(var e in doc){
+                    var jsonOne={};
+                    jsonOne.beginTime=doc[e].beginTime;
+                    jsonOne.endTime=doc[e].endTime;
+                    jsonOne.isOpen=doc[e].isOpen;
+                    jsonOne.theme=doc[e].theme;
+                    jsonOne.themeType=doc[e].themeType;
+                    jsonOne.themeId=doc[e]._id;
 
-                //参与人数
-                (function(i,jsonOne){
-                    helper.db.coll("lavico/custReceive").aggregate(
-                        [
-                            {$group:{_id:"$themeId",count:{$addToSet:"$wechatid"}}},
-                            {$match:{_id:helper.db.id(i)}}
-                        ],then.hold(function(err,doc){
-                            if(err) throw err;
-                            try{
-                                jsonOne.totalPop=doc[0].count.length;
-                            }catch(e){
-                                jsonOne.totalPop=0;
-                            }
-                            console.log("doc[0].count.length",doc[0])
-
-                        }));
-
-                })(doc[e]._id,jsonOne);
-
-                //完成人数
-                (function(i,jsonOne){
-                    console.log("i",i)
-                    //helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(i),"isFinish":true,"optionId":0,"getLabel":null,"getGift":"","compScore":""})
-                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(i),"isFinish":true,"optionId":0,"getLabel":"","getScore":""})
-                        .count(
-                            then.hold(function(err,doc){
-                                if(err)throw err;
-                                if(doc==0){
-                                    jsonOne.finishCount=0;
-                                }
-                                else{
-                                    jsonOne.finishCount=doc;
-                                }
-                                console.log("count",jsonOne)
+                    //参与人数
+                    (function(i,jsonOne){
+                        console.log("i",i)
+                        helper.db.coll("lavico/custReceive").aggregate(
+                            [
+                                {$match:{themeId:i}},
+                                {$group:{_id:"$memberId"}}
+                            ],then.hold(function(err,doc){
+                                if(err) throw err;
                                 console.log("doc",doc)
-                            })
-                        )
-                    themeArr.push(jsonOne);
-                })(doc[e]._id,jsonOne);
-                console.log("ss:", themeArr)
+                                try{
+                                    jsonOne.totalPop=doc.length;
+                                }catch(e){
+                                    jsonOne.totalPop=0;
+                                }
+
+                            }));
+
+                    })(doc[e]._id,jsonOne);
+
+                    //完成人数
+                    (function(i,jsonOne){
+                        helper.db.coll("lavico/custReceive").find({"themeId":i,"isFinish":true,"type":"0"})
+                            .count(
+                                then.hold(function(err,doc){
+                                    if(err)throw err;
+                                    if(doc==0){
+                                        jsonOne.finishCount=0;
+                                    }
+                                    else{
+                                        jsonOne.finishCount=doc;
+                                    }
+                                })
+                            )
+                        themeArr.push(jsonOne);
+                    })(doc[e]._id,jsonOne);
+                }
             }
+
         })
 
         then.step(function(){
             pageSize=20
+            var data=[];
             page={}
             page.lastPage=themeArr.length%pageSize==0 ? parseInt(themeArr.length/pageSize) : parseInt(themeArr.length/pageSize)+1;
-            page.currentPage=typeof(seed.page)=="undefined"?1:seed.page
+            page.currentPage=typeof(seed.page)=="undefined"?1:parseInt(seed.page);
             page.totalCount=themeArr.length
-            page.docs=[]
-            for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+20;j++){
+
+            for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+pageSize;j++){
                 if(typeof(themeArr[j])!="undefined")
-                    page.docs.push(themeArr[j])
+                    data.push(themeArr[j])
             }
 
-            nut.model.docs=page.docs;
+            for(var i=0;i<data.length;i++){
+                data[i].beginTime = data[i].beginTime;
+                data[i].endTime = data[i].endTime;
+                data[i].isOpen = data[i].isOpen;
+                data[i].theme = data[i].theme;
+                data[i].themeType = data[i].themeType;
+                data[i].themeId = data[i].themeId;
+                data[i].totalPop = data[i].totalPop;
+                data[i].finishCount = data[i].finishCount;
+                data[i].count = ForDight(data[i].totalPop,data[i].finishCount)
+              }
+
+            nut.model.data = data;
+            console.log("data",data)
+            nut.model.page=page || {};
         })
     },
     actions:{
@@ -118,9 +137,10 @@ module.exports={
     },
     viewIn:function(){
         $("input[name='btnDel']").click(function(){
-            var id=$(this).parent().prev().prev("input[type=hidden]").val();
-            $.get("/lavico/answerQuestion/statistics/statistics_list:del",{_id:id} ,function(result){
-                location.href='/lavico/answerQuestion/statistics/statistics_list';
+            var themeVal = $(this).next("input[name='del']").val();
+            var themeValArr= themeVal.split("_");
+            $.get("/lavico/answerQuestion/statistics/statistics_list:del?_id="+themeValArr[2] ,function(result){
+                location.href='/lavico/answerQuestion/statistics/statistics_list?themetype='+themeValArr[3];
             });
         });
 
@@ -129,7 +149,11 @@ module.exports={
         $("input[name='btnStatistics']").click(function(){
             var themeVal=$(this).next("input[name='tongji']").val();
             var themeValArr= themeVal.split("_");
-            location.href="/lavico/answerQuestion/statistics/statistics_true?_id="+themeValArr[2]+"&finishCount="+themeValArr[0]+"&totalPop="+themeValArr[1];
+            location.href="/lavico/answerQuestion/statistics/statistics_true?_id="+themeValArr[2]+"&finishCount="+themeValArr[0]+"&totalPop="+themeValArr[1]+"&themetype="+themeValArr[3];
         });
     }
+}
+function   ForDight(Dight,How){
+    var num   =   Math.round(How/Dight*100)+"%";
+    return   num;
 }

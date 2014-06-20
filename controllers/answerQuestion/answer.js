@@ -101,7 +101,6 @@ module.exports={
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,cursor){
                 if(err) throw err;
-                console.log(cursor)
                 if(optionId>cursor.options.length){
                     nut.model.isok = "2";
                     nut.model.conent = "无此题，联系管理员"
@@ -120,7 +119,6 @@ module.exports={
                     //循环题数
                     if(optionId==cursor.options[i].optionId){
                         //传入题号和当前题号相同,记录题目
-                        console.log(JSON.stringify(cursor.options[i]))
                         nut.model.option=JSON.stringify(cursor.options[i]);//以json字符串格式记录,当前此题
                         nut.model.optionId=i+1;
                         nut.model._id=_id;

@@ -16,11 +16,11 @@
             desc: '型男测试',
             btns: [
                 {
-                    title: '添加',
-                    controller: '/lavico/answerQuestion/question/addQuestion'
-                }, {
                     title: '列表',
                     controller: '/lavico/answerQuestion/themeList?themetype=1'
+                }, {
+                    title: '添加',
+                    controller: '/lavico/answerQuestion/question/addQuestion'
                 },{
                     title: '统计',
                     controller: '/lavico/answerQuestion/statistics/statistics_list?themetype=1'

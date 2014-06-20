@@ -7,6 +7,8 @@ module.exports={
         var optionId=seed.optionId
         var resultJson
         var allPartakeNum=0;
+        var themetype = seed.themetype ? seed.themetype : 0;
+        nut.model.themetype = themetype;
 
         seed["$visitedPartake"]={_id:themeId,optionId:optionId}
 
@@ -90,7 +92,7 @@ module.exports={
                                 if(doc){
                                     var visiPeople={}
                                     visiPeople.realname=doc.realname
-                                    visiPeople.gender=doc.gender
+                                    visiPeople.gender=doc.sex ||doc.gender
                                     visiPeople.mobile=doc.mobile
                                     visiPeople.email=doc.email
                                     visiPeople.profession=doc.profession
@@ -150,7 +152,7 @@ module.exports={
                                 if(doc){
                                     var visiPeople={}
                                     visiPeople.realname=doc.realname
-                                    visiPeople.gender=doc.gender
+                                    visiPeople.gender=doc.sex ||doc.gender
                                     visiPeople.mobile=doc.mobile
                                     visiPeople.email=doc.email
                                     visiPeople.profession=doc.profession
@@ -191,6 +193,12 @@ module.exports={
 
                     for(var i in visitePeopleList){
                         var rows
+                        var realname
+                        if(typeof (visitePeopleList[i].realname)=="undefined"){
+                            realname=""
+                        }else{
+                            realname= visitePeopleList[i].realname
+                        }
                         var email
                         if(typeof (visitePeopleList[i].email)=="undefined"){
                             email=""
@@ -204,19 +212,26 @@ module.exports={
                             profession= visitePeopleList[i].profession
                         }
                         var gender
-                        if(typeof (visitePeopleList[i].gender)=="female"){
+                        if(visitePeopleList[i].gender=="female"){
                             gender="女"
                         }else{
                             gender= "男"
                         }
 
+                        var city
+                        if(typeof (visitePeopleList[i].city)=="undefined"){
+                            city=""
+                        }else{
+                            city= visitePeopleList[i].city
+                        }
+
                         rows = [
-                            visitePeopleList[i].realname,
+                            realname,
                             gender,
                             visitePeopleList[i].mobile,
                             email,
                             profession,
-                            visitePeopleList[i].city
+                            city
                         ]
                         conf.rows.push(rows)
                     }
