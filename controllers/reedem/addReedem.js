@@ -190,6 +190,8 @@ module.exports={
                 desEditor.config.language = 'zh-cn';
                 desEditor.config.width = 600;
                 desEditor.config.height = 400;
+                desEditor.config.allowedContent = true;//防止过滤标签的css-style属性
+
                 //保存功能
                 window.save = function (){
 
@@ -347,6 +349,8 @@ module.exports={
         desEditor.config.language = 'zh-cn';
         desEditor.config.width = 600;
         desEditor.config.height = 400;
+        desEditor.config.allowedContent = true;//防止过滤标签的css-style属性
+
 
         //券选择
         $('#activity_select').change(function(){

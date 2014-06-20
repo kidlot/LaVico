@@ -27,6 +27,7 @@ module.exports={
          explanationEditor.config.language = 'zh-cn';
          explanationEditor.config.width = 600;
          explanationEditor.config.height = 400;
+         explanationEditor.config.allowedContent = true;//防止过滤标签的css-style属性
          //活动规则-编辑器
          var descriptionEditor = CKEDITOR.replace( 'description', {
              toolbar: [
@@ -38,6 +39,8 @@ module.exports={
          descriptionEditor.config.language = 'zh-cn';
          descriptionEditor.config.width = 600;
          descriptionEditor.config.height = 400;
+         descriptionEditor.config.allowedContent = true;//防止过滤标签的css-style属性
+
          //免责声明-编辑器
          var reliefEditor = CKEDITOR.replace( 'relief', {
              toolbar: [
@@ -49,6 +52,8 @@ module.exports={
          reliefEditor.config.language = 'zh-cn';
          reliefEditor.config.width = 600;
          reliefEditor.config.height = 400;
+         reliefEditor.config.allowedContent = true;//防止过滤标签的css-style属性
+
          //保存功能
          window.save = function(){
              //活动说明

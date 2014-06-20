@@ -1,7 +1,9 @@
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
     <li class="b02"><a href="/lavico/announcement/announcementIndex" class="stay">公告列表</a> <em></em></li>
-    <li class="active"><span>新增公告</span></li>
+    <li class="active"><span>公告</span></li>
+    <li class="active"><span>添加</span></li>
+
 </ul>
 
 <div name="container" class="panel panel-default formText">
@@ -11,10 +13,26 @@
         <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
     </div>
 
-    <div name="addContent" class="panel-body">
-        <strong>内容设置:</strong><span name="resultShowArea" style="font-size: 20px;"></span><br><br>
-        正文标题:<input type="text" name="announcementTitle" class="form-control input-sm" style="width: 350px"/><br><br>
-        正文内容:<textarea rows="5" cols="25" name="announcementContent" id="content" class="form-control input-sm" style="width: 450px"></textarea>
-        <br/> <br/>
+    <div name="addContent" class="panel-body col-md-12">
+
+        <h6>基础设置</h6>
+
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2">标题</label>
+            <div class="col-sm-10">
+
+                <input type="text" name="announcementTitle" class="form-control input-sm" style="width: 350px"/><br><br>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2">内容</label>
+            <div class="col-sm-10">
+                <textarea rows="5" cols="25" name="announcementContent" id="content" class="form-control input-sm" style="width: 450px"></textarea>
+            </div>
+        </div>
+
+
     </div>
 </div>

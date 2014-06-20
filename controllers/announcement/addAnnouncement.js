@@ -25,15 +25,13 @@ module.exports={
     },
     viewIn:function(){
         window.save = function(){
-            $("input[name='btnSave']").click(function(){
-                var jsonData={title:$("input[name='announcementTitle']").val(),content:$("#content").val()}
-                $.get("/lavico/announcement/addAnnouncement:save",jsonData,
-                    function(data){
-                        $("span[name='resultShowArea']").html("the data added successfully");
-                        location.href='/lavico/announcement/announcementIndex'
-                    }
-                );
-            });
+            var jsonData={title:$("input[name='announcementTitle']").val(),content:$("#content").val()}
+            $.get("/lavico/announcement/addAnnouncement:save",jsonData,
+                function(data){
+                    $("span[name='resultShowArea']").html("the data added successfully");
+                    location.href='/lavico/announcement/announcementIndex'
+                }
+            );
         }
     }
 }

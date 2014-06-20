@@ -19,10 +19,10 @@
             btns: [
                 {
                     title: '列表',
-                    controller: '/lavico/announcement/announcementIndex.js'
+                    controller: '/lavico/announcement/announcementIndex'
                 }, {
                     title: '添加',
-                    controller: '/lavico/announcement/addAnnouncement.js'
+                    controller: '/lavico/announcement/addAnnouncement'
                 }
             ],
             start: function() {

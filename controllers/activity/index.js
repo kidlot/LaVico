@@ -132,6 +132,7 @@ module.exports = {
                 });
                 editor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
                 editor.config.enterMode = CKEDITOR.ENTER_BR;
+                editor.config.allowedContent = true;//防止过滤标签的css-style属性
                 editor.config.language = 'zh-cn';
                 editor.config.width = 600;
                 editor.config.height = 400;
