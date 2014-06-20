@@ -6,22 +6,15 @@
     map.centerAndZoom(point,12);
 
     function myFun(result){
-        console.log("1")
         var cityName = result.name;
         map.setCenter(cityName);
-        //location.href = "/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName=" + cityName;
-        $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName=北京市",function(doc){
+        $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName="+cityName,function(doc){
             console.log("doc:"+doc);
             document.write(doc);
         })
     }
     var myCity = new BMap.LocalCity();
     myCity.get(myFun)
-
-    //    $(".chengeCity").click(function(){
-    //        window.location.href = "/lavico/store/searchByCity?wxid={@wxid}";
-    //    });
-
     $("div.store-listContent").find("ul li:last-child").css("border-bottom", "none");
     }
 
