@@ -28,7 +28,9 @@ module.exports={
         then.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},this.hold(function(err,doc){
                 if(err) throw err
-                docOne.doc=doc
+                if(doc){
+                    docOne.doc=doc
+                }
             }))
         })
 
@@ -36,8 +38,8 @@ module.exports={
 
             helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id)}).toArray(this.hold(function(err,doc){
                 if(err) throw err
-                for(var doco in docOne.doc.options){
-                    for(var i in docOne.doc.options[doco].choose){
+                for(var doco=0;doc<docOne.doc.options.length;doco++){
+                    for(var i=0;i<docOne.doc.options[doco].choose.length;i++){
                         if(docOne.doc.options[doco].choose[i].isCorrect==1){
                             //全对
                             (function(a,j){
@@ -57,7 +59,7 @@ module.exports={
                                 helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(_id),"optionId":j.optionId},
                                     then.hold(function(err,doc){
                                     if(err)throw err
-                                        for(var i in allRight){
+                                        for(var i=0;i<allRight.length;i++){
                                             if(allRight[i].themeId==_id && allRight[i].optionId== j.optionId){
                                                 allRight[i].allNum=doc
                                             }
@@ -70,7 +72,7 @@ module.exports={
                                         then.hold(function(err,doc){
                                            if(err) throw err;
 
-                                           for(var i in doc){
+                                           for(var i=0;i<doc.length;i++){
                                                 if(allRightList.wechatid==doc[i].wechatid){
                                                     allRightList.rightNum=allRightList.rightNum+1;
 
