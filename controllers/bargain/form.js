@@ -51,6 +51,8 @@ module.exports = {
             nut.model.maps =JSON.stringify(doc.maps);
         });
 
+        
+
     }
 
     , viewIn : function(){
