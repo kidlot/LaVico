@@ -132,7 +132,7 @@
         <div class="fade1 channel" id="_win_step2_low">
             <div class="first-price">
                 <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗心寒的吐血<br/>
-                    休息一下，有心想买的话10分钟后再来<br/>
+                    休息一下，有心想买的话3分钟后再来<br/>
                     好好出个价</p>
 
                 <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="我去休息下" onclick="giveup()"/></p>
@@ -142,7 +142,7 @@
 
         <div class="fade3">
             <div class="first-price">
-                <p class="msg">休息休息，10分钟后才能再侃价</p>
+                <p class="msg">休息休息，3分钟后才能再侃价</p>
 
                 <p class="confirm"><input class="restconfirmBtn" type="submit" border="0" value="好吧"/></p>
             </div>
@@ -176,7 +176,7 @@ function giveup(){
 
                 $("#fixed").attr('href',"javascript:;");
                 $("#fixed").attr('onclick',"return false");
-                $("#fixed").text("休息休息，10分钟后才能再侃价")
+                $("#fixed").text("休息休息，3分钟后才能再侃价")
                 _close()
             }else{
                 alert(data.msg)

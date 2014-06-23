@@ -9,6 +9,7 @@ module.exports = {
     {
         nut.model.type = seed.type ? seed.type : 0;
         var doc = {};
+        var promotions;
 
         if(seed._id){
 
@@ -21,19 +22,34 @@ module.exports = {
                 console.log(doc)
             }))
         }
-
-        //shops
-        middleware.request( "Shops",
-            {perPage:1000},
-            this.hold(function(err,doc){
-                nut.model.shops = JSON.parse(doc)
-            }));
-
         this.step(function(){
+            //shops
+            middleware.request( "Shops",
+                {perPage:1000},
+                this.hold(function(err,doc){
+                    nut.model.shops = JSON.parse(doc)
+                }));
+
+            //getPromotions by David.xu 2014-06-23
+            middleware.request('Coupon/Promotions', {
+                perPage: 1000,
+                pageNum: 1
+            }, this.hold(function (err, doc) {
+                doc = doc.replace(/[\n\r\t]/, '');
+                var doc_json = eval('(' + doc + ')');
+                if (doc_json && doc_json.list) {
+                    promotions = doc_json.list;
+                } else {
+                    promotions = {};
+                }
+            }))
+        });
+        this.step(function(){
+            nut.model.promotions = promotions;
             nut.model._id = seed._id
             nut.model.doc = doc
             nut.model.maps =JSON.stringify(doc.maps);
-        })
+        });
 
 
 
@@ -418,11 +434,11 @@ module.exports = {
                     helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                         if(doc.length > 0){
-                            var timeout = 60 * 10 * 1000
+                            var timeout = 60 * 3 * 1000
 
                             if( doc[0].createTime + timeout > new Date().getTime()){
 
-                                _write({err:1,msg:"休息休息，10分钟后才能再侃价"})
+                                _write({err:1,msg:"休息休息，3分钟后才能再侃价"})
                                 this.terminate()
                             }
                         }
