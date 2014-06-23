@@ -25,9 +25,9 @@ module.exports={
         })
 
         this.step(function(doc){
-            console.log(doc)
+            console.log("doc",doc.length)
             if(doc){
-                for(var e in doc){
+                for(var e=0;e<doc.length;e++){
                     var jsonOne={};
                     jsonOne.beginTime=doc[e].beginTime;
                     jsonOne.endTime=doc[e].endTime;
@@ -45,7 +45,6 @@ module.exports={
                                 {$group:{_id:"$memberId"}}
                             ],then.hold(function(err,doc){
                                 if(err) throw err;
-                                console.log("doc",doc)
                                 try{
                                     jsonOne.totalPop=doc.length;
                                 }catch(e){

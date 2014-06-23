@@ -100,23 +100,10 @@
                                         </div>
                                     </if>
                                 </div>
-                                <input type="button"  class="btn btn-xs btn-primary mhm" style=" margin-top: -18px"  name="btnStatistics"  value="统计">
+                                <input type="button"  class="btn btn-xs btn-primary mhm" style=" margin-top: 8px"  name="btnStatistics"  value="统计">
                                 <input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>
-
-                                <input type="button" name="btnDel" value="删除" class="btn btn-xs btn-primary mhm">
+                                <input type="button" name="btnDel" style="margin-top: 5px" value="删除" class="btn btn-xs btn-primary mhm">
                                 <input type="hidden" name="del" id="del" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>
-
-                                <!--<a href="tongji?reedem_id={@doc._id}" class="btn btn-xs btn-primary mhm" style="margin: 5 0 5 10">统计</a>-->
-                                <!--<a href="reedem_list:del?_id={@doc._id}" class="btn btn-xs btn-primary mhm ">删除</a>-->
-                                <!--<div style="float:left; padding-top: 20px;">-->
-
-                                    <!--<input type="button"  class="btn btn-xs btn-primary mhm" style=" margin-top: -18px"  name="btnStatistics"  value="统计">-->
-                                    <!--<input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>-->
-                                <!--</div>-->
-                                <!--<div style="float:left; padding-top: 25px;">-->
-                                    <!--<input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">-->
-                                    <!--<input type="hidden" name="del" id="del" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>-->
-                                <!--</div>-->
                             </td>
                         </tr>
                     </foreach>
