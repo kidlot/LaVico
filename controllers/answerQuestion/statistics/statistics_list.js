@@ -128,8 +128,8 @@ module.exports={
             process:function(seed,nut){
                 helper.db.coll("lavico/themeQuestion").remove({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
                     if(err) throw err;
-                    //this.res.writeHead(302, {'Location': "/lavico/answerQuestion/");
-                    //this.res.end();
+                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/statistics/statistics_list?themetype="+seed.themetype});
+                    this.res.end();
                 }));
             }
         }
