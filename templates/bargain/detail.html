@@ -332,7 +332,13 @@ function bargain(){
                 $("#_win_step"+data.step+'_'+data.doc).find(".stepPrice").text($("#price").val())
                 console.log(data)
             }else{
-                alert(data.msg)
+                if(data.msg=='coupons_were_over'){
+                //本次活动优惠券已领完,下次活动更精彩,敬请期待
+                $(".fade5").find(".msg").text("本次活动优惠券已领完,下次活动更精彩,敬请期待");
+                $(".fade5").show();
+                }else{
+                    alert(data.msg)
+                }
             }
         },
         error:function(msg){
