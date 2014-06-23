@@ -109,9 +109,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 14px;">活动代码</th>
+                        <th style="font-size: 14px;">优惠券</th>
                         <td colspan="2">
-                            <input type="text" id="promotionsCode" class="form-control input-sm postData" style="width: 150px" value="{@ doc.promotionsCode}">
+                            <select class="form-control input-sm postData" style="width: 150px;display:inline;" id='promotionsCode' name="type">
+                                <option value="">请选择优惠券</option>
+                                <foreach for="@promotions" var="promotionDoc">
+                                    <if condition="@doc.promotionsCode == promotionDoc.PROMOTION_CODE">
+                                        <option value="{@promotionDoc.PROMOTION_CODE}" selected="selected">{@promotionDoc.PROMOTION_NAME}</option>
+                                        <else/>
+                                        <option value="{@promotionDoc.PROMOTION_CODE}">{@promotionDoc.PROMOTION_NAME}</option>
+                                    </if>
+                                </foreach>
+                            </select>
                         </td>
                     </tr>
                     <tr>

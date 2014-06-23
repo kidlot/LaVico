@@ -9,6 +9,7 @@ module.exports = {
     {
         nut.model.type = seed.type ? seed.type : 0;
         var doc = {};
+        var promotions;
 
         if(seed._id){
 
@@ -21,19 +22,34 @@ module.exports = {
                 console.log(doc)
             }))
         }
-
-        //shops
-        middleware.request( "Shops",
-            {perPage:1000},
-            this.hold(function(err,doc){
-                nut.model.shops = JSON.parse(doc)
-            }));
-
         this.step(function(){
+            //shops
+            middleware.request( "Shops",
+                {perPage:1000},
+                this.hold(function(err,doc){
+                    nut.model.shops = JSON.parse(doc)
+                }));
+
+            //getPromotions by David.xu 2014-06-23
+            middleware.request('Coupon/Promotions', {
+                perPage: 1000,
+                pageNum: 1
+            }, this.hold(function (err, doc) {
+                doc = doc.replace(/[\n\r\t]/, '');
+                var doc_json = eval('(' + doc + ')');
+                if (doc_json && doc_json.list) {
+                    promotions = doc_json.list;
+                } else {
+                    promotions = {};
+                }
+            }))
+        });
+        this.step(function(){
+            nut.model.promotions = promotions;
             nut.model._id = seed._id
             nut.model.doc = doc
             nut.model.maps =JSON.stringify(doc.maps);
-        })
+        });
 
     }
 
