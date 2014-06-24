@@ -91,23 +91,18 @@ module.exports = {
 
 
                 this.step(function(){
-
-                    if(seed._id){
-                        conditions[seed.unwind+".reddem_id"] = seed._id;
-                    }
-
                     var arrregateParams = [
-                        {$match:conditions}
                     ]
-                    
-
- 
 
                     if(seed.unwind){
                         conditions[seed.unwind+".createDate"] = {$gt:new Date(seed.startDate + " 00:00:00").getTime(), $lt:new Date(seed.stopDate + " 23:59:59").getTime()}
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
 
+                    if(seed._id){
+                        conditions[seed.unwind+".reddem_id"] = seed._id
+                    }
+                    arrregateParams.push({$match:conditions})
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
@@ -216,13 +211,16 @@ module.exports = {
                 this.step(function(){
 
                     var arrregateParams = [
-                        {$match:conditions}
                     ]
 
                     if(seed.unwind){
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
 
+                    if(seed._id){
+                        conditions[seed.unwind+".reddem_id"] = seed._id;
+                    }
+                    arrregateParams.push({$match:conditions})
                     arrregateParams.push({$sort:sort})
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
@@ -235,7 +233,7 @@ module.exports = {
                                     docs[i].realname = docs[i].realname || '未注册用户';
                                     docs[i].city = docs[i].province + docs[i].city;
                                     docs[i].followCount = docs[i].followCount || '1';
-                                    docs[i].messageCount = docs[i].messageCount;
+                                    docs[i].messageCount = docs[i].messageCount||'1';
                                     docs[i].isRegister = docs[i].registerTime ? "是" : "否"
                                     docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
                                     docs[i].birthday = docs[i].birthday ? parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365)) : "未知"
@@ -257,20 +255,12 @@ module.exports = {
                             }catch(e){
                                 if(e) console.log(e)
                             }
-
-
                             _data = _rows;
                         })
                     );
-
                 })
 
-
-
                 this.step(function(){
-
-
-
                     try{
                         var nodeExcel = require('excel-export');
                         var conf = {};
@@ -348,9 +338,6 @@ module.exports = {
                     }catch(e){
                         if(e) console.log(e)
                     }
-
-
-
 
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
