@@ -20,7 +20,7 @@ module.exports = {
         var usedCoupons = [];//已使用的03
         var overdueCoupons = [];//已到期失效 04
         var errorCoupons = [];//错误
-        var couponData;
+        var couponData = [];
         var couponArr;
 
         var wxid = seed.wxid ? seed.wxid : false;//预先定义微信ID
