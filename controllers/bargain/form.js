@@ -295,6 +295,7 @@ module.exports = {
                 by David.xu at 2014-06-23
                 */
                 var fetchCouponStatus = true;
+                var _memo;
                 //用户获取优惠券的成功与否状态，默认为可以获取,by David.xu at 2014-06-23
 
                 this.step(function(){
@@ -360,10 +361,10 @@ module.exports = {
                 // 减少积分
                 this.step(function(){
                     //fetchCouponStatus 获取券的是否成功
-                    if(fetchCouponStatus == true && bargain.deductionIntegral && bargain.deductionIntegral!=""){
+                    if(fetchCouponStatus == true && bargain.deductionIntegral && bargain.deductionIntegral!="" && bargain.deductionIntegral > 0){
                         var qty = "-"+bargain.deductionIntegral;
                         middleware.request("Point/Change",
-                            {memberId: seed.memberID, qty:qty, memo:"我要侃价"},
+                            {memberId: seed.memberID, qty:qty, memo:_memo},
                             this.hold(function (err, doc) {
                                 if(err){
                                     console.log(err)

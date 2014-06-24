@@ -226,7 +226,7 @@ module.exports = {
 
                         couponData = JSON.parse(doc);
 
-                        couponArr = couponArr.concat(couponData.list);
+                        couponArr = couponData.list;
                         //nut.model.effectiveCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
