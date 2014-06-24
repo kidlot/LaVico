@@ -8,6 +8,7 @@ module.exports = {
     , process: function(seed,nut)
     {
         nut.model.type = seed.type ? seed.type : 0;
+        nut.model.host = this.req.headers.host;
         var doc = {};
         var promotions;
 
@@ -291,8 +292,11 @@ module.exports = {
                 /*
                 此次修改，由于活动券被发放完，
                 此时，无法获取，系统却提示获取成功
+                by David.xu at 2014-06-23
                 */
-                var fetchCouponStatus = true;//用户获取优惠券的成功与否状态，默认为可以获取,by David.xu at 2014-06-23
+                var fetchCouponStatus = true;
+                var _memo;
+                //用户获取优惠券的成功与否状态，默认为可以获取,by David.xu at 2014-06-23
 
                 this.step(function(){
 
@@ -312,10 +316,10 @@ module.exports = {
 
                     // 差价
                     var qty = parseInt(bargain.price) - parseInt(seed.price);
-
+                    var _memo = bargain.activityName || '我要侃价';
                     // 获得券
                     middleware.request("Coupon/FetchCoupon",
-                        {openid: seed.wxid, otherPromId: seed.promotionsCode, PROMOTION_CODE: seed.promotionsCode, qty: qty, point: 0, memo:"侃价"},
+                        {openid: seed.wxid, otherPromId: seed.promotionsCode, PROMOTION_CODE: seed.promotionsCode, qty: qty, point: 0, memo:_memo},
                         this.hold(function (err, doc) {
                             var doc = JSON.parse(doc);
                             if(doc&&doc.success&&doc.success==true){
@@ -357,10 +361,10 @@ module.exports = {
                 // 减少积分
                 this.step(function(){
                     //fetchCouponStatus 获取券的是否成功
-                    if(fetchCouponStatus == true && bargain.deductionIntegral && bargain.deductionIntegral!=""){
+                    if(fetchCouponStatus == true && bargain.deductionIntegral && bargain.deductionIntegral!="" && bargain.deductionIntegral > 0){
                         var qty = "-"+bargain.deductionIntegral;
                         middleware.request("Point/Change",
-                            {memberId: seed.memberID, qty:qty, memo:"我要侃价"},
+                            {memberId: seed.memberID, qty:qty, memo:_memo},
                             this.hold(function (err, doc) {
                                 if(err){
                                     console.log(err)
@@ -432,7 +436,7 @@ module.exports = {
                     return;
                 }
 
-                if(!seed.wxid){
+                if(!seed.wxid||seed.wxid=="{wxid}"){
                     _write({err:1,msg:"没有wxid"})
                     return;
                 }

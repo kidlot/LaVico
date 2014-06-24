@@ -20,7 +20,7 @@ module.exports = {
         var usedCoupons = [];//已使用的03
         var overdueCoupons = [];//已到期失效 04
         var errorCoupons = [];//错误
-        var couponData;
+        var couponData = [];
         var couponArr;
 
         var wxid = seed.wxid ? seed.wxid : false;//预先定义微信ID
@@ -185,7 +185,7 @@ module.exports = {
 
                 });
                 this.step(function(){
-
+                    /*
                     var requestData01 = {
                         'memberId' : member_id,
                         'perPage':10000,
@@ -213,6 +213,7 @@ module.exports = {
                         );
                         //记录用户动作
                     }));
+                    */
 
                     var requestData02 = {
                         'memberId' : member_id,
@@ -225,7 +226,7 @@ module.exports = {
 
                         couponData = JSON.parse(doc);
 
-                        couponArr = couponArr.concat(couponData.list);
+                        couponArr = couponData.list;
                         //nut.model.effectiveCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
@@ -312,7 +313,7 @@ module.exports = {
                                 then.hold(function (err, doc) {
 
                                     if(doc&&doc.pic){
-                                        var _PIC = doc.pic;
+                                        var _PIC = doc.thumb || doc.pic;
                                     }else{
                                         var _PIC = "/lavico/public/images/coupons.jpg";
                                     }
@@ -401,7 +402,7 @@ module.exports = {
 
                         if(coupons[_i].COUPON_STATUS == '01'){
 
-                            ineffectiveCoupons.push(coupons[_i]);
+                            //ineffectiveCoupons.push(coupons[_i]);
 
                         }else if(coupons[_i].COUPON_STATUS == '02'){
 
