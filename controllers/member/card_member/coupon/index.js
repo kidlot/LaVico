@@ -185,7 +185,7 @@ module.exports = {
 
                 });
                 this.step(function(){
-
+                    /*
                     var requestData01 = {
                         'memberId' : member_id,
                         'perPage':10000,
@@ -213,6 +213,7 @@ module.exports = {
                         );
                         //记录用户动作
                     }));
+                    */
 
                     var requestData02 = {
                         'memberId' : member_id,
@@ -401,7 +402,7 @@ module.exports = {
 
                         if(coupons[_i].COUPON_STATUS == '01'){
 
-                            ineffectiveCoupons.push(coupons[_i]);
+                            //ineffectiveCoupons.push(coupons[_i]);
 
                         }else if(coupons[_i].COUPON_STATUS == '02'){
 
