@@ -1,14 +1,3 @@
-
-<div style="margin-bottom: 10px;height: 30px;">
-
-    <button style="display: none" class="btn btn-primary handle_btn" type="button" onclick="$('#searchView').fadeIn('100')"><em class="icon01"></em>条件筛选</button>
-
-
-    <a class="btn btn-xs btn-primary mhm pull-right" id="exportssd">全部导出</a>
-    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信">
-    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签" onclick="userSetTagView()">
-</div>
-
 <div class="form-search searchbox" id="searchView" style="display: none">
 
   <div style="margin-top: 5px; margin-bottom: 5px;">
@@ -53,6 +42,22 @@
     <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
       <option value="male">男</option>
       <option value="female">女</option>
+    </select>
+  </span>
+
+
+  <span class="searchExpression searchExpressionMember">
+    <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
+        <option value="bind">是</option>
+        <option value="unbind">否</option>
+    </select>
+  </span>
+
+  <span class="searchExpression searchExpressionMemberType">
+    <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
+        <option value="1">白卡</option>
+        <option value="2">VIP卡</option>
+        <option value="3">白金VIP卡</option>
     </select>
   </span>
 

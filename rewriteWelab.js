@@ -494,10 +494,6 @@ exports.load = function () {
         });
     }
 
-
-
-
-
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
         console.log("---search customers---");
@@ -806,8 +802,8 @@ exports.load = function () {
             , {field:'city',title:'城市',type:'text'}
             , {field:'profession',title:'行业',type:'text'}
             , {field:'source',title:'关注来源',type:'value'}
-            , {field:'HaiLanMemberInfo.action',title:'绑定与否',type:'value'}
-            , {field:'HaiLanMemberInfo.cardNumber',title:'会员卡',type:'value'}
+            , {field:'HaiLanMemberInfo.action',title:'绑定与否',type:'member'}
+            , {field:'HaiLanMemberInfo.type',title:'会员卡',type:'membertype'}
         ]) ;
 
         $(".btnsearch").click(function(){
@@ -979,6 +975,9 @@ exports.load = function () {
 //            return false;
 //        })
     }
+
+    //复写 view
+    welabUserlist.view = "lavico/templates/welab/user/list.html"
 
 
     var welabMessagelist = require("welab/controllers/MessageList.js");
