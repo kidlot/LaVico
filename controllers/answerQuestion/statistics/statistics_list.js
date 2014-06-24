@@ -25,7 +25,6 @@ module.exports={
         })
 
         this.step(function(doc){
-            console.log("doc",doc.length)
             if(doc){
                 for(var e=0;e<doc.length;e++){
                     var jsonOne={};
@@ -38,7 +37,6 @@ module.exports={
 
                     //参与人数
                     (function(i,jsonOne){
-                        console.log("i",i)
                         helper.db.coll("lavico/custReceive").aggregate(
                             [
                                 {$match:{themeId:i}},
@@ -102,7 +100,6 @@ module.exports={
               }
 
             nut.model.data = data;
-            console.log("data",data)
             nut.model.page=page || {};
         })
     },

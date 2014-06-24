@@ -133,7 +133,7 @@
     <div>图文URL:&nbsp;&nbsp;<input type="text" value="http://{host}/lavico/answerQuestion/first?_id={_id}&optionId=1&wechatid={wxid}" name="url" class="form-control input-sm" style="width: 350px">&nbsp;<input type="button"  value="复制"  class="btn btn-embossed btn-primary"></div>
     <div>开始/结束:&nbsp;<input type="text" class="form-control input-sm input-date" style="border: 2px solid #bdc3c7;" id="datetimepicker_s" name="beginTime">&nbsp;&nbsp;<input style="border: 2px solid #bdc3c7;" type="text" class="form-control input-sm input-date" id="datetimepicker_t" name="endTime"></div>
     <div>题目名称:&nbsp;&nbsp;<input type="text" name="title" class="form-control input-sm" style="width: 350px"></div>
-    <div>卷&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;<input type="text" name="volumename" class="form-control input-sm" style="width: 350px"></div>
+    <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;<input type="text" name="volumename" class="form-control input-sm" style="width: 350px"></div>
     <div>题目类型:&nbsp;&nbsp;<select name="themeType" class="form-control input-sm" style="width: 150px">
         <option value="0">对错型</option>
         <option value="1">测试型</option>
@@ -437,7 +437,7 @@
                 所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px">
                 所获奖券:
                 <select name="getActivities"  class="form-control input-sm" style="width: 150px">
-                    <option value="-1" selected="selected">无卷</option>
+                    <option value="-1" selected="selected">无券</option>
                     <foreach for="{@doc_json.list}" var="docListOne">
                         <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
                     </foreach>
@@ -791,7 +791,7 @@
             所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px">
             所获奖券:
             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
-                <option value="-1" selected="selected">无卷</option>
+                <option value="-1" selected="selected">无券</option>
                 <foreach for="{@doc_json.list}" var="docListOne">
                     <option value="{@docListOne.PROMOTION_CODE}">{@docListOne.PROMOTION_NAME}</option>
                 </foreach>
