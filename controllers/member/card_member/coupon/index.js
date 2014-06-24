@@ -313,7 +313,7 @@ module.exports = {
                                 then.hold(function (err, doc) {
 
                                     if(doc&&doc.pic){
-                                        var _PIC = doc.pic;
+                                        var _PIC = doc.thumb || doc.pic;
                                     }else{
                                         var _PIC = "/lavico/public/images/coupons.jpg";
                                     }
