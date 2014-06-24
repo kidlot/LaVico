@@ -50,5 +50,5 @@
         </foreach>
         <tbody>
     </table>
-    <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@visitedPeopleList" model.url="/lavico/answerQuestion/statistics/statistics_oneDetail?themeId={@_id}&page=%pagenum%" /></div>
+    <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_oneDetail:visitedPartake?_id={@_id}&optionId={@optionId}&page=%pagenum%" /></div>
 </div>

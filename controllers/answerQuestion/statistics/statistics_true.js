@@ -404,7 +404,8 @@ module.exports={
                     then.step(function(){
                         helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":"0"})
                             .toArray(then.hold(function(err,doc){
-                                for(var i in doc){
+                                console.log("doc",doc.length)
+                                for(var i=0;i<doc.length;i++){
                                     var manInfo={};
                                     manInfo.name=doc[i].wechatid;
                                     finishMan.push(manInfo);
@@ -413,32 +414,32 @@ module.exports={
                     });
 
                     then.step(function(){
-                        for(var i in finishMan){
+                        console.log("finishMan",finishMan)
+                        for(var i=0;i<finishMan.length;i++){
                             (function(i){
                                 helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name,"type":{$ne:"0"}})
                                     .toArray(then.hold(function(err,doc){
 
-                                            for(var j in finishMan){
-                                                if(finishMan[j].name==doc[0].wechatid){
-                                                    finishMan[j].getLabel=doc[0].getLabel
-                                                    finishMan[j].getGift=doc[0].getGift
-                                                    finishMan[j].compScore=doc[0].getScore
-                                                    finishMan[j].createTime=doc[0].createTime;
+                                        for(var j=0;j<finishMan.length;j++){
+                                            if(finishMan[j].name==doc[0].wechatid){
+                                                finishMan[j].getLabel=doc[0].getLabel
+                                                finishMan[j].getGift=doc[0].getGift
+                                                finishMan[j].compScore=doc[0].getScore
+                                                finishMan[j].createTime=doc[0].createTime;
 
-                                                    (function(j){
-                                                        helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
-                                                            if(err) throw err
-                                                            if(doc){
-                                                                 finishMan[j].realname=doc.realname
-                                                                 finishMan[j].gender = doc.sex ||doc.gender
-                                                                 finishMan[j].birthday=doc.birthday
-                                                                 finishMan[j].city=doc.city
-                                                            }
-                                                        }))
-                                                    })(j)
-                                                }
+                                                (function(j){
+                                                    helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
+                                                        if(err) throw err
+                                                        if(doc){
+                                                             finishMan[j].realname=doc.realname
+                                                             finishMan[j].gender = doc.gender
+                                                             finishMan[j].birthday=doc.birthday
+                                                             finishMan[j].city=doc.city
+                                                        }
+                                                    }))
+                                                })(j)
                                             }
-                                        //}
+                                        }
                                     }))
                             })(i)
                         }
@@ -470,6 +471,7 @@ module.exports={
 
                         }
                         nut.model.data=data;
+                        console.log("data",data)
 
                     })
                 }catch(e){
