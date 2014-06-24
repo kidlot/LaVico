@@ -80,7 +80,7 @@
                 <if condition="{@docs.finishCount==0}">
                     0%
                 <else/>
-                    {@parseInt(docs.finishCount/docs.finishCount*100)}%
+                    {@parseInt(docs.finishCount/docs.totalPop*100)}%
                 </if>
                 </td>
                 <td class="width50" name="qdl">
@@ -97,6 +97,10 @@
         </div>
         <if condition="{@themetype==1}">
             <view name="lab"/>
+            <else/>
+            <div style="display: none">
+                <view name="lab"/>
+            </div>
         </if>
         <view name="score"/>
 

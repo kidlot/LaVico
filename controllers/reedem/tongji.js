@@ -21,8 +21,9 @@ module.exports={
 
         this.step(function(aid){
             //查找商品积分兑换记录条数
-            helper.db.coll("lavico/exchangeRecord").count({reddem_id:reedem_id,aid:aid},this.hold(function(err,result){
+            helper.db.coll("lavico/exchangeRecord").count({reddem_id:reedem_id},this.hold(function(err,result){
                 if(err) throw err;
+                console.log(result)
                 if(result){
                     tongJ.count=result;
                 }else{
