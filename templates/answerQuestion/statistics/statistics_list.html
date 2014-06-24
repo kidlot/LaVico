@@ -48,7 +48,7 @@
                             <th class="width50">类型</th>
                             <th class="width50">完/参</th>
                             <th class="width50">完成率</th>
-                            <th class="width150">操作</th>
+                            <th class="width50">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,32 +82,30 @@
                                     {@doc.count}
                                 </if>
                             </td>
-                            <td class="width150">
-                                <div style="float:left; padding-top: 20px;">
-                                    <div class="switch has-switch way">
-                                        <if condition="{@doc.isOpen==0}">
-                                            <div class="switch-animate switch-off" data="{@doc._id}" onclick="audioClick(this,'{@doc.themeId}')">
-                                                <input type="checkbox" data-toggle="switch">
-                                                <span class="switch-left">关</span>
-                                                <label>&nbsp;</label>
-                                                <span class="switch-right">开</span>
-                                            </div>
+                            <td class="width50">
+                                <div class="switch has-switch way">
+                                    <if condition="{@doc.isOpen==0}">
+                                        <div class="switch-animate switch-off" data="{@doc._id}" onclick="audioClick(this,'{@doc.themeId}')">
+                                            <input type="checkbox" data-toggle="switch">
+                                            <span class="switch-left">关</span>
+                                            <label>&nbsp;</label>
+                                            <span class="switch-right">开</span>
+                                        </div>
                                         <else/>
-                                            <div class="switch-animate switch-on" data="{@doc._id}"  onclick="audioClick(this,'{@doc.themeId}')">
-                                                <input type="checkbox" data-toggle="switch">
-                                                <span class="switch-left">关</span>
-                                                <label>&nbsp;</label>
-                                                <span class="switch-right">开</span>
-                                            </div>
-                                        </if>
-                                    </div>
-                                    <input type="button"  class="btn btn-xs btn-primary mhm" style=" margin-top: -18px"  name="btnStatistics"  value="统计">
-                                    <input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>
+                                        <div class="switch-animate switch-on" data="{@doc._id}"  onclick="audioClick(this,'{@doc.themeId}')">
+                                            <input type="checkbox" data-toggle="switch">
+                                            <span class="switch-left">关</span>
+                                            <label>&nbsp;</label>
+                                            <span class="switch-right">开</span>
+                                        </div>
+                                    </if>
                                 </div>
-                                <div style="float:left; padding-top: 25px;">
-                                    <input type="image" name="btnDel" value="删除" src="/lavico/public/images/cha.jpg" width="20" height="20">
-                                    <input type="hidden" name="del" id="del" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>
-                                </div>
+                                <a href="/lavico/answerQuestion/statistics/statistics_true?_id={@doc.themeId}&finishCount={@doc.finishCount}&totalPop={@doc.totalPop}&themetype={@themetype}" class="btn btn-xs btn-primary mhm">统计</a>
+                                <a href="/lavico/answerQuestion/statistics/statistics_list:del?_id={@doc.themeId}&themetype={@themetype}" onclick="func_remove('{@ doc._id}',this)" class="btn btn-xs mhm">删除</a>
+                                <!--<input type="button"  class="btn btn-xs btn-primary mhm" style=" margin-top: 8px"  name="btnStatistics"  value="统计">-->
+                                <!--<input type="hidden" name="tongji" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>-->
+                                <!--<input type="button" name="btnDel" style="margin-top: 5px" value="删除" class="btn btn-xs btn-primary mhm">-->
+                                <!--<input type="hidden" name="del" id="del" value="{@doc.finishCount}_{@doc.totalPop}_{@doc.themeId}_{@themetype}"/>-->
                             </td>
                         </tr>
                     </foreach>

@@ -16,17 +16,17 @@
                 </p>
 
                 <p class="rules">
-                	<span class="rules_sp">尺码：</span>{@ doc.sizes}
+                	<span class="rules_sp">尺码：</span><span class="rules-con">{@ doc.sizes}</span>
                     <!--<span class="rules-title fl"></span>-->
                     <!--<span class="rules-con fl">--><!--</span>-->
                 </p>
 
                 <p class="color" style="display:block;">
-                    <span class="color-title">剩余：</span><span class="color-con" style="color:#AF8B4D">{@ doc.surplus}</span>件
+                    <span class="color-title">剩余：</span><span class="color-con" style="color:#AF8B4D" style="width: 70%;" >{@ doc.surplus}<em style="color: #646464">件</em></span>
                 </p>
 
                 <p class="color" style="display:block;">
-                    <span class="color-title">市场零售价：</span><span class="color-con">
+                    <span class="color-title" style="width: 92px">市场零售价：</span><span class="color-con" style="width: 68%">
                         <span class="pice">{@ doc.price}</span>元
                     </span>
                 </p>
@@ -123,7 +123,7 @@
                 <p class="confirm"><input type="submit" class="okconfirmBtn" border="0" value="我确认价格，成交" onclick="_step('success')"/></p>
 
                 <p class="msg mt70">如果您觉得出价高了<br/>可以放弃此次机会<br/>
-                    十分钟以后再来和我侃价</p>
+                    3分钟以后再来和我侃价</p>
 
                 <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="放弃" onclick="giveup()"/></p>
             </div>
@@ -132,7 +132,7 @@
         <div class="fade1 channel" id="_win_step2_low">
             <div class="first-price">
                 <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗心寒的吐血<br/>
-                    休息一下，有心想买的话10分钟后再来<br/>
+                    休息一下，有心想买的话3分钟后再来<br/>
                     好好出个价</p>
 
                 <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="我去休息下" onclick="giveup()"/></p>
@@ -142,7 +142,7 @@
 
         <div class="fade3">
             <div class="first-price">
-                <p class="msg">休息休息，10分钟后才能再侃价</p>
+                <p class="msg">休息休息，3分钟后才能再侃价</p>
 
                 <p class="confirm"><input class="restconfirmBtn" type="submit" border="0" value="好吧"/></p>
             </div>
@@ -176,7 +176,7 @@ function giveup(){
 
                 $("#fixed").attr('href',"javascript:;");
                 $("#fixed").attr('onclick',"return false");
-                $("#fixed").text("休息休息，10分钟后才能再侃价")
+                $("#fixed").text("休息休息，3分钟后才能再侃价")
                 _close()
             }else{
                 alert(data.msg)
@@ -282,7 +282,14 @@ function deal(cb){
                 if(data.err == 0){
                     cb()
                 }else{
-                    alert(data.msg)
+
+                    if(data.msg=='coupons_were_over'){
+                        //本次活动优惠券已领完,下次活动更精彩,敬请期待
+                        $(".fade5").find(".msg").text("本次活动优惠券已领完,下次活动更精彩,敬请期待");
+                        $(".fade5").show();
+                    }else{
+                        console.log(data.msg)
+                    }
                 }
             },
             error:function(msg){
@@ -332,7 +339,13 @@ function bargain(){
                 $("#_win_step"+data.step+'_'+data.doc).find(".stepPrice").text($("#price").val())
                 console.log(data)
             }else{
-                alert(data.msg)
+                if(data.msg=='coupons_were_over'){
+                //本次活动优惠券已领完,下次活动更精彩,敬请期待
+                $(".fade5").find(".msg").text("本次活动优惠券已领完,下次活动更精彩,敬请期待");
+                $(".fade5").show();
+                }else{
+                    alert(data.msg)
+                }
             }
         },
         error:function(msg){

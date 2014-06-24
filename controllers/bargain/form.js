@@ -8,7 +8,9 @@ module.exports = {
     , process: function(seed,nut)
     {
         nut.model.type = seed.type ? seed.type : 0;
+        nut.model.host = this.req.headers.host;
         var doc = {};
+        var promotions;
 
         if(seed._id){
 
@@ -21,19 +23,36 @@ module.exports = {
                 console.log(doc)
             }))
         }
-
-        //shops
-        middleware.request( "Shops",
-            {perPage:1000},
-            this.hold(function(err,doc){
-                nut.model.shops = JSON.parse(doc)
-            }));
-
         this.step(function(){
+            //shops
+            middleware.request( "Shops",
+                {perPage:1000},
+                this.hold(function(err,doc){
+                    nut.model.shops = JSON.parse(doc)
+                }));
+
+            //getPromotions by David.xu 2014-06-23
+            middleware.request('Coupon/Promotions', {
+                perPage: 1000,
+                pageNum: 1
+            }, this.hold(function (err, doc) {
+                doc = doc.replace(/[\n\r\t]/, '');
+                var doc_json = eval('(' + doc + ')');
+                if (doc_json && doc_json.list) {
+                    promotions = doc_json.list;
+                } else {
+                    promotions = {};
+                }
+            }))
+        });
+        this.step(function(){
+            nut.model.promotions = promotions;
             nut.model._id = seed._id
             nut.model.doc = doc
             nut.model.maps =JSON.stringify(doc.maps);
-        })
+        });
+
+
 
     }
 
@@ -270,6 +289,11 @@ module.exports = {
 
                 var bargain;
                 var then = this;
+                /*
+                此次修改，由于活动券被发放完，
+                此时，无法获取，系统却提示获取成功
+                */
+                var fetchCouponStatus = true;//用户获取优惠券的成功与否状态，默认为可以获取,by David.xu at 2014-06-23
 
                 this.step(function(){
 
@@ -278,14 +302,63 @@ module.exports = {
                         if(err ){
                             console.log(err)
                         }
-                        bargain = doc || {}
+                        bargain = doc || {};
+                        return bargain;
                     })) ;
                 })
 
+
+
+                this.step(function(bargain){
+
+                    // 差价
+                    var qty = parseInt(bargain.price) - parseInt(seed.price);
+
+                    // 获得券
+                    middleware.request("Coupon/FetchCoupon",
+                        {openid: seed.wxid, otherPromId: seed.promotionsCode, PROMOTION_CODE: seed.promotionsCode, qty: qty, point: 0, memo:"侃价"},
+                        this.hold(function (err, doc) {
+                            var doc = JSON.parse(doc);
+                            if(doc&&doc.success&&doc.success==true){
+                                fetchCouponStatus =  true;
+                            }else{
+                                fetchCouponStatus =  false;
+                            }
+
+                            if(fetchCouponStatus == true){
+
+                                //当获取优惠券成功的时候再记录
+
+                                // 更新用户表中的记录。用于统计
+                                var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
+                                helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
+                                    if(err ){
+                                        console.log(err)
+                                    }
+                                })) ;
+
+                                // 更新用户记录表
+                                _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
+
+                                // 更新侃价
+                                helper.db.coll("lavico/bargain").update({_id : helper.db.id(seed._id)}, {$inc:{surplus:-1}},this.hold(function(err,doc){
+                                    if(err ){
+                                        console.log(err)
+                                    }
+                                })) ;
+                                this.req.session._bargain_step = 1;
+
+                            }
+                            console.log(doc)
+                        }));
+
+
+                });
+
                 // 减少积分
                 this.step(function(){
-
-                    if(bargain.deductionIntegral && bargain.deductionIntegral!=""){
+                    //fetchCouponStatus 获取券的是否成功
+                    if(fetchCouponStatus == true && bargain.deductionIntegral && bargain.deductionIntegral!=""){
                         var qty = "-"+bargain.deductionIntegral;
                         middleware.request("Point/Change",
                             {memberId: seed.memberID, qty:qty, memo:"我要侃价"},
@@ -299,41 +372,15 @@ module.exports = {
                     }
                 })
 
-                this.step(function(bargain){
 
-                    // 差价
-                    var qty = parseInt(bargain.price) - parseInt(seed.price);
-
-                    // 获得券
-                    middleware.request("Coupon/FetchCoupon",
-                        {openid: seed.wxid, otherPromId: seed.promotionsCode, PROMOTION_CODE: seed.promotionsCode, qty: qty, point: 0, memo:"侃价"},
-                        this.hold(function (err, doc) {
-                            console.log(doc)
-                        }));
-
-                    // 更新用户表中的记录。用于统计
-                    var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
-                    helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
-                        if(err ){
-                            console.log(err)
-                        }
-                    })) ;
-
-                    // 更新用户记录表
-                    _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
-
-                    // 更新侃价
-                    helper.db.coll("lavico/bargain").update({_id : helper.db.id(seed._id)}, {$inc:{surplus:-1}},this.hold(function(err,doc){
-                        if(err ){
-                            console.log(err)
-                        }
-                    })) ;
-                    this.req.session._bargain_step = 1;
-                })
 
                 this.step(function(){
                     nut.disable();
-                    var data = JSON.stringify({err:0});
+                    if(fetchCouponStatus == true){
+                        var data = JSON.stringify({err:0});
+                    }else{
+                        var data = JSON.stringify({err:1,msg:'coupons_were_over'});
+                    }
                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
                     this.res.write(data);
                     this.res.end();
@@ -386,7 +433,7 @@ module.exports = {
                     return;
                 }
 
-                if(!seed.wxid){
+                if(!seed.wxid||seed.wxid=="{wxid}"){
                     _write({err:1,msg:"没有wxid"})
                     return;
                 }
@@ -416,11 +463,11 @@ module.exports = {
                     helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                         if(doc.length > 0){
-                            var timeout = 60 * 10 * 1000
+                            var timeout = 60 * 3 * 1000
 
                             if( doc[0].createTime + timeout > new Date().getTime()){
 
-                                _write({err:1,msg:"休息休息，10分钟后才能再侃价"})
+                                _write({err:1,msg:"休息休息，3分钟后才能再侃价"})
                                 this.terminate()
                             }
                         }

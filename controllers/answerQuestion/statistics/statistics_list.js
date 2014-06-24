@@ -25,9 +25,8 @@ module.exports={
         })
 
         this.step(function(doc){
-            console.log(doc)
             if(doc){
-                for(var e in doc){
+                for(var e=0;e<doc.length;e++){
                     var jsonOne={};
                     jsonOne.beginTime=doc[e].beginTime;
                     jsonOne.endTime=doc[e].endTime;
@@ -38,14 +37,12 @@ module.exports={
 
                     //参与人数
                     (function(i,jsonOne){
-                        console.log("i",i)
                         helper.db.coll("lavico/custReceive").aggregate(
                             [
                                 {$match:{themeId:i}},
                                 {$group:{_id:"$memberId"}}
                             ],then.hold(function(err,doc){
                                 if(err) throw err;
-                                console.log("doc",doc)
                                 try{
                                     jsonOne.totalPop=doc.length;
                                 }catch(e){
@@ -103,7 +100,6 @@ module.exports={
               }
 
             nut.model.data = data;
-            console.log("data",data)
             nut.model.page=page || {};
         })
     },
@@ -129,8 +125,8 @@ module.exports={
             process:function(seed,nut){
                 helper.db.coll("lavico/themeQuestion").remove({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
                     if(err) throw err;
-                    //this.res.writeHead(302, {'Location': "/lavico/answerQuestion/");
-                    //this.res.end();
+                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/statistics/statistics_list?themetype="+seed.themetype});
+                    this.res.end();
                 }));
             }
         }

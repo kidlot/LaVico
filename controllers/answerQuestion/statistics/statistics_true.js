@@ -28,7 +28,9 @@ module.exports={
         then.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},this.hold(function(err,doc){
                 if(err) throw err
-                docOne.doc=doc
+                if(doc){
+                    docOne.doc=doc
+                }
             }))
         })
 
@@ -36,8 +38,8 @@ module.exports={
 
             helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id)}).toArray(this.hold(function(err,doc){
                 if(err) throw err
-                for(var doco in docOne.doc.options){
-                    for(var i in docOne.doc.options[doco].choose){
+                for(var doco=0;doc<docOne.doc.options.length;doco++){
+                    for(var i=0;i<docOne.doc.options[doco].choose.length;i++){
                         if(docOne.doc.options[doco].choose[i].isCorrect==1){
                             //全对
                             (function(a,j){
@@ -57,7 +59,7 @@ module.exports={
                                 helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(_id),"optionId":j.optionId},
                                     then.hold(function(err,doc){
                                     if(err)throw err
-                                        for(var i in allRight){
+                                        for(var i=0;i<allRight.length;i++){
                                             if(allRight[i].themeId==_id && allRight[i].optionId== j.optionId){
                                                 allRight[i].allNum=doc
                                             }
@@ -70,7 +72,7 @@ module.exports={
                                         then.hold(function(err,doc){
                                            if(err) throw err;
 
-                                           for(var i in doc){
+                                           for(var i=0;i<doc.length;i++){
                                                 if(allRightList.wechatid==doc[i].wechatid){
                                                     allRightList.rightNum=allRightList.rightNum+1;
 
@@ -402,7 +404,8 @@ module.exports={
                     then.step(function(){
                         helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":"0"})
                             .toArray(then.hold(function(err,doc){
-                                for(var i in doc){
+                                console.log("doc",doc.length)
+                                for(var i=0;i<doc.length;i++){
                                     var manInfo={};
                                     manInfo.name=doc[i].wechatid;
                                     finishMan.push(manInfo);
@@ -411,32 +414,32 @@ module.exports={
                     });
 
                     then.step(function(){
-                        for(var i in finishMan){
+                        console.log("finishMan",finishMan)
+                        for(var i=0;i<finishMan.length;i++){
                             (function(i){
                                 helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name,"type":{$ne:"0"}})
                                     .toArray(then.hold(function(err,doc){
 
-                                            for(var j in finishMan){
-                                                if(finishMan[j].name==doc[0].wechatid){
-                                                    finishMan[j].getLabel=doc[0].getLabel
-                                                    finishMan[j].getGift=doc[0].getGift
-                                                    finishMan[j].compScore=doc[0].getScore
-                                                    finishMan[j].createTime=doc[0].createTime;
+                                        for(var j=0;j<finishMan.length;j++){
+                                            if(finishMan[j].name==doc[0].wechatid){
+                                                finishMan[j].getLabel=doc[0].getLabel
+                                                finishMan[j].getGift=doc[0].getGift
+                                                finishMan[j].compScore=doc[0].getScore
+                                                finishMan[j].createTime=doc[0].createTime;
 
-                                                    (function(j){
-                                                        helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
-                                                            if(err) throw err
-                                                            if(doc){
-                                                                 finishMan[j].realname=doc.realname
-                                                                 finishMan[j].gender = doc.sex ||doc.gender
-                                                                 finishMan[j].birthday=doc.birthday
-                                                                 finishMan[j].city=doc.city
-                                                            }
-                                                        }))
-                                                    })(j)
-                                                }
+                                                (function(j){
+                                                    helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
+                                                        if(err) throw err
+                                                        if(doc){
+                                                             finishMan[j].realname=doc.realname
+                                                             finishMan[j].gender = doc.gender
+                                                             finishMan[j].birthday=doc.birthday
+                                                             finishMan[j].city=doc.city
+                                                        }
+                                                    }))
+                                                })(j)
                                             }
-                                        //}
+                                        }
                                     }))
                             })(i)
                         }
@@ -468,6 +471,7 @@ module.exports={
 
                         }
                         nut.model.data=data;
+                        console.log("data",data)
 
                     })
                 }catch(e){

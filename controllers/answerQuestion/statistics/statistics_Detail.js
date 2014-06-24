@@ -14,6 +14,14 @@ module.exports={
             helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(themeId),isFinish:true,"type":"0"}).toArray(this.hold(function(err,doc){
                 if(err) throw  err;
                 if(doc){
+                    for(var i=0;i<doc.length;i++){
+                        if(doc[i].createTime.length>10){
+                            doc[i].createTime =doc[i].createTime
+
+                        }else{
+                            doc[i].createTime = formatTime(doc[i].createTime)
+                        }
+                    }
                     finishdoc = doc;
                 }
             }))
@@ -21,34 +29,21 @@ module.exports={
 
         //参与
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(themeId),isFinish:false,"optionId":1,"type":"0"}).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(themeId),isFinish:false,"optionId":1}).toArray(this.hold(function(err,doc){
                 if(err) throw  err;
                 if(doc){
+                    for(var i=0;i<doc.length;i++){
+                        doc[i].createTime = formatTime(doc[i].createTime)
+                    }
                     no_finishdoc = doc;
                 }
             }))
         })
 
         var docs=[];
-        this.step(function(){
-            for(var i=0;i<no_finishdoc.length;i++){
-                if(no_finishdoc[i].createTime.length>10){
-                    no_finishdoc[i].createTime =no_finishdoc[i].createTime
-
-                }else{
-                    no_finishdoc[i].createTime = formatTime(no_finishdoc[i].createTime)
-                }
-            }
-            for(var i=0;i<finishdoc.length;i++){
-                finishdoc[i].createTime = formatTime(finishdoc[i].createTime)
-            }
-        })
-
         var arr=[];
         var arr1=[];
         this.step(function(){
-            console.log(no_finishdoc.length)
-            console.log(finishdoc.length)
             for(var i=0;i<no_finishdoc.length;i++){
                 year = no_finishdoc[i].createTime;
                 fa=false;
@@ -100,14 +95,24 @@ module.exports={
         })
 
         this.step(function(){
-            console.log(arr)
-            console.log(arr1)
             for(var i=0;i<arr.length;i++){
                 for(var j=0;j<arr1.length;j++){
-                    if(arr[i].year == arr1[i].year){
+                    if(arr[i].year == arr1[j].year){
                         var doc={};
                         doc.time = arr[i].year;
-                        doc.finishcount = arr1[i].count;
+                        doc.finishcount = arr1[j].count;
+                        doc.no_finish = arr[i].count;
+                        docs.push(doc);
+                    }
+                }
+            }
+
+            for(var i=0;i<arr.length;i++){
+                for(var j=0;j<arr1.length;j++){
+                    if(arr[i].year != arr1[j].year){
+                        var doc={};
+                        doc.time = arr[i].year;
+                        doc.finishcount = 0;
                         doc.no_finish = arr[i].count;
                         docs.push(doc);
                     }
@@ -115,6 +120,7 @@ module.exports={
             }
         })
 
+        //去除重复项
         var newArr=[];
         this.step(function(){
             for(var i=0;i<docs.length;i++){
@@ -133,9 +139,9 @@ module.exports={
                     newArr.push(sa);
                 }
             }
-            console.log(newArr)
         })
 
+        //排序
         this.step(function(){
             var i = 0, len = newArr.length,
                 j, d;
@@ -151,7 +157,7 @@ module.exports={
         })
 
         this.step(function(){
-            nut.model.newArr = newArr;
+            nut.model.newArr = newArr||{};
         })
 
     }

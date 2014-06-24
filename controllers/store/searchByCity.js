@@ -118,15 +118,13 @@ module.exports={
             view:"lavico/templates/store/store_num3.html",
             process:function(seed,nut){
                 nut.model.wxid = seed.wxid;
-                var city;
-                console.log(typeof (seed.city))
-                if(seed.city == "null"){
-                    nut.model.city = seed.city
+                var city=decodeURIComponent(seed.city);
+                console.log("city",city)
+                if(typeof (city) == undefined){
+                    nut.model.city = "null"
                 }else{
-                    nut.model.city = seed.city+"市";
+                    nut.model.city = city;
                 }
-
-                console.log(seed.city);
                 console.log("seed.wxid:"+seed.wxid);
                 //设置id从砍价过来
                 //没设置id查询过来的
@@ -135,7 +133,7 @@ module.exports={
                     helper.db.coll("welab/customers").findOne({"wechatid":seed.wxid},this.hold(function(err,doc){
                         if(err) throw err;
                         console.log(doc)
-                        if(doc){
+                        if(doc && doc.location){
                             if(doc.location!=null) {
                                 nut.model.userLng = doc.location[1];
                                 nut.model.userLat = doc.location[0];
@@ -143,6 +141,9 @@ module.exports={
                                 nut.model.userLng="null";
                                 nut.model.userLat="null";
                             }
+                        }else{
+                            nut.model.userLng="null";
+                            nut.model.userLat="null";
                         }
                     }));
                 });
@@ -244,8 +245,7 @@ module.exports={
             process:function(seed,nut){
                 var then=this;
                 var cityName= seed.city.substring(0,seed.city.length-1);
-                nut.model.city = cityName;
-                nut.model.cityName=cityName;
+                nut.model.city = seed.city;
                 nut.model.wxid = seed.wxid;
                 this.step(function(){
                     var jsonData={};

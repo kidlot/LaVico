@@ -57,8 +57,8 @@ module.exports={
                 this.step(function(){
                     helper.db.coll("lavico/custReceive").aggregate(
                         [
-                            {$match:{optionId:1,themeId:helper.db.id(seed._id)}},
-                            {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$wechatid"}}}
+                            {$match:{optionId:parseInt(seed.optionId),themeId:helper.db.id(seed._id)}},
+                            {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$memberId"}}}
                         ],this.hold(function(err,doc){
                             if(err)throw err
                             if(doc!=""){
@@ -87,7 +87,7 @@ module.exports={
                 this.step(function(){
                     for(var i in visitedPeople){
                         (function(i){
-                            helper.db.coll("welab/customers").findOne({wechatid:visitedPeople[i]},then.hold(function(err,doc){
+                            helper.db.coll("welab/customers").findOne({"HaiLanMemberInfo.memberID":parseInt(visitedPeople[i])},then.hold(function(err,doc){
                                 if(err)throw err
                                 if(doc){
                                     var visiPeople={}
@@ -104,22 +104,24 @@ module.exports={
                     }
                 })
                 this.step(function(){
-                    pageSize=20
+                    console.log("visitePeopleList",visitePeopleList.length)
+                    var docs=[];
+                    console.log("page",seed.page)
+                    pageSize=10
                     page={}
                     page.lastPage=visitePeopleList.length%pageSize==0 ? parseInt(visitePeopleList.length/pageSize) : parseInt(visitePeopleList.length/pageSize)+1;
                     page.currentPage=typeof(seed.page)=="undefined"?1:seed.page
                     page.totalCount=visitePeopleList.length
                     page.docs=[]
 
-                    for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+20;j++){
+                    for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+pageSize;j++){
                         if(typeof(visitePeopleList[j])!="undefined")
-                            page.docs.push(visitePeopleList[j])
+                            docs.push(visitePeopleList[j])
                     }
-                    nut.model.visitedPeopleList=page.docs
+                    nut.model.page = page;
+                    nut.model.visitedPeopleList=docs
                     nut.model._id=seed._id
-
                     nut.model.optionId=seed.optionId
-                    //nut.model.visitedPeopleList=visitePeopleList
                 })
             }
         }

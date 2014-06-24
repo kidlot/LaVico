@@ -110,10 +110,11 @@ module.exports = {
                 helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                     if(doc.length > 0){
-                        var timeout = 60 * 10 * 1000
+                        var timeout = 60 * 3 * 1000
+                        //10分钟改为3分钟
 
                         if( doc[0].createTime + timeout > new Date().getTime()){
-                            nut.model.res = {err:1,msg:"休息休息，10分钟后才能再侃价"};
+                            nut.model.res = {err:1,msg:"休息休息，3分钟后才能再侃价"};
                         }
                     }
                     return;
