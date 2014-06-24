@@ -146,7 +146,7 @@ module.exports={
                                                             if(err) throw err
                                                             if(doc){
                                                                 finishMan[j].realname=doc.realname
-                                                                finishMan[j].gender=doc.sex ||doc.gender
+                                                                finishMan[j].gender= doc.gender
                                                                 finishMan[j].birthday=doc.birthday
                                                                 finishMan[j].city=doc.city
                                                             }
@@ -192,7 +192,7 @@ module.exports={
                         conf.rows = [];
                         for(var i in finishMan){
                             var rows
-                            var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+new Date(finishMan[i].createTime).getMonth()+"-"+new Date(finishMan[i].createTime).getDate();
+                            var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+(new Date(finishMan[i].createTime).getMonth()+1)+"-"+new Date(finishMan[i].createTime).getDate();
                             var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
                             var city
                             if(typeof (finishMan[i].city)=="undefined"){

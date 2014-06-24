@@ -30,7 +30,7 @@ module.exports={
                 * */
                     (function(i){
                         helper.db.coll("lavico/custReceive").aggregate([
-                            {$group:{_id:"$themeId",count:{$addToSet:"$wechatid"}}},
+                            {$group:{_id:"$themeId",count:{$addToSet:"$memberId"}}},
                             {$match:{_id:helper.db.id(cursor[i]._id)}}
                         ],then.hold(function(err,doc){
                             if(err) throw err;
@@ -49,7 +49,7 @@ module.exports={
                             partakeCount[i]=doc;
                             }));
                             */
-                            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(cursor[i]._id),"isFinish":true,"optionId":0,"chooseId":0,"getChooseLabel":"","getLabel":"","getGift":""}).count(then.hold(function(err,doc){
+                            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(cursor[i]._id),"isFinish":true,"type":"0"}).count(then.hold(function(err,doc){
                             //完成人数
                             finishCount[i]=doc;
                         }));

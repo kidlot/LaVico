@@ -92,7 +92,7 @@ module.exports={
                                 if(doc){
                                     var visiPeople={}
                                     visiPeople.realname=doc.realname
-                                    visiPeople.gender=doc.sex ||doc.gender
+                                    visiPeople.gender=doc.gender
                                     visiPeople.mobile=doc.mobile
                                     visiPeople.email=doc.email
                                     visiPeople.profession=doc.profession
@@ -154,7 +154,7 @@ module.exports={
                                 if(doc){
                                     var visiPeople={}
                                     visiPeople.realname=doc.realname
-                                    visiPeople.gender=doc.sex ||doc.gender
+                                    visiPeople.gender=doc.gender
                                     visiPeople.mobile=doc.mobile
                                     visiPeople.email=doc.email
                                     visiPeople.profession=doc.profession
