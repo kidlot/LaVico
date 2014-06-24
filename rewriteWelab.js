@@ -382,59 +382,59 @@ exports.load = function () {
             conf.rows = [];
 
             for(var i=0 ;i < _data.length ;i++){
-/*
-* {
- caption: '昵称',
- type: 'string'
- }, {
- caption: '姓名',
- type: 'string'
- }, {
- caption: '性别',
- type: 'string'
- }, {
- caption: '年龄',
- type: 'string'
- }, {
- caption: '手机',
- type: 'string'
- }, {
- caption: '行业',
- type: 'string'
- }, {
- caption: 'Email',
- type: 'string'
- }, {
- caption: '省份',
- type: 'string'
- }, {
- caption: '城市',
- type: 'string'
- }, {
- caption: '具体地址',
- type: 'string'
- }, {
- caption: '喜好款式',
- type: 'string'
- }, {
- caption: '喜好颜色',
- type: 'string'
- }, {
- caption: '卡类型',
- type: 'string'
- }, {
- caption: '卡号码',
- type: 'string'
- }, {
- caption: '会员号码',
- type: 'string'
- }, {
- caption: '关注来源',
- type: 'string'
- }, {
- caption: '标签',
- type: 'string'
- }*/
+            /*
+            * {
+             caption: '昵称',
+             type: 'string'
+             }, {
+             caption: '姓名',
+             type: 'string'
+             }, {
+             caption: '性别',
+             type: 'string'
+             }, {
+             caption: '年龄',
+             type: 'string'
+             }, {
+             caption: '手机',
+             type: 'string'
+             }, {
+             caption: '行业',
+             type: 'string'
+             }, {
+             caption: 'Email',
+             type: 'string'
+             }, {
+             caption: '省份',
+             type: 'string'
+             }, {
+             caption: '城市',
+             type: 'string'
+             }, {
+             caption: '具体地址',
+             type: 'string'
+             }, {
+             caption: '喜好款式',
+             type: 'string'
+             }, {
+             caption: '喜好颜色',
+             type: 'string'
+             }, {
+             caption: '卡类型',
+             type: 'string'
+             }, {
+             caption: '卡号码',
+             type: 'string'
+             }, {
+             caption: '会员号码',
+             type: 'string'
+             }, {
+             caption: '关注来源',
+             type: 'string'
+             }, {
+             caption: '标签',
+             type: 'string'
+             }*/
                 var rows;
                 rows = [
                     _data[i].nickname,
@@ -802,8 +802,10 @@ exports.load = function () {
             , {field:'city',title:'城市',type:'text'}
             , {field:'profession',title:'行业',type:'text'}
             , {field:'source',title:'关注来源',type:'value'}
-            , {field:'HaiLanMemberInfo.action',title:'绑定与否',type:'member'}
+            , {field:'HaiLanMemberInfo.action',title:'绑定',type:'member'}
             , {field:'HaiLanMemberInfo.type',title:'会员卡',type:'membertype'}
+            , {field:'isFollow',title:'关注',type:'follow'}
+            , {field:'isRegister',title:'注册',type:'register'}
         ]) ;
 
         $(".btnsearch").click(function(){
