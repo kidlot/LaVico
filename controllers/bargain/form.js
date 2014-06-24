@@ -8,6 +8,7 @@ module.exports = {
     , process: function(seed,nut)
     {
         nut.model.type = seed.type ? seed.type : 0;
+        nut.model.host = this.req.headers.host;
         var doc = {};
         var promotions;
 
@@ -432,7 +433,7 @@ module.exports = {
                     return;
                 }
 
-                if(!seed.wxid){
+                if(!seed.wxid||seed.wxid=="{wxid}"){
                     _write({err:1,msg:"没有wxid"})
                     return;
                 }
