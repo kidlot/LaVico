@@ -341,7 +341,7 @@ module.exports = {
                                 })) ;
 
                                 // 更新用户记录表
-                                _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
+                                _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:4,stat:true})
 
                                 // 更新侃价
                                 helper.db.coll("lavico/bargain").update({_id : helper.db.id(seed._id)}, {$inc:{surplus:-1}},this.hold(function(err,doc){
@@ -402,7 +402,7 @@ module.exports = {
                 })) ;
 
 
-                _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:false})
+                _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:4,stat:false})
                 this.req.session._bargain_step = 1;
                 this.step(function(){
                     nut.disable();
@@ -463,7 +463,7 @@ module.exports = {
                 // timeout
                 this.step(function(){
 
-                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":3}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                         if(doc.length > 0){
                             var timeout = 60 * 3 * 1000
@@ -481,7 +481,7 @@ module.exports = {
 
                 // max
                 this.step(function(){
-                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":3,"data.stat":true}).count(this.hold(function(err,num){
+                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":4,"data.stat":true}).count(this.hold(function(err,num){
 
                         helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                             if(num >= _doc.surplus){
@@ -507,6 +507,10 @@ module.exports = {
                             }else if(this.req.session._bargain_step == 2){
 
                                 res = {err:0,step:2,doc:_bargain(seed.price,doc.minPrice)}
+                                this.req.session._bargain_step = 3;
+                            }else if(this.req.session._bargain_step == 3){
+
+                                res = {err:0,step:3,doc:_bargain(seed.price,doc.minPrice)}
                                 this.req.session._bargain_step = 1;
                             }
 

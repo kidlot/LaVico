@@ -96,8 +96,7 @@
 
                 <p class="confirm"><input type="submit" class="okconfirmBtn" border="0" value="我确认价格，成交" onclick="_step('success')"/></p>
 
-                <p class="msg mt70">如果您觉得出价高了<br/>可以再重新出价一次<br/>
-                    不过只有最后一次机会哦</p>
+                <p class="msg mt70">如果您觉得出价高了<br/>可以再重新出价一次</p>
 
                 <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="重新出价" onclick="_step('bargain')"/></p>
             </div>
@@ -107,6 +106,32 @@
         <div class="fade1 channel" id="_win_step1_low">
             <div class="first-price">
                 <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗吐血<br/>
+                    再加点儿呗<br/></p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="重新出价" onclick="_step('bargain')"/></p>
+            </div>
+        </div>
+
+
+        <!-- STEP2 -->
+        <div class="fade2 channel" id="_win_step2_high">
+            <div class="second-price">
+                <p class="msg"><span class="f45 stepPrice">4900</span>元<br/>就喜欢和您这种爽气的买家做生意<br/>
+                    成交</p>
+
+                <p class="confirm"><input type="submit" class="okconfirmBtn" border="0" value="我确认价格，成交" onclick="_step('success')"/></p>
+
+                <p class="msg mt70">如果您觉得出价高了<br/>可以再重新出价一次<br/>
+                    不过只有最后一次机会哦</p>
+
+                <p class="confirm"><input class="reconfirmBtn" type="submit" border="0" value="重新出价" onclick="_step('bargain')"/></p>
+            </div>
+        </div>
+
+
+        <div class="fade1 channel" id="_win_step2_low">
+            <div class="first-price">
+                <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗吐血<br/>
                     再加点儿呗<br/>
                     不过只有最后一次机会哦</p>
 
@@ -114,8 +139,8 @@
             </div>
         </div>
 
-        <!-- STEP2 -->
-        <div class="fade2 channel" id="_win_step2_high">
+        <!-- STEP3 -->
+        <div class="fade2 channel" id="_win_step3_high">
             <div class="second-price">
                 <p class="msg"><span class="f45 stepPrice">4900</span>元<br/>就喜欢和您这种爽气的买家做生意<br/>
                     成交</p>
@@ -129,7 +154,7 @@
             </div>
         </div>
 
-        <div class="fade1 channel" id="_win_step2_low">
+        <div class="fade1 channel" id="_win_step3_low">
             <div class="first-price">
                 <p class="msg"><span class="f45 stepPrice">10</span>元<br/>您的价格让小朗心寒的吐血<br/>
                     休息一下，有心想买的话3分钟后再来<br/>
@@ -337,12 +362,11 @@ function bargain(){
             if(data.err == 0){
                 _step("step"+data.step+'_'+data.doc)
                 $("#_win_step"+data.step+'_'+data.doc).find(".stepPrice").text($("#price").val())
-                console.log(data)
             }else{
                 if(data.msg=='coupons_were_over'){
-                //本次活动优惠券已领完,下次活动更精彩,敬请期待
-                $(".fade5").find(".msg").text("本次活动优惠券已领完,下次活动更精彩,敬请期待");
-                $(".fade5").show();
+                    //本次活动优惠券已领完,下次活动更精彩,敬请期待
+                    $(".fade5").find(".msg").text("本次活动优惠券已领完,下次活动更精彩,敬请期待");
+                    $(".fade5").show();
                 }else{
                     alert(data.msg)
                 }
