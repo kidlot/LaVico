@@ -35,14 +35,14 @@ module.exports = {
                 )
 
                 //最低成交价
-                helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':seed._id}).sort({price:1}).limit(1).toArray(then.hold(function(err,doc){
+                helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':seed._id}).sort({"data.price":1}).limit(1).toArray(then.hold(function(err,doc){
                     docs.min = doc && doc[0] ? doc[0].data.price : 0
 
                 })
                 )
 
                 //最高成交价
-                helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':seed._id}).sort({price:-1}).limit(1).toArray(then.hold(function(err,doc){
+                helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':seed._id}).sort({"data.price":-1}).limit(1).toArray(then.hold(function(err,doc){
                     docs.max = doc && doc[0] ? doc[0].data.price : 0
                 })
                 )
