@@ -1,6 +1,6 @@
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
-    <li class="b02"><a href="/lavico/bargain/form" class="stay">列表管理</a> <em></em></li>
+    <li class="b02"><a href="/lavico/bargain" class="stay">列表管理</a> <em></em></li>
     <li class="active"><span>
         <if condition="@type=='1'">
             修改侃价
@@ -173,29 +173,6 @@
                             <input type="text" id="activityName" class="form-control input-sm postData" style="width: 150px" value="{@ doc.activityName}" placeholder="请输入活动名称">
                         </td>
                     </tr>
-                    <tr>
-                        <th style="font-size: 14px;">活动图</th>
-                        <td colspan="2">
-                            <div class="col-sm-10" style="padding-top: 8px;">
-                                <input id="pic"  name="pic" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected1(this);">
-                                    &nbsp;
-                                <span calss="progressNumber"></span>
-                                <div class="alert alert-success picView file_box">
-                                    <img id="pic_upload" class="media-object image_data" style="height: 128px;" src="{@doc.pic_kv}">
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th style="font-size: 14px;">详细说明</th>
-                        <td colspan="2">
-                            <div class="col-sm-10">
-                                <textarea  class="form-control" rows="3"  id="description" style="width: 420px;height:400px;" placeholder="详细说明">{@doc.description}</textarea>
-                            </div>
-                        </td>
-                    </tr>
-
 
                     <if condition="@doc">
                         <tr>
@@ -210,7 +187,6 @@
         </div>
     </div>
 </div>
-<script src="/welab/public/ckeditor/ckeditor.js"></script>
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">

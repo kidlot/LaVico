@@ -1,0 +1,101 @@
+<section id="section" style="background-color: #e4e4e4;">
+    <div class="elite" id="wrap">
+        <foreach for="@list" var="item" key="key">
+            <div class="elite_list_lw">
+                <a href="/lavico/bargain/detail?wxid={@ wxid}&_id={@item._id}"  >
+                    <span class="elite_img"><img src="{@item.pic}" /></span>
+                    <span class="elite_details">{@item.name}</span>
+                </a>
+            </div>
+        </foreach>
+    </div>
+    <script>
+        function wrapWin() {
+            var wrap = document.getElementById("wrap");
+            var wrapWin = wrap.offsetWidth / 2.2;
+            //console.log(wrapWin)
+            var elite_list = document.getElementById("wrap").getElementsByTagName("div");
+            for (var i = 0; i < elite_list.length; i++) {
+                elite_list[i].style.width = wrapWin + "px";
+            }
+        }
+
+        if (wrap != undefined) {
+            wrapWin();
+            window.onload = function () {
+                waterFall("wrap");
+            }
+        }
+    </script>
+</section>
+<script src="/lavico/public/js/waterfall.js"></script>
+<script src="/lavico/public/js/flipsnap.js"></script>
+<script type="text/javascript" src="/lavico/public/js/jquery.touchwipe.1.1.1.js"></script>
+<script>
+    var n = 0;
+    function showContent(m){
+        if(n==0){
+            $(".num_"+m).show();
+            $(".img_" + m).attr("src", "/lavico/public/images/down.png");
+            $(".num_" + m).siblings(".content_up").find("a").css({ "background": "url(/lavico/public/images/match_top.png) center no-repeat", "background-size": "20px" });
+            n = 1;
+        }else{
+            $(".num_" + m).hide();
+            $(".num_" + m).siblings(".content_up").find("a").css({ "background": "url(/lavico/public/images/match_bottom.png) center no-repeat", "background-size": "20px" });
+            n = 0;
+        }
+
+    }
+
+    function favorites(wxid,pid){
+        $.ajax({
+            url:'/lavico/lookbook/favorites:save',
+            type:'POST',
+            data:{
+                'wxid':wxid,
+                'pid':pid
+            },
+            success:function(data){
+                alert(data.msg)
+            },
+            error:function(msg){
+                console.log(msg);
+            }
+        });
+    }
+
+    var wrapper = document.getElementById("wrapper");
+
+
+    function flipsnapRoll() {
+        flipsnapLen = document.getElementById("flipsnap").getElementsByTagName("div");
+        var itemWin = wrapper.offsetWidth / 3;
+        for (var i = 0; i < flipsnapLen.length; i++) {
+            flipsnapLen[i].style.width = itemWin + "px";
+        }
+        var temWin8 = flipsnapLen[0].offsetWidth + 2;
+        var flipsnap = document.getElementById("flipsnap");
+        flipsnap.style.width = temWin8 * flipsnapLen.length + "px";
+    }
+
+    function flipH() {
+        var flipsnapH = document.getElementById("flipsnap").offsetHeight;
+        for (var i = 0; i < flipsnapLen.length; i++) {
+            flipsnapLen[i].style.height = flipsnapH + "px";
+        }
+    }
+
+    if (wrapper != undefined) {
+        flipsnapRoll();
+        window.onload = function () {
+            Flipsnap('.flipsnap');
+            flipH();
+        }
+
+        window.onresize = function () {
+            flipsnapRoll();
+            flipH();
+        }
+    }
+
+</script>

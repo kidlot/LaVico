@@ -16,7 +16,7 @@ module.exports = {
                 docs = _doc
                 //参与人数:
                 helper.db.coll("lavico/user/logs").aggregate([
-                        {$match:{action:"侃价",'data.productID':seed._id}},
+                        {$match:{action:"侃价","data.step":4,'data.productID':seed._id}},
                         {$group:{_id:"$wxid"}}
                     ],
                     then.hold(function(err,doc){
@@ -26,7 +26,7 @@ module.exports = {
 
                 //成交人数:
                 helper.db.coll("lavico/user/logs").aggregate([
-                        {$match:{action:"侃价","data.step":3,"data.stat":true,'data.productID':seed._id}},
+                        {$match:{action:"侃价","data.step":4,"data.stat":true,'data.productID':seed._id}},
                         {$group:{_id:"$wxid"}}
                     ],
                     then.hold(function(err,doc){
@@ -35,14 +35,14 @@ module.exports = {
                 )
 
                 //最低成交价
-                helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":3,"data.stat":true,'data.productID':seed._id}).sort({price:1}).limit(1).toArray(then.hold(function(err,doc){
+                helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':seed._id}).sort({"data.price":1}).limit(1).toArray(then.hold(function(err,doc){
                     docs.min = doc && doc[0] ? doc[0].data.price : 0
 
                 })
                 )
 
                 //最高成交价
-                helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":3,"data.stat":true,'data.productID':seed._id}).sort({price:-1}).limit(1).toArray(then.hold(function(err,doc){
+                helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':seed._id}).sort({"data.price":-1}).limit(1).toArray(then.hold(function(err,doc){
                     docs.max = doc && doc[0] ? doc[0].data.price : 0
                 })
                 )

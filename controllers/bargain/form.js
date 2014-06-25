@@ -95,41 +95,9 @@ module.exports = {
             })
         })
 
-        //活动规则-编辑器
-        var descriptionEditor = CKEDITOR.replace( 'description', {
-            toolbar: [
-                [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
-            ]
-        });
-        descriptionEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
-        descriptionEditor.config.enterMode = CKEDITOR.ENTER_BR;
-        descriptionEditor.config.language = 'zh-cn';
-        descriptionEditor.config.allowedContent = true;//防止过滤标签的css-style属性
-        descriptionEditor.config.width = 420;
-        descriptionEditor.config.height = 400;
 
         //保存
         window.save = function(){
-
-            //活动规则
-            var description = encodeURIComponent(descriptionEditor.document.getBody().getHtml());
-
-
-            if(!description){
-                $.globalMessenger().post({
-                    message: "请填写详细说明",
-                    type: 'error',
-                    showCloseButton: true});
-                return false;
-            }
-
-            if(!$('#pic_upload').attr('src')){
-                $.globalMessenger().post({
-                    message: "请上传活动图",
-                    type: 'error',
-                    showCloseButton: true});
-                return false;
-            }
 
             var aFormInput = {}
             var _inputCheck = true;
@@ -151,9 +119,6 @@ module.exports = {
             });
             aFormInput['maps'] = maplist;
             aFormInput['pic'] = $("#showPic").attr("src")
-            aFormInput['pic_kv'] = $("#pic_upload").attr("src")
-
-            aFormInput['description'] = description;
             aFormInput['pic_big'] = getBigPicList()
 
             if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
@@ -333,7 +298,7 @@ module.exports = {
                                 //当获取优惠券成功的时候再记录
 
                                 // 更新用户表中的记录。用于统计
-                                var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
+                                var bargain = {price:parseInt(seed.price),_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
                                 helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
                                     if(err ){
                                         console.log(err)
@@ -341,7 +306,7 @@ module.exports = {
                                 })) ;
 
                                 // 更新用户记录表
-                                _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:true})
+                                _log(seed.wxid,seed.memberID,"侃价",{price:parseInt(seed.price),productID:seed.productID,step:4,stat:true})
 
                                 // 更新侃价
                                 helper.db.coll("lavico/bargain").update({_id : helper.db.id(seed._id)}, {$inc:{surplus:-1}},this.hold(function(err,doc){
@@ -394,7 +359,7 @@ module.exports = {
         , giveup:{
             process: function(seed,nut){
 
-                var bargain = {price:seed.price,_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:false}
+                var bargain = {price:parseInt(seed.price),_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:false}
                 helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
                     if(err ){
                         throw err;
@@ -402,7 +367,7 @@ module.exports = {
                 })) ;
 
 
-                _log(seed.wxid,seed.memberID,"侃价",{price:seed.price,productID:seed.productID,step:3,stat:false})
+                _log(seed.wxid,seed.memberID,"侃价",{price:parseInt(seed.price),productID:seed.productID,step:4,stat:false})
                 this.req.session._bargain_step = 1;
                 this.step(function(){
                     nut.disable();
@@ -463,7 +428,7 @@ module.exports = {
                 // timeout
                 this.step(function(){
 
-                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":3}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                         if(doc.length > 0){
                             var timeout = 60 * 3 * 1000
@@ -481,7 +446,7 @@ module.exports = {
 
                 // max
                 this.step(function(){
-                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":3,"data.stat":true}).count(this.hold(function(err,num){
+                    helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:seed.memberID,action:"侃价","data.step":4,"data.stat":true}).count(this.hold(function(err,num){
 
                         helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                             if(num >= _doc.surplus){
@@ -497,7 +462,7 @@ module.exports = {
                     helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
                         if(doc){
 
-                            _log(seed.wxid,seed.memberID,"侃价",{step:parseInt(this.req.session._bargain_step),price:seed.price,productID:seed._id,bargain:_bargain(seed.price,doc.minPrice)})
+                            _log(seed.wxid,seed.memberID,"侃价",{step:parseInt(this.req.session._bargain_step),price:parseInt(seed.price),productID:seed._id,bargain:_bargain(seed.price,doc.minPrice)})
 
                             if(this.req.session._bargain_step == 1){
 
@@ -507,6 +472,10 @@ module.exports = {
                             }else if(this.req.session._bargain_step == 2){
 
                                 res = {err:0,step:2,doc:_bargain(seed.price,doc.minPrice)}
+                                this.req.session._bargain_step = 3;
+                            }else if(this.req.session._bargain_step == 3){
+
+                                res = {err:0,step:3,doc:_bargain(seed.price,doc.minPrice)}
                                 this.req.session._bargain_step = 1;
                             }
 

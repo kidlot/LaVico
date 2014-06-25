@@ -91,7 +91,8 @@ module.exports = {
         // repeat
         this.step(function(){
 
-            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":3,"data.stat":true}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+            console.log({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true})
+            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                 console.log(doc)
                 if(doc.length > 0){
@@ -107,7 +108,7 @@ module.exports = {
 
             if(nut.model.res.err != 1){
 
-                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":2}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":3}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                     if(doc.length > 0){
                         var timeout = 60 * 3 * 1000
@@ -127,7 +128,7 @@ module.exports = {
         this.step(function(){
 
             if(nut.model.res.err != 1){
-                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":3,"data.stat":true}).count(this.hold(function(err,num){
+                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true}).count(this.hold(function(err,num){
 
                     if(num >= doc.surplus){
                         nut.model.res = {err:1,msg:"此商品已销售完毕，请选其它商品。"};
