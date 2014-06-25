@@ -25,8 +25,10 @@ $(function(){
         , gender: ".searchExpressionGender"
         , messagetype: ".searchExpressionMessageType"
         , replytype: ".searchExpressionReplyType"
-        , member: ".searchExpressionMember"
-        , membertype: ".searchExpressionMemberType"
+        , member: ".searchExpressionMember" //David.xu at 2014-06-24
+        , membertype: ".searchExpressionMemberType" //David.xu at 2014-06-24
+        , follow: ".searchExpressionFollow" //David.xu at 2014-06-24
+        , register: ".searchExpressionRegister" //David.xu at 2014-06-24
 
     }
     $(document).on('change','[name=searchFieldName]',function(event){
@@ -85,6 +87,22 @@ $.fn.searchConditions = function(){
         }
         if(data[0] == "HaiLanMemberInfo.type"){
             data[1] = parseInt(data[1]);
+        }
+
+        if(data[0] == "isFollow"){
+            if(data[1]=='true'){
+                data[1] = true;
+            }else{
+                data[1] = false;
+            }
+        }
+
+        if(data[0] == "isRegister"){
+            if(data[1]=='true'){
+                data[1] = true;
+            }else{
+                data[1] = false;
+            }
         }
         console.log(data);
 

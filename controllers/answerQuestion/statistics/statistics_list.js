@@ -150,6 +150,6 @@ module.exports={
     }
 }
 function   ForDight(Dight,How){
-    var num   =   Math.round(How/Dight*100)+"%";
+    var num   =   parseInt(How/Dight*100)+"%";
     return   num;
 }

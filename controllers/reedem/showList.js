@@ -89,8 +89,8 @@ module.exports={
                                             reedemJson.canUse.push(result[i]);//追加数组
                                         }
                                     }else{
-                                        //nut.view.disable();
-                                        //nut.write("<script>window.onload=function(){window.popupStyle2.on('商家没有提供可兑换券',function(event){history.back()})}</script>");
+                                        nut.view.disable();
+                                        nut.write("<script>window.onload=function(){window.popupStyle2.on('商家没有提供可兑换券',function(event){history.back()})}</script>");
                                     }
                                 }))
                             })(i)
@@ -144,7 +144,6 @@ module.exports={
     actions:{
         //兑换
         exchange:{
-            //view:"lavico/templates/reedem/exchangeOk.html",
             layout: "lavico/layout",
             view:"lavico/templates/reedem/member_num17.html",
             process:function(seed,nut){
@@ -231,39 +230,29 @@ module.exports={
                 this.step(function(){
 
                     //提交给接口
-                    //console.log("wechatId:"+wechatId)//不删
                     //拿优惠券
                     var params={};
                     params.meno='积分兑换-'+t_name;
                     params.openid=wechatId;
                     params.otherPromId=id;
                     params.PROMOTION_CODE=aid;
-                    //params.PROMOTION_CODE='CQL201404280005';//aid:测试号
-                    //params.PROMOTION_CODE='L2013112709'
                     params.point=0;
                     //调用接口：提交扣除积分和兑换奖券
                     //扣积分接口
 
                     if(isok){
-//                        middleware.request("Point/Change",
-//                            {"memberId": memberId, "qty": (0-needScore), "memo": '积分兑换-'+t_name},
-//                            this.hold(function (err, doc) {
-//                            }))
-
                         //得券
                         middleware.request('Coupon/FetchCoupon',params,this.hold(function(err,doc){
                             if(err) throw err;
                             //console.log("doc:"+doc)//不删
                             var docJson=JSON.parse(doc)
-                            console.log(docJson.success)
+                            console.log(docJson)
                             if(docJson.success){
                                 //扣除积分
                                 //返回true，表成功兑换，返回券值
                                 return docJson
 
                             }else{
-//                                middleware.request("Point/Change",{"memberId": memberId, "qty": (needScore), "memo": '积分兑换-'+t_name},this.hold(function (err, doc) {
-//                                    }))
                                 nut.view.disable();
                                 nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此商品暂停兑换',function(event){history.back()})}</script>");
                             }
@@ -272,7 +261,6 @@ module.exports={
                 });
 
                 this.step(function(docJson){
-                    console.log(docJson)
                     if(isok){
                         //把兑换记录，记录至数据库
                         if(docJson){
@@ -293,7 +281,7 @@ module.exports={
                                 this.hold(function (err, doc) {
                                 }))
                             //记录会员表
-                            helper.db.coll('welab/customers').update({"wechatid":wechatId,"memberId":memberId},{$addToSet:{reedem:record}},function(err,doc){
+                            helper.db.coll('welab/customers').update({"wechatid":wechatId,"HaiLanMemberInfo.memberID":parseInt(memberId)},{$addToSet:{reedem:record}},function(err,doc){
                             })
                             //记录兑换表
                             helper.db.coll("lavico/exchangeRecord").insert(record,this.hold(function(err,result){
@@ -302,7 +290,7 @@ module.exports={
                             }))
                         }else{
                             nut.view.disable();
-                            nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误1',function(event){history.back()})}</script>");
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误',function(event){history.back()})}</script>");
                         }
                     }
                 })

@@ -23,7 +23,6 @@ module.exports={
             //查找商品积分兑换记录条数
             helper.db.coll("lavico/exchangeRecord").count({reddem_id:reedem_id},this.hold(function(err,result){
                 if(err) throw err;
-                console.log(result)
                 if(result){
                     tongJ.count=result;
                 }else{
@@ -67,7 +66,8 @@ module.exports={
             autoclose: true,
             minView: 2
         }),
-            $("#exportssd").attr("href","/lavico/reedem/userList:exports?&unwind=reedem&data=%7B%22name%22%3A%22%E5%90%8D%E7%A7%B0%22%2C%22createDate%22%3A%22%E6%94%B6%E8%97%8F%E6%97%B6%E9%97%B4%22%7D")
+            $("#exportssd").attr("href","/lavico/reedem/userList:exports?_id="+$("#_id").val()+"&unwind=reedem&data=%7B%22name%22%3A%22%E5%90%8D%E7%A7%B0%22%2C%22createDate%22%3A%22%E6%97%B6%E9%97%B4%22%7D")
+            //$("#exportssd").attr("href","/lavico/reedem/userList:exports?&unwind=reedem&data=%7B%22name%22%3A%22%E5%90%8D%E7%A7%B0%22%2C%22createDate%22%3A%22%E6%94%B6%E8%97%8F%E6%97%B6%E9%97%B4%22%7D")
     }
 
 
