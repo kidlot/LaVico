@@ -95,41 +95,9 @@ module.exports = {
             })
         })
 
-        //活动规则-编辑器
-        var descriptionEditor = CKEDITOR.replace( 'description', {
-            toolbar: [
-                [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
-            ]
-        });
-        descriptionEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
-        descriptionEditor.config.enterMode = CKEDITOR.ENTER_BR;
-        descriptionEditor.config.language = 'zh-cn';
-        descriptionEditor.config.allowedContent = true;//防止过滤标签的css-style属性
-        descriptionEditor.config.width = 420;
-        descriptionEditor.config.height = 400;
 
         //保存
         window.save = function(){
-
-            //活动规则
-            var description = encodeURIComponent(descriptionEditor.document.getBody().getHtml());
-
-
-            if(!description){
-                $.globalMessenger().post({
-                    message: "请填写详细说明",
-                    type: 'error',
-                    showCloseButton: true});
-                return false;
-            }
-
-            if(!$('#pic_upload').attr('src')){
-                $.globalMessenger().post({
-                    message: "请上传活动图",
-                    type: 'error',
-                    showCloseButton: true});
-                return false;
-            }
 
             var aFormInput = {}
             var _inputCheck = true;
@@ -151,9 +119,6 @@ module.exports = {
             });
             aFormInput['maps'] = maplist;
             aFormInput['pic'] = $("#showPic").attr("src")
-            aFormInput['pic_kv'] = $("#pic_upload").attr("src")
-
-            aFormInput['description'] = description;
             aFormInput['pic_big'] = getBigPicList()
 
             if($("input[name='colorsVal']").val()) aFormInput['colors'] = $("input[name='colorsVal']").val().split(",")
