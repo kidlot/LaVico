@@ -23,7 +23,9 @@
                 <th class="width50">年龄</th>
                 <th class="width50">城市</th>
                 <th class="width50">获得礼券</th>
-                <th class="width50">获得标签</th>
+                <if condition="{@themetype==1}">
+                    <th class="width50">获得标签</th>
+                </if>
                 <th class="width50">奖励积分</th>
             </tr>
             <foreach for="@data" var="onef">
@@ -37,7 +39,9 @@
                     <td class="width50">{@onef.birthday}</td>
                     <td class="width50">{@onef.city}</td>
                     <td class="width50">{@onef.getGift}</td>
-                    <td class="width50">{@onef.getLabel}</td>
+                    <if condition="{@themetype==1}">
+                        <td class="width50">{@onef.getLabel}</td>
+                    </if>
                     <td class="width50">{@onef.compScore}</td>
                 </tr>
             </foreach>

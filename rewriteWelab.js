@@ -185,144 +185,104 @@ exports.load = function () {
 //            })
 //
 //        }
-//    }
+//
 
     var welabUserlist = require("welab/controllers/user/list.js");
 
 
     // 复写用户列表的导出
     welabUserlist.actions.exports.process = function(seed, nut){
-
         nut.disabled = true ;
-
-        // 总人数
-        var otherData = {};
-        // 总消息数
-        var count = util.countor(this) ;
-        count("customers","totalUser",{},otherData) ;
-        count("messages","totaMessages",{replyFor:{$exists:false}},otherData) ;
-        count("replyViewLog","totalView",{action:"view"},otherData) ;
-        count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
-        count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
-
-        var conditions = search.conditions(seed) ;
-        var _data = [];
-
-        var sort = {_id:-1};
-        if(seed.sortname){
-
-            var order = seed.sortorder == "asc" ? 1 : -1;
-            sort = eval("({"+seed.sortname+":"+order+"})")
-        }
-
+        var UserList = seed.UserList.split(",");
+        var resultList=[];
+        var then = this;
 
         this.step(function(){
-            //console.log("tip:"+conditions);
-            helper.db.coll("welab/customers").find(conditions).sort(sort).toArray(this.hold(function(err,docs){
-                if(err) throw err ;
+            for(var i=0;i<UserList.length;i++){
+                (function(i){
+                    console.log("UserList[i]",UserList[i])
+                    helper.db.coll("welab/customers").findOne({"_id":helper.db.id(UserList[i])},then.hold(function(err,doc){
+                        if(err) throw err;
+                        console.log("doc",doc)
+                        if(doc){
+                            var result={};
+                            result.nickname = doc.nickname || "--";
+                            result.realname = doc.realname || "--";
+                            result.gender = doc.gender == 'female'?"女": (doc.gender == 'male' ? "男" : '--');
+                            result.birthday = doc.birthday ? parseInt(((new Date()) - (parseInt(doc.birthday))) / (1000*60*60*24*365)) : "--";
+                            result.mobile = doc.mobile || "--";
+                            result.profession = doc.profession || "--";
+                            result.email = doc.email || "--";
+                            result.province = doc.province || "--";
+                            result.city = doc.city || "--";
+                            result.address = doc.address || "--";
 
-                for (var i=0; i<docs.length; i++)
-                {/*
-                 _data[i].nickname,
-                 _data[i].realname,
-                 _data[i].gender,
-                 _data[i].birthday,
-                 _data[i].mobile,
-                 _data[i].industry,
-                 _data[i].email,
-                 _data[i].province,
-                 _data[i].city,
-                 _data[i].address,
-                 _data[i].favoriteStyle,
-                 _data[i].favoriteColor,
-                 _data[i].cardtype,
-                 _data[i].cardNumber,
-                 _data[i].source,
-                 _data[i].tags*/
-                    docs[i].realname = docs[i].realname || '';
-                    docs[i].nickname = docs[i].nickname || '';
-                    docs[i].province = docs[i].province || '';
-                    docs[i].city = docs[i].city || '';
-                    docs[i].address = docs[i].address || '';
+                            if(doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.type){
+                                if(doc.HaiLanMemberInfo.type == 1){
+                                    doc.cardtype = '白卡';
+                                }else if(doc.HaiLanMemberInfo.type == 2){
+                                    doc.cardtype = 'VIP卡';
+                                }else if(doc.HaiLanMemberInfo.type == 3){
+                                    doc.cardtype = '白金VIP卡';
+                                }else{
+                                    doc.cardtype = '未知';
+                                }
+                            }else{
+                                doc.cardtype = '--';
+                            }
+                            result.cardtype = doc.cardtype;
 
-                    docs[i].followCount = docs[i].followCount || '1';
-                    docs[i].messageCount = docs[i].messageCount && otherData.totaMessages ? (docs[i].messageCount) + " " + (parseInt((docs[i].messageCount / otherData.totaMessages)*100)) + "%" : "0";
-                    docs[i].isRegister = docs[i].registerTime ? "是" : "否"
-                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '--')
-                    docs[i].birthday = docs[i].birthday ? parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365)) : ""
+                            if(doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.cardNumber){
+                                doc.cardNumber = doc.HaiLanMemberInfo.cardNumber;
+                            }else{
+                                doc.cardNumber = '--';
+                            }
+                            result.cardNumber = doc.cardNumber;
 
-                    docs[i].source = docs[i].source || '';
-                    docs[i].mobile = docs[i].mobile || '';
+                            if(doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.favoriteStyle){
+                                doc.favoriteStyle = doc.HaiLanMemberInfo.favoriteStyle;
+                            }else{
+                                doc.favoriteStyle = '--';
+                            }
+                            result.favoriteStyle = doc.favoriteStyle;
 
-                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.type){
-                        if(docs[i].HaiLanMemberInfo.type == 1){
-                            docs[i].cardtype = '白卡';
-                        }else if(docs[i].HaiLanMemberInfo.type == 2){
-                            docs[i].cardtype = 'VIP卡';
-                        }else if(docs[i].HaiLanMemberInfo.type == 3){
-                            docs[i].cardtype = '白金VIP卡';
-                        }else{
-                            docs[i].cardtype = '未知';
+                            if(doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID){
+                                doc.memberID = doc.HaiLanMemberInfo.memberID;
+                            }else{
+                                doc.memberID = '--';
+                            }
+                            result.memberID = doc.memberID;
+
+                            if(doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.favoriteColor){
+                                doc.favoriteColor = doc.HaiLanMemberInfo.favoriteColor;
+                            }else{
+                                doc.favoriteColor = '--';
+                            }
+                            result.favoriteColor = doc.favoriteColor;
+
+                            var tags = [];
+                            if(doc.tags){
+                                for (var j=0; j<doc.tags.length; j++)
+                                {
+                                        tags.push(doc.tags[j]);
+                                }
+                                doc.tags = tags.join(",");
+                            }else{
+                                doc.tags = '--';
+                            }
+                            result.tags = tags;
+
+                            result.source = doc.source || '--';
+                            resultList.push(result);
                         }
-                    }else{
-                        docs[i].cardtype = '--';
-                    }
-
-                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.cardNumber){
-                        docs[i].cardNumber = docs[i].HaiLanMemberInfo.cardNumber;
-                    }else{
-                        docs[i].cardNumber = '--';
-                    }
-
-                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.favoriteStyle){
-                        docs[i].favoriteStyle = docs[i].HaiLanMemberInfo.favoriteStyle;
-                    }else{
-                        docs[i].favoriteStyle = '--';
-                    }
-
-                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.memberID){
-                        docs[i].memberID = docs[i].HaiLanMemberInfo.memberID;
-                    }else{
-                        docs[i].memberID = '--';
-                    }
-
-                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.favoriteColor){
-                        docs[i].favoriteColor = docs[i].HaiLanMemberInfo.favoriteColor;
-                    }else{
-                        docs[i].favoriteColor = '--';
-                    }
-
-
-                    docs[i].industry = docs[i].profession || '';
-                    docs[i].email = docs[i].email || '';
-
-                    var tags = [];
-                    if(docs[i].tags){
-                        for (var ii=0; ii<docs[i].tags.length; ii++)
-                        {
-                                tags.push(docs[i].tags[ii]);
-                        }
-                        docs[i].tags = tags.join(",");
-                    }else{
-                        docs[i].tags = '';
-                    }
-
-                    _data.push(docs[i]);
-
-                }
-
-            }));
-
+                    }))
+                })(i)
+            }
         })
 
-
-        //导出
         this.step(function(){
-
             var nodeExcel = require('excel-export');
-
             var conf = {};
-
             conf.cols = [
                 {
                     caption: '昵称',
@@ -377,96 +337,241 @@ exports.load = function () {
                     type: 'string'
                 }
             ];
-
-
             conf.rows = [];
-
-            for(var i=0 ;i < _data.length ;i++){
-            /*
-            * {
-             caption: '昵称',
-             type: 'string'
-             }, {
-             caption: '姓名',
-             type: 'string'
-             }, {
-             caption: '性别',
-             type: 'string'
-             }, {
-             caption: '年龄',
-             type: 'string'
-             }, {
-             caption: '手机',
-             type: 'string'
-             }, {
-             caption: '行业',
-             type: 'string'
-             }, {
-             caption: 'Email',
-             type: 'string'
-             }, {
-             caption: '省份',
-             type: 'string'
-             }, {
-             caption: '城市',
-             type: 'string'
-             }, {
-             caption: '具体地址',
-             type: 'string'
-             }, {
-             caption: '喜好款式',
-             type: 'string'
-             }, {
-             caption: '喜好颜色',
-             type: 'string'
-             }, {
-             caption: '卡类型',
-             type: 'string'
-             }, {
-             caption: '卡号码',
-             type: 'string'
-             }, {
-             caption: '会员号码',
-             type: 'string'
-             }, {
-             caption: '关注来源',
-             type: 'string'
-             }, {
-             caption: '标签',
-             type: 'string'
-             }*/
+            for(var i=0 ;i < resultList.length ;i++){
                 var rows;
                 rows = [
-                    _data[i].nickname,
-                    _data[i].realname,
-                    _data[i].gender,
-                    _data[i].birthday,
-                    _data[i].mobile,
-                    _data[i].industry,
-                    _data[i].email,
-                    _data[i].province,
-                    _data[i].city,
-                    _data[i].address,
-                    _data[i].favoriteStyle,
-                    _data[i].favoriteColor,
-                    _data[i].cardtype,
-                    _data[i].cardNumber,
-                    _data[i].memberID,
-                    _data[i].source,
-                    _data[i].tags
+                    resultList[i].nickname,
+                    resultList[i].realname,
+                    resultList[i].gender,
+                    resultList[i].birthday,
+                    resultList[i].mobile,
+                    resultList[i].profession,
+                    resultList[i].email,
+                    resultList[i].province,
+                    resultList[i].city,
+                    resultList[i].address,
+                    resultList[i].favoriteStyle,
+                    resultList[i].favoriteColor,
+                    resultList[i].cardtype,
+                    resultList[i].cardNumber,
+                    resultList[i].memberID,
+                    resultList[i].source,
+                    resultList[i].tags
                 ]
                 conf.rows.push(rows)
-
             }
             var result = nodeExcel.execute(conf);
-            console.log(conf);
-
             this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
             this.res.write(result, 'binary');
             this.res.end();
-
         })
+//        nut.disabled = true ;
+//
+//        // 总人数
+//        var otherData = {};
+//        // 总消息数
+//        var count = util.countor(this) ;
+//        count("customers","totalUser",{},otherData) ;
+//        count("messages","totaMessages",{replyFor:{$exists:false}},otherData) ;
+//        count("replyViewLog","totalView",{action:"view"},otherData) ;
+//        count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
+//        count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
+//
+//        var conditions = search.conditions(seed) ;
+//        var _data = [];
+//
+//        var sort = {_id:-1};
+//        if(seed.sortname){
+//
+//            var order = seed.sortorder == "asc" ? 1 : -1;
+//            sort = eval("({"+seed.sortname+":"+order+"})")
+//        }
+//
+//
+//        this.step(function(){
+//            //console.log("tip:"+conditions);
+//            helper.db.coll("welab/customers").find({"_id":helper.db.id("53a8ff09d94e071568000c72")}).toArray(this.hold(function(err,docs){
+//                if(err) throw err ;
+//
+//                for (var i=0; i<docs.length; i++)
+//                {
+//                    docs[i].realname = docs[i].realname || '';
+//                    docs[i].nickname = docs[i].nickname || '';
+//                    docs[i].province = docs[i].province || '';
+//                    docs[i].city = docs[i].city || '';
+//                    docs[i].address = docs[i].address || '';
+//
+//                    docs[i].followCount = docs[i].followCount || '1';
+//                    docs[i].messageCount = docs[i].messageCount && otherData.totaMessages ? (docs[i].messageCount) + " " + (parseInt((docs[i].messageCount / otherData.totaMessages)*100)) + "%" : "0";
+//                    docs[i].isRegister = docs[i].registerTime ? "是" : "否"
+//                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '--')
+//                    docs[i].birthday = docs[i].birthday ? parseInt(((new Date()) - (parseInt(docs[i].birthday))) / (1000*60*60*24*365)) : ""
+//
+//                    docs[i].source = docs[i].source || '';
+//                    docs[i].mobile = docs[i].mobile || '';
+//
+//                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.type){
+//                        if(docs[i].HaiLanMemberInfo.type == 1){
+//                            docs[i].cardtype = '白卡';
+//                        }else if(docs[i].HaiLanMemberInfo.type == 2){
+//                            docs[i].cardtype = 'VIP卡';
+//                        }else if(docs[i].HaiLanMemberInfo.type == 3){
+//                            docs[i].cardtype = '白金VIP卡';
+//                        }else{
+//                            docs[i].cardtype = '未知';
+//                        }
+//                    }else{
+//                        docs[i].cardtype = '--';
+//                    }
+//
+//                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.cardNumber){
+//                        docs[i].cardNumber = docs[i].HaiLanMemberInfo.cardNumber;
+//                    }else{
+//                        docs[i].cardNumber = '--';
+//                    }
+//
+//                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.favoriteStyle){
+//                        docs[i].favoriteStyle = docs[i].HaiLanMemberInfo.favoriteStyle;
+//                    }else{
+//                        docs[i].favoriteStyle = '--';
+//                    }
+//
+//                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.memberID){
+//                        docs[i].memberID = docs[i].HaiLanMemberInfo.memberID;
+//                    }else{
+//                        docs[i].memberID = '--';
+//                    }
+//
+//                    if(docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.favoriteColor){
+//                        docs[i].favoriteColor = docs[i].HaiLanMemberInfo.favoriteColor;
+//                    }else{
+//                        docs[i].favoriteColor = '--';
+//                    }
+//
+//
+//                    docs[i].industry = docs[i].profession || '';
+//                    docs[i].email = docs[i].email || '';
+//
+//                    var tags = [];
+//                    if(docs[i].tags){
+//                        for (var ii=0; ii<docs[i].tags.length; ii++)
+//                        {
+//                                tags.push(docs[i].tags[ii]);
+//                        }
+//                        docs[i].tags = tags.join(",");
+//                    }else{
+//                        docs[i].tags = '';
+//                    }
+//
+//                    _data.push(docs[i]);
+//
+//                }
+//
+//            }));
+//
+//        })
+//
+//
+//        //导出
+//        this.step(function(){
+//
+//            var nodeExcel = require('excel-export');
+//
+//            var conf = {};
+//
+//            conf.cols = [
+//                {
+//                    caption: '昵称',
+//                    type: 'string'
+//                }, {
+//                    caption: '姓名',
+//                    type: 'string'
+//                }, {
+//                    caption: '性别',
+//                    type: 'string'
+//                }, {
+//                    caption: '年龄',
+//                    type: 'string'
+//                }, {
+//                    caption: '手机',
+//                    type: 'string'
+//                }, {
+//                    caption: '行业',
+//                    type: 'string'
+//                }, {
+//                    caption: 'Email',
+//                    type: 'string'
+//                }, {
+//                    caption: '省份',
+//                    type: 'string'
+//                }, {
+//                    caption: '城市',
+//                    type: 'string'
+//                }, {
+//                    caption: '具体地址',
+//                    type: 'string'
+//                }, {
+//                    caption: '喜好款式',
+//                    type: 'string'
+//                }, {
+//                    caption: '喜好颜色',
+//                    type: 'string'
+//                }, {
+//                    caption: '卡类型',
+//                    type: 'string'
+//                }, {
+//                    caption: '卡号码',
+//                    type: 'string'
+//                }, {
+//                    caption: '会员号码',
+//                    type: 'string'
+//                }, {
+//                    caption: '关注来源',
+//                    type: 'string'
+//                }, {
+//                    caption: '标签',
+//                    type: 'string'
+//                }
+//            ];
+//
+//
+//            conf.rows = [];
+//
+//            for(var i=0 ;i < _data.length ;i++){
+//                var rows;
+//                rows = [
+//                    _data[i].nickname,
+//                    _data[i].realname,
+//                    _data[i].gender,
+//                    _data[i].birthday,
+//                    _data[i].mobile,
+//                    _data[i].industry,
+//                    _data[i].email,
+//                    _data[i].province,
+//                    _data[i].city,
+//                    _data[i].address,
+//                    _data[i].favoriteStyle,
+//                    _data[i].favoriteColor,
+//                    _data[i].cardtype,
+//                    _data[i].cardNumber,
+//                    _data[i].memberID,
+//                    _data[i].source,
+//                    _data[i].tags
+//                ]
+//                conf.rows.push(rows)
+//
+//            }
+//            var result = nodeExcel.execute(conf);
+//            console.log(conf);
+//
+//            this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+//            this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+//            this.res.write(result, 'binary');
+//            this.res.end();
+//
+//        })
     }
     //短信发送  viewIn
     welabUserlist.children.page.viewIn = function(){
@@ -626,6 +731,7 @@ exports.load = function () {
         })
 
     }
+
     welabUserlist.children.page.viewIn = function(){
         $("#userList").flexigrid({
             url: '/welab/user/list:jsonData',
@@ -976,6 +1082,25 @@ exports.load = function () {
 //            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
 //            return false;
 //        })
+
+        /**
+         * 分页导出
+         */
+        $(".exports").on("click",function(){
+
+            var aList = getUserList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一条数据',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }else{
+                window.location.href="/welab/user/list:exports?UserList="+getUserList().join(",");
+                return false;
+            }
+            return false;
+        })
     }
 
     //复写 view
@@ -1213,4 +1338,9 @@ exports.load = function () {
             }
         })
     }
+
+    //复写 reply/detail.js
+    var welabReplyDetail = require("welab/controllers/reply/detail.js");
+    welabReplyDetail.view = "lavico/templates/welab/reply/detail.html"
+
 };

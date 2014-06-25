@@ -21,7 +21,7 @@ module.exports={
         //父进程变量传入子变量
         seed["$lab"]= {_id:seed._id}
         seed["$score"]={_id:seed._id}
-        seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop}
+        seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop,themetype:themetype}
         seed["$exportXsl"]={_id:seed._id}
         seed["filterexport"]={_id:seed._id}
 
@@ -398,6 +398,8 @@ module.exports={
 
                 nut.model.finishCount=finishCount
                 nut.model.totalPop=totalPop;
+
+                nut.model.themetype = seed.themetype;
 
                 var finishMan=[];
                 try{
