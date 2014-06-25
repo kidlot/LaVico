@@ -16,7 +16,7 @@ module.exports = {
                 docs = _doc
                 //参与人数:
                 helper.db.coll("lavico/user/logs").aggregate([
-                        {$match:{action:"侃价",'data.productID':seed._id}},
+                        {$match:{action:"侃价","data.step":4,'data.productID':seed._id}},
                         {$group:{_id:"$wxid"}}
                     ],
                     then.hold(function(err,doc){
