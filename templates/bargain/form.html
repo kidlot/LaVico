@@ -205,9 +205,11 @@
             map.value = $option.val();
             maplist.push(map)
         });
-
+        console.log(maplist.length)
+        console.log(map_text)
+        console.log(map_val)
         var isok = true;
-        if(maplist.length>0){
+        if(maplist.length!=0){
             for(var i=0;i<maplist.length;i++){
                 if(maplist[i].value==map_val){
                     isok=false;
@@ -220,7 +222,45 @@
     }
 
     function nochackall(){
-        $("#maps_two").empty();
+        var mapslist = [];
+        $('#maps option').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.html();
+            map.value = $option.val();
+            mapslist.push(map)
+        });
+
+        var mapstwolist = [];
+        $('#maps_two option').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.html();
+            map.value = $option.val();
+            mapstwolist.push(map)
+        });
+
+        if(mapslist.length == mapstwolist.length){
+            $("#maps_two").empty();
+        }else if(mapstwolist.length==0){
+            for(var i=0;i<mapslist.length;i++){
+                $("#maps_two").append("<OPTION VALUE="+mapslist[i].value+">"+mapslist[i].text+"</OPTION>");
+            }
+        }else{
+            $("#maps_two").empty();
+            for(var i=0;i<mapslist.length;i++){
+                for(var j=0;j<mapstwolist.length;j++){
+                    if(mapslist[i].value==mapstwolist[j].value){
+                        mapslist[i].equally = true;
+                    }
+                }
+            }
+            for(var i=0;i<mapslist.length;i++){
+                if(mapslist[i].equally!=true){
+                    $("#maps_two").append("<OPTION VALUE="+mapslist[i].value+">"+mapslist[i].text+"</OPTION>");
+                }
+            }
+        }
     }
     function chackall(){
         $("#maps_two").empty();
