@@ -1,0 +1,80 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
+    <li class="b02"><a href="/welab/reply/list" class="stay">回复</a> <em></em></li>
+    <li class="active"><span>详细</span></li>
+</ul>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <ul class="nav nav-tabs nav-head">
+            <li class="active"><a href="/welab/reply/detail?_id={@data._id}" class="stay-top">详细</a></li>
+            <li><a href="/welab/reply/dialog?_id={@data._id}" class="stay-top">会话</a></li>
+        </ul>
+    </div>
+    <div class="panel-body" style="border-bottom:2px #ddd solid;">
+        <div class="btn-group">
+            <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown"><em class="icon02"></em> 操作 <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="/welab/reply/form{@data.type=='text'?'Text':''}{@data.type=='voice'?'Audio':''}?_id={@data._id}&type={@data.type}" class="stay-top">编辑</a></li>
+                <li><a href="/welab/reply/form:setInvalid?replyid={@data._id}" class="userSetTagView stay-top" >停用</a></li>
+                <li><a href="/welab/reply/form:remove?list={@data._id}" class="removeUserView stay-top">删除</a></li>
+            </ul>
+        </div>
+        <a type="button" class="btn btn-primary handle_btn stay" href="/welab/reply/list">返回</a>
+    </div>
+    <div class="panel-body">
+        <table class="table" id="tagList">
+            <tbody>
+            <tr>
+                <td class="td-name">名称</td>
+                <td>{@data.name}</td>
+                <td class="td-name">创建时间</td>
+                <td>{@ new Date(data.createTime).toISOString().substr(0,10)}</td>
+            </tr>
+            <tr>
+                <td class="td-name">标签</td>
+                <td>{@data.tags}</td>
+                <td class="td-name">最后修改时间</td>
+                <td>{@ data.lastEditTime ? new Date(data.lastEditTime).toISOString().substr(0,10) : ''}</td>
+            </tr>
+            <tr>
+                <td class="td-name">关键词</td>
+                <td>{@data.keywords}</td>
+                <td class="td-name">最近请求时间</td>
+                <td>{@ data.otherData.lastSessionTime ? new Date(data.otherData.lastSessionTime).toISOString().substr(0,10) : ''}</td>
+            </tr>
+            <tr>
+                <td class="td-name">内容类型</td>
+                <td>{@data.type=='text'?'文本':''}{@data.type=='voice'?'语音':''}</td>
+                <td class="td-name">会话数</td>
+                <td><a href="/welab/reply/dialog?_id={@data._id}" class="stay">{@ data.otherData.sessionCount}</a> </td>
+            </tr>
+            <tr>
+                <td class="td-name">状态</td>
+                <td>启用</td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 删除 -->
+<div class="modal fade" id="delModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">删除操作</h4>
+            </div>
+            <div class="modal-body">
+                真的要删除吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary removeUserBtn">删除</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

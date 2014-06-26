@@ -51,24 +51,34 @@ module.exports={
             process:function(seed,nut){
 
                 var then = this
-                var visitedPeople
+                var visitedPeople=[];
                 var themeQuestionList = []
                 var visitePeopleList=[]
                 this.step(function(){
-                    helper.db.coll("lavico/custReceive").aggregate(
-                        [
-                            {$match:{optionId:parseInt(seed.optionId),themeId:helper.db.id(seed._id)}},
-                            {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$memberId"}}}
-                        ],this.hold(function(err,doc){
-                            if(err)throw err
-                            if(doc!=""){
-                                visitedPeople=doc[0].count
-                            }else{
-
-                                this.terminate();
+                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(seed._id),isFinish:false,"type":"0","optionId":parseInt(seed.optionId)}).toArray(this.hold(function(err,doc){
+                        if(err) console.log(err);
+                        if(doc.length>0){
+                            for(var i=0;i<doc.length;i++){
+                                var visite={};
+                                visite.wechatid = doc[i].wechatid;
+                                visitedPeople.push(visite);
                             }
-                        })
-                    )
+                        }
+                    }))
+//                    helper.db.coll("lavico/custReceive").aggregate(
+//                        [
+//                            {$match:{optionId:parseInt(seed.optionId),themeId:helper.db.id(seed._id)}},
+//                            {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$memberId"}}}
+//                        ],this.hold(function(err,doc){
+//                            if(err)throw err
+//                            if(doc!=""){
+//                                visitedPeople=doc[0].count
+//                            }else{
+//
+//                                this.terminate();
+//                            }
+//                        })
+//                    )
                 })
 
                 this.step(function(){
@@ -85,9 +95,9 @@ module.exports={
                 })
 
                 this.step(function(){
-                    for(var i in visitedPeople){
+                    for(var i=0;i<visitedPeople.length;i++){
                         (function(i){
-                            helper.db.coll("welab/customers").findOne({"HaiLanMemberInfo.memberID":parseInt(visitedPeople[i])},then.hold(function(err,doc){
+                            helper.db.coll("welab/customers").findOne({"wechatid":visitedPeople[i].wechatid},then.hold(function(err,doc){
                                 if(err)throw err
                                 if(doc){
                                     var visiPeople={}
@@ -104,9 +114,7 @@ module.exports={
                     }
                 })
                 this.step(function(){
-                    console.log("visitePeopleList",visitePeopleList.length)
                     var docs=[];
-                    console.log("page",seed.page)
                     pageSize=10
                     page={}
                     page.lastPage=visitePeopleList.length%pageSize==0 ? parseInt(visitePeopleList.length/pageSize) : parseInt(visitePeopleList.length/pageSize)+1;
@@ -131,25 +139,37 @@ module.exports={
             view:null,
             process:function(seed,nut){
                 var then = this
-                var visitedPeople
+                var visitedPeople=[];
                 var visitePeopleList=[]
                 this.step(function(){
-                    helper.db.coll("lavico/custReceive").aggregate(
-                        [
-                            {$match:{optionId:1,themeId:helper.db.id(seed._id)}},
-                            {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$wechatid"}}}
-                        ],this.hold(function(err,doc){
-                            if(err)throw err
 
-                            visitedPeople=doc[0].count
-                        })
-                    )
+                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(seed._id),isFinish:false,"type":"0","optionId":parseInt(seed.optionId)}).toArray(this.hold(function(err,doc){
+                        if(err) console.log(err);
+                        if(doc.length>0){
+                            for(var i=0;i<doc.length;i++){
+                                var visite={};
+                                visite.wechatid = doc[i].wechatid;
+                                visitedPeople.push(visite);
+                            }
+                        }
+                    }))
+
+//                    helper.db.coll("lavico/custReceive").aggregate(
+//                        [
+//                            {$match:{optionId:1,themeId:helper.db.id(seed._id)}},
+//                            {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$wechatid"}}}
+//                        ],this.hold(function(err,doc){
+//                            if(err)throw err
+//
+//                            visitedPeople=doc[0].count
+//                        })
+//                    )
                 })
 
                 this.step(function(){
-                    for(var i in visitedPeople){
+                    for(var i=0;i<visitedPeople.length;i++){
                         (function(i){
-                            helper.db.coll("welab/customers").findOne({wechatid:visitedPeople[i]},then.hold(function(err,doc){
+                            helper.db.coll("welab/customers").findOne({wechatid:visitedPeople[i].wechatid},then.hold(function(err,doc){
                                 if(err)throw err
                                 if(doc){
                                     var visiPeople={}
@@ -192,7 +212,6 @@ module.exports={
                     ]
 
                     conf.rows = []
-
                     for(var i in visitePeopleList){
                         var rows
                         var realname
