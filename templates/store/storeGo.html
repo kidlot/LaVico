@@ -6,19 +6,14 @@
     window.onload=function(){
         var map = new BMap.Map("allmap");
         var point = new BMap.Point({@locationLat},{@locationLng});
-    alert("开始请求百度")
     map.centerAndZoom(point,12);
 
     function myFun(result){
-        alert("请求百度结束")
         var cityName = result.name;
         map.setCenter(cityName);
-        alert(cityName)
-        alert("请求B页面开始")
         $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName="+encodeURIComponent(cityName),function(doc){
             document.write(doc);
         })
-        alert("请求B页面结束");
 
     }
     var myCity = new BMap.LocalCity();
