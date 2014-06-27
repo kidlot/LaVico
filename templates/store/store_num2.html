@@ -13,9 +13,9 @@
           <foreach for="{@city_docs}" var="docs" key="key">
             <li><a href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@docs.CODE}&wxid={@wxid}&city={@cityName}'">
               <p class="name">{@docs.NAME}</p>
-              <p class="adree"><span>地址：</span>{@docs.ADDR}</p>
-              <p class="tel">电话：{@docs.TEL}</p>
-                <p class="tel"><span>活动：</span>
+              <p class="adree">地址：&nbsp;{@docs.ADDR}</p>
+              <p class="tel">电话：&nbsp;{@docs.TEL}</p>
+                <p class="tel">活动：
                     <if condition="{@docs.ACT==null}">
                         暂无活动，敬请期待！
                         <else/>

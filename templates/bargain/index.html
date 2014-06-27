@@ -20,6 +20,7 @@
                 <th>状态</th>
                 <th>市场零售价</th>
                 <th>最低价格</th>
+                <th>最高价格</th>
                 <th>剩余数量</th>
                 <th>完成人数</th>
                 <th>开始时间</th>
@@ -34,6 +35,7 @@
                     <td id="docstatus">{@ doc.stat}</td>
                     <td>{@ doc.price}</td>
                     <td>{@ doc.minPrice}</td>
+                    <td>{@ doc.maxPrice}</td>
                     <td>{@ doc.surplus}</td>
                     <td>{@ doc.num}</td>
                     <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>

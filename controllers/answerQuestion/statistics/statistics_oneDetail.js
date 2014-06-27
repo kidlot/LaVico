@@ -60,6 +60,7 @@ module.exports={
                         if(doc.length>0){
                             for(var i=0;i<doc.length;i++){
                                 var visite={};
+                                visite.createTime = formatTime(doc[i].createTime);
                                 visite.wechatid = doc[i].wechatid;
                                 visitedPeople.push(visite);
                             }
@@ -82,6 +83,20 @@ module.exports={
                 })
 
                 this.step(function(){
+                    var i = 0, len = visitedPeople.length,
+                        j, d;
+                    for(; i<len; i++){
+                        for(j=0; j<len; j++){
+                            if(visitedPeople[i].createTime > visitedPeople[j].createTime){
+                                d = visitedPeople[j];
+                                visitedPeople[j] = visitedPeople[i];
+                                visitedPeople[i] = d;
+                            }
+                        }
+                    }
+                })
+
+                this.step(function(){
                     helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
                         if(err){
                             throw err
@@ -101,6 +116,7 @@ module.exports={
                                 if(err)throw err
                                 if(doc){
                                     var visiPeople={}
+                                    visiPeople.createtime =visitedPeople[i].createTime;
                                     visiPeople.realname=doc.realname
                                     visiPeople.gender=doc.gender
                                     visiPeople.mobile=doc.mobile
@@ -148,6 +164,7 @@ module.exports={
                         if(doc.length>0){
                             for(var i=0;i<doc.length;i++){
                                 var visite={};
+                                visite.createTime = formatTime(doc[i].createTime);
                                 visite.wechatid = doc[i].wechatid;
                                 visitedPeople.push(visite);
                             }
@@ -167,12 +184,27 @@ module.exports={
                 })
 
                 this.step(function(){
+                    var i = 0, len = visitedPeople.length,
+                        j, d;
+                    for(; i<len; i++){
+                        for(j=0; j<len; j++){
+                            if(visitedPeople[i].createTime > visitedPeople[j].createTime){
+                                d = visitedPeople[j];
+                                visitedPeople[j] = visitedPeople[i];
+                                visitedPeople[i] = d;
+                            }
+                        }
+                    }
+                })
+
+                this.step(function(){
                     for(var i=0;i<visitedPeople.length;i++){
                         (function(i){
                             helper.db.coll("welab/customers").findOne({wechatid:visitedPeople[i].wechatid},then.hold(function(err,doc){
                                 if(err)throw err
                                 if(doc){
                                     var visiPeople={}
+                                    visiPeople.createtime =visitedPeople[i].createTime;
                                     visiPeople.realname=doc.realname
                                     visiPeople.gender=doc.gender
                                     visiPeople.mobile=doc.mobile
@@ -190,6 +222,10 @@ module.exports={
                     var nodeExcel = require('excel-export');
                     var conf = {};
                     conf.cols = [
+                        {
+                            caption: '时间',
+                            type: 'string'
+                        },
                         {
                             caption: '用户姓名',
                             type: 'string'
@@ -247,6 +283,7 @@ module.exports={
                         }
 
                         rows = [
+                            visitePeopleList[i].createtime,
                             realname,
                             gender,
                             visitePeopleList[i].mobile,
@@ -268,4 +305,15 @@ module.exports={
             }
         }
     }
+}
+
+function   formatTime(now){
+    var   now = new Date(now);
+    var   year=now.getFullYear();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+    return   year+"-"+month+"-"+date;
 }
