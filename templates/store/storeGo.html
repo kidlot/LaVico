@@ -8,8 +8,8 @@
     function myFun(result){
         var cityName = result.name;
         map.setCenter(cityName);
+        alert("请求B页面开始")
         $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName="+cityName,function(doc){
-            console.log("doc:"+doc);
             document.write(doc);
         })
     }
@@ -19,4 +19,6 @@
     }
 
 </script>
+<!--正在加载-->
+<div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
 <div id="allmap"></div>

@@ -115,133 +115,147 @@ module.exports={
                 var _id=seed._id
                 var finishMan=[]
 
-                    then.step(function(){
-                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,"type":"0"})
-                            .toArray(then.hold(function(err,doc){
-                                for(var i in doc){
-                                    var manInfo={};
-                                    manInfo.name=doc[i].wechatid;
-                                    finishMan.push(manInfo);
-                                }
-                            }))
-                    });
-                    then.step(function(){
-                        for(var i in finishMan){
-                            (function(i){
-                                helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name,"type":{$ne:"0"}})
-                                    .toArray(then.hold(function(err,doc){
-                                        for(var i in doc){
+                then.step(function(){
+                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,"type":"0"})
+                        .toArray(then.hold(function(err,doc){
+                            for(var i in doc){
+                                var manInfo={};
+                                manInfo.createTime = formatTime(doc[i].createTime)
+                                manInfo.wechatid=doc[i].wechatid;
+                                finishMan.push(manInfo);
+                            }
+                        }))
+                });
+                then.step(function(){
+                    for(var i=0;i<finishMan.length;i++){
+                        (function(i){
+                            helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].wechatid,"type":{$ne:"0"}})
+                                .toArray(then.hold(function(err,doc){
+                                    for(var k=0;k<doc.length;k++){
 
-                                            for(var j in finishMan){
-                                                if(finishMan[j].name==doc[i].wechatid){
-                                                    finishMan[j].getLabel=doc[i].getLabel
-                                                    finishMan[j].getGift=doc[i].getGift
-                                                    finishMan[j].getScore=doc[i].getScore
-                                                    finishMan[j].createTime=doc[i].createTime;
+                                        for(var j=0;j<finishMan.length;j++){
+                                            if(finishMan[j].wechatid==doc[k].wechatid){
+                                                finishMan[j].getLabel=doc[k].getLabel;
+                                                finishMan[j].getGift=doc[k].getGift;
+                                                finishMan[j].getScore=doc[k].getScore;
 
-                                                    (function(j){
-                                                        helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
-                                                            if(err) throw err
-                                                            if(doc){
-                                                                finishMan[j].realname=doc.realname
-                                                                finishMan[j].gender= doc.gender
-                                                                finishMan[j].birthday=doc.birthday
-                                                                finishMan[j].city=doc.city
-                                                            }
-                                                        }))
-                                                    })(j)
-                                                }
+                                                (function(j){
+                                                    helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].wechatid},then.hold(function(err,doc){
+                                                        if(err) throw err
+                                                        if(doc){
+                                                            finishMan[j].realname=doc.realname
+                                                            finishMan[j].gender= doc.gender
+                                                            finishMan[j].birthday=doc.birthday
+                                                            finishMan[j].city=doc.city
+                                                        }
+                                                    }))
+                                                })(j)
                                             }
                                         }
-                                    }))
-                            })(i)
+                                    }
+                                }))
+                        })(i)
+                    }
+                })
+
+                then.step(function(){
+                    var i = 0, len = finishMan.length,
+                        j, d;
+                    for(; i<len; i++){
+                        for(j=0; j<len; j++){
+                            if(finishMan[i].createTime > finishMan[j].createTime){
+                                d = finishMan[j];
+                                finishMan[j] = finishMan[i];
+                                finishMan[i] = d;
+                            }
                         }
-                    })
+                    }
+                })
 
-                    then.step(function(){
 
-                        //exportXsl
-                        var nodeExcel = require('excel-export');
-                        var conf = {};
-                        conf.cols = [
-                            {
-                                caption: '时间',
-                                type: 'string'
-                            }, {
-                                caption: '姓名',
-                                type: 'string'
-                            }, {
-                                caption: '年龄',
-                                type: 'string'
-                            }, {
-                                caption: '城市',
-                                type: 'string'
-                            }, {
-                                caption: '获得礼券',
-                                type: 'string'
-                            }, {
-                                caption: '获得标签',
-                                type: 'string'
-                            }, {
-                                caption: '奖励积分',
-                                type: 'string'
-                            }
-                        ];
-                        conf.rows = [];
-                        for(var i in finishMan){
-                            var rows
-                            var createtime = new Date(finishMan[i].createTime).getFullYear()+"-"+(new Date(finishMan[i].createTime).getMonth()+1)+"-"+new Date(finishMan[i].createTime).getDate();
-                            var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
-                            var city
-                            if(typeof (finishMan[i].city)=="undefined"){
-                                city=""
-                            }else{
-                                city= finishMan[i].city
-                            }
+                then.step(function(){
 
-                            var realname
-                            if(typeof (finishMan[i].realname)=="undefined"){
-                                realname=""
-                            }else{
-                                realname= finishMan[i].realname
-                            }
-                            var getGift
-                            if(typeof (finishMan[i].getGift)=="undefined"){
-                                getGift=""
-                            }else{
-                                getGift= finishMan[i].getGift
-                            }
-                            var getLabel
-                            if(typeof (finishMan[i].getLabel)=="undefined"){
-                                getLabel=""
-                            }else{
-                                getLabel= finishMan[i].getLabel
-                            }
-                            var getScore
-                            if(typeof (finishMan[i].getScore)=="undefined"){
-                                getScore=""
-                            }else{
-                                getScore= finishMan[i].getScore
-                            }
-                            rows = [
-                                createtime,
-                                realname,
-                                birthday,
-                                city,
-                                getGift,
-                                getLabel,
-                                getScore
-                            ]
-                            conf.rows.push(rows)
+                    //exportXsl
+                    var nodeExcel = require('excel-export');
+                    var conf = {};
+                    conf.cols = [
+                        {
+                            caption: '时间',
+                            type: 'string'
+                        }, {
+                            caption: '姓名',
+                            type: 'string'
+                        }, {
+                            caption: '年龄',
+                            type: 'string'
+                        }, {
+                            caption: '城市',
+                            type: 'string'
+                        }, {
+                            caption: '获得礼券',
+                            type: 'string'
+                        }, {
+                            caption: '获得标签',
+                            type: 'string'
+                        }, {
+                            caption: '奖励积分',
+                            type: 'string'
+                        }
+                    ];
+                    conf.rows = [];
+                    for(var i in finishMan){
+                        var rows
+                        var birthday = parseInt(new Date().getFullYear()-new Date(finishMan[i].birthday).getFullYear());
+                        var city
+                        if(typeof (finishMan[i].city)=="undefined"){
+                            city=""
+                        }else{
+                            city= finishMan[i].city
                         }
 
-                        var result = nodeExcel.execute(conf);
-                        this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-                        this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
-                        this.res.write(result, 'binary');
-                        return this.res.end();
+                        var realname
+                        if(typeof (finishMan[i].realname)=="undefined"){
+                            realname=""
+                        }else{
+                            realname= finishMan[i].realname
+                        }
+                        var getGift
+                        if(typeof (finishMan[i].getGift)=="undefined"){
+                            getGift=""
+                        }else{
+                            getGift= finishMan[i].getGift
+                        }
+                        var getLabel
+                        if(typeof (finishMan[i].getLabel)=="undefined"){
+                            getLabel=""
+                        }else{
+                            getLabel= finishMan[i].getLabel
+                        }
+                        var getScore
+                        if(typeof (finishMan[i].getScore)=="undefined"){
+                            getScore=""
+                        }else{
+                            getScore= finishMan[i].getScore
+                        }
+                        rows = [
+                            finishMan[i].createTime,
+                            realname,
+                            birthday,
+                            city,
+                            getGift,
+                            getLabel,
+                            getScore
+                        ]
+                        conf.rows.push(rows)
+                    }
 
-                    })
+                    var result = nodeExcel.execute(conf);
+                    this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                    this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                    this.res.write(result, 'binary');
+                    return this.res.end();
+
+                })
             }
         },
         filterexport:{
@@ -401,6 +415,7 @@ module.exports={
                             .toArray(then.hold(function(err,doc){
                                 for(var i=0;i<doc.length;i++){
                                     var manInfo={};
+                                    manInfo.createTime = formatTime(doc[i].createTime)
                                     manInfo.name=doc[i].wechatid;
                                     finishMan.push(manInfo);
                                 }
@@ -417,8 +432,7 @@ module.exports={
                                             if(finishMan[j].name==doc[0].wechatid){
                                                 finishMan[j].getLabel=doc[0].getLabel
                                                 finishMan[j].getGift=doc[0].getGift
-                                                finishMan[j].compScore=doc[0].getScore
-                                                finishMan[j].createTime=doc[0].createTime;
+                                                finishMan[j].compScore=doc[0].getScore;
 
                                                 (function(j){
                                                     helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){
@@ -437,6 +451,20 @@ module.exports={
                             })(i)
                         }
                     });
+
+                    this.step(function(){
+                        var i = 0, len = finishMan.length,
+                            j, d;
+                        for(; i<len; i++){
+                            for(j=0; j<len; j++){
+                                if(finishMan[i].createTime > finishMan[j].createTime){
+                                    d = finishMan[j];
+                                    finishMan[j] = finishMan[i];
+                                    finishMan[i] = d;
+                                }
+                            }
+                        }
+                    })
 
                     then.step(function(){
                         pageSize=10
