@@ -8,7 +8,7 @@
     function myFun(result){
         var cityName = result.name;
         map.setCenter(cityName);
-        $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName="+cityName,function(doc){
+        $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName="+encodeURIComponent(cityName),function(doc){
             document.write(doc);
         })
     }
