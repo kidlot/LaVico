@@ -145,7 +145,7 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .look-map .map .way{ padding-top:5%;font-size:1.6rem; padding-bottom:4%;line-height:1.5em;color:#646464;}
 .look-map .map .way .title{ font-size:25px; color:#B9954D; line-height:45px;}
 .look-map .map .way .text{  overflow: hidden; }
-.look-map .map .way .text span{ width: 40px; float: left; }
+.look-map .map .way .text span{ float: left; }
 .inquiry{width:100%; height:50px; line-height:50px; background:url(../images/head_bg.jpg) center center no-repeat;}
 .inquiry .city{ font-size:1.6rem; color:#010000; padding-left:4%;}
 .inquiry .input{ padding-top:10px; margin-left:80px;}
@@ -483,13 +483,44 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .input_select_div{ width:100%; height:40px; position:relative}
 .input_select{width:100%;height:40px;border:0;font-size:1.4rem;line-height:40px;position:relative; background-size:100% 100%; padding:0 2%; border:1px solid #999; }
 #model-name{width:380px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
-#select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:100%;opacity:0;-moz-opacity:0;position:absolute;top:0px;border: 1px solid #999;display:block; left:0px; }
-.input_select_sex{width:96%;height:40px; padding-left:4%; border:0;padding:0 2%;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
-#select_sex{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;left:-123px;}
+#select_sex,#select_province,#select_city,#select_profession,#select_favoriteStyle{width:100%;height:100%;opacity:0;-moz-opacity:0;position:absolute;top:0px;border: 1px solid #999;display:block; left:0px; }
+
+/*#select_sex{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;left:-123px;}*/
 #select_month,#select_day{width:120px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
 .input_select_year{width:96%;height:40px;padding-left:4%;border:0;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
+.input_select_sex{width:100%;height:40px; padding-left:4%; border:0;padding:0 2%;font-size:1.4rem;line-height:40px;position:relative; border:1px #999 solid;}
+#sex {
+    width: 100%;
+    height: 40px;
+    opacity: 0;
+    -moz-opacity: 0;
+    position: relative;
+    left: 1px;
+    z-index:10;
+    font-size: 1.4rem;
+    line-height: 30px;
+    top:-40px;
+}
+#year {
+    width: 100%;
+    height: 40px;
+    opacity: 0;
+    -moz-opacity: 0;
+    position: relative;
+    top: -40px;
+    z-index:10;
+}
+#month, #day {
+    width: 100%;
+    height: 40px;
+    opacity: 0;
+    -moz-opacity: 0;
+    position: relative;
+    top: -40px;
+    z-index:10;
+}
 #select_year{width:160px;height:65px;opacity:0;-moz-opacity:0;position:relative;top:-65px;}
-.input_select_div_f{ float:left; width:100%; height:50px;}
+.input_select_div_f{ float:left; width:100%; height:40px;}
 .input_select_div_fy{ float:left; width:100%; height:50px; }
 .input_select_div_fys{ float:left; width:150px; height:65px; margin-left:0;}
 .new_tab{ margin-top:4%;}

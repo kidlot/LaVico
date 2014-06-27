@@ -1,34 +1,5 @@
 <style type="text/css">
-    #sex {
-        width: 100%;
-        height: 40px;
-        opacity: 0;
-        -moz-opacity: 0;
-        position: relative;
-        left: 1px;
-        z-index:10;
-        font-size: 1.4rem;
-        line-height: 30px;
-        top:-40px;
-    }
-    #year {
-        width: 100%;
-        height: 40px;
-        opacity: 0;
-        -moz-opacity: 0;
-        position: relative;
-        top: -40px;
-        z-index:10;
-    }
-    #month, #day {
-        width: 100%;
-        height: 40px;
-        opacity: 0;
-        -moz-opacity: 0;
-        position: relative;
-        top: -40px;
-        z-index:10;
-    }
+
     .apply .form .input .left { width:20%; }
     .apply .form .input .tel-right { width:77%; }
 </style>
@@ -50,39 +21,41 @@
                 <div class="left fl"><span class="star-sign">*</span>姓名</div>
                 <div class="name-right fl" style="width:72%;"><input id='name' border="0" type="text" value="" /></div>
             </div>
-            <div class="input clear">
-                <div class="left fl"><span class="star-sign">*</span>性别</div>
-                <div class="sex-right fl" style="width:18%;"><div class="input_select_div">
-                    <input type="text" name="brand" class="input_select_sex" value="请选择" id="model_sex_input" readonly/>
-                    <select id="sex">
-                        <option value='1'>男</option>
-                        <option value='0'>女</option>
-                    </select>
-                </div> </div>
-            </div>
-            <div class="input clear">
-                <div class="left fl"><span class="star-sign">*</span>生日</div>
-                <div class="birth-right fl">
-                    <div class="sex-right fl">
-                        <div class="input_select_div_f">
-                            <input type="text" name="brand" class="input_select_year" value="年" id="model_year_input" readonly />
-                            <select id="year" class="select1"></select>
-                        </div>
-                    </div>
-                    <div class="sex-right fl">
-                        <div class="input_select_div_f">
-                            <input type="text" name="brand" class="input_select_sex" value="月" id="model_month_input" readonly />
-                            <select id="month" class="select2"></select>
-                        </div>
-                    </div>
-                    <div class="sex-right fl">
-                        <div class="input_select_div_f">
-                            <input type="text" name="brand" class="input_select_sex" value="日" id="model_day_input" readonly />
-                            <select id="day" class="select3"></select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="input clear">-->
+                <!--<div class="left fl"><span class="star-sign">*</span>性别</div>-->
+                <!--<div class="sex-right fl" style="width:18%;">-->
+                    <!--<div class="input_select_div">-->
+                        <!--<input type="text" name="brand" class="input_select_sex" value="请选择" id="model_sex_input" readonly/>-->
+                        <!--<select id="sex">-->
+                            <!--<option value='1'>男</option>-->
+                            <!--<option value='0'>女</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="input clear">-->
+                <!--<div class="left fl"><span class="star-sign">*</span>生日</div>-->
+                <!--<div class="birth-right fl">-->
+                    <!--<div class="sex-right fl">-->
+                        <!--<div class="input_select_div_f">-->
+                            <!--<input type="text" name="brand" class="input_select_year" value="年" id="model_year_input" readonly />-->
+                            <!--<select id="year" class="select1"></select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="sex-right fl">-->
+                        <!--<div class="input_select_div_f">-->
+                            <!--<input type="text" name="brand" class="input_select_sex" value="月" id="model_month_input" readonly />-->
+                            <!--<select id="month" class="select2"></select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="sex-right fl">-->
+                        <!--<div class="input_select_div_f">-->
+                            <!--<input type="text" name="brand" class="input_select_sex" value="日" id="model_day_input" readonly />-->
+                            <!--<select id="day" class="select3"></select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>手机</div>
                 <div class="tel-right fl"><input AutoComplete='on' id='mobile' border="0" type="text" value="" /><div class="verify" id="get_id_code">获取验证码</div></div>

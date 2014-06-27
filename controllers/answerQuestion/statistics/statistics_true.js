@@ -28,9 +28,7 @@ module.exports={
         then.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},this.hold(function(err,doc){
                 if(err) throw err
-                if(doc){
-                    docOne.doc=doc
-                }
+                docOne.doc=doc
             }))
         })
 
@@ -38,7 +36,7 @@ module.exports={
 
             helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id)}).toArray(this.hold(function(err,doc){
                 if(err) throw err
-                for(var doco=0;doc<docOne.doc.options.length;doco++){
+                for(var doco=0;doco<docOne.doc.options.length;doco++){
                     for(var i=0;i<docOne.doc.options[doco].choose.length;i++){
                         if(docOne.doc.options[doco].choose[i].isCorrect==1){
                             //全对
@@ -47,36 +45,36 @@ module.exports={
                                 //答对的正确的人
                                 helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(_id),"optionId":j.optionId,
                                     "chooseId":j.choose[a].chooseID},then.hold(function(err,doc){
-                                        if(err)throw err
-                                        var rightOne={}
-                                        rightOne.themeId=_id
-                                        rightOne.optionId= j.optionId
-                                        rightOne.rightNum=doc
-                                        allRight.push(rightOne)
+                                    if(err)throw err
+                                    var rightOne={}
+                                    rightOne.themeId=_id
+                                    rightOne.optionId= j.optionId
+                                    rightOne.rightNum=doc
+                                    allRight.push(rightOne)
                                 }))
 
                                 //答过此题的人
                                 helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(_id),"optionId":j.optionId},
                                     then.hold(function(err,doc){
-                                    if(err)throw err
-                                        for(var i=0;i<allRight.length;i++){
-                                            if(allRight[i].themeId==_id && allRight[i].optionId== j.optionId){
-                                                allRight[i].allNum=doc
+                                        if(err)throw err
+                                        for(var k=0;k<allRight.length;k++){
+                                            if(allRight[k].themeId==_id && allRight[k].optionId== j.optionId){
+                                                allRight[k].allNum=doc
                                             }
                                         }
-                                }))
+                                    }))
 
                                 //所有答对题的人
                                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"optionId":j.optionId,
                                     "chooseId":j.choose[a].chooseID}).toArray(
                                         then.hold(function(err,doc){
-                                           if(err) throw err;
+                                            if(err) throw err;
 
-                                           for(var i=0;i<doc.length;i++){
-                                                if(allRightList.wechatid==doc[i].wechatid){
+                                            for(var n=0;n<doc.length;n++){
+                                                if(allRightList.wechatid==doc[n].wechatid){
                                                     allRightList.rightNum=allRightList.rightNum+1;
 
-                                                    if(allRightList[doc[i].wechatid]==docOne.doc.options.length)
+                                                    if(allRightList[doc[n].wechatid]==docOne.doc.options.length)
                                                         then.req.session.allCountPeople++;
                                                 }else{
                                                     allRightList.themeId=_id
@@ -84,7 +82,7 @@ module.exports={
                                                     allRightList.chooseId=j.choose[a].chooseID
                                                     allRightList.rightNum=1
                                                 }
-                                           }
+                                            }
                                         })
                                     )
 
@@ -250,8 +248,6 @@ module.exports={
             view:null,
             process:function(seed,nut){
                 var filter = seed.filter.split(",");
-                console.log(filter)
-                console.log(filter.length)
                 var _id = seed._id;
                 var then = this;
                 var resultList=[];
@@ -279,8 +275,6 @@ module.exports={
                 })
 
                 then.step(function(){
-                    console.log(resultList)
-                    console.log(resultList.length)
                     for(var i=0;i<resultList.length;i++){
                         (function(i){
                             helper.db.coll("welab/customers").findOne({"wechatid":resultList[i].wechatid},then.hold(function(err,doc){
@@ -297,7 +291,6 @@ module.exports={
                 })
 
                 then.step(function(){
-                    console.log(resultList)
                     //exportXsl
                     var nodeExcel = require('excel-export');
                     var conf = {};
@@ -406,7 +399,6 @@ module.exports={
                     then.step(function(){
                         helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":"0"})
                             .toArray(then.hold(function(err,doc){
-                                console.log("doc",doc.length)
                                 for(var i=0;i<doc.length;i++){
                                     var manInfo={};
                                     manInfo.name=doc[i].wechatid;
@@ -416,7 +408,6 @@ module.exports={
                     });
 
                     then.step(function(){
-                        console.log("finishMan",finishMan)
                         for(var i=0;i<finishMan.length;i++){
                             (function(i){
                                 helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,wechatid:finishMan[i].name,"type":{$ne:"0"}})
@@ -473,7 +464,6 @@ module.exports={
 
                         }
                         nut.model.data=data;
-                        console.log("data",data)
 
                     })
                 }catch(e){
