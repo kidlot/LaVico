@@ -56,15 +56,15 @@ module.exports = {
                   nut.model.birthday_month = (date.getMonth() + 1) + '月';
                   nut.model.birthday_date = date.getDate() +'日';
               }else{
-                  nut.model.birthday_year = '1970年';
-                  nut.model.birthday_month = '1月';
-                  nut.model.birthday_date = '1日';
+                  nut.model.birthday_year = '年';
+                  nut.model.birthday_month = '月';
+                  nut.model.birthday_date = '日';
               }
 
               if(doc.gender){
                  nut.model.gender = (doc.gender && doc.gender == 'male') ? '男' : ((doc.gender && doc.gender == 'female') ? '女' : '' );
               }else{
-                 nut.model.gender = '男';
+                 nut.model.gender = '请选择';
               }
 
               nut.model.is_send = 1;            
@@ -142,6 +142,28 @@ module.exports = {
         window.hideShareButtion.on();
 
         /*设计前端JS*/
+        $("#select_sex").change(function(){
+            var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
+            $(this).parent().find("input").val(_v);
+        });
+
+        $("#select_sex").click(function(){
+            var _v = (parseInt($(this).val()) == 1) ? '男' : '女';
+            $(this).parent().find("input").val(_v);
+        });
+
+        $("#year").change(function(){
+            $(this).parent().find("input").val($(this).val()+'年');
+        });
+
+        $("#month").change(function(){
+            $(this).parent().find("input").val($(this).val()+'月');
+        });
+
+        $("#day").change(function(){
+            $(this).parent().find("input").val($(this).val()+'日');
+        });
+
         $("#select_profession").change(function(){
             $(this).parent().find("input").val($(this).val());
         });
@@ -165,6 +187,61 @@ module.exports = {
         $('#goon_btn').click(function(){
             window.location.href ="/lavico/member/index?wxid="+$('#wxid').val();
         });
+        /*年月日*/
+        var $day = $("#day"),
+            $month = $("#month"),
+            $year = $("#year");
+
+        var dDate = new Date(),
+            dCurYear = dDate.getFullYear(),
+            str = "";
+        for (var i = dCurYear - 100; i < dCurYear + 1; i++) {
+            if (i == dCurYear) {
+                str = "<option value=" + i + " selected=true>" + i + "年</option>";
+            } else {
+                str = "<option value=" + i + ">" + i + "年</option>";
+            }
+            $year.append(str);
+        }
+
+        for (var i = 1; i <= 12; i++) {
+
+            if (i == (dDate.getMonth() + 1)) {
+                str = "<option value=" + i + " selected=true>" + i + "月</option>";
+            } else {
+                str = "<option value=" + i + ">" + i + "月</option>";
+            }
+            $month.append(str);
+        }
+        TUpdateCal($year.val(), $month.val());
+        $("#year,#month").bind("change", function(){
+            TUpdateCal($year.val(),$month.val());
+        });
+
+        /*设置年月日数值*/
+
+        function TGetDaysInMonth(iMonth, iYear) {
+            var dPrevDate = new Date(iYear, iMonth, 0);
+            return dPrevDate.getDate();
+        }
+
+        function TUpdateCal(iYear, iMonth) {
+            var dDate = new Date(),
+                daysInMonth = TGetDaysInMonth(iMonth, iYear),
+                str = "";
+
+            $("#day").empty();
+
+            for (var d = 1; d <= parseInt(daysInMonth); d++) {
+
+                if (d == dDate.getDate()) {
+                    str = "<option value=" + d + " selected=true>" + d + "日</option>";
+                } else {
+                    str = "<option value=" + d + ">" + d + "日</option>";
+                }
+                $("#day").append(str);
+            }
+        }
 
         /*省市联动效果*/
         var province = document.getElementById('select_province');
@@ -328,6 +405,7 @@ module.exports = {
         /*后端开发JS*/
         $('#submit').click(function(){
 
+            var sex = $('#model_sex_input').val();
             var email = $('#email').val();
             var profession = $('#profession').val();
             var province = $('#province').val();
@@ -336,6 +414,26 @@ module.exports = {
             var favoriteStyle = $('#favoriteStyle').val();
             var favoriteColor = $('#favoriteColor').val();
             var wxid = $("#wxid").val();
+
+            if(sex.length == 0||sex == '请选择'){
+                window.popupStyle2.on("请选择性别",function(event){});
+                //$("#model_sex_input").focus();
+                return	false;
+            }
+
+            if($("#year").val().length  == 0||$("#model_year_input").val() == '年'){
+                window.popupStyle2.on("请选择生日的年",function(event){});
+                return	false;
+            }
+            if($("#month").val().length  == 0||$("#model_month_input").val() == '月'){
+                window.popupStyle2.on("请选择生日的月",function(event){});
+                return	false;
+            }
+            if($("#day").val().length  == 0||$("#model_day_input").val() == '日'){
+                window.popupStyle2.on("请选择生日的日",function(event){});
+                return	false;
+            }
+
 
             if(!email || !/^.+@.+\..+$/.test(email)){
               window.popupStyle2.on("邮箱格式错误",function(event){
@@ -391,9 +489,17 @@ module.exports = {
             }
 
             $("#loading").show();
+
+            if(sex == '男'){
+                sex = 1;
+            }else{
+                sex = 0;
+            }
             $.get('/lavico/member/card_member/info:Modified',
               {
                 'wxid':wxid,
+                'sex' :sex,
+                'birthday' : $("#year").val()+'-'+$("#month").val()+'-'+$('#day').val(),
                 'email':email,
                 'profession':profession,
                 'province':province,
@@ -938,6 +1044,8 @@ module.exports = {
             view:null,
             process:function(seed,nut){
 
+              var sex = seed.sex || 'undefined';
+              var birthday = seed.birthday || 'undefined';
               var memberID = seed.memberID || 'undefined';
               var email = seed.email || 'undefined';
               var profession = seed.profession || 'undefined';
@@ -957,7 +1065,9 @@ module.exports = {
                       this.res.end();
                       this.terminate();
                   }
-                  if(email == 'undefined'  || profession == 'undefined'  || province == 'undefined' || city == 'undefined' || address == 'undefined' || favoriteStyle == 'undefined' || favoriteColor == 'undefined'){
+                  console.log(sex);
+                  console.log(birthday);
+                  if(sex == 'undefined'  || birthday == 'undefined'  || email == 'undefined'  || profession == 'undefined'  || province == 'undefined' || city == 'undefined' || address == 'undefined' || favoriteStyle == 'undefined' || favoriteColor == 'undefined'){
                       nut.disable();//不显示模版
                       this.res.writeHead(200, { 'Content-Type': 'application/json' });
                       this.res.write('{"success":false,"error":"missing_parameter"}');
@@ -996,7 +1106,10 @@ module.exports = {
                     _favoriteStyle = '01';
                 }
 
+                //提交到lavico服务器上
                 var data_submit_checekd = {
+                    'sex':seed.sex,
+                    'birthday':seed.birthday,
                     'email':seed.email,
                     'industry':seed.profession,//行业
                     'province':seed.province,
@@ -1005,7 +1118,15 @@ module.exports = {
                     'hoppy':_favoriteStyle,
                     'color':seed.favoriteColor
                 }
+                if(seed.sex == '1'){
+                  var _sex = 'male';
+                }else if(seed.sex === '0'){
+                  var _sex = 'female';
+                }
+                //提交到本地服务上
                 var data_submit_inserted = {
+                    'gender':_sex,
+                    'birthday':new Date(seed.birthday).getTime(),
                     'email':seed.email,
                     'profession':seed.profession,//行业
                     'province':seed.province,

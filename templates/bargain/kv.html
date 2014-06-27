@@ -44,35 +44,35 @@
 <script>
     function _isVip(wxid,_id){
 
-        var length='{@doc.length}';
-        if(length=='0'){
-            window.popupStyle2.on("很抱歉，活动已结束",function(event){
-                if(event == "confirm"){
-
-                }
-            })
-            return false;
-        }
-
-        var startDate=parseInt('{@doc.length > 0 ? doc[0].startDate : 0}');
-        if(new Date().getTime() < startDate){
-            window.popupStyle2.on("很抱歉，活动未开始，敬请期待",function(event){
-                if(event == "confirm"){
-
-                }
-            })
-            return false;
-        }
-
-        var stopDate=parseInt('{@doc.length > 0 ? doc[0].stopDate : 0}');
-        if(new Date().getTime() > stopDate){
-            window.popupStyle2.on("很抱歉，活动已结束",function(event){
-                if(event == "confirm"){
-
-                }
-            })
-            return false;
-        }
+//        var length='{@doc.length}';
+//        if(length=='0'){
+//            window.popupStyle2.on("很抱歉，活动已结束",function(event){
+//                if(event == "confirm"){
+//
+//                }
+//            })
+//            return false;
+//        }
+//
+//        var startDate=parseInt('{@doc.length > 0 ? doc[0].startDate : 0}');
+//        if(new Date().getTime() < startDate){
+//            window.popupStyle2.on("很抱歉，活动未开始，敬请期待",function(event){
+//                if(event == "confirm"){
+//
+//                }
+//            })
+//            return false;
+//        }
+//
+//        var stopDate=parseInt('{@doc.length > 0 ? doc[0].stopDate : 0}');
+//        if(new Date().getTime() > stopDate){
+//            window.popupStyle2.on("很抱歉，活动已结束",function(event){
+//                if(event == "confirm"){
+//
+//                }
+//            })
+//            return false;
+//        }
 
         var isvip = '{@ isVip}'
         if(isvip == "true"){
