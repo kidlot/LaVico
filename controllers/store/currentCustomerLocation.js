@@ -57,7 +57,7 @@ module.exports={
                 })
                 var list1 = [];
                 this.step(function (doc) {
-
+console.log("cityName",cityName)
                 var cityName = (decodeURIComponent(seed.cityName)).replace("市",'');
 
 
