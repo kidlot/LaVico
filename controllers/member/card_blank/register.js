@@ -57,8 +57,6 @@ module.exports = {
             });
         }
 
-//        $("#sex").parent().find("input").val(((parseInt($("#sex").val()) == 1) ? '男' : '女'));//设置默认值
-
         $("#year").change(function(){
             $(this).parent().find("input").val($(this).val()+'年');
         });
@@ -130,7 +128,7 @@ module.exports = {
             TUpdateCal($year.val(),$month.val());
         });
 
-        /*设置默认年月日数值*/
+        /*设置年月日数值*/
 
         function TGetDaysInMonth(iMonth, iYear) {
             var dPrevDate = new Date(iYear, iMonth, 0);
@@ -306,23 +304,23 @@ module.exports = {
                 $("#name").focus();
                 return	false;
             }
-            if(sex.length == 0||sex == '请选择'){
-                window.popupStyle2.on("请选择性别",function(event){});
-                $("#sex").focus();
-                return	false;
-            }
-            if($("#year").val().length  == 0||$("#model_year_input").val() == '年'){
-                window.popupStyle2.on("请选择生日的年",function(event){});
-                return	false;
-            }
-            if($("#month").val().length  == 0||$("#model_month_input").val() == '月'){
-                window.popupStyle2.on("请选择生日的月",function(event){});
-                return	false;
-            }
-            if($("#day").val().length  == 0||$("#model_day_input").val() == '日'){
-                window.popupStyle2.on("请选择生日的日",function(event){});
-                return	false;
-            }
+//            if(sex.length == 0||sex == '请选择'){
+//                window.popupStyle2.on("请选择性别",function(event){});
+//                $("#sex").focus();
+//                return	false;
+//            }
+//            if($("#year").val().length  == 0||$("#model_year_input").val() == '年'){
+//                window.popupStyle2.on("请选择生日的年",function(event){});
+//                return	false;
+//            }
+//            if($("#month").val().length  == 0||$("#model_month_input").val() == '月'){
+//                window.popupStyle2.on("请选择生日的月",function(event){});
+//                return	false;
+//            }
+//            if($("#day").val().length  == 0||$("#model_day_input").val() == '日'){
+//                window.popupStyle2.on("请选择生日的日",function(event){});
+//                return	false;
+//            }
             if($("#mobile").val() =='' || !(/^1[3458]\d{9}$/i.test($("#mobile").val())) ){
                 window.popupStyle2.on("请输入正确的手机号码",function(event){});
                 return	false;
@@ -509,8 +507,8 @@ module.exports = {
                     data_request = {
                         openid:seed.uid, //微信账号ID
                         MEM_PSN_CNAME:seed.name, //会员姓名
-                        MEM_PSN_SEX:seed.sex, //性别 0：女，1：男
-                        MEM_PSN_BIRTHDAY:seed.birthday, //生日
+                        //MEM_PSN_SEX:seed.sex, //性别 0：女，1：男
+                        //MEM_PSN_BIRTHDAY:seed.birthday, //生日
                         MOBILE_TELEPHONE_NO:seed.mobile, //手机号
                     };
 
@@ -542,11 +540,11 @@ module.exports = {
 
                         then.req.session.id_code = '';
 
-                        if(seed.sex == '1'){
-                            sex = 'male';
-                        }else if(seed.sex === '0'){
-                            sex = 'female';
-                        }
+//                        if(seed.sex == '1'){
+//                            sex = 'male';
+//                        }else if(seed.sex === '0'){
+//                            sex = 'female';
+//                        }
                         //获取member的用户类型
                         middleware.request( "Member/Level/"+data_return_middleware.MEMBER_ID,{
                             }
@@ -602,8 +600,8 @@ module.exports = {
                             'mobile':seed.mobile,
                             'isRegister':true,
                             'registerTime':new Date().getTime(),
-                            'birthday':new Date(seed.birthday).getTime(),
-                            'gender':sex,
+                            //'birthday':new Date(seed.birthday).getTime(),
+                            //'gender':sex,
                             'HaiLanMemberInfo':{
                                 'memberID':data_return_middleware.MEMBER_ID,
                                 'cardNumber':card_number,

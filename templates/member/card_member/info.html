@@ -7,42 +7,55 @@
     <p class="text">请完善您的个人信息，审核通过后可奖励积分</p>
 </div>
 <div class="form clear">
-    <div class="input clear">
-        <div class="left fl"><span class="star-sign">*</span>姓名</div>
-        <div class="name-right fl"><input id="realname"  class="bg"  name="realname" border="0" type="text" value="{@realname}" disabled="true" /></div>
-    </div>
-    <div class="input clear">
-        <div class="left fl"><span class="star-sign">*</span>性别</div>
-        <div class="tel-right fl">
-            <div class="input_select_div">
-                <input type="text" name="brand" class="input_select_sex bg" value="男" id="gender" name="gender" disabled="true" value="{@gender}" />
-            </div>
-        </div>
-        <div class="input clear">
-            <div class="left fl"><span class="star-sign">*</span>生日</div>
-            <div class="birth-right fl">
-                <div class="sex-right fl">
-                    <div class="input_select_div_fy">
-                        <input type="text" id="birthday_year" name="birthday_year" class="input_select_year bg" value="{@birthday_year}"  disabled="true" id="model_sex_input"/>
 
-                    </div>
-                </div>
-                <div class="sex-right fl">
-                    <div class="input_select_div_f">
-                        <input type="text" id="birthday_month" name="birthday_month" class="input_select_sex bg" value="{@birthday_month}" disabled="true" id="model_sex_input"/>
-                    </div>
-                </div>
-                <div class="sex-right fl">
-                    <div class="input_select_div_f">
-                        <input type="text" id="birthday_date" name="birthday_date" class="input_select_sex bg" value="{@birthday_date}"  disabled="true"  id="model_sex_input"/>
-
-                    </div>
-                </div>
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>姓名</div>
+                <div class="name-right fl"><input id="realname"  class="bg"  name="realname" border="0" type="text" value="{@realname}" disabled="true" /></div>
             </div>
+
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>手机</div>
                 <div class="tel-right fl"><input id="mobile" name="mobile" border="0" type="text" value="{@mobile}" class="bg"  disabled="true" /></div>
             </div>
+
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>性别</div>
+                <div class="trade-right fl">
+                    <div class="input_select_div">
+                        <input type="text" name="brand" class="input_select_sex" value="{@gender}" id="model_sex_input" readonly/>
+                        <select id="select_sex">
+                            <option value='1'>男</option>
+                            <option value='0'>女</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input clear">
+                <div class="left fl"><span class="star-sign">*</span>生日</div>
+                <div class="birth-right fl">
+                    <div class="sex-right fl">
+                        <div class="input_select_div_f">
+                            <input type="text" name="brand" class="input_select_year" value="{@birthday_year}" id="model_year_input" readonly />
+                            <select id="year" class="select1"></select>
+                        </div>
+                    </div>
+                    <div class="sex-right fl">
+                        <div class="input_select_div_f">
+                            <input type="text" name="brand" class="input_select_sex" value="{@birthday_month}" id="model_month_input" readonly />
+                            <select id="month" class="select2"></select>
+                        </div>
+                    </div>
+                    <div class="sex-right fl">
+                        <div class="input_select_div_f">
+                            <input type="text" name="brand" class="input_select_sex" value="{@birthday_date}" id="model_day_input" readonly />
+                            <select id="day" class="select3"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
 
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>行业</div>
@@ -69,12 +82,14 @@
                     </div>
                 </div>
             </div>
+
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>Email</div>
                 <div class="name-right fl">
                     <input id="email" name="email" border="0" type="text" value="{@email}" />
                 </div>
             </div>
+
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>所在省份</div>
                 <div class="trade-right fl">
@@ -86,6 +101,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>所在城市</div>
                 <div class="trade-right fl"><div class="input_select_div">
@@ -94,10 +110,12 @@
                     </select>
                 </div></div>
             </div>
+
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>具体地址</div>
                 <div class="name-right fl"><input id="address" name="address"  border="0" type="text" value="{@address}" /></div>
             </div>
+
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>喜好款式</div>
                 <div class="trade-right fl">
@@ -113,16 +131,18 @@
                         </select></div>
                 </div>
             </div>
+
             <div class="input clear">
                 <div class="left fl"><span class="star-sign">*</span>喜好颜色</div>
                 <div class="name-right fl"><input id="favoriteColor" border="0" type="text" value="{@favoriteColor}" /></div>
             </div>
+
             <!--额外信息-->
             <input id="memberID" type="hidden" name="memberID" value="{@memberID}"/>
             <input id='wxid' type='hidden' name='wxid' value='{@wxid}' />
             <!--额外信息-->
 
-            <div class="note">如需修改姓名、性别、生日、手机信息<br />
+            <div class="note">如需修改姓名、手机信息<br />
                 请拨打 <a class="tel" style="color: #3C3C3C;" href="tel:4001008866">400-100-8866</a> 联系</div>
             <div class="submit_btn"><input id='submit' name='submit' type="button" class="subbtn" value="提交修改" /></div>
         </div>
