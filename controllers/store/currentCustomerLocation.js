@@ -80,7 +80,6 @@ module.exports={
                         }
                     }
 
-                    console.log(list1)
                     if(list1.length>0){
                         nut.model.cityName=seed.cityName;
                         nut.model.city_docs = list1;
