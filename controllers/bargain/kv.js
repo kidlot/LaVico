@@ -58,7 +58,7 @@ module.exports = {
         this.step(function(){
 
             if(wxid){
-                helper.db.coll("lavico/bargain").find({"switcher":"on"}).toArray(this.hold(function(err,_doc){
+                helper.db.coll("lavico/bargain").find({"switcher":"on",startDate:{$lt:new Date().getTime()},stopDate:{$gt:new Date().getTime()}}).toArray(this.hold(function(err,_doc){
                     if(err) throw err;
                     doc = _doc || {}
                     console.log(doc);
