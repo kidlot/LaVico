@@ -28,6 +28,7 @@
         <thead>
         <tr class="staCount borderBtm">
             <th class="width50"><input type="checkbox" name="all"></input></th>
+            <th style="width: 75px;">时间</th>
             <th class="width50">用户姓名</th>
             <th class="width100">性别</th>
             <th class="width50">电话</th>
@@ -40,6 +41,7 @@
         <foreach for="@visitedPeopleList" var="people">
             <tr class="borderBtm">
                 <td class="width50"><input type="checkbox" name="all"></input></td>
+                <td style="width: 75px;">{@people.createtime}</td>
                 <td class="width50">{@people.realname}</td>
                 <td class="width100">{@people.gender=="male"?"男":"女"}</td>
                 <td class="width50">{@people.mobile}</td>

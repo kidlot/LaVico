@@ -469,7 +469,7 @@ module.exports = {
                 $("#address").focus();
                 return false;
             }
-            if(!favoriteStyle){
+            if(!favoriteStyle || favoriteStyle =="请选择"){
                 window.popupStyle2.on("请输入喜好款式",function(event){});
                 return false;
             } 

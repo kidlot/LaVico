@@ -36,28 +36,27 @@ module.exports={
         })
 
     },
+    viewIn:function(){
+        $('#loading').hide();//隐藏加载框
+    },
    actions:{
         show: {
             layout:"lavico/layout",
             view:"lavico/templates/store/store_num2.html",
             process: function (seed, nut){
                 nut.model.wxid = seed.wxid ? seed.wxid : 'undefined';
-                        this.step(function () {
-                            var jsonData = {}
-                            jsonData.perPage = 1000;
-                            jsonData.pageNum = 1;
-                            //接口返回的doc都是字符串
-                            middleware.request('Shops', jsonData,
-                                this.hold(function (err, doc) {
-
-                                    if (err) throw err;
-                                    return JSON.parse(doc);//注意字符串和对象格式
-                                })
-                            )
-                        })
-
-                   var list1 = [];
-            this.step(function (doc) {
+                this.step(function () {
+                var jsonData = {}
+                jsonData.perPage = 1000;
+                jsonData.pageNum = 1;
+                //接口返回的doc都是字符串
+                middleware.request('Shops', jsonData,this.hold(function (err, doc) {
+                    if (err) throw err;
+                    return JSON.parse(doc);//注意字符串和对象格式
+                    }))
+                })
+                var list1 = [];
+                this.step(function (doc) {
 
                 var cityName = (seed.cityName).replace("市",'');
 
@@ -70,7 +69,6 @@ module.exports={
                             if(doc.list[i].ACT.length>10){
                                 var act = doc.list[i].ACT.replace(/<[\/]*br[^>]*>/img, "")
                                 doc.list[i].ACT = act.substr(0,30)+"......";
-                                console.log("sa:"+act)
                             }
                         }
                         list1.push(doc.list[i]);
@@ -86,10 +84,7 @@ module.exports={
                     nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，本城市没有LaVico品牌专柜，请选择其他城市查询',function(event){location.href='javascript:history.back()'})}</script>");
                 }
             })
-
-        }
-
-
+            }
         }
     }
 
