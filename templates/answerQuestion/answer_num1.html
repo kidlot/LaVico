@@ -107,20 +107,13 @@ function isReg(){
         <if condition="@docs.themeType=='1'">
             <input type="hidden" id="themetitle" value="型男测试">
             <img src="/public/files/2014/6/9/~!dad3765ef671652fe592caf9e0c294e5!E5A4B4E59BBE4.jpg" style="text-align:center;" />
-            <else/>
+        <else/>
             <input type="hidden" id="themetitle" value="答题抢积分">
             <img src="/lavico/public/images/questions-top-image.jpg" />
         </if>
     </div>
     <div class="activity-rules">
         <div class="begin"><a href="/lavico/answerQuestion/answer?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()" style="text-decoration:none;">立即开始</a></div>
-        <!--<if condition="@ fromWelab==''">-->
-        	<!--<div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()">立即开始</a></div>-->
-		<!--</if>-->
-        <!--<div class="begin"><a href="/lavico/answerQuestion/answer?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()">立即开始</a></div>-->
-        <!--<if condition="@ fromWelab==''">-->
-        	<!--<div class="begin"><a href="/lavico/answerQuestion/Filter?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()" style="text-decoration: underline">立即开始</a></div>-->
-		<!--</if>-->
         <if condition="@themetype == 1">
             <div class="text">
                 <div class="title">活动及使用规则</div>
