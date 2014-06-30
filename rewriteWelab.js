@@ -1343,4 +1343,101 @@ exports.load = function () {
     var welabReplyDetail = require("welab/controllers/reply/detail.js");
     welabReplyDetail.view = "lavico/templates/welab/reply/detail.html"
 
+    var welabAppsMenuStatics = require("welab/apps/menu/controllers/statistics");
+    welabAppsMenuStatics.process  = function(seed,nut){
+        var then = this
+        var menus = {}
+
+        var count=0;
+
+        nut.model.seed = seed;
+
+        var dTime = new Date()
+        var _ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1)
+
+        var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym+"-01 00:00:00").getTime();
+        var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
+        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+
+        // menu list
+        helper.db.coll("welab/settings").findOne({_id:"wechat.menus"},this.hold(function(err,docs){
+            if(err) throw err ;
+            menus = docs ? docs.menus : {}
+        }))
+
+        this.step(function(){
+
+            var then = this;
+            for(var i=0 ; i < menus.length ; i++){
+
+                (function(i){
+                    if(menus[i].action == "news"){
+                        helper.db.coll("welab/reply").findOne({_id:helper.db.id(menus[i].reply)},then.hold(function(err,doc){
+                            if(err) throw err ;
+                            if(doc){
+                                menus[i].reply = '<a href="/welab/reply/detail?_id='+doc._id+'">'+doc.title || doc.name+"</a>"
+                            }
+                        }))
+                    }
+
+
+                    //sum
+                    var _eventKey = menus[i].action == "link" ? menus[i].reply : menus[i].tag;
+                    helper.db.coll("welab/feeds").find({status:"点击菜单","params.EventKey":_eventKey,time:{$gt:startTimeStamp,$lt:endTimeStamp}}).count(then.hold(function(err,doc){
+                        if(err) throw err ;
+                        menus[i].sum =  doc||0
+                    }))
+                })(i)
+
+                if(menus[i].items){
+
+                    for(var ii=0 ; ii< menus[i].items.length ; ii++){
+
+                        (function(i,ii){
+
+                            if(menus[i].items[ii].action == "news"){
+                                helper.db.coll("welab/reply").findOne({_id:helper.db.id(menus[i].items[ii].reply)},then.hold(function(err,doc){
+                                    if(err) throw err ;
+                                    if(doc){
+                                        menus[i].items[ii].reply = '<a href="/welab/reply/detail?_id='+doc._id+'">'+doc.title || doc.name+'</a>'
+                                    }
+                                }))
+                            }
+
+                            //sum
+                            var _eventKey = menus[i].items[ii].action == "link" ? menus[i].items[ii].reply : menus[i].items[ii].tag;
+                            helper.db.coll("welab/feeds").find({status:"点击菜单","params.EventKey":_eventKey,time:{$gt:startTimeStamp,$lt:endTimeStamp}}).count(then.hold(function(err,doc){
+                                if(err) throw err ;
+                                menus[i].items[ii].sum =  doc||0
+                            }))
+                        })(i,ii)
+                    }
+                }
+
+            }
+        })
+
+        this.step(function(){
+            for(var i=0;i<menus.length;i++){
+                if(menus[i].items){
+                    for(var j=0 ; j< menus[i].items.length ; j++){
+                        (function(i,j){
+                            var _eventKey = menus[i].items[j].action == "link" ? menus[i].items[j].reply : menus[i].items[j].tag;
+                            helper.db.coll("welab/feeds").find({status:"点击菜单","params.EventKey":_eventKey,time:{$gt:startTimeStamp,$lt:endTimeStamp}}).count(then.hold(function(err,doc){
+                                if(err) throw err ;
+                                count +=doc;
+                            }))
+                        })(i,j)
+                    }
+                }
+            }
+        })
+
+        this.step(function(){
+            nut.model.sum = count;
+            nut.model.menu = menus
+
+        })
+    }
 };

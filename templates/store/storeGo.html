@@ -8,16 +8,18 @@
     function myFun(result){
         var cityName = result.name;
         map.setCenter(cityName);
-        $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&cityName="+encodeURIComponent(cityName),function(doc){
-            document.write(doc);
+        $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&$webpage=false&cityName="+encodeURIComponent(cityName),function(doc){
+            $("#content").html(doc)
+            jQuery('#loading').hide();//隐藏加载框
         })
     }
     var myCity = new BMap.LocalCity();
-    myCity.get(myFun)
+    myCity.get(myFun);
     $("div.store-listContent").find("ul li:last-child").css("border-bottom", "none");
     }
 
 </script>
+<div id="content"></div>
 <!--正在加载-->
 <div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
 <div id="allmap"></div>
