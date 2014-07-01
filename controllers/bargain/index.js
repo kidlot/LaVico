@@ -31,7 +31,7 @@ module.exports = {
                                     num++;
                                     logs={};
                                     logs.productID = doc[j].data.productID;
-                                    logs.num = num || 0;
+                                    logs.num = num;
                                     userlogs.push(logs);
                                 }
                             }
@@ -62,6 +62,8 @@ module.exports = {
                     if(!page.docs[i].switcher){
                         page.docs[i].switcher="off";
                     }
+                    //排序
+                    page.docs[i].orderId = page.docs[i].orderId || (i+1);
                 }
             }));
         })
@@ -71,6 +73,34 @@ module.exports = {
             console.log(list);
             nut.model.page = list;
         })
+    },
+    viewIn:function(){
+
+        //排序
+        $("#tagList>tbody").dragsort({ dragSelector: "tr", dragEnd: saveOrder, placeHolderTemplate: "<tr class='placeHolder'><td colspan='6'></td></tr>" });
+
+        function saveOrder() {
+            var data = $("#tagList tr").map(function() { return $(this).data("itemid"); }).get();
+            console.log(data);
+            $.post("/lavico/bargain/index:updateListOrder", { "orderIds": data });
+        };
+    },
+    actions:{
+        updateListOrder:function(seed,nut){
+
+            console.log(seed.orderIds);
+
+            var orderIds = seed.ordeIds;
+
+//            helper.db.coll("lavico/bargain").find({}).sort({orderId:-1}).page(50,seed.page||1,this.hold(function(err,page){
+//                list = page
+//                for (var i=0;i<page.docs.length;i++){
+//                    page.docs[i].orderId = orderIds[i];
+//                }
+//            }));
+
+        }
+
     }
 }
 
