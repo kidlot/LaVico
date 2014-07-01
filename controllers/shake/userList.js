@@ -5,7 +5,7 @@ module.exports = {
 
 
     layout: "welab/Layout"
-    , view: "lavico/templates/reedem/userList.html"
+    , view: "lavico/templates/shake/userList.html"
 
     , process: function (seed, nut) {
 
@@ -23,21 +23,21 @@ module.exports = {
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
                 {display: '时间', name : $(".unwind").val()+'.createDate', width : 80, sortable : true},
-                {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true},
+                {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true, hide:true},
                 {display: '姓名', name : 'realname', width : 80, sortable : true},
                 {display: '手机号吗', name : 'mobile', width : 100, sortable : true},
                 {display: 'memberID', name :$(".unwind").val()+'.memberID', width : 80, sortable : true},
 //                {display: '券名', name : $(".unwind").val()+'.promotion_name', width : 100, sortable : true},
-                {display: '券号', name : $(".unwind").val()+'.coupon_no', width : 180, sortable : true},
+                {display: '券号', name : $(".unwind").val()+'.coupon_no', width : 120, sortable : true},
                 {display: '券中奖率', name : $(".unwind").val()+'.lottery_chance', width : 80, sortable : true},
                 {display: '消耗积分', name : $(".unwind").val()+'.points', width : 80, sortable : true},
                 {display: '券名称', name : $(".unwind").val()+'.display_name', width : 80, sortable : true},
-//                {display: '面值', name : $(".unwind").val()+'.qty', width : 30, sortable : true},
-//                {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
-//                {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
-//                {display: '省份', name : 'province', width : 80, sortable : true}
-//                {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
-                {display: '标签', name : 'tags', width : 292, sortable : true}
+                {display: '面值', name : $(".unwind").val()+'.promotion_qty', width : 80, sortable : true},
+                {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
+                {display: '省份', name : 'province', width : 80, sortable : true, hide:true},
+                {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
+                {display: '标签', name : 'tags', width : 292, sortable : true, hide:true},
+                {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true}
 
             ],
             //sortname: "input",
@@ -134,7 +134,7 @@ module.exports = {
                             for (var i=0; i<docs.length; i++)
                             {
                                 docs[i].input = '<input type="checkbox" userid="'+docs[i]._id+'" onclick="checkUser(this)" >';
-                                docs[i].realname = docs[i].realname || '未注册用户';
+                                docs[i].realname = docs[i].realname || '';
                                 docs[i].city = docs[i].city || '';
                                 docs[i].followCount = docs[i].followCount || '1';
                                 docs[i].messageCount = docs[i].messageCount && otherData.totaMessages ? (docs[i].messageCount) + " <span style='color: #1ABC9C'>" + (parseInt((docs[i].messageCount / otherData.totaMessages)*100)) + "%</span>" : "0";
@@ -255,7 +255,7 @@ module.exports = {
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
-                                    docs[i].realname = docs[i].realname || '未注册用户';
+                                    docs[i].realname = docs[i].realname || '';
                                     docs[i].province = docs[i].province || '';
                                     docs[i].mobile = docs[i].mobile || '';
                                     docs[i].city = docs[i].city || '';
