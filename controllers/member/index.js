@@ -208,8 +208,6 @@ module.exports = {
                 if(err) throw err;
                 if(doc && doc.announcement){
                     announcement = doc.announcement;
-                }else{
-                    announcement="null";
                 }
             }));
         })
@@ -222,21 +220,25 @@ module.exports = {
         })
 
         this.step(function(){
-            console.log(announcement)
-            console.log(resultlist.length)
-            if(announcement!="null" && resultlist.length>0){
-                for(var i=0;i<resultlist.length;i++){
-                    for(var j=0;j<announcement.length;j++){
-                        console.log(announcement[j])
-                        console.log(resultlist[i]._id)
-                        if(announcement[j]==resultlist[i]._id){
-                            readcount++;
+            if(resultlist.length>0){
+                if(typeof(announcement)!="undefined"){
+                    for(var i=0;i<resultlist.length;i++){
+                        for(var j=0;j<announcement.length;j++){
+                            console.log("j", announcement[j])
+                            console.log("i", resultlist[i]._id)
+                            if(announcement[j]==resultlist[i]._id){
+                                readcount++;
+                            }
                         }
                     }
+                    if(readcount==resultlist.length){
+                        readcount=0;
+                    }
+                }else{
+                    readcount=1;
                 }
-                if(readcount!=resultlist.length){
-                    readcount=0;
-                }
+            }else{
+                readcount=0;
             }
             console.log("readcount:"+readcount)
             nut.model.count = readcount;

@@ -22,25 +22,25 @@
         <div class="col-md-4">
             <img id="showPic" style="width: 300; height: 380" src="{@ doc.pic || '/lavico/public/images/u6.jpg'}">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div style="padding: 15px">
                 <table cellpadding="10">
                     <tbody>
                     <tr>
                         <th style="width: 100px;font-size: 14px;">产品名称</th>
-                        <td colspan="2">
+                        <td colspan="3">
                             <input type="text" id="name" class="form-control input-sm postData" style="width: 150px" value="{@ doc.name}">
                         </td>
                     </tr>
                     <tr>
                         <th style="font-size: 14px;">产品简介</th>
-                        <td colspan="2">
+                        <td colspan="3">
                             <textarea class="form-control postData" rows="3" id="introduction" style="width: 300px">{@ doc.introduction}</textarea>
                         </td>
                     </tr>
                     <tr>
                         <th style="font-size: 14px;">最低价格</th>
-                        <td>
+                        <td colspan="3">
                             <input type="text" id="minPrice" class="form-control input-sm postData" style="width: 150px" value="{@ doc.minPrice}">
                         </td>
                     </tr>
@@ -143,29 +143,52 @@
                     </tr>
                     <tr>
                         <th></th>
-                        <td><div >
-                            <input type="button" value="全选" onclick="chackall()">&nbsp;&nbsp;<input type="button" onclick="nochackall()" value="反选">
-                        </div></td>
+                        <td colspan="3">
+                            <div>
+                                <span style="font-size: 14px;">门店:</span>&nbsp;<input type="text" id="searchStore" class="form-control input-sm" style="width: 150px">
+                                <input type="button" value="搜索" onclick="search()">
+                                <!--<input type="button" value="全选" onclick="chackall()">&nbsp;&nbsp;<input type="button" onclick="nochackall()" value="反选">-->
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <th style="font-size: 14px;">门店</th>
-                        <td>
+                        <td colspan="3">
+                            <table>
+                                <tr>
+                                    <td style="width: 157px;" >
+                                        <select  size="10" class="form-control " style="width: 165px;height: 200px;" id="maps">
+                                            <foreach for="@shops.list" var="docmaps">
+                                                <option value="{@docmaps.CODE.replace(/\s*/g, '')}">{@docmaps.NAME}</option>
+                                            </foreach>
+                                        </select>
+                                        <input type="hidden" id="mapsValue" value="{@ doc.maps}">
+                                        <!--隐藏域-->
+                                        <select  size="10" class="form-control " style="width: 200px;height: 200px;display: none" id="maps_there">
+                                            <foreach for="@shops.list" var="docmaps">
+                                                <option value="{@docmaps.CODE.replace(/\s*/g, '')}">{@docmaps.NAME}</option>
+                                            </foreach>
+                                        </select>
 
+                                    </td>
 
-                            <select  size="10" class="form-control " style="width: 200px" id="maps" onchange="chang()">
-                                <foreach for="@shops.list" var="docmaps">
-                                    <option value="{@docmaps.CODE.replace(/\s*/g, '')}">{@docmaps.NAME}</option>
-                                </foreach>
-                            </select>
-                            <input type="hidden" id="mapsValue" value="{@ doc.maps}">
+                                    <td style="width: 20px;" >
+                                        <a href="javascript:;" onclick="chackall()"><label>&gt&gt</label></a>
+                                        <a href="javascript:;" onclick="chang()"><label>&gt</label></a>
+                                        <a href="javascript:;" onclick="changmap()"><label>&lt</label></a>
+                                        <a href="javascript:;" onclick="clears()"><label>&lt&lt</label></a>
+                                    </td>
 
+                                    <td style="margin-top: 10px;width: 165px;">
+                                        <select  size="10" class="form-control" style="width: 157px;height: 200px;padding-bottom: -28px" id="maps_two">
+
+                                        </select>
+                                        <input type="hidden" id="mapsValue" value="{@ doc.maps}">
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
-                        <td style="margin-top: 10px;">
-                            <select  size="10" class="form-control" style="width: 200px;padding-bottom: -28px" id="maps_two" onchange="changmap()">
 
-                            </select>
-                            <input type="hidden" id="mapsValue" value="{@ doc.maps}">
-                        </td>
                     </tr>
                     <tr>
                         <th style="width: 100px;font-size: 14px;">活动名称</th>
@@ -193,6 +216,31 @@
 <script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
 <script>
     var maps = JSON.parse('{@maps}');
+
+    function search(){
+        var maplist=[];
+
+        $('#maps_there option').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.html();
+            map.value = $option.val();
+            maplist.push(map)
+        });
+        $("#maps").empty();
+        var searchValue = $('#searchStore').val();
+        var _reg = eval("/"+searchValue+"/")
+        for(var i=0;i<maplist.length;i++){
+            if(maplist[i].text.match(_reg)){
+                $("#maps").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+            }
+        }
+    }
+
+    function clears(){
+        $("#maps_two").empty();
+    }
+
     function chang(){
         var map_text = $("#maps option:selected").text();
         var map_val = $("#maps option:selected").val();
@@ -205,9 +253,6 @@
             map.value = $option.val();
             maplist.push(map)
         });
-        console.log(maplist.length)
-        console.log(map_text)
-        console.log(map_val)
         var isok = true;
         if(maplist.length!=0){
             for(var i=0;i<maplist.length;i++){
@@ -279,8 +324,10 @@
 
     function changmap(){
         var  myselect=document.getElementById("maps_two");
-        var index=myselect.selectedIndex ;
-        myselect.options.remove(index);
+        var index=myselect.selectedIndex;
+        if(index!="-1"){
+            myselect.options.remove(index);
+        }
     }
 
 

@@ -60,12 +60,13 @@ module.exports={
 
                 this.step(function (doc) {
 
-                    var cityName = decodeURIComponent(seed.cityName)
+                    var cityName = decodeURIComponent(seed.cityName).substring(0,seed.cityName.length-1)
 
                     for (var i = 0; i < doc.list.length; i++) {
 
-                        var _reg = eval("/"+cityName+"/")
-                        if (doc.list[i].ADDR && doc.list[i].ADDR.match(_reg)) {
+//                        var _reg = eval("/"+cityName+"/")
+//                        doc.list[i].ADDR.match(_reg)
+                        if (doc.list[i].CITY ==cityName ) {
 
                             var newCODE = (doc.list[i].CODE).replace(/\s/g, '');
                             doc.list[i].CODE = newCODE;
@@ -86,7 +87,11 @@ module.exports={
                         nut.model.currentCityName = seed.city;
                     }else{
                         nut.view.disable();
-                        nut.write("<script>window.popupStyle2.on('很抱歉，本城市没有LaVico品牌专柜，请选择其他城市查询',function(event){location.href='javascript:history.back()'})</script>");
+                        nut.write(
+                            "<script>window.popupStyle2.on('很抱歉，本城市没有LaVico品牌专柜，请选择其他城市查询',function(event){" +
+                            " if(event == 'confirm'){" +
+                                "location.href='/lavico/member/index?wxid=oTVLcjg1ZZrFhdvuRJuje8zQofKs'" +
+                                "}})</script>");
                     }
                 })
             }
