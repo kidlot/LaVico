@@ -26,12 +26,12 @@ module.exports = {
                     for(var h=0;h<bargainid.length;h++){
                         var num=0;
                         for(var j=0;j<doc.length;j++){
-                            if(doc[j].data && doc[j].data.productID && doc[j].data.step && doc[j].data.stat &&  doc[j].data.step == 3 && doc[j].data.stat==true){
+                            if(doc[j].data && doc[j].data.productID && doc[j].data.step && doc[j].data.stat &&  doc[j].data.step == 4 && doc[j].data.stat==true){
                                 if(bargainid[h]._id==doc[j].data.productID){
                                     num++;
                                     logs={};
                                     logs.productID = doc[j].data.productID;
-                                    logs.num = num;
+                                    logs.num = num || 0;
                                     userlogs.push(logs);
                                 }
                             }
