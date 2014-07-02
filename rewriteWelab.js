@@ -871,7 +871,6 @@ exports.load = function () {
 
                 ];
                 conf.rows = [];
-                console.log(resultList)
                 for(var i=0 ;i < resultList.length;i++){
                     var rows;
                     rows = [
