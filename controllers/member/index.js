@@ -15,7 +15,7 @@ module.exports = {
         var card_number;//显示在会员中心的帐号
         nut.model.error = 'false';
         var announcement;
-        var resultlist;
+        var resultlist=[];
         var readcount=0;
 
         if(!wxid){
@@ -215,7 +215,9 @@ module.exports = {
         this.step(function(){
             helper.db.coll("lavico/announcement").find({isOpen:true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
                 if(err) throw err;
-                resultlist = doc;
+                if(doc){
+                    resultlist = doc;
+                }
             }));
         })
 
