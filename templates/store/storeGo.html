@@ -3,19 +3,19 @@
     window.onload=function(){
         var map = new BMap.Map("allmap");
         var point = new BMap.Point({@locationLat},{@locationLng});
-        map.centerAndZoom(point,12);
+    map.centerAndZoom(point,12);
 
-        function myFun(result){
-            var cityName = result.name;
-            map.setCenter(cityName);
-            $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&$webpage=false&cityName="+encodeURIComponent(cityName),function(doc){
-                $("#content").html(doc)
-                jQuery('#loading').hide();//隐藏加载框
-            })
-        }
-        var myCity = new BMap.LocalCity();
-        myCity.get(myFun);
-        $("div.store-listContent").find("ul li:last-child").css("border-bottom", "none");
+    function myFun(result){
+        var cityName = result.name;
+        map.setCenter(cityName);
+        $.get("/lavico/store/currentCustomerLocation:show?wxid={@wxid}&$webpage=false&cityName="+encodeURIComponent(cityName),function(doc){
+            $("#content").html(doc)
+            jQuery('#loading').hide();//隐藏加载框
+        })
+    }
+    var myCity = new BMap.LocalCity();
+    myCity.get(myFun);
+    $("div.store-listContent").find("ul li:last-child").css("border-bottom", "none");
     }
 
 </script>

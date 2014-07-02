@@ -75,8 +75,16 @@ store-title .store-title p{position:relative;}
 .store-listContent ul li{width:92%; height:auto; border-bottom:1px #a9a9a9 solid; overflow:hidden; padding:4%; }
 .store-listContent ul li a{width:100%; height:auto;display:inline-block;background:url(../images/store_ljt.jpg) right center no-repeat; background-size:10px;}
 .store-listContent ul li a .name{ font-size:1.6rem; color:#cdb788;}
-.store-listContent ul li a .adree,.store-listContent ul li a .tel{ width:90%; font-size:1.4rem; color:#646464; padding-right:10%; display:-webkit-flex;}
-.store-listContent ul li a .adree span,.store-listContent ul li a .tel span{ display: inline-table;}
+.store-listContent ul li a .adree,
+.store-listContent ul li a .tel{ width:96%; font-size:1.4rem; color:#646464; padding-right:10%; overflow: hidden; }
+.store-listContent ul li a .adree span.adree_left,
+.store-listContent ul li a .tel span.adree_left{
+    width:42px; display: inline-block; vertical-align: top;
+}
+.store-listContent ul li a .adree span.adree_right,
+.store-listContent ul li a .tel span.adree_right{
+    width: 83%; display: inline-block; vertical-align: top;
+}
 .store-listContent ul li a .adree{ padding-top:2%;}
 .store-listContent ul li a .tel{ padding-top:5px;}
 /*专属礼券*/

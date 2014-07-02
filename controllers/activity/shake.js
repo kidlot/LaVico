@@ -121,6 +121,18 @@ module.exports = {
             helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid)},this.hold(function(err,doc){
                 shake = doc;
                 if(doc){
+                    if(doc.content && doc.content!="null" && typeof(doc.content)!="undefined"){
+                        nut.model.content = decodeURIComponent(doc.content).replace(/\{\@(.?wxid)\}/g, wxid);
+                    }else{
+                        nut.model.content = "undefined";
+                    }
+
+                    if(doc.pic && doc.pic!="null" && typeof(doc.pic)!="undefined"){
+                        nut.model.pic = doc.pic;
+                    }else{
+                        nut.model.pic = "undefined";
+                    }
+
                     if(new Date().getTime() < doc.startDate){
                         error = 'activity_no_start';
                         aid = "undefined";
@@ -133,6 +145,8 @@ module.exports = {
                         error = 'null';
                     }
                 }else{
+                    nut.model.content = "undefined";
+                    nut.model.pic = "undefined";
                     aid = "undefined";
                     error = 'activity_no_found';
                 }

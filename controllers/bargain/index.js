@@ -8,7 +8,7 @@ module.exports = {
         var userlogs=[];
         var then = this;
         this.step(function(){
-            helper.db.coll("lavico/bargain").find({},{"_id":1}).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/bargain").find({},{"orderId":1}).toArray(this.hold(function(err,doc){
                 if(err){
                     throw err;
                 }else{
@@ -26,7 +26,7 @@ module.exports = {
                     for(var h=0;h<bargainid.length;h++){
                         var num=0;
                         for(var j=0;j<doc.length;j++){
-                            if(doc[j].data && doc[j].data.productID && doc[j].data.step && doc[j].data.stat &&  doc[j].data.step == 3 && doc[j].data.stat==true){
+                            if(doc[j].data && doc[j].data.productID && doc[j].data.step && doc[j].data.stat &&  doc[j].data.step == 4 && doc[j].data.stat==true){
                                 if(bargainid[h]._id==doc[j].data.productID){
                                     num++;
                                     logs={};
@@ -42,7 +42,7 @@ module.exports = {
         })
 
         this.step(function(){
-            helper.db.coll("lavico/bargain").find({}).sort({createTime:-1}).page(50,seed.page||1,this.hold(function(err,page){
+            helper.db.coll("lavico/bargain").find({}).sort({orderId:1}).page(50,seed.page||1,this.hold(function(err,page){
                 list = page
                 for (var i=0;i<page.docs.length;i++){
                     if(page.docs[i].switcher == "off"){
@@ -62,6 +62,8 @@ module.exports = {
                     if(!page.docs[i].switcher){
                         page.docs[i].switcher="off";
                     }
+                    //排序
+                    page.docs[i].orderId = page.docs[i].orderId || (i+1);
                 }
             }));
         })
@@ -71,12 +73,60 @@ module.exports = {
             console.log(list);
             nut.model.page = list;
         })
+    },
+    viewIn:function(){
+
+        //排序
+        $("#tagList>tbody").dragsort({ dragSelector: "tr", dragEnd: saveOrder, placeHolderTemplate: "<tr class='placeHolder'><td colspan='6'></td></tr>" });
+
+        function saveOrder() {
+            var data = $("#tagList tr").map(function() { return $(this).data("itemid"); }).get();
+            $.post("/lavico/bargain/index:updateListOrder", { "orderIds": data },function(err,nut){
+                console.log(nut);
+                if(nut == 'success'){
+                    $.globalMessenger().post({
+                        message: "更新顺序成功",
+                        type: 'success',
+                        showCloseButton: true});
+                }else{
+                    $.globalMessenger().post({
+                        message: "更新顺序失败",
+                        type: 'error',
+                        showCloseButton: true});
+                }
+            });
+
+        };
+    },
+    actions:{
+        updateListOrder:function(seed,nut){
+
+                console.log(seed.orderIds);
+
+                var orderIds = seed.orderIds;
+
+                for(var i=0;i<orderIds.length;i++){
+                    var _arr = orderIds[i].split(':');
+                    _arr[1] = parseInt(_arr[1]);
+                    _arr.push(i+1);
+
+                    (function(_arr){
+                        console.log(_arr);
+                        console.log(helper.db.id(_arr[0]));
+                        helper.db.coll('lavico/bargain').update({'_id': helper.db.id(_arr[0])}, {$set: {'orderId':_arr[2]}}, {multi: false, upsert: true}, function (err, doc) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                nut.message("保存成功", null, 'success');
+                            }
+                        });
+                    })(_arr);
+                }
+
+
+
+        }
+
     }
+
 }
-
-
-
-
-
-
-

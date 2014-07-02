@@ -19,8 +19,6 @@ module.exports={
                 if(err) throw err;
                 if(doc && doc.announcement){
                     announcement = doc.announcement;
-                }else{
-                    announcement="null";
                 }
 
             }));
@@ -28,7 +26,7 @@ module.exports={
 
         var newArr=[];
         this.step(function(doc){
-            if(announcement!="null"){
+            if(typeof(announcement)!="undefined"){
                 for(var i=0;i<announcement.length;i++){
                     var flag=true;
                     for(var j=0;j<newArr.length;j++){
@@ -46,9 +44,9 @@ module.exports={
         })
 
         this.step(function(){
-            helper.db.coll("lavico/announcement").find({isOpen:true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/announcement").find({"isOpen":true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
                 if(err) throw err;
-                resultlist = doc;
+                resultlist = doc || {};
             }));
         })
 

@@ -7,7 +7,7 @@ module.exports = {
         nut.model.wxid = seed.wxid;
 
         this.step(function(){
-            helper.db.coll("lavico/bargain").find({switcher:"on",startDate:{$lt:new Date().getTime()},stopDate:{$gt:new Date().getTime()}}).sort({createTime:-1}).toArray(this.hold(function(err,docs){
+            helper.db.coll("lavico/bargain").find({switcher:"on",startDate:{$lt:new Date().getTime()},stopDate:{$gt:new Date().getTime()}}).sort({orderId:1}).toArray(this.hold(function(err,docs){
                 nut.model.list = docs||[];
             }));
         })

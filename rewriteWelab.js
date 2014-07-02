@@ -5,7 +5,6 @@ var middleware = require('lavico/lib/middleware.js');//引入中间件
 exports.load = function () {
 
     var summaryUserTrend = require("welab/controllers/summary/userTrend.js");
-
 //    summaryUserTrend.children.page = {
 //
 //        layout: "welab/Layout"
@@ -186,10 +185,7 @@ exports.load = function () {
 //
 //        }
 //
-
     var welabUserlist = require("welab/controllers/user/list.js");
-
-
     // 复写用户列表的导出
     welabUserlist.actions.exports.process = function(seed, nut){
         nut.disabled = true ;
@@ -598,7 +594,6 @@ exports.load = function () {
 
         });
     }
-
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
         console.log("---search customers---");
@@ -616,12 +611,7 @@ exports.load = function () {
         count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
         count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
-
-
         var conditions = search.conditions(seed) ;
-        console.log('--------conditions-------');
-        console.log(conditions);
-        console.log('--------conditions-------');
 
         var _data = {};
         var _rows = [];
@@ -730,6 +720,188 @@ exports.load = function () {
             this.res.end();
         })
 
+    }
+
+    welabUserlist.actions.fexports = {process:
+        function(seed,nut){
+
+            nut.disabled = true ;
+            var conditions = search.conditions(seed)
+            var doc=[];
+            var resultList=[];
+            this.step(function(){
+                helper.db.coll("welab/customers").find(conditions).toArray(this.hold(function(err,docs){
+                    if(err) throw err;
+                    if(docs){
+                        doc = docs || {};
+                    }
+                }))
+            })
+
+            this.step(function(){
+                for(var i=0;i<doc.length;i++){
+                    var result={};
+                    result.nickname = doc[i].nickname || "--";
+                    result.realname = doc[i].realname || "--";
+                    result.gender = doc[i].gender == 'female'?"女": (doc[i].gender == 'male' ? "男" : '--');
+                    result.birthday = doc[i].birthday ? parseInt(((new Date()) - (parseInt(doc[i].birthday))) / (1000*60*60*24*365)) : "--";
+                    result.mobile = doc[i].mobile || "--";
+                    result.profession = doc[i].profession || "--";
+                    result.email = doc[i].email || "--";
+                    result.province = doc[i].province || "--";
+                    result.city = doc[i].city || "--";
+                    result.address = doc[i].address || "--";
+
+                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.type){
+                        if(doc[i].HaiLanMemberInfo.type == 1){
+                            doc[i].cardtype = '白卡';
+                        }else if(doc[i].HaiLanMemberInfo.type == 2){
+                            doc[i].cardtype = 'VIP卡';
+                        }else if(doc[i].HaiLanMemberInfo.type == 3){
+                            doc[i].cardtype = '白金VIP卡';
+                        }else{
+                            doc[i].cardtype = '未知';
+                        }
+                    }else{
+                        doc[i].cardtype = '--';
+                    }
+                    result.cardtype = doc[i].cardtype;
+
+                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.cardNumber){
+                        doc[i].cardNumber = doc[i].HaiLanMemberInfo.cardNumber;
+                    }else{
+                        doc[i].cardNumber = '--';
+                    }
+                    result.cardNumber = doc[i].cardNumber;
+
+                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.favoriteStyle){
+                        doc[i].favoriteStyle = doc[i].HaiLanMemberInfo.favoriteStyle;
+                    }else{
+                        doc[i].favoriteStyle = '--';
+                    }
+                    result.favoriteStyle = doc[i].favoriteStyle;
+
+                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.memberID){
+                        doc[i].memberID = doc[i].HaiLanMemberInfo.memberID;
+                    }else{
+                        doc[i].memberID = '--';
+                    }
+                    result.memberID = doc[i].memberID;
+
+                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.favoriteColor){
+                        doc[i].favoriteColor = doc[i].HaiLanMemberInfo.favoriteColor;
+                    }else{
+                        doc[i].favoriteColor = '--';
+                    }
+                    result.favoriteColor = doc[i].favoriteColor;
+
+                    var tags = [];
+                    if(doc[i].tags){
+                        for (var j=0; j<doc[i].tags.length; j++)
+                        {
+                            tags.push(doc[i].tags[j]);
+                        }
+                        doc[i].tags = tags.join(",");
+                    }else{
+                        doc[i].tags = '--';
+                    }
+                    result.tags = tags;
+
+                    result.source = doc[i].source || '--';
+                    resultList.push(result);
+                }
+            })
+
+            this.step(function(){
+                var nodeExcel = require('excel-export');
+                var conf = {};
+                conf.cols = [
+                    {
+                        caption: '昵称',
+                        type: 'string'
+                    }, {
+                        caption: '姓名',
+                        type: 'string'
+                    }, {
+                        caption: '性别',
+                        type: 'string'
+                    }, {
+                        caption: '年龄',
+                        type: 'string'
+                    }, {
+                        caption: '手机',
+                        type: 'string'
+                    }, {
+                        caption: '行业',
+                        type: 'string'
+                    }, {
+                        caption: 'Email',
+                        type: 'string'
+                    }, {
+                        caption: '省份',
+                        type: 'string'
+                    }, {
+                        caption: '城市',
+                        type: 'string'
+                    }, {
+                        caption: '具体地址',
+                        type: 'string'
+                    }, {
+                        caption: '喜好款式',
+                        type: 'string'
+                    }, {
+                        caption: '喜好颜色',
+                        type: 'string'
+                    }, {
+                        caption: '卡类型',
+                        type: 'string'
+                    }, {
+                        caption: '卡号码',
+                        type: 'string'
+                    }, {
+                        caption: '会员号码',
+                        type: 'string'
+                    }, {
+                        caption: '关注来源',
+                        type: 'string'
+                    }, {
+                        caption: '标签',
+                        type: 'string'
+                    }
+
+                ];
+                conf.rows = [];
+                for(var i=0 ;i < resultList.length;i++){
+                    var rows;
+                    rows = [
+                        resultList[i].nickname,
+                        resultList[i].realname,
+                        resultList[i].gender,
+                        resultList[i].birthday,
+                        resultList[i].mobile,
+                        resultList[i].profession,
+                        resultList[i].email,
+                        resultList[i].province,
+                        resultList[i].city,
+                        resultList[i].address,
+                        resultList[i].favoriteStyle,
+                        resultList[i].favoriteColor,
+                        resultList[i].cardtype,
+                        resultList[i].cardNumber,
+                        resultList[i].memberID,
+                        resultList[i].source,
+                        resultList[i].tags
+                    ]
+                    conf.rows.push(rows)
+                }
+
+                var result = nodeExcel.execute(conf);
+                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                this.res.write(result, 'binary');
+                this.res.end();
+            })
+        }
     }
 
     welabUserlist.children.page.viewIn = function(){
@@ -1343,4 +1515,111 @@ exports.load = function () {
     var welabReplyDetail = require("welab/controllers/reply/detail.js");
     welabReplyDetail.view = "lavico/templates/welab/reply/detail.html"
 
+    var welabAppsMenuStatics = require("welab/apps/menu/controllers/statistics");
+    welabAppsMenuStatics.process  = function(seed,nut){
+        var then = this
+        var menus = {}
+
+        var count=0;
+
+        nut.model.seed = seed;
+
+        var dTime = new Date()
+        var _ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1)
+
+        var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym+"-01 00:00:00").getTime();
+        var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
+        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+
+        // menu list
+        helper.db.coll("welab/settings").findOne({_id:"wechat.menus"},this.hold(function(err,docs){
+            if(err) throw err ;
+            menus = docs ? docs.menus : {}
+        }))
+
+        this.step(function(){
+
+            var then = this;
+            for(var i=0 ; i < menus.length ; i++){
+
+                (function(i){
+                    if(menus[i].action == "news"){
+                        helper.db.coll("welab/reply").findOne({_id:helper.db.id(menus[i].reply)},then.hold(function(err,doc){
+                            if(err) throw err ;
+                            if(doc){
+                                menus[i].reply = '<a href="/welab/reply/detail?_id='+doc._id+'">'+doc.title || doc.name+"</a>"
+                            }
+                        }))
+                    }
+
+
+                    //sum
+                    var _eventKey = menus[i].action == "link" ? menus[i].reply : menus[i].tag;
+                    helper.db.coll("welab/feeds").find({status:"点击菜单","params.EventKey":_eventKey,time:{$gt:startTimeStamp,$lt:endTimeStamp}}).count(then.hold(function(err,doc){
+                        if(err) throw err ;
+                        menus[i].sum =  doc||0
+                    }))
+                })(i)
+
+                if(menus[i].items){
+
+                    for(var ii=0 ; ii< menus[i].items.length ; ii++){
+
+                        (function(i,ii){
+
+                            if(menus[i].items[ii].action == "news"){
+                                helper.db.coll("welab/reply").findOne({_id:helper.db.id(menus[i].items[ii].reply)},then.hold(function(err,doc){
+                                    if(err) throw err ;
+                                    if(doc){
+                                        menus[i].items[ii].reply = '<a href="/welab/reply/detail?_id='+doc._id+'">'+doc.title || doc.name+'</a>'
+                                    }
+                                }))
+                            }
+
+                            //sum
+                            var _eventKey = menus[i].items[ii].action == "link" ? menus[i].items[ii].reply : menus[i].items[ii].tag;
+                            helper.db.coll("welab/feeds").find({status:"点击菜单","params.EventKey":_eventKey,time:{$gt:startTimeStamp,$lt:endTimeStamp}}).count(then.hold(function(err,doc){
+                                if(err) throw err ;
+                                menus[i].items[ii].sum =  doc||0
+                            }))
+                        })(i,ii)
+                    }
+                }
+
+            }
+        })
+
+        this.step(function(){
+            for(var i=0;i<menus.length;i++){
+                if(menus[i].items){
+                    for(var j=0 ; j< menus[i].items.length ; j++){
+                        (function(i,j){
+                            var _eventKey = menus[i].items[j].action == "link" ? menus[i].items[j].reply : menus[i].items[j].tag;
+                            helper.db.coll("welab/feeds").find({status:"点击菜单","params.EventKey":_eventKey,time:{$gt:startTimeStamp,$lt:endTimeStamp}}).count(then.hold(function(err,doc){
+                                if(err) throw err ;
+                                count +=doc;
+                            }))
+                        })(i,j)
+                    }
+                }
+            }
+        })
+
+        this.step(function(){
+            for(var i=0;i<menus.length;i++){
+                for(var j=0;j<menus[i].items.length;j++){
+                    if(menus[i].items[j].action=="text"){
+                        menus[i].items[j].reply = decodeURIComponent(menus[i].items[j].reply).replace(/<[\/]*br[^>]*>/img, "")
+                    }
+                }
+            }
+        })
+
+        this.step(function(){
+            nut.model.sum = count;
+            nut.model.menu = menus
+
+        })
+    }
 };

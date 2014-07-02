@@ -22,7 +22,7 @@ module.exports={
         seed["$lab"]= {_id:seed._id}
         seed["$score"]={_id:seed._id}
         seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop,themetype:themetype}
-        seed["$exportXsl"]={_id:seed._id}
+        seed["$exportXsl"]={_id:seed._id,themetype:themetype}
         seed["filterexport"]={_id:seed._id}
 
         then.step(function(){
@@ -114,11 +114,12 @@ module.exports={
                 var docs_themeQuestion3
                 var _id=seed._id
                 var finishMan=[]
+                var themetype = seed.themetype;
 
                 then.step(function(){
                     helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,optionId:0,chooseId:0,"type":"0"})
                         .toArray(then.hold(function(err,doc){
-                            for(var i in doc){
+                            for(var i=0;i<doc.length;i++){
                                 var manInfo={};
                                 manInfo.createTime = formatTime(doc[i].createTime)
                                 manInfo.wechatid=doc[i].wechatid;
@@ -178,30 +179,55 @@ module.exports={
                     //exportXsl
                     var nodeExcel = require('excel-export');
                     var conf = {};
-                    conf.cols = [
-                        {
-                            caption: '时间',
-                            type: 'string'
-                        }, {
-                            caption: '姓名',
-                            type: 'string'
-                        }, {
-                            caption: '年龄',
-                            type: 'string'
-                        }, {
-                            caption: '城市',
-                            type: 'string'
-                        }, {
-                            caption: '获得礼券',
-                            type: 'string'
-                        }, {
-                            caption: '获得标签',
-                            type: 'string'
-                        }, {
-                            caption: '奖励积分',
-                            type: 'string'
-                        }
-                    ];
+                    if(themetype=="1"){
+                        conf.cols = [
+                            {
+                                caption: '时间',
+                                type: 'string'
+                            }, {
+                                caption: '姓名',
+                                type: 'string'
+                            }, {
+                                caption: '年龄',
+                                type: 'string'
+                            }, {
+                                caption: '城市',
+                                type: 'string'
+                            }, {
+                                caption: '获得礼券',
+                                type: 'string'
+                            }, {
+                                caption: '获得标签',
+                                type: 'string'
+                            }, {
+                                caption: '奖励积分',
+                                type: 'string'
+                            }
+                        ];
+                    }else{
+                        conf.cols = [
+                            {
+                                caption: '时间',
+                                type: 'string'
+                            }, {
+                                caption: '姓名',
+                                type: 'string'
+                            }, {
+                                caption: '年龄',
+                                type: 'string'
+                            }, {
+                                caption: '城市',
+                                type: 'string'
+                            }, {
+                                caption: '获得礼券',
+                                type: 'string'
+                            },{
+                                caption: '奖励积分',
+                                type: 'string'
+                            }
+                        ];
+                    }
+
                     conf.rows = [];
                     for(var i in finishMan){
                         var rows
@@ -237,15 +263,27 @@ module.exports={
                         }else{
                             getScore= finishMan[i].getScore
                         }
-                        rows = [
-                            finishMan[i].createTime,
-                            realname,
-                            birthday,
-                            city,
-                            getGift,
-                            getLabel,
-                            getScore
-                        ]
+                        if(themetype=="1"){
+                            rows = [
+                                finishMan[i].createTime,
+                                realname,
+                                birthday,
+                                city,
+                                getGift,
+                                getLabel,
+                                getScore
+                            ]
+                        }else{
+                            rows = [
+                                finishMan[i].createTime,
+                                realname,
+                                birthday,
+                                city,
+                                getGift,
+                                getScore
+                            ]
+                        }
+
                         conf.rows.push(rows)
                     }
 
@@ -402,6 +440,7 @@ module.exports={
                 var finishCount=seed.finishCount;
                 var totalPop=seed.totalPop;
                 nut.model._id=_id;
+                nut.model.themetype = seed.themetype ? seed.themetype : 0;
 
                 nut.model.finishCount=finishCount
                 nut.model.totalPop=totalPop;

@@ -31,6 +31,16 @@ module.exports= {
                 isOpen=doc.isOpen;
                 nut.model.themeType = doc.themeType;
                 nut.model.themequestion = JSON.stringify(doc.options);
+
+                nut.model.description = decodeURIComponent(doc.description);
+                nut.model.relief = decodeURIComponent(doc.relief);
+                nut.model.explanation = decodeURIComponent(doc.explanation).replace(/\{\@(.?wxid)\}/g, wechatid);
+                if(doc.pic && doc.pic!="null" && typeof(doc.pic)!="undefined"){
+                    nut.model.pic = doc.pic;
+                }else{
+                    nut.model.pic = "undefined";
+                }
+
             }));
         })
 
@@ -110,6 +120,7 @@ module.exports= {
         this.step(function(){
             nut.model._id = seed._id || ""
             nut.model.wechatId = wechatid
+            nut.model.wxid = wechatid
         })
 
         this.step(function(){

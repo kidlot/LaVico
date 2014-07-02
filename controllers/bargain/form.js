@@ -20,7 +20,6 @@ module.exports = {
                     _doc.description = decodeURIComponent(_doc.description);
                 }
                 doc = _doc || {}
-                console.log(doc)
             }))
         }
         this.step(function(){
@@ -136,6 +135,16 @@ module.exports = {
                     type: 'error',
                     showCloseButton: true})
             }
+            var startDate = $('#startDate').val();//开始时间
+            var stopDate = $('#stopDate').val();//结束时间
+            if(startDate>stopDate){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "开始时间不能大于结束时间！",
+                    type: 'error',
+                    showCloseButton: true})
+            }
+
             /*David.xu添加最高价格at2014-06-19*/
 
             if(_inputCheck){
@@ -161,13 +170,8 @@ module.exports = {
                 map.value = $option.val();
                 maplist.push(map);
             });
- //           console.log(maps);
-            //console.log(maplist);
             for(var i=0;i<maplist.length;i++){
                 for(var j=0;j<maps.length;j++){
-//                console.log("j",maps[j])
-//                    console.log("i",maplist[i].value)
-
                     if($.trim(maplist[i].value) == $.trim(maps[j])){
                         $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
                     }
