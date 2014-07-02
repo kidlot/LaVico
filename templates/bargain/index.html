@@ -1,6 +1,6 @@
 <script src="/welab/public/js/dragsort/jquery.dragsort-0.5.1.min.js"></script>
 <style>
-    .placeHolder { background-color:white; border:dashed 1px #1abc9c; }
+    tr.placeHolder { background-color:white; border:dashed 1px #1abc9c; height: 100px; }
 </style>
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
@@ -28,21 +28,21 @@
                 <th>完成人数</th>
                 <th>开始时间</th>
                 <th>结束时间</th>
-                <th></th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <foreach for="@page.docs" var="doc">
-                <tr data-itemid="{@ doc.orderId}">
-                    <td>{@ doc.name}</td>
-                    <td id="docstatus">{@ doc.stat}</td>
-                    <td>{@ doc.price}</td>
-                    <td>{@ doc.minPrice}</td>
-                    <td>{@ doc.maxPrice}</td>
-                    <td>{@ doc.surplus}</td>
-                    <td>{@ doc.num}</td>
-                    <td>{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
-                    <td>{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
+                <tr data-itemid="{@ doc._id}:{@ doc.orderId}" style="height: 80px;">
+                    <td width="5%">{@ doc.name}</td>
+                    <td id="docstatus" width="10%">{@ doc.stat}</td>
+                    <td width="3%">{@ doc.price}</td>
+                    <td width="3%">{@ doc.minPrice}</td>
+                    <td width="3%">{@ doc.maxPrice}</td>
+                    <td width="3%">{@ doc.surplus}</td>
+                    <td width="3%">{@ doc.num || 0}</td>
+                    <td width="10%">{@ new Date(doc.startDate+28800000).toISOString().substr(0,10)}</td>
+                    <td width="10%">{@ new Date(doc.stopDate+28800000).toISOString().substr(0,10)}</td>
                     <td>
 
                         <div class="switch has-switch way">
