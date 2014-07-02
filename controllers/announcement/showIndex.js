@@ -19,8 +19,6 @@ module.exports={
                 if(err) throw err;
                 if(doc && doc.announcement){
                     announcement = doc.announcement;
-                }else{
-                    announcement="null";
                 }
 
             }));
@@ -28,7 +26,7 @@ module.exports={
 
         var newArr=[];
         this.step(function(doc){
-            if(announcement!="null"){
+            if(typeof(announcement)!="undefined"){
                 for(var i=0;i<announcement.length;i++){
                     var flag=true;
                     for(var j=0;j<newArr.length;j++){
