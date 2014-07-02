@@ -87,11 +87,7 @@ module.exports={
                         nut.model.currentCityName = seed.city;
                     }else{
                         nut.view.disable();
-                        nut.write(
-                            "<script>window.popupStyle2.on('很抱歉，本城市没有LaVico品牌专柜，请选择其他城市查询',function(event){" +
-                            " if(event == 'confirm'){" +
-                                "location.href='/lavico/member/index?wxid=oTVLcjg1ZZrFhdvuRJuje8zQofKs'" +
-                                "}})</script>");
+                        nut.write("<script>window.popupStyle2.on('很抱歉，本城市没有LaVico品牌专柜，请选择其他城市查询',function(event){ if(event == 'confirm'){location.href='javascript: history.go(-2)'}})</script>");
                     }
                 })
             }
