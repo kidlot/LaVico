@@ -149,9 +149,11 @@ module.exports = {
                         'pageNum':0,
                         'status':'02'//已生效
                     };
+
                     middleware.request( "Coupon/GetCoupons", requestData02,this.hold(function(err,doc){
 
                         couponData = JSON.parse(doc);
+                        console.log("111",couponData)
                         nut.model.effectiveCouponsLength = couponData.total;
                         //记录用户动作
                     }));
@@ -337,7 +339,7 @@ module.exports = {
 
                     var coupons = [];
                     var _coupons = couponArr;
-                    console.log(couponArr);
+                    //console.log(couponArr);
                     /*
                      优惠券状态 01: 未生效  02: 已生效  03: 已使用  04: 已到期失效,默认 02
                      */
@@ -400,11 +402,7 @@ module.exports = {
                     //console.log(coupons);
                     for(var _i in coupons){
 
-                        if(coupons[_i].COUPON_STATUS == '01'){
-
-                            //ineffectiveCoupons.push(coupons[_i]);
-
-                        }else if(coupons[_i].COUPON_STATUS == '02'){
+                        if(coupons[_i].COUPON_STATUS == '02' || coupons[_i].COUPON_STATUS == '01'){
 
                             effectiveCoupons.push(coupons[_i]);
 
@@ -415,8 +413,8 @@ module.exports = {
                         }else if(coupons[_i].COUPON_STATUS == '04'){
 
                             overdueCoupons.push(coupons[_i]);
-                            console.log('~~~~~~~~~~~~~~~~~~~~~~`');
-                            console.log(overdueCoupons);
+                            //console.log('~~~~~~~~~~~~~~~~~~~~~~`');
+                            //console.log(overdueCoupons);
 
                         }else{
                             errorCoupons.push(coupons[_i]);
@@ -485,7 +483,7 @@ module.exports = {
                         'perPage':perPage
                     },
                     success:function(data){
-                        console.log(data);
+                        //console.log(data);
 
                     }
                 }
@@ -541,7 +539,7 @@ module.exports = {
                         success = 'false';
                         error = 'coupon_is_null';
                     }
-                    console.log(couponArr);
+                    //console.log(couponArr);
 
                 }));
             });
