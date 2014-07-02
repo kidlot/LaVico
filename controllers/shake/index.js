@@ -184,15 +184,6 @@ module.exports = {
                     });
                 }
 
-                var lottery_input = $("#lottery_input").val();
-                if (lottery_input) {
-                    $("#lottery_cycle  option").each(function () {
-                        if ($(this).val() == lottery_input) {
-                            $(this).attr("selected", "true");
-                        }
-                    });
-                }
-
                 //添加
                 $('#add-coupons').click(function(){
                     console.log($('#activity_select').val());
@@ -538,6 +529,7 @@ module.exports = {
 
 
                 this.step(function (shake) {
+                    shake.lottery_cycle = parseInt(shake.lottery_cycle);
                     shake = shake ? shake : {};
                     doc = JSON.stringify(list);
 
@@ -545,12 +537,6 @@ module.exports = {
                     nut.model.shake = shake;
                     nut.model.doc = doc;
                     nut.model.lottery = JSON.stringify(shake.lottery);
-
-//                    var _lottery = shake.lottery;
-//                    for(var _i;_i<_lottery.length;_i++){
-//                        var _str = _lottery[_i].aid;
-//                        _lottery[_i]._str = _lottery[_i].aid;
-//                    }
 
                 });
             },
@@ -576,15 +562,6 @@ module.exports = {
                         $(".promotion_detail").css('display', 'none');
                         $("#" + aid).css('display', 'block');
                         $("#" + aid + " .lottery_chance").val($('#lottery_chance').val());
-                    });
-                }
-
-                var lottery_input = $("#lottery_input").val();
-                if (lottery_input) {
-                    $("#lottery_cycle  option").each(function () {
-                        if ($(this).val() == lottery_input) {
-                            $(this).attr("selected", "true");
-                        }
                     });
                 }
 
