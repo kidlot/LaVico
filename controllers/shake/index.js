@@ -529,6 +529,7 @@ module.exports = {
 
 
                 this.step(function (shake) {
+                    shake.lottery_cycle = parseInt(shake.lottery_cycle);
                     shake = shake ? shake : {};
                     doc = JSON.stringify(list);
 
