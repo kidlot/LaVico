@@ -1435,6 +1435,16 @@ exports.load = function () {
         })
 
         this.step(function(){
+            for(var i=0;i<menus.length;i++){
+                for(var j=0;j<menus[i].items.length;j++){
+                    if(menus[i].items[j].action=="text"){
+                        menus[i].items[j].reply = decodeURIComponent(menus[i].items[j].reply).replace(/<[\/]*br[^>]*>/img, "")
+                    }
+                }
+            }
+        })
+
+        this.step(function(){
             nut.model.sum = count;
             nut.model.menu = menus
 

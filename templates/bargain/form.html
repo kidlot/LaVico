@@ -262,7 +262,8 @@
             }
         }
         if(isok){
-            $("#maps_two").append("<OPTION VALUE="+map_val+">"+map_text+"</OPTION>");
+            var  myselect=document.getElementById("maps_two");
+            myselect.options.add(new Option(map_text,map_val),0);
         }
     }
 

@@ -226,13 +226,16 @@ module.exports = {
                         for(var j=0;j<announcement.length;j++){
                             console.log("j", announcement[j])
                             console.log("i", resultlist[i]._id)
-                            if(announcement[j]==resultlist[i]._id){
-                                readcount++;
+                            if(announcement[j].toString()==resultlist[i]._id.toString()){
+                                resultlist[j].read="true";
                             }
                         }
                     }
-                    if(readcount==resultlist.length){
-                        readcount=0;
+                    console.log(resultlist)
+                    for(var j=0;j<resultlist.length;j++){
+                        if(!resultlist[j].read){
+                            readcount++;
+                        }
                     }
                 }else{
                     readcount=1;
@@ -240,7 +243,6 @@ module.exports = {
             }else{
                 readcount=0;
             }
-            console.log("readcount:"+readcount)
             nut.model.count = readcount;
         })
 
