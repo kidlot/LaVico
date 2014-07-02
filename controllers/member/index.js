@@ -220,33 +220,34 @@ module.exports = {
                 }
             }));
         })
+        nut.model.count = readcount;
 
-        this.step(function(){
-            if(resultlist.length>0){
-                if(typeof(announcement)!="undefined"){
-                    for(var i=0;i<resultlist.length;i++){
-                        for(var j=0;j<announcement.length;j++){
-                            console.log("j", announcement[j])
-                            console.log("i", resultlist[i]._id)
-                            if(announcement[j].toString()==resultlist[i]._id.toString()){
-                                resultlist[j].read="true";
-                            }
-                        }
-                    }
-                    console.log(resultlist)
-                    for(var j=0;j<resultlist.length;j++){
-                        if(!resultlist[j].read){
-                            readcount++;
-                        }
-                    }
-                }else{
-                    readcount=1;
-                }
-            }else{
-                readcount=0;
-            }
-            nut.model.count = readcount;
-        })
+//        this.step(function(){
+//            if(resultlist.length>0){
+//                if(typeof(announcement)!="undefined"){
+//                    for(var i=0;i<resultlist.length;i++){
+//                        for(var j=0;j<announcement.length;j++){
+//                            console.log("j", announcement[j])
+//                            console.log("i", resultlist[i]._id)
+//                            if(announcement[j].toString()==resultlist[i]._id.toString()){
+//                                resultlist[j].read="true";
+//                            }
+//                        }
+//                    }
+//                    console.log(resultlist)
+//                    for(var j=0;j<resultlist.length;j++){
+//                        if(!resultlist[j].read){
+//                            readcount++;
+//                        }
+//                    }
+//                }else{
+//                    readcount=1;
+//                }
+//            }else{
+//                readcount=0;
+//            }
+//            nut.model.count = readcount;
+//        })
 
     },
     viewIn:function(){
