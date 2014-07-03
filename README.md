@@ -17,7 +17,7 @@ isRegister 是否注册：绑定、注册时写入true。解绑时false 单位�
 用户ID: _id<br/>
 微信ID: wechatid<br/>
 微信头像地址:headimgurl<br/>
-关注时间:followTime<br/>
+关注时间: followTime 单位是秒<br/>
 最近会话时间:lastMessageTime<br/>
 会话数:messageCount<br/>
 标签:tags<br/>
@@ -25,7 +25,6 @@ isRegister 是否注册：绑定、注册时写入true。解绑时false 单位�
 性别：gender     值：male/female<br/>
 生日：birthday   单位是毫秒<br/>
 手机号码：mobile<br/>
-关注时间: followTime 单位是秒<br/>
 isFollow:true/false<br/>
 排名：ranking?<br/>
 邮箱：email<br/>
