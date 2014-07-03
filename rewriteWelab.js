@@ -652,18 +652,71 @@ exports.load = function () {
         ) ;
 
         this.step(function(){
-            console.log(conditions);
-
-            if(conditions&&conditions.$or&&conditions.$or[0]&&conditions.$or[0].followTime){
+            //关注时间 任意
+            if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
                 conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
                 conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
             }
-
-            if(conditions&&conditions.$and&&conditions.$and[0]&&conditions.$and[0].followTime){
+            //关注时间 全部
+            if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
                 conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
                 conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
             }
+            //年龄 任意
+            if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday){
+                var year = new Date().getFullYear();
+                var month = new Date().getMonth()+1;
+                var day = new Date().getDay();
+                console.log(typeof month)
+                console.log(typeof day)
+                var mindate = "-"+month+"-"+day+" 00:00:00";
+                console.log(mindate)
+                if(conditions.$or[0].birthday.$gt){//年龄 小于
+                    conditions.$or[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$or[0].birthday.$lt){//年龄 大于
+                    conditions.$or[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                }else if(conditions.$or[0].birthday.$lte){//年龄 大于等于
+                    conditions.$or[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$or[0].birthday.$gte){//年龄 小于等于
+                    conditions.$or[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                }else{console.log(conditions.$or[0].birthday)
+                    var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-01-01 00:00:00").getTime();
+                    var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-12-31 23:59:59").getTime();
+                    var sa  = {$gte:gt,$lte:lt};
+                    conditions.$or[0].birthday=sa;
+                    console.log(conditions.$or[0].birthday)
+                }
+            }
+            //年龄 全部
+            if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday){
+                var year = new Date().getFullYear();
+                var month = new Date().getMonth()+1;
+                var day = new Date().getDay();
+                console.log(typeof month)
+                console.log(typeof day)
+                var mindate = "-"+month+"-"+day+" 00:00:00";
+                console.log(mindate)
+                if(conditions.$and[0].birthday.$gt){//年龄 小于
+                    conditions.$and[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$and[0].birthday.$lt){//年龄 大于
+                    conditions.$and[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                }else if(conditions.$and[0].birthday.$lte){//年龄 大于等于
+                    conditions.$and[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$and[0].birthday.$gte){//年龄 小于等于
+                    conditions.$and[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                }else{console.log(conditions.$and[0].birthday)
+                    var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-01-01 00:00:00").getTime();
+                    var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-12-31 23:59:59").getTime();
+                    var sa  = {$gte:gt,$lte:lt};
+                    conditions.$and[0].birthday=sa;
+                    console.log(conditions.$and[0].birthday)
+                }
+            }
 
+
+
+
+            console.log(conditions);
 
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
@@ -681,8 +734,9 @@ exports.load = function () {
                     page.docs[i].messageCount = page.docs[i].messageCount && otherData.totaMessages ? (page.docs[i].messageCount) + " <span style='color: #1ABC9C'>" + (parseInt((page.docs[i].messageCount / otherData.totaMessages)*100)) + "%</span>" : "0";
                     page.docs[i].isRegister = page.docs[i].registerTime ? "是" : "否"
                     page.docs[i].gender = page.docs[i].gender == 'female'?"女": (page.docs[i].gender == 'male' ? "男" : '')
-                    page.docs[i].birthday = page.docs[i].birthday ? parseInt(((new Date()) - (parseInt(page.docs[i].birthday))) / (1000*60*60*24*365)) : ""
-
+                    page.docs[i].birthday = page.docs[i].birthday ?parseInt(new Date().getFullYear()-new Date(page.docs[i].birthday).getFullYear()):""
+//                        parseInt(((new Date()) - (parseInt(page.docs[i].birthday))) / (1000*60*60*24*365)) : ""
+                    //parseInt(new Date().getFullYear()-new Date(page.docs[i].birthday).getFullYear()):""
                     page.docs[i].source = page.docs[i].source || '';
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';
                     page.docs[i].industry = page.docs[i].profession || '';
@@ -737,6 +791,66 @@ exports.load = function () {
 
             nut.disabled = true ;
             var conditions = search.conditions(seed)
+            if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
+                conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
+                conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+            }
+
+            if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
+                conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
+                conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
+            }
+
+            //年龄 任意
+            if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday){
+                var year = new Date().getFullYear();
+                var month = new Date().getMonth()+1;
+                var day = new Date().getDay();
+                console.log(typeof month)
+                console.log(typeof day)
+                var mindate = "-"+month+"-"+day+" 00:00:00";
+                console.log(mindate)
+                if(conditions.$or[0].birthday.$gt){//年龄 小于
+                    conditions.$or[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$or[0].birthday.$lt){//年龄 大于
+                    conditions.$or[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                }else if(conditions.$or[0].birthday.$lte){//年龄 大于等于
+                    conditions.$or[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$or[0].birthday.$gte){//年龄 小于等于
+                    conditions.$or[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                }else{console.log(conditions.$or[0].birthday)
+                    var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-01-01 00:00:00").getTime();
+                    var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-12-31 23:59:59").getTime();
+                    var sa  = {$gte:gt,$lte:lt};
+                    conditions.$or[0].birthday=sa;
+                    console.log(conditions.$or[0].birthday)
+                }
+            }
+            //年龄 全部
+            if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday){
+                var year = new Date().getFullYear();
+                var month = new Date().getMonth()+1;
+                var day = new Date().getDay();
+                console.log(typeof month)
+                console.log(typeof day)
+                var mindate = "-"+month+"-"+day+" 00:00:00";
+                console.log(mindate)
+                if(conditions.$and[0].birthday.$gt){//年龄 小于
+                    conditions.$and[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$and[0].birthday.$lt){//年龄 大于
+                    conditions.$and[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                }else if(conditions.$and[0].birthday.$lte){//年龄 大于等于
+                    conditions.$and[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$and[0].birthday.$gte){//年龄 小于等于
+                    conditions.$and[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                }else{console.log(conditions.$and[0].birthday)
+                    var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-01-01 00:00:00").getTime();
+                    var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-12-31 23:59:59").getTime();
+                    var sa  = {$gte:gt,$lte:lt};
+                    conditions.$and[0].birthday=sa;
+                    console.log(conditions.$and[0].birthday)
+                }
+            }
             var doc=[];
             var resultList=[];
             this.step(function(){
@@ -1080,7 +1194,7 @@ exports.load = function () {
         $.searchInitConditions([
             {field:'realname',title:'姓名',type:'text'}
             , {field:'gender',title:'性别',type:'gender'}
-            , {field:'age',title:'年龄',type:'num'}
+            , {field:'birthday',title:'年龄',type:'birthday'}
             , {field:'email',title:'电子邮件',type:'text'}
             , {field:'mobile',title:'移动电话',type:'text'}
             , {field:'registerTime',title:'注册时间',type:'date'}

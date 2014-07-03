@@ -29,6 +29,7 @@ $(function(){
         , membertype: ".searchExpressionMemberType" //David.xu at 2014-06-24
         , follow: ".searchExpressionFollow" //David.xu at 2014-06-24
         , register: ".searchExpressionRegister" //David.xu at 2014-06-24
+        ,birthday:".searchExpressionbirthday"
 
     }
     $(document).on('change','[name=searchFieldName]',function(event){
@@ -81,12 +82,10 @@ $.fn.searchConditions = function(){
 
         if(data[0] == "followTime"){
             data[1] = data[1];
-            console.log(data[1]);
 
         }
         if(data[0] == "registerTime"){
             data[1] =  data[1];
-            console.log(data[1]);
         }
         if(data[0] == "HaiLanMemberInfo.type"){
             data[1] = parseInt(data[1]);

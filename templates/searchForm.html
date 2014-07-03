@@ -30,7 +30,7 @@
     <select name="searchFieldName" class="form-control input-sm" style="width:80px">
       <option value="realname" search-field-type="text">姓名</option>
       <option value="gender" search-field-type="gender">性别</option>
-      <option value="age" search-field-type="num">年龄</option>
+      <option value="birthday" search-field-type="birthday">年龄</option>
       <option value="email" search-field-type="text">电子邮件</option>
       <option value="mobile" search-field-type="text">移动电话</option>
       <option value="registerTime" search-field-type="date">注册时间</option>
@@ -95,6 +95,17 @@
       <option value="lt">小于</option>
       <option value="gte">大于等于</option>
       <option value="lte">小于等于</option>
+    </select>
+    <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
+  </span>
+
+    <span class="searchExpression searchExpressionbirthday">
+    <select name="searchConditionOperator" class="form-control input-sm" style="width:80px">
+        <option value="eq">等于</option>
+        <option value="lt">大于</option>
+        <option value="gt">小于</option>
+        <option value="lte">大于等于</option>
+        <option value="gte">小于等于</option>
     </select>
     <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
   </span>
