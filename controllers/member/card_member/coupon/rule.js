@@ -158,6 +158,7 @@ module.exports = {
                     * "perPage":1,"pageNum":1}*/
 
                     _couponArr.CREAT_DATE = formatTime(couponArr.CREAT_DATE);//获得时间
+                    _couponArr.BIND_DATE = formatTime(couponArr.BIND_DATE);//获得时间
                     _couponArr.USED_DATE = couponArr.USED_DATE ? formatTime(couponArr.USED_DATE) : null;//已使用时间
                     _couponArr.BEGIN_DATE = formatDate(couponArr.BEGIN_DATE);//有效期开始时间
                     _couponArr.END_DATE = formatDate(couponArr.END_DATE);//有效期结束时间
@@ -234,13 +235,14 @@ module.exports = {
                     var coupon = data;
                     if(coupon.success == true){
                         var _info = coupon.info;
+
                         $('#coupon_des').find('.PROMOTION_NAME').html(_info.PROMOTION_NAME);
                         $('#coupon_des').find('.TYPE').html(_info.TYPE);
 
                         $('#coupon_des').find('.COUPON_NO').html(_info.COUPON_NO);
                         $('#coupon_des').find('.COUPON_QTY').html(_info.COUPON_QTY);
 
-                        $('#coupon_des').find('.CREAT_DATE').html(_info.CREAT_DATE);
+                        $('#coupon_des').find('.BIND_DATE').html(_info.BIND_DATE);
                         if(!_info.USED_DATE){
                             $('#coupon_des').find('.USED_DATE').hide().prev().hide().prev().hide();
                         }else{
@@ -249,6 +251,7 @@ module.exports = {
 
                         $('#coupon_des').find('.BEGIN_DATE').html(_info.BEGIN_DATE);
                         $('#coupon_des').find('.END_DATE').html(_info.END_DATE);
+                        $('#coupon_title').show();
                         $('#coupon_des').show();
 
                     }else if(activity.success == false){
