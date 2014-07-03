@@ -325,7 +325,8 @@ module.exports = {
                                             window.location.href = "/lavico/member/index?wxid="+wxid;
                                         }else{
                                             if(/lavico\/member\/card_blank\/register/g.test(referer)){
-                                                window.history.go(-2);
+                                                //window.history.go(-2);
+                                                window.location.href = "/lavico/member/index?wxid="+wxid;
                                             }else{
                                                 window.location.href = referer;
                                             }
@@ -338,7 +339,13 @@ module.exports = {
                                         if(referer == window.location.href || referer.length == 0){
                                             window.location.href = "/lavico/member/index?wxid="+wxid;
                                         }else{
-                                            window.location.href = referer;
+                                            if(/lavico\/member\/card_blank\/register/g.test(referer)){
+                                                //window.history.go(-2);
+                                                window.location.href = "/lavico/member/index?wxid="+wxid;
+
+                                            }else{
+                                                window.location.href = referer;
+                                            }
                                         }
                                     });
 
