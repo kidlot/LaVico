@@ -654,6 +654,16 @@ exports.load = function () {
         this.step(function(){
             console.log(conditions);
 
+            if(conditions&&conditions.$or&&conditions.$or[0]&&conditions.$or[0].followTime){
+                conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
+                conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+            }
+
+            if(conditions&&conditions.$and&&conditions.$and[0]&&conditions.$and[0].followTime){
+                conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
+                conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
+            }
+
 
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
@@ -1073,7 +1083,7 @@ exports.load = function () {
             , {field:'age',title:'年龄',type:'num'}
             , {field:'email',title:'电子邮件',type:'text'}
             , {field:'mobile',title:'移动电话',type:'text'}
-            , {field:'createtime',title:'注册时间',type:'date'}
+            , {field:'registerTime',title:'注册时间',type:'date'}
             , {field:'followTime',title:'关注时间',type:'date'}
             , {field:'tags',title:'标签',type:'text'}
             , {field:'nickname',title:'昵称',type:'text'}
