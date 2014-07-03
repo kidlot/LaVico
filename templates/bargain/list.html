@@ -5,6 +5,11 @@
                 <a href="/lavico/bargain/detail?wxid={@ wxid}&_id={@item._id}"  >
                     <span class="elite_img"><img src="{@item.pic}" /></span>
                     <span class="elite_details">{@item.name}</span>
+                    <if condition="@item.bargainSuccess == true">
+                    <span class="elite_tag success">已侃价</span>
+                    <else/>
+                    <span class="elite_tag default">未侃价</span>
+                    </if>
                 </a>
             </div>
         </foreach>
@@ -99,3 +104,5 @@
     }
 
 </script>
+<!--正在加载-->
+<div id="loading" class="loading" style="display:none;"><img src="/lavico/public/images/loading.gif"></div>
