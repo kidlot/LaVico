@@ -19,6 +19,7 @@
   <div>
       <button type="button" class="btn btn-embossed btn-primary" onclick="btnsearch(this)">查看</button>
       <button type="button" class="btn btn-embossed btn-primary " onclick="btncancel()">取消筛选</button>
+      <button type="button" class="btn btn-embossed btn-primary "  onclick="exportXsl(this)">筛选导出</button>
   </div>
 
 </div>
@@ -129,77 +130,80 @@
 <!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
 
 
-        <script>
+<script>
 
-            function search(){
-                window.location.href = "/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
-            }
-                function btnsearch(obj){
-                    var conditions = $(obj).searchConditions() ;
+    function search(){
+        window.location.href = "/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
+    }
+    function btnsearch(obj){
+        var conditions = $(obj).searchConditions() ;
+        if(!conditions.length)
+            return ;
+        $("#userList").flexOptions({params: [{name:"conditions",value:JSON.stringify(conditions)},{name:"logic",value:$("[name=searchLogic]").val()}]});
+        $('#userList').flexOptions({newp: 1}).flexReload();
+    } ;
 
-                    if(!conditions.length)
-                        return ;
+    function btncancel(){
 
+        location.reload()
+    } ;
 
-                    $("#userList").flexOptions({params: [{name:"conditions",value:JSON.stringify(conditions)},{name:"logic",value:$("[name=searchLogic]").val()}]});
-                    $('#userList').flexOptions({newp: 1}).flexReload();
+    var oUserSetOption;
 
-                } ;
+    function userSetTagView(){
 
-                function btncancel(){
+        var aList = getUserList();
+        if( aList.length == 0){
+            $.globalMessenger().post({
+                message: '至少选择一个用户.',
+                type: 'error',
+                showCloseButton: true})
+            return ;
+        }
 
-                    location.reload()
-                } ;
+        jQuery("#tags").tagsManager('empty');
 
-                var oUserSetOption;
+        $('#tagModal').modal('toggle');
+        oUserSetOption = {} ;
+        oUserSetOption.data = [];
+        oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+        return false;
+    };
 
-                function userSetTagView(){
+    function userTagBtn(){
 
-                    var aList = getUserList();
-                    if( aList.length == 0){
-                        $.globalMessenger().post({
-                            message: '至少选择一个用户.',
-                            type: 'error',
-                            showCloseButton: true})
-                        return ;
-                    }
+        var tags = $("input[type='hidden'][name='tagsVal']").val();
+        if( tags == ""){
+            $.globalMessenger().post({
+                message: '至少设置一个标签.',
+                type: 'error',
+                showCloseButton: true})
+            return ;
+        }
 
-                    jQuery("#tags").tagsManager('empty');
+        var oUserSetOption = {} ;
+        oUserSetOption.data = [];
+        oUserSetOption.data.push({name:"sUserList",value:getUserList().join(",")});
+        oUserSetOption.data.push({name:"sTagList",value:tags});
+        oUserSetOption.type = "POST";
+        oUserSetOption.url = "/welab/user/tags:setUserTag";
 
-                    $('#tagModal').modal('toggle');
-                    oUserSetOption = {} ;
-                    oUserSetOption.data = [];
-                    oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
-                    return false;
-                };
+        $.request(oUserSetOption,function(err,nut){
+            if(err) throw err ;
+            nut.msgqueue.popup() ;
 
-                function userTagBtn(){
+            $.controller("/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val(),null,"lazy");
+        }) ;
 
-                    var tags = $("input[type='hidden'][name='tagsVal']").val();
-                    if( tags == ""){
-                        $.globalMessenger().post({
-                            message: '至少设置一个标签.',
-                            type: 'error',
-                            showCloseButton: true})
-                        return ;
-                    }
+        $('#tagModal').modal('toggle');
+        return false;
 
-                    var oUserSetOption = {} ;
-                    oUserSetOption.data = [];
-                    oUserSetOption.data.push({name:"sUserList",value:getUserList().join(",")});
-                    oUserSetOption.data.push({name:"sTagList",value:tags});
-                    oUserSetOption.type = "POST";
-                    oUserSetOption.url = "/welab/user/tags:setUserTag";
+    };
 
-                    $.request(oUserSetOption,function(err,nut){
-                        if(err) throw err ;
-                        nut.msgqueue.popup() ;
-
-                        $.controller("/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val(),null,"lazy");
-                    }) ;
-
-                    $('#tagModal').modal('toggle');
-                    return false;
-
-                };
-        </script>
+    function exportXsl(obj){
+        var conditions = $(obj).searchConditions() ;
+        if(!conditions.length)
+            return ;
+        window.location.href="/welab/user/list:fexports?conditions="+JSON.stringify(conditions)+"&logic="+$("[name=searchLogic]").val();
+    }
+</script>

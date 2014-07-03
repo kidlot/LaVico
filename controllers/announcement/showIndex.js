@@ -44,9 +44,9 @@ module.exports={
         })
 
         this.step(function(){
-            helper.db.coll("lavico/announcement").find({isOpen:true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/announcement").find({"isOpen":true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
                 if(err) throw err;
-                resultlist = doc;
+                resultlist = doc || {};
             }));
         })
 
