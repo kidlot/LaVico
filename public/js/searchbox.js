@@ -80,10 +80,13 @@ $.fn.searchConditions = function(){
         var data = [ $(this).find("[name=searchFieldName]").val(), value ] ;
 
         if(data[0] == "followTime"){
-            data[1] = parseInt(new Date(data[1]).getTime() / 1000)
+            data[1] = data[1];
+            console.log(data[1]);
+
         }
-        if(data[0] == "createtime"){
-            data[1] = new Date(data[1]).getTime()
+        if(data[0] == "registerTime"){
+            data[1] =  data[1];
+            console.log(data[1]);
         }
         if(data[0] == "HaiLanMemberInfo.type"){
             data[1] = parseInt(data[1]);
