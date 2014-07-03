@@ -11,6 +11,7 @@ module.exports = {
     ,view: 'lavico/templates/member/card_blank/bind.html'
     ,process:function(seed, nut){
         //nut.disabled = true ;
+        nut.model.referer = this.req.headers.referer || '';//用户访问的上一个页面
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         this.step(function(){
             if(wxid == 'undefined'){
@@ -54,12 +55,18 @@ module.exports = {
             jQuery('.popupStyle2').css('z-index','10002');
 
             var wxid = $('#wxid').val();
+            var referer = $("#referer").val();//用户访问的上一个页面
+            var host = window.location.host;
 
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
 
                 window.popupStyle2.on("您已绑定",function(event){
-                    window.location.href="/lavico/member/index?wxid="+wxid;
+                    if(referer == window.location.href || referer.length == 0){
+                        window.location.href = "/lavico/member/index?wxid="+wxid;
+                    }else{
+                        window.location.href = referer;
+                    }
                 });
 
             }
@@ -310,13 +317,21 @@ module.exports = {
                                 if($('#tel_checked_status').val() == 'tel_checked_false'){
                                     //alert('绑定成功');
                                     window.popupStyle2.on("绑定成功",function(event){
-                                        window.location.href="/lavico/member/index?wxid="+wxid;
+                                        if(referer == window.location.href || referer.length == 0){
+                                            window.location.href = "/lavico/member/index?wxid="+wxid;
+                                        }else{
+                                            window.location.href = referer;
+                                        }
                                     });
 
                                 }else if($('#tel_checked_status').val() == 'tel_checked_true'){
                                     //alert('绑定成功');
                                     window.popupStyle2.on("绑定成功",function(event){
-                                        window.location.href="/lavico/member/index?wxid="+wxid;
+                                        if(referer == window.location.href || referer.length == 0){
+                                            window.location.href = "/lavico/member/index?wxid="+wxid;
+                                        }else{
+                                            window.location.href = referer;
+                                        }
                                     });
 
                                     //以前绑定过的手机号码，不再继续输入卡号码
