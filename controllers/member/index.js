@@ -15,7 +15,7 @@ module.exports = {
         var card_number;//显示在会员中心的帐号
         nut.model.error = 'false';
         var announcement;
-        var resultlist=[];
+        var resultlist;
         var readcount=0;
 
         if(!wxid){
@@ -215,35 +215,36 @@ module.exports = {
         this.step(function(){
             helper.db.coll("lavico/announcement").find({"isOpen":true}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
                 if(err) throw err;
-                if(doc){
-                    resultlist = doc || {};
-                }
+                resultlist = doc || {};
             }));
         })
 
-//        this.step(function(){
-//            if(resultlist.length>0){
-//                if(typeof(announcement)!="undefined"){
-//                    for(var i=0;i<resultlist.length;i++){
-//                        for(var j=0;j<announcement.length;j++){
-//                            if(announcement[j].toString()!=resultlist[i]._id.toString()){
-//                                resultlist[j].read="false";
-//                            }
-//                        }
-//                    }
-//                    for(var j=0;j<resultlist.length;j++){
-//                        if(resultlist[j].read && resultlist[j].read=="false"){
-//                            readcount++;
-//                        }
-//                    }
-//                }else{
-//                    readcount=1;
-//                }
-//            }else{
-//                readcount=0;
-//            }
+        this.step(function(){
+            if(resultlist.length>0 && typeof(resultlist)!="undefined"){
+                for(var i=0;i<resultlist.length;i++){
+                    resultlist[i].isRead="false";
+                }
+                if(typeof(announcement)!="undefined"){
+                    for(var i=0;i<resultlist.length;i++){
+                        for(var j=0;j<announcement.length;j++){
+                            if(announcement[j]==resultlist[i]._id){
+                                resultlist[i].isRead="true";
+                            }
+                        }
+                    }
+                    for(var j=0;j<resultlist.length;j++){
+                        if(resultlist[j].isRead && resultlist[j].isRead=="false"){
+                            readcount++;
+                        }
+                    }
+                }else{
+                    readcount=1;
+                }
+            }else{
+                readcount=0;
+            }
             nut.model.count = readcount;
-        //})
+        })
 
     },
     viewIn:function(){
