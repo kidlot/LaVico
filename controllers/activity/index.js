@@ -24,11 +24,11 @@ module.exports = {
                 console.log(doc_json)
 
                 var page = {};
-                console.log(Math.floor(doc_json.total / perPage));
+                console.log(Math.ceil(doc_json.total / perPage));
                 console.log(pageNum);
                 console.log(doc_json.total);
 
-                page.lastPage = Math.floor(doc_json.total / perPage);
+                page.lastPage = Math.ceil(doc_json.total / perPage);
                 page.currentPage = pageNum;
                 page.totalcount = doc_json.total;
                 nut.model.page = page;

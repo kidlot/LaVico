@@ -58,29 +58,14 @@
                     <div class="col-sm-10">
                         <select class="form-control" id='lottery_cycle' style="width: 150px;display:inline-block;" name="type">
 
-                                <if condition="@shake.lottery_cycle ==1">
-                                    <option selected="selected"  value="1">1天</option>
-                                    <else/>
-                                    <option value="1">1天</option>
-                                </if>
+                                <option value="1">1天</option>
 
-                                <if condition="@shake.lottery_cycle ==2">
-                                    <option selected="selected"  value="2">1周</option>
-                                    <else/>
-                                    <option value="2">1周</option>
-                                </if>
+                                <option value="2">1周</option>
 
-                                <if condition="@shake.lottery_cycle ==3">
-                                    <option selected="selected"  value="3">1月</option>
-                                    <else/>
-                                    <option value="3">1月</option>
-                                </if>
+                                <option value="3">1月</option>
 
-                                <if condition="@shake.lottery_cycle ==100">
-                                    <option selected="selected"  value="100">永久</option>
-                                    <else/>
-                                    <option value="100">永久</option>
-                                </if>
+                                <option value="100">永久</option>
+
 
                         </select>
                         <input type="text" id='lottery_count' class="form-control" name="name" placeholder="抽奖频率如果设置为0，则不限制次数" style="width: 300px;display:inline-block;" value="{@ shake.lottery_count}" oninput="$('#pagename').text(this.value)">
@@ -280,6 +265,15 @@ init();
     var content;
     content = decodeURIComponent('{@shake.content}');
     document.getElementById("content").value = content;
+
+    var lottery_cycle_val = document.getElementById("lottery_input").value;
+    var lottery_cycle = document.getElementById('lottery_cycle');
+    for(var i=0;i<lottery_cycle.options.length;i++){
+        if(lottery_cycle.options[i].value == lottery_cycle_val){
+            lottery_cycle.options[i].selected = true;
+            break;
+        }
+    }
 </script>
 <script>
     var lastPic = ""
