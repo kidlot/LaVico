@@ -1,7 +1,7 @@
 <section id="section" style="background-color: #e4e4e4;">
     <div class="elite" id="wrap">
         <foreach for="@list" var="item" key="key">
-            <div class="elite_list_lw">
+            <div class="elite_list_lw" style="opacity:0">
                 <a href="/lavico/bargain/detail?wxid={@ wxid}&_id={@item._id}"  >
                     <span class="elite_img"><img src="{@item.pic}" /></span>
                     <span class="elite_details">{@item.name}</span>
@@ -27,6 +27,7 @@
             wrapWin();
             window.onload = function () {
                 waterFall("wrap");
+                $('.elite_list_lw').css('opacity','1');
             }
         }
     </script>
