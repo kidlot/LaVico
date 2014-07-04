@@ -61,32 +61,35 @@ module.exports = {
                 helper.db.coll("lavico/bargain").find({"switcher":"on",startDate:{$lt:new Date().getTime()},stopDate:{$gt:new Date().getTime()}}).toArray(this.hold(function(err,_doc){
                     if(err) throw err;
                     doc = _doc || {}
-                    console.log(doc);
+                    //console.log(doc);
 
                     nut.model.doc = doc
-                }))
-                helper.db.coll("lavico/bargain/kv").find({"type":"kv"}).toArray(this.hold(function(err,_doc){
-                    if(err) throw err;
-                    if(_doc.length > 0){
-                        nut.model.doc.description = decodeURIComponent(_doc[0].description).replace(/\{\@(.?wxid)\}/g, wxid);
-                        nut.model.doc.pic_kv = _doc[0].pic_kv || '/lavico/public/images/bargain_banner.jpg';//设置默认的kv图
-                    }
-                }))
-
-                helper.db.coll("welab/customers").findOne({wechatid:wxid},this.hold(function(err,customers){
-                    var customers = customers || {}
-
-                    nut.model.isVip = false
-                    nut.model.isFollow = customers.isFollow ? true : false;
-                    if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
-                        nut.model.isVip = true
-                        nut.model.memberID = customers.HaiLanMemberInfo.memberID
-                    }
                 }))
             }
 
         })
 
+        this.step(function(){
+
+            helper.db.coll("lavico/bargain/kv").find({"type":"kv"}).toArray(this.hold(function(err,_doc){
+                if(err) throw err;
+                if(_doc.length > 0){
+                    nut.model.doc.description = decodeURIComponent(_doc[0].description).replace(/\{\@(.?wxid)\}/g, wxid);
+                    nut.model.doc.pic_kv = _doc[0].pic_kv || '/lavico/public/images/bargain_banner.jpg';//设置默认的kv图
+                }
+            }))
+
+            helper.db.coll("welab/customers").findOne({wechatid:wxid},this.hold(function(err,customers){
+                var customers = customers || {}
+
+                nut.model.isVip = false
+                nut.model.isFollow = customers.isFollow ? true : false;
+                if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
+                    nut.model.isVip = true
+                    nut.model.memberID = customers.HaiLanMemberInfo.memberID
+                }
+            }))
+        })
 
 //        nut.model.bargainStatus = "";
 //
