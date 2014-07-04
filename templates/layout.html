@@ -168,7 +168,7 @@
 
             WeixinJSBridge.invoke('shareTimeline',{
                 "img_url":shareIcon,
-                "link":replaceWxid(location.href) + "&fromWelab=timeline",
+                "link":replaceWxid(location.href) + "fromWelab=timeline",
                 "desc":shareContent,
                 "title":shareContent
             }, function(res) {
@@ -196,7 +196,7 @@
 
             var contentModel = {
                 "img_url":shareIcon,
-                "link":replaceWxid(location.href) + "&fromWelab=friend",
+                "link":replaceWxid(location.href) + "fromWelab=friend",
                 "desc":shareContent,
                 "title":shareTitle
             }
@@ -231,6 +231,13 @@
     }
 
     function replaceWxid (url){
-        return url.replace("wxid=","by=").replace("uid=","by=").replace("wechatid=","by=")
+        url = url.replace("wxid=","by=").replace("uid=","by=").replace("wechatid=","by=")
+
+        if(/\?/.test(url)){
+            url += "&"
+        }else{
+            url += "?"
+        }
+        return url;
     }
 </script>
