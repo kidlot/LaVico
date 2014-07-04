@@ -66,8 +66,6 @@ module.exports = {
                     if(err) throw err;
                     doc = _doc || {}
                     //console.log(doc);
-
-                    nut.model.doc = doc
                 }))
             }
 
@@ -78,8 +76,8 @@ module.exports = {
             helper.db.coll("lavico/bargain/kv").find({"type":"kv"}).toArray(this.hold(function(err,_doc){
                 if(err) throw err;
                 if(_doc.length > 0){
-                    nut.model.doc.description = decodeURIComponent(_doc[0].description).replace(/\{\@(.?wxid)\}/g, wxid);
-                    nut.model.doc.pic_kv = _doc[0].pic_kv || '/lavico/public/images/bargain_banner.jpg';//设置默认的kv图
+                    doc.description = decodeURIComponent(_doc[0].description).replace(/\{\@(.?wxid)\}/g, wxid);
+                    doc.pic_kv = _doc[0].pic_kv || '/lavico/public/images/bargain_banner.jpg';//设置默认的kv图
                 }
             }))
 
@@ -129,7 +127,7 @@ module.exports = {
 
             nut.model._id = seed._id || ""
             nut.model.wxid = wxid
-            nut.model.doc = nut.model.doc || {}
+            nut.model.doc = doc || {}
         })
     }
 }
