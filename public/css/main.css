@@ -590,6 +590,12 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite .elite_list_lw .elite_details { width:92%; height:40px; background:url(../images/list_bg.png) no-repeat; background-size:100% 100%; padding:0 4%;
                                      position:absolute; bottom:0px; left:0px; color:#B9954D; line-height:40px; }
 
+.elite .elite_list_lw a{ display:block; position: relative; overflow:hidden; }
+.elite .elite_list_lw a em { width:100px; height:30px; position: absolute; top:15px; right:-14px;background:url(../images/bargain.png) no-repeat;
+    -moz-transform: rotate(-34deg); /* FF3.5+ */
+    -o-transform: rotate(-34deg); /* Opera 10.5 */
+    -webkit-transform: rotate(-34deg); /* Saf3.1+, Chrome */
+}
 #wrapMain {
   width:100%;
   height:100%;
