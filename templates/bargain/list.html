@@ -1,3 +1,5 @@
+<!--正在加载-->
+<div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
 <section id="section" style="background-color: #e4e4e4;">
     <div class="elite" id="wrap">
         <foreach for="@list" var="item" key="key">
@@ -21,14 +23,15 @@
             for (var i = 0; i < elite_list.length; i++) {
                 elite_list[i].style.width = wrapWin + "px";
             }
+
         }
 
         if (wrap != undefined) {
             wrapWin();
             window.onload = function () {
                 waterFall("wrap");
+                document.getElementById('loading').style.display = 'none';
                 $('.elite_list_lw').css('opacity','1');
-
                 //$('.elite_list_lw').animate({'opacity','1'},1000);
             }
         }
@@ -105,5 +108,3 @@
     }
 
 </script>
-<!--正在加载-->
-<div id="loading" class="loading" style="display:none;"><img src="/lavico/public/images/loading.gif"></div>
