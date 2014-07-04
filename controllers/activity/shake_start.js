@@ -652,11 +652,12 @@ module.exports = {
                 console.log(data);
 
                 if(data.result == 'has-no-chance'){
-
+                    //您的机会已用完，下次再来试试吧
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
                     window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
                         flag = 1;
                     });
+
 
                 }else if(data.result == 'activity_is_over'){
 
