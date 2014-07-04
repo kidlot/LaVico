@@ -593,11 +593,11 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 .elite .elite_list_lw a{ display:block; position: relative; overflow:hidden; }
 .elite .elite_list_lw a em {
 
-    width: 50px;
-    height: 15px;
+    width: 60px;
+    height: 28px;
     position: absolute;
-    top: 5px;
-    right: -14px;
+    top: -2px;
+    right: -20px;
     background: url(../images/bargain.gif) no-repeat;
     -moz-transform: rotate(45deg); /* FF3.5+ */
     -o-transform: rotate(45deg); /* Opera 10.5 */
