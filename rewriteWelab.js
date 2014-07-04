@@ -1620,7 +1620,6 @@ exports.load = function () {
                 delete conditions['$and'];
             }
         }
-        console.log(seed.page)
         collMsg.find(messageWhere).sort({time:-1}).page({
             perPage: 10
             , pageNum: parseInt(seed.page) || 1
@@ -1704,7 +1703,7 @@ exports.load = function () {
 
 
         this.step(function(){
-            console.log("pg",pg)
+            //console.log("pg",pg)
         }) ;
     }
 
