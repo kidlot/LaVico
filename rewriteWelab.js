@@ -205,8 +205,8 @@ exports.load = function () {
                             result.nickname = doc.nickname || "--";
                             result.realname = doc.realname || "--";
                             result.gender = doc.gender == 'female'?"女": (doc.gender == 'male' ? "男" : '--');
-                            result.birthday = doc.birthday ? parseInt(((new Date()) - (parseInt(doc.birthday))) / (1000*60*60*24*365)) : "--";
-                            result.mobile = doc.mobile || "--";
+                            result.birthday = doc.birthday ?parseInt(new Date().getFullYear()-parseInt(new Date(doc.birthday).getFullYear())):"--"
+                                result.mobile = doc.mobile || "--";
                             result.profession = doc.profession || "--";
                             result.email = doc.email || "--";
                             result.province = doc.province || "--";
@@ -652,8 +652,55 @@ exports.load = function () {
         ) ;
 
         this.step(function(){
-            console.log(conditions);
+            //关注时间 任意
+            if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
+                conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
+                conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+            }
+            //关注时间 全部
+            if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
+                conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
+                conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
+            }
+            //年龄 任意
+            if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday){
+                if(conditions.$or[0].birthday.$gt){
+                    conditions.$or[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$or[0].birthday.$lt){
+                    conditions.$or[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                }else if(conditions.$or[0].birthday.$lte){
+                    conditions.$or[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$or[0].birthday.$gte){
+                    conditions.$or[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                }else{
+                    var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-01-01 00:00:00").getTime();
+                    var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-12-31 23:59:59").getTime();
+                    var investigation  = {$gte:gt,$lte:lt};
+                    conditions.$or[0].birthday=investigation;
+                }
+            }
+            //年龄 全部
+            if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday){
+                if(conditions.$and[0].birthday.$gt){
+                    conditions.$and[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$and[0].birthday.$lt){
+                    conditions.$and[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                }else if(conditions.$and[0].birthday.$lte){
+                    conditions.$and[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$and[0].birthday.$gte){
+                    conditions.$and[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                }else{
+                    var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-01-01 00:00:00").getTime();
+                    var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-12-31 23:59:59").getTime();
+                    var investigation  = {$gte:gt,$lte:lt};
+                    conditions.$and[0].birthday=investigation;
+                }
+            }
 
+
+
+
+            console.log(conditions);
 
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
@@ -671,8 +718,9 @@ exports.load = function () {
                     page.docs[i].messageCount = page.docs[i].messageCount && otherData.totaMessages ? (page.docs[i].messageCount) + " <span style='color: #1ABC9C'>" + (parseInt((page.docs[i].messageCount / otherData.totaMessages)*100)) + "%</span>" : "0";
                     page.docs[i].isRegister = page.docs[i].registerTime ? "是" : "否"
                     page.docs[i].gender = page.docs[i].gender == 'female'?"女": (page.docs[i].gender == 'male' ? "男" : '')
-                    page.docs[i].birthday = page.docs[i].birthday ? parseInt(((new Date()) - (parseInt(page.docs[i].birthday))) / (1000*60*60*24*365)) : ""
-
+                    page.docs[i].birthday = page.docs[i].birthday ?parseInt(new Date().getFullYear()-new Date(page.docs[i].birthday).getFullYear()):""
+//                        parseInt(((new Date()) - (parseInt(page.docs[i].birthday))) / (1000*60*60*24*365)) : ""
+                    //parseInt(new Date().getFullYear()-new Date(page.docs[i].birthday).getFullYear()):""
                     page.docs[i].source = page.docs[i].source || '';
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';
                     page.docs[i].industry = page.docs[i].profession || '';
@@ -722,11 +770,56 @@ exports.load = function () {
 
     }
 
+    //筛选导出
     welabUserlist.actions.fexports = {process:
         function(seed,nut){
 
             nut.disabled = true ;
             var conditions = search.conditions(seed)
+            if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
+                conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
+                conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+            }
+
+            if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
+                conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
+                conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
+            }
+
+            //年龄 任意
+            if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday){
+                if(conditions.$or[0].birthday.$gt){
+                    conditions.$or[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$or[0].birthday.$lt){
+                    conditions.$or[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                }else if(conditions.$or[0].birthday.$lte){
+                    conditions.$or[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$or[0].birthday.$gte){
+                    conditions.$or[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                }else{
+                    var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-01-01 00:00:00").getTime();
+                    var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-12-31 23:59:59").getTime();
+                    var investigation  = {$gte:gt,$lte:lt};
+                    conditions.$or[0].birthday=investigation;
+                }
+            }
+            //年龄 全部
+            if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday){
+                if(conditions.$and[0].birthday.$gt){
+                    conditions.$and[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$and[0].birthday.$lt){
+                    conditions.$and[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                }else if(conditions.$and[0].birthday.$lte){
+                    conditions.$and[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                }else if(conditions.$and[0].birthday.$gte){
+                    conditions.$and[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                }else{
+                    var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-01-01 00:00:00").getTime();
+                    var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-12-31 23:59:59").getTime();
+                    var investigation  = {$gte:gt,$lte:lt};
+                    conditions.$and[0].birthday = investigation;
+                }
+            }
             var doc=[];
             var resultList=[];
             this.step(function(){
@@ -744,7 +837,7 @@ exports.load = function () {
                     result.nickname = doc[i].nickname || "--";
                     result.realname = doc[i].realname || "--";
                     result.gender = doc[i].gender == 'female'?"女": (doc[i].gender == 'male' ? "男" : '--');
-                    result.birthday = doc[i].birthday ? parseInt(((new Date()) - (parseInt(doc[i].birthday))) / (1000*60*60*24*365)) : "--";
+                    result.birthday = doc[i].birthday ? parseInt(new Date().getFullYear()-parseInt(new Date(doc[i].birthday).getFullYear())):"--"
                     result.mobile = doc[i].mobile || "--";
                     result.profession = doc[i].profession || "--";
                     result.email = doc[i].email || "--";
@@ -1070,10 +1163,10 @@ exports.load = function () {
         $.searchInitConditions([
             {field:'realname',title:'姓名',type:'text'}
             , {field:'gender',title:'性别',type:'gender'}
-            , {field:'age',title:'年龄',type:'num'}
+            , {field:'birthday',title:'年龄',type:'birthday'}
             , {field:'email',title:'电子邮件',type:'text'}
             , {field:'mobile',title:'移动电话',type:'text'}
-            , {field:'createtime',title:'注册时间',type:'date'}
+            , {field:'registerTime',title:'注册时间',type:'date'}
             , {field:'followTime',title:'关注时间',type:'date'}
             , {field:'tags',title:'标签',type:'text'}
             , {field:'nickname',title:'昵称',type:'text'}
@@ -1280,6 +1373,339 @@ exports.load = function () {
 
 
     var welabMessagelist = require("welab/controllers/MessageList.js");
+
+    welabMessagelist.view = "lavico/templates/welab/message/MessageList.html";
+
+    welabMessagelist.viewIn = function(){
+        // search box--搜索显示
+        $.searchInitConditions([
+            {field:'realname',title:'姓名',type:'text'}
+            , {field:'gender',title:'性别',type:'gender'}
+            , {field:'birthday',title:'年龄',type:'birthday'}
+            , {field:'email',title:'电子邮件',type:'text'}
+            , {field:'mobile',title:'移动电话',type:'text'}
+            , {field:'registerTime',title:'注册时间',type:'date'}
+            , {field:'followTime',title:'关注时间',type:'date'}
+            , {field:'tags',title:'标签',type:'text'}
+            , {field:'nickname',title:'昵称',type:'text'}
+            , {field:'city',title:'城市',type:'text'}
+            , {field:'profession',title:'行业',type:'text'}
+            , {field:'source',title:'关注来源',type:'value'}
+            , {field:'HaiLanMemberInfo.action',title:'绑定',type:'member'}
+            , {field:'HaiLanMemberInfo.type',title:'会员卡',type:'membertype'}
+            , {field:'isFollow',title:'关注',type:'follow'}
+            , {field:'isRegister',title:'注册',type:'register'}
+            , {field:'message.type',title:'消息类型',type:'type'}
+            , {field:'message.time',title:'发送时间',type:'date'}
+        ]) ;
+
+
+
+
+        jQuery("#tags").tagsManager({
+            prefilled: [],
+            hiddenTagListName: 'tagsVal'
+        });
+
+
+        /**
+         * 设置标签
+         */
+        $(".userSetTagView").on("click",function(){
+
+            var aList = getUserList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一个用户.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            jQuery("#tags").tagsManager('empty');
+
+            $('#tagModal').modal('toggle');
+            oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
+            return false;
+        })
+
+        /**
+         * 设置标签
+         */
+        $(".userTagBtn").on("click",function(){
+
+            var tags = $("input[type='hidden'][name='tagsVal']").val();
+            if( tags == ""){
+                $.globalMessenger().post({
+                    message: '至少设置一个标签.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            var oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:getUserList().join(",")});
+            oUserSetOption.data.push({name:"sTagList",value:tags});
+            oUserSetOption.type = "POST";
+            oUserSetOption.url = "/welab/user/tags:setUserTag";
+
+            $.request(oUserSetOption,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+            }) ;
+
+            $('#tagModal').modal('toggle');
+            return false;
+
+        });
+
+
+
+        $(".btnsearch").click(function(){
+            var conditions = $(this).searchConditions() ;
+
+            if(!conditions.length)
+                return ;
+
+            $.controller("/welab/MessageList:page",{
+                conditions:JSON.stringify(conditions)
+                , logic: $("[name=searchLogic]").val()
+            },'.childview>.ocview') ;
+        }) ;
+
+        $(".btncancel").click(function(){
+
+            $('#searchView').fadeOut('100')
+            $('.searchConditionOuter').empty()
+            $.controller("/welab/MessageList:page",{
+                conditions:JSON.stringify({})
+                , logic: $("[name=searchLogic]").val()
+            },'.childview>.ocview') ;
+        }) ;
+    }
+
+    welabMessagelist.children.page.process = function(seed,nut){
+        var msgTypeNames = {
+            text:'文本'
+            , image:'图片'
+            , location:'位置'
+            , link:'链接'
+            , voice:'语音'
+        } ;
+
+        if(typeof(seed.conditions)== "undefined" || typeof(seed.logic) == "undefined"){
+            nut.model.conditions = "null";
+            nut.model.logic = "null";
+        }else{
+            nut.model.conditions = encodeURIComponent(seed.conditions);
+            nut.model.logic = seed.logic;
+        }
+
+        var conditions = search.conditions(seed);
+        if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
+            conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
+            conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+        }
+
+        if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
+            conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
+            conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
+        }
+        //年龄 任意
+        if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday){
+            if(conditions.$or[0].birthday.$gt){
+                conditions.$or[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+            }else if(conditions.$or[0].birthday.$lt){
+                conditions.$or[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+            }else if(conditions.$or[0].birthday.$lte){
+                conditions.$or[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+            }else if(conditions.$or[0].birthday.$gte){
+                conditions.$or[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+            }else{
+                var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-01-01 00:00:00").getTime();
+                var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-12-31 23:59:59").getTime();
+                var investigation  = {$gte:gt,$lte:lt};
+                conditions.$or[0].birthday=investigation;
+            }
+        }
+        //年龄 全部
+        if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday){
+            if(conditions.$and[0].birthday.$gt){
+                conditions.$and[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+            }else if(conditions.$and[0].birthday.$lt){
+                conditions.$and[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+            }else if(conditions.$and[0].birthday.$lte){
+                conditions.$and[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+            }else if(conditions.$and[0].birthday.$gte){
+                conditions.$and[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+            }else{
+                var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-01-01 00:00:00").getTime();
+                var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-12-31 23:59:59").getTime();
+                var investigation  = {$gte:gt,$lte:lt};
+                conditions.$and[0].birthday = investigation;
+            }
+        }
+
+        console.log(conditions)
+        var collCus = helper.db.coll("welab/customers") ;
+        var collMsg = helper.db.coll("welab/messages") ;
+        var collReply = helper.db.coll("welab/reply") ;
+        var pg ;
+
+        var messageWhere = {replyFor:null}
+
+        // 单独增加消息类型的搜索
+        if(conditions && (conditions['$or'])){
+
+            for(var i=0 ; i<conditions['$or'].length ; i++){
+
+                var _where = conditions['$or'][i]
+                if(_where['message.type']){
+                    messageWhere.type = _where['message.type']
+                    conditions['$or'].splice(i,1)
+                }
+            }
+
+            if(conditions['$or'].length == 0){
+                delete conditions['$or'];
+            }
+        }
+        if(conditions && (conditions['$and'])){
+
+            for(var i=0 ; i<conditions['$and'].length ; i++){
+
+                var _where = conditions['$and'][i]
+                if(_where['message.type']){
+                    messageWhere.type = _where['message.type']
+                    conditions['$and'].splice(i,1)
+                }
+            }
+
+            if(conditions['$and'].length == 0){
+                delete conditions['$and'];
+            }
+        }
+
+        // 单独增加发送消息时间的搜索
+        if(conditions && (conditions['$or'])){
+
+            for(var i=0 ; i<conditions['$or'].length ; i++){
+
+                var _where = conditions['$or'][i]
+                if(_where['message.time']){
+                    messageWhere.time = _where['message.time']
+                    conditions['$or'].splice(i,1)
+                }
+            }
+
+            if(conditions['$or'].length == 0){
+                delete conditions['$or'];
+            }
+        }
+        if(conditions && (conditions['$and'])){
+
+            for(var i=0 ; i<conditions['$and'].length ; i++){
+
+                var _where = conditions['$and'][i]
+                if(_where['message.time']){
+                    messageWhere.time = _where['message.time']
+                    conditions['$and'].splice(i,1)
+                }
+            }
+
+            if(conditions['$and'].length == 0){
+                delete conditions['$and'];
+            }
+        }
+        collMsg.find(messageWhere).sort({time:-1}).page({
+            perPage: 10
+            , pageNum: parseInt(seed.page) || 1
+            ,filter: conditions && function(doc,cb){
+
+                collCus.findOne(
+                    { $and: [
+                        {wechatid: doc.from}
+                        , conditions
+                    ] }
+                    , function(err,docCUS){
+
+                        if(err) console.log(err) ;
+                        cb(docCUS?doc:false) ;
+                    }
+                ) ;
+            }
+            , callback: this.hold(function(err,page){
+                if(err) throw err ;
+
+                pg = nut.model.page = page || {} ;
+
+                page.docs && this.each(page.docs,function(idx,msgdoc){
+
+                    // format date/time
+                    var _timeOffset = new Date().getTimezoneOffset()
+                    var formattime = new Date(msgdoc.time + (-_timeOffset * 60 *1000)).toISOString() ;
+                    //console.log(formattime) ;
+                    msgdoc.date = formattime.substr(0,10).replace(/\-/g,'/') ;
+                    msgdoc.time = formattime.substr(11,5) ;
+
+                    // msg type name
+                    msgdoc.typeName = msgTypeNames[msgdoc.type] || msgdoc.type ;
+
+                    // link to customer
+                    collCus.findOne(
+                        {wechatid:msgdoc.from}
+                        , this.hold(function(err,cusdoc){
+                            if(err) throw err ;
+
+                            if(cusdoc){
+                                cusdoc.realname = '<a href="/welab/user/detail?_id='+cusdoc._id+'" class="stay-top">'+ (cusdoc.realname || '--') +'</a>'         ;
+                                cusdoc.nickname = '<a href="/welab/user/detail?_id='+cusdoc._id+'" class="stay-top">'+ (cusdoc.nickname || '--') +'</a>'         ;
+                                cusdoc.city = cusdoc.city || '';
+                                cusdoc.gender = cusdoc.gender == 'female'?"女": (cusdoc.gender == 'male' ? "男" : '--')
+                                cusdoc.birthday = cusdoc.birthday ? parseInt(new Date().getFullYear()-parseInt(new Date(cusdoc.birthday).getFullYear())):"--"
+
+                                cusdoc.source = cusdoc.source || '--';
+                                cusdoc.cardtype = cusdoc.cardtype || '微信会员卡';
+                                cusdoc.industry = cusdoc.industry || '--';
+                            }
+
+                            msgdoc.customer = cusdoc || {} ;
+                        })
+                    ) ;
+
+                    // link to reply
+                    collMsg.findOne(
+                        {reply: msgdoc._id}
+                        , this.hold(function(err,rmsgdoc){
+                            if(err) throw err ;
+
+                            if(!rmsgdoc)
+                                return ;
+
+                            // matched keywords
+                            msgdoc.matchedKeywords = rmsgdoc.matchedKeywords ;
+
+                            collReply.findOne(
+                                {_id: rmsgdoc.content}
+                                , this.hold(function(err,replydoc){
+                                    if(err) throw err ;
+                                    msgdoc.reply = replydoc ;
+                                })
+                            ) ;
+                        })
+                    ) ;
+                }) ;
+            })
+        }) ;
+
+
+        this.step(function(){
+            //console.log("pg",pg)
+        }) ;
+    }
 
     // 复写 messageList
     welabMessagelist.children.page.view = "lavico/templates/MessageListPage.html";

@@ -84,8 +84,7 @@
     </foreach>
     </tbody>
 </table>
-<include file="welab/templates/paginator.html" model="@page" model.url="/welab/MessageList:page?page=%pagenum%" />
-
+<include file="welab/templates/paginator.html" model="@page" model.url="/welab/MessageList:page?conditions={@conditions}&logic={@logic}&page=%pagenum%" />
 
 
 <script>

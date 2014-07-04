@@ -6,6 +6,10 @@ module.exports = {
 
     , process: function(seed,nut)
     {
+        if(this.req){
+            //this.req.now
+        }
+
         var doc = {};
 
         nut.model.fromWelab = seed.fromWelab || ""

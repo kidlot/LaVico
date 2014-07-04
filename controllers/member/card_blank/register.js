@@ -9,7 +9,7 @@ module.exports = {
 	view: "lavico/templates/member/card_blank/register.html",
 	process: function(seed,nut)
 	{
-
+        nut.model.referer = this.req.headers.referer || '';//用户访问的上一个页面
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         this.step(function(){
             if(wxid == 'undefined'){
@@ -21,6 +21,7 @@ module.exports = {
             }
         });
         this.step(function(){
+
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
                 if(!doc){
                     nut.disable();//不显示模版
@@ -29,12 +30,14 @@ module.exports = {
                     this.res.end();
                     this.terminate();
                 }else{
+
                     if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
                         nut.model.error = "you_has_bound_already" ;
                     }else{
                         nut.model.error = "null"
                     }
-
+                    console.log('nut.model.error:'+nut.model.error);
+                    console.log(doc);
                 }
             }));
         });
@@ -50,10 +53,20 @@ module.exports = {
         /*前端设计JS*/
         $('#loading').hide();//隐藏加载框
 
+        /*后端开发JS*/
+        var wxid = $('#uid').val();
+        var referer = $("#referer").val();//用户访问的上一个页面
+        var host = window.location.host;
+
         /*判断是否会员已经绑定*/
         if($("#error").val()=="you_has_bound_already"){
             window.popupStyle2.on("您已经是LaVico的会员",function(event){
-                window.location.href="/lavico/member/index?wxid="+wxid;
+
+                if(referer == window.location.href || referer.length == 0){
+                    window.location.href = "/lavico/member/index?wxid="+wxid;
+                }else{
+                    window.location.href = referer;
+                }
             });
         }
 
@@ -79,8 +92,6 @@ module.exports = {
         });
 
 
-        /*后端开发JS*/
-        var wxid = $('#uid').val();
         /*申请会员卡*/
         $("#registerUrl").click(function(){
             window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
@@ -356,7 +367,12 @@ module.exports = {
                             //alert("恭喜你，注册成功");
                             window.popupStyle2.on("恭喜你，注册成功",function(event){
                                 if(event == "confirm"){
-                                    window.location.href="/lavico/member/index?wxid="+$("#uid").val();
+                                    //window.history.go(-1);//返回上一页
+                                    if(referer == window.location.href || referer.length == 0){
+                                        window.location.href = "/lavico/member/index?wxid="+$("#uid").val()
+                                    }else{
+                                        window.location.href = referer;
+                                    }
                                 }
                             });
 

@@ -225,9 +225,23 @@ module.exports = {
                     if(shake.lottery_cycle == '1'){ // 自然天
                         start_time = now_timestamp - ( now_timestamp % 86400000 );
                     }else if(shake.lottery_cycle == '2'){// 自然周
-                        start_time = now_timestamp -86400000*(new Date().getDay()) - ( now_timestamp % 86400000 );
+                        if(new Date().getDay() > 0){
+                            /*
+                            * var weekday=new Array(7)
+                             weekday[0]="Sunday"
+                             weekday[1]="Monday"
+                             weekday[2]="Tuesday"
+                             weekday[3]="Wednesday"
+                             weekday[4]="Thursday"
+                             weekday[5]="Friday"
+                             weekday[6]="Saturday"
+                           */
+                            start_time = now_timestamp -(86400000*(new Date().getDay()) -1) - ( now_timestamp % 86400000 );
+                        }else{
+                            start_time = now_timestamp -(86400000*(new Date().getDay()) -6) - ( now_timestamp % 86400000 );
+                        }
                     }else if(shake.lottery_cycle == '3'){//自然月
-                        start_time = now_timestamp -86400000*(new Date().getDate()) - ( now_timestamp % 86400000 );
+                        start_time = now_timestamp -(86400000*(new Date().getDate())-1) - ( now_timestamp % 86400000 );
                     }else if(shake.lottery_cycle == '100'){//永久
                         start_time = 0;
                     }else{
@@ -638,11 +652,12 @@ module.exports = {
                 console.log(data);
 
                 if(data.result == 'has-no-chance'){
-
+                    //您的机会已用完，下次再来试试吧
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
                     window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
                         flag = 1;
                     });
+
 
                 }else if(data.result == 'activity_is_over'){
 
