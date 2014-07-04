@@ -592,16 +592,15 @@ filter:Alpha(opacity=90); background:#fff;/*实现IE背景透明*/z-index:9999;}
 
 .elite .elite_list_lw a{ display:block; position: relative; overflow:hidden; }
 .elite .elite_list_lw a em {
-
     width: 50px;
-    height: 15px;
+    height: 23px;
     position: absolute;
-    top: 6px;
-    right: -12px;
+    top: -2px;
+    right: -16px;
     background: url(../images/bargain.gif) no-repeat;
-    -moz-transform: rotate(45deg); /* FF3.5+ */
-    -o-transform: rotate(45deg); /* Opera 10.5 */
-    -webkit-transform: rotate(45deg); /* Saf3.1+, Chrome */
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
     background-size: cover;
 }
 #wrapMain {
