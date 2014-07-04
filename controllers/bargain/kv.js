@@ -129,6 +129,7 @@ module.exports = {
 
             nut.model._id = seed._id || ""
             nut.model.wxid = wxid
+            nut.model.doc = nut.model.doc || {}
         })
     }
 }
