@@ -65,67 +65,40 @@ module.exports = {
                 helper.db.coll("lavico/bargain").find({"switcher":"on",startDate:{$lt:new Date().getTime()},stopDate:{$gt:new Date().getTime()}}).toArray(this.hold(function(err,_doc){
                     if(err) throw err;
                     doc = _doc || {}
-                    console.log(doc);
-
-                    nut.model.doc = doc
-                }))
-                helper.db.coll("lavico/bargain/kv").find({"type":"kv"}).toArray(this.hold(function(err,_doc){
-                    if(err) throw err;
-                    if(_doc.length > 0){
-                        nut.model.doc.description = decodeURIComponent(_doc[0].description).replace(/\{\@(.?wxid)\}/g, wxid);
-                        nut.model.doc.pic_kv = _doc[0].pic_kv || '/lavico/public/images/bargain_banner.jpg';//设置默认的kv图
-                    }
-                }))
-
-                helper.db.coll("welab/customers").findOne({wechatid:wxid},this.hold(function(err,customers){
-                    var customers = customers || {}
-
-                    nut.model.isVip = false
-                    nut.model.isFollow = customers.isFollow ? true : false;
-                    if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
-                        nut.model.isVip = true
-                        nut.model.memberID = customers.HaiLanMemberInfo.memberID
-                    }
+                    //console.log(doc);
                 }))
             }
 
         })
 
+        this.step(function(){
 
-//        nut.model.bargainStatus = "";
-//
-//        // 查询剩余积分
-//        this.step(function(){
-//
-//            var then = this;
-//            nut.model.jf = 0;
-//
-//            if(nut.model.doc.length > 0){
-//
-//                nut.model.jf = nut.model.doc[0].deductionIntegral || 0;
-//
-//                if(nut.model.doc[0].deductionIntegral){
-//
-//                    middleware.request("Point/" + nut.model.memberID,
-//                        {memberId: nut.model.memberID},
-//                        this.hold(function (err, doc) {
-//
-//                            console.log("剩余积分",doc)
-//                            if(parseInt(JSON.parse(doc).point) < parseInt(nut.model.doc[0].deductionIntegral)){
-//
-//                                nut.model.bargainStatus = "您的积分不够了，快去朗维高门店消费或者参加抢积分活动吧！"
-//                            }
-//                        }));
-//                }
-//            }
-//        })
+            helper.db.coll("lavico/bargain/kv").find({"type":"kv"}).toArray(this.hold(function(err,_doc){
+                if(err) throw err;
+                if(_doc.length > 0){
+                    doc.description = decodeURIComponent(_doc[0].description).replace(/\{\@(.?wxid)\}/g, wxid);
+                    doc.pic_kv = _doc[0].pic_kv || '/lavico/public/images/bargain_banner.jpg';//设置默认的kv图
+                }
+            }))
 
+            helper.db.coll("welab/customers").findOne({wechatid:wxid},this.hold(function(err,customers){
+                var customers = customers || {}
+
+                nut.model.isVip = false
+                nut.model.isFollow = customers.isFollow ? true : false;
+                if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
+                    nut.model.isVip = true
+                    nut.model.memberID = customers.HaiLanMemberInfo.memberID
+                }
+            }))
+        })
 
 
         this.step(function(){
 
             nut.model._id = seed._id || ""
             nut.model.wxid = wxid
+            nut.model.doc = doc || {}
         })
     }
 }
