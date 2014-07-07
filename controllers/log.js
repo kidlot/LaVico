@@ -6,6 +6,7 @@ module.exports = {
     , process: function(seed,nut)
     {
 
+        console.log("wxid",seed.wxid)
         if(seed.wxid){
 
             helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){

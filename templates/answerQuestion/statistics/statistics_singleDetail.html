@@ -31,28 +31,11 @@
     </div>
     <div name="title" style="padding: 10px;">
         <div nam="main">
-            <div name="getMember" class="maginTop20">
-                <table class="table table-hover" id="tagList">
-                    <thead>
-                    <tr>
-                        <th>答题时间</th>
-                        <th>参与人数</th>
-                        <th>完成人数</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <foreach for="{@newArr}" var="oneDoc" key="key">
-                        <tr class="borderBtm">
-                            <td class="width50">{@oneDoc.year}</td>
-                            <td class="width50">{@oneDoc.no_finish}</td>
-                            <td class="width50">{@oneDoc.finishcount}</td>
-
-                        </tr>
-                    </foreach>
-                    </tbody>
-                </table>
-                <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_Detail?themeId={@themeId}&page=%pagenum%" />
+            <div class="btn-group" style="float: left; margin-left: 10px">
+                <a  class="btn btn-xs btn-primary mhm pull-left" href="/lavico/answerQuestion/statistics/statistics_singleDetail:exportXsl?themeId={@themeId}&optionId={@optionId}&chooseID={@chooseID}&themetype={@themetype}" >全部导出</a>
             </div>
+            <view name="singledetail"/>
+
         </div>
     </div>
 </div>

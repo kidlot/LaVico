@@ -42,6 +42,9 @@ module.exports={
 
         then.step(function(){
             nut.model.resultJson=resultJson
+            nut.model.themeId = themeId;
+            nut.model.optionId = optionId;
+            console.log("resultJson",resultJson.choose)
             nut.model.allPartakeNum=allPartakeNum
         })
     },
@@ -248,7 +251,7 @@ module.exports={
                     ]
 
                     conf.rows = []
-                    for(var i in visitePeopleList){
+                    for(var i=0;i<visitePeopleList.length;i++){
                         var rows
                         var realname
                         if(typeof (visitePeopleList[i].realname)=="undefined"){

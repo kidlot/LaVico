@@ -40,23 +40,25 @@
     <div name="getTheme" class="maginTop20">
         <table class="tableSty">
             <tr class="staCount borderBtm">
-                <th class="width50">选项名称</th>
-                <th class="width50">总共参与人数</th>
-                <th class="width50">参与人数</th>
-                <th class="width50">比列</th>
+                <th class="width50" style="font-size: 14px; color: #1ABC9C;text-align: center">选项名称</th>
+                <th class="width50" style="font-size: 14px; color: #1ABC9C;text-align: center">总共参与人数</th>
+                <th class="width50" style="font-size: 14px; color: #1ABC9C;text-align: center">参与人数</th>
+                <th class="width50" style="font-size: 14px; color: #1ABC9C;text-align: center">比列</th>
+                <th class="width50" style="font-size: 14px; color: #1ABC9C;text-align: center">操作</th>
             </tr>
             <foreach for="@resultJson.choose" var="oneDoc" key="key">
                 <tr class="borderBtm">
-                    <td class="width50">{@oneDoc.chooseName}</td>
+                    <td class="width50" style="font-size: 14px;border: 3px solid #e8e8e8">{@oneDoc.chooseName}</td>
                     <if condition="@key==0">
                         <td class="width50" rowspan="{@resultJson.choose.length}" style="text-align: center;border: 3px solid #e8e8e8" >{@allPartakeNum}</td>
                     </if>
-                    <td class="width50">{@oneDoc.selectCount}</td>
+                    <td class="width50" style="text-align: center;border: 3px solid #e8e8e8" >{@oneDoc.selectCount}</td>
                     <if condition="{@allPartakeNum==0}">
-                        <td>0%</td>
+                        <td class="width50" style="text-align: center;border: 3px solid #e8e8e8">0%</td>
                         <else/>
-                        <td>{@parseInt(oneDoc.selectCount/allPartakeNum*100)}%</td>
+                        <td class="width50" style="text-align: center;border: 3px solid #e8e8e8">{@parseInt(oneDoc.selectCount/allPartakeNum*100)}%</td>
                     </if>
+                    <td class="width50" style="font-size: 14px;text-align: center;border: 3px solid #e8e8e8"><a href="statistics_singleDetail?themeId={@themeId}&optionId={@optionId}&chooseID={@oneDoc.chooseID}&themetype={@themetype}">查看详情</a></td>
                 </tr>
             </foreach>
         </table>

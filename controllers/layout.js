@@ -13,10 +13,15 @@ module.exports = {
 
         // 自动提取分享内容。
         //// 侃价
-        if(location.pathname == "/lavico/bargain/kv"){
+        if(location.pathname == "/lavico/bargain/kv" || location.pathname == "/lavico/bargain/list"){
             shareTitle = "我要侃价";
             shareContent = "侃价是门技术更是门艺术，既要有吃定你不放弃的决心，更要练就三寸不烂的嘴上功夫。生活中的你也是侃价达人吗？马上参与朗维高“我要侃价”活动，点击“立即侃价”，输入你心目中的理想价位，给力优惠，惊喜无限！";
             shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
+        }
+        if(location.pathname == "/lavico/bargain/list"){
+            shareTitle = "我要侃价";
+            shareContent = "侃价是门技术更是门艺术，既要有吃定你不放弃的决心，更要练就三寸不烂的嘴上功夫。生活中的你也是侃价达人吗？马上参与朗维高“我要侃价”活动，点击“立即侃价”，输入你心目中的理想价位，给力优惠，惊喜无限！";
+            shareIcon = location.origin + jQuery(".elite_list_lw:eq(0)").find("img").attr("src");
         }
         //// 精英
         if(location.pathname == "/lavico/lookbook/detail"){

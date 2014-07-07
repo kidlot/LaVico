@@ -1,0 +1,29 @@
+<div name="getMember" class="maginTop20">
+    <table class="table table-hover" id="tagList">
+        <thead>
+        <tr>
+            <th style="width: 70px">答题时间</th>
+            <th style="width: 80px">用户姓名</th>
+            <th style="width: 70px">性别</th>
+            <th style="width: 100px">电话</th>
+            <th style="width: 100px">email</th>
+            <th style="width: 150px">行业</th>
+            <th style="width: 70px">城市</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach for="{@resultlist}" var="oneDoc" key="key">
+            <tr class="borderBtm">
+                <td style="width: 70px">{@oneDoc.createTime}</td>
+                <td style="width: 80px">{@oneDoc.realname}</td>
+                <td style="width: 70px">{@oneDoc.gender}</td>
+                <td style="width: 100px">{@oneDoc.mobile}</td>
+                <td style="width: 100px">{@oneDoc.email}</td>
+                <td style="width: 150px">{@oneDoc.profession}</td>
+                <td style="width: 70px">{@oneDoc.city}</td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+    <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_singleDetail:singledetail?themeId={@themeId}&chooseID={@chooseID}&optionId={@optionId}&page=%pagenum%" />
+</div>
