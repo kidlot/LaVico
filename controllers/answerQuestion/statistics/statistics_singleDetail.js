@@ -152,7 +152,6 @@ module.exports={
                 })
 
                 this.step(function(){
-                    console.log("resultlist",resultlist)
                     var nodeExcel = require('excel-export');
                     var conf = {};
                     conf.cols = [
