@@ -216,7 +216,7 @@
 
     function getWxid (){
 
-        var wxid = ""
+        var wxid = jQuery("#wxid").val();
         if(location.search.match(/wxid=(.*)$/)){
 
             wxid = location.search.match(/wxid=(.*)$/)[1].split("&")[0];
