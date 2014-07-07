@@ -2,19 +2,10 @@
 <input type="hidden" id="wxid" value='{@wxid}'>
 <div class="wrapper">
     <div class="coupon-banner">
-
             <img src="{@doc.pic_kv||'/lavico/public/images/bargain_banner.jpg'}">
     </div>
     <div class="activity-rules">
-        <if condition="@ _id">
-            <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@ _id}')">立即开始</a></div>
-        <else/>
-            <if condition="@doc.length == 0">
-                <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','')">立即开始</a></div>
-            <else/>
-                <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','{@doc[0]._id}')">立即开始</a></div>
-            </if>
-        </if>
+        <div class="begin"><a href="javascript:;" onclick="_isVip('{@wxid}','')">立即开始</a></div>
         <div class="text">
             <div class="title">活动及使用规则</div>
             <if condition="@doc.description">
