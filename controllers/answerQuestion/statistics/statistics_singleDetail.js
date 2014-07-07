@@ -152,6 +152,7 @@ module.exports={
                 })
 
                 this.step(function(){
+                    console.log("resultlist",resultlist)
                     var nodeExcel = require('excel-export');
                     var conf = {};
                     conf.cols = [
@@ -184,9 +185,9 @@ module.exports={
                     for(var i=0;i<resultlist.length;i++){
                         var rows
                         rows = [
-                            resultlist[i].createtime,
+                            resultlist[i].createTime,
                             resultlist[i].realname,
-                            sex(resultlist[i].gender),
+                            resultlist[i].gender,
                             resultlist[i].mobile,
                             resultlist[i].email,
                             resultlist[i].profession,
@@ -197,7 +198,6 @@ module.exports={
 
 
                     var result = nodeExcel.execute(conf);
-                    console.log("result",result)
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                     this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
                     this.res.write(result, 'binary');
