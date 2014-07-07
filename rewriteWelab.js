@@ -1503,7 +1503,6 @@ exports.load = function () {
             nut.model.conditions = encodeURIComponent(seed.conditions);
             nut.model.logic = seed.logic;
         }
-
         var conditions = search.conditions(seed);
         if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
             conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
@@ -1620,22 +1619,22 @@ exports.load = function () {
                 delete conditions['$and'];
             }
         }
+        var _pageNum;
+        if(typeof seed.page == 'undefined'){
+            _pageNum = 1;
+        }else{
+            _pageNum = parseInt(seed.page);
+        }
         collMsg.find(messageWhere).sort({time:-1}).page({
             perPage: 10
-            , pageNum: parseInt(seed.page) || 1
+            , pageNum:_pageNum
             ,filter: conditions && function(doc,cb){
 
-                collCus.findOne(
-                    { $and: [
-                        {wechatid: doc.from}
-                        , conditions
-                    ] }
-                    , function(err,docCUS){
-
+                collCus.findOne({ $and: [{wechatid: doc.from}, conditions] },function(err,docCUS){
                         if(err) console.log(err) ;
                         cb(docCUS?doc:false) ;
                     }
-                ) ;
+                );
             }
             , callback: this.hold(function(err,page){
                 if(err) throw err ;
