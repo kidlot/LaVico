@@ -8,6 +8,7 @@ module.exports={
         var no_finishdoc;
         var themetype = seed.themetype ? seed.themetype : 0;
         nut.model.themetype = themetype;
+        nut.model.themeId = themeId;
 
         //完成
         this.step(function(){
@@ -157,9 +158,21 @@ module.exports={
         })
 
         this.step(function(){
-            nut.model.newArr = newArr||{};
-        })
+            var docs=[];
+            pageSize=10
+            page={}
+            page.lastPage=newArr.length%pageSize==0 ? parseInt(newArr.length/pageSize) : parseInt(newArr.length/pageSize)+1;
+            page.currentPage=typeof(seed.page)=="undefined"?1:seed.page
+            page.totalCount=newArr.length
+            page.docs=[]
 
+            for(var j=(page.currentPage-1)*pageSize;j<(page.currentPage-1)*pageSize+pageSize;j++){
+                if(typeof(newArr[j])!="undefined")
+                    docs.push(newArr[j])
+            }
+            nut.model.page = page;
+            nut.model.newArr=docs || {};
+        })
     }
 }
 function   formatTime(now){
