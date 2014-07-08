@@ -654,12 +654,12 @@ module.exports = {
                 if(data.result == 'has-no-chance'){
                     //您的机会已用完，下次再来试试吧
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
-//                    window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
-//                        flag = 1;
-//                    });
-                    window.popupStyle2.on('本次活动您的抽奖机会已用完',function(event){
+                    window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
                         flag = 1;
                     });
+//                    window.popupStyle2.on('本次活动您的抽奖机会已用完',function(event){
+//                        flag = 1;
+//                    });
 
                 }else if(data.result == 'activity_is_over'){
 
@@ -837,12 +837,12 @@ module.exports = {
                     }else if(data.result == 'has-no-chance'){
 
                         //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
-//                        window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
-//                            flag = 1;
-//                        });
-                        window.popupStyle2.on('本次活动您的抽奖机会已用完',function(event){
+                        window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
                             flag = 1;
                         });
+//                        window.popupStyle2.on('本次活动您的抽奖机会已用完',function(event){
+//                            flag = 1;
+//                        });
 
                     }else if(data.result == 'activity_is_over'){
 
