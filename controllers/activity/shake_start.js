@@ -134,6 +134,8 @@ module.exports = {
                 var returnCount;//根据系统后台设置，返回多少次机会
                 var lottery_count;//保存后台设置，用户还可以玩多少次机会（剩余的机会）
 
+                var lottery_cycle;//抽奖频率
+
 
 
                 this.step(function(){
@@ -222,6 +224,7 @@ module.exports = {
                 this.step(function(){
                     var start_time;
                     var now_timestamp = new Date().getTime();
+                    lottery_cycle = shake.lottery_cycle;//抽奖频率
                     if(shake.lottery_cycle == '1'){ // 自然天
                         start_time = now_timestamp - ( now_timestamp % 86400000 );
                     }else if(shake.lottery_cycle == '2'){// 自然周
@@ -269,7 +272,7 @@ module.exports = {
                         console.log('system-count:'+shake.lottery_count);
                         if(count >= shake.lottery_count){
 
-                            write_info(then,'{"result":"has-no-chance"}');
+                            write_info(then,'{"result":"has-no-chance","lottery_cycle":"'+lottery_cycle+'"}');
                         }
                     }
 
@@ -295,9 +298,9 @@ module.exports = {
 
                     if(lottery_count == 0){
                         //不限制次数
-                        write_info(then,'{"result":"unwin","limit":"no","points":"'+shake.points+'","count":"'+lottery_count+'"}');
+                        write_info(then,'{"result":"unwin","limit":"no","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+lottery_count+'"}');
                     }else{
-                        write_info(then,'{"result":"unwin","limit":"yes","points":"'+shake.points+'","count":"'+_count+'"}');
+                        write_info(then,'{"result":"unwin","limit":"yes","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+_count+'"}');
                     }
 
                 })
@@ -325,6 +328,7 @@ module.exports = {
                 var returnCount;//根据系统后台设置，返回多少次机会
                 var PROMOTION_CODE;
 
+                var lottery_cycle;
                 this.step(function(){
                     helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
                         shake = doc;
@@ -405,6 +409,8 @@ module.exports = {
                 var count=0;
                 this.step(function(){
                     var start_time;
+                    lottery_cycle = shake.lottery_cycle;//抽奖频率
+
                     var now_timestamp = new Date().getTime();
                     if(shake.lottery_cycle == '1'){ // 自然天
                         start_time = now_timestamp - ( now_timestamp % 86400000 );
@@ -440,7 +446,7 @@ module.exports = {
                         console.log('system-count:'+shake.lottery_count);
                         if(count >= shake.lottery_count){
 
-                            write_info(then,'{"result":"has-no-chance"}');
+                            write_info(then,'{"result":"has-no-chance","lottery_cycle":"'+lottery_cycle+'"}');
                         }
                     }
 
@@ -572,10 +578,10 @@ module.exports = {
 
                                      if(lottery_count == 0){
                                      //不限制次数
-                                     write_info(then,'{"result":"unwin","limit":"no","points":"'+shake.points+'","count":"'+lottery_count+'"}');
+                                    write_info(then,'{"result":"unwin","limit":"no","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+lottery_count+'"}');
 
                                      }else{
-                                     write_info(then,'{"result":"unwin","limit":"yes","points":"'+shake.points+'","count":"'+_count+'"}');
+                                    write_info(then,'{"result":"unwin","limit":"yes","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+_count+'"}');
                                      }
                                      /*摇一摇-活动券发放完毕处理-end*/
                                 }else if(doc.error=='找不到对应的人员，请检查！'){
@@ -620,10 +626,10 @@ module.exports = {
 
                         if(lottery_count == 0){
                             //不限制次数
-                            write_info(then,'{"result":"unwin","limit":"no","points":"'+shake.points+'","count":"'+lottery_count+'"}');
+                            write_info(then,'{"result":"unwin","limit":"no","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+lottery_count+'"}');
 
                         }else{
-                            write_info(then,'{"result":"unwin","limit":"yes","points":"'+shake.points+'","count":"'+_count+'"}');
+                            write_info(then,'{"result":"unwin","limit":"yes","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+_count+'"}');
                         }
 
 
@@ -654,12 +660,28 @@ module.exports = {
                 if(data.result == 'has-no-chance'){
                     //您的机会已用完，下次再来试试吧
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
-                    window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
-                        flag = 1;
-                    });
-//                    window.popupStyle2.on('本次活动您的抽奖机会已用完',function(event){
-//                        flag = 1;
-//                    });
+
+                    if(data.lottery_cycle == 1){
+                        window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                            flag = 1;
+                        });
+                    }else if(data.lottery_cycle == 2){
+                        window.popupStyle2.on('本周您的的机会用完了，下次再来吧！',function(event){
+                            flag = 1;
+                        });
+                    }else if(data.lottery_cycle == 3){
+                        window.popupStyle2.on('本月您的的机会用完了，下次再来吧！',function(event){
+                            flag = 1;
+                        });
+                    }else if(data.lottery_cycle == 100){
+                        window.popupStyle2.on('您的机会用完了，下次活动再来吧！',function(event){
+                            flag = 1;
+                        });
+                    }else{
+                        window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                            flag = 1;
+                        });
+                    }
 
                 }else if(data.result == 'activity_is_over'){
 
@@ -837,12 +859,27 @@ module.exports = {
                     }else if(data.result == 'has-no-chance'){
 
                         //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
-                        window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
-                            flag = 1;
-                        });
-//                        window.popupStyle2.on('本次活动您的抽奖机会已用完',function(event){
-//                            flag = 1;
-//                        });
+                        if(data.lottery_cycle == 1){
+                            window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                                flag = 1;
+                            });
+                        }else if(data.lottery_cycle == 2){
+                            window.popupStyle2.on('本周您的的机会用完了，下次再来吧！',function(event){
+                                flag = 1;
+                            });
+                        }else if(data.lottery_cycle == 3){
+                            window.popupStyle2.on('本月您的的机会用完了，下次再来吧！',function(event){
+                                flag = 1;
+                            });
+                        }else if(data.lottery_cycle == 100){
+                            window.popupStyle2.on('您的机会用完了，下次活动再来吧！',function(event){
+                                flag = 1;
+                            });
+                        }else{
+                            window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                                flag = 1;
+                            });
+                        }
 
                     }else if(data.result == 'activity_is_over'){
 
