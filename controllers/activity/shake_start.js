@@ -132,7 +132,7 @@ module.exports = {
 
                 var countUserByPoints;//根据积分计算多少次数
                 var returnCount;//根据系统后台设置，返回多少次机会
-                var lottery_count;//保存后台设置，限制用户玩多少次机会
+                var lottery_count;//保存后台设置，用户还可以玩多少次机会（剩余的机会）
 
 
 
@@ -654,10 +654,12 @@ module.exports = {
                 if(data.result == 'has-no-chance'){
                     //您的机会已用完，下次再来试试吧
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
-                    window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
+//                    window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
+//                        flag = 1;
+//                    });
+                    window.popupStyle2.on('本次活动您的抽奖机会已用完',function(event){
                         flag = 1;
                     });
-
 
                 }else if(data.result == 'activity_is_over'){
 
@@ -835,7 +837,10 @@ module.exports = {
                     }else if(data.result == 'has-no-chance'){
 
                         //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
-                        window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
+//                        window.popupStyle2.on('今天您的机会用完了，明天再来试一试吧！',function(event){
+//                            flag = 1;
+//                        });
+                        window.popupStyle2.on('本次活动您的抽奖机会已用完',function(event){
                             flag = 1;
                         });
 
@@ -861,10 +866,12 @@ module.exports = {
                             if(_i > 0){
                                 var _points = parseInt(data.points);//每次摇一摇将消耗的积分
                                 if(_points == 0){
+                                    //本次活动您共有5次抽奖机会，已使用2次
                                     window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
                                         flag = 1;
                                     });
                                 }else{
+                                    //本次活动您共有5次抽奖机会，已使用2次
                                     window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
                                         flag = 1;
                                     });
