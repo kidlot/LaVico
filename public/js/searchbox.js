@@ -88,9 +88,6 @@ $.fn.searchConditions = function(){
         if(data[0] == "registerTime"){
             data[1] =  data[1];
         }
-        if(data[0] == "time"){
-            data[1] =  data[1];
-        }
         if(data[0] == "HaiLanMemberInfo.type"){
             data[1] = parseInt(data[1]);
         }

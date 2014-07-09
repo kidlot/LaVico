@@ -79,7 +79,6 @@ module.exports = {
                 count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
                 var conditions = search.conditions(seed) || {} ;
-                console.log("conditions__1",conditions)
                 if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
                     conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
                     conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
@@ -123,7 +122,6 @@ module.exports = {
                         conditions.$and[0].birthday = investigation;
                     }
                 }
-                console.log("conditions__2",conditions)
                 var _data = {};
                 var _rows = [];
 

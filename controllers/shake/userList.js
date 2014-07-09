@@ -87,6 +87,51 @@ module.exports = {
                 count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
                 var conditions = search.conditions(seed) || {} ;
+
+                if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
+                    conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
+                    conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+                }
+
+                if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
+                    conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
+                    conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
+                }
+                //年龄 任意
+                if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday){
+                    if(conditions.$or[0].birthday.$gt){
+                        conditions.$or[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$or[0].birthday.$lt){
+                        conditions.$or[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                    }else if(conditions.$or[0].birthday.$lte){
+                        conditions.$or[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$or[0].birthday.$gte){
+                        conditions.$or[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                    }else{
+                        var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-01-01 00:00:00").getTime();
+                        var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-12-31 23:59:59").getTime();
+                        var investigation  = {$gte:gt,$lte:lt};
+                        conditions.$or[0].birthday=investigation;
+                    }
+                }
+                //年龄 全部
+                if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday){
+                    if(conditions.$and[0].birthday.$gt){
+                        conditions.$and[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$and[0].birthday.$lt){
+                        conditions.$and[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                    }else if(conditions.$and[0].birthday.$lte){
+                        conditions.$and[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$and[0].birthday.$gte){
+                        conditions.$and[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                    }else{
+                        var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-01-01 00:00:00").getTime();
+                        var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-12-31 23:59:59").getTime();
+                        var investigation  = {$gte:gt,$lte:lt};
+                        conditions.$and[0].birthday = investigation;
+                    }
+                }
+
                 var _data = {};
                 var _rows = [];
 

@@ -105,6 +105,16 @@ module.exports = {
 
     }
     , viewIn : function(){
+        $.searchInitConditions([
+            {field:'realname',title:'姓名',type:'text'}
+            , {field:'gender',title:'性别',type:'gender'}
+            , {field:'birthday',title:'年龄',type:'birthday'}
+            , {field:'email',title:'电子邮件',type:'text'}
+            , {field:'mobile',title:'移动电话',type:'text'}
+            , {field:'registerTime',title:'注册时间',type:'date'}
+            , {field:'followTime',title:'关注时间',type:'date'}
+            , {field:'tags',title:'标签',type:'text'}
+        ]);
 
         $('#startDate').datetimepicker({
             format: 'yyyy-mm-dd',
