@@ -1501,7 +1501,7 @@ exports.load = function () {
             nut.model.logic = "null";
         }else{
             nut.model.conditions = encodeURIComponent(seed.conditions);
-            nut.model.logic = seed.logic;
+            nut.model.logic = encodeURIComponent(seed.logic);
         }
         var conditions = search.conditions(seed);
         if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
@@ -1548,13 +1548,13 @@ exports.load = function () {
             }
         }
 
-        console.log(conditions)
         var collCus = helper.db.coll("welab/customers") ;
         var collMsg = helper.db.coll("welab/messages") ;
         var collReply = helper.db.coll("welab/reply") ;
         var pg ;
 
         var messageWhere = {replyFor:null}
+        var isok = false;
 
         // 单独增加消息类型的搜索
         if(conditions && (conditions['$or'])){
@@ -1564,6 +1564,7 @@ exports.load = function () {
                 var _where = conditions['$or'][i]
                 if(_where['message.type']){
                     messageWhere.type = _where['message.type']
+                    isok=true;
                     conditions['$or'].splice(i,1)
                 }
             }
@@ -1579,6 +1580,7 @@ exports.load = function () {
                 var _where = conditions['$and'][i]
                 if(_where['message.type']){
                     messageWhere.type = _where['message.type']
+                    isok=true;
                     conditions['$and'].splice(i,1)
                 }
             }
@@ -1596,6 +1598,7 @@ exports.load = function () {
                 var _where = conditions['$or'][i]
                 if(_where['message.time']){
                     messageWhere.time = _where['message.time']
+                    isok=true;
                     conditions['$or'].splice(i,1)
                 }
             }
@@ -1611,6 +1614,7 @@ exports.load = function () {
                 var _where = conditions['$and'][i]
                 if(_where['message.time']){
                     messageWhere.time = _where['message.time']
+                    isok=true;
                     conditions['$and'].splice(i,1)
                 }
             }
@@ -1619,26 +1623,26 @@ exports.load = function () {
                 delete conditions['$and'];
             }
         }
+
         var _pageNum;
         if(typeof seed.page == 'undefined'){
             _pageNum = 1;
         }else{
             _pageNum = parseInt(seed.page);
         }
-        collMsg.find(messageWhere).sort({time:-1}).page({
-            perPage: 10
-            , pageNum:_pageNum
-            ,filter: conditions && function(doc,cb){
 
+        collMsg.find(messageWhere).sort({time:-1}).page({
+            pageNum:_pageNum,
+            perPage: 10,
+            filter: conditions && function(doc,cb){
                 collCus.findOne({ $and: [{wechatid: doc.from}, conditions] },function(err,docCUS){
                         if(err) console.log(err) ;
                         cb(docCUS?doc:false) ;
                     }
                 );
-            }
-            , callback: this.hold(function(err,page){
+            },
+            callback: this.hold(function(err,page){
                 if(err) throw err ;
-
                 pg = nut.model.page = page || {} ;
 
                 page.docs && this.each(page.docs,function(idx,msgdoc){
@@ -1646,7 +1650,6 @@ exports.load = function () {
                     // format date/time
                     var _timeOffset = new Date().getTimezoneOffset()
                     var formattime = new Date(msgdoc.time + (-_timeOffset * 60 *1000)).toISOString() ;
-                    //console.log(formattime) ;
                     msgdoc.date = formattime.substr(0,10).replace(/\-/g,'/') ;
                     msgdoc.time = formattime.substr(11,5) ;
 
@@ -1654,9 +1657,7 @@ exports.load = function () {
                     msgdoc.typeName = msgTypeNames[msgdoc.type] || msgdoc.type ;
 
                     // link to customer
-                    collCus.findOne(
-                        {wechatid:msgdoc.from}
-                        , this.hold(function(err,cusdoc){
+                    collCus.findOne({wechatid:msgdoc.from}, this.hold(function(err,cusdoc){
                             if(err) throw err ;
 
                             if(cusdoc){
@@ -1676,9 +1677,7 @@ exports.load = function () {
                     ) ;
 
                     // link to reply
-                    collMsg.findOne(
-                        {reply: msgdoc._id}
-                        , this.hold(function(err,rmsgdoc){
+                    collMsg.findOne({reply: msgdoc._id}, this.hold(function(err,rmsgdoc){
                             if(err) throw err ;
 
                             if(!rmsgdoc)
@@ -1687,9 +1686,7 @@ exports.load = function () {
                             // matched keywords
                             msgdoc.matchedKeywords = rmsgdoc.matchedKeywords ;
 
-                            collReply.findOne(
-                                {_id: rmsgdoc.content}
-                                , this.hold(function(err,replydoc){
+                            collReply.findOne({_id: rmsgdoc.content}, this.hold(function(err,replydoc){
                                     if(err) throw err ;
                                     msgdoc.reply = replydoc ;
                                 })
@@ -1702,7 +1699,7 @@ exports.load = function () {
 
 
         this.step(function(){
-            //console.log("pg",pg)
+//            console.log("pg",pg)
         }) ;
     }
 
