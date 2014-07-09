@@ -157,7 +157,7 @@
                             <table>
                                 <tr>
                                     <td style="width: 157px;" >
-                                        <select  size="10" class="form-control " style="width: 165px;height: 200px;" id="maps">
+                                        <select multiple="multiple" size="10"  class="form-control " style="width: 165px;height: 200px;" id="maps" ondblclick="maps_Doubleclick()">
                                             <foreach for="@shops.list" var="docmaps">
                                                 <option value="{@docmaps.CODE.replace(/\s*/g, '')}">{@docmaps.NAME}</option>
                                             </foreach>
@@ -180,7 +180,7 @@
                                     </td>
 
                                     <td style="margin-top: 10px;width: 165px;">
-                                        <select  size="10" class="form-control" style="width: 157px;height: 200px;padding-bottom: -28px" id="maps_two">
+                                        <select multiple="multiple" size="10" class="form-control" style="width: 157px;height: 200px;padding-bottom: -28px" id="maps_two">
 
                                         </select>
                                         <input type="hidden" id="mapsValue" value="{@ doc.maps}">
@@ -217,10 +217,11 @@
 <script>
     var maps = JSON.parse('{@maps}');
 
+    //搜索
     function search(){
         var maplist=[];
 
-        $('#maps_there option').each(function () {
+        $('#maps option').each(function () {
             var $option = $(this);
             var map={};
             map.text = $option.html();
@@ -237,15 +238,11 @@
         }
     }
 
-    function clears(){
-        $("#maps_two").empty();
-    }
-
-    function chang(){
+    //备选框双击事件
+    function maps_Doubleclick(){
         var map_text = $("#maps option:selected").text();
         var map_val = $("#maps option:selected").val();
         var maplist=[];
-
         $('#maps_two option').each(function () {
             var $option = $(this);
             var map={};
@@ -261,12 +258,79 @@
                 }
             }
         }
+        var  myselect_maps=document.getElementById("maps");
+        var index_maps = myselect_maps.selectedIndex;
+        if(index_maps!="-1"){
+            myselect_maps.options.remove(index_maps);
+        }
         if(isok){
             var  myselect=document.getElementById("maps_two");
             myselect.options.add(new Option(map_text,map_val),0);
         }
     }
 
+    //清除
+    function clears(){
+        var maplist=[];
+        $("#maps_two").empty();
+        $('#maps_there option').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.html();
+            map.value = $option.val();
+            maplist.push(map)
+        });
+        //$("#maps").empty();
+        for(var i=0;i<maplist.length;i++){
+            $("#maps").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+        }
+    }
+
+    //备选框单条数据移至已选框
+    function chang(){
+        var maps_two=[];
+        var maps_one=[];
+        $('#maps_two option').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.text();
+            map.value = $option.val();
+            maps_two.push(map)
+        });
+
+        $('#maps option:selected').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.text();
+            map.value = $option.val();
+            maps_one.push(map)
+        });
+
+        for(var i=0;i<maps_one.length;i++){
+            maps_one[i].equals = true;
+        }
+
+        for(var i=0;i<maps_one.length;i++){
+            for(var j=0;j<maps_two.length;j++){
+                if(maps_one[i].value==maps_two[j].value){
+                    maps_one[i].equals = false;
+                }
+            }
+        }
+        console.log(maps_one)
+        for(var i=0;i<maps_one.length;i++){
+            var  myselect_maps=document.getElementById("maps");
+            var index = myselect_maps.selectedIndex;
+            if(index!="-1"){
+                myselect_maps.options.remove(index);
+            }
+            if(maps_one[i].equals && maps_one[i].equals == true){
+                var  myselect=document.getElementById("maps_two");
+                myselect.options.add(new Option(maps_one[i].text,maps_one[i].value),0);
+            }
+        }
+    }
+    //反选
     function nochackall(){
         var mapslist = [];
         $('#maps option').each(function () {
@@ -308,10 +372,11 @@
             }
         }
     }
+    //全选
     function chackall(){
         $("#maps_two").empty();
         var maplist=[];
-        $('#maps option').each(function () {
+        $('#maps_there option').each(function () {
             var $option = $(this);
             var map={};
             map.text = $option.html();
@@ -321,13 +386,51 @@
         for(var i=0;i<maplist.length;i++){
             $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
         }
+        $("#maps").empty();
     }
 
+    //已选框单条数据移至备选框
     function changmap(){
-        var  myselect=document.getElementById("maps_two");
-        var index=myselect.selectedIndex;
-        if(index!="-1"){
-            myselect.options.remove(index);
+
+        var maps_two=[];
+        var maps_one=[];
+        $('#maps_two option:selected').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.text();
+            map.value = $option.val();
+            maps_two.push(map)
+        });
+
+        $('#maps option').each(function () {
+            var $option = $(this);
+            var map={};
+            map.text = $option.text();
+            map.value = $option.val();
+            maps_one.push(map)
+        });
+
+        for(var i=0;i<maps_two.length;i++){
+            maps_two[i].equals = true;
+        }
+
+        for(var i=0;i<maps_one.length;i++){
+            for(var j=0;j<maps_two.length;j++){
+                if(maps_one[i].value==maps_two[j].value){
+                    maps_two[i].equals = false;
+                }
+            }
+        }
+        for(var i=0;i<maps_two.length;i++){
+            var  myselect_mapstwo=document.getElementById("maps_two");
+            var index = myselect_mapstwo.selectedIndex;
+            if(index!="-1"){
+                myselect_mapstwo.options.remove(index);
+            }
+            if(maps_two[i].equals && maps_two[i].equals == true){
+                var  myselect_maps=document.getElementById("maps");
+                myselect_maps.options.add(new Option(maps_two[i].text,maps_two[i].value),0);
+            }
         }
     }
 

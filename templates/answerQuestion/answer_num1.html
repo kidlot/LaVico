@@ -76,7 +76,12 @@ function isReg(){
 
         window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到上次答题的结果",function(event){
             if(event == "confirm"){
-                location.href="/lavico/answerQuestion/finish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true";
+                if('{@themeType}'==3){
+                    location.href="/lavico/answerQuestion/guessfinish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true";
+                }else{
+                    location.href="/lavico/answerQuestion/finish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true";
+                }
+
             }
         })
         return false;

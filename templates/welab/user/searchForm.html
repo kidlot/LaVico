@@ -1,10 +1,10 @@
 
-<div id="form-default" style="margin-bottom: 10px">
-    <button class="btn btn-primary handle_btn" type="button" onclick="$('#searchView').fadeIn('100')"><em class="icon01"></em>条件筛选</button>
-    <a class="btn btn-xs btn-primary mhm pull-right" id="exportssd">全部导出</a>
-    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信">
-    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签" onclick="userSetTagView()">
-</div>
+<!--<div id="form-default" style="margin-bottom: 10px">-->
+    <!--<button class="btn btn-primary handle_btn" type="button" onclick="$('#searchView').fadeIn('100')"><em class="icon01"></em>条件筛选</button>-->
+    <!--<a class="btn btn-xs btn-primary mhm pull-right" id="exportssd">全部导出</a>-->
+    <!--<input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信">-->
+    <!--<input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签" onclick="userSetTagView()">-->
+<!--</div>-->
 <script>
     var host = window.location.href;
     var reg = /welab\/user\/list/i;
@@ -14,49 +14,49 @@
 </script>
 <div class="form-search searchbox" id="searchView" style="display: none">
 
-  <div style="margin-top: 5px; margin-bottom: 5px;">
-    <span>符合以下</span>
+    <div style="margin-top: 5px; margin-bottom: 5px;">
+        <span>符合以下</span>
 
-    <select name="searchLogic" class="form-control input-sm"  style="width:80px;">
-      <option value="or">任意</option>
-      <option value="and">全部</option>
-    </select>
-    <span>条件</span>
-  </div>
+        <select name="searchLogic" class="form-control input-sm"  style="width:80px;">
+            <option value="or">任意</option>
+            <option value="and">全部</option>
+        </select>
+        <span>条件</span>
+    </div>
 
-  <div class="searchConditionOuter"></div>
+    <div class="searchConditionOuter"></div>
 
     <div class="mb15">
         <a class="glyphicon glyphicon-plus-sign lnk-add-condition" href="javascript:void(0)"></a> <a class="lnk-add-condition" href="javascript:void(0)">添加条件</a>
     </div>
 
-  <div>
-      <button type="button" class="btn btn-embossed btn-primary" onclick="btnsearch(this)">查看</button>
-      <button type="button" class="btn btn-embossed btn-primary " onclick="btncancel()">取消筛选</button>
-      <button type="button" class="btn btn-embossed btn-primary " style="display: none"  onclick="exportXsl(this)">筛选导出</button>
-  </div>
+    <div>
+        <button type="button" class="btn btn-embossed btn-primary" onclick="btnsearch(this)">查看</button>
+        <button type="button" class="btn btn-embossed btn-primary " onclick="btncancel()">取消筛选</button>
+        <button type="button" class="btn btn-embossed btn-primary "  onclick="exportXsl(this)">筛选导出</button>
+    </div>
 
 </div>
 
 <div style="display:none" class="searchTemplates">
-  <div class="searchConditionTemplate searchCondition" style="margin-bottom: 5px;">
-    <a href="javascript:;"><i class="glyphicon glyphicon-minus-sign removeItem"></i></a>
-    <select name="searchFieldName" class="form-control input-sm" style="width:80px">
-      <option value="realname" search-field-type="text">姓名</option>
-      <option value="gender" search-field-type="gender">性别</option>
-      <option value="birthday" search-field-type="birthday">年龄</option>
-      <option value="email" search-field-type="text">电子邮件</option>
-      <option value="mobile" search-field-type="text">移动电话</option>
-      <option value="registerTime" search-field-type="date">注册时间</option>
-      <option value="followTime" search-field-type="date">关注时间</option>
-      <option value="tags" search-field-type="value">标签</option>
-    </select>
-  </div>
+    <div class="searchConditionTemplate searchCondition" style="margin-bottom: 5px;">
+        <a href="javascript:;"><i class="glyphicon glyphicon-minus-sign removeItem"></i></a>
+        <select name="searchFieldName" class="form-control input-sm" style="width:80px">
+            <option value="realname" search-field-type="text">姓名</option>
+            <option value="gender" search-field-type="gender">性别</option>
+            <option value="birthday" search-field-type="birthday">年龄</option>
+            <option value="email" search-field-type="text">电子邮件</option>
+            <option value="mobile" search-field-type="text">移动电话</option>
+            <option value="registerTime" search-field-type="date">注册时间</option>
+            <option value="followTime" search-field-type="date">关注时间</option>
+            <option value="tags" search-field-type="value">标签</option>
+        </select>
+    </div>
 
   <span class="searchExpression searchExpressionGender">
     <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
-      <option value="male">男</option>
-      <option value="female">女</option>
+        <option value="male">男</option>
+        <option value="female">女</option>
     </select>
   </span>
 
@@ -92,11 +92,11 @@
 
   <span class="searchExpression searchExpressionText">
     <select name="searchConditionOperator" class="form-control input-sm" style="width:80px">
-      <option value="is">是</option>
-      <option value="not">不是</option>
-      <option value="match">包含</option>
-      <option value="notmatch">不包含</option>
-      <!--<option value="startwith">起始于</option>-->
+        <option value="is">是</option>
+        <option value="not">不是</option>
+        <option value="match">包含</option>
+        <option value="notmatch">不包含</option>
+        <!--<option value="startwith">起始于</option>-->
         <!--<option vakue="endwith">结束于</option>-->
     </select>
     <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
@@ -104,11 +104,11 @@
 
   <span class="searchExpression searchExpressionNum">
     <select name="searchConditionOperator" class="form-control input-sm" style="width:80px">
-      <option value="eq">等于</option>
-      <option value="gt">大于</option>
-      <option value="lt">小于</option>
-      <option value="gte">大于等于</option>
-      <option value="lte">小于等于</option>
+        <option value="eq">等于</option>
+        <option value="gt">大于</option>
+        <option value="lt">小于</option>
+        <option value="gte">大于等于</option>
+        <option value="lte">小于等于</option>
     </select>
     <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
   </span>
@@ -137,21 +137,21 @@
 
 <!--&lt;!&ndash; 设置标签 &ndash;&gt;-->
 <!--<div class="modal fade" id="tagModal">-->
-    <!--<div class="modal-dialog">-->
-        <!--<div class="modal-content">-->
-            <!--<div class="modal-header">-->
-                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-                <!--<h4 class="modal-title">设置标签</h4>-->
-            <!--</div>-->
-            <!--<div class="modal-body">-->
-                <!--<input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm tm-input tm-input-info" style="width:240px;"/>-->
-            <!--</div>-->
-            <!--<div class="modal-footer">-->
-                <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-                <!--<button type="button" class="btn btn-primary" onclick="userTagBtn()">保存</button>-->
-            <!--</div>-->
-        <!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
-    <!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+<!--<div class="modal-dialog">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+<!--<h4 class="modal-title">设置标签</h4>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm tm-input tm-input-info" style="width:240px;"/>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+<!--<button type="button" class="btn btn-primary" onclick="userTagBtn()">保存</button>-->
+<!--</div>-->
+<!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
 <!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
 
 
