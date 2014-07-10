@@ -44,9 +44,9 @@ module.exports = {
 function _log(wxid,memberID,action,url,fromWelab,replyid){
 
 
-    helper.db.coll("lavico/user/views").insert({createTime:new Date().getTime(),wxid:wxid,memberID:memberID,action:action,url:url}, function(err, doc){
-        if(err)console.log(err)
-    })
+//    helper.db.coll("lavico/user/views").insert({createTime:new Date().getTime(),wxid:wxid,memberID:memberID,action:action,url:url}, function(err, doc){
+//        if(err)console.log(err)
+//    })
 
 
     // 自己浏览
