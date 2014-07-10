@@ -236,7 +236,7 @@
         var replyid = "";
         if(location.search.match(/replyid=(.*)$/)){
 
-            wxid = location.search.match(/replyid=(.*)$/)[1].split("&")[0];
+            replyid = location.search.match(/replyid=(.*)$/)[1].split("&")[0];
         }
         return replyid;
     }
