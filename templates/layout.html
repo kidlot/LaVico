@@ -157,7 +157,7 @@
                 data:{
                     'wxid':getWxid(),
                     'url':location.href,
-                    'replyid':'{@replyid}',
+                    'replyid':getReplyID(),
                     'action' : "转发朋友圈"
                 },
                 success:function(data){
@@ -185,7 +185,7 @@
                 data:{
                     'wxid':getWxid(),
                     'url':location.href,
-                    'replyid':'{@replyid}',
+                    'replyid':getReplyID(),
                     'action' : "转发好友"
                 },
                 success:function(data){
@@ -230,6 +230,15 @@
             wxid = location.search.match(/wechatid=(.*)$/)[1].split("&")[0];
         }
         return wxid;
+    }
+    function getReplyID (){
+
+        var replyid = "";
+        if(location.search.match(/replyid=(.*)$/)){
+
+            wxid = location.search.match(/replyid=(.*)$/)[1].split("&")[0];
+        }
+        return replyid;
     }
 
     function replaceWxid (url){

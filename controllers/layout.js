@@ -7,7 +7,6 @@ module.exports = {
     view: "lavico/templates/layout.html",
     process: function (seed, nut) {
 
-        nut.model.replyid = seed.replyid
     },
     viewIn:function(){
 
