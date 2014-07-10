@@ -1,3 +1,4 @@
+var middleware = require('lavico/lib/middleware.js');//引入中间件
 module.exports={
     layout:null,
     view:null,
@@ -41,6 +42,126 @@ module.exports={
         })
 
         this.step(function(docOptions){
+//            //竞猜型
+//            if(themetype==3){
+//                if(type==0){
+//                    //记录选项
+//                    if(!isNaN(score)){
+//                        //session累加
+//                        var scores=0;
+//                        if(isNaN(parseInt(score))){
+//                            scores=0
+//                        }else{
+//                            scores=parseInt(score)
+//                            then.req.session.scoreAll+=parseInt(score);
+//                        }
+//                        //记录积分
+//                        helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+//                                "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
+//                            {$set: {
+//                                "wechatid": wechatid,
+//                                "themeId": helper.db.id(_id),
+//                                "isFinish": false,
+//                                "optionId": parseInt(optionId),
+//                                "chooseId": parseInt(chooseId),
+//                                "getChooseScore": scores,
+//                                "getChooseLabel":"",
+//                                "getLabel": "",
+//                                "getGift":  "",
+//                                "getScore": "",
+//                                "type":type,
+//                                "createTime": new Date().getTime(),
+//                                "memberId":memberid,
+//                                "themetype":themetype
+//                            }}, {upsert: true},function(err,doc){
+//                                if(err) throw err;
+//                                console.log(doc)
+//                            })
+//                    }
+//                    var memoString = docOptions.theme + customerLabel;
+//                    jsonData = {};
+//                    jsonData.memberId = memberid;
+//                    jsonData.tag = memoString;
+//                    middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+//                        if (err) throw err;
+//                        console.log("tag record:" + doc);
+//                    }))
+//                    helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+//                        if(err ){
+//                            throw err;
+//                        }
+//                    }));
+//                }else if(type==1){
+//                    then.req.session.scoreAll+=parseInt(score);
+//                    var selectChooseIdArr=seed.chooseId;
+//                    var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
+//                    var selId="["+selectChooseId.replace("_",",")+"]";
+//                    helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+//                            "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
+//                        {$set: {
+//                            "wechatid": wechatid,
+//                            "themeId": helper.db.id(_id),
+//                            "isFinish": false,
+//                            "optionId": parseInt(optionId),
+//                            "chooseId": selId,
+//                            "getChooseScore": "",
+//                            "getChooseLabel":"",
+//                            "getLabel": "",
+//                            "getGift":  "",
+//                            "getScore": "",
+//                            "type":type,
+//                            "createTime": new Date().getTime(),
+//                            "memberId":memberid,
+//                            "themetype":themetype
+//                        }}, {upsert: true},function(err,doc){
+//                            if(err) throw err;
+//                            console.log(doc)
+//                        })
+//                    var memoString = docOptions.theme + customerLabel;
+//                    jsonData = {};
+//                    jsonData.memberId = memberid;
+//                    jsonData.tag = memoString;
+//                    middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+//                        if (err) throw err;
+//                        console.log("tag record:" + doc);
+//                    }))
+//                    helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+//                        if(err ){
+//                            throw err;
+//                        }
+//                    }));
+//                }
+//                if(chooseNext!=""){
+//                    then.req.session.optionId = parseInt(chooseNext);
+//                    then.req.session.isFinish = false;
+//                    this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+wechatid+"&_id="+_id
+//                        +"&optionId="+parseInt(chooseNext)});
+//                    this.res.end();
+//                }else{
+//                    if(stopLabel!=""){
+//                        then.req.session.stopLabel=stopLabel;
+//                        then.req.session.optionId=optionId;
+//                        then.req.session.isFinish=true;
+//
+//                        this.res.writeHead(302, {'Location': "/lavico/answerQuestion/guessfinish?wechatid="+
+//                                wechatid+"&_id="+_id+"&stopLab=true&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
+//                        this.res.end();
+//                    }else{
+//                        if(finish!="true"){
+//                            then.req.session.optionId=(parseInt(optionId)+1);
+//                            then.req.session.isFinish=false;
+//
+//                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/answer?wechatid="+
+//                                wechatid+"&_id="+_id+"&optionId="+(parseInt(optionId)+1)});
+//                            this.res.end();
+//                        }else{
+//                            this.res.writeHead(302, {'Location': "/lavico/answerQuestion/guessfinish?wechatid="+
+//                                wechatid+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
+//                            this.res.end();
+//                        }
+//                    }
+//                }
+//            }else
             if(themetype==1){
                 if(type==0){
                 //单选

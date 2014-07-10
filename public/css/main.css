@@ -14,7 +14,7 @@ a.tel{color:#2d2d2d;}
 .activity-rules .text{width:92%; margin:0 auto;padding:4%; line-height:20px; } 
 .activity-rules .text .title{text-align:center; color:#000; font-size:1.4rem;}
 .activity-rules .title1{color:#bda172; font-size:1.4rem; padding-top:4%;}
-.subtext{ color:#646464; font-size:1.4rem; padding-top:2%; line-height:20px; }
+.subtext{ color:#646464; font-size:1.4rem; padding-top:2%; padding-bottom:2%;line-height:20px; }
 a.login_size{ color:#bda172; text-decoration:underline; font-size:1.6rem; font-weight:bold; }
 /*Member*/
 .vip_card_num{text-align: center; color:#999; font-size: 1.2rem; position: absolute; left:50%; top:78%; }

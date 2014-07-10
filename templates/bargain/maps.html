@@ -6,11 +6,13 @@
         <div class="store-listContent">
             <ul>
                 <foreach for="@doc.shops2" var="doc">
-                <li><a href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@doc.CODE}&_id={@_id}&wxid={@wxid}&city={@doc.city}'">
-                    <p class="name">{@ doc.name}</p>
-                    <p class="adree" style="max-width: 500px;"><span>地址：</span>{@ doc.address}</p>
-                    <p class="tel">电话：{@ doc.tel}</p>
-                </a></li>
+                <li>
+                    <a href="javascript:location.href='/lavico/store/searchByCity:show?CODE={@doc.CODE}&_id={@_id}&wxid={@wxid}&city={@doc.city}'">
+                        <p class="name">{@ doc.name}</p>
+                        <p class="adree"><span class="adree_left">地址：</span><span class="adree_right">{@doc.address}</span></p>
+                        <p class="tel"><span class="adree_left">电话：</span><span class="adree_right">{@doc.tel}</span></p>
+                    </a>
+                </li>
                 </foreach>
             </ul>
         </div>
