@@ -13,9 +13,9 @@ module.exports = {
                 var customers = customers || {}
 
                 if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
-                    _log(seed.wxid,customers.HaiLanMemberInfo.memberID,seed.action,decodeURIComponent(seed.url),seed.fromWelab||"");
+                    _log(seed.wxid,customers.HaiLanMemberInfo.memberID,seed.action,decodeURIComponent(seed.url),seed.fromWelab||"",seed.replyid);
                 }else{
-                    _log(seed.wxid,0,seed.action,decodeURIComponent(seed.url),seed.fromWelab||"");
+                    _log(seed.wxid,0,seed.action,decodeURIComponent(seed.url),seed.fromWelab||"",seed.replyid);
                 }
             }))
 
@@ -41,7 +41,7 @@ module.exports = {
 
 
 
-function _log(wxid,memberID,action,url,fromWelab){
+function _log(wxid,memberID,action,url,fromWelab,replyid){
 
 
     helper.db.coll("lavico/user/views").insert({createTime:new Date().getTime(),wxid:wxid,memberID:memberID,action:action,url:url}, function(err, doc){
@@ -55,6 +55,7 @@ function _log(wxid,memberID,action,url,fromWelab){
         helper.db.coll("welab/replyViewLog").insert({
                 "time": new Date().getTime(),
                 "action": "view",
+                reply:replyid,
                 "by": wxid
             }
             , function(err, doc){
@@ -68,6 +69,7 @@ function _log(wxid,memberID,action,url,fromWelab){
         helper.db.coll("welab/replyViewLog").insert({
                 "time": new Date().getTime(),
                 "action": "view."+fromWelab,
+                reply:replyid,
                 "by": wxid
             }
             , function(err, doc){
@@ -80,6 +82,7 @@ function _log(wxid,memberID,action,url,fromWelab){
         helper.db.coll("welab/replyViewLog").insert({
                 "time": new Date().getTime(),
                 "action": "share.friend",
+                reply:replyid,
                 "by": wxid
             }
             , function(err, doc){
@@ -91,6 +94,7 @@ function _log(wxid,memberID,action,url,fromWelab){
         helper.db.coll("welab/replyViewLog").insert({
                 "time": new Date().getTime(),
                 "action": "share.timeline",
+                reply:replyid,
                 "by": wxid
             }
             , function(err, doc){
