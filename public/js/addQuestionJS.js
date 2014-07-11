@@ -34,6 +34,22 @@ $(function () {
                 showCloseButton: true})
         }
 
+        if(!volumename && themeType==1){
+            _inputCheck = false;
+            $.globalMessenger().post({
+                message: "请填写劵名称！",
+                type: 'error',
+                showCloseButton: true})
+        }
+
+        if(beginTime>endTime){
+            _inputCheck = false;
+            $.globalMessenger().post({
+                message: "开始时间不能大于结束时间！",
+                type: 'error',
+                showCloseButton: true})
+        }
+
         if(!_inputCheck){
             return false;
         }
