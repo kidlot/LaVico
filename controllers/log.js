@@ -45,7 +45,7 @@ function _log(wxid,memberID,action,url,replyid){
     var _funcName = 'addReplyViewLog("'+wxid+'","'+replyid+'","'+action+'","'+url+'")'
     console.log(_funcName)
     helper.db.eval(_funcName,function(err,doc){
-        console.log("插入ViewLog",err)
+        console.log("插入ViewLog",err,doc)
     });
 
 }
