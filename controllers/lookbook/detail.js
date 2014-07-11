@@ -44,11 +44,11 @@ module.exports = {
         })
 
         this.step(function(){
-            console.log("wechatid:"+wxid)
+            //console.log("wechatid:"+wxid)
             if(wxid != undefined){
                 helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
                     var doc = doc || {};
-                    console.log("doc:"+doc.isFollow)
+                    //console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
                 }));
             }else{
@@ -59,8 +59,8 @@ module.exports = {
         this.step(function(){
             helper.db.coll("welab/customers").findOne({"wechatid":wxid},this.hold(function(err,doc){
                 if(err) throw err;
-                console.log("welab/customers")
-                console.log(doc)
+                //console.log("welab/customers")
+                //console.log(doc)
                 if(doc && doc.HaiLanMemberInfo){
                     if(doc.HaiLanMemberInfo.action=='bind') {
                         memberid = doc.HaiLanMemberInfo.memberID;
@@ -83,8 +83,8 @@ module.exports = {
         })
 
         this.step(function(){
-            console.log("wxid:"+seed.wxid)
-            console.log("_id:"+seed._id);
+            //console.log("wxid:"+seed.wxid)
+            //console.log("_id:"+seed._id);
             if(seed._id){
                 nut.model._id = seed._id
                 nut.model.pageNum = parseInt(seed.pageNum) || 1
@@ -96,11 +96,11 @@ module.exports = {
                     nut.model.doc = doc.page[nut.model.pageNum-1]
                     nut.model.lookbookType = doc.type
                     nut.model.sumPageNum = doc.page.length
-                    console.log(nut.model.allPage)
+                    //console.log(nut.model.allPage)
                 }))
             }else{
-                console.log("wxid:"+seed.wxid)
-                console.log("_id:"+seed._id);
+                //console.log("wxid:"+seed.wxid)
+                //console.log("_id:"+seed._id);
                 nut.disable();
                 var data = JSON.stringify({err:1,msg:"没有微信ID或产品ID"});
                 this.res.writeHead(200, { 'Content-Type': 'application/json' });

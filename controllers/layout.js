@@ -62,8 +62,7 @@ module.exports = {
                     'wxid':$("#wxid").val() || getWxid(),
                     'url':location.href,
                     'replyid':getReplyID(),
-                    'action' : "好友浏览",
-                    'fromWelab' : location.search.match(/fromWelab=(.*)$/)[1].split("&")[0]
+                    'action' : "view."+location.search.match(/fromWelab=(.*)$/)[1].split("&")[0]
                 },
                 success:function(data){
 
@@ -82,7 +81,7 @@ module.exports = {
                     'wxid':$("#wxid").val() || getWxid(),
                     'url':location.href,
                     'replyid':getReplyID(),
-                    'action' : "浏览"
+                    'action' : "view"
                 },
                 success:function(data){
 
