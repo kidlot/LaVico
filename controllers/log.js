@@ -13,9 +13,9 @@ module.exports = {
                 var customers = customers || {}
 
                 if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
-                    _log(seed.wxid,customers.HaiLanMemberInfo.memberID,seed.action,decodeURIComponent(seed.url),seed.fromWelab||"",seed.replyid);
+                    _log(seed.wxid,customers.HaiLanMemberInfo.memberID,seed.action,decodeURIComponent(seed.url),seed.replyid);
                 }else{
-                    _log(seed.wxid,0,seed.action,decodeURIComponent(seed.url),seed.fromWelab||"",seed.replyid);
+                    _log(seed.wxid,0,seed.action,decodeURIComponent(seed.url),seed.replyid);
                 }
             }))
 
@@ -40,67 +40,12 @@ module.exports = {
 
 
 
+function _log(wxid,memberID,action,url,replyid){
 
-function _log(wxid,memberID,action,url,fromWelab,replyid){
-
-
-//    helper.db.coll("lavico/user/views").insert({createTime:new Date().getTime(),wxid:wxid,memberID:memberID,action:action,url:url}, function(err, doc){
-//        if(err)console.log(err)
-//    })
-
-
-    // 自己浏览
-    if(action == "浏览"){
-
-        helper.db.coll("welab/replyViewLog").insert({
-                "time": new Date().getTime(),
-                "action": "view",
-                reply:replyid,
-                "by": wxid
-            }
-            , function(err, doc){
-                if(err)console.log(err)
-            })
-    }
-
-    // 好友浏览
-    if(action == "好友浏览"){
-
-        helper.db.coll("welab/replyViewLog").insert({
-                "time": new Date().getTime(),
-                "action": "view."+fromWelab,
-                reply:replyid,
-                "by": wxid
-            }
-            , function(err, doc){
-                if(err)console.log(err)
-            })
-    }
-    // 转发
-    if(action == "转发好友"){
-
-        helper.db.coll("welab/replyViewLog").insert({
-                "time": new Date().getTime(),
-                "action": "share.friend",
-                reply:replyid,
-                "by": wxid
-            }
-            , function(err, doc){
-                if(err)console.log(err)
-            })
-    }
-    if(action == "转发朋友圈"){
-
-        helper.db.coll("welab/replyViewLog").insert({
-                "time": new Date().getTime(),
-                "action": "share.timeline",
-                reply:replyid,
-                "by": wxid
-            }
-            , function(err, doc){
-                if(err)console.log(err)
-            })
-    }
-
+    var _funcName = 'addReplyViewLog("'+wxid+'","'+replyid+'","'+action+'","'+url+'")'
+    console.log(_funcName)
+    helper.db.eval(_funcName,function(err,doc){
+        console.log("插入ViewLog",err)
+    });
 
 }
