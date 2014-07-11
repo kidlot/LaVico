@@ -157,7 +157,8 @@
                 data:{
                     'wxid':getWxid(),
                     'url':location.href,
-                    'action' : "转发朋友圈"
+                    'replyid':getReplyID(),
+                    'action' : "share.timeline"
                 },
                 success:function(data){
 
@@ -184,7 +185,8 @@
                 data:{
                     'wxid':getWxid(),
                     'url':location.href,
-                    'action' : "转发好友"
+                    'replyid':getReplyID(),
+                    'action' : "share.friend"
                 },
                 success:function(data){
 
@@ -226,8 +228,20 @@
         }else if(location.search.match(/wechatid=(.*)$/)){
 
             wxid = location.search.match(/wechatid=(.*)$/)[1].split("&")[0];
+        }else if(location.search.match(/by=(.*)$/)){
+
+            wxid = location.search.match(/by=(.*)$/)[1].split("&")[0];
         }
         return wxid;
+    }
+    function getReplyID (){
+
+        var replyid = "";
+        if(location.search.match(/replyid=(.*)$/)){
+
+            replyid = location.search.match(/replyid=(.*)$/)[1].split("&")[0];
+        }
+        return replyid;
     }
 
     function replaceWxid (url){

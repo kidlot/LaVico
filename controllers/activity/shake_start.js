@@ -666,11 +666,11 @@ module.exports = {
                             flag = 1;
                         });
                     }else if(data.lottery_cycle == 2){
-                        window.popupStyle2.on('本周您的的机会用完了，下次再来吧！',function(event){
+                        window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
                             flag = 1;
                         });
                     }else if(data.lottery_cycle == 3){
-                        window.popupStyle2.on('本月您的的机会用完了，下次再来吧！',function(event){
+                        window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
                             flag = 1;
                         });
                     }else if(data.lottery_cycle == 100){
@@ -864,11 +864,11 @@ module.exports = {
                                 flag = 1;
                             });
                         }else if(data.lottery_cycle == 2){
-                            window.popupStyle2.on('本周您的的机会用完了，下次再来吧！',function(event){
+                            window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
                                 flag = 1;
                             });
                         }else if(data.lottery_cycle == 3){
-                            window.popupStyle2.on('本月您的的机会用完了，下次再来吧！',function(event){
+                            window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
                                 flag = 1;
                             });
                         }else if(data.lottery_cycle == 100){
@@ -922,11 +922,14 @@ module.exports = {
                                         flag = 1;
                                     });
                                 }else if(data.lottery_cycle == 2){
-                                    window.popupStyle2.on('本周您的的机会用完了，下次再来吧！',function(event){
+//                                    window.popupStyle2.on('本周您的的机会用完了，下次再来吧！',function(event){
+//                                        flag = 1;
+//                                    });
+                                    window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
                                         flag = 1;
                                     });
                                 }else if(data.lottery_cycle == 3){
-                                    window.popupStyle2.on('本月您的的机会用完了，下次再来吧！',function(event){
+                                    window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
                                         flag = 1;
                                     });
                                 }else if(data.lottery_cycle == 100){
