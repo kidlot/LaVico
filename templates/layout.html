@@ -228,6 +228,9 @@
         }else if(location.search.match(/wechatid=(.*)$/)){
 
             wxid = location.search.match(/wechatid=(.*)$/)[1].split("&")[0];
+        }else if(location.search.match(/by=(.*)$/)){
+
+            wxid = location.search.match(/by=(.*)$/)[1].split("&")[0];
         }
         return wxid;
     }
