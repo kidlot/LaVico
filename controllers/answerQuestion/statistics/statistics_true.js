@@ -553,6 +553,7 @@ module.exports={
                 var docs_themeQuestion2;
                 var _id=seed._id;
                 var all2=0;
+                var newArr=[];
                 then.step(function(){
                     helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},then.hold(function(err,doc){
                         if(err) throw err;
@@ -560,22 +561,58 @@ module.exports={
                     }))
                 });
 
-                then.step(function(){
-                    for(var i in docs_themeQuestion2.scoreMinMax){
-                        var score=docs_themeQuestion2.scoreMinMax[i].getScore;
-                        (function(x,w){
-                            helper.db.coll("lavico/custReceive").count({themeId:helper.db.id(_id),isFinish:true,getScore:x},
-                              then.hold(function(err,doc){
-                                if(err) throw err;
-                                w.sinScore=doc;
-                                all2+=doc;
-                            }))
-                        })(score,docs_themeQuestion2.scoreMinMax[i]);
+                this.step(function(){
+                    if(docs_themeQuestion2){
+                        this.step(function(){
+                            for(var i=0;i<docs_themeQuestion2.scoreMinMax.length;i++){
+                                var flag=true;
+                                for(var j=0;j<newArr.length;j++){
+                                    if(docs_themeQuestion2.scoreMinMax[i].getScore==newArr[j].getScore){
+                                        flag=false;
+                                        break;
+                                    }
+                                }
+                                if(flag){
+                                    var result={};
+                                    result.getScore = docs_themeQuestion2.scoreMinMax[i].getScore;
+                                    newArr.push(result);
+                                }
+                            }
+                        })
                     }
+                })
+
+
+                then.step(function(){
+                    if(newArr.length>0){
+                        for(var i=0;i<newArr.length;i++){
+                            var score = newArr[i].getScore;
+                            (function(x,w){
+                                helper.db.coll("lavico/custReceive").count({themeId:helper.db.id(_id),isFinish:true,getScore:x},
+                                    then.hold(function(err,doc){
+                                        if(err) throw err;
+                                        w.sinScore=doc;
+                                        all2+=doc;
+                                    }))
+                            })(score,newArr[i]);
+                        }
+                    }
+
+//                    for(var i in docs_themeQuestion2.scoreMinMax){
+//                        var score=docs_themeQuestion2.scoreMinMax[i].getScore;
+//                        (function(x,w){
+//                            helper.db.coll("lavico/custReceive").count({themeId:helper.db.id(_id),isFinish:true,getScore:x},
+//                              then.hold(function(err,doc){
+//                                if(err) throw err;
+//                                w.sinScore=doc;
+//                                all2+=doc;
+//                            }))
+//                        })(score,docs_themeQuestion2.scoreMinMax[i]);
+//                    }
                 });
 
                 then.step(function(){
-                    nut.model.docs_2=docs_themeQuestion2
+                    nut.model.docs_2=newArr || {}
                     nut.model.all2=all2;
                 })
             }
@@ -639,8 +676,8 @@ module.exports={
 
                 then.step(function(){
                     if(custReceive && docs_themeQuestion){
-                        for(var i in docs_themeQuestion.scoreMinMax){
-                            for(var j in custReceive){
+                        for(var i=0;i<docs_themeQuestion.scoreMinMax.length;i++){
+                            for(var j=0;j<custReceive.length;j++){
                                 if(docs_themeQuestion.scoreMinMax[i].conditionMinScore<=custReceive[j].getChooseScore &&
                                     custReceive[j].getChooseScore<= docs_themeQuestion.scoreMinMax[i].conditionMaxScore){
                                     if(docs_themeQuestion.scoreMinMax[i].sinCount){

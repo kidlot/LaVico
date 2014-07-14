@@ -20,7 +20,7 @@
                     controller: '/lavico/answerQuestion/themeList?themetype=1'
                 }, {
                     title: '添加',
-                    controller: '/lavico/answerQuestion/question/addQuestion'
+                    controller: '/lavico/answerQuestion/question/addQuestion?themetype=1'
                 },{
                     title: '统计',
                     controller: '/lavico/answerQuestion/statistics/statistics_list?themetype=1'
