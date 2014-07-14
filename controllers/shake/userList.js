@@ -380,13 +380,13 @@ module.exports = {
                                 caption: '会员ID',
                                 type: 'string'
                             },{
-                                caption: '优惠券号码',
+                                caption: '券号码',
                                 type: 'string'
                             },{
-                                caption: '优惠券金额',
+                                caption: '券金额',
                                 type: 'string'
                             },{
-                                caption: '优惠券中奖率',
+                                caption: '券中奖率',
                                 type: 'string'
                             },{
                                 caption: '活动名称',
@@ -422,7 +422,7 @@ module.exports = {
                             _data[i].shake.promotion_code = _data[i].shake.promotion_code || '';
                             _data[i].shake.points = _data[i].shake.points || '0';
                             _data[i].shake.promotion_qty = _data[i].shake.promotion_qty || '0';
-                            _data[i].shake.lottery_chance = _data[i].shake.promotion_qty || '';
+                            _data[i].shake.lottery_chance = _data[i].shake.lottery_chance || '';
                             var rows;
                             rows = [
                                 _data[i].shake.createDate,
