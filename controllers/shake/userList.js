@@ -1,3 +1,6 @@
+/*
+* 摇一摇：统计的用户列表
+* */
 var search = require("welab/lib/search.js") ;
 var util = require("welab/controllers/summary/util.js") ;
 
@@ -9,31 +12,35 @@ module.exports = {
 
     , process: function (seed, nut) {
 
-        nut.model.startDate = seed.startDate
-        nut.model.stopDate = seed.stopDate
-        nut.model.unwind = seed.unwind
-        nut.model._id = seed._id
+        nut.model.startDate = seed.startDate;
+        nut.model.stopDate = seed.stopDate;
+        nut.model.unwind = seed.unwind;
+        nut.model._id = seed._id;
+        console.log('+++++++++++++++++++++++++');
+        console.log(nut.model);
+        console.log('+++++++++++++++++++++++++');
+
+
     }
     , viewIn : function(){
 
-        //console.log("userList")
         $("#userList").flexigrid({
             url: '/lavico/shake/userList:jsonData?unwind='+$(".unwind").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val()+"&_id="+$("._id").val(),
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
-                {display: '时间', name : $(".unwind").val()+'.createDate', width : 80, sortable : true},
+                {display: '日期', name : $(".unwind").val()+'.createDate', width : 80, sortable : true},
                 {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true, hide:true},
                 {display: '姓名', name : 'realname', width : 80, sortable : true},
                 {display: '手机号吗', name : 'mobile', width : 100, sortable : true},
                 {display: 'memberID', name :$(".unwind").val()+'.memberID', width : 80, sortable : true},
 //                {display: '券名', name : $(".unwind").val()+'.promotion_name', width : 100, sortable : true},
-                {display: '券号', name : $(".unwind").val()+'.coupon_no', width : 120, sortable : true},
+                {display: '券号', name : $(".unwind").val()+'.coupon_no', width : 180, sortable : true},
                 {display: '券中奖率', name : $(".unwind").val()+'.lottery_chance', width : 80, sortable : true},
                 {display: '消耗积分', name : $(".unwind").val()+'.points', width : 80, sortable : true},
                 {display: '券名称', name : $(".unwind").val()+'.display_name', width : 80, sortable : true},
                 {display: '面值', name : $(".unwind").val()+'.promotion_qty', width : 80, sortable : true},
-                {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
+                {display: '性别', name : 'gender', width : 80, sortable : true, hide:false},
                 {display: '省份', name : 'province', width : 80, sortable : true, hide:true},
                 {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
                 {display: '标签', name : 'tags', width : 292, sortable : true, hide:true},
@@ -156,6 +163,7 @@ module.exports = {
                     if(seed._id){
                         conditions[seed.unwind+".aid"] = seed._id
                     }
+                    console.log(seed._id);
                     arrregateParams.push({$match:conditions})
                     //console.log(arrregateParams)
                     helper.db.coll("welab/customers").aggregate(
@@ -251,7 +259,7 @@ module.exports = {
 
                 var conditions = search.conditions(seed) || {} ;
                 console.log('---------seed.conditions-----------');
-                //console.log(seed.conditions);
+                console.log(seed.conditions);
                 console.log('---------seed.conditions-----------');
                 //this.terminate();
                 var _data = {};
@@ -263,7 +271,9 @@ module.exports = {
                     var order = seed.sortorder == "asc" ? 1 : -1;
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
-
+                console.log('-----------------sort------------');
+                console.log(sort);
+                console.log('-----------------sort------------');
 
                 this.step(function(){
 
@@ -275,7 +285,7 @@ module.exports = {
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
                     console.log('---------arrregateParams-----------');
-                    //console.log(arrregateParams);
+                    console.log(arrregateParams);
                     console.log('---------arrregateParams-----------');
 
 
@@ -289,6 +299,10 @@ module.exports = {
                     console.log(seed._id);
                     console.log('---------seed._id-----------');
 
+                    console.log('---------arrregateParams-----------');
+                    console.log(arrregateParams);
+                    console.log('---------arrregateParams-----------');
+
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
@@ -296,7 +310,6 @@ module.exports = {
                             console.log('---------docs-----------');
                             //console.log(docs);
                             console.log('---------docs-----------');
-                            //this.terminate()
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
@@ -346,6 +359,9 @@ module.exports = {
                         var conf = {};
                         conf.cols = [
                             {
+                                caption: '日期',
+                                type: 'string'
+                            }, {
                                 caption: '姓名',
                                 type: 'string'
                             }, {
@@ -359,6 +375,27 @@ module.exports = {
                                 type: 'string'
                             },{
                                 caption: '手机号码',
+                                type: 'string'
+                            },{
+                                caption: '会员ID',
+                                type: 'string'
+                            },{
+                                caption: '优惠券号码',
+                                type: 'string'
+                            },{
+                                caption: '优惠券金额',
+                                type: 'string'
+                            },{
+                                caption: '优惠券中奖率',
+                                type: 'string'
+                            },{
+                                caption: '活动名称',
+                                type: 'string'
+                            },{
+                                caption: '活动编号',
+                                type: 'string'
+                            },{
+                                caption: '消耗积分',
                                 type: 'string'
                             }
                         ];
@@ -375,14 +412,32 @@ module.exports = {
                         conf.rows = [];
 
                         for(var i=0 ;i < _data.length ;i++){
-
+                            _data[i].shake.createDate = formatDate(_data[i].shake.createDate);
+                            _data[i].province = _data[i].province || '';
+                            _data[i].city = _data[i].city || '';
+                            _data[i].gender = _data[i].gender || '';
+                            _data[i].shake.memberID = _data[i].shake.memberID || '';
+                            _data[i].shake.coupon_no = _data[i].shake.coupon_no || '';
+                            _data[i].shake.promotion_name = _data[i].shake.promotion_name || '';
+                            _data[i].shake.promotion_code = _data[i].shake.promotion_code || '';
+                            _data[i].shake.points = _data[i].shake.points || '0';
+                            _data[i].shake.promotion_qty = _data[i].shake.promotion_qty || '0';
+                            _data[i].shake.lottery_chance = _data[i].shake.promotion_qty || '';
                             var rows;
                             rows = [
+                                _data[i].shake.createDate,
                                 _data[i].realname,
                                 _data[i].province,
                                 _data[i].city,
                                 _data[i].gender,
-                                _data[i].mobile
+                                _data[i].mobile,
+                                _data[i].shake.memberID,
+                                _data[i].shake.coupon_no,
+                                _data[i].shake.promotion_qty,
+                                _data[i].shake.lottery_chance,
+                                _data[i].shake.promotion_name,
+                                _data[i].shake.promotion_code,
+                                _data[i].shake.points
                             ]
 
                             if(seed.unwind && seed.data){
@@ -421,4 +476,20 @@ module.exports = {
         }
     }
 
+}
+function  formatDate(now){
+    var   now = new Date(now);
+    var   year=now.getFullYear();
+    var   month=now.getMonth()+1;
+    var   date=now.getDate();
+    if(month < 10){
+        month = '0'+month;
+    }
+    if(date < 10){
+        date = '0'+date;
+    }
+    var   hour=now.getHours();
+    var   minute=now.getMinutes();
+    var   second=now.getSeconds();
+    return   year+"-"+month+"-"+date;
 }
