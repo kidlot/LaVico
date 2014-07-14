@@ -1,24 +1,39 @@
 <div name="getScore" class="maginTop20">
     <table class="table table-hover" id="tagList">
         <thead>
-        <tr class="staCount borderBtm">
-            <th class="width250">获得奖励</th>
-            <th class="width50">获得</th>
-            <th class="width50">获得率</th>
-        </tr></thead>
-        <tbody>
-        <foreach for="@docs_2.scoreMinMax" var="doc">
-            <tr class="borderBtm">
-                <td class="width250">{@doc.getScore}</td>
-                <td class="width50">{@doc.sinScore}</td>
-                <td class="width50">
-                    <if condition="{@doc.sinScore==''}">
-                        0%
-                        <else/>
-                        {@parseInt(doc.sinScore/all2*100)}%
-                    </if>
-                </td>
+            <tr class="staCount borderBtm">
+                <th class="width250">获得奖励</th>
+                <th class="width50">获得</th>
+                <th class="width50">获得率</th>
             </tr>
-        </foreach><tbody>
+        </thead>
+        <tbody>
+            <!--<foreach for="@docs_2.scoreMinMax" var="doc">-->
+                <!--<tr class="borderBtm">-->
+                    <!--<td class="width250">{@doc.getScore}</td>-->
+                    <!--<td class="width50">{@doc.sinScore}</td>-->
+                    <!--<td class="width50">-->
+                        <!--<if condition="{@doc.sinScore==''}">-->
+                            <!--0%-->
+                            <!--<else/>-->
+                            <!--{@parseInt(doc.sinScore/all2*100)}%-->
+                        <!--</if>-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</foreach>-->
+            <foreach for="@docs_2" var="doc">
+                <tr class="borderBtm">
+                    <td class="width250">{@doc.getScore}</td>
+                    <td class="width50">{@doc.sinScore}</td>
+                    <td class="width50">
+                        <if condition="{@doc.sinScore==''}">
+                            0%
+                            <else/>
+                            {@parseInt(doc.sinScore/all2*100)}%
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+        <tbody>
     </table>
 </div>
