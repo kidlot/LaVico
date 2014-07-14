@@ -96,6 +96,7 @@ module.exports = {
             nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate,unwind:"shake",_id:nut.model._id};
+            console.log({startDate:nut.model.startDate,stopDate:nut.model.stopDate,unwind:"shake",_id:nut.model._id});
 
         })
     }
@@ -132,8 +133,7 @@ module.exports = {
             prefilled: [],
             hiddenTagListName: 'tagsVal'
         });
-
-        $("#exportssd").attr("href","/lavico/shake/userList:exports?unwind=shake&_id="+$('._id').val())
+        $("#exportssd").attr("href","/lavico/shake/userList:exports?unwind=shake&_id="+$('#_id').val())
     }
 
 
