@@ -5,8 +5,8 @@ module.exports={
     process:function(seed,nut){
         var perPage = 1000;
         var pageNum = seed.page ? seed.page : 1;
-        var type = seed.type ? seed.type : 0;
-        nut.model.type = type;
+        var themetype = seed.themetype ? seed.themetype : 0;
+        nut.model.type = themetype;
 
         this.step(function(){
             middleware.request('Coupon/Promotions',{perPage:perPage,pageNum:pageNum},this.hold(function(err,doc){
