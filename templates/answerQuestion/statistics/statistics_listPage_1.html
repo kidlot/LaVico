@@ -2,31 +2,24 @@
     <table class="table table-hover" id="tagList">
         <thead>
         <tr class="staCount borderBtm">
-            <th class="width50">名称</th>
-            <th class="width50">状态</th>
-            <th class="width50">开始时间</th>
-            <th class="width50">结束时间</th>
-            <th class="width50">类型</th>
-            <th class="width50">完/参</th>
-            <th class="width50">完成率</th>
-            <th class="width50">操作</th>
+            <th class="width150">名称</th>
+            <th class="width70">状态</th>
+            <th class="width100">开始时间</th>
+            <th class="width100">结束时间</th>
+            <th class="width70">类型</th>
+            <th class="width35">完/参</th>
+            <th class="width35">完成率</th>
+            <th class="width350">操作</th>
         </tr>
         </thead>
         <tbody>
         <foreach for="@data" var="doc" key="key">
             <tr class="borderBtm">
-                <td class="width50"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
-                <td class="width50" id="openClose">{@doc.status}
-                    <input type="hidden" name="id" id="docId" value="{@doc.themeId}">
-                    <!--<if condition="{@doc.isOpen==1}">-->
-                    <!--进行中-->
-                    <!--<else/>-->
-                    <!--已关闭-->
-                    <!--</if>-->
-                </td>
-                <td class="width50">{@doc.beginTime}</td>
-                <td class="width50">{@doc.endTime}</td>
-                <td class="width50">
+                <td class="width150"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
+                <td class="width70" id="openClose">{@doc.status}<input type="hidden" name="id" id="docId" value="{@doc.themeId}"></td>
+                <td class="width100">{@doc.beginTime}</td>
+                <td class="width100">{@doc.endTime}</td>
+                <td class="width70">
                     <if condition="{@doc.themeType==0}">
                         对错型
                         <elseif condition="{@doc.themeType==1}"/>
@@ -35,15 +28,15 @@
                         调查题
                     </if>
                 </td>
-                <td class="width50">&nbsp;&nbsp;{@doc.finishCount}/{@doc.totalPop}</td>
-                <td class="width50">
+                <td class="width35">&nbsp;&nbsp;{@doc.finishCount}/{@doc.totalPop}</td>
+                <td class="width35">
                     <if condition="{@doc.totalPop==0}">
                         0%
                         <else/>
                         {@doc.count}
                     </if>
                 </td>
-                <td class="width50">
+                <td class="width350">
                     <div class="switch has-switch way">
                         <if condition="{@doc.isOpen==0}">
                             <div class="switch-animate switch-off" data="{@doc._id}" onclick="audioClick(this,'{@doc.themeId}')">
@@ -62,7 +55,9 @@
                         </if>
                     </div>
                     <a href="/lavico/answerQuestion/statistics/statistics_true?_id={@doc.themeId}&finishCount={@doc.finishCount}&totalPop={@doc.totalPop}&themetype=1" class="btn btn-xs btn-primary mhm">统计</a>
+                    <a href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}&optionId=1&themetype=1" class="btn btn-xs btn-primary mhm">修改</a>
                     <a href="javascript:;" onclick="func_remove(this,'{@ doc.themeId}')" class="btn btn-xs mhm">删除</a>
+                    <a href="/lavico/answerQuestion/RuleDescription?_id={@doc.themeId}" style="margin-top: 5px;" class="btn btn-xs btn-primary mhm">规则说明</a>
                 </td>
             </tr>
         </foreach>
@@ -101,14 +96,19 @@
     }
 
     function func_remove(o,id){
-        var oLinkOptions = {} ;
-        oLinkOptions.data = [{name:'_id',value:id}];
-        oLinkOptions.type = "POST";
-        oLinkOptions.url = "/lavico/answerQuestion/statistics/statistics_list_1:del";
-        $.request(oLinkOptions,function(err,nut){
-            if(err) throw err ;
-            nut.msgqueue.popup();//调用welab前台提示控件
-            $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
-        });
+        if (confirm("真的要删除吗？")){
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'_id',value:id}];
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/answerQuestion/statistics/statistics_list_1:del";
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup();//调用welab前台提示控件
+                $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+            });
+
+        }else{
+            return false;
+        }
     }
 </script>

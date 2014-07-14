@@ -17,14 +17,16 @@
             btns: [
                 {
                     title: '列表',
-                    controller: '/lavico/answerQuestion/themeList'
+                    controller: '/lavico/answerQuestion/statistics/statistics_list_1'
+//                    controller: '/lavico/answerQuestion/themeList'
                 }, {
                     title: '添加',
                     controller: '/lavico/answerQuestion/question/addQuestion?themetype=1'
-                },{
-                    title: '统计',
-                    controller: '/lavico/answerQuestion/statistics/statistics_list_1'
-                }
+                },
+//                {
+//                    title: '统计',
+//                    controller: '/lavico/answerQuestion/statistics/statistics_list_1'
+//                }
             ],
             start: function() {
                 return this.on = true;

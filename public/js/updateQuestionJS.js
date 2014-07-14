@@ -173,7 +173,11 @@ $(function () {
             data:{_id:$("input[name=_id]").val(),json:jsonData}
         }).done(function(msg){
                 alert("成功");
-                location.href="/lavico/answerQuestion/question/updateQuestion?_id="+$("input[name=_id]").val()
+                if(themeType==1){
+                    $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+                }else{
+                    $.controller("/lavico/answerQuestion/statistics/statistics_list")
+                }
             });
     });
 });
