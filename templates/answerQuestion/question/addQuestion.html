@@ -135,9 +135,13 @@
     <div>题目名称:&nbsp;&nbsp;<input type="text" name="title" class="form-control input-sm" style="width: 350px"></div>
     <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;<input type="text" name="volumename" class="form-control input-sm" style="width: 350px"></div>
     <div>题目类型:&nbsp;&nbsp;<select name="themeType" class="form-control input-sm" style="width: 150px">
-        <option value="0">对错型</option>
-        <option value="1">测试型</option>
-        <option value="2">调查型</option>
+        <if condition="{@type==1}">
+            <option value="1" selected="selected">测试型</option>
+            <else/>
+            <option value="0" selected="selected">对错型</option>
+            <option value="2">调查型</option>
+        </if>
+
         <!--<option value="3">竞猜型</option>-->
     </select></div>
     <div>是否开启:&nbsp;&nbsp;<select name="isOpen" class="form-control input-sm" style="width: 150px">
