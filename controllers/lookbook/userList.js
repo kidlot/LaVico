@@ -16,7 +16,7 @@ module.exports = {
     }
     , viewIn : function(){
 
-        console.log("userList")
+        //console.log("userList")
 
         $("#userList").flexigrid({
             url: '/lavico/lookbook/userList:jsonData?unwind='+$(".unwind").val()+'&_id='+$("._id").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),

@@ -97,6 +97,22 @@ module.exports = {
                                 }
                             }))
 
+
+                            helper.db.coll("welab/customers").update(
+                                {wechatid:seed.wxid},
+                                {
+                                    $pull:{
+                                        lookbook:{
+                                            productID:seed.pid
+                                        }
+                                    }
+                                }
+                                ,this.hold(function(err,custdoc){
+                                    if(err) console.log(err) ;
+
+                                })
+                            );
+
                         }else{
                             var data = JSON.stringify({err:1,msg:"参数不正确"});
                             this.res.writeHead(200, { 'Content-Type': 'application/json' });

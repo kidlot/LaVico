@@ -14,7 +14,7 @@
                         <div class="fl text">
                             <div class="title3"><a href="javascript:;">{@fav.product.name}</a></div>
                             <div class="con"><a href="javascript:;">{@fav.product.detail}</a></div>
-                            <div class="btn subbtn" onclick="cancelFav('{@ fav._id}')">取消收藏</div>
+                            <div class="btn subbtn" onclick="cancelFav('{@ fav._id}','{@ fav.productId}')">取消收藏</div>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                 location.href = url
             }
 
-            function cancelFav(_id){
+            function cancelFav(_id,pid){
                 window.popupStyle3.on("您确定要取消收藏吗？",function(event){
 
                     if(event == "yes"){
@@ -57,7 +57,9 @@
                             url:'/lavico/lookbook/favorites:cancelFav',
                             type:'POST',
                             data:{
-                                '_id':_id
+                                '_id':_id,
+                                'pid':pid,
+                                wxid:'{@ wxid}'
                             },
                             success:function(data){
                                 $('.fade2').show()
