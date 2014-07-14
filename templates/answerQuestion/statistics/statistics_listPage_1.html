@@ -55,8 +55,7 @@
                         </if>
                     </div>
                     <a href="/lavico/answerQuestion/statistics/statistics_true?_id={@doc.themeId}&finishCount={@doc.finishCount}&totalPop={@doc.totalPop}&themetype=1" class="btn btn-xs btn-primary mhm">统计</a>
-
-                    <a href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}&optionId=1" class="btn btn-xs btn-primary mhm">修改</a>
+                    <a href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}&optionId=1&themetype=1" class="btn btn-xs btn-primary mhm">修改</a>
                     <a href="javascript:;" onclick="func_remove(this,'{@ doc.themeId}')" class="btn btn-xs mhm">删除</a>
                     <a href="/lavico/answerQuestion/RuleDescription?_id={@doc.themeId}" style="margin-top: 5px;" class="btn btn-xs btn-primary mhm">规则说明</a>
                 </td>
@@ -97,14 +96,19 @@
     }
 
     function func_remove(o,id){
-        var oLinkOptions = {} ;
-        oLinkOptions.data = [{name:'_id',value:id}];
-        oLinkOptions.type = "POST";
-        oLinkOptions.url = "/lavico/answerQuestion/statistics/statistics_list_1:del";
-        $.request(oLinkOptions,function(err,nut){
-            if(err) throw err ;
-            nut.msgqueue.popup();//调用welab前台提示控件
-            $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
-        });
+        if (confirm("真的要删除吗？")){
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'_id',value:id}];
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/answerQuestion/statistics/statistics_list_1:del";
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup();//调用welab前台提示控件
+                $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+            });
+
+        }else{
+            return false;
+        }
     }
 </script>

@@ -97,14 +97,19 @@
     }
 
     function func_remove(o,id){
-        var oLinkOptions = {} ;
-        oLinkOptions.data = [{name:'_id',value:id}];
-        oLinkOptions.type = "POST";
-        oLinkOptions.url = "/lavico/answerQuestion/statistics/statistics_list:del";
-        $.request(oLinkOptions,function(err,nut){
-            if(err) throw err ;
-            nut.msgqueue.popup();//调用welab前台提示控件
-            $.controller("/lavico/answerQuestion/statistics/statistics_list")
-        });
+        if (confirm("真的要删除吗？")){
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'_id',value:id}];
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/answerQuestion/statistics/statistics_list_1:del";
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup();//调用welab前台提示控件
+                $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+            });
+
+        }else{
+            return false;
+        }
     }
 </script>

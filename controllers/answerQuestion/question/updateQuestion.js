@@ -6,6 +6,8 @@ module.exports={
         id=seed._id;
         var scoreMinMaxs;
         var list;
+        var themetype = seed.themetype ? seed.themetype : 0;
+        nut.model.type = themetype;
         helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(id)},this.hold(function(err,doc){
             if(err) throw err;
             nut.model.docs=doc;
