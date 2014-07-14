@@ -183,6 +183,11 @@ $(function () {
             data:{json:jsonData}
         }).done(function(msg){
                 alert("成功");
+                if(themeType==1){
+                    $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+                }else{
+                    $.controller("/lavico/answerQuestion/statistics/statistics_list")
+                }
             });
 
     });
