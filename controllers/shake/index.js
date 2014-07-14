@@ -621,7 +621,13 @@ module.exports = {
 //                    ['Styles','Format','Font','FontSize'],
 //                    ['TextColor','BGColor']
 //                ];
-
+                //复制功能
+                $.getScript('/lavico/public/zclip.js/jquery.zclip.min.js',function(){
+                    $("#btnCopy").zclip({
+                        path:'/lavico/public/zclip.js/ZeroClipboard.swf',
+                        copy:$('#host-url').val()
+                    });
+                });
                 //保存按钮
                 window.save = function (){
 
