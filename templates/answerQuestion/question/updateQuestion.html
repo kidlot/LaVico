@@ -146,18 +146,16 @@
             </div>
             <div>题目类型:&nbsp;&nbsp;
                 <select name="themeType" class="form-control input-sm" style="width: 150px">
-                    <if condition="{@docs.themeType==0}">
-                        <option value="0" selected="selected">对错型</option>
-                        <option value="1">测试型</option>
-                        <option value="2">调查型</option>
-                    <elseif condition="{@docs.themeType==1}"/>
-                        <option value="0">对错型</option>
+                    <if condition="{@type==1}">
                         <option value="1" selected="selected">测试型</option>
-                        <option value="2">调查型</option>
-                    <else/>
-                        <option value="0">对错型</option>
-                        <option value="1">测试型</option>
-                        <option value="2"  selected="selected">调查型</option>
+                        <else/>
+                        <if condition="{@docs.themeType==0}">
+                            <option value="0" selected="selected">对错型</option>
+                            <option value="2">调查型</option>
+                            <else/>
+                            <option value="0">对错型</option>
+                            <option value="2"  selected="selected">调查型</option>
+                        </if>
                     </if>
                 </select>
             </div>
