@@ -15,14 +15,11 @@
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
     <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
-    <li class="b03">
-        <if condition="{@themetype==1}">
-            <a href="/lavico/answerQuestion/statistics/statistics_list_1" class="stay">型男测试</a><em></em>
-            <else/>
-            <a href="/lavico/answerQuestion/statistics/statistics_list" class="stay">答题抢积分</a><em></em>
-        </if>
-
-    </li>
+    <if condition="{@themetype==1}">
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_1">型男测试</a><em></em></li>
+        <else/>
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list">答题抢积分</a><em></em></li>
+    </if>
     <li class="active"><span>统计</span></li>
 </ul>
 

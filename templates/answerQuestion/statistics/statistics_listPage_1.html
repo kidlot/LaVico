@@ -2,11 +2,11 @@
     <table class="table table-hover" id="tagList">
         <thead>
         <tr class="staCount borderBtm">
-            <th class="width100">名称</th>
-            <th class="width50">状态</th>
-            <th class="width50">开始时间</th>
-            <th class="width50">结束时间</th>
-            <th class="width50">类型</th>
+            <th class="width150">名称</th>
+            <th class="width70">状态</th>
+            <th class="width100">开始时间</th>
+            <th class="width100">结束时间</th>
+            <th class="width70">类型</th>
             <th class="width35">完/参</th>
             <th class="width35">完成率</th>
             <th class="width350">操作</th>
@@ -15,18 +15,11 @@
         <tbody>
         <foreach for="@data" var="doc" key="key">
             <tr class="borderBtm">
-                <td class="width100"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
-                <td class="width50" id="openClose">{@doc.status}
-                    <input type="hidden" name="id" id="docId" value="{@doc.themeId}">
-                    <!--<if condition="{@doc.isOpen==1}">-->
-                    <!--进行中-->
-                    <!--<else/>-->
-                    <!--已关闭-->
-                    <!--</if>-->
-                </td>
-                <td class="width50">{@doc.beginTime}</td>
-                <td class="width50">{@doc.endTime}</td>
-                <td class="width50">
+                <td class="width150"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
+                <td class="width70" id="openClose">{@doc.status}<input type="hidden" name="id" id="docId" value="{@doc.themeId}"></td>
+                <td class="width100">{@doc.beginTime}</td>
+                <td class="width100">{@doc.endTime}</td>
+                <td class="width70">
                     <if condition="{@doc.themeType==0}">
                         对错型
                         <elseif condition="{@doc.themeType==1}"/>
