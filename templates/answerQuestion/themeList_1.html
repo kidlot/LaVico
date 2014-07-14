@@ -1,12 +1,12 @@
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/question/addQuestion" class="stay">添加题目</a> <em></em></li>
+    <li class="b02"><a href="/lavico/answerQuestion/question/addQuestion?themetype=1" class="stay">添加题目</a> <em></em></li>
     <li class="active"><span>列表管理</span></li>
 </ul>
 <div class="panel panel-default">
     <div class="panel-heading">
         <div style="width: 300px;">
-            <a href="/lavico/answerQuestion/question/addQuestion" class="btn btn-xs btn-primary mhm stay">增加</a>
+            <a href="/lavico/answerQuestion/question/addQuestion?themetype=1" class="btn btn-xs btn-primary mhm stay">增加</a>
         </div>
     </div>
     <div class="panel-body">
@@ -39,7 +39,7 @@
                 </foreach>
                 </tbody>
             </table>
-            <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/themeList?page=%pagenum%" />
+            <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/themeList_1?page=%pagenum%" />
         </div>
     </div>
 </div>
