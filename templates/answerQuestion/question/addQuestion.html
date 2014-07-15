@@ -37,32 +37,47 @@
     }
 </style>
 <script>
-    window.onload=function(){
-        $("li[name=editTheme]").click(function(){
-            if($(this).css("background-color")!="#bdc3c7"){
-                $(this).css("background-color","#bdc3c7");
-                $(this).next().css("background-color","");
-
-                $("div[name=mainContent]").show();
-                $("div[name=addThemes]").show();
-                $("div[name=gift]").hide();
-            }
-        });
-
-        $("li[name=editGift]").click(function(){
-            if($(this).css("background-color")!="#bdc3c7"){
-                $(this).css("background-color","#bdc3c7");
-                $(this).prev().css("background-color","");
-
-                $("div[name=mainContent]").hide();
-                $("div[name=addThemes]").hide();
-                $("div[name=gift]").show();
-            }
-
-        });
-
-        $("div[name='divImg']").css("display","none")
+    function editTheme(){
+        $("li[name=editTheme]").css("background-color","#bdc3c7");
+        $("li[name=editGift]").css("background-color","");
+        $("div[name=mainContent]").show();
+        $("div[name=addThemes]").show();
+        $("div[name=gift]").hide();
     }
+
+    function editGift(){
+        $("li[name=editGift]").css("background-color","#bdc3c7");
+        $("li[name=editTheme]").css("background-color","");
+        $("div[name=mainContent]").hide();
+        $("div[name=addThemes]").hide();
+        $("div[name=gift]").show();
+    }
+//    window.onload=function(){
+//        $("li[name=editTheme]").click(function(){
+//            //if($(this).css("background-color")!="#bdc3c7"){
+//                $(this).css("background-color","#bdc3c7");
+//                $(this).next().css("background-color","");
+//
+//                $("div[name=mainContent]").show();
+//                $("div[name=addThemes]").show();
+//                $("div[name=gift]").hide();
+//           // }
+//        });
+//
+//        $("li[name=editGift]").click(function(){
+//           // if($(this).css("background-color")!="#bdc3c7"){
+//                $(this).css("background-color","#bdc3c7");
+//                $(this).prev().css("background-color","");
+//
+//                $("div[name=mainContent]").hide();
+//                $("div[name=addThemes]").hide();
+//                $("div[name=gift]").show();
+//           // }
+//
+//        });
+//
+//        $("div[name='divImg']").css("display","none")
+//    }
 
     function addTheme(){
         $("div[name=mainContent]").append($("div[name='hiddenOption']").find("div[name='option']").clone());
@@ -107,6 +122,8 @@
         }
     }
 </script>
+
+
 <ul class="breadcrumb clearfix">
     <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
     <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
@@ -115,12 +132,12 @@
         <else/>
         <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list">答题抢积分</a><em></em></li>
     </if>
-    <li class="active"><span>添加</span></li>
+    <li class="active"><span>新增</span></li>
 </ul>
 <div name="container" class="panel panel-default formText">
     <div class="panel-heading clearfix">
         <a class="btn btn-defalut btn-social-googleplus pull-left" href="javascript:history.back();"><i class="fui-arrow-left"></i> 返回</a>
-        <a class="btn btn-success btn-social-googleplus pull-right save" id="save" href="javascript:;" ><i class="fui-arrow-left"></i> 保存</a>
+        <a class="btn btn-success btn-social-googleplus pull-right save" id="save" onclick="save()" href="javascript:;" ><i class="fui-arrow-left"></i> 保存</a>
     </div>
     <div name="title" style="padding: 10px;">
     <div name="main">
@@ -157,10 +174,10 @@
     <p>内容设置</p>
     <ul name="btnLab" class="labMenu">
         <li name="editTheme" style="background-color:#bdc3c7;">
-            <a href="javascript:">编辑题目</a>
+            <a href="#" onclick="editTheme()">编辑题目</a>
         </li>
         <li name="editGift">
-            <a href="javascript:">编辑奖项</a>
+            <a href="#" onclick="editGift()">编辑奖项</a>
         </li>
     </ul>
 <div name="main">
