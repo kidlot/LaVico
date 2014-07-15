@@ -33,8 +33,12 @@ module.exports = {
             for (var i = 0; i < list.docs.length; i++) {
                 (function (i) {
                     helper.db.coll("welab/customers").find({"shake.aid": list.docs[i]._id.toString()}).toArray(then.hold(function (err, _doc2) {
-                        list.docs[i].count = _doc2.length;
+                        list.docs[i].count = _doc2.length;//获得人数,也就是中奖人数
+
                     }))
+
+
+
 
                     helper.db.coll("lavico/shake/logs").aggregate(
                         [
@@ -49,9 +53,14 @@ module.exports = {
                             }
                         ]
                         , then.hold(function (err, doc) {
-                            list.docs[i].total = doc.length;
+                            list.docs[i].total = doc.length;//参与人数，也就是所有参加活动的人数
+
+
+
                         })
                     )
+
+
                 })(i);
             }
         })
@@ -621,7 +630,13 @@ module.exports = {
 //                    ['Styles','Format','Font','FontSize'],
 //                    ['TextColor','BGColor']
 //                ];
-
+                //复制功能
+                $.getScript('/lavico/public/zclip.js/jquery.zclip.min.js',function(){
+                    $("#btnCopy").zclip({
+                        path:'/lavico/public/zclip.js/ZeroClipboard.swf',
+                        copy:$('#host-url').val()
+                    });
+                });
                 //保存按钮
                 window.save = function (){
 
