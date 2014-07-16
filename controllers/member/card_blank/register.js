@@ -9,7 +9,7 @@ module.exports = {
 	view: "lavico/templates/member/card_blank/register.html",
 	process: function(seed,nut)
 	{
-        nut.model.referer = encodeURI(this.req.headers.referer) || '';//用户访问的上一个页面
+        nut.model.referer = this.req.headers.referer || '';//用户访问的上一个页面
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         this.step(function(){
             if(wxid == 'undefined'){
@@ -102,7 +102,9 @@ module.exports = {
             if(referer == window.location.href || referer.length == 0){
                 window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
             }else{
-                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid+"&go="+referer;
+                //window.location.href="/lavico/member/card_blank/bind?wxid="+wxid+"&go="+encodeURIComponent(referer);
+                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+
             }
         });
 
