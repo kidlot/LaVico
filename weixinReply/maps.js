@@ -112,7 +112,7 @@ exports.load = function () {
             console.log("******get user position******");
             postData={"location":[msg.Latitude,msg.Longitude]};
             helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
-                {multi: false},function(err,doc){
+                {upsert: true},function(err,doc){
                     if(err)throw err;
                     console.log("doc",doc)
                     if(doc){
