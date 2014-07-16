@@ -1,5 +1,5 @@
-$(function () {
-    $("#save").click(function () {
+//$(function () {
+   function save(){
 
         var jsonData = "{";
         var beginTime=$("input[name='beginTime']").val();
@@ -190,8 +190,8 @@ $(function () {
                 }
             });
 
-    });
-});
+    };
+//});
 
 /*
  * 图片上传开始
