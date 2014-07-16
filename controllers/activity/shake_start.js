@@ -662,23 +662,35 @@ module.exports = {
                     //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
 
                     if(data.lottery_cycle == 1){
-                        window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+//                        window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+//                            flag = 1;
+//                        });
+                        window.popupStyle2.on('本次活动今天您的机会没有了，明天再来试一试吧！',function(event){
                             flag = 1;
                         });
                     }else if(data.lottery_cycle == 2){
-                        window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
+//                        window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
+//                            flag = 1;
+//                        });
+                        window.popupStyle2.on('本次活动您的的机会用完了，下次再来吧！',function(event){
                             flag = 1;
                         });
                     }else if(data.lottery_cycle == 3){
-                        window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
+//                        window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
+//                            flag = 1;
+//                        });
+                        window.popupStyle2.on('本次活动您的的机会用完了，下次再来吧！',function(event){
                             flag = 1;
                         });
                     }else if(data.lottery_cycle == 100){
-                        window.popupStyle2.on('您的机会用完了，下次活动再来吧！',function(event){
+//                        window.popupStyle2.on('您的机会用完了，下次活动再来吧！',function(event){
+//                            flag = 1;
+//                        });
+                        window.popupStyle2.on('本次活动您的机会用完了，下次再来吧！',function(event){
                             flag = 1;
                         });
                     }else{
-                        window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                        window.popupStyle2.on('本次活动今天您的机会没有了，明天再来试一试吧！',function(event){
                             flag = 1;
                         });
                     }
@@ -702,11 +714,11 @@ module.exports = {
                     var _limit = data.limit;
                     if(_limit == 'yes'){
                         if(_points == 0){
-                            window.popupStyle2.on('您当前还有'+_i+'次机会',function(event){
+                            window.popupStyle2.on('本次活动您当前还有'+_i+'次机会',function(event){
                                 flag = 1;
                             });
                         }else{
-                            window.popupStyle2.on('每次摇一摇将消耗'+_points+'积分，您当前还有'+_i+'次机会',function(event){
+                            window.popupStyle2.on('每次摇一摇将消耗'+_points+'积分，本次活动您当前还有'+_i+'次机会',function(event){
                                 flag = 1;
                             });
                         }
@@ -860,23 +872,32 @@ module.exports = {
 
                         //alert('刚被别人抢光了，好遗憾，下次再参加活动吧！');
                         if(data.lottery_cycle == 1){
-                            window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                            window.popupStyle2.on('本次活动今天您的机会没有了，明天再来试一试吧！',function(event){
                                 flag = 1;
                             });
                         }else if(data.lottery_cycle == 2){
-                            window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
+//                            window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
+//                                flag = 1;
+//                            });
+                            window.popupStyle2.on('本次活动您的的机会用完了，下次再来吧！',function(event){
                                 flag = 1;
                             });
                         }else if(data.lottery_cycle == 3){
-                            window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
+//                            window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
+//                                flag = 1;
+//                            });
+                            window.popupStyle2.on('本次活动您的的机会用完了，下次再来吧！',function(event){
                                 flag = 1;
                             });
                         }else if(data.lottery_cycle == 100){
-                            window.popupStyle2.on('您的机会用完了，下次活动再来吧！',function(event){
+//                            window.popupStyle2.on('您的机会用完了，下次活动再来吧！',function(event){
+//                                flag = 1;
+//                            });
+                            window.popupStyle2.on('本次活动您的的机会用完了，下次再来吧！',function(event){
                                 flag = 1;
                             });
                         }else{
-                            window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                            window.popupStyle2.on('本次活动今天您的机会没有了，明天再来试一试吧！',function(event){
                                 flag = 1;
                             });
                         }
@@ -904,40 +925,45 @@ module.exports = {
                                 var _points = parseInt(data.points);//每次摇一摇将消耗的积分
                                 if(_points == 0){
                                     //本次活动您共有5次抽奖机会，已使用2次
-                                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                    window.popupStyle2.on('这次没摇到，要不再试一试？本次活动您当前还有'+_i+'次机会',function(event){
                                         flag = 1;
                                     });
                                 }else{
                                     //本次活动您共有5次抽奖机会，已使用2次
-                                    window.popupStyle2.on('这次没摇到，要不再试一试？还有'+_i+'次机会',function(event){
+                                    window.popupStyle2.on('这次没摇到，要不再试一试？本次活动您当前还有'+_i+'次机会',function(event){
                                         flag = 1;
                                     });
                                 }
                             }else{
-//                                window.popupStyle2.on('这次没摇到，今天没机会了，明天再来试一试吧！',function(event){
-//                                    flag = 1;
-//                                });
+
                                 if(data.lottery_cycle == 1){
-                                    window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                                    window.popupStyle2.on('本次活动今天您的机会没有了，明天再来试一试吧！',function(event){
                                         flag = 1;
                                     });
                                 }else if(data.lottery_cycle == 2){
-//                                    window.popupStyle2.on('本周您的的机会用完了，下次再来吧！',function(event){
+
+//                                    window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
 //                                        flag = 1;
 //                                    });
-                                    window.popupStyle2.on('最近7天您的的机会用完了，下次再来吧！',function(event){
+                                    window.popupStyle2.on('本次活动您的的机会用完了，下次再来吧！',function(event){
                                         flag = 1;
                                     });
                                 }else if(data.lottery_cycle == 3){
-                                    window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
+//                                    window.popupStyle2.on('最近30天您的的机会用完了，下次再来吧！',function(event){
+//                                        flag = 1;
+//                                    });
+                                    window.popupStyle2.on('本次活动您的的机会用完了，下次再来吧！',function(event){
                                         flag = 1;
                                     });
                                 }else if(data.lottery_cycle == 100){
-                                    window.popupStyle2.on('您的机会用完了，下次活动再来吧！',function(event){
+//                                    window.popupStyle2.on('您的机会用完了，下次活动再来吧！',function(event){
+//                                        flag = 1;
+//                                    });
+                                    window.popupStyle2.on('本次活动您的的机会用完了，下次再来吧！',function(event){
                                         flag = 1;
                                     });
                                 }else{
-                                    window.popupStyle2.on('今天您的机会没有了，明天再来试一试吧！',function(event){
+                                    window.popupStyle2.on('本次活动今天您的机会没有了，明天再来试一试吧！',function(event){
                                         flag = 1;
                                     });
                                 }
