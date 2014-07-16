@@ -9,7 +9,7 @@ module.exports = {
 	view: "lavico/templates/member/card_blank/register.html",
 	process: function(seed,nut)
 	{
-        nut.model.referer = this.req.headers.referer || '';//用户访问的上一个页面
+        nut.model.referer = encodeURI(this.req.headers.referer) || '';//用户访问的上一个页面
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         this.step(function(){
             if(wxid == 'undefined'){
