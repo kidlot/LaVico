@@ -596,7 +596,6 @@ exports.load = function () {
     }
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
-        console.log("---search customers---");
         nut.disabled = true ;
 
         // 总人数
@@ -769,6 +768,8 @@ exports.load = function () {
         })
 
     }
+
+    welabUserlist.children.page.view = "lavico/templates/welab/user/listPage.html";
 
     //筛选导出
     welabUserlist.actions.fexports = {process:
@@ -1761,6 +1762,75 @@ exports.load = function () {
 
     }
 
+    //删除标签
+    welabUserform.actions.removeTag = function(seed,nut){
+        nut.view.disable() ;
+        var _id = seed._id;
+        var tag = seed.name;
+        var memberId;
+        var status = 0;// 0:成功 1:失败
+        this.step(function(){
+            if(_id){
+                helper.db.coll("welab/customers").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
+                    if(err) throw err;
+                    if(doc && doc.HaiLanMemberInfo){
+                        memberId = doc.HaiLanMemberInfo.memberID;
+                    }else{
+                        status = 1;
+                    }
+                }))
+            }else{
+                status = 1;
+            }
+        })
+
+        this.step(function(){
+            if(status==0 && memberId && tag){
+                middleware.request("Tag/Remove", {memberId: memberId,tag:tag}, this.hold(function (err, doc) {
+                    if(err) {
+                        console.log(err)
+                    }
+                    if(doc){
+                        var docs = JSON.parse(doc);
+                        console.log("docs",docs)
+                        if(docs.success){
+                            status = 0;
+                        }else{
+                            status = 1;
+                        }
+                    }else{
+                        status = 1;
+                    }
+                }))
+            }else{
+                status = 1;
+            }
+        })
+
+        this.step(function(){
+            if(status == 0){
+                helper.db.coll("welab/customers").update({_id : helper.db.id(_id)}, {"$pull":{tags:tag}},this.hold(function(err,doc){
+                    if(err){
+                        throw err;
+                    }
+                    console.log("doc",doc)
+                    if(doc){
+                        status = 0;
+                    }else{
+                        status = 1;
+                    }
+                }))
+            }
+            nut.model.status = status;
+            console.log("nut.model.status",nut.model.status)
+            if(status == 0){
+                nut.message("删除成功",null,"success");
+            }else{
+                nut.message("删除失败",null,"error");
+            }
+        })
+    }
+
 
 
     // 复写 welab/user/detail by David.xu 2014-05-29 Start
@@ -1880,25 +1950,45 @@ exports.load = function () {
         })
 
         this.step(function(){
-            console.log("jsonData",jsonData)
-            console.log(jsonData.length)
-            for(var i=0;i<jsonData.length;i++){
-                if(jsonData[i].memberId){
-                    (function(i,stutas){
-                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, then.hold(function (err, doc) {
-                            if (err) throw err;
+
+
+            this.each(jsonData,function(i,row){
+
+                if(row.memberId){
+
+                    middleware.request("Tag/Add", {memberId: row.memberId,tag: row.tag}, this.hold(function (err, doc) {
+                        if (err) {
+                            console.log(err)
+                        }else{
                             console.log(doc)
-                            var docs = JSON.parse(doc);
-                            sta={};
-                            sta.stat = docs.success;
-                            sta.id = jsonData[i].id;
-                            console.log("sta",sta)
-                            stutas.push(sta);
-                            console.log("i:"+i)
-                        }))
-                    })(i,stutas)
+                        }
+                        var docs = JSON.parse(doc);
+                        sta={};
+                        sta.stat = docs.success;
+                        sta.id = row.id;
+                        stutas.push(sta);
+                    }))
                 }
-            }
+            })
+
+//            for(var i=0;i<jsonData.length;i++){
+//                if(jsonData[i].memberId){
+//                    (function(i,stutas){
+//                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, then.hold(function (err, doc) {
+//                            if (err) {
+//                                console.log(err)
+//                            }else{
+//                                console.log(doc)
+//                            }
+//                            var docs = JSON.parse(doc);
+//                            sta={};
+//                            sta.stat = docs.success;
+//                            sta.id = jsonData[i].id;
+//                            stutas.push(sta);
+//                        }))
+//                    })(i,stutas)
+//                }
+//            }
         })
 
         this.step(function(){
@@ -1932,7 +2022,7 @@ exports.load = function () {
             if(errID.length==0){
                 nut.message("操作完成",null,"success");
             }else{
-                nut.message(successID.length+"个用户设定标签成功;" + errID.length+"个失败",null,"error") ;
+                nut.message(successID.length+"个用户设定标签成功;" + errID.length+"个失败(不是会员或标签重复)",null,"error") ;
             }
         })
     }
