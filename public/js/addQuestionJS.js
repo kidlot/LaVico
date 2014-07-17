@@ -1,5 +1,5 @@
-$(function () {
-    $("#save").click(function () {
+//$(function () {
+   function save(){
 
         var jsonData = "{";
         var beginTime=$("input[name='beginTime']").val();
@@ -183,10 +183,15 @@ $(function () {
             data:{json:jsonData}
         }).done(function(msg){
                 alert("成功");
+                if(themeType==1){
+                    $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+                }else{
+                    $.controller("/lavico/answerQuestion/statistics/statistics_list")
+                }
             });
 
-    });
-});
+    };
+//});
 
 /*
  * 图片上传开始

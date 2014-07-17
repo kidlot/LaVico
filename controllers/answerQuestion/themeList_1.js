@@ -1,6 +1,6 @@
 module.exports={
     layout:"welab/Layout",
-    view:"lavico/templates/answerQuestion/themeList.html",
+    view:"lavico/templates/answerQuestion/themeList_1.html",
     process:function(seed,nut){
         then = this;
         this.req.session.scoreAll=0;
@@ -51,7 +51,7 @@ module.exports={
         });
         //
         this.step(function(){
-            helper.db.coll("lavico/themeQuestion").find({themeType:{$ne:1}}).toArray(this.hold(function(err,themeQuestion){
+            helper.db.coll("lavico/themeQuestion").find({themeType:1}).toArray(this.hold(function(err,themeQuestion){
                 if(err) throw  err;
                 return themeQuestion;
             }));

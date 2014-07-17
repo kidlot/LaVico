@@ -99,7 +99,13 @@ module.exports = {
 
         /*绑定会员卡*/
         $("#bindUrl").click(function(){
-            window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+            if(referer == window.location.href || referer.length == 0){
+                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+            }else{
+                //window.location.href="/lavico/member/card_blank/bind?wxid="+wxid+"&go="+encodeURIComponent(referer);
+                window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
+
+            }
         });
 
         /*会员管理*/

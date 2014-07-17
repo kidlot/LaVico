@@ -35,32 +35,47 @@
     .newBtn{height: 23px;padding: 3px 5px;}
 </style>
 <script>
-    window.onload=function(){
-        $("li[name=editTheme]").click(function(){
-            if($(this).css("background-color")!="#bdc3c7"){
-                $(this).css("background-color","#bdc3c7");
-                $(this).next().css("background-color","");
-
-                $("div[name=mainContent]").show();
-                $("div[name=addThemes]").show();
-                $("div[name=gift]").hide();
-            }
-        });
-
-        $("li[name=editGift]").click(function(){
-            if($(this).css("background-color")!="#bdc3c7"){
-                $(this).css("background-color","#bdc3c7");
-                $(this).prev().css("background-color","");
-
-                $("div[name=mainContent]").hide();
-                $("div[name=addThemes]").hide();
-                $("div[name=gift]").show();
-            }
-
-        });
-
-
+    function editTheme(){
+        $("li[name=editTheme]").css("background-color","#bdc3c7");
+        $("li[name=editGift]").css("background-color","");
+        $("div[name=mainContent]").show();
+        $("div[name=addThemes]").show();
+        $("div[name=gift]").hide();
     }
+
+    function editGift(){
+        $("li[name=editGift]").css("background-color","#bdc3c7");
+        $("li[name=editTheme]").css("background-color","");
+        $("div[name=mainContent]").hide();
+        $("div[name=addThemes]").hide();
+        $("div[name=gift]").show();
+    }
+//    window.onload=function(){
+//        $("li[name=editTheme]").click(function(){
+//            if($(this).css("background-color")!="#bdc3c7"){
+//                $(this).css("background-color","#bdc3c7");
+//                $(this).next().css("background-color","");
+//
+//                $("div[name=mainContent]").show();
+//                $("div[name=addThemes]").show();
+//                $("div[name=gift]").hide();
+//            }
+//        });
+//
+//        $("li[name=editGift]").click(function(){
+//            if($(this).css("background-color")!="#bdc3c7"){
+//                $(this).css("background-color","#bdc3c7");
+//                $(this).prev().css("background-color","");
+//
+//                $("div[name=mainContent]").hide();
+//                $("div[name=addThemes]").hide();
+//                $("div[name=gift]").show();
+//            }
+//
+//        });
+//
+//
+//    }
 
     function addTheme(){
         $("div[name=mainContent]").append($("div[name='hiddenOption']").find("div[name='option']").clone());
@@ -106,9 +121,14 @@
     }
 </script>
 <ul class="breadcrumb clearfix">
-    <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
-    <li class="b02"><a href="/lavico/answerQuestion/themeList" class="stay">问答管理</a> <em></em></li>
-    <li class="active"><span>修改问答</span></li>
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <if condition="{@type==1}">
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_1">型男测试</a><em></em></li>
+        <else/>
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list">答题抢积分</a><em></em></li>
+    </if>
+    <li class="active"><span>修改</span></li>
 </ul>
 
 <div name="container" class="panel panel-default formText">
@@ -124,9 +144,9 @@
                 <input type="hidden" name="_id" value="{@docs._id}">
             </p>
             <div>图文URL:&nbsp;&nbsp;
-                <input type="text" name="url" value="http://{host}/lavico/answerQuestion/first?_id={@docs._id}&optionId=1&wechatid={wxid}" class="form-control input-sm" style="width: 350px">
+                <input type="text" name="url" id="host-url" value="http://{host}/lavico/answerQuestion/first?_id={@docs._id}&optionId=1&wechatid={wxid}" class="form-control input-sm" style="width: 350px">
                 &nbsp;
-                <input type="button" name="btnCopy" value="复制" class="btn btn-embossed btn-primary">
+                <button type="button" id="btnCopy" name="btnCopy" class="btn btn-primary">复制</button>
             </div>
             <div>开始/结束:&nbsp;
                 <input type="text" value="{@docs.beginTime}" class="form-control input-sm input-date" style="border: 2px solid #bdc3c7;" id="datetimepicker_s" name="beginTime">
@@ -141,18 +161,16 @@
             </div>
             <div>题目类型:&nbsp;&nbsp;
                 <select name="themeType" class="form-control input-sm" style="width: 150px">
-                    <if condition="{@docs.themeType==0}">
-                        <option value="0" selected="selected">对错型</option>
-                        <option value="1">测试型</option>
-                        <option value="2">调查型</option>
-                    <elseif condition="{@docs.themeType==1}"/>
-                        <option value="0">对错型</option>
+                    <if condition="{@type==1}">
                         <option value="1" selected="selected">测试型</option>
-                        <option value="2">调查型</option>
-                    <else/>
-                        <option value="0">对错型</option>
-                        <option value="1">测试型</option>
-                        <option value="2"  selected="selected">调查型</option>
+                        <else/>
+                        <if condition="{@docs.themeType==0}">
+                            <option value="0" selected="selected">对错型</option>
+                            <option value="2">调查型</option>
+                            <else/>
+                            <option value="0">对错型</option>
+                            <option value="2"  selected="selected">调查型</option>
+                        </if>
                     </if>
                 </select>
             </div>
@@ -172,8 +190,8 @@
         <div name="contentSet">
         <p>内容设置</p>
         <ul name="btnLab" class="labMenu">
-            <li name="editTheme" style="background-color:#bdc3c7;"><a href="javascript:">编辑题目</a></li>
-            <li name="editGift"><a href="javascript:">编辑奖项</a></li>
+            <li name="editTheme" style="background-color:#bdc3c7;"><a href="#" onclick="editTheme()">编辑题目</a></li>
+            <li name="editGift"><a href="#" onclick="editGift()">编辑奖项</a></li>
         </ul>
         <div name="main">
         <div name="mainContent" class="mainContent">
@@ -694,36 +712,53 @@
                 </div>
             </div>
             <br/>
-<div name="choEs" class="choEs">
-<div id="hiddenContainer" name="sinple">
-    <ul name="chooses" class="chooses">
-        <li class="oneChoose">
-            <div name="chooseLab" class="chooseLab"><input type="button" class="btn btn-embossed btn-primary newBtn"  name="btnCloseOption" value="删除" onclick="delChoose(this)">&nbsp;选项</div>
-            <div class="firstLine">
-                <div name="chooseContent" class="chooseContent">内容:<br/><input type="text" name="txtChooseContent" class="form-control input-sm" style="width: 300px"></div>
-                <div name="chooseScore" class="chooseScore ">分值:<br/><input type="text" name="txtChooseScore" class="form-control input-sm" style="width: 150px"></div>
-                <div name="isCorrect" class="isCorrect">正解<br/><input type="checkbox" name="chkCorrect"></div>
-            </div>
-            <div class="secondLine">
-                <div name="nextID" class="nextID">下一题题号:<input type="text" name="txtNext" class="form-control input-sm" style="width: 100px"></div>
-                <div name="stopLab" class="stopLab">停止标签:<input type="text" name="txtStop" class="form-control input-sm" style="width: 100px"></div>
-                <div name="labTip" class="labTip">标注标签:<input type="text" name="txtLab" class="form-control input-sm" style="width: 100px"></div>
-                <div class="pic">
-                    <br/><br/>
-                                        <span name="pic">
-                                             <input type="hidden" name="uploadFile"/>
-                                             <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
-                                        </span>
-                </div>
-                <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
-                                        <span name='upPic'>
-                                            <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
-                                            <span style="margin-top: 41px;float: right;">
-                                                <a href="javascript:" onclick="delPic(this)">删除</a>
-                                            </span>
-                                        </span>
-                </div>
-            </div>
+            <div name="choEs" class="choEs">
+            <div id="hiddenContainer" name="sinple">
+                <ul name="chooses" class="chooses">
+                    <li class="oneChoose">
+                        <div name="chooseLab" class="chooseLab">
+                            <input type="button" class="btn btn-embossed btn-primary newBtn"  name="btnCloseOption" value="删除" onclick="delChoose(this)">&nbsp;选项
+                        </div>
+                        <div class="firstLine">
+                            <div name="chooseContent" class="chooseContent">内容:
+                                <br/>
+                                <input type="text" name="txtChooseContent" class="form-control input-sm" style="width: 300px">
+                            </div>
+                            <div name="chooseScore" class="chooseScore ">分值:
+                                <br/>
+                                <input type="text" name="txtChooseScore" class="form-control input-sm" style="width: 150px">
+                            </div>
+                            <div name="isCorrect" class="isCorrect">正解
+                                <br/>
+                                <input type="checkbox" name="chkCorrect">
+                            </div>
+                        </div>
+                        <div class="secondLine">
+                            <div name="nextID" class="nextID">下一题题号:
+                                <input type="text" name="txtNext" class="form-control input-sm" style="width: 100px">
+                            </div>
+                            <div name="stopLab" class="stopLab">停止标签:
+                                <input type="text" name="txtStop" class="form-control input-sm" style="width: 100px">
+                            </div>
+                            <div name="labTip" class="labTip">标注标签:
+                                <input type="text" name="txtLab" class="form-control input-sm" style="width: 100px">
+                            </div>
+                            <div class="pic">
+                                <br/>
+                                <br/>
+                                <span name="pic">
+                                    <input type="hidden" name="uploadFile"/>
+                                    <input type="file" name="file" class="file" onchange="fileSelected(this)"/>
+                                </span>
+                            </div>
+                            <div style='float:left;width:90px;height:60px;display:none' name='divImg' >
+                                <span name='upPic'>
+                                    <img name="picimg" style="width: 50px; height: 50px; margin-top: 10px;" src="">
+                                    <span style="margin-top: 41px;float: right;">
+                                        <a href="javascript:" onclick="delPic(this)">删除</a>
+                                    </span>
+                                </span>
+                            </div></div>
         </li>
 
         <li class="oneChoose">

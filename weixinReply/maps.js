@@ -112,10 +112,18 @@ exports.load = function () {
             console.log("******get user position******");
             postData={"location":[msg.Latitude,msg.Longitude]};
             helper.db.coll("welab/customers").update({"wechatid":msg.FromUserName}, {$set:postData},
-                {multi: false},function(err,doc){
+                {upsert: true},function(err,doc){
                     if(err)throw err;
-                    console.log("*******update db*******");
+                    console.log("doc",doc)
+                    if(doc){
+                        console.log("*******update db*******");
+                    }else{
+                        console.log("***********error************")
+                    }
                 });
+            helper.db.coll("welab/location").insert({"wechatid":msg.FromUserName,"lat":msg.Latitude,"lng":msg.Longitude,"createTime":new Date().getTime()},function(err,doc){
+
+            })
         }else{
             next();
         }
@@ -137,30 +145,16 @@ exports.load = function () {
                 function(){
                     helper.db.coll("welab/customers").findOne({"wechatid":msg.FromUserName},function(err,doc){
                         if(err) throw err;
-
                         if(doc){
-
-                            if(doc.location==null){
-
-                                //当时取消获取账户
-                                //单图文回复
-//                                res.reply([{
-//                                    title: '门店查询',
-//                                    description:请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。 '请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。',
-//                                    picurl: 'http://wx.lavicouomo.com/public/files/2014/5/12/~!77a37b225d61a40f84fb32468c81ba00!map.jpg',
-//                                    url: 'http://wx.lavicouomo.com/lavico/store/currentCustomerLocation?wxid='+msg.FromUserName
-//                                }])
-
-                                res.reply('请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。');
-                            }else{
-
+                            if(doc.location){
                                 lat=doc.location[0];
                                 lng=doc.location[1];
                                 console.log("lat:"+lat);
                                 console.log("lng:"+lng);
                                 next();
+                            }else{
+                                res.reply('请按以下步骤发送您的位置来查看离您最近的\r\nLaVico朗维高门店：\r\n1.点击左下角小键盘按钮切换到输入模式。\r\n2.点击右侧“+”号按钮。\r\n3.点击位置按钮。');
                             }
-
                         }
                     })}
             )()
@@ -248,6 +242,32 @@ exports.load = function () {
     })
 
     wechatapi.makeQueue();
+
+    wechatapi.registerReply(14,function(msg,req,res,next){
+
+        if(msg.MsgType=="text" && msg.Content=="wz"){
+            var replyarr;
+            var list="无";
+            Steps(
+                function(){
+                    helper.db.coll("welab/location").find({"wechatid":msg.FromUserName}).sort({"createTime":-1}).toArray(this.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            list = doc[0]
+                        }
+                    }))
+                },
+                function(){
+                    if(list){
+                        res.reply("您最后一次获取坐标的记录:\r 微信ID:"+list.wechatid+"\r\n坐标:"+list.lat+","+list.lng+"\r\n获取时间:\r"+formatTime(list.createTime))
+                    }
+                }
+            )()
+        }else{
+            next();
+        }
+    })
+    wechatapi.makeQueue();
 };
 
 
@@ -281,4 +301,15 @@ function changeTwoDecimal(floatvar)
     }
     var f_x = Math.round(floatvar*100)/100;
     return f_x;
+}
+
+function   formatTime(now){
+    var   now = new Date(now);
+    var   year=now.getFullYear();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+    return   year+"-"+month+"-"+date+"\r"+hour+ ":"+minute+":"+second;
 }

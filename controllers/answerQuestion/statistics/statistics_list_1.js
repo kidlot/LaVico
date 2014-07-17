@@ -1,18 +1,18 @@
 module.exports={
     layout:"welab/Layout",
-    view:"lavico/templates/answerQuestion/statistics/statistics_list.html",
+    view:"lavico/templates/answerQuestion/statistics/statistics_list_1.html",
     process:function(seed,nut){
 
     },
     children:{
         page:{
             layout: "welab/Layout",
-            view: "lavico/templates/answerQuestion/statistics/statistics_listPage.html",
+            view: "lavico/templates/answerQuestion/statistics/statistics_listPage_1.html",
             process:function(seed,nut){
                 var then=this;
                 var themeArr=[];
                 this.step(function(){
-                    helper.db.coll("lavico/themeQuestion").find({themeType:{$ne:1}}).toArray(this.hold(function(err,docs){
+                    helper.db.coll("lavico/themeQuestion").find({themeType:1}).toArray(this.hold(function(err,docs){
                         if(err) throw  err;
                         if(docs){
                             return docs;
@@ -105,7 +105,7 @@ module.exports={
                         data[i].finishCount = data[i].finishCount;
                         data[i].count = ForDight(data[i].totalPop,data[i].finishCount)
                     }
-                    nut.model.data = data;
+                    nut.model.data = data || {};
                     nut.model.page=page || {};
                 })
             }
