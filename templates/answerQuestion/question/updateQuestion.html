@@ -144,9 +144,9 @@
                 <input type="hidden" name="_id" value="{@docs._id}">
             </p>
             <div>图文URL:&nbsp;&nbsp;
-                <input type="text" name="url" value="http://{host}/lavico/answerQuestion/first?_id={@docs._id}&optionId=1&wechatid={wxid}" class="form-control input-sm" style="width: 350px">
+                <input type="text" name="url" id="host-url" value="http://{host}/lavico/answerQuestion/first?_id={@docs._id}&optionId=1&wechatid={wxid}" class="form-control input-sm" style="width: 350px">
                 &nbsp;
-                <input type="button" name="btnCopy" value="复制" class="btn btn-embossed btn-primary">
+                <button type="button" id="btnCopy" name="btnCopy" class="btn btn-primary">复制</button>
             </div>
             <div>开始/结束:&nbsp;
                 <input type="text" value="{@docs.beginTime}" class="form-control input-sm input-date" style="border: 2px solid #bdc3c7;" id="datetimepicker_s" name="beginTime">

@@ -1881,7 +1881,7 @@ exports.load = function () {
         })
 
         this.step(function(){
-            console.log(jsonData)
+            console.log("jsonData",jsonData)
             console.log(jsonData.length)
             for(var i=0;i<jsonData.length;i++){
                 if(jsonData[i].memberId){
@@ -1893,7 +1893,7 @@ exports.load = function () {
                             sta={};
                             sta.stat = docs.success;
                             sta.id = jsonData[i].id;
-                            console.log(sta)
+                            console.log("sta",sta)
                             stutas.push(sta);
                             console.log("i:"+i)
                         }))
@@ -1905,22 +1905,26 @@ exports.load = function () {
         this.step(function(){
             for (var i=0; i<aTagList.length; i++) {
                 tag = aTagList[i];
-                console.log(stutas)
                 for(var j=0;j<stutas.length;j++){
                     if(stutas[j].stat==true){
                         successID.push(stutas[j].id);
-                        console.log("3")
                         helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},then.hold(function(err,doc){
                             if(err ){
                                 throw err;
                             }
                         }))
-                    }else{
-                        errID.push(stutas[j].id);
                     }
                 }
             }
         });
+
+        this.step(function(){
+            for(var j=0;j<stutas.length;j++){
+                if(stutas[j].stat==false){
+                    errID.push(stutas[j].id);
+                }
+            }
+        })
 
         this.step(function(){
             console.log(errID.length)

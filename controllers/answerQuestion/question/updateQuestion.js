@@ -93,6 +93,13 @@ module.exports={
             minView: 2
         })
 
+        $.getScript('/lavico/public/zclip.js/jquery.zclip.min.js',function(){
+            $("#btnCopy").zclip({
+                path:'/lavico/public/zclip.js/ZeroClipboard.swf',
+                copy:$('#host-url').val()
+            });
+        });
+
 //        $('#datetimepicker_s').datetimepicker({
 //            format: 'yyyy-mm-dd',
 //            autoclose: true,
