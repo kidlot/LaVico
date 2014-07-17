@@ -11,7 +11,11 @@ module.exports = {
     ,view: 'lavico/templates/member/card_blank/bind.html'
     ,process:function(seed, nut){
         //nut.disabled = true ;
-        nut.model.referer = seed.go || (this.req.headers.referer || '');//用户访问的上一个页面
+        if(seed.go){
+            nut.model.referer = decodeURIComponent(seed.go);//用户访问的上一个页面
+        }else{
+            nut.model.referer = this.req.headers.referer || '';//用户访问的上一个页面
+        }
         var wxid = seed.wxid ? seed.wxid : 'undefined';//预先定义微信ID
         this.step(function(){
             if(wxid == 'undefined'){
