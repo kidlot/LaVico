@@ -1079,7 +1079,6 @@ exports.load = function () {
             $.request(oUserSetOption,function(err,nut){
                 if(err) throw err ;
                 nut.msgqueue.popup() ;
-
                 // 更改页面数据
                 $("#userList").find("tr").each(function( i, o){
                     var tds = $(o).find("td");
@@ -1927,6 +1926,7 @@ exports.load = function () {
         })
 
         this.step(function(){
+            nut.model.jsonData = jsonData;
             console.log(errID.length)
             console.log(successID.length)
             if(errID.length==0){
