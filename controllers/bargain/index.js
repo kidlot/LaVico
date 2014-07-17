@@ -7,6 +7,9 @@ module.exports = {
         var list = {};
         var userlogs=[];
         var then = this;
+
+
+
         this.step(function(){
             helper.db.coll("lavico/bargain").find({},{"orderId":1}).toArray(this.hold(function(err,doc){
                 if(err){
