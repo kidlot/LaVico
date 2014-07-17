@@ -596,7 +596,6 @@ exports.load = function () {
     }
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
-        console.log("---search customers---");
         nut.disabled = true ;
 
         // 总人数
@@ -1881,25 +1880,45 @@ exports.load = function () {
         })
 
         this.step(function(){
-            console.log("jsonData",jsonData)
-            console.log(jsonData.length)
-            for(var i=0;i<jsonData.length;i++){
-                if(jsonData[i].memberId){
-                    (function(i,stutas){
-                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, then.hold(function (err, doc) {
-                            if (err) throw err;
+
+
+            this.each(jsonData,function(i,row){
+
+                if(row.memberId){
+
+                    middleware.request("Tag/Add", {memberId: row.memberId,tag: row.tag}, this.hold(function (err, doc) {
+                        if (err) {
+                            console.log(err)
+                        }else{
                             console.log(doc)
-                            var docs = JSON.parse(doc);
-                            sta={};
-                            sta.stat = docs.success;
-                            sta.id = jsonData[i].id;
-                            console.log("sta",sta)
-                            stutas.push(sta);
-                            console.log("i:"+i)
-                        }))
-                    })(i,stutas)
+                        }
+                        var docs = JSON.parse(doc);
+                        sta={};
+                        sta.stat = docs.success;
+                        sta.id = row.id;
+                        stutas.push(sta);
+                    }))
                 }
-            }
+            })
+
+//            for(var i=0;i<jsonData.length;i++){
+//                if(jsonData[i].memberId){
+//                    (function(i,stutas){
+//                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, then.hold(function (err, doc) {
+//                            if (err) {
+//                                console.log(err)
+//                            }else{
+//                                console.log(doc)
+//                            }
+//                            var docs = JSON.parse(doc);
+//                            sta={};
+//                            sta.stat = docs.success;
+//                            sta.id = jsonData[i].id;
+//                            stutas.push(sta);
+//                        }))
+//                    })(i,stutas)
+//                }
+//            }
         })
 
         this.step(function(){
@@ -1913,26 +1932,18 @@ exports.load = function () {
                                 throw err;
                             }
                         }))
+                    }else{
+                        errID.push(stutas[j].id);
                     }
                 }
             }
         });
 
         this.step(function(){
-            for(var j=0;j<stutas.length;j++){
-                if(stutas[j].stat==false){
-                    errID.push(stutas[j].id);
-                }
-            }
-        })
-
-        this.step(function(){
-            console.log(errID.length)
-            console.log(successID.length)
             if(errID.length==0){
                 nut.message("操作完成",null,"success");
             }else{
-                nut.message(successID.length+"个用户设定标签成功;" + errID.length+"个失败",null,"error") ;
+                nut.message(successID.length+"个用户设定标签成功;" + errID.length+"个失败(不是会员或标签重复)",null,"error") ;
             }
         })
     }
