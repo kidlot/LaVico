@@ -80,7 +80,7 @@ module.exports = {
             }
             /*申请会员卡*/
             $("#registerUrl").click(function(){
-                window.location.href="/lavico/member/card_blank/register?wxid="+wxid;
+                window.location.href="/lavico/member/card_blank/register?wxid="+wxid+"&go="+encodeURIComponent(referer);
             });
 
 
