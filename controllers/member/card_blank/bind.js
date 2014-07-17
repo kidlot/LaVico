@@ -70,9 +70,9 @@ module.exports = {
                         window.location.href = "/lavico/member/index?wxid="+wxid;
                     }else{
                         if(/lavico\/member\/card_blank\/register/g.test(referer)){
-                            window.history.go(-2);
-                        }else{
                             window.location.href = referer;
+                        }else{
+                            window.location.href = "/lavico/member/index?wxid="+wxid;
                         }
                     }
                 });
