@@ -731,7 +731,7 @@ exports.load = function () {
                     if( page.docs[i].tags){
                         for (var ii=0; ii<page.docs[i].tags.length; ii++)
                         {
-                            tags.push('<span class="tm-tag tm-tag-info" ><span>'+page.docs[i].tags[ii]+'</span><a href="#" class="tm-tag-remove" tagidtoremove="1" data-dismiss="alert" onclick="removeTagOrKeyword(this)">×</a></span>')
+                            tags.push('<span class="tm-tag tm-tag-info" ><span>'+page.docs[i].tags[ii]+'</span><a href="javascript:;" class="tm-tag-remove" tagidtoremove="1"  onclick="removeTagOrKeyword(this)">×</a></span>')
                         }
                     }
                     page.docs[i].tags = tags.join("&nbsp;")
@@ -1111,7 +1111,7 @@ exports.load = function () {
 
                             if( _is == false){
 
-                                var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="#" class="tm-tag-remove" data-dismiss="alert" onclick="removeTagOrKeyword( \'tag\', this)">×</a></span>';
+                                var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="javascript:;" class="tm-tag-remove"  onclick="removeTagOrKeyword(this)">×</a></span>';
                                 tds.eq(9).find("div").append(_span);
                             }
                         }
@@ -2022,7 +2022,7 @@ exports.load = function () {
             if(errID.length==0){
                 nut.message("操作完成",null,"success");
             }else{
-                nut.message(successID.length+"个用户设定标签成功;" + errID.length+"个失败(不是会员或标签重复)",null,"error") ;
+                nut.message("共为"+aUserList.length+"个用户设定标签,"+successID.length+"个标签设定成功,"+ errID.length+"个标签设定失败(不是会员或标签重复)",null,"error") ;
             }
         })
     }
