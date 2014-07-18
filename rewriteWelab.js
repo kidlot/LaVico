@@ -653,6 +653,8 @@ exports.load = function () {
         this.step(function(){
             //关注时间 任意
             if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
+                console.log(JSON.stringify(conditions));
+                console.log(conditions.$or[0].followTime.$gt)
                 conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
                 conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
             }
