@@ -70,18 +70,39 @@ module.exports={
                         resultList.push(sa);
                         nut.model.jsonResult =resultList;
                         nut.model.label =resultList[0].getLabel;
-                        nut.model.type =resultList[0].type;
                         nut.model.code =resultList[0].type;
                     }else{
-                        var results={};
-                        results.getLabel = "您已答完此题,获奖名单择期公布";
-                        results.getScore = "0";
-                        results.getTipContent = "您已答完此题,获奖名单择期公布";
-                        results.code = "undefined";
-                        results.getActivities = "您已答完此题,获奖名单择期公布";
-                        results.volumename = "您已答完此题,获奖名单择期公布";
-                        resultList.push(results);
+                        if(docTheme.showtype==0){
+                            var results={};
+                            results.getLabel = "您已答完此题,获奖名单择期公布";
+                            results.getScore = "0";
+                            results.getTipContent = "您已答完此题,获奖名单择期公布";
+                            results.code = "undefined";
+                            results.getActivities = "您已答完此题,获奖名单择期公布";
+                            results.volumename = "您已答完此题,获奖名单择期公布";
+                            resultList.push(results);
+                        }else if(docTheme.showtype==1){
+                            var results={};
+                            results.getLabel = "对不起,未查到您的答题记录,请联系管理员";
+                            results.getScore = "0";
+                            results.getTipContent = "对不起,未查到您的答题记录,请联系管理员";
+                            results.code = "undefined";
+                            results.getActivities = "对不起,未查到您的答题记录,请联系管理员";
+                            results.volumename = "对不起,未查到您的答题记录,请联系管理员";
+                            resultList.push(results);
+                        }else{
+                            var results={};
+                            results.getLabel = "对不起,未查到您的答题记录,请联系管理员";
+                            results.getScore = "0";
+                            results.getTipContent = "对不起,未查到您的答题记录,请联系管理员";
+                            results.code = "undefined";
+                            results.getActivities = "";
+                            results.volumename = "对不起,未查到您的答题记录,请联系管理员";
+                            resultList.push(results);
+                        }
                         nut.model.jsonResult =  resultList
+                        nut.model.label =resultList[0].getLabel;
+                        nut.model.code =resultList[0].type;
                     }
                 }
             }
