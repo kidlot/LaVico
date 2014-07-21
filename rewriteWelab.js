@@ -610,6 +610,10 @@ exports.load = function () {
         count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
         count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
+        console.log('*************0*************');
+        console.log(JSON.stringify(seed));
+        console.log('*************0*************');
+
         var conditions = search.conditions(seed) ;
 
         var _data = {};
@@ -651,11 +655,17 @@ exports.load = function () {
         ) ;
 
         this.step(function(){
+
+
             //关注时间 任意
             if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
+                console.log(JSON.stringify(conditions));
+                console.log(conditions.$or[0].followTime.$gt)
                 conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
                 conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+
             }
+
             //关注时间 全部
             if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
                 conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
@@ -696,14 +706,13 @@ exports.load = function () {
                 }
             }
 
-
-
-
-            console.log(conditions);
+            helper.db.coll("welab/customers").find(conditions).toArray(this.hold(function(err,docs){
+                console.log(docs);
+            }));
 
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
-
+                console.log(page);
                 _data.page = page.currentPage
                 _data.total = page.totalcount
 
@@ -1181,9 +1190,9 @@ exports.load = function () {
 
         $(".btnsearch").click(function(){
             var conditions = $(this).searchConditions() ;
-            //alert(JSON.stringify(conditions));
             if(!conditions.length)
                 return ;
+
 
             //{params:[{name:"conditions",value:[["city","上海"]]},{name:"logic",value:"任意"}]}
             $("#userList").flexOptions({params: [{name:"conditions",value:JSON.stringify(conditions)},{name:"logic",value:$("[name=searchLogic]").val()}]});
