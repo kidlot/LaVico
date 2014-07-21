@@ -1,3 +1,31 @@
+<script>
+
+    window.hideShareButtion.on()
+
+    window.onload=function(){
+
+        var label ='{@label}';
+        var sa = label.replace(/[ ]/g,"");
+        var str = sa.substr(0,1);
+        var art;
+        var cha;
+        var getlabel;
+        if(str=="A"||str=="B"||str=="C"||str=="D"||str=="E"||str=="F"){
+
+            art = sa.substr(1);
+            if(art.indexOf(":")>=0){
+                cha=(0==art.indexOf(':')?art.substr(1):art);
+                getlabel=cha;
+            }else{
+                getlabel =art;
+            }
+        }else{
+            getlabel=sa;
+        }
+        $("#getlabel").html(getlabel);
+    }
+
+</script>
 <if condition="{@showtype==0}">
     <foreach for="{@jsonResult}" var="resultString">
         <!--<div style="background-color: #a47e3c">-->
@@ -63,7 +91,7 @@
             </foreach>
             <div class="line">
             </div>
-            <if condition="{@resultString.getActivities!='数据错误'}">
+            <if condition="{@resultString.getActivities!=''}">
                 <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&code={@code}">领取优惠券</a></div>
                 <else/>
                 <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&code={@code}">领取优惠券</a></div>
@@ -71,26 +99,3 @@
         </div>
 </if>
 
-<script>
-    window.onload=function(){
-
-        var label ='{@label}';
-        var sa = label.replace(/[ ]/g,"");
-        var str = sa.substr(0,1);
-        var art;
-        var cha;
-        var getlabel;
-        if(str=="A"||str=="B"||str=="C"||str=="D"||str=="E"||str=="F"){
-
-            art = sa.substr(1);
-            if(art.indexOf(":")>=0){
-                cha=(0==art.indexOf(':')?art.substr(1):art);
-                getlabel=cha;
-            }else{
-                getlabel =art;
-            }
-        }else{
-            getlabel=label;
-        }
-        $("#getlabel").html(getlabel);
-</script>

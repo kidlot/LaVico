@@ -285,95 +285,102 @@ module.exports={
             if(go){
                 //停止标签过来
                 if (stopLab == "true") {
+
                     if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
+
                         for (var i = 0; i < scoreRange.length; i++){
-                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
-                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                            if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
-                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                getActivities = scoreRange[i].getActivities == "" ? "-1" : scoreRange[i].getActivities;
-                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                type = scoreRange[i].getActivities;
-                                if( docTheme.showtype == 1){//发放积分
-                                    then.step(function () {
-                                        var jsonData = {};
-                                        jsonData.memberId = memberid;
-                                        jsonData.qty = getScore;
-                                        jsonData.memo = nut.model.themeTitle;
-                                        if(ok){
-                                            middleware.request('Point/Change', jsonData,
-                                                this.hold(function (err, doc) {
+                            if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
+                                console.log(then.req.session.stopLabel)
+                                console.log(scoreRange[i].conditionLabel)
+                                console.log(scoreRange)
+                                var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                                var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
+                                if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
+                                    getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                    getActivities = scoreRange[i].getActivities == "" ? "-1" : scoreRange[i].getActivities;
+                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+                                    type = scoreRange[i].getActivities;
+                                    if( docTheme.showtype == 1){//发放积分
+                                        then.step(function () {
+                                            var jsonData = {};
+                                            jsonData.memberId = memberid;
+                                            jsonData.qty = getScore;
+                                            jsonData.memo = nut.model.themeTitle;
+                                            if(ok){
+                                                middleware.request('Point/Change', jsonData,
+                                                    this.hold(function (err, doc) {
+                                                        if (err) throw err;
+                                                        console.log(doc);
+                                                    })
+                                                )
+                                            }
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = "";
+                                            results.volumename = "";
+                                            resultList.push(results);
+                                        })
+                                    }else if(docTheme.showtype == 2 && typeof(getActivities) != "undefined" && getActivities != "" && getActivities != "-1"){//发放优惠劵
+                                        newActivity = ""
+                                        //服务器返回的券
+                                        //调用接口开始
+                                        var memoString = "竞猜型:" + getLabel;
+                                        //得券接口
+                                        then.step(function () {
+                                            var jsonData = {
+                                                openid: wechatid,
+                                                otherPromId: _id,
+                                                PROMOTION_CODE: getActivities,
+                                                memo: memoString,
+                                                point: 0
+                                            }
+                                            if(ok){
+                                                middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                     if (err) throw err;
-                                                    console.log(doc);
-                                                })
-                                            )
-                                        }
+                                                    var docJson = JSON.parse(doc)
+                                                    console.log(docJson)
+                                                    if (docJson.success==true) {
+                                                        newActivity = docJson.coupon_no
+                                                        nut.model.err = docJson.success
+                                                        if (docJson.coupon_no) {
+                                                            nut.model.errString = "无";
+                                                        }
+                                                        newActivity= docJson.coupon_no
+                                                    } else {
+                                                        console.log("docJson.success",docJson.success)
+//                                                        newActivity="数据错误";
+                                                        nut.model.err = docJson.success;
+                                                        nut.model.errString = docJson.error;
+                                                    }
+                                                }));
+                                            }
+                                        })
+                                        then.step(function(){
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = newActivity;
+                                            results.volumename = volumename;
+                                            resultList.push(results);
+                                        })
+                                    }else{
                                         var results={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = "";
+                                        results.getLabel = "对不起,您没有获得任何奖励";
+                                        results.getScore = "0";
+                                        results.getTipContent = "对不起,您没有获得任何奖励";
+                                        results.code = "";
+                                        results.getActivities = "对不起,您没有获得任何奖励";
                                         results.volumename = "";
                                         resultList.push(results);
-                                    })
-                                }else if(docTheme.showtype == 2 && typeof(getActivities) != "undefined" && getActivities != "" && getActivities != "-1"){//发放优惠劵
-                                    newActivity = ""
-                                    //服务器返回的券
-                                    //调用接口开始
-                                    var memoString = "竞猜型:" + getLabel;
-                                    //得券接口
-                                    then.step(function () {
-                                        var jsonData = {
-                                            openid: wechatid,
-                                            otherPromId: _id,
-                                            PROMOTION_CODE: getActivities,
-                                            memo: memoString,
-                                            point: 0
-                                        }
-                                        if(ok){
-                                            middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                var docJson = JSON.parse(doc)
-                                                console.log(docJson)
-                                                if (docJson.success) {
-                                                    newActivity = docJson.coupon_no
-                                                    nut.model.err = docJson.success
-                                                    if (docJson.coupon_no) {
-                                                        nut.model.errString = "无";
-                                                    }
-                                                    newActivity= docJson.coupon_no
-                                                } else {
-                                                    newActivity="数据错误";
-                                                    nut.model.err = docJson.success;
-                                                    nut.model.errString = docJson.error;
-                                                }
-                                            }));
-                                        }
-                                    })
-                                    then.step(function(){
-                                        var results={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = newActivity;
-                                        results.volumename = volumename;
-                                        resultList.push(results);
-                                    })
-                                }else{
-                                    var results={};
-                                    results.getLabel = "对不起,您没有获得任何奖励";
-                                    results.getScore = "0";
-                                    results.getTipContent = "对不起,您没有获得任何奖励";
-                                    results.code = "";
-                                    results.getActivities = "对不起,您没有获得任何奖励";
-                                    results.volumename = "";
-                                    resultList.push(results);
+                                    }
                                 }
                             }
-
                         }
                     }else{
                         var results={};
@@ -450,8 +457,9 @@ module.exports={
                             memoString = nut.model.themeTitle +":"+ getLabel;
                         }
                         jsonData = {};
-                        jsonData.memberId = nut.model.memberID;
+                        jsonData.memberId = memberid;
                         jsonData.tag = memoString;
+                        console.log("jsonData",jsonData)
                         middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                             if (err) throw err;
                             console.log("tag record:" + doc);

@@ -85,6 +85,7 @@ module.exports={
                     jsonData = {};
                     jsonData.memberId = memberid;
                     jsonData.tag = memoString;
+                    console.log("jsonData",jsonData)
                     middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                         if (err) throw err;
                         console.log("tag record:" + doc);
@@ -124,6 +125,7 @@ module.exports={
                     jsonData = {};
                     jsonData.memberId = memberid;
                     jsonData.tag = memoString;
+                    console.log("jsonData",jsonData)
                     middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                         if (err) throw err;
                         console.log("tag record:" + doc);
