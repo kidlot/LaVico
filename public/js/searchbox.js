@@ -71,6 +71,7 @@ $.searchInitConditions = function(meta){
 
 $.fn.searchConditions = function(){
 
+
     var $conditions = $(this).parents(".searchbox").find(".searchConditionOuter") ;
     var conditions = [] ;
 
@@ -81,13 +82,18 @@ $.fn.searchConditions = function(){
             return ;
         var data = [ $(this).find("[name=searchFieldName]").val(), value ] ;
 
+        /*2014-07-21添加时间间隔晒选功能*/
         if(data[0] == "followTime"){
-            data[1] = data[1];
+            data[1] = data[1];//开始时间
+            data[2] = $(this).find("[name=searchConditionValueEnd]").val();//结束时间
 
         }
         if(data[0] == "registerTime"){
-            data[1] =  data[1];
+            data[1] =  data[1];//开始时间
+            data[2] = $(this).find("[name=searchConditionValueEnd]").val();//结束时间
+
         }
+
         if(data[0] == "HaiLanMemberInfo.type"){
             data[1] = parseInt(data[1]);
         }
