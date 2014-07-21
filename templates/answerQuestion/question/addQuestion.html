@@ -148,20 +148,29 @@
     <div>开始/结束:&nbsp;<input type="text" class="form-control input-sm input-date" style="border: 2px solid #bdc3c7;" id="datetimepicker_s" name="beginTime">&nbsp;&nbsp;<input style="border: 2px solid #bdc3c7;" type="text" class="form-control input-sm input-date" id="datetimepicker_t" name="endTime"></div>
     <div>题目名称:&nbsp;&nbsp;<input type="text" name="title" class="form-control input-sm" style="width: 350px"></div>
     <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;<input type="text" name="volumename" class="form-control input-sm" style="width: 350px"></div>
-    <div>题目类型:&nbsp;&nbsp;<select name="themeType" class="form-control input-sm" style="width: 150px">
-        <if condition="{@type==1}">
-            <option value="1" selected="selected">测试型</option>
-            <else/>
-            <option value="0" selected="selected">对错型</option>
-            <option value="2">调查型</option>
+    <div>题目类型:&nbsp;
+        <select name="themeType" class="form-control input-sm" style="width: 200px">
+            <if condition="{@type==1}">
+                <option value="1" selected="selected">测试型</option>
+                <elseif condition="{@type==3}"/>
+                <option value="3">竞猜型</option>
+                <else/>
+                <option value="0" selected="selected">对错型</option>
+                <option value="2">调查型</option>
+            </if>
+        </select>
+    </div>
+        <if condition="{@type==3}">
+            <div>发放类型:&nbsp;
+                <select name="showType" class="form-control input-sm" style="width: 200px">
+                    <option value="0" selected="selected">只显示提示</option>
+                    <option value="1">发放积分</option>
+                    <option value="2">发放优惠劵</option>
+                </select>
+            </div>
         </if>
-        <!--<option value="0" selected="selected">对错型</option>-->
-        <!--<option value="1">测试型</option>-->
-        <!--<option value="2">调查型</option>-->
 
-        <!--<option value="3">竞猜型</option>-->
-    </select></div>
-    <div>是否开启:&nbsp;&nbsp;<select name="isOpen" class="form-control input-sm" style="width: 150px">
+    <div>是否开启:&nbsp;&nbsp;<select name="isOpen" class="form-control input-sm" style="width: 200px">
         <option value="0">关</option>
         <option value="1" selected="selected">开</option>
     </select>

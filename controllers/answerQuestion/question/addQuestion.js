@@ -39,41 +39,41 @@ module.exports={
         }
     },
     viewIn:function(){
-//        $('#datetimepicker_s').datetimepicker({
-//            format: 'yyyy-mm-dd',
-//            autoclose: true,
-//            minView: 2
-//        }).on('changeDate', function(ev)
-//            {
-//                $.controller("/welab/summary/addQuestion",{
-//                    start: $("#datetimepicker_s").val() ,
-//                    end: $("#datetimepicker_t").val()
-//                },'.childview:last()>.ocview') ;
-//            });
-
         $('#datetimepicker_s').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
             minView: 2
-        })
+        }).on('changeDate', function(ev)
+            {
+                $.controller("/welab/summary/addQuestion",{
+                    start: $("#datetimepicker_s").val() ,
+                    end: $("#datetimepicker_t").val()
+                },'.childview:last()>.ocview') ;
+            });
+
+//        $('#datetimepicker_s').datetimepicker({
+//            format: 'yyyy-mm-dd',
+//            autoclose: true,
+//            minView: 2
+//        })
+//
+//        $('#datetimepicker_t').datetimepicker({
+//            format: 'yyyy-mm-dd',
+//            autoclose: true,
+//            minView: 2
+//        })
 
         $('#datetimepicker_t').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
-            minView: 2
-        })
-
-//        $('#datetimepicker_t').datetimepicker({
-//            format: 'yyyy-mm-dd',
-//            autoclose: true,
-//            minView: 2,
-//        }).on('changeDate', function(ev)
-//            {
-//                $.controller("/welab/summary/addQuestion",{
-//                    start: $("#datetimepicker_s").val() ,
-//                    end: $("#datetimepicker_t").val()
-//                },'.childview:last()>.ocview') ;
-//            });
+            minView: 2,
+        }).on('changeDate', function(ev)
+            {
+                $.controller("/welab/summary/addQuestion",{
+                    start: $("#datetimepicker_s").val() ,
+                    end: $("#datetimepicker_t").val()
+                },'.childview:last()>.ocview') ;
+            });
     }
 }
 
