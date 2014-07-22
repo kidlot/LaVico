@@ -26,13 +26,34 @@
     }
 
 </script>
+<style>
+    .points{
+        position:absolute;
+        top:40%;
+        right:7%;
+        font-size:2.4rem;
+        width:35% ;
+        text-align:left;
+        line-height: 35px;
+    }
+</style>
 <if condition="{@showtype==0}">
-    <foreach for="{@jsonResult}" var="resultString">
-        <!--<div style="background-color: #a47e3c">-->
-            {@resultString.getLabel}
-        <!--</div>-->
-    </foreach>
-
+    <div class="wrapper">
+        <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
+        <div class="coupon">
+            <div class="points-content">
+                <img src="/lavico/public/images/lavico.jpg" />
+                <div class="points">
+                    <foreach for="{@jsonResult}" var="resultString">
+                        <label style="font-size: 2.4rem">{@resultString.getLabel}</label>
+                    </foreach>
+                </div>
+            </div>
+            <div class="look-text">
+                <p class="click-look"><a href="/lavico/member/index?wxid={@wechatid}">会员中心</a></p>
+            </div>
+        </div>
+    </div>
     <elseif condition="{@showtype=='1'}"/>
     <div class="wrapper">
         <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
