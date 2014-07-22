@@ -196,6 +196,8 @@
                 alert("成功");
                 if(themeType==1){
                     $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+                }else if(themeType==3){
+                    $.controller("/lavico/answerQuestion/statistics/statistics_list_3")
                 }else{
                     $.controller("/lavico/answerQuestion/statistics/statistics_list")
                 }

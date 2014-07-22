@@ -17,7 +17,7 @@
             btns: [
                 {
                     title: '列表',
-                    controller: '/lavico/answerQuestion/statistics/statistics_list_1'
+                    controller: '/lavico/answerQuestion/statistics/statistics_list_3'
                 }, {
                     title: '添加',
                     controller: '/lavico/answerQuestion/question/addQuestion?themetype=3'
