@@ -17,10 +17,10 @@
             <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown"><em class="icon02"></em> 操作 <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li><a href="/welab/reply/form{@data.type=='text'?'Text':''}{@data.type=='voice'?'Audio':''}?_id={@data._id}&type={@data.type}" class="stay-top">编辑</a></li>
-                <if condition="@data.type=='list'">
+                <if condition="@data.type=='1'">
                     <li><a href="/welab/reply/form?_id={@data._id}&type=single" class="stay-top">编辑单图文</a></li>
                 </if>
-                <if condition="@data.type=='single'">
+                <if condition="@data.type=='2'">
                     <li><a href="/welab/reply/form?_id={@data._id}&type=list" class="stay-top">编辑多图文</a></li>
                 </if>
                 <li><a href="/welab/reply/form:setInvalid?replyid={@data._id}" class="userSetTagView stay-top" >停用</a></li>
