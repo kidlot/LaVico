@@ -31,10 +31,8 @@
         position:absolute;
         top:40%;
         right:7%;
-        font-size:2.4rem;
         width:35% ;
         text-align:left;
-        line-height: 35px;
     }
 </style>
 <if condition="{@showtype==0}">
@@ -45,7 +43,7 @@
                 <img src="/lavico/public/images/lavico.jpg" />
                 <div class="points">
                     <foreach for="{@jsonResult}" var="resultString">
-                        <label style="font-size: 2.4rem">{@resultString.getLabel}</label>
+                        <label style="font-size: 1.8rem">{@resultString.getLabel}</label>
                     </foreach>
                 </div>
             </div>
