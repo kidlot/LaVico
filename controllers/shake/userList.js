@@ -32,7 +32,7 @@ module.exports = {
                 {display: '日期', name : $(".unwind").val()+'.createDate', width : 80, sortable : true},
                 {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true, hide:true},
                 {display: '姓名', name : 'realname', width : 80, sortable : true},
-                {display: '手机号吗', name : 'mobile', width : 100, sortable : true},
+                {display: '手机号码', name : 'mobile', width : 100, sortable : true},
                 {display: 'memberID', name :$(".unwind").val()+'.memberID', width : 80, sortable : true},
 //                {display: '券名', name : $(".unwind").val()+'.promotion_name', width : 100, sortable : true},
                 {display: '券号', name : $(".unwind").val()+'.coupon_no', width : 180, sortable : true},
