@@ -4,11 +4,13 @@ module.exports={
     view:"lavico/templates/answerQuestion/guessfinish.html",
     process:function(seed,nut){
         var wechatid = seed.wechatid || "null";
+        nut.model.wechatid = wechatid;
         var _id = seed._id || "null";
         var optionid = seed.optionId || "null";
         var memberid  = seed.memberid  || "null";
         var themetype = seed.themetype || "null";
         var stutas= seed.stutas ? seed.stutas :"false";
+        nut.model.stutas = stutas;
         var stopLab=seed.stopLab ? seed.stopLab : "null";
         var newActivity="";
         var docs=[];
@@ -23,6 +25,19 @@ module.exports={
         var newActivity="";
         var getActivities ="";
         var getTipContent="您已答完此题,获奖名单择期公布";
+
+        //查找单题组,获取分值范围数组
+        this.step(function () {
+            helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
+                if (err) throw err;
+                scoreRange = doc.scoreMinMax;
+                volumename = doc.volumename || "";
+                docTheme = doc;
+                themeType = doc.themeType;
+                nut.model.themeType = themeType;
+                nut.model.themeTitle = doc.theme
+            }));
+        });
 
         this.step(function(){
             helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
@@ -50,22 +65,44 @@ module.exports={
                             sa = docs[i];
                         }
                     }
+                    nut.model.showtype = docTheme.showtype;
                     if(sa){
                         resultList.push(sa);
                         nut.model.jsonResult =resultList;
                         nut.model.label =resultList[0].getLabel;
-                        nut.model.type =resultList[0].type;
                         nut.model.code =resultList[0].type;
                     }else{
-                        var results={};
-                        results.getLabel = "您已答完此题,获奖名单择期公布";
-                        results.getScore = 0;
-                        results.getTipContent = "您已答完此题,获奖名单择期公布";
-                        results.code = "undefined";
-                        results.getActivities = "您已答完此题,获奖名单择期公布";
-                        results.volumename = "您已答完此题,获奖名单择期公布";
-                        resultList.push(results);
+                        if(docTheme.showtype==0){
+                            var results={};
+                            results.getLabel = "您已答完此题,获奖名单择期公布";
+                            results.getScore = "0";
+                            results.getTipContent = "您已答完此题,获奖名单择期公布";
+                            results.code = "undefined";
+                            results.getActivities = "您已答完此题,获奖名单择期公布";
+                            results.volumename = "您已答完此题,获奖名单择期公布";
+                            resultList.push(results);
+                        }else if(docTheme.showtype==1){
+                            var results={};
+                            results.getLabel = "对不起,未查到您的答题记录,请联系管理员";
+                            results.getScore = "0";
+                            results.getTipContent = "对不起,未查到您的答题记录,请联系管理员";
+                            results.code = "undefined";
+                            results.getActivities = "对不起,未查到您的答题记录,请联系管理员";
+                            results.volumename = "对不起,未查到您的答题记录,请联系管理员";
+                            resultList.push(results);
+                        }else{
+                            var results={};
+                            results.getLabel = "对不起,未查到您的答题记录,请联系管理员";
+                            results.getScore = "0";
+                            results.getTipContent = "对不起,未查到您的答题记录,请联系管理员";
+                            results.code = "undefined";
+                            results.getActivities = "";
+                            results.volumename = "对不起,未查到您的答题记录,请联系管理员";
+                            resultList.push(results);
+                        }
                         nut.model.jsonResult =  resultList
+                        nut.model.label =resultList[0].getLabel;
+                        nut.model.code =resultList[0].type;
                     }
                 }
             }
@@ -93,19 +130,7 @@ module.exports={
             }
         })
 
-        //查找单题组,获取分值范围数组
-        this.step(function () {
-            helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
-                if (err) throw err;
-                scoreRange = doc.scoreMinMax;
-                volumename = doc.volumename || {};
-                docTheme = doc;
-                themeType = doc.themeType;
-                nut.model.themeType = themeType;
-                nut.model.themeTitle = doc.theme
-            }));
-        });
-
+        //插入总积分
         this.step(function(){
             if(go){
                 if(ok){
@@ -134,75 +159,44 @@ module.exports={
             if(go){
                 //非停止标签过来
                 if (stopLab != "true") {
-                    for (var i = 0; i < scoreRange.length; i++) {
-                        var minlen = scoreRange[i].conditionMinScore;//获取低分值
-                        var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                        console.log(minlen)
-                        console.log(maxlen)
-                        //判断是否是发放卷
-                        if(scoreRange[i].getActivities=="-1"){
-                            type = scoreRange[i].getActivities;
-                            //在分值范围中
-                            if(score >= minlen && score <= maxlen && minlen!=null && maxlen!=null){
+                    if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
+                        for (var i = 0; i < scoreRange.length; i++){
+                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
+                            if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                 getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                getActivities = scoreRange[i].getActivities == "" ? "-1" : scoreRange[i].getActivities;
                                 getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                then.step(function (memberID) {
-                                    var jsonData = {};
-                                    jsonData.memberId = memberid;
-                                    jsonData.qty = getScore;
-                                    jsonData.memo = nut.model.themeTitle;
-                                    if(ok){
-                                        middleware.request('Point/Change', jsonData,
-                                            this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                console.log(doc);
-                                            })
-                                        )
-                                    }
-                                    var results={};
-                                    results.getLabel = getLabel;
-                                    results.getScore = getScore;
-                                    results.getTipContent = getTipContent;
-                                    results.code = getActivities;
-                                    results.getActivities = "您没有获得任何礼券";
-                                    results.volumename = volumename;
-                                    resultList.push(results);
-                                    nut.model.sta = "false";
-                                    nut.model.score = "1";
-                                    nut.model.getScores ="1";
-                                })
-                            }else{
-                                var results={};
-                                results.getLabel = "您已答完此题,获奖名单择期公布";
-                                results.getScore = "您已答完此题,获奖名单择期公布";
-                                results.getTipContent = "您已答完此题,获奖名单择期公布";
-                                results.code = "";
-                                results.getActivities = "您没有获得任何礼券";
-                                results.volumename = volumename;
-                                resultList.push(results);
-                            }
-
-                        }else{
-                            type = scoreRange[i].getActivities;
-
-                            if(score >= minlen && score <= maxlen && score!=0){
-                                //获取奖励
-                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                if (typeof(getActivities) != "undefined" && getActivities != "") {
+                                type = scoreRange[i].getActivities;
+                                if( docTheme.showtype == 1){//发放积分
+                                    then.step(function () {
+                                        var jsonData = {};
+                                        jsonData.memberId = memberid;
+                                        jsonData.qty = getScore;
+                                        jsonData.memo = nut.model.themeTitle;
+                                        if(ok){
+                                            middleware.request('Point/Change', jsonData,
+                                                this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                    console.log(doc);
+                                                })
+                                            )
+                                        }
+                                        var results={};
+                                        results.getLabel = getLabel;
+                                        results.getScore = getScore;
+                                        results.getTipContent = getTipContent;
+                                        results.code = getActivities;
+                                        results.getActivities = "";
+                                        results.volumename = "";
+                                        resultList.push(results);
+                                    })
+                                }else if(docTheme.showtype == 2 && typeof(getActivities) != "undefined" && getActivities != "" && getActivities != "-1"){//发放优惠劵
                                     newActivity = ""
                                     //服务器返回的券
                                     //调用接口开始
-                                    var memoString = "主观题-" + getScore+"积分";
-                                    if (themeType == 0) {
-                                        memoString = "答题抢积分-" + getScore+"积分";
-                                    } else if (themeType == 1) {
-                                        memoString = "型男测试-" + getLabel;
-                                    }
+                                    var memoString = "竞猜型:" + getLabel;
                                     //得券接口
                                     then.step(function () {
                                         var jsonData = {
@@ -219,19 +213,17 @@ module.exports={
                                                 console.log(docJson)
                                                 if (docJson.success) {
                                                     newActivity = docJson.coupon_no
-                                                    console.log(docJson)
                                                     nut.model.err = docJson.success
                                                     if (docJson.coupon_no) {
                                                         nut.model.errString = "无";
                                                     }
                                                     newActivity= docJson.coupon_no
                                                 } else {
+                                                    newActivity="数据错误";
                                                     nut.model.err = docJson.success;
                                                     nut.model.errString = docJson.error;
                                                 }
                                             }));
-                                        }else{
-                                            newActivity="已领过此卷";
                                         }
                                     })
                                     then.step(function(){
@@ -243,25 +235,30 @@ module.exports={
                                         results.getActivities = newActivity;
                                         results.volumename = volumename;
                                         resultList.push(results);
-                                        nut.model.sta = "false";
-                                        nut.model.score = "1";
-                                        nut.model.getScores ="1";
-                                        nut.model.type = type;
                                     })
+                                }else{
+                                    var results={};
+                                    results.getLabel = "对不起,您没有获得任何奖励";
+                                    results.getScore = "0";
+                                    results.getTipContent = "对不起,您没有获得任何奖励";
+                                    results.code = "";
+                                    results.getActivities = "对不起,您没有获得任何奖励";
+                                    results.volumename = "";
+                                    resultList.push(results);
                                 }
-                            }else{
-                                var results={};
-                                results.getLabel = "您已答完此题,获奖名单择期公布";
-                                results.getScore = "您已答完此题,获奖名单择期公布";
-                                results.getTipContent = "您已答完此题,获奖名单择期公布";
-                                results.code = "";
-                                results.getActivities = "您没有获得任何礼券";
-                                results.volumename = volumename;
-                                resultList.push(results);
                             }
-                        }
-                    }
 
+                        }
+                    }else{
+                        var results={};
+                        results.getLabel = "您已答完此题,获奖名单择期公布";
+                        results.getScore = "0";
+                        results.getTipContent = "您已答完此题,获奖名单择期公布";
+                        results.code = "";
+                        results.getActivities = "您已答完此题,获奖名单择期公布";
+                        results.volumename = "";
+                        resultList.push(results);
+                    }
 
                     then.step(function(){
                         if(resultList.length==0){
@@ -273,9 +270,6 @@ module.exports={
                             results.getActivities = "您没有获得任何礼券";
                             results.volumename = volumename;
                             resultList.push(results)
-                            nut.model.stutas = "true";
-                            nut.model.score = "0";
-                            nut.model.getScores ="0";
                             nut.model.type = type;
                         }
                     })
@@ -303,7 +297,6 @@ module.exports={
                                 "type":type
                             }, function (err, doc) {});
                         }
-
                     })
                 }
             }
@@ -313,75 +306,50 @@ module.exports={
             if(go){
                 //停止标签过来
                 if (stopLab == "true") {
-                    for (var i = 0; i < scoreRange.length; i++) {
-                        if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
-                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
-                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                            //判断是否是发放卷
-                            if(scoreRange[i].getActivities=="-1"){
-                                type = scoreRange[i].getActivities;
-                                //在分值范围中
-                                if(score >= minlen && score <= maxlen){
-                                    getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                    //获取奖励
-                                    then.step(function (memberID) {
-                                        var jsonData = {};
-                                        jsonData.memberId = memberid;
-                                        jsonData.qty = getScore;
-                                        jsonData.memo = nut.model.themeTitle;
 
-                                        if(ok){
-                                            console.log("问答测试:"+JSON.stringify(jsonData));
-                                            middleware.request('Point/Change', jsonData,
-                                                this.hold(function (err, doc) {
-                                                    if (err) throw err;
-                                                })
-                                            )
-                                        }
-                                        var results ={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = "您没有获得任何礼券";
-                                        results.volumename = volumename;
-                                        resultList.push(results)
-                                        nut.model.sta = "false";
-                                        nut.model.score = "1";
-                                        nut.model.getScores ="1";
-                                        nut.model.type = type;
-                                    })
-                                }else{
-                                    var results={};
-                                    results.getLabel = "您已答完此题,获奖名单择期公布";
-                                    results.getScore = "您已答完此题,获奖名单择期公布";
-                                    results.getTipContent = "您已答完此题,获奖名单择期公布";
-                                    results.code = "";
-                                    results.getActivities = "您没有获得任何礼券";
-                                    results.volumename = volumename;
-                                    resultList.push(results);
-                                }
-                            }else{
-                                if(score >= minlen && score <= maxlen){
-                                    type = scoreRange[i].getActivities;
-                                    //获取奖励
+                    if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
+
+                        for (var i = 0; i < scoreRange.length; i++){
+                            if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
+                                console.log(then.req.session.stopLabel)
+                                console.log(scoreRange[i].conditionLabel)
+                                console.log(scoreRange)
+                                var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                                var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
+                                if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                     getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                     getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                    getActivities = scoreRange[i].getActivities == "" ? "-1" : scoreRange[i].getActivities;
                                     getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                    if (typeof(getActivities) != "undefined" && getActivities != "") {
+                                    type = scoreRange[i].getActivities;
+                                    if( docTheme.showtype == 1){//发放积分
+                                        then.step(function () {
+                                            var jsonData = {};
+                                            jsonData.memberId = memberid;
+                                            jsonData.qty = getScore;
+                                            jsonData.memo = nut.model.themeTitle;
+                                            if(ok){
+                                                middleware.request('Point/Change', jsonData,
+                                                    this.hold(function (err, doc) {
+                                                        if (err) throw err;
+                                                        console.log(doc);
+                                                    })
+                                                )
+                                            }
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = "";
+                                            results.volumename = "";
+                                            resultList.push(results);
+                                        })
+                                    }else if(docTheme.showtype == 2 && typeof(getActivities) != "undefined" && getActivities != "" && getActivities != "-1"){//发放优惠劵
                                         newActivity = ""
                                         //服务器返回的券
                                         //调用接口开始
-                                        var memoString = "主观题-" + getScore+"积分";
-                                        if (themeType == 0) {
-                                            memoString = "答题抢积分-" + getScore+"积分";
-                                        } else if (themeType == 1) {
-                                            memoString = "型男测试-" + getLabel;
-                                        }
+                                        var memoString = "竞猜型:" + getLabel;
                                         //得券接口
                                         then.step(function () {
                                             var jsonData = {
@@ -396,21 +364,20 @@ module.exports={
                                                     if (err) throw err;
                                                     var docJson = JSON.parse(doc)
                                                     console.log(docJson)
-                                                    if (docJson.success) {
+                                                    if (docJson.success==true) {
                                                         newActivity = docJson.coupon_no
-                                                        console.log(docJson)
                                                         nut.model.err = docJson.success
                                                         if (docJson.coupon_no) {
                                                             nut.model.errString = "无";
                                                         }
-                                                        newActivity =  docJson.coupon_no
+                                                        newActivity= docJson.coupon_no
                                                     } else {
+                                                        console.log("docJson.success",docJson.success)
+//                                                        newActivity="数据错误";
                                                         nut.model.err = docJson.success;
                                                         nut.model.errString = docJson.error;
                                                     }
                                                 }));
-                                            }else{
-                                                newActivity="已领过此卷";
                                             }
                                         })
                                         then.step(function(){
@@ -422,43 +389,46 @@ module.exports={
                                             results.getActivities = newActivity;
                                             results.volumename = volumename;
                                             resultList.push(results);
-                                            nut.model.sta = "false";
-                                            nut.model.score = "1";
-                                            nut.model.getScores ="1";
-                                            nut.model.type = type;
                                         })
-
+                                    }else{
+                                        var results={};
+                                        results.getLabel = "对不起,您没有获得任何奖励";
+                                        results.getScore = "0";
+                                        results.getTipContent = "对不起,您没有获得任何奖励";
+                                        results.code = "";
+                                        results.getActivities = "对不起,您没有获得任何奖励";
+                                        results.volumename = "";
+                                        resultList.push(results);
                                     }
-                                }else{
-                                    var results={};
-                                    results.getLabel = "您已答完此题,获奖名单择期公布";
-                                    results.getScore = "您已答完此题,获奖名单择期公布";
-                                    results.getTipContent = "您已答完此题,获奖名单择期公布";
-                                    results.code = "";
-                                    results.getActivities = "您没有获得任何礼券";
-                                    results.volumename = volumename;
-                                    resultList.push(results);
                                 }
                             }
                         }
+                    }else{
+                        var results={};
+                        results.getLabel = "您已答完此题,获奖名单择期公布";
+                        results.getScore = "0";
+                        results.getTipContent = "您已答完此题,获奖名单择期公布";
+                        results.code = "";
+                        results.getActivities = "您已答完此题,获奖名单择期公布";
+                        results.volumename = "";
+                        resultList.push(results);
                     }
 
                     then.step(function(){
                         if(resultList.length==0){
                             var results={};
-                            results.getLabel = "您已答完此题,获奖名单择期公布";
+                            results.getLabel = "对不起,您没有获得任何奖励";
                             results.getScore = 0;
-                            results.getTipContent = "您已答完此题,获奖名单择期公布";
-                            results.code = "";
-                            results.getActivities = "您已答完此题,获奖名单择期公布";
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "undefined";
+                            results.getActivities = "您没有获得任何礼券";
                             results.volumename = volumename;
                             resultList.push(results)
-                            nut.model.stutas = "true";
-                            nut.model.score = "0";
-                            nut.model.getScores ="0";
                             nut.model.type = type;
                         }
                     })
+
+
                     then.step(function(){
                         if(ok){
                             helper.db.coll("lavico/custReceive").insert({
@@ -481,7 +451,6 @@ module.exports={
                                 "type":type
                             }, function (err, doc) {});
                         }
-
                     })
                 }
             }
@@ -489,12 +458,40 @@ module.exports={
 
         this.step(function () {
             if(go){
-                nut.model.type = type;
+                nut.model.code = type;
+                nut.model.showtype = docTheme.showtype;
                 then.req.session.optionId = ""
                 nut.model.result = resultList;
                 nut.model.jsonResult = resultList
                 nut.model.label =resultList[0].getLabel;
                 console.log("resultlist",resultList)
+
+                if(ok){
+                    if (getLabel != "" || getLabel != null || getScore!="") {
+                        //发送标签至CRM
+                        var memoString="";
+                        if(docTheme.showtype==0){
+                            memoString = nut.model.themeTitle +":"+"已完成";
+                        }else if(docTheme.showtype==1){
+                            memoString = nut.model.themeTitle +":"+ getScore+"积分";
+                        }else{
+                            memoString = nut.model.themeTitle +":"+ getLabel;
+                        }
+                        jsonData = {};
+                        jsonData.memberId = memberid;
+                        jsonData.tag = memoString;
+                        console.log("jsonData",jsonData)
+                        middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                            if (err) throw err;
+                            console.log("tag record:" + doc);
+                        }))
+                        helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+                            if(err ){
+                                throw err;
+                            }
+                        }));
+                    }
+                }
             }
         })
     }

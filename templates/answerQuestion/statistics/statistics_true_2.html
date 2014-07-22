@@ -1,3 +1,4 @@
+<if condition="{@showtype!=0}">
 <div name="getScore" class="maginTop20">
     <table class="table table-hover" id="tagList">
         <thead>
@@ -8,19 +9,6 @@
             </tr>
         </thead>
         <tbody>
-            <!--<foreach for="@docs_2.scoreMinMax" var="doc">-->
-                <!--<tr class="borderBtm">-->
-                    <!--<td class="width250">{@doc.getScore}</td>-->
-                    <!--<td class="width50">{@doc.sinScore}</td>-->
-                    <!--<td class="width50">-->
-                        <!--<if condition="{@doc.sinScore==''}">-->
-                            <!--0%-->
-                            <!--<else/>-->
-                            <!--{@parseInt(doc.sinScore/all2*100)}%-->
-                        <!--</if>-->
-                    <!--</td>-->
-                <!--</tr>-->
-            <!--</foreach>-->
             <foreach for="@docs_2" var="doc">
                 <tr class="borderBtm">
                     <td class="width250">{@doc.getScore}</td>
@@ -37,3 +25,4 @@
         <tbody>
     </table>
 </div>
+</if>

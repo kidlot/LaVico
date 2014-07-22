@@ -1,24 +1,120 @@
-<div class="wrapper">
-    <div class="mobile">
-        <div class="points-content">
-            <img src="/lavico/public/images/man_test_result-642X385.png" />
-            <div style="text-align: left;position:absolute; top: 20%; left: 18%;width:30%">
-                <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
-                <foreach for="{@jsonResult}" var="resultString">
-                    <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
-                        您是<label id="getlabel">{@resultString.getLabel}</label>
-                    </p>
-                </foreach>
+<script>
+
+    window.hideShareButtion.on()
+
+    window.onload=function(){
+
+        var label ='{@label}';
+        var sa = label.replace(/[ ]/g,"");
+        var str = sa.substr(0,1);
+        var art;
+        var cha;
+        var getlabel;
+        if(str=="A"||str=="B"||str=="C"||str=="D"||str=="E"||str=="F"){
+
+            art = sa.substr(1);
+            if(art.indexOf(":")>=0){
+                cha=(0==art.indexOf(':')?art.substr(1):art);
+                getlabel=cha;
+            }else{
+                getlabel =art;
+            }
+        }else{
+            getlabel=sa;
+        }
+        $("#getlabel").html(getlabel);
+    }
+
+</script>
+<style>
+    .points{
+        position:absolute;
+        top:40%;
+        right:7%;
+        width:35% ;
+        text-align:left;
+    }
+</style>
+<if condition="{@showtype==0}">
+    <div class="wrapper">
+        <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
+        <div class="coupon">
+            <div class="points-content">
+                <img src="/lavico/public/images/lavico.jpg" />
+                <div class="points">
+                    <foreach for="{@jsonResult}" var="resultString">
+                        <label style="font-size: 1.8rem">{@resultString.getLabel}</label>
+                    </foreach>
+                </div>
+            </div>
+            <div class="look-text">
+                <p class="click-look"><a href="/lavico/member/index?wxid={@wechatid}">会员中心</a></p>
+            </div>
+        </div>
+    </div>
+    <elseif condition="{@showtype=='1'}"/>
+    <div class="wrapper">
+        <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
+        <div class="coupon">
+            <div class="points-content">
+                <img src="/lavico/public/images/points_banner-604X319.jpg" />
+                <div class="points_txt">
+
+                    <foreach for="{@jsonResult}" var="resultString">
+                        <label style="font-size: 2.4rem">{@resultString.getScore}积分</label>
+                    </foreach>
+                </div>
             </div>
         </div>
         <foreach for="{@jsonResult}" var="resultString">
-            <div class="man-test-content">
-                <div class="title1">{@resultString.getLabel}</div>
-                <div class="subtext">{@resultString.getTipContent}</div>
+            <div class="look-text">
+                <p class="get">
+                    <if condition="{@stutas=='true'}">
+                        <if condition="{@resultString.getScore=='0'}">
+                            对不起,您上次答题获得:
+                            <else/>
+                            您上次答题获得:
+                        </if>
+                        <else/>
+                        <if condition="{@resultString.getScore=='0'}">
+                            对不起,您获得:
+                            <else/>
+                            恭喜您获得:
+                        </if>
+                    </if>
+                    {@resultString.getScore}积分<br />
+                    可在“积分明细”内查询</p>
+                <p class="click-look"><a href="/lavico/member/card_member/points/index?wxid={@wechatid}">点击查看</a></p>
             </div>
         </foreach>
-        <div class="line">
-        </div>
-
     </div>
-</div>
+    <elseif condition="{@showtype=='2'}"/>
+    <div class="wrapper">
+        <div class="mobile">
+            <div class="points-content">
+                <img src="/lavico/public/images/man_test_result-642X385.png" />
+                <div style="text-align: left;position:absolute; top: 20%; left: 18%;width:30%">
+                    <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
+                    <foreach for="{@jsonResult}" var="resultString">
+                        <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
+                            您是<label id="getlabel"></label>
+                        </p>
+                    </foreach>
+                </div>
+            </div>
+            <foreach for="{@jsonResult}" var="resultString">
+                <div class="man-test-content">
+                    <div class="title1">{@resultString.getLabel}</div>
+                    <div class="subtext">{@resultString.getTipContent}</div>
+                </div>
+            </foreach>
+            <div class="line">
+            </div>
+            <if condition="{@resultString.getActivities!=''}">
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&code={@code}">领取优惠券</a></div>
+                <else/>
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&code={@code}">领取优惠券</a></div>
+            </if>
+        </div>
+</if>
+

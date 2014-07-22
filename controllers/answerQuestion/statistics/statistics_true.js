@@ -20,7 +20,7 @@ module.exports={
         docOne.totalPop=seed.totalPop
         //父进程变量传入子变量
         seed["$lab"]= {_id:seed._id}
-        seed["$score"]={_id:seed._id}
+        seed["$score"]={_id:seed._id,themetype:themetype}
         seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop,themetype:themetype}
         seed["$exportXsl"]={_id:seed._id,themetype:themetype}
         seed["filterexport"]={_id:seed._id}
@@ -558,8 +558,17 @@ module.exports={
                     helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},then.hold(function(err,doc){
                         if(err) throw err;
                         docs_themeQuestion2=doc;
+
                     }))
                 });
+
+                this.step(function(){
+                    var showtype = -1;
+                    if(seed.themetype == 3){
+                        showtype = docs_themeQuestion2.showtype;
+                    }
+                    nut.model.showtype = showtype;
+                })
 
                 this.step(function(){
                     if(docs_themeQuestion2){

@@ -125,6 +125,8 @@
     <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
     <if condition="{@type==1}">
         <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_1">型男测试</a><em></em></li>
+        <elseif condition="{@type==3}"/>
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_3">竞猜型</a><em></em></li>
         <else/>
         <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list">答题抢积分</a><em></em></li>
     </if>
@@ -156,26 +158,42 @@
             <div>题目名称:&nbsp;&nbsp;
                 <input type="text" value="{@docs.theme}"  name="title" class="form-control input-sm" style="width: 350px">
             </div>
-            <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;
+            <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;
                 <input type="text" value="{@docs.volumename}"  name="volumename" class="form-control input-sm" style="width: 350px">
             </div>
             <div>题目类型:&nbsp;&nbsp;
-                <select name="themeType" class="form-control input-sm" style="width: 150px">
-                    <if condition="{@type==1}">
+                <select name="themeType" class="form-control input-sm" style="width: 200px">
+                    <if condition="{@docs.themeType==1}">
                         <option value="1" selected="selected">测试型</option>
+                        <elseif condition="{@docs.themeType==3}"/>
+                        <option value="3">竞猜型</option>
                         <else/>
-                        <if condition="{@docs.themeType==0}">
-                            <option value="0" selected="selected">对错型</option>
-                            <option value="2">调查型</option>
-                            <else/>
-                            <option value="0">对错型</option>
-                            <option value="2"  selected="selected">调查型</option>
-                        </if>
+                        <option value="0" selected="selected">对错型</option>
+                        <option value="2">调查型</option>
                     </if>
                 </select>
             </div>
+            <if condition="{@docs.themeType==3}">
+                <div>发放类型:&nbsp;&nbsp;
+                    <select name="showType" class="form-control input-sm" style="width: 200px">
+                        <if condition="{@docs.showtype==0}">
+                            <option value="0" selected="selected">只显示提示</option>
+                            <option value="1">发放积分</option>
+                            <option value="2">发放优惠劵</option>
+                            <elseif condition="{@docs.showtype==1}"/>
+                            <option value="0">只显示提示</option>
+                            <option value="1" selected="selected">发放积分</option>
+                            <option value="2">发放优惠劵</option>
+                            <else/>
+                            <option value="0">只显示提示</option>
+                            <option value="1">发放积分</option>
+                            <option value="2" selected="selected">发放优惠劵</option>
+                        </if>
+                    </select>
+                </div>
+            </if>
             <div>是否开启:&nbsp;&nbsp;
-                <select name="isOpen" class="form-control input-sm" style="width: 150px">
+                <select name="isOpen" class="form-control input-sm" style="width: 200px">
                     <if condition="{@docs.isOpen==0}">
                         <option value="0" selected="selected">关</option>
                         <option value="1" >开</option>

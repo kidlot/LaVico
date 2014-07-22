@@ -17,14 +17,17 @@ module.exports={
         var memberid = seed.memberid;
         var themetype = seed.themetype;
         var type = seed.type;
+        var customerLabel=seed.customerLabel;//自定义标签
         //判断是否是下一题或完成按钮
         var status = seed.status ? seed.status : "false";
+        var themeQuestion_doc;
         //字数判断
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
                 if(err) throw err;
 
                 if(doc)
+                    themeQuestion_doc = doc;
                     return doc;
             }))
         })
@@ -91,6 +94,20 @@ module.exports={
                 this.res.end();
             }else{
                 if(themetype==3){
+                    var memoString = themeQuestion_doc.theme +"--"+ customerLabel;
+                    jsonData = {};
+                    jsonData.memberId = memberid;
+                    jsonData.tag = memoString;
+                    middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                        if (err) throw err;
+                        console.log("tag record:" + doc);
+                    }))
+                    helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+                        if(err ){
+                            throw err;
+                        }
+                    }));
+
                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/guessfinish?wechatid="+
                         wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                     this.res.end();

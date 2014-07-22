@@ -1,0 +1,47 @@
+<style>
+    .floatRight{float: right;}
+    .width50{width:50px;}
+    .width100{width:100px;}
+    .width150{width:150px;}
+    .width250{width:250px;}
+    .width350{width:350px;}
+    .width70{width:70px;}
+    .height35{heigth:35px;}
+    .staCount{background-color:#e8e8e8;}
+    .lineCenter{text-align: center;}
+    .maginTop20{margin-top:20px;}
+    .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
+    .borderBtm{border-bottom:1px solid darkgray;}
+</style>
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_3" class="stay">竞猜型</a><em></em></li>
+    <li class="active"><span>列表</span></li>
+</ul>
+
+<div name="container" class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+        <div class="btn-group" style="float: left;">
+            <h6 style="margin-top: 2px; color: #1ABC9C">所有竞猜型</h6>
+        </div>
+        <div style="float: right;">
+            <div style="float: right; width: 306px;">
+                <div >
+                    <a href="/lavico/answerQuestion/question/addQuestion?themetype=3"  name="btnSave" class="btn btn-xs btn-primary mhm stay" style="float: right; margin-left: 300px;">新增题目</a>
+                </div>
+                <!--<input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}">-->
+                <!--<input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}">-->
+                <!--<input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">-->
+            </div>
+        </div>
+    </div>
+    <div name="title" style="padding: 10px;">
+
+        <div nam="main">
+            <div class="childview">
+                <view name="page" />
+            </div>
+        </div>
+    </div>
+

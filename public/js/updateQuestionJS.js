@@ -8,8 +8,19 @@ $(function () {
         var themeType=$("select[name='themeType']").val();//0答题抢积分 1型男测试 2调查问卷
         var volumename=$("input[name='volumename']").val();
         var url=$("input[name='url']").val();
+        var showtype="";
+        if(themeType==3){
+            showtype = $("select[name='showType']").val();
+        }
 
         var _inputCheck = true;
+        if(themeType==3 && showtype==2 && !volumename){
+            _inputCheck = false;
+            $.globalMessenger().post({
+                message: "请填写劵名称！",
+                type: 'error',
+                showCloseButton: true})
+        }
         if(!beginTime){
             _inputCheck = false;
             $.globalMessenger().post({
@@ -53,7 +64,7 @@ $(function () {
             return false;
         }
 
-        jsonData +="volumename:'"+volumename+ "',url:'"+url+"',themeType:"+themeType+",isOpen:'"+isOpen+"',endTime:'"+endTime+"',beginTime:'"+beginTime+"',createTime:'"+createTime()+"',theme:\'" + theme + "\',";
+        jsonData +="showtype:'"+showtype+ "',volumename:'"+volumename+ "',url:'"+url+"',themeType:"+themeType+",isOpen:'"+isOpen+"',endTime:'"+endTime+"',beginTime:'"+beginTime+"',createTime:'"+createTime()+"',theme:\'" + theme + "\',";
         //jsonData += "description:\'奖项设置\',relief:\'免责声明\',themePicUrl:\'主题图片路径\',themeUrl:\'主题点击链接\',options:[";
         //jsonData += "options:[";
         jsonData += "explanation:\'活动说明\',description:\'活动规则\',relief:\'免责声明\',themePicUrl:\'主题图片路径\',themeUrl:\'主题点击链接\',options:[";
@@ -175,6 +186,8 @@ $(function () {
                 alert("成功");
                 if(themeType==1){
                     $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+                }else if(themeType==3){
+                    $.controller("/lavico/answerQuestion/statistics/statistics_list_3")
                 }else{
                     $.controller("/lavico/answerQuestion/statistics/statistics_list")
                 }

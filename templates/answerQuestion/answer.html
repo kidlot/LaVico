@@ -216,6 +216,9 @@ function showCorrent(t){
     if(themeType==1){
         //型男测试
         $("span[name='correntImg']").css("visibility","hidden");//隐藏
+    }else if(themeType==3){
+        //竞猜型
+        $("span[name='correntImg']").css("visibility","hidden");//隐藏
     }else{
         $("span[name='correntImg']").css("visibility","visible");//显示
         $("input[name='singleChooseInput']").attr("disabled",true);//
@@ -627,14 +630,14 @@ window.onload =function() {
                     <if condition="{@optionCount!=optionId}">
                         <a class="fr next" href="javascript:nextChoose()" style="float:none; display:block;margin:0 auto;">下一题</a>
                     <else/>
-                        <a class="fr next" href="javascript:finish()" style="float:none;">完&nbsp;&nbsp;成 > </a>
+                        <a class="fr next" href="javascript:finish()" style="float:none; display:block;margin:0 auto;">完&nbsp;&nbsp;成 </a>
                     </if>
                 <else/>
                 <a class="fl pre" onclick="javascript:history.go(-1);">上一题</a>
                     <if condition="{@optionCount!=optionId}">
                         <a class="fr next" href="javascript:nextChoose()" style="float:none;">下一题</a>
                     <else/>
-                        <a class="fr next" href="javascript:finish()" style="float:none;">完&nbsp;&nbsp;成 > </a>
+                        <a class="fr next" href="javascript:finish()" style="float:none; display:block;margin:0 auto;">完&nbsp;&nbsp;成  </a>
                     </if>
             </if>
         </div>

@@ -17,6 +17,8 @@
     <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
     <if condition="{@themetype==1}">
         <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_1">型男测试</a><em></em></li>
+        <elseif condition="{@themetype==3}"/>
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_3">竞猜型</a><em></em></li>
         <else/>
         <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list">答题抢积分</a><em></em></li>
     </if>
