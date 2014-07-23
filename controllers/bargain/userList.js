@@ -193,7 +193,7 @@ module.exports = {
                                 if( docs[i].tags){
                                     for (var ii=0; ii<docs[i].tags.length; ii++)
                                     {
-                                        tags.push('<span class="tm-tag tm-tag-info" ><span>'+docs[i].tags[ii]+'</span></span>')
+                                        tags.push('<span class="tm-tag tm-tag-info" ><span>'+docs[i].tags[ii]+'</span><a href="javascript:;" class="tm-tag-remove" tagidtoremove="1"  onclick="removeTagOrKeyword(this)">×</a></span>')
                                     }
                                 }
                                 docs[i].tags = tags.join("&nbsp;")

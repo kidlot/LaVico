@@ -30,8 +30,8 @@ module.exports = {
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
                 {display: '日期', name : $(".unwind").val()+'.createDate', width : 80, sortable : true},
-                {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true, hide:true},
                 {display: '姓名', name : 'realname', width : 80, sortable : true},
+                {display: '标签', name : 'tags', width : 292, sortable : true, hide:false},
                 {display: '手机号码', name : 'mobile', width : 100, sortable : true},
                 {display: 'memberID', name :$(".unwind").val()+'.memberID', width : 80, sortable : true},
 //                {display: '券名', name : $(".unwind").val()+'.promotion_name', width : 100, sortable : true},
@@ -43,7 +43,7 @@ module.exports = {
                 {display: '性别', name : 'gender', width : 80, sortable : true, hide:false},
                 {display: '省份', name : 'province', width : 80, sortable : true, hide:true},
                 {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
-                {display: '标签', name : 'tags', width : 292, sortable : true, hide:true},
+                {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true, hide:true},
                 {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true}
 
             ],
@@ -199,7 +199,7 @@ module.exports = {
                                 if( docs[i].tags){
                                     for (var ii=0; ii<docs[i].tags.length; ii++)
                                     {
-                                        tags.push('<span class="tm-tag tm-tag-info" ><span>'+docs[i].tags[ii]+'</span></span>')
+                                        tags.push('<span class="tm-tag tm-tag-info" ><span>'+docs[i].tags[ii]+'</span><a href="javascript:;" class="tm-tag-remove" tagidtoremove="1"  onclick="removeTagOrKeyword(this)">×</a></span>')
                                     }
                                 }
                                 docs[i].tags = tags.join("&nbsp;")
