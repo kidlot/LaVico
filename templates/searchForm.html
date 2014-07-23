@@ -2,7 +2,7 @@
 <div id="form-default" style="margin-bottom: 10px">
     <button class="btn btn-primary handle_btn" type="button" onclick="$('#searchView').fadeIn('100')"><em class="icon01"></em>条件筛选</button>
     <a class="btn btn-xs btn-primary mhm pull-right" id="exportssd">全部导出</a>
-    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信">
+    <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="发送短信" onclick="seedMessage()">
     <input type="submit" class="btn btn-xs btn-primary mhm pull-right" value="设定标签" onclick="userSetTagView()">
 </div>
 <script>
@@ -175,8 +175,8 @@
 
     var oUserSetOption;
 
+    //添加标签
     function userSetTagView(){
-
         var aList = getUserList();
         if( aList.length == 0){
             $.globalMessenger().post({
@@ -194,7 +194,7 @@
         oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
         return false;
     };
-
+    //添加标签
     function userTagBtn(){
 
         var tags = $("input[type='hidden'][name='tagsVal']").val();
@@ -216,8 +216,7 @@
         $.request(oUserSetOption,function(err,nut){
             if(err) throw err ;
             nut.msgqueue.popup() ;
-
-            $.controller("/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val(),null,"lazy");
+            $.controller("/lavico/"+$(".unwind").val()+"/statistics?_id="+$("._id").val(),null,"lazy");
         }) ;
 
         $('#tagModal').modal('toggle');
@@ -225,10 +224,74 @@
 
     };
 
+    //导出
     function exportXsl(obj){
         var conditions = $(obj).searchConditions() ;
         if(!conditions.length)
             return ;
         window.location.href="/welab/user/list:fexports?conditions="+JSON.stringify(conditions)+"&logic="+$("[name=searchLogic]").val();
+    }
+
+    //删除标签
+    function removeTagOrKeyword (o){
+
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [];
+        oLinkOptions.data.push({name:"_id",value:$(o).parents("tr").find("td:eq(0)").find("input").attr("userid")});
+        oLinkOptions.data.push({name:"name",value:$(o).prev().text()});
+        oLinkOptions.type = "POST";
+        oLinkOptions.url = "/welab/user/form:removeTag";
+
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+            var status = nut.model.status;
+            console.log("status",status)
+            if(status == 0){
+                $(o).parent().remove();
+            }
+            nut.msgqueue.popup() ;
+        }) ;
+    }
+
+    /**
+     * 消息
+     */
+    function seedMessage(){
+        var sms = getUserList();
+        if(sms.length == 0){
+            $.globalMessenger().post({
+                message: '至少选择一个用户.',
+                type: 'error',
+                showCloseButton: true})
+            return ;
+        }
+        jQuery("#tags").tagsManager('empty');
+        $('#sendMessageModal').modal('toggle');
+        oUserSetOption = {} ;
+        oUserSetOption.data = [];
+        oUserSetOption.data.push({name:"sUserList",value:sms.join(",")});
+        return false;
+    }
+
+    /**
+     * 消息
+     */
+    function sendMessageBtn(){
+        var oUserSetOption = {} ;
+        oUserSetOption.data = [];
+        oUserSetOption.data.push({name:"sUserList",value:getUserList().join(",")});
+        oUserSetOption.data.push({name:"sContent",value:$("#sendMessageValue").val()});
+        oUserSetOption.type = "POST";
+        oUserSetOption.url = "/welab/user/form:sendMessage";
+
+        $.request(oUserSetOption,function(err,nut){
+            if(err) throw err ;
+            $("#sendMessageValue").val("")
+            nut.msgqueue.popup() ;
+
+        }) ;
+
+        $('#sendMessageModal').modal('toggle');
+        return false;
     }
 </script>

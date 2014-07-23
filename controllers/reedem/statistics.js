@@ -1,10 +1,10 @@
 module.exports={
     layout: "welab/Layout",
-    view:"lavico/templates/reedem/tongji.html",
+    view:"lavico/templates/reedem/statistics.html",
     process: function(seed,nut)
     {
         //积分兑换编号
-        var reedem_id=seed.reedem_id;
+        var reedem_id=seed._id;
         var tongJ={};
 
         this.step(function(){
@@ -71,6 +71,10 @@ module.exports={
             autoclose: true,
             minView: 2
         })
+        jQuery("#tags").tagsManager({
+            prefilled: [],
+            hiddenTagListName: 'tagsVal'
+        });
 
         $('#stopDate').datetimepicker({
             format: 'yyyy-mm-dd',
