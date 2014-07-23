@@ -11,11 +11,11 @@ module.exports = {
 
     , process: function (seed, nut) {
 
-        helper.db.coll("lavico/stores").find().sort({createTime:-1}).find(this.hold(function(err,doc){
+        helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
             if(err) throw err ;
             console.log(doc);
             if(doc){
-                nut.model.storeList = JSON.stringify(doc.storeList);
+                nut.model.storeList = JSON.stringify(doc[0].storeList);
             }else{
                 nut.model.storeList = null;
             }
