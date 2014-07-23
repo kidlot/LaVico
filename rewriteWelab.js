@@ -617,7 +617,8 @@ exports.load = function () {
                     tagstr += taglist[i].title + ",";
                 }
             }
-            nut.model.jsonData = tagstr;
+            var reg=/,$/gi;
+            nut.model.jsonData = tagstr.replace(reg,"");
             console.log("tagstr",tagstr);
         })
     }
@@ -628,6 +629,9 @@ exports.load = function () {
 
         // 总人数
         var otherData = {};
+
+        //门店信息
+        var storeList;
 
         // 总消息数
         var count = util.countor(this) ;
@@ -682,6 +686,19 @@ exports.load = function () {
             })
         ) ;
 
+
+        this.step(function(){
+            /*关注来源数字与门店对应，查询lavico/stores表*/
+            helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+
+                if(err) throw err ;
+                if(doc&&doc[0]&&doc[0].storeList){
+                    storeList = doc[0].storeList;
+                }else{
+                    storeList = false;
+                }
+            }));
+        })
         this.step(function(){
 
 
@@ -738,6 +755,9 @@ exports.load = function () {
                 console.log(docs);
             }));
 
+
+
+
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
                 console.log(page);
@@ -758,6 +778,16 @@ exports.load = function () {
 //                        parseInt(((new Date()) - (parseInt(page.docs[i].birthday))) / (1000*60*60*24*365)) : ""
                     //parseInt(new Date().getFullYear()-new Date(page.docs[i].birthday).getFullYear()):""
                     page.docs[i].source = page.docs[i].source || '';
+
+                    /*门店查询David.xu-2014-07-23*/
+                    if(page.docs[i].source&&storeList){
+                        var _sourceObject = page.docs[i].source;
+                        for(var _i in _sourceObject){
+                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                        }
+                        page.docs[i].source = _sourceObject || '';
+                    }
+
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';
                     page.docs[i].industry = page.docs[i].profession || '';
 
@@ -1392,6 +1422,30 @@ exports.load = function () {
 
     welabMessagelist.view = "lavico/templates/welab/message/MessageList.html";
 
+    welabMessagelist.process = function(seed,nut){
+        var taglist;
+        var tagstr = "";
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                if(docs){
+                    taglist = docs || {};
+                }
+            }))
+        })
+
+        this.step(function(){
+            if(taglist){
+                for(var i=0;i<taglist.length;i++){
+                    tagstr += taglist[i].title + ",";
+                }
+            }
+            var reg=/,$/gi;
+            nut.model.jsonData = tagstr.replace(reg,"");
+            console.log("tagstr",tagstr);
+        })
+    }
+
     welabMessagelist.viewIn = function(){
         // search box--搜索显示
         $.searchInitConditions([
@@ -1415,11 +1469,15 @@ exports.load = function () {
             , {field:'message.time',title:'发送时间',type:'date'}
         ]) ;
 
-
-
+        var tagstr = $("#jsondata").val();
+        var taglist = tagstr.split(",");
+        var str = []
+        for(var i=0;i<taglist.length;i++){
+            str.push(taglist[i])
+        }
 
         jQuery("#tags").tagsManager({
-            prefilled: [],
+            prefilled: str,
             hiddenTagListName: 'tagsVal'
         });
 
@@ -1438,7 +1496,7 @@ exports.load = function () {
                 return ;
             }
 
-            jQuery("#tags").tagsManager('empty');
+            //jQuery("#tags").tagsManager('empty');
 
             $('#tagModal').modal('toggle');
             oUserSetOption = {} ;

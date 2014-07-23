@@ -112,9 +112,12 @@ function isReg(){
             <if condition="@docs.themeType=='1'">
                 <input type="hidden" id="themetitle" value="型男测试">
                 <img src="/public/files/2014/6/9/~!dad3765ef671652fe592caf9e0c294e5!E5A4B4E59BBE4.jpg" style="text-align:center;" />
+                <elseif condition="@docs.themeType=='3'"/>
+                    <input type="hidden" id="themetitle" value="竞猜型">
+                    <img src="/lavico/public/images/guess.jpg" />
                 <else/>
-                <input type="hidden" id="themetitle" value="答题抢积分">
-                <img src="/lavico/public/images/questions-top-image.jpg" />
+                    <input type="hidden" id="themetitle" value="答题抢积分">
+                    <img src="/lavico/public/images/questions-top-image.jpg" />
             </if>
         </if>
     </div>

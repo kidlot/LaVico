@@ -9,7 +9,7 @@
     welabExtension = require('welab/extension.js');
 
     exports.load = function() {
-        return welabExtension.apps.activity = {
+        return welabExtension.apps.QRstore = {
             categories: ['图片'],
             type: '沟通',
             icon: '/welab/apps/welcome/public/icon_s.png',
