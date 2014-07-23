@@ -759,7 +759,7 @@ exports.load = function () {
                     //parseInt(new Date().getFullYear()-new Date(page.docs[i].birthday).getFullYear()):""
                     page.docs[i].source = page.docs[i].source || '';
 
-                   
+
 
 
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';

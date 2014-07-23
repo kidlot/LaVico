@@ -11,15 +11,18 @@ module.exports = {
 
     , process: function (seed, nut) {
 
-        helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
-            if(err) throw err ;
-            console.log(doc[0].storeList);
-            if(doc){
-                nut.model.storeList = JSON.stringify(doc[0].storeList);
-            }else{
-                nut.model.storeList = null;
-            }
-        }));
+        if(helper.db.coll("lavico/stores")){
+            helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+                if(err) throw err ;
+
+                if(doc&&doc[0]&&doc[0].storeList){
+                    nut.model.storeList = JSON.stringify(doc[0].storeList);
+                }else{
+                    nut.model.storeList = null;
+                }
+            }));
+        }
+
 
     }
     , viewIn: function(){
