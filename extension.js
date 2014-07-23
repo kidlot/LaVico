@@ -10,6 +10,7 @@ var maps = require("./weixinReply/maps.js") ;
 var rewriteWelab = require("./rewriteWelab.js") ;
 var sportsman = require("./weixinReply/sportsman.js");
 var statistics = require("./weixinReply/statistics.js") ;
+var QRstore = require("./weixinReply/QRstore.js");
 var wechatapi = require("welab/lib/wechat-api.js") ;
 var guess = require("./weixinReply/guess.js") ;
 exports.onload = function(application){
@@ -43,6 +44,9 @@ exports.onload = function(application){
 
     //应用统计
     //statistics.load();
+
+    //门店数据导入
+    QRstore.load();
 
 
     // 覆盖WELAB的LAYOUT
