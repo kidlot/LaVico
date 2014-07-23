@@ -13,7 +13,7 @@ module.exports = {
 
         helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
             if(err) throw err ;
-            console.log(doc);
+            console.log(doc[0].storeList);
             if(doc){
                 nut.model.storeList = JSON.stringify(doc[0].storeList);
             }else{

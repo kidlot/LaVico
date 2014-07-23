@@ -758,6 +758,10 @@ exports.load = function () {
 //                        parseInt(((new Date()) - (parseInt(page.docs[i].birthday))) / (1000*60*60*24*365)) : ""
                     //parseInt(new Date().getFullYear()-new Date(page.docs[i].birthday).getFullYear()):""
                     page.docs[i].source = page.docs[i].source || '';
+
+                   
+
+
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';
                     page.docs[i].industry = page.docs[i].profession || '';
 
