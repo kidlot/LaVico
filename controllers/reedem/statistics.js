@@ -50,28 +50,27 @@ module.exports={
             seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate,unwind:"reedem",_id:nut.model._id};
         })
 
-        this.step(function(){
-            var taglist;
-            var tagstr = "";
-            this.step(function(){
-                helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
-                    if(err) throw  err;
-                    if(docs){
-                        taglist = docs || {};
-                    }
-                }))
-            })
 
-            this.step(function(){
-                if(taglist){
-                    for(var i=0;i<taglist.length;i++){
-                        tagstr += taglist[i].title + ",";
-                    }
+        var taglist;
+        var tagstr = "";
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                if(docs){
+                    taglist = docs || {};
                 }
-                var reg=/,$/gi;
-                nut.model.jsonData = tagstr.replace(reg,"");
-                console.log("nut.model.jsonData",nut.model.jsonData);
-            })
+            }))
+        })
+
+        this.step(function(){
+            if(taglist){
+                for(var i=0;i<taglist.length;i++){
+                    tagstr += taglist[i].title + ",";
+                }
+            }
+            var reg=/,$/gi;
+            nut.model.jsonData = tagstr.replace(reg,"");
+            console.log("nut.model.jsonData",nut.model.jsonData);
         })
     },
     children:{
