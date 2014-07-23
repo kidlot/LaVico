@@ -99,6 +99,28 @@ module.exports = {
             console.log({startDate:nut.model.startDate,stopDate:nut.model.stopDate,unwind:"shake",_id:nut.model._id});
 
         })
+
+        var taglist;
+        var tagstr = "";
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                if(docs){
+                    taglist = docs || {};
+                }
+            }))
+        })
+
+        this.step(function(){
+            if(taglist){
+                for(var i=0;i<taglist.length;i++){
+                    tagstr += taglist[i].title + ",";
+                }
+            }
+            var reg=/,$/gi;
+            nut.model.jsonData = tagstr.replace(reg,"");
+            console.log("nut.model.jsonData",nut.model.jsonData);
+        })
     }
     , children: {
 
@@ -129,8 +151,15 @@ module.exports = {
             minView: 2
         });
 
+        var tagstr = $("#jsondata").val();
+        var taglist = tagstr.split(",");
+        var str = []
+        for(var i=0;i<taglist.length;i++){
+            str.push(taglist[i])
+        }
+
         jQuery("#tags").tagsManager({
-            prefilled: [],
+            prefilled: str,
             hiddenTagListName: 'tagsVal'
         });
         $("#exportssd").attr("href","/lavico/shake/userList:exports?unwind=shake&_id="+$('#_id').val())
