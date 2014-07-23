@@ -26,8 +26,9 @@ exports.onload = function(application){
     //积分兑换
     reedem.load();
 
-	activity.load();
+    //摇一摇
 	shake.load();
+
     // 精英搭配
     lookbook.load();
 
@@ -43,14 +44,15 @@ exports.onload = function(application){
     //竞猜型
     guess.load();
 
+    //活动
+    activity.load();
     //标签管理
     tag.load();
 
-    //应用统计
-    //statistics.load();
 
     //门店数据导入
     QRstore.load();
+
 
 
     // 覆盖WELAB的LAYOUT
