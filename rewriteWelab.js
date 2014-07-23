@@ -617,7 +617,8 @@ exports.load = function () {
                     tagstr += taglist[i].title + ",";
                 }
             }
-            nut.model.jsonData = tagstr;
+            var reg=/,$/gi;
+            nut.model.jsonData = tagstr.replace(reg,"");
             console.log("tagstr",tagstr);
         })
     }
@@ -1414,7 +1415,8 @@ exports.load = function () {
                     tagstr += taglist[i].title + ",";
                 }
             }
-            nut.model.jsonData = tagstr;
+            var reg=/,$/gi;
+            nut.model.jsonData = tagstr.replace(reg,"");
             console.log("tagstr",tagstr);
         })
     }
