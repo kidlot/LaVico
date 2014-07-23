@@ -12,6 +12,7 @@ var sportsman = require("./weixinReply/sportsman.js");
 var statistics = require("./weixinReply/statistics.js") ;
 var wechatapi = require("welab/lib/wechat-api.js") ;
 var guess = require("./weixinReply/guess.js") ;
+var tag = require("./weixinReply/tag.js") ;
 exports.onload = function(application){
 
 
@@ -40,6 +41,9 @@ exports.onload = function(application){
 
     //竞猜型
     guess.load();
+
+    //标签管理
+    tag.load();
 
     //应用统计
     //statistics.load();
