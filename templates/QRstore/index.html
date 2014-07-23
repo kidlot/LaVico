@@ -26,16 +26,8 @@
 
         <div class="col-md-12">
             <div class="form-group">
-                <p><span class="fui-document"></span>上传excel文件</p>
-                <div class="col-sm-10" style="padding-top: 8px;">
-                    <div class="col-md-4">
-                        <input id="excel"  name="excel" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
-                    </div>
-                    <div class="col-md-4">
-                        <span class="progressNumber"></span>
-                    </div>
+                <p><span class="fui-document"></span>上传excel文件&nbsp;<input id="excel"  name="excel" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);"><span class="progressNumber"></span></p>
 
-                </div>
             </div>
 
             <div class="form-group" style="display: none;">
@@ -55,33 +47,19 @@
             </div>
         </div>
 
-
-
     </div>
 </div>
-
-<script>
-    function save(){
-        if( !$("#min").val() || parseInt($("#min").val()) <= 0){
-            $.globalMessenger().post({
-                message: "最小值必须大于0",
-                type: 'error',
-                showCloseButton: true})
-            return false;
-        }
-        if( !$("#max").val() || parseInt($("#max").val()) <= 0 || parseInt($("#max").val()) >= 100000){
-            $.globalMessenger().post({
-                message: "最大值不在有效范围内",
-                type: 'error',
-                showCloseButton: true})
-            return false;
-        }
-        location.href = "/welab/apps/qrcode/form:exports?min="+$("#min").val()+"&max="+$("#max").val()
-    }
-</script>
 <script>
     var lastExcel = "";
     var host = 'http://'+window.location.host;
+    var storeData = '{@storeList}';
+    function init(storeData){
+        if(storeData == true){
+            storeList = JSON.parse(storeData.storeList);
+            console.log(storeList);
+            outTable(storeList);
+        }
+    }
     function fileSelected(inputid) {
 
         $("#"+inputid).next(".progressNumber").text("")
@@ -146,20 +124,31 @@
         var _tableView = $(tableView);//显示框
 
         $.get("/lavico/QRstore/index:readXlsx", {'url':_url},function(result){
-            console.log(result);
-            console.log("++++++++++worksheets+++++++++++++");
-            console.log(result.worksheets);
-            console.log("++++++++++worksheets[0]+++++++++++++");
-            console.log(result.worksheets[0]);
-            console.log("++++++++++worksheets[1]+++++++++++++");
-            console.log(result.worksheets[1]);
-            console.log("++++++++++worksheets[1].data+++++++++++++");
-            console.log(result.worksheets[1].data);
+//            console.log(result);
+//            console.log("++++++++++worksheets+++++++++++++");
+//            console.log(result.worksheets);
+//            console.log("++++++++++worksheets[0]+++++++++++++");
+//            console.log(result.worksheets[0]);
+//            console.log("++++++++++worksheets[1]+++++++++++++");
+//            console.log(result.worksheets[1]);
+//            console.log("++++++++++worksheets[1].data+++++++++++++");
+//            console.log(result.worksheets[1].data);
 
             outTable(result.worksheets[1].data);
 
-            result = JSON.stringify(result.worksheets[1].data);
 
+            if(result&&result.worksheets&&result.worksheets[1]&&result.worksheets[1].data){
+                $.globalMessenger().post({
+                    message: "导入成功",
+                    type: 'success',
+                    showCloseButton: true});
+            }else{
+                $.globalMessenger().post({
+                    message: "导入失败",
+                    type: 'error',
+                    showCloseButton: true});
+            }
+            result = JSON.stringify(result.worksheets[1].data);
             $(tableView).html(result);
 
         });
@@ -216,7 +205,7 @@
         }
         var _html = _html + '</table>';
         $('#outTable').html(_html);
-        console.log('+++++++++++++_html++++++++++++++++');
-        console.log(_html);
+//        console.log('+++++++++++++_html++++++++++++++++');
+//        console.log(_html);
     }
 </script>
