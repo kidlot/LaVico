@@ -129,6 +129,12 @@ exports.onload = function(application){
             next()
         }
     })
+
+
+    // default
+    wechatapi.registerReply(14, function (params, req, res, next) {
+        res.reply('')
+    });
     wechatapi.makeQueue() ;
 
 
