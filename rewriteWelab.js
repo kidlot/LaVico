@@ -594,6 +594,34 @@ exports.load = function () {
 
         });
     }
+
+    //标签管理
+    welabUserlist.children.page.process = function (seed,nut){
+
+    }
+    welabUserlist.process = function(seed,nut){
+        var taglist;
+        var tagstr = "";
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                if(docs){
+                    taglist = docs || {};
+                }
+            }))
+        })
+
+        this.step(function(){
+            if(taglist){
+                for(var i=0;i<taglist.length;i++){
+                    tagstr += taglist[i].title + ",";
+                }
+            }
+            nut.model.jsonData = tagstr;
+            console.log("tagstr",tagstr);
+        })
+    }
+
     // 复写用户列表
     welabUserlist.actions.jsonData.process = function(seed, nut){
         nut.disabled = true ;
@@ -1162,12 +1190,17 @@ exports.load = function () {
 
     //json复写list-viewIn
     welabUserlist.viewIn=function(){
+        var tagstr = $("#jsondata").val();
+        var taglist = tagstr.split(",");
+        var str = []
+        for(var i=0;i<taglist.length;i++){
+            str.push(taglist[i])
+        }
+
         jQuery("#tags").tagsManager({
-            prefilled: [],
+            prefilled: str,
             hiddenTagListName: 'tagsVal'
         });
-
-
         // search box--搜索显示
         $.searchInitConditions([
             {field:'realname',title:'姓名',type:'text'}
@@ -1229,15 +1262,8 @@ exports.load = function () {
                     showCloseButton: true})
                 return ;
             }
-//            if( aList.length > 5){
-//                $.globalMessenger().post({
-//                    message: '最多只能选择五条数据.',
-//                    type: 'error',
-//                    showCloseButton: true})
-//                return ;
-//            }
 
-            jQuery("#tags").tagsManager('empty');
+            //jQuery("#tags").tagsManager('empty');
 
             $('#tagModal').modal('toggle');
             oUserSetOption = {} ;
@@ -1337,25 +1363,6 @@ exports.load = function () {
             return false;
         })
 
-//        $(".userSetTagView").on("click",function(){
-//
-//            var aList = getUserList();
-//            if( aList.length == 0){
-//                $.globalMessenger().post({
-//                    message: '至少选择一个用户.',
-//                    type: 'error',
-//                    showCloseButton: true})
-//                return ;
-//            }
-//
-//            jQuery("#tags").tagsManager('empty');
-//
-//            $('#tagModal').modal('toggle');
-//            oUserSetOption = {} ;
-//            oUserSetOption.data = [];
-//            oUserSetOption.data.push({name:"sUserList",value:aList.join(",")});
-//            return false;
-//        })
 
         /**
          * 分页导出
@@ -1931,7 +1938,7 @@ exports.load = function () {
             }
             for(var i=0;i<aTagList.length;i++){
                 var tag = aTagList[i];
-                (function(i,jsonData){
+                (function(i,tag){
                     for(var j=0;j<aUserList.length;j++){
                         (function(j,jsonData){
                             var id= aUserList[j]
@@ -1954,12 +1961,11 @@ exports.load = function () {
                             }))
                         })(j,jsonData)
                     }
-                })(i,jsonData)
+                })(i,tag)
             }
         })
 
         this.step(function(){
-
 
             this.each(jsonData,function(i,row){
 
@@ -2001,6 +2007,7 @@ exports.load = function () {
         })
 
         this.step(function(){
+            console.log("stutas",stutas)
             for (var i=0; i<aTagList.length; i++) {
                 tag = aTagList[i];
                 for(var j=0;j<stutas.length;j++){
