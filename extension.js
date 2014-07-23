@@ -26,8 +26,9 @@ exports.onload = function(application){
     //积分兑换
     reedem.load();
 
-	activity.load();
-	shake.load();
+    //摇一摇
+    shake.load();
+
     // 精英搭配
     lookbook.load();
 
@@ -43,14 +44,15 @@ exports.onload = function(application){
     //竞猜型
     guess.load();
 
+    //活动
+    activity.load();
     //标签管理
     tag.load();
 
-    //应用统计
-    //statistics.load();
 
     //门店数据导入
     QRstore.load();
+
 
 
     // 覆盖WELAB的LAYOUT
@@ -82,26 +84,26 @@ exports.onload = function(application){
 
     welabExtension.apps.qrcode = {
         categories: ['用户']
-            , type: '沟通'
-            , icon: '/welab/apps/qrcode/public/icon_s.png'
-            , isSwitch : false
-            , on: false
-            , replies: {
+        , type: '沟通'
+        , icon: '/welab/apps/qrcode/public/icon_s.png'
+        , isSwitch : false
+        , on: false
+        , replies: {
             9: [ function(params,req,res,next){next()} ]
         }
-    , title: '参数二维码'
-            , desc: '参数二维码'
-            , btns: [
+        , title: '参数二维码'
+        , desc: '参数二维码'
+        , btns: [
             {
                 title: '管理'
                 , controller: '/welab/apps/qrcode/form'
             }
 
         ]
-            , start: function(){
+        , start: function(){
             this.on = true;
         }
-    , stop: function(){
+        , stop: function(){
             this.on = false;
         }
     }
@@ -134,29 +136,27 @@ exports.onload = function(application){
 
 
     /*
-    * 更新个人信息资料
-    * */
+     * 更新个人信息资料
+     * */
     var _time = 1000*60*60;
     var timer = setInterval(function(){
-             http = require('http');
-             options = {
-                host: '127.0.0.1',
-                port: 80,
-                path: '/lavico/member/card_member/info:updateUserInfo',
-                method: 'GET'
-             };
-             req = http.request(options, function(res) {
-                 res.setEncoding('utf8');
-                 var body='';
-                 res.on('data', function(data) {
-                     body +=data;
-                     console.log(data);
-                 });
-             });
-             //req.write(post_data);
-             console.log(req.end());
-         },_time);
+        http = require('http');
+        options = {
+            host: '127.0.0.1',
+            port: 80,
+            path: '/lavico/member/card_member/info:updateUserInfo',
+            method: 'GET'
+        };
+        req = http.request(options, function(res) {
+            res.setEncoding('utf8');
+            var body='';
+            res.on('data', function(data) {
+                body +=data;
+                console.log(data);
+            });
+        });
+        //req.write(post_data);
+        console.log(req.end());
+    },_time);
 
 }
-
-
