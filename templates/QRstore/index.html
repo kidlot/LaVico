@@ -1,0 +1,222 @@
+
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .nav-tabs {
+        margin-bottom: 0px;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/QRstore/index" >门店数据</a></li>
+</ul>
+
+<div class="panel panel-default formText">
+
+    <div class="panel-heading clearfix">
+        <a class="btn btn-defalut btn-social-googleplus pull-left" href="/welab/AppList"><i class="fui-arrow-left"></i>返回</a>
+    </div>
+
+    <div class="panel-body">
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <p><span class="fui-document"></span>上传excel文件</p>
+                <div class="col-sm-10" style="padding-top: 8px;">
+                    <div class="col-md-4">
+                        <input id="excel"  name="excel" type="file" class="input-xlarge"  style="width:206px"  placeholder="请输入...." onchange="fileSelected(this.id);">
+                    </div>
+                    <div class="col-md-4">
+                        <span class="progressNumber"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group" style="display: none;">
+                <label for="inputEmail3" class="col-sm-2">excel路径</label>
+                <div class="col-sm-10" style="padding-top: 8px;">
+                    <input type="text" id="excel-url" value="" class="form-control input-sm" style="width: 500px">
+                </div>
+            </div>
+            <div id="outTable" class="form-group">
+            </div>
+            <div class="form-group" style="display:none;">
+                <label for="inputEmail3" class="col-sm-2">文件内容</label>
+                <div class="col-sm-10" style="padding-top: 8px;">
+                    <div id="tableView" class="alert alert-success tableView file_box">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<script>
+    function save(){
+        if( !$("#min").val() || parseInt($("#min").val()) <= 0){
+            $.globalMessenger().post({
+                message: "最小值必须大于0",
+                type: 'error',
+                showCloseButton: true})
+            return false;
+        }
+        if( !$("#max").val() || parseInt($("#max").val()) <= 0 || parseInt($("#max").val()) >= 100000){
+            $.globalMessenger().post({
+                message: "最大值不在有效范围内",
+                type: 'error',
+                showCloseButton: true})
+            return false;
+        }
+        location.href = "/welab/apps/qrcode/form:exports?min="+$("#min").val()+"&max="+$("#max").val()
+    }
+</script>
+<script>
+    var lastExcel = "";
+    var host = 'http://'+window.location.host;
+    function fileSelected(inputid) {
+
+        $("#"+inputid).next(".progressNumber").text("")
+        var file = document.getElementById(inputid).files[0];
+        if (file) {
+
+            var fileSize = 0;
+            if (file.size > 1024 * 1024)
+                fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            else
+                fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+
+            lastExcel = inputid
+
+            uploadFile();
+        }
+    }
+
+    function uploadFile() {
+        var fd = new FormData();
+        fd.append(lastExcel, document.getElementById(lastExcel).files[0]);
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener("progress", uploadProgress, false);
+        xhr.addEventListener("load", uploadComplete, false);
+        xhr.addEventListener("error", uploadFailed, false);
+        xhr.addEventListener("abort", uploadCanceled, false);
+        xhr.open("POST", "/welab/Uploadify?$layout=false&$render=false");
+        xhr.send(fd);
+    }
+
+    function uploadProgress(evt) {
+        if (evt.lengthComputable) {
+            var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+
+            $(".progressNumber").text(percentComplete.toString() + '%')
+        }
+        else {
+            $(".progressNumber").text('无法计算出文件的大小')
+        }
+    }
+
+    function uploadComplete(evt) {
+        var json = eval('(' + evt.target.responseText + ')');
+        console.log(json);
+        var filename = json.model.fileName;
+        console.log(JSON.stringify(json.model.toLocaleString()));
+        $("#excel-url").val(filename);
+        ReadExcel('#excel-url','#tableView');
+    }
+
+    function uploadFailed(evt) {
+        alert("上传失败");
+    }
+
+    function uploadCanceled(evt) {
+        alert("已经取消上传");
+    }
+
+    function ReadExcel(excelUrl,tableView) {
+
+        var _url = $(excelUrl).val();//上传的文件地址
+        var _tableView = $(tableView);//显示框
+
+        $.get("/lavico/QRstore/index:readXlsx", {'url':_url},function(result){
+            console.log(result);
+            console.log("++++++++++worksheets+++++++++++++");
+            console.log(result.worksheets);
+            console.log("++++++++++worksheets[0]+++++++++++++");
+            console.log(result.worksheets[0]);
+            console.log("++++++++++worksheets[1]+++++++++++++");
+            console.log(result.worksheets[1]);
+            console.log("++++++++++worksheets[1].data+++++++++++++");
+            console.log(result.worksheets[1].data);
+
+            outTable(result.worksheets[1].data);
+
+            result = JSON.stringify(result.worksheets[1].data);
+
+            $(tableView).html(result);
+
+        });
+    }
+    function outTable(result){
+        var _arr = result;
+        var _html = '<table class="table table-striped" id="tagList">';
+        for(var _i=0;_i<result.length;_i++){
+
+            if(result[_i]&&result[_i][0]&&result[_i][0].value){
+                if(_i==0){
+                    _html = _html + '<thead><tr>';
+
+                }else{
+                    _html = _html + '<tr>';
+                }
+                for(var _j=0;_j<result[_i].length&&_j<3;_j++){
+
+                    if(_i == 0){
+                        if(result[_i][_j]&&result[_i][_j].value){
+                            _html = _html + '<th class="header">';
+                            _html = _html + result[_i][_j].value;
+                            _html = _html + '</th>';
+                        }else{
+                            _html = _html + '<td class="header">' + '&nbsp;' +'</td>'
+                        }
+                    }else{
+
+                        if(result[_i][_j]&&result[_i][_j].value){
+                            _html = _html + '<td>';
+                            _html = _html + result[_i][_j].value;
+                            _html = _html + '</td>';
+                        }else{
+                            _html = _html + '<td class="header">' + '&nbsp;' +'</td>'
+                        }
+                    }
+
+
+
+                }
+                if(_i==0){
+                    _html = _html + '<th class="header">' + '二维码' +'</th>'
+                    _html = _html + '</thead></tr>';
+
+                }else{
+                    _html = _html + '<td>';
+                    _html = _html + '<a target="_blank" href ="/public/qr/'+_i+'.jpg">' + '下载' +'</a>'
+                    _html = _html +'</td>'
+                    _html = _html + '<tr>';
+                }
+                _html = _html + '</tr>';
+            }
+
+        }
+        var _html = _html + '</table>';
+        $('#outTable').html(_html);
+        console.log('+++++++++++++_html++++++++++++++++');
+        console.log(_html);
+    }
+</script>
