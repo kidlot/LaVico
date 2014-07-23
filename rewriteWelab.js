@@ -1396,6 +1396,29 @@ exports.load = function () {
 
     welabMessagelist.view = "lavico/templates/welab/message/MessageList.html";
 
+    welabMessagelist.process = function(seed,nut){
+        var taglist;
+        var tagstr = "";
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                if(docs){
+                    taglist = docs || {};
+                }
+            }))
+        })
+
+        this.step(function(){
+            if(taglist){
+                for(var i=0;i<taglist.length;i++){
+                    tagstr += taglist[i].title + ",";
+                }
+            }
+            nut.model.jsonData = tagstr;
+            console.log("tagstr",tagstr);
+        })
+    }
+
     welabMessagelist.viewIn = function(){
         // search box--搜索显示
         $.searchInitConditions([
@@ -1419,11 +1442,15 @@ exports.load = function () {
             , {field:'message.time',title:'发送时间',type:'date'}
         ]) ;
 
-
-
+        var tagstr = $("#jsondata").val();
+        var taglist = tagstr.split(",");
+        var str = []
+        for(var i=0;i<taglist.length;i++){
+            str.push(taglist[i])
+        }
 
         jQuery("#tags").tagsManager({
-            prefilled: [],
+            prefilled: str,
             hiddenTagListName: 'tagsVal'
         });
 
@@ -1442,7 +1469,7 @@ exports.load = function () {
                 return ;
             }
 
-            jQuery("#tags").tagsManager('empty');
+            //jQuery("#tags").tagsManager('empty');
 
             $('#tagModal').modal('toggle');
             oUserSetOption = {} ;
