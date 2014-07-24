@@ -2075,7 +2075,7 @@ exports.load = function () {
                 tag = aTagList[i];
                 for(var j=0;j<stutas.length;j++){
                     if(stutas[j].stat==true){
-                        successID.push(stutas[j].id);
+
                         helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},then.hold(function(err,doc){
                             if(err ){
                                 throw err;
@@ -2090,6 +2090,8 @@ exports.load = function () {
             for(var j=0;j<stutas.length;j++){
                 if(stutas[j].stat==false){
                     errID.push(stutas[j].id);
+                }else{
+                    successID.push(stutas[j].id);
                 }
             }
         })
