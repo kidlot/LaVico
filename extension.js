@@ -113,7 +113,6 @@ exports.onload = function(application){
     /**
      * welcome
      */
-
     wechatapi.registerReply(9,function(msg,req,res,next){
 
         if( msg.MsgType == "event" && msg.EventKey && msg.Event=='subscribe'){
@@ -136,7 +135,7 @@ exports.onload = function(application){
     // default
     wechatapi.registerReply(14, function (params, req, res, next) {
         console.log("default reply")
-        res.reply('')
+        res.reply('没有什么可以回复的')
     });
     wechatapi.makeQueue() ;
 
