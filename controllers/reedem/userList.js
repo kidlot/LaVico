@@ -166,7 +166,7 @@ module.exports = {
 
                             for (var i=0; i<docs.length; i++)
                             {
-                                docs[i].input = '<input type="checkbox" userid="'+docs[i]._id+'" onclick="checkUser(this)" >';
+                                docs[i].input = '<input type="checkbox" userid="'+docs[i]._id+'" id="'+docs[i]._id+'" onclick="checkUser(this)" >';
                                 docs[i].realname = docs[i].realname || '未注册用户';
                                 docs[i].city = docs[i].city || '';
                                 docs[i].followCount = docs[i].followCount || '1';
