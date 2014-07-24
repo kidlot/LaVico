@@ -135,7 +135,7 @@ exports.onload = function(application){
     // default
     wechatapi.registerReply(14, function (params, req, res, next) {
         console.log("default reply")
-        res.reply('没有什么可以回复的')
+        res.reply('欢迎关注LaVico 朗维高')
     });
     wechatapi.makeQueue() ;
 
