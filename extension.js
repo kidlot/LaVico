@@ -113,7 +113,6 @@ exports.onload = function(application){
     /**
      * welcome
      */
-
     wechatapi.registerReply(9,function(msg,req,res,next){
 
         if( msg.MsgType == "event" && msg.EventKey && msg.Event=='subscribe'){
@@ -131,6 +130,13 @@ exports.onload = function(application){
             next()
         }
     })
+
+
+    // default
+    wechatapi.registerReply(14, function (params, req, res, next) {
+        console.log("default reply")
+        res.reply('欢迎关注LaVico 朗维高')
+    });
     wechatapi.makeQueue() ;
 
 
