@@ -30,6 +30,7 @@ module.exports={
                             jsonOne.theme=doc[e].theme;
                             jsonOne.themeType=doc[e].themeType;
                             jsonOne.themeId=doc[e]._id;
+                            jsonOne.showtype = doc[e].showtype;
 
                             //参与人数
                             (function(i,jsonOne){
@@ -107,6 +108,7 @@ module.exports={
                     }
                     nut.model.data = data || {};
                     nut.model.page=page || {};
+                    console.log(data)
                 })
             }
         }

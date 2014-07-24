@@ -1,0 +1,192 @@
+<style>
+    .floatRight{float: right;}
+    .width50{width:50px;}
+    .width100{width:100px;}
+    .width150{width:150px;}
+    .width250{width:250px;}
+    .width350{width:350px;}
+    .height35{heigth:35px;}
+    .staCount{background-color:#e8e8e8;}
+    .lineCenter{text-align: center;}
+    .maginTop20{margin-top:20px;}
+    .tableSty{width: 97%; line-height: 35px;margin: 0px auto; border: 1px solid darkgray;}
+    .borderBtm{border-bottom:1px solid darkgray;}
+</style>
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <if condition="{@themetype==1}">
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_1">型男测试</a><em></em></li>
+        <elseif condition="{@themetype==3}"/>
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list_3">竞猜型</a><em></em></li>
+        <else/>
+        <li class="b03"><a href="/lavico/answerQuestion/statistics/statistics_list">答题抢积分</a><em></em></li>
+    </if>
+    <li class="active"><span>统计</span></li>
+</ul>
+
+<div name="container" class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+        <div class="btn-group" style="float: left;">
+            <div class="btn-group" style="float: left; margin-top: 6px">
+                <a href="javascript:history.back();"><i class="fui-arrow-left"></i>返回</a>
+            </div>
+        </div>
+        <div class="btn-group" style="float: left; margin-left: 15px">
+            <h6 style="margin-top: 2px; color: #1ABC9C">{@docs.doc.theme}</h6>
+        </div>
+        <!--<div style="float: right;">-->
+        <!--<div style="float: right; width: 306px;">-->
+        <!--<div >-->
+        <!--<a href="/lavico/answerQuestion/question/addQuestion"  name="btnSave" class="btn btn-xs btn-primary mhm stay" style="float: right; margin-left: 300px;">{@docs.doc.theme}</a>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ doc.startDate && new Date(parseInt(doc.startDate)+28800000).toISOString().substr(0,10)}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ doc.endDate && new Date(parseInt(doc.endDate)+28800000).toISOString().substr(0,10)}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">&ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+
+    <!--<div name="title" style="padding: 10px;">-->
+    <!--<div class="height35">-->
+    <!--<input type="button" onclick="history.back()" name="btnBack" value="返回" class="btn btn-embossed">&nbsp;&nbsp;<span style="font-size: 20px;">{@docs.doc.theme}</span>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div nam="main">
+        <div name="getCount">
+            <table class="table table-hover" id="tagList">
+                <thead>
+                <tr class="staCount borderBtm">
+                    <th class="width250">名称</th>
+                    <th class="width50">类型</th>
+                    <th class="width50">参与</th>
+                    <th class="width50">完成</th>
+                    <th class="width50">全对</th>
+                    <th class="width50">完成率</th>
+                    <th class="width50">全对率</th>
+                    <th class="width50">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="borderBtm">
+                    <td class="width250" id="abc">{@docs.doc.theme}</td>
+                    <td class="width50">
+                        <if condition="{@docs.doc.themeType==0}">
+                            对错型
+                            <elseif condition="{@docs.doc.themeType==1"/>
+                            测试型
+                            <else/>
+                            主观型
+                        </if>
+                    </td>
+                    <td class="width50">{@docs.totalPop}</td>
+                    <td class="width50">{@docs.finishCount}</td>
+                    <td class="width50">{@allCountPeople}</td>
+                    <td class="width50" name="wcl">
+                        <if condition="{@docs.finishCount==0}">
+                            0%
+                            <else/>
+                            {@parseInt(docs.finishCount/docs.totalPop*100)}%
+                        </if>
+                    </td>
+                    <td class="width50" name="qdl">
+                        <if condition="{@allCountPeople==0}">
+                            0%
+                            <else/>
+                            {@parseInt(docs.totalPop/allCountPeople*100)}%
+                        </if>
+                    </td>
+                    <td class="width50"><a href="statistics_Detail?themeId={@docs.doc._id}&themetype={@themetype}">查看详情</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <if condition="{@themetype==3}">
+            <if condition="{@showtype==0}">
+                <div style="display: none">
+                    <view name="lab"/>
+                    <view name="score"/>
+                </div>
+
+            </if>
+        </if>
+
+        <if condition="{@themetype==3}">
+            <if condition="{@showtype==1}">
+                <div style="display: none">
+                    <view name="lab"/>
+
+                </div>
+                <view name="score"/>
+            </if>
+
+        </if>
+
+        <if condition="{@themetype==3}">
+            <if condition="{@showtype==2}">
+                <div style="display: none">
+                    <view name="score"/>
+
+                </div>
+                <view name="lab"/>
+            </if>
+
+        </if>
+
+        <if condition="{@themetype==3}">
+            <view name="lab"/>
+            <else/>
+            <div style="display: none">
+                <view name="lab"/>
+            </div>
+        </if>
+        <view name="score"/>
+
+
+        <div name="getTheme" class="maginTop20">
+            <table class="table table-hover" id="tagList">
+                <thead>
+                <tr class="staCount borderBtm">
+                    <th class="width50">序号</th>
+                    <th class="width250">题目</th>
+                    <th class="width50">题型</th>
+                    <th class="width50">正确率</th>
+                    <th class="width50">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <foreach for="@docs.doc.options" var="doc3">
+                    {@docs.options}
+                    <tr class="borderBtm">
+                        <td class="width50">{@doc3.optionId}</td>
+                        <td class="width250">{@doc3.title}</td>
+                        <td class="width50">
+                            <if condition="@doc3.type==0">
+                                单选题
+                                <elseif condition=""/>
+                                多选题
+                                <else/>
+                                主观题
+                            </if>
+                        </td>
+                        <td class="width50">
+                            <foreach for="@allRight" var="right">
+                                <if condition="{@right.themeId==docs.doc._id && right.optionId==doc3.optionId}">
+                                    {@parseInt(right.rightNum/right.allNum*100)}%
+                                </if>
+                            </foreach>
+                        </td>
+                        <td class="width50"><a href="statistics_oneDetail?themeId={@docs.doc._id}&optionId={@doc3.optionId}&themetype={@themetype}">统计</a></td>
+                    </tr>
+                </foreach>
+                </tbody>
+            </table>
+        </div>
+
+        <view name="finishPeople"/>
+
+
+
+    </div>
+</div>

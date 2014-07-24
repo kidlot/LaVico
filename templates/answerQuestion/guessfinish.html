@@ -92,22 +92,13 @@
     <div class="wrapper">
         <div class="mobile">
             <div class="points-content">
-                <img src="/lavico/public/images/man_test_result-642X385.png" />
-                <div style="text-align: left;position:absolute; top: 20%; left: 18%;width:30%">
-                    <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
+                <img src="/lavico/public/images/lavico.jpg" />
+                <div class="points">
                     <foreach for="{@jsonResult}" var="resultString">
-                        <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
-                            您是<label id="getlabel"></label>
-                        </p>
+                        <label style="font-size: 1.8rem">{@resultString.getLabel}</label>
                     </foreach>
                 </div>
             </div>
-            <foreach for="{@jsonResult}" var="resultString">
-                <div class="man-test-content">
-                    <div class="title1">{@resultString.getLabel}</div>
-                    <div class="subtext">{@resultString.getTipContent}</div>
-                </div>
-            </foreach>
             <div class="line">
             </div>
             <if condition="{@resultString.getActivities!=''}">
