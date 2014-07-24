@@ -766,7 +766,7 @@ exports.load = function () {
 
                 for (var i=0; i<page.docs.length; i++)
                 {
-                    page.docs[i].input = '<input type="checkbox" userid="'+page.docs[i]._id+'" onclick="checkUser(this)" >';
+                    page.docs[i].input = '<input type="checkbox" userid="'+page.docs[i]._id+'" id="'+page.docs[i]._id+'" onclick="checkUser(this)" >';
                     page.docs[i].realname = '<a href="/welab/user/detail?_id='+page.docs[i]._id+'" class="stay-top">'+ (page.docs[i].realname || '') +'</a>'         ;
                     page.docs[i].nickname = '<a href="/welab/user/detail?_id='+page.docs[i]._id+'" class="stay-top">'+ (page.docs[i].nickname || '') +'</a>'         ;
                     page.docs[i].city = page.docs[i].city || '';
@@ -1148,41 +1148,45 @@ exports.load = function () {
                 if(err) throw err ;
                 nut.msgqueue.popup() ;
                 // 更改页面数据
+                var jsonData = nut.model.jsonData;
+                console.log("jsonData",jsonData)
+                if(jsonData.length==0){
+                    return;
+                }
+
                 $("#userList").find("tr").each(function( i, o){
                     var tds = $(o).find("td");
-
                     if(tds.eq(0).find("input")[0].checked){
 
-                        // tags
-                        var aOldTagsList = [];
-                        tds.eq(9).find("span").each(function(i,o){
-                            aOldTagsList.push($(o).find("span").text());
-                        })
+                        for(var i=0;i<jsonData.length;i++){
+                            if(jsonData[i].id == tds.eq(0).find("input")[0].id && jsonData[i].status==true){
+                                var aOldTagsList = [];
+                                tds.eq(9).find("span").each(function(i,o){
+                                    aOldTagsList.push($(o).find("span").text());
+                                })
 
-                        var tags = $("input[type='hidden'][name='tagsVal']").val();
-                        var aNewTagsList = tags.split(",");
+                                var tags = $("input[type='hidden'][name='tagsVal']").val();
+                                var aNewTagsList = tags.split(",");
 
+                                var _is = false;
+                                for (var iii=0; iii<aNewTagsList.length; iii++){
+                                    _is = false;
+                                    if(jsonData[i].tag == aNewTagsList[iii]){
+                                        for (var ii=0; ii<aOldTagsList.length; ii++){
+                                            if( aOldTagsList[ii].toLowerCase() == aNewTagsList[iii].toLowerCase()){
+                                                _is = true;
+                                                break;
+                                            }
+                                        }
+                                        if( _is == false){
 
-                        var _is = false;
-                        for (var iii=0; iii<aNewTagsList.length; iii++)
-                        {
-                            _is = false;
-
-                            for (var ii=0; ii<aOldTagsList.length; ii++)
-                            {
-                                if( aOldTagsList[ii].toLowerCase() == aNewTagsList[iii].toLowerCase()){
-                                    _is = true;
-                                    break;
+                                            var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="javascript:;" class="tm-tag-remove"  onclick="removeTagOrKeyword(this)">×</a></span>';
+                                            tds.eq(9).find("div").append(_span);
+                                        }
+                                    }
                                 }
                             }
-
-                            if( _is == false){
-
-                                var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="javascript:;" class="tm-tag-remove"  onclick="removeTagOrKeyword(this)">×</a></span>';
-                                tds.eq(9).find("div").append(_span);
-                            }
                         }
-
                     }
                 })
             }) ;
@@ -2036,6 +2040,7 @@ exports.load = function () {
                             console.log(doc)
                         }
                         var docs = JSON.parse(doc);
+                        row.status = docs.success;
                         sta={};
                         sta.stat = docs.success;
                         sta.id = row.id;
@@ -2091,6 +2096,7 @@ exports.load = function () {
 
         this.step(function(){
             nut.model.jsonData = jsonData;
+            console.log("jsonData",jsonData)
             console.log(errID.length)
             console.log(successID.length)
             if(errID.length==0){
