@@ -41,55 +41,22 @@ module.exports = {
                             var num = 0;//完成人数
                             var count = 0;//参加人数
                             // 添加侃价分类统计
-                            (function(then,data,i){
-                                var condition = {'categoryId':data[i]._id};
-                                helper.db.coll("lavico/bargain").find(condition,{"orderId":1}).toArray(then.hold(function(err,doc){
-                                    if(err){
-                                        throw err;
-                                    }else{
-                                        var bargain = doc;
-                                        data[i].bargain = bargain;
-                                    }
-                                }))
-                            })(this,data,i);
+//                            (function(then,data,i){
+//                                var condition = {'categoryId':data[i]._id};
+//                                helper.db.coll("lavico/bargain").find(condition,{"orderId":1}).toArray(then.hold(function(err,doc){
+//                                    if(err){
+//                                        throw err;
+//                                    }else{
+//                                        var bargain = doc;
+//                                        data[i].bargain = bargain;
+//                                    }
+//                                }))
+//                            })(this,data,i);
 
                             // 添加侃价分类统计
                         }
 
                     });
-                    this.step(function(){
-
-                        helper.db.coll("lavico/bargain").find({},{"orderId":1}).toArray(this.hold(function(err,doc){
-                            if(err){
-                                throw err;
-                            }else{
-                                bargainid = doc;
-                            }
-                        }))
-                    })
-                    this.step(function(){
-                        helper.db.coll("lavico/user/logs").find({"action":"侃价"}).toArray(then.hold(function(err,doc){
-                            if(err){
-                                throw err;
-                            }
-                            if(doc){
-                                for(var h=0;h<bargainid.length;h++){
-                                    var num=0;
-                                    for(var j=0;j<doc.length;j++){
-                                        if(doc[j].data && doc[j].data.productID && doc[j].data.step && doc[j].data.stat &&  doc[j].data.step == 4 && doc[j].data.stat==true){
-                                            if(bargainid[h]._id==doc[j].data.productID){
-                                                num++;
-                                                logs={};
-                                                logs.productID = doc[j].data.productID;
-                                                logs.num = num;
-                                                userlogs.push(logs);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }))
-                    })
 
                     nut.model.data = data;
                     nut.model.page=page || {};
