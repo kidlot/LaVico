@@ -25,7 +25,7 @@ module.exports = {
         var catslist = [];
         helper.db.coll("lavico/bargain/categorys").find({}).sort({createTime:-1}).toArray(this.hold(function(err,docs){
             if(err) throw  err;
-            if(docs == true){
+            if(docs){
                 catslist = docs || {};
                 nut.model.catslist = catslist;
                 console.log(catslist);
