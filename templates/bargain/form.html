@@ -129,11 +129,11 @@
                             <select class="form-control input-sm postData" style="width: 150px;display:inline;" id='categoryId' name="type">
                                 <option value="">请选择所属分类</option>
                                 {@promotionDoc.categoryId}
-                                <foreach for="@catslist" var="doc" key="key">
-                                    <if condition="@doc._id == @promotionDoc.categoryId">
-                                        <option value="{@ doc._id}" selected="selected">{@doc.title}</option>
+                                <foreach for="@catslist" var="cat" key="key">
+                                    <if condition="@cat._id == doc.categoryId">
+                                        <option value="{@ cat._id}" selected="selected">{@cattitle}</option>
                                         <else/>
-                                        <option value="{@ doc._id}">{@doc.title}</option>
+                                        <option value="{@ cat._id}">{@cat.title}</option>
                                 </foreach>
                             </select>
                         </td>
