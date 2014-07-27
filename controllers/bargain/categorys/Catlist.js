@@ -41,9 +41,9 @@ module.exports = {
                             var num = 0;//完成人数
                             var count = 0;//参加人数
                             // 添加侃价分类统计
-                            (function(data,i){
+                            (function(then,data,i){
                                 var condition = {'categoryId':data[i]._id};
-                                helper.db.coll("lavico/bargain").find(condition,{"orderId":1}).toArray(this.hold(function(err,doc){
+                                helper.db.coll("lavico/bargain").find(condition,{"orderId":1}).toArray(then.hold(function(err,doc){
                                     if(err){
                                         throw err;
                                     }else{
@@ -51,7 +51,7 @@ module.exports = {
                                         data[i].bargain = bargain;
                                     }
                                 }))
-                            })(data,i);
+                            })(this,data,i);
 
                             // 添加侃价分类统计
                         }
