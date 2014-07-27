@@ -1,0 +1,38 @@
+<div name="getMember" class="maginTop20">
+    <table class="table table-hover" id="tagList">
+        <thead>
+        <tr class="staCount borderBtm">
+            <th>标签名称</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach for="@data" var="doc" key="key">
+            <tr class="borderBtm">
+                <td>{@doc.createTime}</td>
+                <td><a href="/lavico/bargain/categorys/updateCat?_id={@doc._id}">{@doc.title}</a></td>
+                <td>
+                    <a href="/lavico/bargain/categorys/updateCat?_id={@doc._id}" class="btn btn-xs btn-primary mhm">修改</a>
+                    <a href="javascript:;" onclick="func_remove('{@ doc._id}')" class="btn btn-xs mhm">删除</a>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+    <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@page" model.url="/lavico/tags/Taglist:page?page=%pagenum%" /></div>
+</div>
+<script>
+    function func_remove(id){
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [{name:'id',value:id}];
+        oLinkOptions.type = "POST";
+        oLinkOptions.url = "/lavico/bargain/categorys/Catlist:del";
+
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+            nut.msgqueue.popup() ;
+            $.controller("/lavico/bargain/categorys/Catlist",null,"lazy");
+        });
+    }
+</script>
