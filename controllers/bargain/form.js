@@ -158,7 +158,7 @@ module.exports = {
 
             /*David.xu添加最高价格at2014-06-19*/
             aFormInput['categoryId'] = $("#categoryId").val();
-            alert($("#categoryId").val());
+            //alert($("#categoryId").val());
             console.log(aFormInput);
 
             if(_inputCheck){

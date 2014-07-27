@@ -130,7 +130,7 @@
                                 <option value="">请选择所属分类</option>
                                 <foreach for="@catslist" var="doc" key="key">
                                     <if condition="@doc._id == promotionDoc.categoryId">
-                                        <option value="{@promotionDoc._id}" selected="selected">{@doc.title}</option>
+                                        <option value="{@doc._id}" selected="selected">{@doc.title}</option>
                                         <else/>
                                         <option value="{@ doc._id}">{@doc.title}</option>
                                 </foreach>
