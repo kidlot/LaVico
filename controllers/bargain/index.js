@@ -8,10 +8,14 @@ module.exports = {
         var userlogs=[];
         var then = this;
 
-
+        var categoryId = seed.categoryId || false;
+        var condition = {};
 
         this.step(function(){
-            helper.db.coll("lavico/bargain").find({},{"orderId":1}).toArray(this.hold(function(err,doc){
+            if(categoryId){
+                condition = {'categoryId':categoryId};
+            }
+            helper.db.coll("lavico/bargain").find(condition,{"orderId":1}).toArray(this.hold(function(err,doc){
                 if(err){
                     throw err;
                 }else{
