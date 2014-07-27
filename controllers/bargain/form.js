@@ -127,6 +127,8 @@ module.exports = {
                 maplist.push($option.val())
             });
             aFormInput['maps'] = maplist;
+            aFormInput['categoryId'] = $("#categoryId").val();
+
             aFormInput['pic'] = $("#showPic").attr("src")
             aFormInput['pic_big'] = getBigPicList()
 
