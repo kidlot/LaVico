@@ -127,7 +127,6 @@ module.exports = {
                 maplist.push($option.val())
             });
             aFormInput['maps'] = maplist;
-            aFormInput['categoryId'] = $("#categoryId").val();
 
             aFormInput['pic'] = $("#showPic").attr("src")
             aFormInput['pic_big'] = getBigPicList()
@@ -158,6 +157,9 @@ module.exports = {
             }
 
             /*David.xu添加最高价格at2014-06-19*/
+            aFormInput['categoryId'] = $("#categoryId").val();
+            alert($("#categoryId").val());
+            console.log(aFormInput);
 
             if(_inputCheck){
                 var oLinkOptions = {} ;
