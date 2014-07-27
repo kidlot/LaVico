@@ -49,7 +49,7 @@ module.exports = {
         })
 
         this.step(function(){
-            helper.db.coll("lavico/bargain").find({}).sort({orderId:1}).page(50,seed.page||1,this.hold(function(err,page){
+            helper.db.coll("lavico/bargain").find(condition).sort({orderId:1}).page(50,seed.page||1,this.hold(function(err,page){
                 list = page
                 for (var i=0;i<page.docs.length;i++){
                     if(page.docs[i].switcher == "off"){
