@@ -124,6 +124,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <th style="font-size: 14px;">分类</th>
+                        <td colspan="2">
+                            <select class="form-control input-sm postData" style="width: 150px;display:inline;" id='categoryId' name="type">
+                                <option value="">请选择所属分类</option>
+                                <foreach for="@catslist" var="doc" key="key">
+                                        <option value="{@ doc._id}">{@doc.title}</option>
+                                </foreach>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <th style="font-size: 14px;">扣除积分</th>
                         <td colspan="2">
                             <input type="text" id="deductionIntegral" class="form-control input-sm postData" style="width: 150px" value="{@ doc.deductionIntegral}">

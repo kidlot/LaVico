@@ -21,7 +21,17 @@ module.exports = {
                 }
                 doc = _doc || {}
             }))
-        }
+        };
+        var catslist = [];
+        helper.db.coll("lavico/bargain/categorys").find({}).sort({createTime:-1}).toArray(this.hold(function(err,docs){
+            if(err) throw  err;
+            if(docs == true){
+                catslist = docs || {};
+                nut.model.catslist = catslist;
+                console.log(catslist);
+            }
+        }));
+
         this.step(function(){
             //shops
             middleware.request( "Shops",
