@@ -14,6 +14,7 @@ var QRstore = require("./weixinReply/QRstore.js");
 var wechatapi = require("welab/lib/wechat-api.js") ;
 var guess = require("./weixinReply/guess.js") ;
 var tag = require("./weixinReply/tag.js") ;
+var users = require("./weixinReply/users.js") ;
 exports.onload = function(application){
 
 
@@ -52,6 +53,9 @@ exports.onload = function(application){
 
     //门店数据导入
     QRstore.load();
+
+    //用户管理
+    users.load();
 
 
 
