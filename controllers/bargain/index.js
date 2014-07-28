@@ -10,10 +10,20 @@ module.exports = {
 
         var categoryId = seed.categoryId || false;
         var condition = {};
+        nut.model.categoryName = false;
 
         this.step(function(){
             if(categoryId){
                 condition = {'categoryId':categoryId};
+
+                helper.db.coll("lavico/bargain/categorys").findOne({_id:helper.db.id(categoryId)},this.hold(function(err,doc){
+                    if(err){
+                        throw err;
+                    }else{
+                        nut.model.categoryName = doc.title;
+                        console.log(doc);
+                    }
+                }))
             }
             helper.db.coll("lavico/bargain").find(condition,{"orderId":1}).toArray(this.hold(function(err,doc){
                 if(err){

@@ -184,13 +184,16 @@ module.exports = {
                 map.value = $option.val();
                 maplist.push(map);
             });
-            for(var i=0;i<maplist.length;i++){
-                for(var j=0;j<maps.length;j++){
-                    if($.trim(maplist[i].value) == $.trim(maps[j])){
-                        $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+            if(maplist&&maplist.length>0&&maps&&maps.length>0){
+                for(var i=0;i<maplist.length;i++){
+                    for(var j=0;j<maps.length;j++){
+                        if($.trim(maplist[i].value) == $.trim(maps[j])){
+                            $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+                        }
                     }
                 }
             }
+
         }
         window.load();
 
