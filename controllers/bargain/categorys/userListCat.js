@@ -136,6 +136,7 @@ module.exports = {
 
                 var _data = {};
                 var _rows = [];
+                var _ids = [];//当前分类的所属的侃价列表的ID数组
 
                 var sort = {_id:-1};
                 if(seed.sortname){
@@ -143,7 +144,18 @@ module.exports = {
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
 
-
+                this.step(function(){
+                    if(seed._id){
+                        //侃价分类限制
+                        helper.db.coll("lavico/bargain").find({categoryId:seed._id}).toArray(this.hold(function(err,_doc){
+                            if(_doc&&_doc.length>0){
+                                for(var _i=0;_i<_doc.length;_i++){
+                                    _ids.push(''+_doc[_i]._id);
+                                }
+                            }
+                        }));
+                    }
+                });
                 this.step(function(){
 
                     var arrregateParams = [
@@ -157,22 +169,10 @@ module.exports = {
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
 
-                    if(seed._id){
-                        //侃价分类限制
-                        var _ids = [];
-                        helper.db.coll("lavico/bargain").find({categoryId:seed._id}).toArray(this.hold(function(err,_doc){
-                            if(_doc&&_doc.length>0){
-                                for(var _i=0;_i<_doc.length;_i++){
-                                    _ids.push(''+_doc[_i]._id);
-                                }
-                            }
-                            conditions[seed.unwind+"._id"] = {$in:_ids};
 
-                        }));
-                    }
 
                     arrregateParams.push({$match:conditions})
-                    console.log(arrregateParams)
+                    //console.log(arrregateParams)
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
@@ -183,6 +183,12 @@ module.exports = {
 
                         })
                     );
+                    //当前分类的所属的侃价列表的ID数组-筛选-David.xu
+                    if(_ids&&_ids.length>0){
+                        conditions[seed.unwind+"._id"] = {$in:_ids};
+                    }else{
+                        conditions[seed.unwind+"._id"] = 0;
+                    }
 
                     arrregateParams.push({$sort:sort})
                     arrregateParams.push({$skip:((parseInt(seed.page)-1)||0)*(parseInt(seed.rp) || 20)})
@@ -277,6 +283,20 @@ module.exports = {
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
 
+                var _ids = [];//当前分类的所属的侃价列表的ID数组
+
+                this.step(function(){
+                    if(seed._id){
+                        //侃价分类限制
+                        helper.db.coll("lavico/bargain").find({categoryId:seed._id}).toArray(this.hold(function(err,_doc){
+                            if(_doc&&_doc.length>0){
+                                for(var _i=0;_i<_doc.length;_i++){
+                                    _ids.push(''+_doc[_i]._id);
+                                }
+                            }
+                        }));
+                    }
+                });
 
                 this.step(function(){
 
@@ -288,19 +308,13 @@ module.exports = {
                     if(seed.unwind){
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
+                    conditions[seed.unwind+"._id"] = 0;
 
-                    if(seed._id){
-                        //侃价分类限制
-                        var _ids = [];
-                        helper.db.coll("lavico/bargain").find({categoryId:seed._id}).toArray(this.hold(function(err,_doc){
-                            if(_doc&&_doc.length>0){
-                                for(var _i=0;_i<_doc.length;_i++){
-                                    _ids.push(''+_doc[_i]._id);
-                                }
-                            }
-                            conditions[seed.unwind+"._id"] = {$in:_ids};
-
-                        }));
+                    //当前分类的所属的侃价列表的ID数组-筛选
+                    if(_ids&&_ids.length>0){
+                        conditions[seed.unwind+"._id"] = {$in:_ids};
+                    }else{
+                        conditions[seed.unwind+"._id"] = 0;
                     }
 
                     arrregateParams.push({$match:conditions})
