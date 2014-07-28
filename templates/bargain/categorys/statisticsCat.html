@@ -28,7 +28,12 @@
             <div style="float: right; width: 306px;">
                 <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
                 <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
-                <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
+                <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="searchCat()">
+                <script>
+                    function searchCat(){
+                        window.location.href = "/lavico/"+$(".unwind").val()+"/categorys/statisticsCat?_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
+                    }
+                </script>
             </div>
         </div>
     </div>
@@ -66,6 +71,7 @@
 
     </div>
 </div>
+<input type="hidden" value="{@jsonData}" id="jsondata">
 
 <link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
 <script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>

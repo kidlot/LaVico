@@ -16,8 +16,8 @@ module.exports = {
             var categoryInfo;
             var pv = 0;//活动参与人数
             var uv = 0;//活动成交人数
-            var min = 0;//活动最低成交价格
-            var max = 0;//活动最高成交价格
+            var min ;//活动最低成交价格
+            var max ;//活动最高成交价格
             nut.model.categoryName = false;
             nut.model.startDate = '';
             nut.model.stopDate = '';
@@ -41,10 +41,10 @@ module.exports = {
 
                     for(var i=0;i<docs.length;i++){
                         var product = docs[i];
-                        var productID = product._id;
-
+                        var productID = ''+product._id;
                         //参与人数:
-                        (function(i,then){
+                        (function(i){
+                            console.log({action:"侃价","data.step":4,'data.productID':productID});
                             helper.db.coll("lavico/user/logs").aggregate([
                                 {$match:{action:"侃价","data.step":4,'data.productID':productID}},
                                 {$group:{_id:"$wxid"}}
@@ -53,10 +53,10 @@ module.exports = {
                                     docs[i].pv = doc.length || 0
                                 })
                             )
-                        })(i,this);
+                        })(i);
 
                         //成交人数:
-                        (function(i,then){
+                        (function(i){
                             helper.db.coll("lavico/user/logs").aggregate([
                                 {$match:{action:"侃价","data.step":4,"data.stat":true,'data.productID':productID}},
                                 {$group:{_id:"$wxid"}}
@@ -65,24 +65,27 @@ module.exports = {
                                     docs[i].uv = doc.length || 0
                                 })
                             )
-                        })(i,this);
+                        })(i);
 
                         //最低成交价
-                        (function(i,then){
+                        (function(i){
                             helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':productID}).sort({"data.price":1}).limit(1).toArray(then.hold(function(err,doc){
                                 docs[i].min = doc && doc[0] ? doc[0].data.price : 0
 
                             })
                             )
-                        })(i,this);
+                        })(i);
 
                         //最高成交价
-                        (function(i,then){
-                            helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':seed._id}).sort({"data.price":-1}).limit(1).toArray(then.hold(function(err,doc){
-                                docs[i].max = doc && doc[0] ? doc[0].data.price : 0
+                        (function(i){
+                            helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,"data.stat":true,'data.productID':productID}).sort({"data.price":-1}).limit(1).toArray(then.hold(function(err,doc){
+                                docs[i].max = doc && doc[0] ? doc[0].data.price : 0;
+                                if(docs[i].max == 0){
+                                    docs[i].max = docs[i].min;
+                                }
                             })
                             )
-                        })(i,this);
+                        })(i);
 
                     }
                 }
@@ -94,7 +97,20 @@ module.exports = {
                     for(var i=0;i<docs.length;i++){
                         var product = docs[i];
                         var productID = product._id;
-                        pv + =
+                        pv += docs[i].pv;
+                        uv += docs[i].uv;
+                        if(i == 0){
+                            min = docs[i].min;
+                            max = docs[i].max;
+                        }else{
+                            if(min > docs[i].min){
+                                min = docs[i].min;
+                            }
+                            if(max < docs[i].max){
+                                max = docs[i].max;
+                            }
+                        }
+
                         console.log(product);
                     }
                 }
@@ -108,10 +124,7 @@ module.exports = {
                 nut.model.min = min;//活动最低成交价格
                 nut.model.max = max;//活动最高成交价格
 
-
-            })
-
-
+            });
 
 
 
@@ -124,13 +137,66 @@ module.exports = {
         }
 
 
+        this.step(function(){
+
+
+            var dTime = new Date()
+            var _ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1)
+            var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym+"-01 00:00:00").getTime();
+            var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
+            nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+            nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+            seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate,_id:seed._id,unwind:"bargain"};
+        })
+
+
+        var taglist;
+        var tagstr = "";
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                if(docs){
+                    taglist = docs || {};
+                }
+            }))
+        })
+
+        this.step(function(){
+            if(taglist){
+                for(var i=0;i<taglist.length;i++){
+                    tagstr += taglist[i].title + ",";
+                }
+            }
+            var reg=/,$/gi;
+            nut.model.jsonData = tagstr.replace(reg,"");
+            console.log("nut.model.jsonData",nut.model.jsonData);
+        })
     }
     , children: {
 
-        //userList: "lavico/bargain/userList.js"
+        userList: "lavico/bargain/categorys/userListCat.js"
 
     }
     , viewIn : function(){
+        $.searchInitConditions([
+            {field:'realname',title:'姓名',type:'text'}
+            , {field:'gender',title:'性别',type:'gender'}
+            , {field:'birthday',title:'年龄',type:'birthday'}
+            , {field:'email',title:'电子邮件',type:'text'}
+            , {field:'mobile',title:'移动电话',type:'text'}
+            , {field:'registerTime',title:'注册时间',type:'date'}
+            , {field:'followTime',title:'关注时间',type:'date'}
+            , {field:'tags',title:'标签',type:'text'}
+            , {field:'nickname',title:'昵称',type:'text'}
+            , {field:'city',title:'城市',type:'text'}
+            , {field:'profession',title:'行业',type:'text'}
+            , {field:'source',title:'关注来源',type:'value'}
+            , {field:'HaiLanMemberInfo.action',title:'绑定',type:'member'}
+            , {field:'HaiLanMemberInfo.type',title:'会员卡',type:'membertype'}
+            , {field:'isFollow',title:'关注',type:'follow'}
+            , {field:'isRegister',title:'注册',type:'register'}
+        ]) ;
+
         $('#startDate').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
@@ -142,6 +208,20 @@ module.exports = {
             autoclose: true,
             minView: 2
         });
+
+        var tagstr = $("#jsondata").val();
+        var taglist = tagstr.split(",");
+        var str = []
+        for(var i=0;i<taglist.length;i++){
+            str.push(taglist[i])
+        }
+
+        jQuery("#tags").tagsManager({
+            prefilled: str,
+            hiddenTagListName: 'tagsVal'
+        });
+
+        $("#exportssd").attr("href","/lavico/bargain/categorys/userListCat:exports?_id="+$("#_id").val()+"&unwind=bargain&data=%7B%22name%22%3A%22%E5%90%8D%E7%A7%B0%22%2C%22createDate%22%3A%22%E6%97%B6%E9%97%B4%22%7D")
     }
 
 
