@@ -18,7 +18,7 @@
 //        check();
 //    }
 </script>
-
+<link rel="stylesheet" href="/lavico/public/css/LaVico_03.css" />
 <if condition="@ !isFollow">
     <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
 </if>
@@ -56,52 +56,52 @@
     <!--</div>-->
 <!--</if>-->
 
-<if condition="@lookbookType == '列表型'">
-    <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num2.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
-        <div class="wrapper" style="background-color: #fff;">
-            <foreach for="@allPage.page" var="page" key="key">
-                <div class="elite_list">
-                    <div class="small_list_top">
-                        <img src="{@page.pic||'/lavico/public/images/small_list_top.jpg'}">
-                        <span class="content_up"><a href="javascript:;" onclick="showContent('{@key}');" class="ui-link"></a></span>
-                        <div class="small_content num_{@key}" style="display: none;">
-                            {@ page.detail}
-                        </div>
-                    </div>
-                </div>
-                <div class="small_list">
-                    <foreach for="@page.product" var="product">
-                        <div class="small_image">
-                            <a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}&onlyProduct=true" onclick="check()">
-                                <img src="{@ product.pic}" class="exchangebtn">
-                            </a>
-                        </div>
-                    </foreach>
-                </div>
-                <div class="clear"></div>
-                <div class="small_middle"><img src="/lavico/public/images/small_list_middle.png" class="exchangebtn"></div>
-            </foreach>
-        </div>
-        <script>
-            function smallList() {
-                var classElements = document.getElementsByTagName("div");
-                for (var i = 0; i < classElements.length; i++) {
-                    if (classElements[i].className == 'small_list') {
-                        var nameDiv = classElements[i].getElementsByTagName("div");
-                        if (nameDiv.length === 2) {
-                            nameDiv[1].id = 'samll_50';
-                            nameDiv[0].style.width = '40%';
-                        }
-                    }
-                }
-                return classElements;
-            }
-            window.onload = function () {
-                smallList();
-            }            
-        </script>
-    </div>
-</if>
+<!--<if condition="@lookbookType == '列表型'">-->
+    <!--<div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num2.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">-->
+        <!--<div class="wrapper" style="background-color: #fff;">-->
+            <!--<foreach for="@allPage.page" var="page" key="key">-->
+                <!--<div class="elite_list">-->
+                    <!--<div class="small_list_top">-->
+                        <!--<img src="{@page.pic||'/lavico/public/images/small_list_top.jpg'}">-->
+                        <!--<span class="content_up"><a href="javascript:;" onclick="showContent('{@key}');" class="ui-link"></a></span>-->
+                        <!--<div class="small_content num_{@key}" style="display: none;">-->
+                            <!--{@ page.detail}-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="small_list">-->
+                    <!--<foreach for="@page.product" var="product">-->
+                        <!--<div class="small_image">-->
+                            <!--<a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@product._id}&onlyProduct=true" onclick="check()">-->
+                                <!--<img src="{@ product.pic}" class="exchangebtn">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</foreach>-->
+                <!--</div>-->
+                <!--<div class="clear"></div>-->
+                <!--<div class="small_middle"><img src="/lavico/public/images/small_list_middle.png" class="exchangebtn"></div>-->
+            <!--</foreach>-->
+        <!--</div>-->
+        <!--<script>-->
+            <!--function smallList() {-->
+                <!--var classElements = document.getElementsByTagName("div");-->
+                <!--for (var i = 0; i < classElements.length; i++) {-->
+                    <!--if (classElements[i].className == 'small_list') {-->
+                        <!--var nameDiv = classElements[i].getElementsByTagName("div");-->
+                        <!--if (nameDiv.length === 2) {-->
+                            <!--nameDiv[1].id = 'samll_50';-->
+                            <!--nameDiv[0].style.width = '40%';-->
+                        <!--}-->
+                    <!--}-->
+                <!--}-->
+                <!--return classElements;-->
+            <!--}-->
+            <!--window.onload = function () {-->
+                <!--smallList();-->
+            <!--}            -->
+        <!--</script>-->
+    <!--</div>-->
+<!--</if>-->
 
 <if condition="@lookbookType == '瀑布流型'">
     <section id="section" style="background-color: #e4e4e4;">
@@ -155,6 +155,143 @@
         </ul>
     </section>
 </if>
+
+<if condition="@lookbookType == '列表型'">
+    <section id="section" class="Template_3">
+        <div class="new_top_logo"><img src="/lavico/public/images/logo_03_01.png" alt="" /></div>
+        <div class="swipe" id="wrapper_03_01">
+            <ul id="slider">
+                <foreach for="@allPage.page" var="item" key="key">
+                    <li><a href="/lavico/lookbook/productThere?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@item.product[0]._id}"><img src="{@item.pic||'/lavico/public/images/elite_home_top.gif'}" alt="" /></a></li>
+                </foreach>
+            </ul>
+            <div id="navSli">
+                <ul id="indicator_03_01"></ul>
+            </div>
+            <span class="shadow"></span>
+        </div>
+        <div class="switch_list">
+            <!--<a href="javascript:;" onclick="leftPage()" class="switch_left">左右</a>-->
+            <h2>{@allPage.name}</h2>
+            <!--<a href="javascript:;" onclick="rightPage()" class="switch_right">左右</a>-->
+        </div>
+        <ul class="collocation_list">
+            <foreach for="@allPage.page" var="item" key="key">
+                <li>
+                    <img src="{@item.pic||'/lavico/public/images/elite_home_top.gif'}" class="collocation_list_left" />
+                    <article class="collocation_list_right">
+                        <h3>{@item.name}</h3>
+                        <p>{@item.detail}</p>
+                        <a href="/lavico/lookbook/productThere?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@item.product[0]._id}"><img src="/lavico/public/images/collocation_but.png" alt="" /></a>
+                    </article>
+                </li>
+            </foreach>
+        </ul>
+    </section>
+    <script>
+        var wrapper = document.getElementById("wrapper_03_01");
+        var wrapper_Li = document.getElementById("slider").getElementsByTagName("li");
+        var wrapper_L = document.getElementById("slider").getElementsByTagName("li").length;
+        function wrapperWidth() {
+            wrapper_W = wrapper.offsetWidth;
+            for (var i = 0; i < wrapper_Li.length; i++) {
+                wrapper_Li[i].style.width = wrapper_W + "px";
+            }
+            document.getElementById("slider").style.width = wrapper_W * wrapper_L + "px";
+        }
+
+        wrapperWidth();
+
+        window.onresize = function () {
+            wrapperWidth();
+        }
+
+        var indicator_Li = document.getElementById("indicator_03_01").getElementsByTagName("li");
+        var section_W = document.getElementById("section").offsetWidth;
+        var indicator = document.getElementById("indicator_03_01");
+
+        for (var i = 0; i < wrapper_Li.length; i++) {
+            var indicator_add_Li = document.createElement("li")
+            indicator.appendChild(indicator_add_Li);
+            indicator_Li[0].className = 'active';
+            indicator_Li[i].style.width = (section_W / wrapper_L) / section_W * 100 + "%";
+        }
+    </script>
+    <script src="/lavico/public/js/touchScroll.js"></script>
+    <script src="/lavico/public/js/touchslider.dev.js"></script>
+
+    <script type="text/javascript">
+        function leftPage(){
+
+            if(myScroll.currPageX == 0){
+                window.popupStyle2.on('已经是第一页',function(event){
+
+                })
+            }else{
+                myScroll.scrollToPage('prev', 0)
+            }
+        }
+
+        function rightPage(){
+
+            if($("#thelist_02>li").length == (myScroll.currPageX+1)){
+                window.popupStyle2.on('已经是最后一页',function(event){
+
+                })
+            }else{
+                myScroll.scrollToPage('next', 0)
+            }
+        }
+
+
+        var active = 0,
+                as = document.getElementById('indicator_03_01').getElementsByTagName('li');
+        for (var i = 0; i < as.length; i++) {
+            (function () {
+                var j = i;
+                as[i].onclick = function () {
+                    t2.slide(j);
+                    return false;
+                }
+            })();
+        }
+        var t2 = new TouchSlider({
+            id: 'slider', speed: 600, timeout: 6000, before: function (index) {
+                as[active].className = '';
+                active = index;
+                as[active].className = 'active';
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        var myScroll;
+        var myScroll_02;
+        function loaded() {
+            myScroll = new iScroll('wrapper_03_01', {
+                snap: true,
+                momentum: false,
+                hScrollbar: false,
+                onScrollEnd: function () {
+                    document.querySelector('#indicator_03_01 > li.active').className = '';
+                    document.querySelector('#indicator_03_01 > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
+                    var data = JSON.parse($("#jsonPage").text())
+
+                    $(".switch_list").find("h2").text(data[myScroll.currPageX].name)
+                }
+            });
+            myScroll_02 = new iScroll('switch_list', {
+                snap: true,
+                momentum: false,
+                hScrollbar: false
+            });
+        }
+        document.addEventListener('DOMContentLoaded', loaded, false);
+    </script>
+</if>
+
+
+
+
 <script src="/lavico/public/js/waterfall.js"></script>
 <script src="/lavico/public/js/flipsnap.js"></script>
 <script type="text/javascript" src="/lavico/public/js/jquery.touchwipe.1.1.1.js"></script>

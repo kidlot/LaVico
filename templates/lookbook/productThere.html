@@ -1,0 +1,214 @@
+<link rel="stylesheet" href="/lavico/public/css/LaVico_03.css" />
+<script src="/lavico/public/js/iscroll.js"></script>
+<if condition="@ !isFollow">
+    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
+</if>
+<input type="hidden" id="pageNum" value={@pageNum}>
+<input type="hidden" id="productId" value={@productId}>
+<div style="display: none" id="jsonPage">{@jsonDoc}</div>
+<section id="section" class="Template_3" style="height:100%;">
+    <div class="new_top_logo">
+        <img src="/lavico/public/images/logo_03.png" alt="" />
+    </div>
+    <div class="collection">
+        <a href="javascript:;" onclick="favorites('{@ wxid}')">
+            <img src="/lavico/public/images/collection.png" alt="" />
+        </a>
+    </div>
+    <div id="nav_03">
+        <ul id="indicator_03"></ul>
+    </div>
+    <div id="wrapper_03">
+        <div id="scroller_03">
+            <ul id="thelist_03">
+                <foreach for="@doc" var="item">
+                    <li><a href="#"><img src="{@ item.pic}" alt="" /><article><h2>{@item.name}</h2><p>{@item.detail}</p></article></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <div class="pr_bottom">
+        <div id="wrapper_bot">
+            <div id="scroller_bot">
+                <ul id="thelist_bot">
+                    <li><a href="#"></a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="nav_bot">
+            <div id="prev_03" onclick="leftPage();return false">&larr; prev</div>
+            <div id="next_03" onclick="rightPage();return false">next &rarr;</div>
+        </div>
+    </div>
+
+    <div class="fade2">
+        <div class="second-price">
+            <p class="msg">
+                <span class="mt70 fad2Tit">收藏成功</span>
+            </p>
+            <p class="confirm">
+                <input type="submit" class="goon_btn" border="0" value="继续浏览" onclick="$('.fade2').hide()">
+            </p>
+            <p class="msg mt70">或</p>
+            <p class="confirm">
+                <input class="gocollection" type="submit" border="0" value="转至收藏夹" onclick="location.href='/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}&cb='+encodeURIComponent('{'+location.href+'}')"></p>
+        </div>
+    </div>
+    <script>
+        var myScroll;
+        function loaded() {
+
+            var data = JSON.parse($("#jsonPage").text())
+            $("#thelist_bot").find("a").text(data[0].name)
+
+            myScroll = new iScroll('wrapper_03', {
+                snap: true,
+                momentum: false,
+                hScrollbar: false,
+                onScrollEnd: function () {
+                    document.querySelector('#indicator_03 > li.active').className = '';
+                    document.querySelector('#indicator_03 > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
+
+                    var data = JSON.parse($("#jsonPage").text())
+                    $("#thelist_bot").find("a").text(data[myScroll.currPageX].name)
+                }
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', loaded, false);
+
+
+        function leftPage(){
+
+            if(myScroll.currPageX == 0){
+                window.popupStyle2.on('已经是第一页',function(event){
+
+                })
+            }else{
+                myScroll.scrollToPage('prev', 0)
+            }
+        }
+
+        function rightPage(){
+
+            if($("#thelist_03>li").length == (myScroll.currPageX+1)){
+                window.popupStyle2.on('已经是最后一页',function(event){
+
+                })
+            }else{
+                myScroll.scrollToPage('next', 0)
+            }
+        }
+
+        function favorites(wxid){
+
+            var isvip = '{@isVip}'
+            if(isvip == "false"){
+
+                window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
+
+                    if(event == "confirm"){
+                        location.href="/lavico/member/card_blank/register?wxid={@ wxid}"
+                    }
+                })
+
+                return false;
+            }
+
+            var data = JSON.parse($("#jsonPage").text())
+            var pid = data[myScroll.currPageX]._id;
+            $.ajax({
+                url:'/lavico/lookbook/favorites:save',
+                type:'POST',
+                data:{
+                    'wxid':wxid,
+                    'pid':pid,
+                    'memberID':'{@ memberID}'
+                },
+                success:function(data){
+
+                    $(".fade2").find(".fad2Tit").text(data.msg)
+                    $(".fade2").show()
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        }
+        window.showShareButtion.on();
+
+    </script>
+</section>
+<script>
+    var wrapper = document.getElementById("wrapper_03");
+    var wrapper_Li = document.getElementById("thelist_03").getElementsByTagName("li");
+    var wrapper_L = document.getElementById("thelist_03").getElementsByTagName("li").length;
+
+    var wrapper_bot = document.getElementById("wrapper_bot");
+    var thelist_bot_Li = document.getElementById("thelist_bot").getElementsByTagName("li");
+    var thelist_bot_L = document.getElementById("thelist_bot").getElementsByTagName("li").length;
+    function wrapperWidth() {
+        //头部产品图片
+        wrapper_W = wrapper.offsetWidth;
+        for (var i = 0; i < wrapper_Li.length; i++) {
+            wrapper_Li[i].style.width = wrapper_W + "px";
+        }
+        document.getElementById("scroller_03").style.width = wrapper_W * wrapper_L + "px";
+
+        //底部产品系列标题
+        wrapper_bot_W = wrapper_bot.offsetWidth;
+        for (var i = 0; i < thelist_bot_Li.length; i++) {
+            thelist_bot_Li[i].style.width = wrapper_bot_W + "px";
+        }
+        thelist_bot_Li_W = thelist_bot_Li[0].offsetWidth;
+        document.getElementById("scroller_bot").style.width = thelist_bot_Li_W * thelist_bot_L + 2 + "px";
+
+        indicator_add();
+    }
+
+    function indicator_add() {
+        var indicator_Li = document.getElementById("indicator_03").getElementsByTagName("li");
+        var section_W = document.getElementById("section").offsetWidth;
+        var indicator = document.getElementById("indicator_03");
+        if (indicator_Li.length < wrapper_Li.length) {
+            for (var i = 0; i < wrapper_Li.length; i++) {
+                var indicator_add_Li = document.createElement("li")
+                indicator.appendChild(indicator_add_Li);
+                indicator_Li[0].className = 'active';
+            }
+        }
+        var indicator_W = indicator.offsetWidth;
+        document.getElementById("nav_03").style.marginLeft = (section_W - indicator_W) / 2 + "px";
+    }
+
+    wrapperWidth();
+
+    window.onresize = function () {
+        wrapperWidth();
+    }
+</script>
+<script type="text/javascript">
+    var myScroll;
+    var myScroll_02;
+    function loaded() {
+        myScroll = new iScroll('wrapper_03', {
+            snap: true,
+            momentum: false,
+            hScrollbar: false,
+            onScrollEnd: function () {
+                document.querySelector('#indicator_03 > li.active').className = '';
+                document.querySelector('#indicator_03 > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
+                var data = JSON.parse($("#jsonPage").text())
+                $("#thelist_bot").find("a").text(data[myScroll.currPageX].name)
+            }
+        });
+        myScroll_02 = new iScroll('wrapper_bot', {
+            snap: true,
+            momentum: false,
+            hScrollbar: false
+        });
+    }
+    document.addEventListener('DOMContentLoaded', loaded, false);
+</script>
+

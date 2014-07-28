@@ -93,6 +93,7 @@ module.exports = {
                 helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                     doc = _doc || {}
                     nut.model.allPage = doc
+                    console.log(doc)
                     nut.model.doc = doc.page[nut.model.pageNum-1]
                     nut.model.lookbookType = doc.type
                     nut.model.sumPageNum = doc.page.length
@@ -108,6 +109,26 @@ module.exports = {
                 this.res.end();
             }
         })
+    },
+    viewIn:function(){
+        var active = 0,
+            as = document.getElementById('indicator_03_01').getElementsByTagName('li');
+        for (var i = 0; i < as.length; i++) {
+            (function () {
+                var j = i;
+                as[i].onclick = function () {
+                    t2.slide(j);
+                    return false;
+                }
+            })();
+        }
+        var t2 = new TouchSlider({
+            id: 'slider', speed: 600, timeout: 6000, before: function (index) {
+                as[active].className = '';
+                active = index;
+                as[active].className = 'active';
+            }
+        });
     }
 
 }
