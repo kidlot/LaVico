@@ -250,7 +250,8 @@ module.exports = {
             process: function (seed, nut) {
 
                 nut.disabled = true ;
-
+                //门店信息
+                var storeList;
                 var conditions = search.conditions(seed) || {} ;
 
                 var _data = {};
@@ -263,6 +264,18 @@ module.exports = {
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
 
+                this.step(function(){
+                    /*关注来源数字与门店对应，查询lavico/stores表*/
+                    helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+
+                        if(err) throw err ;
+                        if(doc&&doc[0]&&doc[0].storeList){
+                            storeList = doc[0].storeList;
+                        }else{
+                            storeList = false;
+                        }
+                    }));
+                })
 
                 this.step(function(){
 
@@ -291,9 +304,40 @@ module.exports = {
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
-                                    docs[i].realname = docs[i].realname || '';
-                                    docs[i].city = docs[i].city||'';
-                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '')
+                                    docs[i].realname = docs[i].realname || '未注册用户';
+                                    docs[i].city =  docs[i].city || "";
+                                    docs[i].followCount = docs[i].followCount || '1';
+                                    docs[i].messageCount = docs[i].messageCount||'1';
+                                    docs[i].isRegister = docs[i].registerTime ? "是" : "否"
+                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
+                                    docs[i].birthday = docs[i].birthday ?parseInt(new Date().getFullYear()-new Date(docs[i].birthday).getFullYear()):""
+
+                                    var cardtype = {1:"白卡", 2:"VIP卡", 3:"白金VIP卡"}
+                                    docs[i].cardtype = docs[i].HaiLanMemberInfo ? cardtype[docs[i].HaiLanMemberInfo.type]||"" : "";
+
+                                    docs[i].profession = docs[i].profession || '';
+                                    var tags = [];
+                                    if( docs[i].tags){
+                                        for (var ii=0; ii<docs[i].tags.length; ii++)
+                                        {
+                                            tags.push(docs[i].tags[ii])
+                                        }
+                                    }
+                                    if(docs[i].source&&storeList){
+                                        var _sourceObject = docs[i].source;
+                                        for(var _i in _sourceObject){
+                                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                                        }
+                                        docs[i].source = _sourceObject || '';
+                                    }else{
+                                        docs[i].source=""
+                                    }
+                                    docs[i].tags = tags.join(",")
+                                    docs[i].province = docs[i].province || "";
+                                    docs[i].followTimebak = docs[i].followTime;
+                                    docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
+                                    docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
+                                    docs[i].lastMessageTime = docs[i].lastMessageTime ? new Date(docs[i].lastMessageTime).toISOString().substr(0,10) : "未知"
                                     docs[i].createDate = docs[i].bargain.createDate ? new Date(docs[i].bargain.createDate + 60*60*8*1000).toISOString().substr(0,10) : ""
                                     _rows.push(docs[i])
                                 }
@@ -319,18 +363,45 @@ module.exports = {
                         var conf = {};
                         conf.cols = [
                             {
-                                caption: '日期',
+                                caption: '姓名',
+                                type: 'string'
+                            },{
+                                caption:"省份",
+                                type:"string"
+                            }, {
+                                caption: '城市',
                                 type: 'string'
                             }, {
-                                caption: '姓名',
+                                caption:"会员卡等级",
+                                type:"string"
+                            },{
+                                caption: '关注次数',
+                                type: 'string'
+                            }, {
+                                caption: '消息总数',
                                 type: 'string'
                             }, {
                                 caption: '性别',
                                 type: 'string'
                             }, {
-                                caption: '城市',
+                                caption: '年龄',
+                                type: 'string'
+                            },{
+                                caption:"行业",
+                                type:"string"
+                            },{
+                                caption:"标签",
+                                type:"string"
+                            },{
+                                caption:"关注门店",
+                                type:"string"
+                            }, {
+                                caption: '关注时间',
                                 type: 'string'
                             }, {
+                                caption: '注册时间',
+                                type: 'string'
+                            },  {
                                 caption: '手机号',
                                 type: 'string'
                             }, {
@@ -338,6 +409,9 @@ module.exports = {
                                 type: 'string'
                             }, {
                                 caption: '状态',
+                                type: 'string'
+                            },{
+                                caption: '日期',
                                 type: 'string'
                             }, {
                                 caption: '名称',
@@ -351,13 +425,23 @@ module.exports = {
 
                             var rows;
                             rows = [
-                                _data[i].createDate,
                                 _data[i].realname,
-                                _data[i].gender,
+                                _data[i].province,
                                 _data[i].city,
+                                _data[i].cardtype,
+                                _data[i].followCount,
+                                _data[i].messageCount,
+                                _data[i].gender,
+                                _data[i].birthday,
+                                _data[i].profession,
+                                _data[i].tags || "",
+                                _data[i].source,
+                                _data[i].followTime,
+                                _data[i].registerTime,
                                 _data[i].mobile||"",
                                 _data[i].bargain.stat?_data[i].bargain.price:"",
                                 _data[i].bargain.stat?"成交":"放弃",
+                                _data[i].createDate,
                                 _data[i].bargain.name
                             ]
 
