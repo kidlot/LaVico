@@ -26,15 +26,20 @@
 </div>
 <script>
     function func_remove(id){
-        var oLinkOptions = {} ;
-        oLinkOptions.data = [{name:'id',value:id}];
-        oLinkOptions.type = "POST";
-        oLinkOptions.url = "/lavico/users/userslist:del";
+        if (confirm("真的要删除吗？")){
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'id',value:id}];
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/users/userslist:del";
 
-        $.request(oLinkOptions,function(err,nut){
-            if(err) throw err ;
-            nut.msgqueue.popup() ;
-            $.controller("/lavico/users/userslist",null,"lazy");
-        });
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/lavico/users/userslist",null,"lazy");
+            });
+        }else{
+            return false;
+        }
+
     }
 </script>
