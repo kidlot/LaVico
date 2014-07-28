@@ -8,10 +8,24 @@ module.exports = {
         var userlogs=[];
         var then = this;
 
-
+        var categoryId = seed.categoryId || false;
+        var condition = {};
+        nut.model.categoryName = false;
 
         this.step(function(){
-            helper.db.coll("lavico/bargain").find({},{"orderId":1}).toArray(this.hold(function(err,doc){
+            if(categoryId){
+                condition = {'categoryId':categoryId};
+
+                helper.db.coll("lavico/bargain/categorys").findOne({_id:helper.db.id(categoryId)},this.hold(function(err,doc){
+                    if(err){
+                        throw err;
+                    }else{
+                        nut.model.categoryName = doc.title;
+                        console.log(doc);
+                    }
+                }))
+            }
+            helper.db.coll("lavico/bargain").find(condition,{"orderId":1}).toArray(this.hold(function(err,doc){
                 if(err){
                     throw err;
                 }else{
@@ -45,7 +59,7 @@ module.exports = {
         })
 
         this.step(function(){
-            helper.db.coll("lavico/bargain").find({}).sort({orderId:1}).page(50,seed.page||1,this.hold(function(err,page){
+            helper.db.coll("lavico/bargain").find(condition).sort({orderId:1}).page(50,seed.page||1,this.hold(function(err,page){
                 list = page
                 for (var i=0;i<page.docs.length;i++){
                     if(page.docs[i].switcher == "off"){

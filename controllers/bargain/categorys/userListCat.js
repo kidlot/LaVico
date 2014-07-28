@@ -1,3 +1,6 @@
+/**
+ * Created by David Xu on 7/28/14.
+ */
 var search = require("welab/lib/search.js") ;
 var util = require("welab/controllers/summary/util.js") ;
 
@@ -12,14 +15,14 @@ module.exports = {
         nut.model.startDate = seed.startDate
         nut.model.stopDate = seed.stopDate
         nut.model.unwind = seed.unwind
-        nut.model._id = seed._id
+        nut.model._id = seed._id;//侃价分类ID
     }
     , viewIn : function(){
 
-        console.log("userList")
+        //console.log("userList")
 
         $("#userList").flexigrid({
-            url: '/lavico/bargain/userList:jsonData?unwind='+$(".unwind").val()+'&_id='+$("._id").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
+            url: '/lavico/bargain/categorys/userListCat:jsonData?unwind='+$(".unwind").val()+'&_id='+$("._id").val()+'&startDate='+$(".startDate").val()+"&stopDate="+$(".stopDate").val(),
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
@@ -133,6 +136,7 @@ module.exports = {
 
                 var _data = {};
                 var _rows = [];
+                var _ids = [];//当前分类的所属的侃价列表的ID数组
 
                 var sort = {_id:-1};
                 if(seed.sortname){
@@ -140,7 +144,18 @@ module.exports = {
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
 
-
+                this.step(function(){
+                    if(seed._id){
+                        //侃价分类限制
+                        helper.db.coll("lavico/bargain").find({categoryId:seed._id}).toArray(this.hold(function(err,_doc){
+                            if(_doc&&_doc.length>0){
+                                for(var _i=0;_i<_doc.length;_i++){
+                                    _ids.push(''+_doc[_i]._id);
+                                }
+                            }
+                        }));
+                    }
+                });
                 this.step(function(){
 
                     var arrregateParams = [
@@ -154,11 +169,10 @@ module.exports = {
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
 
-                    if(seed._id){
-                        conditions[seed.unwind+"._id"] = seed._id
-                    }
+
+
                     arrregateParams.push({$match:conditions})
-                    console.log(arrregateParams)
+                    //console.log(arrregateParams)
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
@@ -169,6 +183,12 @@ module.exports = {
 
                         })
                     );
+                    //当前分类的所属的侃价列表的ID数组-筛选-David.xu
+                    if(_ids&&_ids.length>0){
+                        conditions[seed.unwind+"._id"] = {$in:_ids};
+                    }else{
+                        conditions[seed.unwind+"._id"] = 0;
+                    }
 
                     arrregateParams.push({$sort:sort})
                     arrregateParams.push({$skip:((parseInt(seed.page)-1)||0)*(parseInt(seed.rp) || 20)})
@@ -177,7 +197,7 @@ module.exports = {
                         arrregateParams
                         ,this.hold(function(err,docs){
                             if(err) console.log(err) ;
-
+                            console.log(docs);
                             for (var i=0; i<docs.length; i++)
                             {
                                 docs[i].input = '<input type="checkbox" userid="'+docs[i]._id+'" id="'+docs[i]._id+'" onclick="checkUser(this)" >';
@@ -250,8 +270,7 @@ module.exports = {
             process: function (seed, nut) {
 
                 nut.disabled = true ;
-                //门店信息
-                var storeList;
+
                 var conditions = search.conditions(seed) || {} ;
 
                 var _data = {};
@@ -264,18 +283,20 @@ module.exports = {
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
 
-                this.step(function(){
-                    /*关注来源数字与门店对应，查询lavico/stores表*/
-                    helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+                var _ids = [];//当前分类的所属的侃价列表的ID数组
 
-                        if(err) throw err ;
-                        if(doc&&doc[0]&&doc[0].storeList){
-                            storeList = doc[0].storeList;
-                        }else{
-                            storeList = false;
-                        }
-                    }));
-                })
+                this.step(function(){
+                    if(seed._id){
+                        //侃价分类限制
+                        helper.db.coll("lavico/bargain").find({categoryId:seed._id}).toArray(this.hold(function(err,_doc){
+                            if(_doc&&_doc.length>0){
+                                for(var _i=0;_i<_doc.length;_i++){
+                                    _ids.push(''+_doc[_i]._id);
+                                }
+                            }
+                        }));
+                    }
+                });
 
                 this.step(function(){
 
@@ -287,9 +308,13 @@ module.exports = {
                     if(seed.unwind){
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
+                    conditions[seed.unwind+"._id"] = 0;
 
-                    if(seed._id){
-                        conditions[seed.unwind+"._id"] = seed._id
+                    //当前分类的所属的侃价列表的ID数组-筛选
+                    if(_ids&&_ids.length>0){
+                        conditions[seed.unwind+"._id"] = {$in:_ids};
+                    }else{
+                        conditions[seed.unwind+"._id"] = 0;
                     }
 
                     arrregateParams.push({$match:conditions})
@@ -304,40 +329,9 @@ module.exports = {
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
-                                    docs[i].realname = docs[i].realname || '未注册用户';
-                                    docs[i].city =  docs[i].city || "";
-                                    docs[i].followCount = docs[i].followCount || '1';
-                                    docs[i].messageCount = docs[i].messageCount||'1';
-                                    docs[i].isRegister = docs[i].registerTime ? "是" : "否"
-                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
-                                    docs[i].birthday = docs[i].birthday ?parseInt(new Date().getFullYear()-new Date(docs[i].birthday).getFullYear()):""
-
-                                    var cardtype = {1:"白卡", 2:"VIP卡", 3:"白金VIP卡"}
-                                    docs[i].cardtype = docs[i].HaiLanMemberInfo ? cardtype[docs[i].HaiLanMemberInfo.type]||"" : "";
-
-                                    docs[i].profession = docs[i].profession || '';
-                                    var tags = [];
-                                    if( docs[i].tags){
-                                        for (var ii=0; ii<docs[i].tags.length; ii++)
-                                        {
-                                            tags.push(docs[i].tags[ii])
-                                        }
-                                    }
-                                    if(docs[i].source&&storeList){
-                                        var _sourceObject = docs[i].source;
-                                        for(var _i in _sourceObject){
-                                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
-                                        }
-                                        docs[i].source = _sourceObject || '';
-                                    }else{
-                                        docs[i].source=""
-                                    }
-                                    docs[i].tags = tags.join(",")
-                                    docs[i].province = docs[i].province || "";
-                                    docs[i].followTimebak = docs[i].followTime;
-                                    docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
-                                    docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
-                                    docs[i].lastMessageTime = docs[i].lastMessageTime ? new Date(docs[i].lastMessageTime).toISOString().substr(0,10) : "未知"
+                                    docs[i].realname = docs[i].realname || '';
+                                    docs[i].city = docs[i].city||'';
+                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '')
                                     docs[i].createDate = docs[i].bargain.createDate ? new Date(docs[i].bargain.createDate + 60*60*8*1000).toISOString().substr(0,10) : ""
                                     _rows.push(docs[i])
                                 }
@@ -363,45 +357,18 @@ module.exports = {
                         var conf = {};
                         conf.cols = [
                             {
+                                caption: '日期',
+                                type: 'string'
+                            }, {
                                 caption: '姓名',
-                                type: 'string'
-                            },{
-                                caption:"省份",
-                                type:"string"
-                            }, {
-                                caption: '城市',
-                                type: 'string'
-                            }, {
-                                caption:"会员卡等级",
-                                type:"string"
-                            },{
-                                caption: '关注次数',
-                                type: 'string'
-                            }, {
-                                caption: '消息总数',
                                 type: 'string'
                             }, {
                                 caption: '性别',
                                 type: 'string'
                             }, {
-                                caption: '年龄',
-                                type: 'string'
-                            },{
-                                caption:"行业",
-                                type:"string"
-                            },{
-                                caption:"标签",
-                                type:"string"
-                            },{
-                                caption:"关注门店",
-                                type:"string"
-                            }, {
-                                caption: '关注时间',
+                                caption: '城市',
                                 type: 'string'
                             }, {
-                                caption: '注册时间',
-                                type: 'string'
-                            },  {
                                 caption: '手机号',
                                 type: 'string'
                             }, {
@@ -409,9 +376,6 @@ module.exports = {
                                 type: 'string'
                             }, {
                                 caption: '状态',
-                                type: 'string'
-                            },{
-                                caption: '日期',
                                 type: 'string'
                             }, {
                                 caption: '名称',
@@ -425,23 +389,13 @@ module.exports = {
 
                             var rows;
                             rows = [
+                                _data[i].createDate,
                                 _data[i].realname,
-                                _data[i].province,
-                                _data[i].city,
-                                _data[i].cardtype,
-                                _data[i].followCount,
-                                _data[i].messageCount,
                                 _data[i].gender,
-                                _data[i].birthday,
-                                _data[i].profession,
-                                _data[i].tags || "",
-                                _data[i].source,
-                                _data[i].followTime,
-                                _data[i].registerTime,
+                                _data[i].city,
                                 _data[i].mobile||"",
                                 _data[i].bargain.stat?_data[i].bargain.price:"",
                                 _data[i].bargain.stat?"成交":"放弃",
-                                _data[i].createDate,
                                 _data[i].bargain.name
                             ]
 

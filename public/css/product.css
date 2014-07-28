@@ -1,0 +1,157 @@
+﻿@charset "utf-8";
+/*2014.7.25 精英搭配改版*/
+
+/*新品推荐*/
+#section { width:100%; max-width:640px; height:auto; margin:0 auto; position:relative; }
+.templet_02 .new_top { width:100%; height:auto; position:relative; }
+.templet_02 .new_top img { width:100%; }
+.templet_02 .new_top span { width:100%; position:absolute; bottom:20%; left:0px; color:#9b7a55; font-size:1.6rem; text-align:center;  }
+.templet_02 .new_list { width:100%; overflow:hidden; }
+.templet_02 .new_list li img { width:100%; }
+
+/*新品内容*/
+.templet_02 { background:url(../images/product_bg.jpg) no-repeat; background-size:100% 100%; overflow:hidden; }
+.templet_02 .collection { width:8%; height:auto; position:absolute; top:4%; right:4%; z-index:999; }
+.templet_02 .collection img { width:100%; }
+.templet_02 .new_top_logo img{ width:100%; }
+.templet_02 .slide_bottom { width:72%; height:0px; padding:0 14% 30px; background:url(../images/slide_bg.png) repeat; position:fixed; left:0px;bottom:80px; z-index:9999; color:#fff;overflow: visible !important; }
+.templet_02 .slide_top_but { width:60px; height:29px;background:url(../images/slide_top.png) no-repeat; display:block;background-size:contain; position:absolute;top:-29px; left:50%; margin-left:-30px; }
+.templet_02 .slide_bottom h2 { font-size:1.6rem; text-align:center; padding:4% 0 2% 0;  }
+.templet_02 .slide_bottom p { font-size:1.4rem; padding-top:3%; line-height:20px;letter-spacing:1px; border-top:1px solid #6a6a6a;}
+.templet_02 .pr_bottom { width:100%; height:80px; position:fixed; left:0px; bottom:0px; background:#000; z-index:9999; }
+
+#wrapper_02 {
+    width:60%;
+    height:auto;
+    float:left;
+    position:relative;
+    z-index:1;
+    overflow:hidden;
+    margin:0 20%;
+}
+
+#wrapper_bot {
+    width:80%;
+    height:auto;
+    float:left;
+    position:relative;
+    z-index:1;
+    overflow:hidden;
+    margin:0 10%;
+}
+
+#scroller_02,
+#scroller_bot {
+    width:2100px;
+    height:100%;
+    float:left;
+    padding:0;
+}
+
+#scroller_02 ul,
+#scroller_bot ul {
+    list-style:none;
+    display:block;
+    float:left;
+    width:100%;
+    height:100%;
+    padding:0;
+    margin:0;
+    text-align:left;
+}
+
+#scroller_02 li,
+#scroller_bot li {
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -o-box-sizing:border-box;
+    box-sizing:border-box;
+    display:block;
+    float:left;
+    width:auto;
+    height:auto;
+    text-align:center;
+    font-family:georgia;
+    overflow:hidden;
+}
+#scroller_02 li p{
+    font-size:1.6rem;
+    line-height:2em;
+    color:#a9875f;
+    padding-top: 8%;
+}
+
+
+#scroller_bot li {
+    line-height:5em;
+}
+
+#scroller_02 li a,
+#scroller_bot li a {
+    color:#a9875f;
+}
+
+#scroller_02 li img,
+#scroller_bot li img {
+    width:100%;
+}
+
+#nav_02 {
+    width:auto;
+    float:left;
+    padding:4% 0 6%;
+    /*position:absolute; top:20%; left:50%;
+    z-index:999;*/
+}
+
+#prev_02, #next_02 {
+    font-weight:bold;
+    font-size:14px;
+    width:40px;
+    height:80px;
+    position:absolute;
+    text-indent:-9999px;
+}
+
+#prev_02 {
+    left:0px;
+    background:url(../images/macth_pre.png) no-repeat;
+    background-position:16px 24px;
+}
+
+#next_02 {
+    right:0px;
+    background:url(../images/macth_next.png) no-repeat;
+    background-position:10px 24px;
+}
+
+#indicator_02, #indicator_02 > li {
+    display:block; float:left;
+    list-style:none;
+    padding:0; margin:0;
+}
+
+#indicator_02 {
+    width:auto;
+}
+
+#indicator_02 > li {
+    text-indent:-9999em;
+    width:10px;
+    height:10px;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    -o-border-radius:4px;
+    border-radius:4px;
+    background:#808080;
+    overflow:hidden;
+    margin-right:4px;
+}
+
+#indicator_02 > li.active {
+    background:#a9875f;
+}
+
+#indicator_02 > li:last-child {
+    margin:0;
+}

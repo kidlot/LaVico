@@ -124,6 +124,21 @@
                         </td>
                     </tr>
                     <tr>
+                        <th style="font-size: 14px;">分类</th>
+                        <td colspan="2">
+                            <select class="form-control input-sm postData" style="width: 150px;display:inline;" id='categoryId' name="type">
+                                <option value="">请选择所属分类</option>
+                                {@promotionDoc.categoryId}
+                                <foreach for="@catslist" var="cat" key="key">
+                                    <if condition="@cat._id == doc.categoryId">
+                                        <option value="{@ cat._id}" selected="selected">{@cat.title}</option>
+                                        <else/>
+                                        <option value="{@ cat._id}">{@cat.title}</option>
+                                </foreach>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <th style="font-size: 14px;">扣除积分</th>
                         <td colspan="2">
                             <input type="text" id="deductionIntegral" class="form-control input-sm postData" style="width: 150px" value="{@ doc.deductionIntegral}">
@@ -215,25 +230,33 @@
 <link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
 <script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
 <script>
-    var maps = JSON.parse('{@maps}');
+    var str = '{@maps}';
+
+    var maps = {};
+
+    if(str.length>0){
+        maps = JSON.parse('{@maps}');
+    }
 
     //搜索
     function search(){
         var maplist=[];
 
-        $('#maps_there option').each(function () {
+        jQuery('#maps_there option').each(function () {
             var $option = $(this);
             var map={};
             map.text = $option.html();
             map.value = $option.val();
             maplist.push(map)
         });
-        $("#maps").empty();
+        jQuery("#maps").empty();
         var searchValue = $('#searchStore').val();
         var _reg = eval("/"+searchValue+"/")
-        for(var i=0;i<maplist.length;i++){
-            if(maplist[i].text.match(_reg)){
-                $("#maps").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+        if(maplist&&maplist.length){
+            for(var i=0;i<maplist.length;i++){
+                if(maplist[i].text.match(_reg)){
+                    jQuery("#maps").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+                }
             }
         }
     }

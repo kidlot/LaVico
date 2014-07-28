@@ -16,6 +16,10 @@
             desc: '我要侃价',
             btns: [
                 {
+                    title: '分类',
+                    controller: '/lavico/bargain/categorys/Catlist'
+                },
+                {
                     title: '列表',
                     controller: '/lavico/bargain'
                 },

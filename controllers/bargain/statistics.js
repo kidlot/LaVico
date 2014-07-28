@@ -9,7 +9,8 @@ module.exports = {
 
             nut.model._id = seed._id
             var then = this
-            var docs
+            var docs;
+
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
 
@@ -67,7 +68,6 @@ module.exports = {
 
             var dTime = new Date()
             var _ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1)
-
             var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym+"-01 00:00:00").getTime();
             var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
             nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
@@ -112,7 +112,15 @@ module.exports = {
             , {field:'registerTime',title:'注册时间',type:'date'}
             , {field:'followTime',title:'关注时间',type:'date'}
             , {field:'tags',title:'标签',type:'text'}
-        ]);
+            , {field:'nickname',title:'昵称',type:'text'}
+            , {field:'city',title:'城市',type:'text'}
+            , {field:'profession',title:'行业',type:'text'}
+            , {field:'source',title:'关注来源',type:'value'}
+            , {field:'HaiLanMemberInfo.action',title:'绑定',type:'member'}
+            , {field:'HaiLanMemberInfo.type',title:'会员卡',type:'membertype'}
+            , {field:'isFollow',title:'关注',type:'follow'}
+            , {field:'isRegister',title:'注册',type:'register'}
+        ]) ;
 
         $('#startDate').datetimepicker({
             format: 'yyyy-mm-dd',

@@ -1,0 +1,51 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b02"><a href="/lavico/bargain/categorys/Catlist" class="stay">侃价分类列表</a> <em></em></li>
+    <li class="active"><span>分类</span></li>
+    <li class="active"><span>修改</span></li>
+</ul>
+<div name="container" class="panel panel-default formText">
+    <div class="panel-heading clearfix">
+        <a class="btn btn-defalut btn-social-googleplus pull-left stay" href="/lavico/bargain/categorys/Catlist"><i class="fui-arrow-left"></i> 返回</a>
+        <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
+    </div>
+    <div name="addContent" class="panel-body col-md-12">
+        <input type="hidden" value="{@tag._id}" id="titleId">
+        <h6 style="margin-bottom: 20px;">基础设置</h6>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2">分类名称</label>
+            <div class="col-sm-10">
+                <input type="text" name="tagname" id="title" class="form-control input-sm" value="{@tag.title}" style="width: 350px"/>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function save(){
+        var _inputCheck = true;
+        var title = $("#title").val();
+        var titleId = $("#titleId").val();
+        console.log(title);
+        console.log(titleId);
+        if(!title){
+            _inputCheck = false;
+            $.globalMessenger().post({
+                message: "请填写分类名称！",
+                type: 'error',
+                showCloseButton: true})
+
+        }
+        if(_inputCheck){
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'title',value:title},{name:'id',value:titleId}];
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/bargain/categorys/updateCat:update";
+
+            $.request(oLinkOptions,function(err,nut){
+                //if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/lavico/bargain/categorys/Catlist",null,"lazy");
+            });
+        }
+    }
+</script>

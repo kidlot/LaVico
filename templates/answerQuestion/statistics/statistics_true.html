@@ -103,13 +103,17 @@
         </table>
         </div>
         <if condition="{@themetype==1}">
+            <div style="display: none">
+                <view name="score"/>
+            </div>
             <view name="lab"/>
             <else/>
             <div style="display: none">
                 <view name="lab"/>
             </div>
+            <view name="score"/>
         </if>
-        <view name="score"/>
+
 
 
         <div name="getTheme" class="maginTop20">

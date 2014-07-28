@@ -1,0 +1,274 @@
+<link rel="stylesheet" href="/lavico/public/css/product.css" />
+<if condition="@ !isFollow">
+    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
+</if>
+<input type="hidden" id="pageNum" value={@pageNum}>
+<input type="hidden" id="productId" value={@productId}>
+<div style="display: none" id="jsonPage">{@jsonDoc}</div>
+<script src="/lavico/public/js/iscroll.js"></script>
+<section id="section" class="templet_02">
+    <div class="new_top_logo">
+        <img src="/lavico/public/images/new_top_logo.png" alt="" />
+    </div>
+    <div class="collection">
+        <a href="javascript:;" onclick="favorites('{@ wxid}')">
+            <img src="/lavico/public/images/collection.png" alt="" />
+        </a>
+    </div>
+    <div id="nav_02">
+        <ul id="indicator_02">
+        </ul>
+    </div>
+    <div id="wrapper_02">
+        <div id="scroller_02">
+            <ul id="thelist_02">
+                <foreach for="@doc" var="item">
+                    <li><a href="#"><img src="{@ item.pic}" alt="" /></a><p>{@ item.name}</p></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <div class="slide_bottom">
+        <a href="#" class="slide_top_but" id="slide_top_but"></a>
+        <div class="show_lookbook" style="display: none">
+            <h2>粉色抗皱衬衫</h2>
+            <p>LaVico代表产品抗皱衬衫，独特的抗皱性能，保持一整天的平整舒适，是婚庆与商务办公首选。粉色系衬衫和同色系领带，代表喜庆优雅，是搭配婚庆装的点睛之选。</p>
+        </div>
+        <div class="hide_lookbook"><h2>点击查看详情</h2></div>
+    </div>
+    <div class="pr_bottom">
+        <div id="wrapper_bot">
+            <div id="scroller_bot">
+                <ul id="thelist_bot">
+                    <li><a href="#">妹纸</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="nav_bot">
+            <div id="prev_02" onclick="leftPage();return false">&larr; prev</div>
+            <div id="next_02" onclick="rightPage();return false">next &rarr;</div>
+        </div>
+    </div>
+
+    <div class="fade2">
+        <div class="second-price">
+            <p class="msg">
+                <span class="mt70 fad2Tit">收藏成功</span>
+            </p>
+            <p class="confirm">
+                <input type="submit" class="goon_btn" border="0" value="继续浏览" onclick="$('.fade2').hide()">
+            </p>
+            <p class="msg mt70">或</p>
+            <p class="confirm">
+                <input class="gocollection" type="submit" border="0" value="转至收藏夹" onclick="location.href='/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}&cb='+encodeURIComponent('{'+location.href+'}')"></p>
+        </div>
+    </div>
+
+
+
+    <script>
+        var myScroll;
+        function loaded() {
+
+            var data = JSON.parse($("#jsonPage").text())
+
+            $("#thelist_bot").find("a").text(data[0].name)
+
+            $(".show_lookbook").find("h2").text(data[0].name)
+            $(".show_lookbook").find("p").html(data[0].detail.replace(/\n/ig,"</br>"))
+
+            myScroll = new iScroll('wrapper_02', {
+                snap: true,
+                momentum: false,
+                hScrollbar: false,
+                onScrollEnd: function () {
+                    document.querySelector('#indicator_02 > li.active').className = '';
+                    document.querySelector('#indicator_02 > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
+
+                    var data = JSON.parse($("#jsonPage").text())
+                    $("#thelist_bot").find("a").text(data[myScroll.currPageX].name)
+
+                    $(".show_lookbook").find("h2").text(data[myScroll.currPageX].name)
+                    $(".show_lookbook").find("p").html(data[myScroll.currPageX].detail.replace(/\n/ig,"</br>"))
+                }
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', loaded, false);
+
+        function wrapWin() {
+            var wrapMain = document.getElementById("wrapper_02");
+            var MainWin = wrapMain.offsetWidth;
+            listLi = document.getElementById("thelist_02").getElementsByTagName("li");
+            indicator = document.getElementById("indicator_02");
+            <!--var article = document.getElementById("article").offsetHeight;-->
+            var theLength = document.getElementById("thelist_02").getElementsByTagName("li").length;
+
+            for (var i = 0; i < listLi.length; i++) {
+                listLi[i].style.width = MainWin + "px";
+            }
+
+            document.getElementById("scroller_02").style.width = MainWin * theLength + "px";
+
+            <!--indicator.style.top = article + 10 + "px";-->
+        }
+
+        function indicatorAct() {
+            var indicatorTwo = document.getElementById("indicator_02").getElementsByTagName("li");
+            for (var i = 0; i < listLi.length; i++) {
+                var indicatorLi = document.createElement("li")
+                indicator.appendChild(indicatorLi);
+                indicatorTwo[0].className = 'active';
+            }
+
+            var indicatorW = document.getElementById("indicator_02").offsetWidth;
+            indicator.style.marginLeft = -indicatorW / 2 + "px";
+
+        }
+
+        wrapWin();
+        indicatorAct();
+
+        window.onresize = function () {
+            wrapWin();
+        }
+    </script>
+
+    <script>
+        function leftPage(){
+
+            if(myScroll.currPageX == 0){
+                window.popupStyle2.on('已经是第一页',function(event){
+
+                })
+            }else{
+                myScroll.scrollToPage('prev', 0)
+            }
+        }
+
+        function rightPage(){
+
+            if($("#thelist_02>li").length == (myScroll.currPageX+1)){
+                window.popupStyle2.on('已经是最后一页',function(event){
+
+                })
+            }else{
+                myScroll.scrollToPage('next', 0)
+            }
+        }
+
+        function favorites(wxid){
+
+            var isvip = '{@isVip}'
+            if(isvip == "false"){
+
+                window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
+
+                    if(event == "confirm"){
+                        location.href="/lavico/member/card_blank/register?wxid={@ wxid}"
+                    }
+                })
+
+                return false;
+            }
+
+            var data = JSON.parse($("#jsonPage").text())
+            var pid = data[myScroll.currPageX]._id;
+            $.ajax({
+                url:'/lavico/lookbook/favorites:save',
+                type:'POST',
+                data:{
+                    'wxid':wxid,
+                    'pid':pid,
+                    'memberID':'{@ memberID}'
+                },
+                success:function(data){
+
+                    $(".fade2").find(".fad2Tit").text(data.msg)
+                    $(".fade2").show()
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        }
+        window.showShareButtion.on();
+    </script>
+</section>
+<script>
+    var wrapper = document.getElementById("wrapper_02");
+    var wrapper_Li = document.getElementById("thelist_02").getElementsByTagName("li");
+    var wrapper_L = document.getElementById("thelist_02").getElementsByTagName("li").length;
+
+    var wrapper_bot = document.getElementById("wrapper_bot");
+    var thelist_bot_Li = document.getElementById("thelist_bot").getElementsByTagName("li");
+    var thelist_bot_L = document.getElementById("thelist_bot").getElementsByTagName("li").length;
+    function wrapperWidth() {
+        //头部产品图片
+        wrapper_W = wrapper.offsetWidth;
+        for (var i = 0; i < wrapper_Li.length; i++) {
+            wrapper_Li[i].style.width = wrapper_W + "px";
+        }
+        document.getElementById("scroller_02").style.width = wrapper_W * wrapper_L + "px";
+
+        //底部产品系列标题
+        wrapper_bot_W = wrapper_bot.offsetWidth;
+        for (var i = 0; i < thelist_bot_Li.length; i++) {
+            thelist_bot_Li[i].style.width = wrapper_bot_W + "px";
+        }
+        thelist_bot_Li_W = thelist_bot_Li[0].offsetWidth;
+        document.getElementById("scroller_bot").style.width = thelist_bot_Li_W * thelist_bot_L + 2 + "px";
+
+        indicator_add();
+    }
+
+    function indicator_add() {
+        var indicator_Li = document.getElementById("indicator_02").getElementsByTagName("li");
+        var section_W = document.getElementById("section").offsetWidth;
+        var indicator = document.getElementById("indicator_02");
+        if (indicator_Li.length < wrapper_Li.length) {
+            for (var i = 0; i < wrapper_Li.length; i++) {
+                var indicator_add_Li = document.createElement("li")
+                indicator.appendChild(indicator_add_Li);
+                indicator_Li[0].className = 'active';
+            }
+        }
+        var indicator_W = indicator.offsetWidth;
+        document.getElementById("nav_02").style.marginLeft = (section_W - indicator_W) / 2 + "px";
+    }
+
+    wrapperWidth();
+
+    window.onresize = function () {
+        wrapperWidth();
+    }
+
+
+</script>
+<script type="text/javascript">
+    var myScroll;
+    var myScroll_02;
+    function loaded() {
+        myScroll = new iScroll('wrapper_02', {
+            snap: true,
+            momentum: false,
+            hScrollbar: false,
+            onScrollEnd: function () {
+                document.querySelector('#indicator_02 > li.active').className = '';
+                document.querySelector('#indicator_02 > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
+                var data = JSON.parse($("#jsonPage").text())
+                $("#thelist_bot").find("a").text(data[myScroll.currPageX].name)
+
+                $(".show_lookbook").find("h2").text(data[myScroll.currPageX].name)
+                $(".show_lookbook").find("p").html(data[myScroll.currPageX].detail.replace(/\n/ig,"</br>"))
+            }
+        });
+        myScroll_02 = new iScroll('wrapper_bot', {
+            snap: true,
+            momentum: false,
+            hScrollbar: false
+        });
+    }
+    document.addEventListener('DOMContentLoaded', loaded, false);
+</script>

@@ -21,7 +21,17 @@ module.exports = {
                 }
                 doc = _doc || {}
             }))
-        }
+        };
+        var catslist = [];
+        helper.db.coll("lavico/bargain/categorys").find({}).sort({createTime:-1}).toArray(this.hold(function(err,docs){
+            if(err) throw  err;
+            if(docs){
+                catslist = docs || {};
+                nut.model.catslist = catslist;
+                console.log(catslist);
+            }
+        }));
+
         this.step(function(){
             //shops
             middleware.request( "Shops",
@@ -117,6 +127,7 @@ module.exports = {
                 maplist.push($option.val())
             });
             aFormInput['maps'] = maplist;
+
             aFormInput['pic'] = $("#showPic").attr("src")
             aFormInput['pic_big'] = getBigPicList()
 
@@ -146,6 +157,9 @@ module.exports = {
             }
 
             /*David.xu添加最高价格at2014-06-19*/
+            aFormInput['categoryId'] = $("#categoryId").val();
+            //alert($("#categoryId").val());
+            console.log(aFormInput);
 
             if(_inputCheck){
                 var oLinkOptions = {} ;
@@ -170,13 +184,16 @@ module.exports = {
                 map.value = $option.val();
                 maplist.push(map);
             });
-            for(var i=0;i<maplist.length;i++){
-                for(var j=0;j<maps.length;j++){
-                    if($.trim(maplist[i].value) == $.trim(maps[j])){
-                        $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+            if(maplist&&maplist.length>0&&maps&&maps.length>0){
+                for(var i=0;i<maplist.length;i++){
+                    for(var j=0;j<maps.length;j++){
+                        if($.trim(maplist[i].value) == $.trim(maps[j])){
+                            $("#maps_two").append("<OPTION VALUE="+maplist[i].value+">"+maplist[i].text+"</OPTION>");
+                        }
                     }
                 }
             }
+
         }
         window.load();
 

@@ -24,37 +24,37 @@
 </if>
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="sumPageNum" value={@sumPageNum}>
-<if condition="@lookbookType == '整图型'">
-    <div class="wrapper" id="wrapper">
-        <div class="store-title">
-            <p class="title6">精英搭配</p>
-        </div>
-        <div class="match">
-            <div class="banner"><img src="{@doc.pic||'/lavico/public/images/elite_home_top.gif'}"></div>
-            <div class="roll-banner">
-                <div class="viewport" id="viewport">
-                    <div class="flipsnap" id="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">
-                        <foreach for="@doc.product" var="doc2">
-                            <div class="item">
-                                <span class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true" onclick="check()"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></span>
-                            </div>
-                        </foreach>
-                    </div>
-                </div>
-            </div>
-            <div class="intro-text" id="exchangebtn">
-                <div class="text"><a href="javascript:;" class="elite_intro">{@doc.detail}</a></div>
-                <div class="arrow">
-                    <div class="arrow-left" onclick="leftPage()"></div>
-                    <a href="javascript:;" onclick="rightPage()"><div class="arrow-right"></div></a>
-                </div>
-                <div class="number">
-                    <p><span class="f25">{@pageNum}</span><span class="f22">/{@ sumPageNum}</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</if>
+<!--<if condition="@lookbookType == '整图型'">-->
+    <!--<div class="wrapper" id="wrapper">-->
+        <!--<div class="store-title">-->
+            <!--<p class="title6">精英搭配</p>-->
+        <!--</div>-->
+        <!--<div class="match">-->
+            <!--<div class="banner"><img src="{@doc.pic||'/lavico/public/images/elite_home_top.gif'}"></div>-->
+            <!--<div class="roll-banner">-->
+                <!--<div class="viewport" id="viewport">-->
+                    <!--<div class="flipsnap" id="flipsnap" style="transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px);">-->
+                        <!--<foreach for="@doc.product" var="doc2">-->
+                            <!--<div class="item">-->
+                                <!--<span class="img fl"><a href="/lavico/lookbook/product?_id={@ _id}&wxid={@ wxid}&pageNum={@pageNum}&productId={@doc2._id}&onlyProduct=true" onclick="check()"><img src="{@ doc2.pic||'/lavico/public/images/elite_home_list_1.png'}"></a></span>-->
+                            <!--</div>-->
+                        <!--</foreach>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="intro-text" id="exchangebtn">-->
+                <!--<div class="text"><a href="javascript:;" class="elite_intro">{@doc.detail}</a></div>-->
+                <!--<div class="arrow">-->
+                    <!--<div class="arrow-left" onclick="leftPage()"></div>-->
+                    <!--<a href="javascript:;" onclick="rightPage()"><div class="arrow-right"></div></a>-->
+                <!--</div>-->
+                <!--<div class="number">-->
+                    <!--<p><span class="f25">{@pageNum}</span><span class="f22">/{@ sumPageNum}</span></p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</if>-->
 
 <if condition="@lookbookType == '列表型'">
     <div data-role="page" data-url="/Users/gao/Downloads/lavico/elite_num2.html" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 513px;">
@@ -133,6 +133,26 @@
                 }              
             }
         </script>
+    </section>
+</if>
+
+<if condition="@lookbookType == '整图型'">
+    <link rel="stylesheet" href="/lavico/public/css/product.css" />
+    <section id="section" class="templet_02">
+        <div class="new_top">
+            <img src="/lavico/public/images/new_top.jpg" alt="" />
+            <span class="">朗维高2014春夏新品推荐</span>
+        </div>
+        <ul class="new_list">
+            <foreach for="@allPage.page" var="item" key="key">
+                <li>
+                    <a href="/lavico/lookbook/productTwo?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@item.product[0]._id}"  onclick="check()">
+                        <span class="elite_img"><img src="{@item.pic||'/lavico/public/images/elite_home_top.gif'}" /></span>
+                        <!--<span class="elite_details">{@item.name}</span>-->
+                    </a>
+                </li>
+            </foreach>
+        </ul>
     </section>
 </if>
 <script src="/lavico/public/js/waterfall.js"></script>
