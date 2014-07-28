@@ -7,13 +7,22 @@
     <li class="b02"><a href="/lavico/bargain/form" class="stay">添加侃价</a> <em></em></li>
     <li class="active"><span>列表管理</span></li>
 </ul>
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div name="container" class="panel panel-default formText">
 
-        <div style="width: 300px;">
-            <a href="/lavico/bargain/form" class="btn btn-xs btn-primary mhm">增加</a>
-        </div>
+    <div class="panel-heading clearfix">
+        <a class="btn btn-defalut btn-social-googleplus pull-left stay" href="#">
+            <if condition="@categoryName!=false">
+                {@categoryName}侃价分类
+                <else/>
+                所有侃价
+            </if>
+        </a>
+        <a class="btn btn-defalut btn-social-googleplus pull-left stay" href="/lavico/bargain/categorys/Catlist" style="margin-left: 5px;">
+               按侃价分类选择
+        </a>
+        <a class="btn btn-success btn-social-googleplus pull-right save" href="/lavico/bargain/form" ><i class="fui-check-inverted"></i> 增加</a>
     </div>
+
     <div class="panel-body">
 
         <table class="table" id="tagList">

@@ -38,22 +38,6 @@ module.exports = {
                     this.step(function(){
                         for(var i=0;i<data.length; i++){
                             data[i].createTime = createTime(data[i].createTime);
-                            var num = 0;//完成人数
-                            var count = 0;//参加人数
-                            // 添加侃价分类统计
-//                            (function(then,data,i){
-//                                var condition = {'categoryId':data[i]._id};
-//                                helper.db.coll("lavico/bargain").find(condition,{"orderId":1}).toArray(then.hold(function(err,doc){
-//                                    if(err){
-//                                        throw err;
-//                                    }else{
-//                                        var bargain = doc;
-//                                        data[i].bargain = bargain;
-//                                    }
-//                                }))
-//                            })(this,data,i);
-
-                            // 添加侃价分类统计
                         }
 
                     });
