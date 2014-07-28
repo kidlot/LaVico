@@ -316,6 +316,7 @@ module.exports = {
                                         docs[i].source=""
                                     }
                                     docs[i].tags = tags.join(",")
+                                    docs[i].province = docs[i].province || '';
                                     docs[i].followTimebak = docs[i].followTime;
                                     docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
                                     docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
@@ -338,6 +339,9 @@ module.exports = {
                             {
                                 caption: '姓名',
                                 type: 'string'
+                            },{
+                                caption:"省份",
+                                type:"string"
                             }, {
                                 caption: '城市',
                                 type: 'string'
@@ -390,6 +394,7 @@ module.exports = {
                             var rows;
                             rows = [
                                 _data[i].realname,
+                                _data[i].province,
                                 _data[i].city,
                                 _data[i].cardtype,
                                 _data[i].followCount,

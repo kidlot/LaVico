@@ -250,7 +250,8 @@ module.exports = {
             process: function (seed, nut) {
 
                 nut.disabled = true ;
-
+                //门店信息
+                var storeList;
                 var conditions = search.conditions(seed) || {} ;
 
                 var _data = {};
@@ -263,6 +264,18 @@ module.exports = {
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
 
+                this.step(function(){
+                    /*关注来源数字与门店对应，查询lavico/stores表*/
+                    helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+
+                        if(err) throw err ;
+                        if(doc&&doc[0]&&doc[0].storeList){
+                            storeList = doc[0].storeList;
+                        }else{
+                            storeList = false;
+                        }
+                    }));
+                })
 
                 this.step(function(){
 
@@ -320,6 +333,7 @@ module.exports = {
                                         docs[i].source=""
                                     }
                                     docs[i].tags = tags.join(",")
+                                    docs[i].province = docs[i].province || "";
                                     docs[i].followTimebak = docs[i].followTime;
                                     docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
                                     docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
@@ -351,6 +365,9 @@ module.exports = {
                             {
                                 caption: '姓名',
                                 type: 'string'
+                            },{
+                                caption:"省份",
+                                type:"string"
                             }, {
                                 caption: '城市',
                                 type: 'string'
@@ -409,6 +426,7 @@ module.exports = {
                             var rows;
                             rows = [
                                 _data[i].realname,
+                                _data[i].province,
                                 _data[i].city,
                                 _data[i].cardtype,
                                 _data[i].followCount,
