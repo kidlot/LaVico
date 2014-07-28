@@ -1,0 +1,83 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/lavico/bargain/index" >我要侃价</a></li>
+    <li class="b03"><a href="#" class="stay">侃价分类统计</a></li>
+    <li class="pull-right"><a href="javascript:history.go(-1);"><i class="fui-arrow-left"></i>返回</a></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+
+        <div class="btn-group" style="float: left; margin-top: 6px">
+            <a href="javascript:history.go(-1);"><i class="fui-arrow-left"></i>返回</a>
+        </div>
+        <div class="btn-group" style="float: left; margin-left: 15px">
+            <h6 style="margin-top: 2px; color: #1ABC9C">{@ categoryName}侃价分类统计</h6>
+            <input type="hidden" id="_id" value="{@ _id}">
+        </div>
+        <div style="float: right;">
+            <div style="float: right; width: 306px;">
+                <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
+                <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
+                <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="searchCat()">
+                <script>
+                    function searchCat(){
+                        window.location.href = "/lavico/"+$(".unwind").val()+"/categorys/statisticsCat?_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th>侃价分类名称</th>
+                <th style="width: 100px">参与人数</th>
+                <th style="width: 100px">成交人数</th>
+                <th style="width: 100px">最低成交价</th>
+                <th style="width: 100px">最高成交价</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{@ categoryName}</td>
+                <td>{@ pv}</td>
+                <td>{@ uv}</td>
+                <td>{@ min}</td>
+                <td>{@ max}</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+        <include file="lavico/templates/searchForm.html" />
+        <div class="panel-body" style="padding: 0px">
+            <div class="childview">
+                <View name="userList" />
+            </div>
+        </div>
+
+    </div>
+</div>
+<input type="hidden" value="{@jsonData}" id="jsondata">
+
+<link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
+<script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
+
+<script src="/lavico/public/js/searchbox.js"></script>
+<link href="/welab/public/css/searchbox.css" rel="stylesheet">
+
+<script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">

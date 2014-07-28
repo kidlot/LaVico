@@ -9,7 +9,8 @@ module.exports = {
 
             nut.model._id = seed._id
             var then = this
-            var docs
+            var docs;
+
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
 
@@ -67,7 +68,6 @@ module.exports = {
 
             var dTime = new Date()
             var _ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1)
-
             var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym+"-01 00:00:00").getTime();
             var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
             nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)

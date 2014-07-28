@@ -2,22 +2,22 @@
     <table class="table table-hover" id="tagList">
         <thead>
         <tr class="staCount borderBtm">
-            <th>分类名称</th>
-            <th>创建时间</th>
-
-            <th>操作</th>
+            <th style="text-align: center;">分类名称</th>
+            <th style="text-align: center;">创建时间</th>
+            <th style="text-align: center;">操作</th>
         </tr>
         </thead>
         <tbody>
         <foreach for="@data" var="doc" key="key">
             <tr class="borderBtm">
-                <td>{@doc.createTime}</td>
-                <td><a href="/lavico/bargain/categorys/updateCat?_id={@doc._id}">{@doc.title}</a></td>
+                <td style="text-align: center;">{@doc.createTime}</td>
+                <td style="text-align: center;"><a href="/lavico/bargain/categorys/updateCat?_id={@doc._id}">{@doc.title}</a></td>
 
-                <td>
+                <td style="text-align: center;">
                     <a href="/lavico/bargain/categorys/updateCat?_id={@doc._id}" class="btn btn-xs btn-primary mhm">修改</a>
                     <a href="javascript:;" onclick="func_remove('{@ doc._id}')" class="btn btn-xs mhm">删除</a>
                     <a href="/lavico/bargain/index?categoryId={@doc._id}" class="btn btn-xs btn-primary mhm">管理侃价</a>
+                    <a href="/lavico/bargain/categorys/statisticsCat?_id={@doc._id}" class="btn btn-xs btn-primary mhm">统计</a>
                 </td>
             </tr>
         </foreach>

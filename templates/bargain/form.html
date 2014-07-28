@@ -13,7 +13,7 @@
 
 <div class="panel panel-default formText">
     <div class="panel-heading clearfix">
-        <a class="btn btn-defalut btn-social-googleplus pull-left stay" href="/lavico/bargain/index"><i class="fui-arrow-left"></i> 返回侃价列表</a>
+        <a class="btn btn-defalut btn-social-googleplus pull-left stay" href="/lavico/bargain/index"><i class="fui-arrow-left"></i> 返回首页</a>
         <a class="btn btn-success btn-social-googleplus pull-right save" href="javascript:;" onclick="save()"><i class="fui-check-inverted"></i> 保存</a>
     </div>
 
@@ -230,7 +230,13 @@
 <link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
 <script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
 <script>
+    var str = '{@maps}';
 
+    var maps = {};
+
+    if(str.length>0){
+        maps = JSON.parse('{@maps}');
+    }
 
     //搜索
     function search(){
