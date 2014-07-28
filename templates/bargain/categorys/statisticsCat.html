@@ -10,18 +10,18 @@
     <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
     <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
     <li class="b03"><a href="/lavico/bargain/index" >我要侃价</a></li>
-    <li class="b03"><a href="#" class="stay">统计</a></li>
-    <li class="pull-right"><a href="/lavico/bargain/index"><i class="fui-arrow-left"></i>返回</a></li>
+    <li class="b03"><a href="#" class="stay">侃价分类统计</a></li>
+    <li class="pull-right"><a href="javascript:history.go(-1);"><i class="fui-arrow-left"></i>返回</a></li>
 </ul>
 
 <div class="panel panel-default">
     <div class="panel-heading" style="height: 50px">
 
         <div class="btn-group" style="float: left; margin-top: 6px">
-            <a href="/lavico/bargain/index"><i class="fui-arrow-left"></i>返回</a>
+            <a href="javascript:history.go(-1);"><i class="fui-arrow-left"></i>返回</a>
         </div>
         <div class="btn-group" style="float: left; margin-left: 15px">
-            <h6 style="margin-top: 2px; color: #1ABC9C">{@ _id}</h6>
+            <h6 style="margin-top: 2px; color: #1ABC9C">{@ categoryName}侃价分类统计</h6>
             <input type="hidden" id="_id" value="{@ _id}">
         </div>
         <div style="float: right;">
@@ -37,7 +37,7 @@
         <table class="table" id="tagList">
             <thead>
             <tr>
-                <th>名称</th>
+                <th>侃价分类名称</th>
                 <th style="width: 100px">参与人数</th>
                 <th style="width: 100px">成交人数</th>
                 <th style="width: 100px">最低成交价</th>
@@ -45,13 +45,13 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>{@ doc.name}</td>
-                    <td>{@ doc.pv}</td>
-                    <td>{@ doc.uv}</td>
-                    <td>{@ doc.min}</td>
-                    <td>{@ doc.max}</td>
-                </tr>
+            <tr>
+                <td>{@ categoryName}</td>
+                <td>{@ pv}</td>
+                <td>{@ uv}</td>
+                <td>{@ min}</td>
+                <td>{@ max}</td>
+            </tr>
             </tbody>
         </table>
 
@@ -66,8 +66,6 @@
 
     </div>
 </div>
-
-<input type="hidden" value="{@jsonData}" id="jsondata">
 
 <link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
 <script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>

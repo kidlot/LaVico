@@ -9,7 +9,8 @@ module.exports = {
 
             nut.model._id = seed._id
             var then = this
-            var docs
+            var docs;
+
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
 
