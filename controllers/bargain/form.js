@@ -21,7 +21,17 @@ module.exports = {
                 }
                 doc = _doc || {}
             }))
-        }
+        };
+        var catslist = [];
+        helper.db.coll("lavico/bargain/categorys").find({}).sort({createTime:-1}).toArray(this.hold(function(err,docs){
+            if(err) throw  err;
+            if(docs){
+                catslist = docs || {};
+                nut.model.catslist = catslist;
+                console.log(catslist);
+            }
+        }));
+
         this.step(function(){
             //shops
             middleware.request( "Shops",
@@ -117,6 +127,7 @@ module.exports = {
                 maplist.push($option.val())
             });
             aFormInput['maps'] = maplist;
+
             aFormInput['pic'] = $("#showPic").attr("src")
             aFormInput['pic_big'] = getBigPicList()
 
@@ -146,6 +157,9 @@ module.exports = {
             }
 
             /*David.xu添加最高价格at2014-06-19*/
+            aFormInput['categoryId'] = $("#categoryId").val();
+            //alert($("#categoryId").val());
+            console.log(aFormInput);
 
             if(_inputCheck){
                 var oLinkOptions = {} ;

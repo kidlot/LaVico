@@ -153,14 +153,14 @@ exports.onload = function(application){
             path: '/lavico/member/card_member/info:updateUserInfo',
             method: 'GET'
         };
-        req = http.request(options, function(res) {
-            res.setEncoding('utf8');
-            var body='';
-            res.on('data', function(data) {
-                body +=data;
-                console.log(data);
-            });
-        });
+//        req = http.request(options, function(res) {
+//            res.setEncoding('utf8');
+//            var body='';
+//            res.on('data', function(data) {
+//                body +=data;
+//                console.log(data);
+//            });
+//        });
         //req.write(post_data);
         console.log(req.end());
     },_time);
