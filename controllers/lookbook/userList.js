@@ -85,6 +85,49 @@ module.exports = {
 
 
                 var conditions = search.conditions(seed) || {} ;
+                if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
+                    conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
+                    conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+                }
+
+                if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
+                    conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
+                    conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
+                }
+                //年龄 任意
+                if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday){
+                    if(conditions.$or[0].birthday.$gt){
+                        conditions.$or[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$or[0].birthday.$lt){
+                        conditions.$or[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                    }else if(conditions.$or[0].birthday.$lte){
+                        conditions.$or[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$or[0].birthday.$gte){
+                        conditions.$or[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                    }else{
+                        var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-01-01 00:00:00").getTime();
+                        var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[0].birthday)))+"-12-31 23:59:59").getTime();
+                        var investigation  = {$gte:gt,$lte:lt};
+                        conditions.$or[0].birthday=investigation;
+                    }
+                }
+                //年龄 全部
+                if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday){
+                    if(conditions.$and[0].birthday.$gt){
+                        conditions.$and[0].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$and[0].birthday.$lt){
+                        conditions.$and[0].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                    }else if(conditions.$and[0].birthday.$lte){
+                        conditions.$and[0].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$and[0].birthday.$gte){
+                        conditions.$and[0].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                    }else{
+                        var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-01-01 00:00:00").getTime();
+                        var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-12-31 23:59:59").getTime();
+                        var investigation  = {$gte:gt,$lte:lt};
+                        conditions.$and[0].birthday = investigation;
+                    }
+                }
 
                 var _data = {};
                 var _rows = [];
@@ -203,6 +246,8 @@ module.exports = {
 
             process: function (seed, nut) {
 
+                //门店信息
+                var storeList;
                 nut.disabled = true ;
 
                 var conditions = search.conditions(seed) || {} ;
@@ -216,7 +261,18 @@ module.exports = {
                     var order = seed.sortorder == "asc" ? 1 : -1;
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
+                this.step(function(){
+                    /*关注来源数字与门店对应，查询lavico/stores表*/
+                    helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
+                        if(err) throw err ;
+                        if(doc&&doc[0]&&doc[0].storeList){
+                            storeList = doc[0].storeList;
+                        }else{
+                            storeList = false;
+                        }
+                    }));
+                })
 
                 this.step(function(){
 
@@ -245,9 +301,40 @@ module.exports = {
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
+                                    docs[i].followCount = docs[i].followCount || '1';
+                                    docs[i].messageCount = docs[i].messageCount||'1';
+                                    docs[i].isRegister = docs[i].registerTime ? "是" : "否"
+                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '未知')
+                                    docs[i].birthday = docs[i].birthday ?parseInt(new Date().getFullYear()-new Date(docs[i].birthday).getFullYear()):""
+
+                                    var cardtype = {1:"白卡", 2:"VIP卡", 3:"白金VIP卡"}
+                                    docs[i].cardtype = docs[i].HaiLanMemberInfo ? cardtype[docs[i].HaiLanMemberInfo.type]||"" : "";
+
+                                    docs[i].profession = docs[i].profession || '';
+                                    var tags = [];
+                                    if( docs[i].tags){
+                                        for (var ii=0; ii<docs[i].tags.length; ii++)
+                                        {
+                                            tags.push(docs[i].tags[ii])
+                                        }
+                                    }
+                                    if(docs[i].source&&storeList){
+                                        var _sourceObject = docs[i].source;
+                                        for(var _i in _sourceObject){
+                                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                                        }
+                                        docs[i].source = _sourceObject || '';
+                                    }else{
+                                        docs[i].source=""
+                                    }
+                                    docs[i].tags = tags.join(",")
+                                    docs[i].followTimebak = docs[i].followTime;
+                                    docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
+                                    docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
+                                    docs[i].lastMessageTime = docs[i].lastMessageTime ? new Date(docs[i].lastMessageTime).toISOString().substr(0,10) : "未知"
+
                                     docs[i].realname = docs[i].realname || '';
                                     docs[i].city = docs[i].city||'';
-                                    docs[i].gender = docs[i].gender == 'female'?"女": (docs[i].gender == 'male' ? "男" : '')
                                     docs[i].createDate = docs[i].lookbook.createDate ? new Date(docs[i].lookbook.createDate + 60*60*8*1000).toISOString().substr(0,10) : ""
                                     _rows.push(docs[i])
                                 }
@@ -273,19 +360,46 @@ module.exports = {
                         var conf = {};
                         conf.cols = [
                             {
-                                caption: '收藏时间',
-                                type: 'string'
-                            }, {
                                 caption: '姓名',
-                                type: 'string'
-                            }, {
-                                caption: '性别',
                                 type: 'string'
                             }, {
                                 caption: '城市',
                                 type: 'string'
                             }, {
+                                caption:"会员卡等级",
+                                type:"string"
+                            },{
+                                caption: '关注次数',
+                                type: 'string'
+                            }, {
+                                caption: '消息总数',
+                                type: 'string'
+                            }, {
+                                caption: '性别',
+                                type: 'string'
+                            }, {
+                                caption: '年龄',
+                                type: 'string'
+                            },{
+                                caption:"行业",
+                                type:"string"
+                            },{
+                                caption:"标签",
+                                type:"string"
+                            },{
+                                caption:"关注门店",
+                                type:"string"
+                            }, {
+                                caption: '关注时间',
+                                type: 'string'
+                            }, {
+                                caption: '注册时间',
+                                type: 'string'
+                            },  {
                                 caption: '手机号',
+                                type: 'string'
+                            },{
+                                caption: '收藏时间',
                                 type: 'string'
                             }, {
                                 caption: '名称',
@@ -299,11 +413,21 @@ module.exports = {
 
                             var rows;
                             rows = [
-                                _data[i].createDate,
+
                                 _data[i].realname,
-                                _data[i].gender,
                                 _data[i].city,
-                                _data[i].mobile||"",
+                                _data[i].cardtype,
+                                _data[i].followCount,
+                                _data[i].messageCount,
+                                _data[i].gender,
+                                _data[i].birthday,
+                                _data[i].profession,
+                                _data[i].tags || "",
+                                _data[i].source,
+                                _data[i].followTime,
+                                _data[i].registerTime,
+                                _data[i].mobile,
+                                _data[i].createDate,
                                 _data[i].lookbook.name
                             ]
 

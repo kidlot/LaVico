@@ -354,7 +354,7 @@ module.exports = {
                                 caption: '性别',
                                 type: 'string'
                             }, {
-                                caption: '生日',
+                                caption: '年龄',
                                 type: 'string'
                             },{
                                 caption:"行业",
