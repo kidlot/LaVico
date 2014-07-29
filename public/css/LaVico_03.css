@@ -81,7 +81,6 @@ body, html {  height:100%  }
 #scroller_03,
 #scroller_bot {
     width:2100px;
-    height:100%;
     float:left;
     padding:0;
 }
