@@ -63,9 +63,6 @@
                 <input class="gocollection" type="submit" border="0" value="转至收藏夹" onclick="location.href='/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}&cb='+encodeURIComponent('{'+location.href+'}')"></p>
         </div>
     </div>
-
-
-
     <script>
         var myScroll;
         function loaded() {
@@ -97,42 +94,6 @@
 
         document.addEventListener('DOMContentLoaded', loaded, false);
 
-        function wrapWin() {
-            var wrapMain = document.getElementById("wrapper_02");
-            var MainWin = wrapMain.offsetWidth;
-            listLi = document.getElementById("thelist_02").getElementsByTagName("li");
-            indicator = document.getElementById("indicator_02");
-            <!--var article = document.getElementById("article").offsetHeight;-->
-            var theLength = document.getElementById("thelist_02").getElementsByTagName("li").length;
-
-            for (var i = 0; i < listLi.length; i++) {
-                listLi[i].style.width = MainWin + "px";
-            }
-
-            document.getElementById("scroller_02").style.width = MainWin * theLength + "px";
-
-            <!--indicator.style.top = article + 10 + "px";-->
-        }
-
-        function indicatorAct() {
-            var indicatorTwo = document.getElementById("indicator_02").getElementsByTagName("li");
-            for (var i = 0; i < listLi.length; i++) {
-                var indicatorLi = document.createElement("li")
-                indicator.appendChild(indicatorLi);
-                indicatorTwo[0].className = 'active';
-            }
-
-            var indicatorW = document.getElementById("indicator_02").offsetWidth;
-            indicator.style.marginLeft = -indicatorW / 2 + "px";
-
-        }
-
-        wrapWin();
-        indicatorAct();
-
-        window.onresize = function () {
-            wrapWin();
-        }
     </script>
 
     <script>
@@ -245,30 +206,4 @@
     }
 
 
-</script>
-<script type="text/javascript">
-    var myScroll;
-    var myScroll_02;
-    function loaded() {
-        myScroll = new iScroll('wrapper_02', {
-            snap: true,
-            momentum: false,
-            hScrollbar: false,
-            onScrollEnd: function () {
-                document.querySelector('#indicator_02 > li.active').className = '';
-                document.querySelector('#indicator_02 > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
-                var data = JSON.parse($("#jsonPage").text())
-                $("#thelist_bot").find("a").text(data[myScroll.currPageX].name)
-
-                $(".show_lookbook").find("h2").text(data[myScroll.currPageX].name)
-                $(".show_lookbook").find("p").html(data[myScroll.currPageX].detail.replace(/\n/ig,"</br>"))
-            }
-        });
-        myScroll_02 = new iScroll('wrapper_bot', {
-            snap: true,
-            momentum: false,
-            hScrollbar: false
-        });
-    }
-    document.addEventListener('DOMContentLoaded', loaded, false);
 </script>

@@ -188,27 +188,4 @@
         wrapperWidth();
     }
 </script>
-<script type="text/javascript">
-    var myScroll;
-    var myScroll_02;
-    function loaded() {
-        myScroll = new iScroll('wrapper_03', {
-            snap: true,
-            momentum: false,
-            hScrollbar: false,
-            onScrollEnd: function () {
-                document.querySelector('#indicator_03 > li.active').className = '';
-                document.querySelector('#indicator_03 > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
-                var data = JSON.parse($("#jsonPage").text())
-                $("#thelist_bot").find("a").text(data[myScroll.currPageX].name)
-            }
-        });
-        myScroll_02 = new iScroll('wrapper_bot', {
-            snap: true,
-            momentum: false,
-            hScrollbar: false
-        });
-    }
-    document.addEventListener('DOMContentLoaded', loaded, false);
-</script>
 

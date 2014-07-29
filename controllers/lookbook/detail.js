@@ -93,7 +93,7 @@ module.exports = {
                 helper.db.coll("lavico/lookbook").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                     doc = _doc || {}
                     nut.model.allPage = doc
-                    console.log(doc)
+                    nut.model.all = JSON.stringify(doc);
                     nut.model.doc = doc.page[nut.model.pageNum-1]
                     nut.model.lookbookType = doc.type
                     nut.model.sumPageNum = doc.page.length
