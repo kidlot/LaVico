@@ -127,10 +127,54 @@ module.exports = {
                 as[active].className = '';
                 active = index;
                 as[active].className = 'active';
+                $(".collocation_list").html("");
+                loaded();
             }
         });
-    }
 
+        function loaded() {
+            var data = JSON.parse($("#jsonData").text())
+            var wxid = $("#wxid").val();
+            var id = $("#id").val();
+            $(".switch_list").find("h2").text(data.page[active].name)
+            if(data.page[active]){
+                var json = data.page[active].product.length;
+                for(var i=0; i<json;i++){
+                    $(".collocation_list").append("<li>" +
+                        "<img src='"+data.page[active].product[i].pic+"' class='collocation_list_left' />"
+                        +"<article class='collocation_list_right'>" +
+                        "<h3>"+data.page[active].product[i].name+"</h3>" +
+                        "<p>"+data.page[active].product[i].detail +"</p>" +
+                        "<a href='/lavico/lookbook/productThere?_id="+id+"&wxid="+wxid+"&pageNum="+(active+1)+"&productId="+data.page[active].product[i]._id+"'><img src='/lavico/public/images/collocation_but.png'/></a>" +
+                        "</article>" +
+                        "</li>");
+                }
+            }
+        }
+        loaded();
+        window.leftPage = function (){
+            if(active == 0){
+                window.popupStyle2.on('已经是第一页',function(event){
+                })
+            }else{
+                t2.slide(active-1)
+                $(".collocation_list").html("");
+                loaded();
+            }
+        }
+
+        window.rightPage = function (){
+            var data = JSON.parse($("#jsonData").text())
+            if((active+1) == data.page.length ){
+                window.popupStyle2.on('已经是最后一页',function(event){
+                })
+            }else{
+                t2.slide(active+1)
+                $(".collocation_list").html("");
+                loaded();
+            }
+        }
+    }
 }
 
 

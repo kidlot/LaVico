@@ -100,8 +100,8 @@ module.exports = {
                     var aPageList = _doc.page[nut.model.pageNum-1]
 
                     if(aPageList.product){
-                        if(seed.onlyProduct == "true"){
-
+//                        if(seed.onlyProduct == "true"){
+//
                             for(var i=0 ; i < aPageList.product.length ; i++){
 
                                 if(seed.productId == aPageList.product[i]._id && aPageList.product[i].bigPic){
@@ -115,21 +115,21 @@ module.exports = {
                                     }
                                 }
                             }
-                        }else{
-                            for(var i=0 ; i < aPageList.product.length ; i++){
-
-                                if(aPageList.product[i].bigPic){
-
-                                    for(var ii=0 ; ii < aPageList.product[i].bigPic.length ; ii++){
-
-                                        aPageList.product[i].bigPic[ii].detail = aPageList.product[i].detail
-                                        aPageList.product[i].bigPic[ii].name = aPageList.product[i].name
-                                        aPageList.product[i].bigPic[ii]._id = aPageList.product[i]._id
-                                        doc.push(aPageList.product[i].bigPic[ii])
-                                    }
-                                }
-                            }
-                        }
+//                        }else{
+//                            for(var i=0 ; i < aPageList.product.length ; i++){
+//
+//                                if(aPageList.product[i].bigPic){
+//
+//                                    for(var ii=0 ; ii < aPageList.product[i].bigPic.length ; ii++){
+//
+//                                        aPageList.product[i].bigPic[ii].detail = aPageList.product[i].detail
+//                                        aPageList.product[i].bigPic[ii].name = aPageList.product[i].name
+//                                        aPageList.product[i].bigPic[ii]._id = aPageList.product[i]._id
+//                                        doc.push(aPageList.product[i].bigPic[ii])
+//                                    }
+//                                }
+//                            }
+//                        }
                     }
 
                 }))
