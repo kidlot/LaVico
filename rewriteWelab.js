@@ -787,10 +787,10 @@ exports.load = function () {
 
                         for(var _i in _sourceObject){
 
-                            if(_i == 0){
-                                _sourceObject[_i] = storeList[_sourceObject[_i]][1];
-                                _source =  [_sourceObject[_i]];
-                            }
+//                            if(_i == 0){
+//                                _sourceObject[_i] = storeList[_sourceObject[_i]][1];
+//                                _source =  [_sourceObject[_i]];
+//                            }
                             _sourceObject[_i] = storeList[_sourceObject[_i]][1];
 
                         }
