@@ -126,7 +126,7 @@ module.exports = {
 
                 this.step(function(){
                     if(errID.length>0){
-                        nut.message("共为"+stutas.length+"个用户删除标签,"+successID.length+"个标签删除成功,"+ errID.length+"个标签删除失败",null,'error') ;
+                        nut.message("共为"+stutas.length+"个用户删除标签,"+successID.length+"个标签删除成功,"+ errID.length+"个标签删除失败(由于该标签与郎维高CRM库内容不匹配,暂时无法删除本标签,还请检查CRM库再删除,谢谢)",null,'error') ;
                     }else{
                         helper.db.coll("lavico/tags").remove({_id:helper.db.id(seed.id)},this.hold(function(err,doc){
                             if(err) throw err;

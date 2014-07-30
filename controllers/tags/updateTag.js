@@ -61,7 +61,6 @@ module.exports = {
                 })
 
                 this.step(function(){
-                    console.log("userlist",userlist)
                     this.each(userlist,function(i,row){
                         if(row.memberID){
                             middleware.request("Tag/Remove", {memberId: row.memberID,tag: tag.title}, this.hold(function (err, doc) {
@@ -82,7 +81,6 @@ module.exports = {
                 })
 
                 this.step(function(){
-                    console.log("stutas",stutas)
                     this.each(stutas,function(i,row){
                         if(row.memberID && row.stat==true){
                             middleware.request("Tag/Add", {memberId: row.memberID,tag: title}, this.hold(function (err, doc) {
@@ -116,12 +114,11 @@ module.exports = {
                 })
 
                 this.step(function(){
-                    console.log("addstutas",addstutas)
-                    for(var j=0;j<addstutas.length;j++){
-                        if(addstutas[j].stat==false){
-                            errID.push(addstutas[j].id);
+                    for(var j=0;j<stutas.length;j++){
+                        if(stutas[j].stat==false){
+                            errID.push(stutas[j].id);
                         }else{
-                            successID.push(addstutas[j].id);
+                            successID.push(stutas[j].id);
                         }
                     }
                 })
@@ -129,7 +126,7 @@ module.exports = {
 
                 this.step(function(){
                     if(errID.length>0){
-                        nut.message("共为"+stutas.length+"个用户修改标签,"+successID.length+"个标签修改成功,"+ errID.length+"个标签修改失败",null,'error') ;
+                        nut.message("共为"+stutas.length+"个用户修改标签,"+successID.length+"个标签修改成功,"+ errID.length+"个标签修改失败(由于该标签与郎维高CRM库内容不匹配,暂时无法修改本标签,还请检查CRM库再删除,谢谢)",null,'error') ;
                     }else{
                         helper.db.coll("lavico/tags").update({_id:helper.db.id(id)}, {$set:{'title':title}}, {multi: false, upsert: true}, this.hold(function (err, doc) {
                             if (err) {
