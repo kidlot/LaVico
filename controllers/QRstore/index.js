@@ -207,7 +207,6 @@ module.exports = {
 
                 nut.view.disable() ;
 
-
                 var ids = seed.ids.split(',');
 
                 console.log(ids);
@@ -310,7 +309,7 @@ module.exports = {
                     this.each(aQr,function(i,o){
 
                         var holdDo = this.hold()
-                        exec("zip -qj "+folder+"_"+".zip "+folder+o+".jpg", function (error, stdout, stderr) {
+                        exec("zip -qj "+folder+"_"+ids.join("")+".zip "+folder+o+".jpg", function (error, stdout, stderr) {
                             if (error !== null) {
                                 console.log('exec error: ' + error);
                             }
@@ -326,7 +325,7 @@ module.exports = {
 
                     console.log("ok")
 
-                    fs.readFile(folder+"_"+".zip", this.hold(function (error, fileData) {
+                    fs.readFile(folder+"_"+ids.join("")+".zip", this.hold(function (error, fileData) {
                         if (error) {
                             console.log(error)
                         }
