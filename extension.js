@@ -117,23 +117,23 @@ exports.onload = function(application){
     /**
      * welcome
      */
-    wechatapi.registerReply(9,function(msg,req,res,next){
-
-        if( msg.MsgType == "event" && msg.EventKey && msg.Event=='subscribe'){
-
-            if(msg.Event=='subscribe'){
-
-                var eventkey = /^qrscene_(.*)/i.exec(msg.EventKey)[1]
-            }
-
-            helper.db.coll('welab/customers').update({wechatid: msg.FromUserName}, {$addToSet: {source: eventkey}}, function (err, doc) {
-                err && console.log(doc);
-            });
-
-        }else{
-            next()
-        }
-    })
+//    wechatapi.registerReply(9,function(msg,req,res,next){
+//
+//        if( msg.MsgType == "event" && msg.EventKey && msg.Event=='subscribe'){
+//
+//            if(msg.Event=='subscribe'){
+//
+//                var eventkey = /^qrscene_(.*)/i.exec(msg.EventKey)[1]
+//            }
+//
+//            helper.db.coll('welab/customers').update({wechatid: msg.FromUserName}, {$addToSet: {source: eventkey}}, function (err, doc) {
+//                err && console.log(doc);
+//            });
+//
+//        }else{
+//            next()
+//        }
+//    })
 
 
     // default
@@ -157,15 +157,15 @@ exports.onload = function(application){
             path: '/lavico/member/card_member/info:updateUserInfo',
             method: 'GET'
         };
-//        req = http.request(options, function(res) {
-//            res.setEncoding('utf8');
-//            var body='';
-//            res.on('data', function(data) {
-//                body +=data;
-//                console.log(data);
-//            });
-//        });
-        //req.write(post_data);
+        req = http.request(options, function(res) {
+            res.setEncoding('utf8');
+            var body='';
+            res.on('data', function(data) {
+                body +=data;
+                console.log(data);
+            });
+        });
+        req.write(post_data);
         console.log(req.end());
     },_time);
 

@@ -781,9 +781,18 @@ exports.load = function () {
 
                     /*门店查询David.xu-2014-07-23*/
                     if(page.docs[i].source&&storeList){
+
+                        var _source = [];
                         var _sourceObject = page.docs[i].source;
+
                         for(var _i in _sourceObject){
-                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+
+//                            if(_i == 0){
+//                                _sourceObject[_i] = storeList[_sourceObject[_i]][1];
+//                                _source =  [_sourceObject[_i]];
+//                            }
+                            _sourceObject[_i] = storeList[_sourceObject[_i]][1];
+
                         }
                         page.docs[i].source = _sourceObject || '';
                     }
