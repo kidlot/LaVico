@@ -791,11 +791,7 @@ exports.load = function () {
                                 _source =  [_sourceObject[_i]];
                             }
                         }
-                        console.log('++++++++++++++++++++');
-                        console.log(page.docs[i].source);
                         page.docs[i].source = _source || '';
-                        console.log(_source);
-                        console.log('++++++++++++++++++++');
                     }
 
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';
