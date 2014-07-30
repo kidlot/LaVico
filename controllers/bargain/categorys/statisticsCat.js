@@ -14,8 +14,11 @@ module.exports = {
             var then = this
             var docs;//当前分类所属的侃价
             var categoryInfo;
+            var pvAll = 0;//活动参与人次
             var pv = 0;//活动参与人数
-            var uv = 0;//活动成交人数
+            var uv = 0;//活动成交人次
+            var uvLonely = 0;//活动成交人此
+            var wechatArr = [];
             var min ;//活动最低成交价格
             var max ;//活动最高成交价格
             nut.model.categoryName = false;
@@ -42,6 +45,18 @@ module.exports = {
                     for(var i=0;i<docs.length;i++){
                         var product = docs[i];
                         var productID = ''+product._id;
+                        //参与人次:
+                        (function(i){
+                            console.log({action:"侃价","data.step":1,'data.productID':productID});
+                            helper.db.coll("lavico/user/logs").aggregate([
+                                {$match:{action:"侃价","data.step":1,'data.productID':productID}},
+                                {$group:{_id:"$wxid"}}
+                            ],
+                                then.hold(function(err,doc){
+                                    docs[i].pvAll = doc.length || 0
+                                })
+                            )
+                        })(i);
                         //参与人数:
                         (function(i){
                             console.log({action:"侃价","data.step":4,'data.productID':productID});
@@ -62,7 +77,10 @@ module.exports = {
                                 {$group:{_id:"$wxid"}}
                             ],
                                 then.hold(function(err,doc){
-                                    docs[i].uv = doc.length || 0
+                                    docs[i].uv = doc.length || 0;
+                                    for(var j=0;j<doc.length;j++){
+                                        wechatArr.push(doc[j]._id);
+                                    }
                                 })
                             )
                         })(i);
@@ -97,6 +115,7 @@ module.exports = {
                     for(var i=0;i<docs.length;i++){
                         var product = docs[i];
                         var productID = product._id;
+                        pvAll += docs[i].pvAll;
                         pv += docs[i].pv;
                         uv += docs[i].uv;
                         if(i == 0){
@@ -119,10 +138,15 @@ module.exports = {
             this.step(function(){
 
                 nut.model.doc = docs;
+                nut.model.pvAll = pvAll;//活动参与人次
                 nut.model.pv = pv;//活动参与人数
-                nut.model.uv = uv;//活动成交人数
+                nut.model.uv = uv;//活动成交人次
+                uvLonely = wechatArr.uniq().length;//活动成交人数
+                nut.model.uvLonely = uvLonely;
                 nut.model.min = min;//活动最低成交价格
                 nut.model.max = max;//活动最高成交价格
+                console.log(wechatArr);
+                //this.terminate();
 
             });
 
@@ -225,4 +249,21 @@ module.exports = {
     }
 
 
+}
+
+Array.prototype.uniq = function() {
+    //去除重复元素
+    var temp = {}, len = this.length;
+
+    for(var i=0; i < len; i++)  {
+        if(typeof temp[this[i]] == "undefined") {
+            temp[this[i]] = 1;
+        }
+    }
+    this.length = 0;
+    len = 0;
+    for(var i in temp) {
+        this[len++] = i;
+    }
+    return this;
 }

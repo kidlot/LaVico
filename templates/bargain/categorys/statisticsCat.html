@@ -43,7 +43,9 @@
             <thead>
             <tr>
                 <th>侃价分类名称</th>
+                <th style="width: 100px">参与人次</th>
                 <th style="width: 100px">参与人数</th>
+                <th style="width: 100px">成交人次</th>
                 <th style="width: 100px">成交人数</th>
                 <th style="width: 100px">最低成交价</th>
                 <th style="width: 100px">最高成交价</th>
@@ -52,8 +54,10 @@
             <tbody>
             <tr>
                 <td>{@ categoryName}</td>
+                <td>{@ pvAll}</td>
                 <td>{@ pv}</td>
                 <td>{@ uv}</td>
+                <td>{@ uvLonely}</td>
                 <td>{@ min}</td>
                 <td>{@ max}</td>
             </tr>
