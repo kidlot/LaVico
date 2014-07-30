@@ -37,7 +37,7 @@ module.exports = {
                     }
                     this.step(function(){
                         for(var i=0;i<data.length; i++){
-                            data[i].createTime = createTime(data[i].createTime);
+                            data[i].createTime = formatTime(data[i].createTime);
                         }
 
                     });
@@ -63,8 +63,8 @@ module.exports = {
         }
     }
 }
-function createTime(){
-    var d = new Date();
+function formatTime(time){
+    var d = new Date(time);
     var vYear = d.getFullYear();
     var vMon = d.getMonth() + 1;
     var vDay = d.getDate();

@@ -109,28 +109,7 @@ module.exports = {
                 this.res.end();
             }
         })
-    },
-    viewIn:function(){
-        var active = 0,
-            as = document.getElementById('indicator_03_01').getElementsByTagName('li');
-        for (var i = 0; i < as.length; i++) {
-            (function () {
-                var j = i;
-                as[i].onclick = function () {
-                    t2.slide(j);
-                    return false;
-                }
-            })();
-        }
-        var t2 = new TouchSlider({
-            id: 'slider', speed: 600, timeout: 6000, before: function (index) {
-                as[active].className = '';
-                active = index;
-                as[active].className = 'active';
-            }
-        });
     }
-
 }
 
 
