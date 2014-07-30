@@ -303,16 +303,14 @@ module.exports = {
                     var exec = require('child_process').exec;
 //                    var files = []
 
-                    var aQr = []
-                    for(var i=min ; i<= max ; i++){
-                        aQr.push(i)
-                    }
+                    var aQr = ids;
+
 
 
                     this.each(aQr,function(i,o){
 
                         var holdDo = this.hold()
-                        exec("zip -qj "+folder+min+"_"+max+".zip "+folder+o+".jpg", function (error, stdout, stderr) {
+                        exec("zip -qj "+folder+"_"+".zip "+folder+o+".jpg", function (error, stdout, stderr) {
                             if (error !== null) {
                                 console.log('exec error: ' + error);
                             }
@@ -328,7 +326,7 @@ module.exports = {
 
                     console.log("ok")
 
-                    fs.readFile(folder+min+"_"+max+".zip", this.hold(function (error, fileData) {
+                    fs.readFile(folder+"_"+".zip", this.hold(function (error, fileData) {
                         if (error) {
                             console.log(error)
                         }
