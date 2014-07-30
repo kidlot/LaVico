@@ -215,29 +215,75 @@
         }
     </script>
     <script type="text/javascript">
-//        var scroll;
-//        function loaded() {
-//            var data = JSON.parse($("#jsonData").text())
-//            $(".switch_list").find("h2").text(data.page[0].name)
-//            $(".collocation_list_left").attr("src",data.page[0].pic)
-//            $(".collocation_list_right").find("h3").text(data.page[0].name);
-//            $(".collocation_list_right").find("p").text(data.page[0].detail);
-//            $(".collocation_list_right").find("a").attr("href","/lavico/lookbook/productThere?_id={@ _id}&wxid={@wxid}&pageNum=1&productId="+data.page[0].product[0]._id)
-//            scroll = new iScroll('wrapper_03_01', {
-//                snap: true,
-//                momentum: false,
-//                hScrollbar: false,
-//                onScrollEnd: function () {
-//                    var data = JSON.parse($("#jsonData").text())
-//                    $(".collocation_list_left").attr("src",data.page[scroll.currPageX].pic)
-//                    $(".collocation_list_right").find("h3").text(data.page[scroll.currPageX].name);
-//                    $(".collocation_list_right").find("p").text(data.page[scroll.currPageX].detail);
-//                    $(".collocation_list_right").find("a").attr("href","/lavico/lookbook/productThere?_id={@ _id}&wxid={@wxid}&pageNum="+(scroll.currPageX+1)+"&productId="+data.page[scroll.currPageX].product[0]._id)
-//                    $(".switch_list").find("h2").text(data.page[scroll.currPageX].name)
-//                }
-//            });
-//        }
-//        document.addEventListener('DOMContentLoaded', loaded, false);
+        var active = 0;
+        var t2;
+        function init(){
+            var data = JSON.parse($("#jsonData").text())
+            var as = document.getElementById('indicator_03_01').getElementsByTagName('li');
+            for (var i = 0; i < as.length; i++) {
+                (function () {
+                    var j = i;
+                    as[i].onclick = function () {
+                        t2.slide(j);
+                        return false;
+                    }
+                })();
+            }
+            t2 = new TouchSlider({
+                id: 'slider', speed: 600, timeout: 6000, before: function (index) {
+                    as[active].className = '';
+                    active = index;
+                    as[active].className = 'active';
+                    $(".collocation_list").html("");
+                    loaded();
+                }
+            });
+        }
+        window.onload=function(){
+            init();
+            loaded();
+        }
+        function loaded() {
+            var data = JSON.parse($("#jsonData").text())
+            var wxid = $("#wxid").val();
+            var id = $("#id").val();
+            $(".switch_list").find("h2").text(data.page[active].name)
+            if(data.page[active]){
+                var json = data.page[active].product.length;
+                for(var i=0; i<json;i++){
+                    $(".collocation_list").append("<li>" +
+                            "<img src='"+data.page[active].product[i].pic+"' class='collocation_list_left' />"
+                            +"<article class='collocation_list_right'>" +
+                            "<h3>"+data.page[active].product[i].name+"</h3>" +
+                            "<p>"+data.page[active].product[i].detail +"</p>" +
+                            "<a href='/lavico/lookbook/productThere?_id="+id+"&wxid="+wxid+"&pageNum="+(active+1)+"&productId="+data.page[active].product[i]._id+"'><img src='/lavico/public/images/collocation_but.png'/></a>" +
+                            "</article>" +
+                            "</li>");
+                }
+            }
+        }
+
+        function leftPage(){
+            if(active == 0){
+                window.popupStyle2.on('已经是第一页',function(event){
+                })
+            }else{
+                t2.slide(active-1)
+                $(".collocation_list").html("");
+                loaded();
+            }
+        }
+        function rightPage(){
+            var data = JSON.parse($("#jsonData").text())
+            if((active+1) == data.page.length ){
+                window.popupStyle2.on('已经是最后一页',function(event){
+                })
+            }else{
+                t2.slide(active+1)
+                $(".collocation_list").html("");
+                loaded();
+            }
+        }
     </script>
 </if>
 
