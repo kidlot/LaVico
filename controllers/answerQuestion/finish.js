@@ -593,7 +593,7 @@ module.exports={
 
 
                 if(ok){
-                    if (getLabel != "" || getLabel != null || getScore!="") {
+                    if (getLabel != "" || getLabel != null || getScore!="" || typeof (getLabel)!="undefined") {
                         //发送标签至CRM
                         var memoString = "主观题-" + getScore+"积分";
                         if (themeType == 0) {

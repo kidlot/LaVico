@@ -162,7 +162,7 @@ $(function () {
             //条件标签
             var conditionLabel=$fcount.find("input[name='conditionLabel']:eq("+v+")").val();
             //获得标签
-            var getLabel=$fcount.find("input[name='getLabel']:eq("+v+")").val();
+            var getLabel=$fcount.find("input[name='getLabel']:eq("+v+")").val().trim();
             //获得标签内容
             var tipContent=$fcount.find("textarea[name='tipContent']:eq("+v+")").val();
             tipContent = tipContent.replace(/[\n\r\t]/,'<br/>');
