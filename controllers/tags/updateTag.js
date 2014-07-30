@@ -106,7 +106,7 @@ module.exports = {
                 this.step(function(){
                     for(var i=0;i<addstutas.length;i++){
                         if(addstutas[i].stat == true){
-                            helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[i].id),tags: tag.title}, {$set:{'tags':title}},{upsert:true},this.hold(function(err,doc){
+                            helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[i].id),tags: tag.title}, {$set:{"tags.$":title}},{upsert:true},this.hold(function(err,doc){
                                 if(err){
                                     throw err;
                                 }
