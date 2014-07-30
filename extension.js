@@ -119,6 +119,8 @@ exports.onload = function(application){
      */
     wechatapi.registerReply(9,function(msg,req,res,next){
 
+        console.log('++++++++++eventkey-start++++++++++');
+
         if( msg.MsgType == "event" && msg.EventKey && msg.Event=='subscribe'){
 
             if(msg.Event=='subscribe'){
