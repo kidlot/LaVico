@@ -751,16 +751,16 @@ exports.load = function () {
                 }
             }
 
-            helper.db.coll("welab/customers").find(conditions).toArray(this.hold(function(err,docs){
-                console.log(docs);
-            }));
+//            helper.db.coll("welab/customers").find(conditions).toArray(this.hold(function(err,docs){
+//                console.log(docs);
+//            }));
 
 
 
 
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
-                console.log(page);
+//                console.log(page);
                 _data.page = page.currentPage
                 _data.total = page.totalcount
 
