@@ -123,8 +123,11 @@ exports.onload = function(application){
 
             if(msg.Event=='subscribe'){
 
-                var eventkey = /^qrscene_(.*)/i.exec(msg.EventKey)[1]
+                var eventkey = /^qrscene_(.*)/i.exec(msg.EventKey)[1];
             }
+
+            console.log('++++++++++eventkey++++++++++');
+            console.log(eventkey);
 
             helper.db.coll('welab/customers').update({wechatid: msg.FromUserName}, {$addToSet: {source: eventkey}}, function (err, doc) {
                 err && console.log(doc);
@@ -157,15 +160,15 @@ exports.onload = function(application){
             path: '/lavico/member/card_member/info:updateUserInfo',
             method: 'GET'
         };
-//        req = http.request(options, function(res) {
-//            res.setEncoding('utf8');
-//            var body='';
-//            res.on('data', function(data) {
-//                body +=data;
-//                console.log(data);
-//            });
-//        });
-        //req.write(post_data);
+        req = http.request(options, function(res) {
+            res.setEncoding('utf8');
+            var body='';
+            res.on('data', function(data) {
+                body +=data;
+                console.log(data);
+            });
+        });
+        req.write(post_data);
         console.log(req.end());
     },_time);
 
