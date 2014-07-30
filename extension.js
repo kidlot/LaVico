@@ -128,6 +128,7 @@ exports.onload = function(application){
 
             console.log('++++++++++eventkey++++++++++');
             console.log(eventkey);
+            console.log('++++++++++eventkey++++++++++');
 
             helper.db.coll('welab/customers').update({wechatid: msg.FromUserName}, {$addToSet: {source: eventkey}}, function (err, doc) {
                 err && console.log(doc);
