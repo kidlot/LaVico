@@ -42,9 +42,6 @@ module.exports = {
 
                 this.step(function(){
                     if(tag && tag.title){
-                        if(tag.title.indexOf("型男测试")>=0){
-                            tag.title = tag.title+" ";
-                        }
                         helper.db.coll("welab/customers").find({ tags: tag.title }).toArray(this.hold(function(err,docs){
                             if(err) throw  err;
                             if(docs){
