@@ -6,7 +6,7 @@
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="productId" value={@productId}>
 <div style="display: none" id="jsonPage">{@jsonDoc}</div>
-<section id="section" class="Template_3" style="height:100%;">
+<section id="section" class="Template_3">
     <div class="new_top_logo">
         <img src="/lavico/public/images/logo_03.png" alt="" />
     </div>
@@ -62,9 +62,25 @@
             $("#thelist_bot").find("a").text(data[0].name)
 
             myScroll = new iScroll('wrapper_03', {
-                snap: true,
+                snap: 'li',
                 momentum: false,
                 hScrollbar: false,
+                onBeforeScrollStart: function ( e ) {
+                    if ( this.absDistX > (this.absDistY + 5 ) ) {
+                        e.preventDefault();
+                    }
+                },
+                //解决第一次无法滑动的问题
+                onTouchEnd: function () {
+                    var self = this;
+                    if (self.touchEndTimeId) {
+                        clearTimeout(self.touchEndTimeId);
+                    }
+                    self.touchEndTimeId = setTimeout(function () {
+                        self.absDistX = 0;
+                        self.absDistY = 0;
+                    }, 600);
+                },
                 onScrollEnd: function () {
                     document.querySelector('#indicator_03 > li.active').className = '';
                     document.querySelector('#indicator_03 > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
@@ -72,6 +88,7 @@
                     var data = JSON.parse($("#jsonPage").text())
                     $("#thelist_bot").find("a").text(data[myScroll.currPageX].name)
                 }
+
             });
         }
 
