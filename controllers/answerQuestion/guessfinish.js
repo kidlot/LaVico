@@ -467,7 +467,7 @@ module.exports={
                 console.log("resultlist",resultList)
 
                 if(ok){
-                    if (getLabel != "" || getLabel != null || getScore!="") {
+                    if (getLabel != "" || getLabel != null || getScore!=""|| typeof (getLabel)!="undefined") {
                         //发送标签至CRM
                         var memoString="";
                         if(docTheme.showtype==0){
