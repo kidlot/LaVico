@@ -786,12 +786,15 @@ exports.load = function () {
                         var _sourceObject = page.docs[i].source;
 
                         for(var _i in _sourceObject){
+
                             if(_i == 0){
                                 _sourceObject[_i] = storeList[_sourceObject[_i]][1];
                                 _source =  [_sourceObject[_i]];
                             }
+                            _sourceObject[_i] = storeList[_sourceObject[_i]][1];
+
                         }
-                        page.docs[i].source = _source || '';
+                        page.docs[i].source = _sourceObject || '';
                     }
 
                     page.docs[i].cardtype = page.docs[i].cardtype || '微信会员卡';
