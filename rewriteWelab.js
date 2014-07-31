@@ -704,8 +704,8 @@ exports.load = function () {
 
             //关注时间 任意
             if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
-                console.log(JSON.stringify(conditions));
-                console.log(conditions.$or[0].followTime.$gt)
+//                console.log(JSON.stringify(conditions));
+//                console.log(conditions.$or[0].followTime.$gt)
                 conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
                 conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
 
@@ -1158,7 +1158,7 @@ exports.load = function () {
                 nut.msgqueue.popup() ;
                 // 更改页面数据
                 var jsonData = nut.model.jsonData;
-                console.log("jsonData",jsonData)
+//                console.log("jsonData",jsonData)
                 if(jsonData.length==0){
                     return;
                 }
@@ -1455,7 +1455,7 @@ exports.load = function () {
             }
             var reg=/,$/gi;
             nut.model.jsonData = tagstr.replace(reg,"");
-            console.log("tagstr",tagstr);
+//            console.log("tagstr",tagstr);
         })
     }
 
@@ -1809,12 +1809,12 @@ exports.load = function () {
         for(var i = 0 ; i < sUserList.length ; i++){
             (function(userdoc,then){
                 helper.db.coll("welab/customers").findOne({_id : helper.db.id(userdoc)},then.hold(function(err,doc){
-                    console.log(doc.mobile)
+//                    console.log(doc.mobile)
                     if(doc.mobile){
                         mobile = doc.mobile;
                         memberid=doc.HaiLanMemberInfo.memberID;
                         wxid = doc.wechatid;
-                        console.log(doc.mobile)
+//                        console.log(doc.mobile)
                         try{
                             middleware.request( "System/SendSMS",{'mobile':doc.mobile,'content':"【LaVico朗维高】:"+aValue},this.hold(function(err,doc){
                                 helper.db.coll("welab/SMS").insert({"wxid":wxid,"memberID":memberid,"mobile":mobile,"content":"【LaVico朗维高】:"+aValue,"createTime":new Date().getTime()},function(err,docs){
@@ -1879,7 +1879,7 @@ exports.load = function () {
                     }
                     if(doc){
                         var docs = JSON.parse(doc);
-                        console.log("docs",docs)
+//                        console.log("docs",docs)
                         if(docs.success){
                             status = 0;
                         }else{
@@ -1900,7 +1900,7 @@ exports.load = function () {
                     if(err){
                         throw err;
                     }
-                    console.log("doc",doc)
+//                    console.log("doc",doc)
                     if(doc){
                         status = 0;
                     }else{
@@ -1909,7 +1909,7 @@ exports.load = function () {
                 }))
             }
             nut.model.status = status;
-            console.log("nut.model.status",nut.model.status)
+//            console.log("nut.model.status",nut.model.status)
             if(status == 0){
                 nut.message("删除成功",null,"success");
             }else{
@@ -1946,7 +1946,7 @@ exports.load = function () {
                     _data.face = "/welab/" + _data.face
                 }
 
-                console.log(_data)
+//                console.log(_data)
 
 
                 nut.model.data = _data||{};
@@ -2046,7 +2046,7 @@ exports.load = function () {
                         if (err) {
                             console.log(err)
                         }else{
-                            console.log(doc)
+//                            console.log(doc)
                         }
                         var docs = JSON.parse(doc);
                         row.status = docs.success;
@@ -2079,7 +2079,7 @@ exports.load = function () {
         })
 
         this.step(function(){
-            console.log("stutas",stutas)
+//            console.log("stutas",stutas)
             for (var i=0; i<aTagList.length; i++) {
                 tag = aTagList[i];
                 for(var j=0;j<stutas.length;j++){
@@ -2107,9 +2107,9 @@ exports.load = function () {
 
         this.step(function(){
             nut.model.jsonData = jsonData;
-            console.log("jsonData",jsonData)
-            console.log(errID.length)
-            console.log(successID.length)
+//            console.log("jsonData",jsonData)
+//            console.log(errID.length)
+//            console.log(successID.length)
             if(errID.length==0){
                 nut.message("操作完成",null,"success");
             }else{
