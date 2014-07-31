@@ -84,7 +84,10 @@ module.exports = {
                                 then.hold(function(err,doc){
                                     docs[i].uv = doc.length || 0;
                                     for(var j=0;j<doc.length;j++){
-                                        wechatArr.push(doc[j]._id);
+                                        if(wechatArr.indexOf(doc[j]._id) < 0){
+                                            wechatArr.push(doc[j]._id);
+                                        }
+
                                     }
                                 })
                             )
