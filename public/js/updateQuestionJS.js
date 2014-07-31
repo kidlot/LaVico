@@ -99,7 +99,7 @@ $(function () {
                         chooseName=$li.find("input[name='txtChooseContent']").val();
                         chooseScore=$li.find("input[name='txtChooseScore']").val();
                         chooseNext=$li.find("input[name='txtNext']").val();
-                        customerLabel=$li.find("input[name='txtLab']").val();//自定义标签
+                        customerLabel=$li.find("input[name='txtLab']").val().trim();//自定义标签
                         stopLabel=$li.find("input[name='txtStop']").val();//停止标签
                         uploadFile=$li.find("input[name='uploadFile']").val();
 
