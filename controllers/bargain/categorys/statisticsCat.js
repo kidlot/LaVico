@@ -129,8 +129,6 @@ module.exports = {
                                 max = docs[i].max;
                             }
                         }
-
-                        console.log(product);
                     }
                 }
             });
