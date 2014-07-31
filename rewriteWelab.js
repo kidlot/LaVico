@@ -597,29 +597,11 @@ exports.load = function () {
 
     //标签管理
     welabUserlist.children.page.process = function (seed,nut){
-
-    }
-    welabUserlist.process = function(seed,nut){
-        var taglist;
-        var tagstr = "";
         this.step(function(){
             helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
                 if(err) throw  err;
-                if(docs){
-                    taglist = docs || {};
-                }
+                nut.model.taglist = docs || {};
             }))
-        })
-
-        this.step(function(){
-            if(taglist){
-                for(var i=0;i<taglist.length;i++){
-                    tagstr += taglist[i].title + ",";
-                }
-            }
-            var reg=/,$/gi;
-            nut.model.jsonData = tagstr.replace(reg,"");
-            console.log("tagstr",tagstr);
         })
     }
 
@@ -1136,10 +1118,10 @@ exports.load = function () {
          */
         $(".userTagBtn").on("click",function(){
 
-            var tags = $("input[type='hidden'][name='tagsVal']").val();
-            if( tags == ""){
+            var tags = $("#tag option:selected").val();
+            if( tags == "-1"){
                 $.globalMessenger().post({
-                    message: '至少设置一个标签.',
+                    message: '请选择一个标签.',
                     type: 'error',
                     showCloseButton: true})
                 return ;
@@ -1172,27 +1154,27 @@ exports.load = function () {
                                 tds.eq(9).find("span").each(function(i,o){
                                     aOldTagsList.push($(o).find("span").text());
                                 })
-
-                                var tags = $("input[type='hidden'][name='tagsVal']").val();
-                                var aNewTagsList = tags.split(",");
+                                var tags = $("#tag option:selected").val();
+//                                var tags = $("input[type='hidden'][name='tagsVal']").val();
+//                                var aNewTagsList = tags.split(",");
 
                                 var _is = false;
-                                for (var iii=0; iii<aNewTagsList.length; iii++){
+                                //for (var iii=0; iii<aNewTagsList.length; iii++){
                                     _is = false;
-                                    if(jsonData[i].tag == aNewTagsList[iii]){
+                                    if(jsonData[i].tag == tags){
                                         for (var ii=0; ii<aOldTagsList.length; ii++){
-                                            if( aOldTagsList[ii].toLowerCase() == aNewTagsList[iii].toLowerCase()){
+                                            if( aOldTagsList[ii].toLowerCase() == tags.toLowerCase()){
                                                 _is = true;
                                                 break;
                                             }
                                         }
                                         if( _is == false){
 
-                                            var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="javascript:;" class="tm-tag-remove"  onclick="removeTagOrKeyword(this)">×</a></span>';
+                                            var _span = '<span class="tm-tag tm-tag-info" ><span>'+tags+'</span><a href="javascript:;" class="tm-tag-remove"  onclick="removeTagOrKeyword(this)">×</a></span>';
                                             tds.eq(9).find("div").append(_span);
                                         }
                                     }
-                                }
+                               // }
                             }
                         }
                     }
@@ -1232,17 +1214,10 @@ exports.load = function () {
 
     //json复写list-viewIn
     welabUserlist.viewIn=function(){
-        var tagstr = $("#jsondata").val();
-        var taglist = tagstr.split(",");
-        var str = []
-        for(var i=0;i<taglist.length;i++){
-            str.push(taglist[i])
-        }
-
-        jQuery("#tags").tagsManager({
-            prefilled: str,
-            hiddenTagListName: 'tagsVal'
-        });
+//        jQuery("#tags").tagsManager({
+//            prefilled: [],
+//            hiddenTagListName: 'tagsVal'
+//        });
         // search box--搜索显示
         $.searchInitConditions([
             {field:'realname',title:'姓名',type:'text'}
@@ -1314,32 +1289,6 @@ exports.load = function () {
             return false;
         })
 
-
-        /**
-         * 设置标签
-         */
-        $(".sendMessageView").on("click",function(){
-
-            var aList = getUserList();
-            if( aList.length == 0){
-                $.globalMessenger().post({
-                    message: '至少选择一个用户.',
-                    type: 'error',
-                    showCloseButton: true})
-                return ;
-            }
-            if( aList.length > 5){
-                $.globalMessenger().post({
-                    message: '最多只能选择五条数据.',
-                    type: 'error',
-                    showCloseButton: true})
-                return ;
-            }
-
-            $('#sendMessageModal').modal('toggle');
-            return false;
-        })
-
         /**
          * 删除动作
          */
@@ -1383,10 +1332,10 @@ exports.load = function () {
         /**
          * 发送短信
          */
-        jQuery("#tags").tagsManager({
-            prefilled: [],
-            hiddenTagListName: 'tagsVal'
-        });
+//        jQuery("#tags").tagsManager({
+//            prefilled: [],
+//            hiddenTagListName: 'tagsVal'
+//        });
         $(".sendSMS").on("click",function(){
 
             var sms = getUserList();
@@ -1435,26 +1384,11 @@ exports.load = function () {
     welabMessagelist.view = "lavico/templates/welab/message/MessageList.html";
 
     welabMessagelist.process = function(seed,nut){
-        var taglist;
-        var tagstr = "";
         this.step(function(){
             helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
                 if(err) throw  err;
-                if(docs){
-                    taglist = docs || {};
-                }
+                nut.model.taglist = docs || {};
             }))
-        })
-
-        this.step(function(){
-            if(taglist){
-                for(var i=0;i<taglist.length;i++){
-                    tagstr += taglist[i].title + ",";
-                }
-            }
-            var reg=/,$/gi;
-            nut.model.jsonData = tagstr.replace(reg,"");
-            console.log("tagstr",tagstr);
         })
     }
 
@@ -1481,17 +1415,10 @@ exports.load = function () {
             , {field:'message.time',title:'发送时间',type:'date'}
         ]) ;
 
-        var tagstr = $("#jsondata").val();
-        var taglist = tagstr.split(",");
-        var str = []
-        for(var i=0;i<taglist.length;i++){
-            str.push(taglist[i])
-        }
-
-        jQuery("#tags").tagsManager({
-            prefilled: str,
-            hiddenTagListName: 'tagsVal'
-        });
+//        jQuery("#tags").tagsManager({
+//            prefilled: [],
+//            hiddenTagListName: 'tagsVal'
+//        });
 
 
         /**
@@ -1522,10 +1449,10 @@ exports.load = function () {
          */
         $(".userTagBtn").on("click",function(){
 
-            var tags = $("input[type='hidden'][name='tagsVal']").val();
-            if( tags == ""){
+            var tags = $("#tag option:selected").val();
+            if( tags == "-1"){
                 $.globalMessenger().post({
-                    message: '至少设置一个标签.',
+                    message: '请选择一个标签.',
                     type: 'error',
                     showCloseButton: true})
                 return ;
@@ -1991,7 +1918,7 @@ exports.load = function () {
         nut.view.disable() ;
         nut.model.page = {} ;
 
-        var aTagList = seed.sTagList.split(",");
+        var aTagList = seed.sTagList;
         var aUserList = seed.sUserList.split(",");
         var errID = [];
         var successID = [];
@@ -2006,9 +1933,9 @@ exports.load = function () {
                 nut.message("没有指定要操作的ID",null,"error") ;
                 return false;
             }
-            for(var i=0;i<aTagList.length;i++){
-                var tag = aTagList[i];
-                (function(i,tag){
+            //for(var i=0;i<aTagList.length;i++){
+               // var tag = aTagList[i];
+                //(function(i,tag){
                     for(var j=0;j<aUserList.length;j++){
                         (function(j,jsonData){
                             var id= aUserList[j]
@@ -2018,7 +1945,7 @@ exports.load = function () {
                                     if(doc.HaiLanMemberInfo){
                                         json={};
                                         json.memberId = doc.HaiLanMemberInfo.memberID;
-                                        json.tag = tag;
+                                        json.tag = aTagList;
                                         json.id= id;
                                         jsonData.push(json);
                                     }else{
@@ -2031,8 +1958,8 @@ exports.load = function () {
                             }))
                         })(j,jsonData)
                     }
-                })(i,tag)
-            }
+                //})(i,tag)
+            //}
         })
 
         this.step(function(){
@@ -2056,45 +1983,27 @@ exports.load = function () {
                     }))
                 }
             })
-
-//            for(var i=0;i<jsonData.length;i++){
-//                if(jsonData[i].memberId){
-//                    (function(i,stutas){
-//                        middleware.request("Tag/Add", {memberId: jsonData[i].memberId,tag: jsonData[i].tag}, then.hold(function (err, doc) {
-//                            if (err) {
-//                                console.log(err)
-//                            }else{
-//                                console.log(doc)
-//                            }
-//                            var docs = JSON.parse(doc);
-//                            sta={};
-//                            sta.stat = docs.success;
-//                            sta.id = jsonData[i].id;
-//                            stutas.push(sta);
-//                        }))
-//                    })(i,stutas)
-//                }
-//            }
         })
 
         this.step(function(){
             console.log("stutas",stutas)
-            for (var i=0; i<aTagList.length; i++) {
-                tag = aTagList[i];
+            //for (var i=0; i<aTagList.length; i++) {
+                //tag = aTagList[i];
                 for(var j=0;j<stutas.length;j++){
                     if(stutas[j].stat==true){
 
-                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:tag}},then.hold(function(err,doc){
+                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:aTagList}},then.hold(function(err,doc){
                             if(err ){
                                 throw err;
                             }
                         }))
                     }
                 }
-            }
+            //}
         });
 
         this.step(function(){
+            console.log("stutas.length",stutas.length)
             for(var j=0;j<stutas.length;j++){
                 if(stutas[j].stat==false){
                     errID.push(stutas[j].id);

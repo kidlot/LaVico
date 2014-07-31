@@ -5,6 +5,12 @@ module.exports = {
     layout: "welab/Layout"
     , view: "lavico/templates/reedem/userList.html"
     , process: function (seed, nut) {
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                nut.model.taglist = docs || {};
+            }))
+        })
         nut.model.startDate = seed.startDate
         nut.model.stopDate = seed.stopDate
         nut.model.unwind = seed.unwind//

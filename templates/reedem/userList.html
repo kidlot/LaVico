@@ -26,7 +26,13 @@
                 <h4 class="modal-title">设置标签</h4>
             </div>
             <div class="modal-body">
-                <input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm tm-input tm-input-info" style="width:240px;"/>
+                <select id="tag"  class="form-control input-sm" style="width: 250px">
+                    <option value="-1" selected="selected">请选择标签</option>
+                    <foreach for="{@taglist}" var="tags">
+                        <option value="{@tags.title}">{@tags.title}</option>
+                    </foreach>
+                </select>
+                <!--<input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm tm-input tm-input-info" style="width:240px;"/>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -118,10 +124,10 @@
          */
         $(".userTagBtn").on("click",function(){
 
-            var tags = $("input[type='hidden'][name='tagsVal']").val();
-            if( tags == ""){
+            var tags = $("#tag option:selected").val();
+            if( tags == "-1"){
                 $.globalMessenger().post({
-                    message: '至少设置一个标签.',
+                    message: '请选择一个标签.',
                     type: 'error',
                     showCloseButton: true})
                 return ;
@@ -152,30 +158,30 @@
                         for(var i=0;i<jsonData.length;i++){
                             if(jsonData[i].id == tds.eq(0).find("input")[0].id && jsonData[i].status==true){
                                 var aOldTagsList = [];
-                                tds.eq(3).find("span").each(function(i,o){
+                                tds.eq(9).find("span").each(function(i,o){
                                     aOldTagsList.push($(o).find("span").text());
                                 })
-
-                                var tags = $("input[type='hidden'][name='tagsVal']").val();
-                                var aNewTagsList = tags.split(",");
+                                var tags = $("#tag option:selected").val();
+//                                var tags = $("input[type='hidden'][name='tagsVal']").val();
+//                                var aNewTagsList = tags.split(",");
 
                                 var _is = false;
-                                for (var iii=0; iii<aNewTagsList.length; iii++){
-                                    _is = false;
-                                    if(jsonData[i].tag == aNewTagsList[iii]){
-                                        for (var ii=0; ii<aOldTagsList.length; ii++){
-                                            if( aOldTagsList[ii].toLowerCase() == aNewTagsList[iii].toLowerCase()){
-                                                _is = true;
-                                                break;
-                                            }
-                                        }
-                                        if( _is == false){
-
-                                            var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="javascript:;" class="tm-tag-remove"  onclick="removeTagOrKeyword(this)">×</a></span>';
-                                            tds.eq(3).find("div").append(_span);
+                                //for (var iii=0; iii<aNewTagsList.length; iii++){
+                                _is = false;
+                                if(jsonData[i].tag == tags){
+                                    for (var ii=0; ii<aOldTagsList.length; ii++){
+                                        if( aOldTagsList[ii].toLowerCase() == tags.toLowerCase()){
+                                            _is = true;
+                                            break;
                                         }
                                     }
+                                    if( _is == false){
+
+                                        var _span = '<span class="tm-tag tm-tag-info" ><span>'+tags+'</span><a href="javascript:;" class="tm-tag-remove"  onclick="removeTagOrKeyword(this)">×</a></span>';
+                                        tds.eq(9).find("div").append(_span);
+                                    }
                                 }
+                                // }
                             }
                         }
                     }
