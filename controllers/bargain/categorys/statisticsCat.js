@@ -47,9 +47,9 @@ module.exports = {
                         var productID = ''+product._id;
                         //参与人次:
                         (function(i){
-                            console.log({action:"侃价","data.step":1,'data.productID':productID});
+                            console.log({action:"侃价","data.step":4,'data.productID':productID});
                             helper.db.coll("lavico/user/logs").aggregate([
-                                {$match:{action:"侃价","data.step":1,'data.productID':productID}},
+                                {$match:{action:"侃价","data.step":4,'data.productID':productID}},
                                 {$group:{_id:"$wxid"}}
                             ],
                                 then.hold(function(err,doc){
