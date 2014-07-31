@@ -48,14 +48,28 @@ module.exports = {
                         //参与人次:
                         (function(i){
                             console.log({action:"侃价","data.step":4,'data.productID':productID});
-                            helper.db.coll("lavico/user/logs").aggregate([
-                                {$match:{action:"侃价","data.step":4,'data.productID':productID}},
-                                {$group:{_id:"$wxid"}}
-                            ],
-                                then.hold(function(err,doc){
-                                    docs[i].pvAll = doc.length || 0
-                                })
-                            )
+
+                            helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":4,'data.productID':productID}).toArray(then.hold(function(err,_doc){
+                                if(_doc&&_doc.length>0){
+                                    docs[i].pvAll = _doc.length
+                                }else{
+                                    docs[i].pvAll = 0
+                                }
+                            }));
+//                            helper.db.coll("lavico/user/logs").find({action:"侃价","data.step":1,'data.productID':productID}).count(then.hold(function(err,doc){
+//                                console.log("doc",doc)
+//                                docs[i].pvAll = doc.length || 0
+//                            }))
+
+//
+//                            helper.db.coll("lavico/user/logs").aggregate([
+//                                {$match:{action:"侃价","data.step":4,'data.productID':productID}},
+//                                {$group:{_id:"$wxid"}}
+//                            ],
+//                                then.hold(function(err,doc){
+//                                    docs[i].pvAll = doc.length || 0
+//                                })
+//                            )
                         })(i);
                         //参与人数:
                         (function(i){
