@@ -174,7 +174,12 @@ module.exports = {
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
 
-
+                    //当前分类的所属的侃价列表的ID数组-筛选-David.xu
+                    if(_ids&&_ids.length>0){
+                        conditions[seed.unwind+"._id"] = {$in:_ids};
+                    }else{
+                        conditions[seed.unwind+"._id"] = 0;
+                    }
 
                     arrregateParams.push({$match:conditions})
                     //console.log(arrregateParams)
@@ -188,12 +193,7 @@ module.exports = {
 
                         })
                     );
-                    //当前分类的所属的侃价列表的ID数组-筛选-David.xu
-                    if(_ids&&_ids.length>0){
-                        conditions[seed.unwind+"._id"] = {$in:_ids};
-                    }else{
-                        conditions[seed.unwind+"._id"] = 0;
-                    }
+
 
                     arrregateParams.push({$sort:sort})
                     arrregateParams.push({$skip:((parseInt(seed.page)-1)||0)*(parseInt(seed.rp) || 20)})
