@@ -23,10 +23,8 @@
 <script>
     function save(){
         var _inputCheck = true;
-        var title = $("#title").val();
+        var title = $("#title").val().trim();
         var titleId = $("#titleId").val();
-        console.log(title);
-        console.log(titleId);
         if(!title){
             _inputCheck = false;
             $.globalMessenger().post({

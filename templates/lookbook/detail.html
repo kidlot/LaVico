@@ -163,7 +163,7 @@
     <section id="section" class="Template_3">
         <div class="new_top_logo"><img src="/lavico/public/images/logo_03_01.png" alt="" /></div>
         <div class="swipe" id="wrapper_03_01">
-            <ul id="slider">
+            <ul id="slider" style="display: none">
                 <foreach for="@allPage.page" var="item" key="key">
                     <li><a href="/lavico/lookbook/productThere?_id={@ _id}&wxid={@ wxid}&pageNum={@key+1}&productId={@item.product[0]._id}"><img src="{@item.pic||'/lavico/public/images/elite_home_top.gif'}" alt="" /></a></li>
                 </foreach>
@@ -218,6 +218,10 @@
         var active = 0;
         var t2;
         function init(){
+            var slider = $("#slider");
+            if (slider.css("display") == "none") {
+                slider.show();
+            }
             var data = JSON.parse($("#jsonData").text())
             var as = document.getElementById('indicator_03_01').getElementsByTagName('li');
             for (var i = 0; i < as.length; i++) {

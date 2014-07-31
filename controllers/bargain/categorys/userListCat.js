@@ -11,7 +11,12 @@ module.exports = {
     , view: "lavico/templates/userList.html"
 
     , process: function (seed, nut) {
-
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                nut.model.taglist = docs || {};
+            }))
+        })
         nut.model.startDate = seed.startDate
         nut.model.stopDate = seed.stopDate
         nut.model.unwind = seed.unwind
@@ -169,7 +174,12 @@ module.exports = {
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
 
-
+                    //当前分类的所属的侃价列表的ID数组-筛选-David.xu
+                    if(_ids&&_ids.length>0){
+                        conditions[seed.unwind+"._id"] = {$in:_ids};
+                    }else{
+                        conditions[seed.unwind+"._id"] = 0;
+                    }
 
                     arrregateParams.push({$match:conditions})
                     //console.log(arrregateParams)
@@ -183,12 +193,7 @@ module.exports = {
 
                         })
                     );
-                    //当前分类的所属的侃价列表的ID数组-筛选-David.xu
-                    if(_ids&&_ids.length>0){
-                        conditions[seed.unwind+"._id"] = {$in:_ids};
-                    }else{
-                        conditions[seed.unwind+"._id"] = 0;
-                    }
+
 
                     arrregateParams.push({$sort:sort})
                     arrregateParams.push({$skip:((parseInt(seed.page)-1)||0)*(parseInt(seed.rp) || 20)})
@@ -251,8 +256,6 @@ module.exports = {
 
                 })
 
-
-
                 this.step(function(){
 
                     var data = JSON.stringify(_data);
@@ -261,24 +264,16 @@ module.exports = {
                     this.res.end();
                 })
             }
-
         }
-
-
         , exports: {
-
             process: function (seed, nut) {
-
+                console.log("_id",seed._id);
                 nut.disabled = true ;
-
                 var conditions = search.conditions(seed) || {} ;
-
                 var _data = {};
                 var _rows = [];
-
                 var sort = {_id:-1};
                 if(seed.sortname){
-
                     var order = seed.sortorder == "asc" ? 1 : -1;
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
@@ -308,7 +303,7 @@ module.exports = {
                     if(seed.unwind){
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
-                    conditions[seed.unwind+"._id"] = 0;
+                    //conditions[seed.unwind+"._id"] = 0;
 
                     //当前分类的所属的侃价列表的ID数组-筛选
                     if(_ids&&_ids.length>0){
@@ -316,7 +311,7 @@ module.exports = {
                     }else{
                         conditions[seed.unwind+"._id"] = 0;
                     }
-
+                    
                     arrregateParams.push({$match:conditions})
                     arrregateParams.push({$sort:sort})
 
@@ -405,10 +400,6 @@ module.exports = {
                     }catch(e){
                         if(e) console.log(e)
                     }
-
-
-                    console.log(conf)
-
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                     this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");

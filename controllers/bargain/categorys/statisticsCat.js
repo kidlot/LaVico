@@ -74,7 +74,7 @@ module.exports = {
                         (function(i){
                             helper.db.coll("lavico/user/logs").aggregate([
                                 {$match:{action:"侃价","data.step":4,"data.stat":true,'data.productID':productID}},
-                                {$group:{_id:"$wxid"}}
+                                {$group:{_id:"$memberID"}}
                             ],
                                 then.hold(function(err,doc){
                                     docs[i].uv = doc.length || 0;
@@ -129,8 +129,6 @@ module.exports = {
                                 max = docs[i].max;
                             }
                         }
-
-                        console.log(product);
                     }
                 }
             });
@@ -174,27 +172,6 @@ module.exports = {
         })
 
 
-        var taglist;
-        var tagstr = "";
-        this.step(function(){
-            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
-                if(err) throw  err;
-                if(docs){
-                    taglist = docs || {};
-                }
-            }))
-        })
-
-        this.step(function(){
-            if(taglist){
-                for(var i=0;i<taglist.length;i++){
-                    tagstr += taglist[i].title + ",";
-                }
-            }
-            var reg=/,$/gi;
-            nut.model.jsonData = tagstr.replace(reg,"");
-            console.log("nut.model.jsonData",nut.model.jsonData);
-        })
     }
     , children: {
 
@@ -233,17 +210,10 @@ module.exports = {
             minView: 2
         });
 
-        var tagstr = $("#jsondata").val();
-        var taglist = tagstr.split(",");
-        var str = []
-        for(var i=0;i<taglist.length;i++){
-            str.push(taglist[i])
-        }
-
-        jQuery("#tags").tagsManager({
-            prefilled: str,
-            hiddenTagListName: 'tagsVal'
-        });
+//        jQuery("#tags").tagsManager({
+//            prefilled: str,
+//            hiddenTagListName: 'tagsVal'
+//        });
 
         $("#exportssd").attr("href","/lavico/bargain/categorys/userListCat:exports?_id="+$("#_id").val()+"&unwind=bargain&data=%7B%22name%22%3A%22%E5%90%8D%E7%A7%B0%22%2C%22createDate%22%3A%22%E6%97%B6%E9%97%B4%22%7D")
     }

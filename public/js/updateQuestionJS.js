@@ -99,7 +99,7 @@ $(function () {
                         chooseName=$li.find("input[name='txtChooseContent']").val();
                         chooseScore=$li.find("input[name='txtChooseScore']").val();
                         chooseNext=$li.find("input[name='txtNext']").val();
-                        customerLabel=$li.find("input[name='txtLab']").val();//自定义标签
+                        customerLabel=$li.find("input[name='txtLab']").val().trim();//自定义标签
                         stopLabel=$li.find("input[name='txtStop']").val();//停止标签
                         uploadFile=$li.find("input[name='uploadFile']").val();
 
@@ -162,7 +162,7 @@ $(function () {
             //条件标签
             var conditionLabel=$fcount.find("input[name='conditionLabel']:eq("+v+")").val();
             //获得标签
-            var getLabel=$fcount.find("input[name='getLabel']:eq("+v+")").val();
+            var getLabel=$fcount.find("input[name='getLabel']:eq("+v+")").val().trim();
             //获得标签内容
             var tipContent=$fcount.find("textarea[name='tipContent']:eq("+v+")").val();
             tipContent = tipContent.replace(/[\n\r\t]/,'<br/>');
