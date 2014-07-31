@@ -15,6 +15,15 @@ module.exports = {
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
 
                 docs = _doc
+                //参与人次:
+                helper.db.coll("lavico/user/logs").count({"data.productID":seed._id,"action":"侃价","data.step":4 },then.hold(function(err,doc){
+                    if(doc){
+                        docs.pvAll = doc
+                    }else{
+                        docs.pvAll = 0
+                    }
+                }))
+
                 //参与人数:
                 helper.db.coll("lavico/user/logs").aggregate([
                         {$match:{action:"侃价","data.step":4,'data.productID':seed._id}},
