@@ -70,7 +70,7 @@ module.exports = {
                                         }
                                     }
 
-                                    docs[i].pv = doc.length || 0
+                                    //docs[i].pv = doc.length || 0
                                 })
                             )
                         })(i);
