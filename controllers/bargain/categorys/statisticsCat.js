@@ -24,6 +24,7 @@ module.exports = {
             nut.model.categoryName = false;
             nut.model.startDate = '';
             nut.model.stopDate = '';
+            var pvlist=[];
             this.step(function(){
                 helper.db.coll("lavico/bargain/categorys").find({_id:helper.db.id(seed._id)}).toArray(this.hold(function(err,_doc){
 
@@ -63,6 +64,12 @@ module.exports = {
                                 {$group:{_id:"$wxid"}}
                             ],
                                 then.hold(function(err,doc){
+                                    for(var i=0;i<doc.length;i++){
+                                        if(pvlist.indexOf(doc[i]._id) < 0 ){
+                                            pvlist.push(doc[i]._id);
+                                        }
+                                    }
+
                                     docs[i].pv = doc.length || 0
                                 })
                             )
@@ -114,7 +121,7 @@ module.exports = {
                         var product = docs[i];
                         var productID = product._id;
                         pvAll += docs[i].pvAll;
-                        pv += docs[i].pv;
+                       // pv += docs[i].pv;
                         uv += docs[i].uv;
                         if(i == 0){
                             min = docs[i].min;
@@ -135,7 +142,7 @@ module.exports = {
 
                 nut.model.doc = docs;
                 nut.model.pvAll = pvAll;//活动参与人次
-                nut.model.pv = pv;//活动参与人数
+                nut.model.pv = pvlist.uniq().length;//活动参与人数
                 nut.model.uv = uv;//活动成交人次
                 uvLonely = wechatArr.uniq().length;//活动成交人数
                 nut.model.uvLonely = uvLonely;
