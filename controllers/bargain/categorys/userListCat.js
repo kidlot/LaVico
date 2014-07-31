@@ -347,6 +347,7 @@ module.exports = {
                                     docs[i].messageCount = docs[i].messageCount||'1';
                                     docs[i].birthday = docs[i].birthday ?parseInt(new Date().getFullYear()-new Date(docs[i].birthday).getFullYear()):""
                                     docs[i].profession = docs[i].profession || '';
+                                    var tags = [];
                                     if( docs[i].tags){
                                         for (var ii=0; ii<docs[i].tags.length; ii++)
                                         {
