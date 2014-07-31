@@ -313,7 +313,7 @@ module.exports = {
                     if(seed.unwind){
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
-                    conditions[seed.unwind+"._id"] = 0;
+                    //conditions[seed.unwind+"._id"] = 0;
 
                     //当前分类的所属的侃价列表的ID数组-筛选
                     if(_ids&&_ids.length>0){
