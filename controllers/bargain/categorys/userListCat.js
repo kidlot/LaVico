@@ -256,8 +256,6 @@ module.exports = {
 
                 })
 
-
-
                 this.step(function(){
 
                     var data = JSON.stringify(_data);
@@ -266,24 +264,16 @@ module.exports = {
                     this.res.end();
                 })
             }
-
         }
-
-
         , exports: {
-
             process: function (seed, nut) {
-
+                console.log("_id",seed._id);
                 nut.disabled = true ;
-
                 var conditions = search.conditions(seed) || {} ;
-
                 var _data = {};
                 var _rows = [];
-
                 var sort = {_id:-1};
                 if(seed.sortname){
-
                     var order = seed.sortorder == "asc" ? 1 : -1;
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
@@ -321,7 +311,7 @@ module.exports = {
                     }else{
                         conditions[seed.unwind+"._id"] = 0;
                     }
-
+                    
                     arrregateParams.push({$match:conditions})
                     arrregateParams.push({$sort:sort})
 
@@ -410,10 +400,6 @@ module.exports = {
                     }catch(e){
                         if(e) console.log(e)
                     }
-
-
-                    console.log(conf)
-
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                     this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
