@@ -290,7 +290,6 @@ module.exports = {
                     ]
 
                     if(seed.unwind){
-                        conditions[seed.unwind+'.stat'] = true
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
 

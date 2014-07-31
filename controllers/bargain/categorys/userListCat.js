@@ -311,7 +311,6 @@ module.exports = {
                     ]
 
                     if(seed.unwind){
-                        conditions[seed.unwind+'.stat'] = true
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
                     //conditions[seed.unwind+"._id"] = 0;
