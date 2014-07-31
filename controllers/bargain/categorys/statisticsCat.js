@@ -50,7 +50,7 @@ module.exports = {
                             console.log({action:"侃价","data.step":1,'data.productID':productID});
                             helper.db.coll("lavico/user/logs").aggregate([
                                 {$match:{action:"侃价","data.step":1,'data.productID':productID}},
-                                {$group:{_id:"$wxid"}}
+                                {$group:{_id:"$memberID"}}
                             ],
                                 then.hold(function(err,doc){
                                     docs[i].pvAll = doc.length || 0
