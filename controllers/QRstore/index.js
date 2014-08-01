@@ -308,8 +308,9 @@ module.exports = {
 
                     this.each(aQr,function(i,o){
 
-                        var holdDo = this.hold()
-                        exec("zip -qj "+folder+"_"+ids.join("")+".zip "+folder+o+".jpg", function (error, stdout, stderr) {
+                        var holdDo = this.hold();
+                        var time = new Date().getTime();
+                        exec("zip -qj "+folder+"_"+time+".zip "+folder+o+".jpg", function (error, stdout, stderr) {
                             if (error !== null) {
                                 console.log('exec error: ' + error);
                             }
