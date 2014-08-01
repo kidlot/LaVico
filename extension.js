@@ -148,7 +148,7 @@ exports.onload = function(application){
     /*
      * 更新个人信息资料
      * */
-    var _time = 1000*60*60;
+    var _time = 1000*10;
     var timer = setInterval(function(){
         http = require('http');
         options = {
