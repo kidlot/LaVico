@@ -188,17 +188,6 @@ module.exports = {
 
         }
 
-        ,downImage:{
-            process: function(seed,nut)
-            {
-                var url = seed.url;
-                this.res.writeHead(200,{"Content-Type":"application/octet-stream"});
-                var imageData = fs.readFileSync(url);
-                this.res.write(imageData);
-                this.res.end();
-            }
-        }
-
         ,exports: {
 
             process: function(seed,nut)
