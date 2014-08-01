@@ -165,7 +165,6 @@ exports.onload = function(application){
                 console.log(data);
             });
         });
-        req.write(post_data);
         console.log(req.end());
     },_time);
 
