@@ -76,9 +76,11 @@ module.exports = {
 
 
             var dTime = new Date()
-            var _ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1)
-            var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym+"-01 00:00:00").getTime();
-            var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
+            var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()-2);//默认三个月内的数据
+            var _end_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1);//默认三个月内的数据
+
+            var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_start_ym+"-01 00:00:00").getTime();
+            var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_end_ym+"-31 23:59:59").getTime();
             nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate,_id:seed._id,unwind:"bargain"};

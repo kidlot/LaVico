@@ -358,9 +358,7 @@ module.exports = {
                                     if(docs[i].source&&storeList){
                                         var _sourceObject = docs[i].source;
                                         for(var _i in _sourceObject){
-                                            console.log('++++++++++++++++++++++++++++++');
                                             if(storeList[_sourceObject[_i]]){
-                                                console.log(storeList[_sourceObject[_i]][2]);
                                                 _sourceObject[_i] = storeList[_sourceObject[_i]][2];
                                             }else{
                                                 _sourceObject[_i] = _sourceObject[_i];
