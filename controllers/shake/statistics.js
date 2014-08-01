@@ -89,7 +89,14 @@ module.exports = {
         this.step(function(){
 
             var dTime = new Date()
-            var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()-2);//默认三个月内的数据
+            if(dTime.getMonth()<=2){
+                var _start_y = dTime.getFullYear() -1;
+                var _start_m = dTime.getMonth() + 12 -2;
+                var _start_ym = _start_y + "-" + _start_m;//默认三个月内的数据
+
+            }else{
+                var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()-2);//默认三个月内的数据
+            }
             var _end_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1);//默认三个月内的数据
 
             var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_start_ym+"-01 00:00:00").getTime();
