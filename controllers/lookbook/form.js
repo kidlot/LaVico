@@ -36,6 +36,14 @@ module.exports = {
             minView: 2
         });
 
+        //复制功能
+        $.getScript('/lavico/public/zclip.js/jquery.zclip.min.js',function(){
+            $("#btnCopy").zclip({
+                path:'/lavico/public/zclip.js/ZeroClipboard.swf',
+                copy:$('#host-url').val()
+            });
+        });
+
     }
 
     , actions: {
