@@ -1647,7 +1647,8 @@ exports.load = function () {
         collMsg.find(messageWhere).sort({time:-1}).page({
             pageNum:_pageNum,
             perPage: 10,
-            filter: conditions && function(doc,cb){
+            filter: (conditions == true) && function(doc,cb){
+
                 collCus.findOne({ $and: [{wechatid: doc.from}, conditions] },function(err,docCUS){
                         if(err) console.log(err) ;
                         cb(docCUS?doc:false) ;

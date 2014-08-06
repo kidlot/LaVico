@@ -24,6 +24,7 @@ module.exports = {
             nut.model.categoryName = false;
             nut.model.startDate = '';
             nut.model.stopDate = '';
+            var pvlist=[];
             this.step(function(){
                 helper.db.coll("lavico/bargain/categorys").find({_id:helper.db.id(seed._id)}).toArray(this.hold(function(err,_doc){
 
@@ -47,15 +48,13 @@ module.exports = {
                         var productID = ''+product._id;
                         //参与人次:
                         (function(i){
-                            console.log({action:"侃价","data.step":1,'data.productID':productID});
-                            helper.db.coll("lavico/user/logs").aggregate([
-                                {$match:{action:"侃价","data.step":1,'data.productID':productID}},
-                                {$group:{_id:"$wxid"}}
-                            ],
-                                then.hold(function(err,doc){
-                                    docs[i].pvAll = doc.length || 0
-                                })
-                            )
+                            helper.db.coll("lavico/user/logs").count({"data.productID":productID,"action":"侃价","data.step":4 },then.hold(function(err,doc){
+                                if(doc){
+                                    docs[i].pvAll = doc
+                                }else{
+                                    docs[i].pvAll = 0
+                                }
+                            }))
                         })(i);
                         //参与人数:
                         (function(i){
@@ -65,7 +64,13 @@ module.exports = {
                                 {$group:{_id:"$wxid"}}
                             ],
                                 then.hold(function(err,doc){
-                                    docs[i].pv = doc.length || 0
+                                    for(var i=0;i<doc.length;i++){
+                                        if(pvlist.indexOf(doc[i]._id) < 0 ){
+                                            pvlist.push(doc[i]._id);
+                                        }
+                                    }
+
+                                    //docs[i].pv = doc.length || 0
                                 })
                             )
                         })(i);
@@ -79,7 +84,10 @@ module.exports = {
                                 then.hold(function(err,doc){
                                     docs[i].uv = doc.length || 0;
                                     for(var j=0;j<doc.length;j++){
-                                        wechatArr.push(doc[j]._id);
+                                        if(wechatArr.indexOf(doc[j]._id) < 0){
+                                            wechatArr.push(doc[j]._id);
+                                        }
+
                                     }
                                 })
                             )
@@ -116,7 +124,7 @@ module.exports = {
                         var product = docs[i];
                         var productID = product._id;
                         pvAll += docs[i].pvAll;
-                        pv += docs[i].pv;
+                       // pv += docs[i].pv;
                         uv += docs[i].uv;
                         if(i == 0){
                             min = docs[i].min;
@@ -137,7 +145,7 @@ module.exports = {
 
                 nut.model.doc = docs;
                 nut.model.pvAll = pvAll;//活动参与人次
-                nut.model.pv = pv;//活动参与人数
+                nut.model.pv = pvlist.uniq().length;//活动参与人数
                 nut.model.uv = uv;//活动成交人次
                 uvLonely = wechatArr.uniq().length;//活动成交人数
                 nut.model.uvLonely = uvLonely;
@@ -163,9 +171,11 @@ module.exports = {
 
 
             var dTime = new Date()
-            var _ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1)
-            var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_ym+"-01 00:00:00").getTime();
-            var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_ym+"-31 23:59:59").getTime();
+            var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()-2);//默认三个月内的数据
+            var _end_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1);//默认三个月内的数据
+
+            var startTimeStamp = seed.startDate ? new Date(seed.startDate + " 00:00:00").getTime() : new Date(_start_ym+"-01 00:00:00").getTime();
+            var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_end_ym+"-31 23:59:59").getTime();
             nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
             seed["$userList"] = {startDate:nut.model.startDate,stopDate:nut.model.stopDate,_id:seed._id,unwind:"bargain"};
