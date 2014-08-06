@@ -31,10 +31,10 @@ module.exports = {
                         }else{
                             process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
                                 if(!err){
-                                    var openid = doc.openid
+                                    var openid = doc.data.openid
                                     wxid = openid || undefined;
                                     console.log("通过oauth获得信息",doc)
-                                    this.req.session.oauthTokenInfo = doc;
+                                    this.req.session.oauthTokenInfo = doc.data;
                                 }
                             }))
                         }
