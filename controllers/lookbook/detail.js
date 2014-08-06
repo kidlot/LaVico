@@ -15,7 +15,7 @@ module.exports = {
 
         this.step(function(){
             if(wxid == undefined){
-                if(this.req.session.oauthTokenInfo){
+                if(this.req.session.oauthTokenInfo && this.req.session.oauthTokenInfo.openid){
                     console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
                     wxid = this.req.session.oauthTokenInfo.openid
                 }else{

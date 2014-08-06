@@ -78,7 +78,7 @@ module.exports= {
 
         this.step(function(){
             if(wechatid == undefined){
-                if(this.req.session.oauthTokenInfo){
+                if(this.req.session.oauthTokenInfo && this.req.session.oauthTokenInfo.openid){
                     console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
                     wechatid = this.req.session.oauthTokenInfo.openid
                 }else{
