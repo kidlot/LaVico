@@ -19,6 +19,7 @@ module.exports = {
         this.step(function(){
             helper.db.coll("lavico/reddem").findOne({"_id": helper.db.id(id)}, this.hold(function (err, doc) {
                 if (err) throw err;
+                doc.des = decodeURIComponent(doc.des);
                 nut.model.doc = doc;
 
             }))
