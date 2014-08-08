@@ -188,17 +188,6 @@ module.exports = {
 
         }
 
-        ,downImage:{
-            process: function(seed,nut)
-            {
-                var url = seed.url;
-                this.res.writeHead(200,{"Content-Type":"application/octet-stream"});
-                var imageData = fs.readFileSync(url);
-                this.res.write(imageData);
-                this.res.end();
-            }
-        }
-
         ,exports: {
 
             process: function(seed,nut)
@@ -206,6 +195,8 @@ module.exports = {
                 var EasyZip=require('easy-zip').EasyZip;
 
                 nut.view.disable() ;
+
+                var time = new Date().getTime();
 
                 var ids = seed.ids.split(',');
 
@@ -308,8 +299,8 @@ module.exports = {
 
                     this.each(aQr,function(i,o){
 
-                        var holdDo = this.hold()
-                        exec("zip -qj "+folder+"_"+ids.join("")+".zip "+folder+o+".jpg", function (error, stdout, stderr) {
+                        var holdDo = this.hold();
+                        exec("zip -qj "+folder+"_"+time+".zip "+folder+o+".jpg", function (error, stdout, stderr) {
                             if (error !== null) {
                                 console.log('exec error: ' + error);
                             }
@@ -325,7 +316,7 @@ module.exports = {
 
                     console.log("ok")
 
-                    fs.readFile(folder+"_"+ids.join("")+".zip", this.hold(function (error, fileData) {
+                    fs.readFile(folder+"_"+time+".zip", this.hold(function (error, fileData) {
                         if (error) {
                             console.log(error)
                         }
