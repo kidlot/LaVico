@@ -1854,6 +1854,15 @@ exports.load = function () {
 
     welabUserDetail.view = "lavico/templates/welab/user/detail.html";
     welabUserDetail.process = function(seed,nut){
+
+
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw err;
+                nut.model.taglist = docs || {};
+            }))
+        })
+
         helper.db.coll("welab/customers").findOne({_id : helper.db.id(seed._id)},this.hold(function(err,doc){
 
             var _data = {};
@@ -1910,6 +1919,89 @@ exports.load = function () {
 
 
     };
+
+    welabUserDetail.viewIn = function(seed,nut){
+
+//        jQuery("#tags").tagsManager({
+//            prefilled: [],
+//            hiddenTagListName: 'tagsVal'
+//        });
+
+
+        $('#datetimepicker').datetimepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            minView: 2
+        }).on('changeDate', function(ev)
+            {
+                $("#datetimepicker").attr("utime",ev.date.valueOf())
+            });
+
+
+        /**
+         * 删除动作
+         */
+        var deletingLink ;
+        $(".removeUserView").on("click",function(){
+            deletingLink = this ;
+            $('#delModal').modal('toggle');
+            return false;
+        })
+
+        $(".removeUserBtn").click(function(){
+            $('#delModal').modal('toggle');
+            $(deletingLink).action(function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/welab/user/list",null,"lazy");
+            }) ;
+            return false;
+        });
+
+        /**
+         * 设置标签
+         */
+        var oUserSetOption = {} ;
+
+        $(".userSetTagView").on("click",function(){
+            //jQuery("#tags").tagsManager('empty');
+            $('#tagModal').modal('toggle');
+            oUserSetOption = {} ;
+            oUserSetOption.data = [];
+            oUserSetOption.data.push({name:"sUserList",value:$("#_id").text()});
+            return false;
+        })
+
+        $(".userTagBtn").click(function(){
+
+            var tags = $("#tag option:selected").val();
+            if( tags == "-1"){
+                $.globalMessenger().post({
+                    message: '请选择一个标签.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+            oUserSetOption.data.push({name:"sTagList",value:tags});
+            oUserSetOption.type = "POST";
+            oUserSetOption.url = "/welab/user/tags:setUserTag";
+            $('#tagModal').modal('toggle');
+
+            $.request(oUserSetOption,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/welab/user/detail?_id="+$("#_id").text(),null,"lazy");
+            }) ;
+
+            return false;
+
+        });
+
+        pro=document.getElementById("provid");
+        for(var key in selects){
+            pro.options.add(new Option(key,key));
+        }
+    }
 
     // 复写 welab/user/detail by David.xu 2014-05-29 End
 

@@ -359,7 +359,13 @@
                 <h4 class="modal-title">设置标签</h4>
             </div>
             <div class="modal-body">
-                <input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm" style="width:240px;"/>
+                <select id="tag"  class="form-control input-sm" style="width: 250px">
+                    <option value="-1" selected="selected">请选择标签</option>
+                    <foreach for="{@taglist}" var="tags">
+                        <option value="{@tags.title}">{@tags.title}</option>
+                    </foreach>
+                </select>
+                <!--<input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm" style="width:240px;"/>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
