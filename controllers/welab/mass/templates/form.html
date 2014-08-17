@@ -1,0 +1,294 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .nav-tabs {
+        margin-bottom: 0px;
+    }
+</style>
+<input type="hidden" id="_id" value="{@ _id}">
+<input type="hidden" id="_pid" value="{@ _pid}">
+<input type="hidden" id="action" value="{@ doc.action||'link'}">
+<input type="hidden" id="seedAction" value="{@ action}">
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/welab/apps/menu/index" >消息群发</a></li>
+    <li class="b03"><a href="#" class="stay">编辑</a></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+
+        <div class="btn-group" style="float: left; margin-top: 6px">
+            <a href="/welab/apps/menu/index"><i class="fui-arrow-left"></i></a>
+        </div>
+        <div class="btn-group" style="float: left; margin-left: 15px">
+            <h6 style="margin-top: 2px; color: #1ABC9C">编辑/新增</h6>
+        </div>
+        <div style="float: right;">
+            <div style="float: right; width: 125px;">
+                <a class="btn btn-xs btn-primary mhm" href="javascript:;" onclick="save()">保存</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <div class="col-md-12">
+            <p>
+                基础设置
+            </p>
+
+            <div style="padding: 15px">
+                <table cellpadding="10">
+                    <tbody><tr>
+                        <th>
+                            类型
+                        </th>
+                        <td>
+                            <select class="form-control" style="width: 200px;color: #8F8F8F" name="type" id="type" disabled>
+                                <option value="-1" >一级菜单</option>
+
+                                <foreach for="@ menu1" var="menu" key="key">
+                                    <option value="{@ key}" >{@ menu.name}</option>
+                                </foreach>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            名称
+                        </th>
+                        <td>
+                            <input type="text" name="name" id="name" class="form-control" style="width: 275px" value="{@ doc.name}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            标签
+                        </th>
+                        <td>
+                            <input type="text" name="tags" class="form-control tm-input tm-input-info" style="width: 275px" id="tag" value="{@ doc.tag}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            动作
+                        </th>
+                        <td>
+                            <div class="bs-example bs-example-tabs">
+                                <ul id="myTab" class="nav nav-tabs">
+                                    <li class="active"><a href="#url" data-toggle="tab" onclick="$('#action').val('link')">网址</a></li>
+                                    <li><a href="#news" data-toggle="tab" onclick="$('#action').val('news')">图文</a></li>
+                                    <li><a href="#text" data-toggle="tab" onclick="$('#action').val('text')">文字</a></li>
+                                    <li><a href="#custom" data-toggle="tab" onclick="$('#action').val('custom')">自定义</a></li>
+                                    <!--<li><a href="#photo" data-toggle="tab">图片</a></li>
+                                    <li><a href="#voice" data-toggle="tab">语音</a></li>
+                                    <li><a href="#music" data-toggle="tab">音乐</a></li>
+                                    <li><a href="#video" data-toggle="tab">视频</a></li>-->
+                                </ul>
+                                <div id="myTabContent" class="tab-content" style="width:608px;border-left: 2px solid #ddd;border-right: 2px solid #ddd;border-radius: 0px;border-bottom: 2px solid #ddd;border-top: 0px solid #ddd;">
+                                    <div class="tab-pane fade in active" id="url" style="height: 40px">
+                                        <input type="text" style="width: 566px;border: 0px;line-height: 30px;font-size: 20px" class="pull-left" placeholder="www.welab.com" id="replylink">
+                                    </div>
+                                    <div class="tab-pane fade" id="news" style="min-height: 40px">
+                                        <div>
+                                            <div class="pull-left">
+                                                <h6 class="replyDetail" _id="{@ doc.reply}"></h6>
+                                            </div>
+                                            <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="showReplyList()">请选择</a>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="text" style="min-height: 40px">
+                                        <textarea rows="3" style="border: 0px;width: 100%" placeholder="请输入内容" id="replytext"></textarea>
+                                    </div>
+                                    <div class="tab-pane fade" id="custom" style="min-height: 40px">
+                                        <div>
+                                            <div class="pull-left">
+                                                需要程序中编辑
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="photo" style="min-height: 40px">
+                                        <div>
+                                            <div class="pull-left">
+                                                暂不开放
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="voice" style="min-height: 40px">
+                                        <div>
+                                            <div class="pull-left">
+                                                暂不开放
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="video" style="min-height: 40px">
+                                        <div>
+                                            <div class="pull-left">
+                                                暂不开放
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody></table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="replyList_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">请选择图文</h4>
+            </div>
+            <div class="modal-body">
+                <h6>
+                    <ul>
+                        <foreach for="@replyList" var="list">
+                            <li>
+                                <a href="javascript:;" onclick="setReplyList('{@ list.title || list.name}','{@list._id}')">{@ list.title || list.name}</a>
+                            </li>
+                        </foreach>
+                    </ul>
+                </h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<link rel="stylesheet" type="text/css" href="/welab/apps/welcome/public/bootstrap-wysihtml5.css"></link>
+<script src="/welab/public/ckeditor/ckeditor.js"></script>
+
+<script>
+    function showReplyList(){
+        $('#replyList_modal').modal('toggle');
+    }
+    function setReplyList(name,_id){
+
+        $(".replyDetail").text(name)
+        $(".replyDetail").attr('_id',_id)
+        $('#replyList_modal').modal('toggle');
+    }
+
+    function save ( ){
+
+        var aFormInput = {}
+        if(!$("#name").val()){
+            $.globalMessenger().post({
+                message: "名称不能为空",
+                type: 'error',
+                showCloseButton: true})
+            return false;
+        }
+        if(!$("#tag").val()){
+            $.globalMessenger().post({
+                message: "标签不能为空",
+                type: 'error',
+                showCloseButton: true})
+            return false;
+        }
+        if($("#action").val() == "link"){
+            if(!$("#replylink").val()){
+                $.globalMessenger().post({
+                    message: "链接不能为空",
+                    type: 'error',
+                    showCloseButton: true})
+                return false;
+            }
+            aFormInput['reply'] = $("#replylink").val()
+        }
+        if($("#action").val() == "news"){
+            if(!$(".replyDetail").attr("_id")){
+                $.globalMessenger().post({
+                    message: "图文不能为空",
+                    type: 'error',
+                    showCloseButton: true})
+                return false;
+            }
+            aFormInput['reply'] = $(".replyDetail").attr("_id")
+        }
+        if($("#action").val() == "text"){
+            var content = CKEDITOR.instances.replytext.document.getBody().getHtml();
+            if(!content){
+                $.globalMessenger().post({
+                    message: "文本不能为空",
+                    type: 'error',
+                    showCloseButton: true})
+                return false;
+            }
+            aFormInput['reply'] = encodeURIComponent(content)//$("#replytext").val()
+        }
+
+        aFormInput['action'] = $("#action").val()
+        aFormInput['name'] = $("#name").val()
+        aFormInput['tag'] = $("#tag").val()
+        aFormInput['type'] = $("#type").val()
+        aFormInput['isOpen'] =  true;
+
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()},{name:'_pid',value:$("#_pid").val()},{name:'action',value:$("#seedAction").val()}];
+        oLinkOptions.type = "POST";
+        oLinkOptions.url = "/welab/apps/menu/form:save";
+
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+
+            if(nut.msgqueue[0].type=="error"){
+
+                nut.msgqueue.popup() ;
+            }else{
+                $.controller("/welab/apps/menu/index",null,"lazy");
+            }
+            //
+        }) ;
+    }
+
+
+    window.onload = function(){
+
+        var _id = '{@ _id}'
+        var _pid = '{@ _pid}'
+        if(_id){
+            $("select[name='type']").find("option[value='"+_id+"']").attr("selected","selected")
+        }else{
+            $("select[name='type']").find("option[value='-1']").attr("selected","selected")
+        }
+
+
+        var action = $("#action").val();
+        if(action == "news"){
+            $('#myTab li:eq(1) a').tab('show')
+            $(".replyDetail").text('{@ doc.replyname}')
+        }
+        if(action == "text"){
+            $('#myTab li:eq(2) a').tab('show')
+
+            var content = decodeURIComponent('{@doc.reply}')
+            if(content){
+                CKEDITOR.instances.replytext.setData(content)
+            }
+        }
+        if(action == "link"){
+            $('#myTab li:eq(0) a').tab('show')
+            $("#replylink").val('{@ doc.reply}')
+        }
+        if(action == "custom"){
+            $('#myTab li:eq(3) a').tab('show')
+        }
+    }
+</script>

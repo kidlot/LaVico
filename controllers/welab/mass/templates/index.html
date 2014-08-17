@@ -1,0 +1,172 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/welab/apps/mass/index" >消息群发</a></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+
+        <div class="btn-group" style="float: left; margin-top: 6px">
+            <a href="/welab/apps/menu/index"><i class="fui-arrow-left"></i></a>
+        </div>
+        <div class="btn-group" style="float: left; margin-left: 15px">
+            <h6 style="margin-top: 2px; color: #1ABC9C">群发</h6>
+        </div>
+        <div style="float: right;">
+            <div style="float: right; width: 125px;">
+                <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="send()">发送</a>
+            </div>
+            <div style="float: right; width: 125px;">
+                <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="tagtoman()">查询标签人数</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <p>
+            <span class="fui-user"></span> 指定标签
+        </p>
+
+        <div style="padding: 15px">
+            <table cellpadding=10>
+                <tr>
+                    <th>
+                        标签
+                    </th>
+                    <td>
+                        <select class="form-control" id="tag">
+                            <option value="">请选择</option>
+                            <foreach for="@ tags" var="tag">
+                                <option value="{@ tag._id}">{@ tag._id}</option>
+                            </foreach>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>
+            <span class="fui-user"></span> 筛选用户
+        </p>
+
+        <div style="padding: 15px">
+            <include file="lavico/controllers/welab/mass/templates/searchForm.html" />
+
+        </div>
+
+        <script src="/welab/public/js/coffee-script.js"></script>
+        <!--David.xu重写searchbox.js At 2014-06-24-->
+        <script src="/lavico/public/js/searchbox.js"></script>
+
+        <link href="/welab/public/css/searchbox.css" rel="stylesheet">
+
+        <p>
+            <span class="fui-user"></span> 指定回复
+        </p>
+
+        <div style="padding: 15px">
+            <table cellpadding=10>
+                <tr>
+                    <th>
+                        回复
+                    </th>
+                    <td>
+                        <div>
+                            <div class="pull-left">
+                                <h6 class="replyDetail" _id=""></h6>
+                            </div>
+                            <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="showReplyList()">请选择</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="replyList_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">请选择图文</h4>
+            </div>
+            <div class="modal-body">
+                <h6>
+                    <ul>
+                        <foreach for="@replyList" var="list">
+                            <li>
+                                <a href="javascript:;" onclick="setReplyList('{@ list.title || list.name}','{@list._id}')">{@ list.title || list.name}</a>
+                            </li>
+                        </foreach>
+                    </ul>
+                </h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    function showReplyList(){
+        $('#replyList_modal').modal('toggle');
+    }
+
+    function setReplyList(name,_id){
+
+        $(".replyDetail").text(name)
+        $(".replyDetail").attr('_id',_id)
+        $('#replyList_modal').modal('toggle');
+    }
+    function tagtoman(){
+
+        var tag = $("#tag").val()
+        $.ajax({
+            url: "/welab/apps/mass/form:tagtoman?tag="+tag,
+            cache: false
+        }).done(function( json ) {
+                $.globalMessenger().post({
+                    message: json.msg + "人",
+                    showCloseButton: true})
+        });
+
+    }
+
+    function send(){
+
+        if(!$("#tag").val()){
+            $.globalMessenger().post({
+                message: "未选择标签",
+                type:"error",
+                showCloseButton: true})
+
+            return false;
+        }
+        if(!$(".replyDetail").attr("_id")){
+            $.globalMessenger().post({
+                message: "未选择回复",
+                type:"error",
+                showCloseButton: true})
+
+            return false;
+        }
+        $.ajax({
+            url: "/welab/apps/mass/form:send?tag="+$("#tag").val()+"&reply=" + $(".replyDetail").attr("_id"),
+            cache: false
+        }).done(function( json ) {
+            $.globalMessenger().post({
+                message: json.msg,
+                showCloseButton: true})
+        });
+    }
+</script>

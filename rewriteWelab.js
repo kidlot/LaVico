@@ -2230,4 +2230,83 @@ exports.load = function () {
 
         })
     }
+
+    //复写 /welab/apps/mass/index
+    var welabAppsMassIndex = require("welab/apps/mass/controllers/index");
+    welabAppsMassIndex.view = "lavico/controllers/welab/mass/templates/index.html";
+    welabAppsMassIndex.viewIn=function() {
+
+        // search box--搜索显示
+        $.searchInitConditions([
+            {field: 'realname', title: '姓名', type: 'text'}
+            ,
+            {field: 'gender', title: '性别', type: 'gender'}
+            ,
+            {field: 'birthday', title: '年龄', type: 'birthday'}
+            ,
+            {field: 'email', title: '电子邮件', type: 'text'}
+            ,
+            {field: 'mobile', title: '移动电话', type: 'text'}
+            ,
+            {field: 'registerTime', title: '注册时间', type: 'date'}
+            ,
+            {field: 'followTime', title: '关注时间', type: 'date'}
+            ,
+            {field: 'tags', title: '标签', type: 'text'}
+            ,
+            {field: 'nickname', title: '昵称', type: 'text'}
+            ,
+            {field: 'city', title: '城市', type: 'text'}
+            ,
+            {field: 'profession', title: '行业', type: 'text'}
+            ,
+            {field: 'source', title: '关注来源', type: 'value'}
+            ,
+            {field: 'HaiLanMemberInfo.action', title: '绑定', type: 'member'}
+            ,
+            {field: 'HaiLanMemberInfo.type', title: '会员卡', type: 'membertype'}
+            ,
+            {field: 'isFollow', title: '关注', type: 'follow'}
+            ,
+            {field: 'isRegister', title: '注册', type: 'register'}
+        ]);
+
+        $(".btnsearch").click(function () {
+            var conditions = $(this).searchConditions();
+            if (!conditions.length)
+                return;
+
+            var searchObj = {params: [
+                {name: "conditions", value: JSON.stringify(conditions)},
+                {name: "logic", value: $("[name=searchLogic]").val()}
+            ]};
+            var tag = $("#tag").val()
+            $.ajax({
+                url: "/lavico/welab/mass/controllers/form:selecttoman",
+                cache: false,
+                type: 'POST',
+                data:searchObj,
+            }).done(function( json ) {
+                $.globalMessenger().post({
+                    message: json.msg + "人",
+                    showCloseButton: true})
+            });
+            console.log(searchObj);
+
+
+
+        });
+
+        //取消筛选
+        $(".btncancel").click(function () {
+            $('.searchConditionOuter').empty()
+        });
+
+    }
+
+    var welabAppsMassForm = require("welab/apps/mass/controllers/form");
+    welabAppsMassForm = "lavico/controllers/welab/mass/controllers/form"
+
+
 };
+

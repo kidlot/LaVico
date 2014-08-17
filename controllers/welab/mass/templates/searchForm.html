@@ -1,0 +1,127 @@
+<div class="form-search searchbox" id="searchView">
+
+    <div style="margin-top: 5px; margin-bottom: 5px;">
+        <span>符合以下</span>
+
+        <select name="searchLogic" class="form-control input-sm"  style="width:80px;">
+            <option value="or">任意</option>
+            <option value="and">全部</option>
+        </select>
+        <span>条件</span>
+    </div>
+
+    <div class="searchConditionOuter"></div>
+
+    <div class="mb15">
+        <a class="glyphicon glyphicon-plus-sign lnk-add-condition" href="javascript:void(0)"></a> <a class="lnk-add-condition" href="javascript:void(0)">添加条件</a>
+    </div>
+
+    <div style="">
+        <button type="button" class="btn btn-embossed btn-primary btnsearch">查看用户数量</button>
+        <button type="button" class="btn btn-embossed btn-primary btncancel">取消筛选</button>
+    </div>
+
+</div>
+
+<div style="display:none" class="searchTemplates">
+    <div class="searchConditionTemplate searchCondition" style="margin-bottom: 5px;">
+        <a href="javascript:;"><i class="glyphicon glyphicon-minus-sign removeItem"></i></a>
+        <select name="searchFieldName" class="form-control input-sm" style="width:80px">
+            <option value="realname" search-field-type="text">姓名</option>
+            <option value="gender" search-field-type="gender">性别</option>
+            <option value="birthday" search-field-type="birthday">年龄</option>
+            <option value="email" search-field-type="text">电子邮件</option>
+            <option value="mobile" search-field-type="text">移动电话</option>
+            <option value="registerTime" search-field-type="date">注册时间</option>
+            <option value="followTime" search-field-type="date">关注时间</option>
+            <option value="tags" search-field-type="value">标签</option>
+        </select>
+    </div>
+
+  <span class="searchExpression searchExpressionGender">
+    <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
+        <option value="male">男</option>
+        <option value="female">女</option>
+    </select>
+  </span>
+
+
+  <span class="searchExpression searchExpressionMember">
+    <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
+        <option value="bind">已绑定</option>
+        <option value="unbind">已解绑</option>
+    </select>
+  </span>
+
+  <span class="searchExpression searchExpressionFollow">
+    <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
+        <option value="true">是</option>
+        <option value="false">否</option>
+    </select>
+  </span>
+
+  <span class="searchExpression searchExpressionRegister">
+    <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
+        <option value="true">是</option>
+        <option value="false">否</option>
+    </select>
+  </span>
+
+  <span class="searchExpression searchExpressionMemberType">
+    <select name="searchConditionValue" class="form-control input-sm" style="width:80px">
+        <option value="1">白卡</option>
+        <option value="2">VIP卡</option>
+        <option value="3">白金VIP卡</option>
+    </select>
+  </span>
+
+  <span class="searchExpression searchExpressionText">
+    <select name="searchConditionOperator" class="form-control input-sm" style="width:80px">
+        <option value="is">是</option>
+        <option value="not">不是</option>
+        <option value="match">包含</option>
+        <option value="notmatch">不包含</option>
+    </select>
+    <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
+  </span>
+
+  <span class="searchExpression searchExpressionNum">
+    <select name="searchConditionOperator" class="form-control input-sm" style="width:80px">
+        <option value="eq">等于</option>
+        <option value="gt">大于</option>
+        <option value="lt">小于</option>
+        <option value="gte">大于等于</option>
+        <option value="lte">小于等于</option>
+    </select>
+    <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
+  </span>
+
+    <span class="searchExpression searchExpressionbirthday">
+    <select name="searchConditionOperator" class="form-control input-sm" style="width:80px">
+        <option value="eq">等于</option>
+        <option value="lt">大于</option>
+        <option value="gt">小于</option>
+        <option value="lte">大于等于</option>
+        <option value="gte">小于等于</option>
+    </select>
+    <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
+  </span>
+
+  <span class="searchExpression searchExpressionDate">
+      <input type="text" name="searchConditionValue" class="datepicker form-control input-sm" style="width:200px"/>
+      <input type="text" name="searchConditionValueEnd" class="datepicker form-control input-sm" style="width:200px" step="display:none;"/>
+  </span>
+
+  <span class="searchExpression searchExpressionValue">
+    <input type="text" name="searchConditionValue" class="form-control input-sm" style="width:200px"/>
+  </span>
+
+</div>
+
+<script>
+
+    function search(){
+        window.location.href = "/lavico/"+$(".unwind").val()+"/statistics?_id="+$("#_id").val()+"&startDate="+$("#startDate").val()+"&stopDate="+$("#stopDate").val()
+    }
+
+</script>

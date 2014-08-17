@@ -1,0 +1,61 @@
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/AppList" class="stay">应用</a> <em></em></li>
+    <li class="b02"><a href="/welab/AppList" class="stay">应用管理</a> <em></em></li>
+    <li class="b03"><a href="/welab/apps/menu/index" >消息群发</a></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="height: 50px">
+
+        <div class="btn-group" style="float: left; margin-top: 6px">
+            <a href="/welab/apps/menu/index"><i class="fui-arrow-left"></i></a>
+        </div>
+        <div class="btn-group" style="float: left; margin-left: 15px">
+            <h6 style="margin-top: 2px; color: #1ABC9C">统计</h6>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table" id="tagList">
+            <thead>
+            <tr>
+                <th >id</th>
+                <th>状态</th>
+                <th>发送数</th>
+                <th>失败数</th>
+                <th>时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@ masslog" var="log">
+                <tr class="mainMenu">
+                    <td>
+                        {@ log.msgid}
+                    </td>
+                    <td>
+                        {@ log.result && log.result.Status}
+                    </td>
+                    <td>
+                        {@ log.result && log.result.SentCount}
+                    </td>
+                    <td>
+                        {@ log.result && log.result.ErrorCount}
+                    </td>
+                    <td>
+                        {@ log.result && new Date(log.createTime).toISOString().substr(0,10)}
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
