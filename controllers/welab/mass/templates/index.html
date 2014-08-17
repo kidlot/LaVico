@@ -26,7 +26,7 @@
                 <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="send()">发送</a>
             </div>
             <div style="float: right; width: 125px;">
-                <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="tagtoman()">查询人数</a>
+                <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="man()">查询人数</a>
             </div>
         </div>
     </div>
@@ -146,6 +146,32 @@
 
     }
 
+    function man(){
+
+        var conditions = $(".btnsearch").searchConditions();
+//        if (!conditions.length)
+//            return;
+        if($("#tag").val()){
+            var _arr = ['tags',$("#tag").val(),"is"];
+            conditions[0].value.push(_arr);
+        }
+
+        var searchObj = {params: [
+            {name: "conditions", value: JSON.stringify(conditions)},
+            {name: "logic", value: $("[name=searchLogic]").val()},
+        ]};
+        $.ajax({
+            url: "/lavico/welab/mass/controllers/form:man",
+            cache: false,
+            type: 'POST',
+            data:searchObj,
+        }).done(function( json ) {
+            $.globalMessenger().post({
+                message: json.msg + "人",
+                showCloseButton: true})
+        });
+        console.log(searchObj);
+    }
     function send(){
 
         if(!$("#tag").val()){

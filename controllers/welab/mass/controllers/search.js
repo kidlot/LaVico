@@ -88,7 +88,7 @@ exports.conditions = function (seed) {
 
     conditions[ seed.logic == 'and' ? '$and' : '$or' ] = _conditions;
 
-    // console.log(conditions) ;
+    console.log(conditions) ;
 
     return conditions;
 }
