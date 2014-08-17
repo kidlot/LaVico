@@ -26,7 +26,7 @@
                 <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="send()">发送</a>
             </div>
             <div style="float: right; width: 125px;">
-                <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="tagtoman()">查询标签人数</a>
+                <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="tagtoman()">查询人数</a>
             </div>
         </div>
     </div>
@@ -49,6 +49,10 @@
                                 <option value="{@ tag._id}">{@ tag._id}</option>
                             </foreach>
                         </select>
+                    </td>
+                    <td>
+                        <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="tagtoman()">查询标签人数</a>
+
                     </td>
                 </tr>
             </table>
