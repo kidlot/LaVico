@@ -624,9 +624,9 @@ exports.load = function () {
         count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
         count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
-//        console.log('*************0*************');
-//        console.log(JSON.stringify(seed));
-//        console.log('*************0*************');
+        console.log('*************0*************');
+        console.log(JSON.stringify(seed));
+        console.log('*************0*************');
 
         var conditions = search.conditions(seed) ;
 

@@ -4,6 +4,9 @@ function regexpEscape(s) {
 
 exports.conditions = function (seed) {
 
+    seed.conditions = seed[0].value;
+    seed.logic = seed[1].value;
+
     var conditions = {};
     if (!seed.conditions)
         return;
