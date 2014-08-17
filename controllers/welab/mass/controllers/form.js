@@ -230,6 +230,12 @@ module.exports = {
 
             process: function (seed, nut) {
 
+                console.log('******************');
+                console.log(seed.params);
+                seed.reply = seed.params[2].value;
+                console.log(seed.reply);
+                console.log('******************');
+
                 var res = {}
                 var list = {}
                 var reply = {}
@@ -245,26 +251,97 @@ module.exports = {
                     res = {err:1,msg:"不是认证服务号，不能使用群发功能"}
                 }
 
+
+                var conditions = {} ;
+
+                this.step(function() {
+                    conditions = search.conditions(seed.params) ;
+                    console.log(conditions);
+
+                    //关注时间 任意
+                    if (conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime) {
+                        conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt / 1000);
+                        conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt / 1000);
+
+                    }
+
+                    //关注时间 全部
+                    if (conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime) {
+                        conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt / 1000);
+                        conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt / 1000);
+                    }
+                    //年龄 任意
+                    if (conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday) {
+                        if (conditions.$or[0].birthday.$gt) {
+                            conditions.$or[0].birthday.$gt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday.$gt))) + "-12-31 23:59:59").getTime();
+                        } else if (conditions.$or[0].birthday.$lt) {
+                            conditions.$or[0].birthday.$lt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday.$lt))) + "-01-01 00:00:00").getTime();
+                        } else if (conditions.$or[0].birthday.$lte) {
+                            conditions.$or[0].birthday.$lte = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday.$lte))) + "-12-31 23:59:59").getTime();
+                        } else if (conditions.$or[0].birthday.$gte) {
+                            conditions.$or[0].birthday.$gte = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday.$gte))) + "-01-01 00:00:00").getTime();
+                        } else {
+                            var gt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday))) + "-01-01 00:00:00").getTime();
+                            var lt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday))) + "-12-31 23:59:59").getTime();
+                            var investigation = {$gte: gt, $lte: lt};
+                            conditions.$or[0].birthday = investigation;
+                        }
+                    }
+                    //年龄 全部
+                    if (conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday) {
+                        if (conditions.$and[0].birthday.$gt) {
+                            conditions.$and[0].birthday.$gt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday.$gt))) + "-12-31 23:59:59").getTime();
+                        } else if (conditions.$and[0].birthday.$lt) {
+                            conditions.$and[0].birthday.$lt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday.$lt))) + "-01-01 00:00:00").getTime();
+                        } else if (conditions.$and[0].birthday.$lte) {
+                            conditions.$and[0].birthday.$lte = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday.$lte))) + "-12-31 23:59:59").getTime();
+                        } else if (conditions.$and[0].birthday.$gte) {
+                            conditions.$and[0].birthday.$gte = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday.$gte))) + "-01-01 00:00:00").getTime();
+                        } else {
+                            var gt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday))) + "-01-01 00:00:00").getTime();
+                            var lt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday))) + "-12-31 23:59:59").getTime();
+                            var investigation = {$gte: gt, $lte: lt};
+                            conditions.$and[0].birthday = investigation;
+                        }
+                    }
+                });
+
+
                 this.step(function(){
-
-                    // 查标签
-                    helper.db.coll("welab/customers").aggregate([
-                        {$match:{tags:seed.tag}},
-                        {$group: {
-                            _id: "$wechatid"
-                        }}
-                    ],this.hold(function(err,doc){
-                        list = doc
-                    }))
-
-                    // 查回复
+                    console.log(conditions);
+                    helper.db.coll("welab/customers").find(conditions).toArray(this.hold(function(err,doc){
+                        if(doc){
+                            list = doc
+                        }else{
+                            list = {};
+                        }
+                    }));
+                    //查回复
                     helper.db.coll("welab/reply").findOne({_id:helper.db.id(seed.reply)},this.hold(function(err,docs){
                         if(err) throw err ;
                         reply = docs
                     }))
-
-
-                })
+                });
+//                this.step(function(){
+//
+//                    // 查标签
+//                    helper.db.coll("welab/customers").aggregate([
+//                        {$match:{tags:seed.tag}},
+//                        {$group: {
+//                            _id: "$wechatid"
+//                        }}
+//                    ],this.hold(function(err,doc){
+//                        list = doc
+//                    }))
+//
+//                    // 查回复
+//                    helper.db.coll("welab/reply").findOne({_id:helper.db.id(seed.reply)},this.hold(function(err,docs){
+//                        if(err) throw err ;
+//                        reply = docs
+//                    }))
+//
+//
+//                })
                 this.step(function(){
 
                     if(list.length == 0){

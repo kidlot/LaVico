@@ -2237,14 +2237,15 @@ exports.load = function () {
     welabAppsMassIndex.viewIn=function() {
 
         // search box--搜索显示
+        //用户昵称、会员名、性别、年龄、生日、移动电话、城市、行业、标签、关注来源、注册时间、关注时间、会员卡
         $.searchInitConditions([
             {field: 'realname', title: '姓名', type: 'text'}
             ,
             {field: 'gender', title: '性别', type: 'gender'}
             ,
             {field: 'birthday', title: '年龄', type: 'birthday'}
-            ,
-            {field: 'email', title: '电子邮件', type: 'text'}
+            //,
+            //{field: 'email', title: '电子邮件', type: 'text'}
             ,
             {field: 'mobile', title: '移动电话', type: 'text'}
             ,

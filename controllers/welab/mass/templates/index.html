@@ -45,7 +45,6 @@
                     <td>
                         <select class="form-control" id="tag">
                             <option value="">请选择</option>
-                            <option value="test">test</option>
 
                             <foreach for="@ tags" var="tag">
                                 <option value="{@ tag._id}">{@ tag._id}</option>
@@ -200,9 +199,33 @@
 
             return false;
         }
+
+        var conditions = $(".btnsearch").searchConditions();
+        console.log('+++++++++++++++++');
+        console.log(conditions);
+        console.log('+++++++++++++++++');
+
+        if($("#tag").val()){
+            var _arr = ['tags',$("#tag").val(),"is"];
+            console.log(_arr);
+            if(conditions){
+                conditions.push(_arr);
+
+            }
+        }
+
+        var searchObj = {params: [
+            {name: "conditions", value: JSON.stringify(conditions)},
+            {name: "logic", value: $("[name=searchLogic]").val()},
+            {name: "reply",value:$(".replyDetail").attr("_id")}
+        ]};
+
+
         $.ajax({
-            url: "/welab/apps/mass/form:send?tag="+$("#tag").val()+"&reply=" + $(".replyDetail").attr("_id"),
-            cache: false
+            url: "/lavico/welab/mass/controllers/form:send",
+            cache: false,
+            type: 'POST',
+            data:searchObj,
         }).done(function( json ) {
             $.globalMessenger().post({
                 message: json.msg,
