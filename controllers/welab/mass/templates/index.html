@@ -149,11 +149,14 @@
     function man(){
 
         var conditions = $(".btnsearch").searchConditions();
+        console.log(conditions);
 //        if (!conditions.length)
 //            return;
         if($("#tag").val()){
             var _arr = ['tags',$("#tag").val(),"is"];
-            conditions[0].value.push(_arr);
+            if(conditions&&conditions.length>0){
+                conditions[0].value.push(_arr);
+            }
         }
 
         var searchObj = {params: [
