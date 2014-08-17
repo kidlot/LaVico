@@ -156,8 +156,11 @@
             var _arr = ['tags',$("#tag").val(),"is"];
             console.log(_arr);
             _arr = JSON.stringify(_arr);
-            if(conditions&&conditions.length>0){
-                conditions[0].value += _arr;
+            if(conditions&&conditions[0]&&conditions[0].value){
+                var _a = JSON.parse(conditions[0].value);
+                _a.push(_arr);
+                var _s = JSON.stringify(_a);
+                conditions[0].value = _s;
             }
         }
 
