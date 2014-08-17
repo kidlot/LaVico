@@ -49,53 +49,71 @@ module.exports = {
                 console.log(seed.params);
                 console.log('******************');
 
-                var conditions = search.conditions(seed) ;
-                var collCus = helper.db.coll("welab/customers") ;
-                var collMsg = helper.db.coll("welab/messages") ;
-                var collReply = helper.db.coll("welab/reply") ;
-                var pg;
+                var conditions = {} ;
 
-                var messageWhere = {replyFor:null}
+                var _data = {};
+                var _rows = [];
 
-                this.step(function(){
+                var sort = {_id:-1};
+
+                this.step(function() {
+                    conditions = search.conditions(seed.params) ;
 
 
-                    // 单独增加消息类型的搜索
-                    if(conditions && (conditions['$or'])){
+                    //关注时间 任意
+                    if (conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime) {
+//                console.log(JSON.stringify(conditions));
+//                console.log(conditions.$or[0].followTime.$gt)
+                        conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt / 1000);
+                        conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt / 1000);
 
-                        for(var i=0 ; i<conditions['$or'].length ; i++){
-
-                            var _where = conditions['$or'][i]
-                            if(_where['message.type']){
-                                messageWhere.type = _where['message.type']
-                                conditions['$or'].splice(i,1)
-                            }
-                        }
-
-                        if(conditions['$or'].length == 0){
-                            delete conditions['$or'];
-                        }
-                    }
-                    if(conditions && (conditions['$and'])){
-
-                        for(var i=0 ; i<conditions['$and'].length ; i++){
-
-                            var _where = conditions['$and'][i]
-                            if(_where['message.type']){
-                                messageWhere.type = _where['message.type']
-                                conditions['$and'].splice(i,1)
-                            }
-                        }
-
-                        if(conditions['$and'].length == 0){
-                            delete conditions['$and'];
-                        }
                     }
 
+                    //关注时间 全部
+                    if (conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime) {
+                        conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt / 1000);
+                        conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt / 1000);
+                    }
+                    //年龄 任意
+                    if (conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday) {
+                        if (conditions.$or[0].birthday.$gt) {
+                            conditions.$or[0].birthday.$gt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday.$gt))) + "-12-31 23:59:59").getTime();
+                        } else if (conditions.$or[0].birthday.$lt) {
+                            conditions.$or[0].birthday.$lt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday.$lt))) + "-01-01 00:00:00").getTime();
+                        } else if (conditions.$or[0].birthday.$lte) {
+                            conditions.$or[0].birthday.$lte = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday.$lte))) + "-12-31 23:59:59").getTime();
+                        } else if (conditions.$or[0].birthday.$gte) {
+                            conditions.$or[0].birthday.$gte = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday.$gte))) + "-01-01 00:00:00").getTime();
+                        } else {
+                            var gt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday))) + "-01-01 00:00:00").getTime();
+                            var lt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$or[0].birthday))) + "-12-31 23:59:59").getTime();
+                            var investigation = {$gte: gt, $lte: lt};
+                            conditions.$or[0].birthday = investigation;
+                        }
+                    }
+                    //年龄 全部
+                    if (conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday) {
+                        if (conditions.$and[0].birthday.$gt) {
+                            conditions.$and[0].birthday.$gt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday.$gt))) + "-12-31 23:59:59").getTime();
+                        } else if (conditions.$and[0].birthday.$lt) {
+                            conditions.$and[0].birthday.$lt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday.$lt))) + "-01-01 00:00:00").getTime();
+                        } else if (conditions.$and[0].birthday.$lte) {
+                            conditions.$and[0].birthday.$lte = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday.$lte))) + "-12-31 23:59:59").getTime();
+                        } else if (conditions.$and[0].birthday.$gte) {
+                            conditions.$and[0].birthday.$gte = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday.$gte))) + "-01-01 00:00:00").getTime();
+                        } else {
+                            var gt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday))) + "-01-01 00:00:00").getTime();
+                            var lt = new Date((parseInt(new Date().getFullYear() - parseInt(conditions.$and[0].birthday))) + "-12-31 23:59:59").getTime();
+                            var investigation = {$gte: gt, $lte: lt};
+                            conditions.$and[0].birthday = investigation;
+                        }
+                    }
                 });
 
+
                 this.step(function(){
-                    collMsg.find(messageWhere).toArray(this.hold(function(err,doc){
+                    console.log(conditions);
+                    helper.db.coll("welab/customers").find(conditions).toArray(this.hold(function(err,doc){
                         if(doc){
                             res = {err: 0, msg:doc.length};
                         }else{
