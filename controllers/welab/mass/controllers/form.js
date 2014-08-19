@@ -410,7 +410,9 @@ module.exports = {
                         }else if(reply.type == "single"){
 
                             if(fs.existsSync(path.join(__dirname,"../../../../../") + reply.pic)){
-                                process.wxApi.uploadMedia(path.join(__dirname,"../../../../../") + reply.pic, 'image', then.hold(function(err,doc){
+                               console.log('single');
+                                process.wxApi.uploadMedia(path.join(__dirname,"../../../../../") + reply.pic, 'image', then.hold(function(err,doc){                               console.log('single-come-on');
+
                                     if(err)console.log(err)
 
                                     updateReply.articles.push({
