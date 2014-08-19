@@ -363,14 +363,14 @@ module.exports = {
 
                         var path = require("path")
                         var fs = require("fs")
-                        console.log(path.join(__dirname,"../../../../../"));
+                        console.log(path.join(__dirname,"../../../../../../"));
                         console.log(reply.pic);
                         //console.log(__dirname);
-                        console.log(path.join(__dirname,"../../../../../") + reply.pic);
+                        console.log(path.join(__dirname,"../../../../../../") + reply.pic);
                         if(reply.type == "list"){
 
-                            if(fs.existsSync(path.join(__dirname,"../../../../../") + reply.pic)){
-                                process.wxApi.uploadMedia(path.join(__dirname,"../../../../../") + reply.pic, 'image', then.hold(function(err,doc){
+                            if(fs.existsSync(path.join(__dirname,"../../../../../../") + reply.pic)){
+                                process.wxApi.uploadMedia(path.join(__dirname,"../../../../../../") + reply.pic, 'image', then.hold(function(err,doc){
                                     if(err)console.log(err)
 
                                     updateReply.articles.push({
@@ -390,8 +390,8 @@ module.exports = {
                             for(var i=0 ; i< reply.items.length ; i ++){
                                 (function(i){
 
-                                    if(fs.existsSync(path.join(__dirname,"../../../../../") + reply.items[i].pic)){
-                                        process.wxApi.uploadMedia(path.join(__dirname,"../../../../../") + reply.items[i].pic, 'image', then.hold(function(err,doc){
+                                    if(fs.existsSync(path.join(__dirname,"../../../../../../") + reply.items[i].pic)){
+                                        process.wxApi.uploadMedia(path.join(__dirname,"../../../../../../") + reply.items[i].pic, 'image', then.hold(function(err,doc){
                                             if(err)console.log(err)
 
                                             updateReply.articles.push({
@@ -411,9 +411,9 @@ module.exports = {
                             }
                         }else if(reply.type == "single"){
 
-                            if(fs.existsSync(path.join(__dirname,"../../../../../") + reply.pic)){
+                            if(fs.existsSync(path.join(__dirname,"../../../../../../") + reply.pic)){
                                console.log('single');
-                                process.wxApi.uploadMedia(path.join(__dirname,"../../../../../") + reply.pic, 'image', then.hold(function(err,doc){                               console.log('single-come-on');
+                                process.wxApi.uploadMedia(path.join(__dirname,"../../../../../../") + reply.pic, 'image', then.hold(function(err,doc){                               console.log('single-come-on');
 
                                     if(err)console.log(err)
 
