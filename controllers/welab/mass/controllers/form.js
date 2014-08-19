@@ -248,7 +248,7 @@ module.exports = {
                 nut.view.disable();
 
                 if(process.wxApi == null){
-                    //res = {err:1,msg:"不是认证服务号，不能使用群发功能"}
+                    res = {err:1,msg:"不是认证服务号，不能使用群发功能"}
                 }
 
 
@@ -354,18 +354,18 @@ module.exports = {
 //
 //
 //                })
-//                this.step(function(){
-//
-//                    if(list.length == 0){
-//                        res = {err: 1, msg:"查不到这个标签"};
-//                        return;
-//                    }else if(!reply){
-//                        res = {err: 1, msg:"查不到这个回复"};
-//                        return;
-//                    }else{
-//
-//                    }
-//                })
+                this.step(function(){
+
+                    if(list.length == 0){
+                        res = {err: 1, msg:"查不到这个标签"};
+                        return;
+                    }else if(!reply){
+                        res = {err: 1, msg:"查不到这个回复"};
+                        return;
+                    }else{
+
+                    }
+                })
 
 
                 // 上传附件
