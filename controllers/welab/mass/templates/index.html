@@ -31,6 +31,13 @@
         </div>
     </div>
     <div class="panel-body">
+        <p>
+            <span class="fui-user"></span> 筛选用户
+        </p>
+
+        <div style="padding: 15px">
+            <include file="lavico/controllers/welab/mass/templates/searchForm.html" />
+        </div>
 
         <p>
             <span class="fui-user"></span> 指定标签
@@ -59,18 +66,11 @@
             </table>
         </div>
 
-        <p>
-            <span class="fui-user"></span> 筛选用户
-        </p>
 
-        <div style="padding: 15px">
-            <include file="lavico/controllers/welab/mass/templates/searchForm.html" />
-
-        </div>
 
         <script src="/welab/public/js/coffee-script.js"></script>
         <!--David.xu重写searchbox.js At 2014-06-24-->
-        <script src="/lavico/public/js/searchbox.js"></script>
+        <script src="/lavico/public/js/massSearchbox.js"></script>
 
         <link href="/welab/public/css/searchbox.css" rel="stylesheet">
 

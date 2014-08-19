@@ -2233,6 +2233,7 @@ exports.load = function () {
 
     //复写 /welab/apps/mass/index
     var welabAppsMassIndex = require("welab/apps/mass/controllers/index");
+
     welabAppsMassIndex.view = "lavico/controllers/welab/mass/templates/index.html";
     welabAppsMassIndex.viewIn=function() {
 
