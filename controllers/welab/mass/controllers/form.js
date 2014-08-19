@@ -237,7 +237,7 @@ module.exports = {
                 console.log('******************');
 
                 var res = {}
-                var list = {}
+                var list = []
                 var reply = {}
                 var updateReply = {
                     "articles": [
@@ -309,12 +309,19 @@ module.exports = {
 
                 this.step(function(){
                     console.log(conditions);
+
                     helper.db.coll("welab/customers").find(conditions).toArray(this.hold(function(err,doc){
                         if(doc){
-                            list = doc
+                            var _user ={};
+                            for(var _i=0;_i<doc.length;_i++){
+                                _user._id = doc[_i].wechatid;
+                                list.push(_user);
+                            }
                         }else{
-                            list = {};
+                            list = [];
                         }
+                        console.log(list);
+
                     }));
                     //查回复
                     helper.db.coll("welab/reply").findOne({_id:helper.db.id(seed.reply)},this.hold(function(err,docs){
