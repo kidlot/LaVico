@@ -23,7 +23,7 @@
         </div>
         <div style="float: right;">
             <div style="float: right; width: 125px;">
-                <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="send()">发送</a>
+                <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="is_send()">发送</a>
             </div>
             <div style="float: right; width: 125px;">
                 <a class="btn btn-xs btn-primary mhm pull-right" href="javascript:;" onclick="man()">查询人数</a>
@@ -181,16 +181,25 @@
         });
         console.log(searchObj);
     }
-    function send(){
-
-        if(!$("#tag").val()){
-            $.globalMessenger().post({
-                message: "未选择标签",
-                type:"error",
-                showCloseButton: true})
-
+    function is_send(){
+        if (confirm("真的要群发吗？每个用户在每月里只能接受到四次群发的信息。")){
+            send()
+        }else{
             return false;
         }
+    }
+    function send(){
+
+//        alert($("#tag").val());
+//
+//        if(!$("#tag").val()){
+//            $.globalMessenger().post({
+//                message: "未选择标签",
+//                type:"error",
+//                showCloseButton: true})
+//
+//            return false;
+//        }
         if(!$(".replyDetail").attr("_id")){
             $.globalMessenger().post({
                 message: "未选择回复",
