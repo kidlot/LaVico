@@ -314,13 +314,18 @@ module.exports = {
                         if(doc){
                             var _user ={};
                             for(var _i=0;_i<doc.length;_i++){
-                                _user._id = doc[_i].wechatid;
-                                list.push(_user);
+                                _user = {_id:doc[_i].wechatid};
+                                console.log(_user);
+                                if(!list.in_array(_user)){
+                                    list.push(_user);
+                                }
                             }
                         }else{
                             list = [];
                         }
+                        console.log('********************send_users****************');
                         console.log(list);
+                        console.log('********************send_users****************');
 
                     }));
                     //查回复
@@ -515,4 +520,8 @@ function log(msgid,content,userlist,sendres){
     helper.db.coll("welab/masslog").insert({msgid:msgid,content:content,userlist:userlist,sendres:sendres,createTime:new Date().getTime()},function(err,docs) {
         if (err) throw err;
     })
+}
+Array.prototype.in_array = function (e) {
+    for (i = 0; i < this.length && this[i] != e; i++);
+    return !(i == this.length);
 }
