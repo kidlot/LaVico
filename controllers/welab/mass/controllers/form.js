@@ -355,6 +355,7 @@ module.exports = {
 //                    }
 //                })
 
+
                 // 上传附件
                 this.step(function(){
 
@@ -453,9 +454,13 @@ module.exports = {
 
                         // all user
                         var userlist = []
+
                         for(var i=0;i<list.length;i++){
                             userlist.push(list[i]._id)
                         }
+                        console.log('******************************');
+                        console.log(userlist);
+                        console.log('******************************');
 
                         if(reply.type == "list" || reply.type == "single"){
                             process.wxApi.massSendNews(media_id,userlist,then.hold(function(err,doc){
