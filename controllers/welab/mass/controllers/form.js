@@ -363,7 +363,9 @@ module.exports = {
 
                         var path = require("path")
                         var fs = require("fs")
+                        console.log(path.join(__dirname,"../../../../../"));
                         console.log(reply.pic);
+                        //console.log(__dirname);
                         console.log(path.join(__dirname,"../../../../../") + reply.pic);
                         if(reply.type == "list"){
 
