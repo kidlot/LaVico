@@ -54,9 +54,6 @@ module.exports = {
                         ]
                         , then.hold(function (err, doc) {
                             list.docs[i].total = doc.length;//参与人数，也就是所有参加活动的人数
-
-
-
                         })
                     )
 
@@ -74,6 +71,7 @@ module.exports = {
                             pageNum: 1,
                             code: list.docs[i].aid
                         }, then.hold(function (err, doc) {
+                            console.log(doc);
                             doc = doc.replace(/[\n\r\t]/, '');
                             var doc_json = eval('(' + doc + ')');
                             for (var o in doc_json.list[0]) {
@@ -86,8 +84,6 @@ module.exports = {
         })
         this.step(function () {
             nut.model.list = list;
-            console.log('~~~~~~~~');
-            console.log(list);
         });
 
     },
@@ -448,6 +444,7 @@ module.exports = {
                     aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
                     aFormInput['lottery_count'] = $("#lottery_count").val();
                     aFormInput['switcher'] = 'on';
+                    aFormInput['parm'] = $('input[name="parm"]:checked').val();
                     //aFormInput['thumb'] = $('#thumb_upload').attr('src');//活动小图
                     aFormInput['pic'] = $('#pic_upload').attr('src');//活动大图
                     aFormInput['createTime'] = new Date().getTime();
