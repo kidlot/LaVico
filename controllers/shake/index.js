@@ -547,6 +547,9 @@ module.exports = {
                 });
             },
             viewIn: function () {
+
+                var url;//当前活动的地址;
+
                 $('#startDate').datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
@@ -570,7 +573,21 @@ module.exports = {
                         $("#" + aid + " .lottery_chance").val($('#lottery_chance').val());
                     });
                 }
+                //URL修改
 
+                $('input[name="parm"]').change(function (){
+                    var _parm  = $('input[name="parm"]:checked').val();
+                    var host = window.location.host;
+                    var shake_id = $("#_id").val();
+                    var shake;
+                    if(_parm=='02'||_parm=='03'){
+                        shake = 'shake'+_parm;
+                    }else{
+                        shake = 'shake';
+                    }
+                    url = "http://"+host+"/lavico/activity/"+shake+"?uid={wxid}&aid="+shake_id;
+                    $('#host-url').val(url);
+                });
                 //添加
                 $('#add-coupons').click(function(){
                     console.log($('#activity_select').val());
@@ -612,28 +629,15 @@ module.exports = {
                 editor.config.height = 400;
                 editor.config.allowedContent = true;//防止过滤标签的css-style属性
 
-//                CKEDITOR.config.toolbar_Full = [
-//                    ['Source','-','Save','NewPage','Preview','-','Templates'],
-//                    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
-//                    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-//                    ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
-//                    '/',
-//                    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-//                    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-//                    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-//                    ['Link','Unlink','Anchor'],
-//                    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
-//                    '/',
-//                    ['Styles','Format','Font','FontSize'],
-//                    ['TextColor','BGColor']
-//                ];
                 //复制功能
-                $.getScript('/lavico/public/zclip.js/jquery.zclip.min.js',function(){
-                    $("#btnCopy").zclip({
-                        path:'/lavico/public/zclip.js/ZeroClipboard.swf',
-                        copy:$('#host-url').val()
-                    });
+
+                $("#btnCopy").zclip({
+                    path:'/lavico/public/zclip.js/ZeroClipboard.swf',
+                    copy:function(){
+                        return $('#host-url').val();
+                    }
                 });
+
                 //保存按钮
                 window.save = function (){
 
@@ -848,6 +852,7 @@ module.exports = {
                     aFormInput['lottery_cycle'] = $("#lottery_cycle").val();
                     aFormInput['lottery_count'] = $("#lottery_count").val();
                     aFormInput['switcher'] = 'on';
+                    aFormInput['parm'] = $('input[name="parm"]:checked').val();
                     //aFormInput['thumb'] = $('#thumb_upload').attr('src');//活动小图
                     aFormInput['pic'] = $('#pic_upload').attr('src');//活动大图
                     aFormInput['createTime'] = new Date().getTime();
@@ -855,7 +860,6 @@ module.exports = {
                     aFormInput['content'] = encodeURIComponent(content);
                     aFormInput['display_name'] = $("#display_name").val();//券名称
                     console.log(aFormInput)
-
                     if(_inputCheck){
                         var oLinkOptions = {} ;
                         oLinkOptions.data = [{name:'postData',value:JSON.stringify(aFormInput)},{name:'_id',value:$("#_id").val()}];

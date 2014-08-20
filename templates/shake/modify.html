@@ -26,7 +26,13 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">图文URL</label>
                     <div class="col-sm-10">
+                        <if condition="@shake.parm=='01'">
                         <input type="text" class="form-control" id="host-url" readonly value="http://{@host}/lavico/activity/shake?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
+                        <elseif condition="@shake.parm=='02'"/>
+                            <input type="text" class="form-control" id="host-url" readonly value="http://{@host}/lavico/activity/shake02?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
+                        <elseif condition="@shake.parm=='03'"/>
+                            <input type="text" class="form-control" id="host-url" readonly value="http://{@host}/lavico/activity/shake03?uid={wxid}&aid={@shake._id}" style="width: 300px;color: #9B9B9B;float: left">
+                        </if>
                         <button type="button" id="btnCopy" name="btnCopy" class="btn btn-primary" style="float: left;margin-left: 6px" >复制</button>
                     </div>
                 </div>
@@ -42,6 +48,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2">名称</label>
                     <div class="col-sm-10">
+
                         <input type="text" class="form-control postData" id='name' name="name" placeholder="名称" style="width: 300px;" value="{@ shake.name}" oninput="$('#pagename').text(this.value)">
                     </div>
                 </div>
@@ -50,16 +57,15 @@
                     <div class="col-sm-10">
 
                         <if condition="@shake.parm=='01'">
-                            <input type="radio" name="parm" value="01" checked="checked"/>先注册后游戏（前置）
-                        <else/>
-                            <if condition="@shake.parm=='02'">
-                                    <input type="radio" name="parm" value="01"/>先注册后游戏（前置）
-                                <elseif condition="@shake.parm=='03'">
-                                    <input type="radio" name="parm" value="01"/>先注册后游戏（前置）
-                                <else/>
                                     <input type="radio" name="parm" value="01" checked="checked"/>先注册后游戏（前置）
-                            </if>
+                        <elseif condition="@shake.parm=='02'"/>
+                                    <input type="radio" name="parm" value="01"/>先注册后游戏（前置）
+                        <elseif condition="@shake.parm=='03'"/>
+                                    <input type="radio" name="parm" value="01"/>先注册后游戏（前置）
+                        <else/>
+                                    <input type="radio" name="parm" value="01" checked="checked"/>先注册后游戏（前置）
                         </if>
+
 
                         <if condition="@shake.parm=='02'">
                             <input type="radio" name="parm" value="02" checked="checked"/>先游戏后注册（后置）
@@ -233,6 +239,8 @@
 <script src="/welab/public/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 <link href="/welab/public/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <script src="/welab/public/ckeditor/ckeditor.js"></script>
+<script src="/lavico/public/zclip.js/jquery.zclip.min.js"></script>
+
 <script>
 /*点击复制按钮*/
 var init = function (){
