@@ -12,6 +12,8 @@ module.exports = {
         var PROMOTION_CODE = seed.activity || 'undefined';
         var coupon_no = seed.coupon_no || 'undefined';//优惠券
         var lottery_info = {};
+        var memberId;
+        var url;
         var time = (new Date()).getTime();
         nut.model.time = time;
 
@@ -41,6 +43,7 @@ module.exports = {
             }
         });
         this.step(function(){
+
             helper.db.coll('welab/customers').findOne({wechatid:uid},this.hold(function(err, doc){
                 if(!doc){
                     nut.disable();//不显示模版
@@ -48,6 +51,17 @@ module.exports = {
                     this.res.write('{"error":"wxid_no_bind_to_welab"}');
                     this.res.end();
                     this.terminate();
+                }else{
+
+                    if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
+                        memberId = doc.HaiLanMemberInfo.memberID;
+                        console.log(memberId);
+                        url="/lavico/member/card_member/coupon?wxid="+uid;
+                    }else{
+                        memberId = "undefined";
+                        url="/lavico/member/card_blank/coupon?wxid="+uid;
+                    }
+                    nut.model.url = url;
                 }
             }));
         });
