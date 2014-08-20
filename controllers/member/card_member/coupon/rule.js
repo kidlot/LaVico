@@ -8,7 +8,7 @@ var middleware = require('lavico/lib/middleware.js');//引入中间件
 
 module.exports = {
     layout: "lavico/layout",
-    view: "lavico/templates/member/card_member/coupon/rule.html",
+    view: "lavico/templates/member/card_blank/coupon/rule.html",
     process: function (seed, nut) {
         var wxid = seed.wxid;
         var code = seed.code;

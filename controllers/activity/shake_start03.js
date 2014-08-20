@@ -113,6 +113,7 @@ module.exports = {
 
                 var lottery_cycle;//抽奖频率
 
+                console.log('~~~~~~~~~~~~~~~~~12');
 
 
                 this.step(function(){
@@ -121,23 +122,25 @@ module.exports = {
                         shake = doc;
                         costPerShake = shake ? shake.points : 0;//每次摇一摇消耗积分
                         shakeActivityName = shake ? shake.name :'';
-                        console.log('~~~~~~~~~~~~~~~~~');
+                        console.log('~~~~~~~~~~~~~~~~~12');
                         console.log(doc);
-                        console.log('~~~~~~~~~~~~~~~~~');
+                        console.log('~~~~~~~~~~~~~~~~~12');
                     }));
                 });
 
                 this.step(function(){
                     if(!shake){
-                            write_info(then,'{"result":"activity_is_over"}');
+                        write_info(then,'{"result":"activity_is_over"}');
                     }
+                    console.log('&*&*&*&&*&*&*&*&*&*&*');
                 });
 
                 this.step(function(){
                     /*判断用户积分是否足够*/
-                    console.log("costPerShake:"+costPerShake);
-                    if(costPerShake >=  0){
 
+                    console.log("costPerShake:"+costPerShake);
+
+                    if(costPerShake >  0){
                         helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
 
                             console.log(doc);
@@ -204,7 +207,7 @@ module.exports = {
                     }else if(shake.lottery_cycle == '2'){// 自然周
                         if(new Date().getDay() > 0){
                             /*
-                            * var weekday=new Array(7)
+                             * var weekday=new Array(7)
                              weekday[0]="Sunday"
                              weekday[1]="Monday"
                              weekday[2]="Tuesday"
@@ -212,7 +215,7 @@ module.exports = {
                              weekday[4]="Thursday"
                              weekday[5]="Friday"
                              weekday[6]="Saturday"
-                           */
+                             */
                             start_time = now_timestamp -(86400000*(new Date().getDay()) -1) - ( now_timestamp % 86400000 );
                         }else{
                             start_time = now_timestamp -(86400000*(new Date().getDay()) -6) - ( now_timestamp % 86400000 );
@@ -224,7 +227,7 @@ module.exports = {
                     }else{
                         write_info(then,'{"result":"something-error"}');
                     }
-                    helper.db.coll('lavico/shake/logs').count({aid:seed.aid,memberID:memberId,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                    helper.db.coll('lavico/shake/logs').count({aid:seed.aid,uid:seed.uid,createDate:{$gte:start_time}},this.hold(function(err,doc){
                         count = doc;//已经摇一摇次数
                         console.log('+++++++++++++++++');
                         console.log('now'+seed.aid+'sum:'+doc);
@@ -297,7 +300,7 @@ module.exports = {
                 var shakeActivityName;//摇一摇活动名称
                 var lottery_count;//保存后台设置，限制用户玩多少次机会
 
-
+                var parm = '01';//默认是前置
                 var countUserByPoints;//根据积分计算多少次数
                 var returnCount;//根据系统后台设置，返回多少次机会
                 var PROMOTION_CODE;
@@ -324,20 +327,19 @@ module.exports = {
                     /*判断用户积分是否足够*/
                     console.log("costPerShake:"+costPerShake);
                     if(costPerShake >=  0){
+                        //获取用户信息，判断该用户是否为会员，会员memberId帐号
                         helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
-
                             console.log(doc);
 
                             if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
-                               memberId = doc.HaiLanMemberInfo.memberID;
+                                memberId = doc.HaiLanMemberInfo.memberID;
+                                parm = '01';
                             }else{
-                               memberId = "undefined";
+                                memberId = "undefined";
+                                parm = '02';
+
                             }
                             console.log("memberId:"+memberId);
-
-                            if(memberId == "undefined"){
-                                write_info(then,'{"result":"something-error"}');
-                            }
                         }));
 
                     }
@@ -397,7 +399,7 @@ module.exports = {
                     }else{
                         write_info(then,'{"result":"something-error"}');
                     }
-                    helper.db.coll('lavico/shake/logs').count({aid:seed.aid,memberID:memberId,createDate:{$gte:start_time}},this.hold(function(err,doc){
+                    helper.db.coll('lavico/shake/logs').count({aid:seed.aid,uid:seed.uid,createDate:{$gte:start_time}},this.hold(function(err,doc){
                         //aid:活动编号
                         //memberID:lavico会员编号
                         count = doc;//已经摇一摇次数
@@ -432,7 +434,7 @@ module.exports = {
                     var _points = 0 - parseInt(shake.points);//每次摇一摇，消耗积分
 
                     activity.aid = seed.aid;//摇一摇活动ID，也就是_id
-                    activity.uid = seed.uid;
+                    activity.uid = seed.uid;//微信ID
                     activity.points = _points;//每次摇一摇，所需要的积分多少
                     activity.memberID = memberId;//用户
                     activity.createDate = new Date().getTime();
@@ -490,7 +492,8 @@ module.exports = {
                             PROMOTION_CODE:PROMOTION_CODE, //海澜CRM 活动代码，由 Promotions 接口返回
                             point:0,//每次摇一摇，消耗积分
                             otherPromId:seed.aid, //微信活动识别ID
-                            memo:activity.memo
+                            memo:activity.memo,
+                            parm:parm//前后置状态：01 前置（注册后直接获得） ; 02 后置（注册前先和OPENID绑定，直到注册后才和memberid绑定）
                         },this.hold(function(err,doc){
                             //console.log("摇一摇领取优惠券");
                             err&&console.log(doc);
@@ -510,7 +513,7 @@ module.exports = {
                                 }
                                 activity.coupon_no = doc.coupon_no;//优惠券号码
 
-                                helper.db.coll('welab/customers').update({wechatid: seed.uid}, {$addToSet: {shake: activity}}, function (err, doc) {
+                                helper.db.coll('welab/customers').update({wechatid: seed.uid}, {$addToSet: {shake: activity}},{upsert:true}, function (err, doc) {
                                     err && console.log(doc);
                                 });
 
@@ -524,40 +527,40 @@ module.exports = {
 
                                     /*摇一摇-活动券发放完毕处理-start*/
 
-                                     console.log("shake fail");
-                                     helper.db.coll('lavico/shake/logs').insert(activity,function(err,doc){
-                                     err&&console.log(doc);
-                                     });
-                                     if(costPerShake > 0){
-                                     middleware.request('Point/Change',{
-                                     memberId:memberId,
-                                     qty:_points,//每次摇一摇，消耗积分
-                                     memo:shakeActivityName
-                                     },then.hold(function(err,doc){
-                                     console.log(doc);
-                                     }));
-                                     }
+                                    console.log("shake fail");
+                                    helper.db.coll('lavico/shake/logs').insert(activity,function(err,doc){
+                                        err&&console.log(doc);
+                                    });
+                                    if(costPerShake > 0){
+                                        middleware.request('Point/Change',{
+                                            memberId:memberId,
+                                            qty:_points,//每次摇一摇，消耗积分
+                                            memo:shakeActivityName
+                                        },then.hold(function(err,doc){
+                                            console.log(doc);
+                                        }));
+                                    }
 
-                                     if(costPerShake > 0){
-                                     if(countUserByPoints>returnCount){
-                                     var _count = returnCount;//系统设置允许多少次
-                                     }else{
-                                     var _count = countUserByPoints;//根据用户积分设置允许多少次
-                                     }
-                                     }else{
-                                     var _count = returnCount;//系统设置允许多少次
-                                     }
+                                    if(costPerShake > 0){
+                                        if(countUserByPoints>returnCount){
+                                            var _count = returnCount;//系统设置允许多少次
+                                        }else{
+                                            var _count = countUserByPoints;//根据用户积分设置允许多少次
+                                        }
+                                    }else{
+                                        var _count = returnCount;//系统设置允许多少次
+                                    }
 
-                                     _count = _count - 1;
+                                    _count = _count - 1;
 
-                                     if(lottery_count == 0){
-                                     //不限制次数
-                                    write_info(then,'{"result":"unwin","limit":"no","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+lottery_count+'"}');
+                                    if(lottery_count == 0){
+                                        //不限制次数
+                                        write_info(then,'{"result":"unwin","limit":"no","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+lottery_count+'"}');
 
-                                     }else{
-                                    write_info(then,'{"result":"unwin","limit":"yes","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+_count+'"}');
-                                     }
-                                     /*摇一摇-活动券发放完毕处理-end*/
+                                    }else{
+                                        write_info(then,'{"result":"unwin","limit":"yes","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+_count+'"}');
+                                    }
+                                    /*摇一摇-活动券发放完毕处理-end*/
                                 }else if(doc.error=='找不到对应的人员，请检查！'){
                                     write_info(then,'{"result":"'+'lavico_no_found_wxid'+'"}');
                                 }else{
@@ -624,7 +627,7 @@ module.exports = {
 
         var init = function(){
 
-            $.get('/lavico/activity/shake_start:init',{
+            $.get('/lavico/activity/shake_start03:init',{
                 uid:$("#uid").val(),//微信ID
                 aid:$("#aid").val()//摇一摇活动ID,也就是_id
             },function(data){
@@ -742,17 +745,17 @@ module.exports = {
 
         var shakeIt = function(){
 
-                mobileClickRight();
+            mobileClickRight();
 
-                setTimeout(function(){
-                    mobileClick();
-                },50);
+            setTimeout(function(){
+                mobileClick();
+            },50);
 
-                setTimeout(function(){mobileClickLeft()},100);
+            setTimeout(function(){mobileClickLeft()},100);
 
-                setTimeout(function(){
-                    mobileClick();
-                },150);
+            setTimeout(function(){
+                mobileClick();
+            },150);
 
         }
 
@@ -826,7 +829,7 @@ module.exports = {
             $('#loading').show();
 
             var _nowTime = new Date().getTime();
-            $.get('/lavico/activity/shake_start:shakeit',{
+            $.get('/lavico/activity/shake_start03:shakeit',{
                 uid:$("#uid").val(),//微信ID
                 aid:$("#aid").val()//摇一摇活动ID
             },function(data){
@@ -840,7 +843,7 @@ module.exports = {
                     if(data.result == 'win'){
                         var _coupon_no = data.coupon_no;
                         var _PROMOTION_CODE = data.PROMOTION_CODE;
-                        window.location.href="/lavico/activity/shake_end?uid="+$("#uid").val()+"&aid="+$("#aid").val()+"&activity="+_PROMOTION_CODE+"&coupon_no="+data.coupon_no;
+                        window.location.href="/lavico/activity/shake_end03?uid="+$("#uid").val()+"&aid="+$("#aid").val()+"&activity="+_PROMOTION_CODE+"&coupon_no="+data.coupon_no;
 
                     }else if(data.result == 'has-no-chance'){
 

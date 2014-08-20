@@ -84,7 +84,14 @@
                 <div class="form-group">
                     <label for="points" class="col-sm-2">积分消耗/每次</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control postData" id='points' name="points" placeholder="0" style="width: 300px;" value="{@ shake.points}" oninput="$('#pagename').text(this.value)">
+                        <if condition="@shake.parm=='02'">
+                            <input type="text" class="form-control postData" id='points' name="points" placeholder="0" style="width: 300px;" value="0" oninput="$('#pagename').text(this.value)" readonly="readonly">
+                            <elseif condition="@shake.parm=='03'"/>
+                            <input type="text" class="form-control postData" id='points' name="points" placeholder="0" style="width: 300px;" value="0" oninput="$('#pagename').text(this.value)" readonly="readonly">
+                            <else/>
+                            <input type="text" class="form-control postData" id='points' name="points" placeholder="0" style="width: 300px;" value="{@ shake.points}" oninput="$('#pagename').text(this.value)">
+                            </if>
+
                     </div>
                 </div>
 
