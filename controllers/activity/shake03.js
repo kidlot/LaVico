@@ -1,12 +1,15 @@
 /*
-* 摇一摇后台管理页面
+* 摇一摇活动介绍页面
+* 类型：03
+* 先游戏后不提示注册（后置）
+* 活动规则：不需要注册，就可以玩游戏。
 * URL：{host}/lavico/shake
 * */
 
 var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "lavico/layout",
-    view: "lavico/templates/activity/shake.html",
+    view: "lavico/templates/activity/shake03.html",
     process:function(seed,nut){
 
         var wxid = seed.uid ? seed.uid : 'undefined';//uid是用户的wechatid
@@ -67,20 +70,6 @@ module.exports = {
                 this.terminate();
             }
         });
-
-        this.step(function(){
-            helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err,doc){
-                if(!doc){
-                    nut.disable();//不显示模版
-                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                    this.res.write('{"error":"wxid_no_found"}');
-                    this.res.end();
-                    this.terminate();
-                }
-            }));
-        });
-
-
 
         this.step(function(){
 
@@ -176,32 +165,27 @@ module.exports = {
         var aid = $("#aid").val();
         var error = $('#error').val();
         $("#shake_start").click(function(){
-            if(member_id != 'normal'){
-                window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
-                    window.location.href = "/lavico/member/card_blank/register?wxid="+uid;
-                });
-            }else{
 
-                if(aid == 'undefined'){
-                    if(error == 'activity_no_start'){
-                        window.popupStyle2.on('很抱歉，活动未开始，敬请期待',function(event){});
+            if(aid == 'undefined'){
+                if(error == 'activity_no_start'){
+                    window.popupStyle2.on('很抱歉，活动未开始，敬请期待',function(event){});
 
-                    }else if(error == 'activity_was_end'||error == 'activity_no_found'){
+                }else if(error == 'activity_was_end'||error == 'activity_no_found'){
 
-                        window.popupStyle2.on('很抱歉，活动已结束',function(event){});
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){});
 
-                    }else{
-                        window.popupStyle2.on('很抱歉，活动已结束',function(event){});
-                    }
-                    return false;
                 }else{
-                    if( error == 'null'){
-                        window.location.href = "/lavico/activity/shake_start?uid="+uid+"&aid="+aid;
-                    }else{
-                        window.popupStyle2.on('很抱歉，活动已结束',function(event){});
-                    }
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){});
+                }
+                return false;
+            }else{
+                if( error == 'null'){
+                    window.location.href = "/lavico/activity/shake_start03?uid="+uid+"&aid="+aid;
+                }else{
+                    window.popupStyle2.on('很抱歉，活动已结束',function(event){});
                 }
             }
+
         });
     }
 }

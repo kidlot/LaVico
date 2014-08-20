@@ -574,15 +574,22 @@ module.exports = {
                     });
                 }
                 //URL修改
-
+                var point;
                 $('input[name="parm"]').change(function (){
                     var _parm  = $('input[name="parm"]:checked').val();
                     var host = window.location.host;
                     var shake_id = $("#_id").val();
                     var shake;
                     if(_parm=='02'||_parm=='03'){
+                        point = $('#points').val();
+                        $('#points').val(0).attr("readonly","readonly");
                         shake = 'shake'+_parm;
                     }else{
+                        if(point){
+                            $('#points').val(point).removeAttr("readonly");
+                        }else{
+                            $('#points').removeAttr("readonly");
+                        }
                         shake = 'shake';
                     }
                     url = "http://"+host+"/lavico/activity/"+shake+"?uid={wxid}&aid="+shake_id;

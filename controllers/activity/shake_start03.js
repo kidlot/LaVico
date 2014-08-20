@@ -4,7 +4,7 @@
 var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "lavico/layout",
-    view: "lavico/templates/activity/shake_start.html",
+    view: "lavico/templates/activity/shake_start03.html",
     process:function(seed,nut){
 
         /*MemberID会员判断*/
@@ -23,18 +23,6 @@ module.exports = {
                 this.res.end();
                 this.terminate();
             }
-        });
-
-        this.step(function(){
-            helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err,doc){
-                if(!doc){
-                    nut.disable();//不显示模版
-                    this.res.writeHead(200, { 'Content-Type': 'application/json' });
-                    this.res.write('{"error":"wxid_no_found"}');
-                    this.res.end();
-                    this.terminate();
-                }
-            }));
         });
 
         this.step(function(){
@@ -65,24 +53,13 @@ module.exports = {
             if(member_id == "undefined"){
                 //缺少微信ID参数，强制中断
                 //直接跳转
-                nut.disable();//不显示模版
-                //this.res.writeHead(302, {'Location': "/lavico/member/index?wxid="+wxid});
-                this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先注册会员或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
-                this.res.end();
-                this.terminate();
+
             }
         });
 
         this.step(function(){
             if(aid == 'undefined'){
-                nut.disable();//不显示模版
-//              this.res.writeHead(200, { 'Content-Type': 'application/json' });
-//              this.res.write('{"error":"aid_is_empty"}');
-                this.res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'})
-                this.res.write("<script>alert('请先注册会员或者绑定会员,然后参加活动!');window.location.href='/lavico/member/index?wxid="+wxid+"'</script>");
-                this.res.end();
-                this.terminate();
+
             }
         });
 
@@ -174,9 +151,6 @@ module.exports = {
                             console.log("memberId:"+memberId);
                             console.log('****************************************');
 
-                            if(memberId == "undefined"){
-                                write_info(then,'{"result":"something-error"}');
-                            }
                         }));
                     }
 

@@ -4,7 +4,7 @@
 var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "lavico/layout",
-    view: "lavico/templates/activity/shake_end.html",
+    view: "lavico/templates/activity/shake_end03.html",
     process:function(seed,nut){
 
         var uid = seed.uid || 'undefined';//用户微信ID
