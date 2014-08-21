@@ -56,9 +56,11 @@ module.exports = {
                     if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
                         memberId = doc.HaiLanMemberInfo.memberID;
                         console.log(memberId);
+                        nut.model.bind = 'true';
                         url="/lavico/member/card_member/coupon?wxid="+uid;
                     }else{
                         memberId = "undefined";
+                        nut.model.bind = 'false';
                         url="/lavico/member/card_blank/coupon?wxid="+uid;
                         //url = "/lavico/member/card_blank/register?wxid="+uid;
                     }
