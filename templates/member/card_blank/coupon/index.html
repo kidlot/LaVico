@@ -1,0 +1,106 @@
+<if condition="@error =='null'">
+    <div class="wrapper" style="background-color: #eee;">
+        <div class="store-title">
+            <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">专属礼券</span></p>
+        </div>
+        <div class="points5">
+            <div class="points5-content">
+                <div class="banner"><img src="/lavico/public/images/coupons.jpg" /></div>
+                <div class="tab new_tab">
+                    <ul>
+                        <li><a id="overdueCoupons" class="couponBtn" href="javascript:void(0);">已过期 ({@overdueCouponsLength})</a></li>
+                        <li style="width:34%;"><a id="effectiveCoupons" class="couponBtn on" href="javascript:void(0);">可使用({@effectiveCouponsLength})</a></li>
+                        <li><a id="usedCoupons" class="couponBtn" href="javascript:void(0);">已使用 ({@usedCouponsLength})</a></li>
+                    </ul>
+                </div>
+                <div class="pre-box" id="overdueCouponsContent" style="display:none">
+                    <foreach for="@overdueCoupons" key="key">
+                        <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_blank/coupon/rule?wxid={@wxid}&code={@overdueCoupons[key].PROMOTION_CODE}&coupon_no={@overdueCoupons[key].COUPON_NO}&status={@overdueCoupons[key].COUPON_STATUS}'">
+                            <div class="pre_title">
+                                <h2>{@overdueCoupons[key].COUPON_NAME}<em>{@overdueCoupons[key].COUPON_TYPE}</em>&nbsp;{@overdueCoupons[key].COUPON_QTY}</h2>
+                                <h3>{@overdueCoupons[key].BIND_DATE}</h3>
+                            </div>
+                            <div class="pre-top clear">
+                                <div class="fl"><img src="{@overdueCoupons[key].PIC}" /></div>
+                                <div class="fl pre-top-right">
+                                    <div class="intro">
+                                        <p>有效期：<br />{@overdueCoupons[key].BEGIN_DATE} 至 {@overdueCoupons[key].END_DATE}</p>
+                                        <p>礼券号：<br />{@overdueCoupons[key].COUPON_NO}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreach>
+                </div>
+                <div class="pre-box" id="effectiveCouponsContent" style="display:block">
+                    <foreach for="@effectiveCoupons" key="key">
+                        <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_blank/coupon/rule?wxid={@wxid}&code={@effectiveCoupons[key].PROMOTION_CODE}&coupon_no={@effectiveCoupons[key].COUPON_NO}&status={@effectiveCoupons[key].COUPON_STATUS}'">
+                            <div class="pre_title">
+                                <h2>{@effectiveCoupons[key].COUPON_NAME}<em>{@effectiveCoupons[key].COUPON_TYPE}</em>&nbsp;{@effectiveCoupons[key].COUPON_QTY}</h2>
+                                <h3>{@effectiveCoupons[key].BIND_DATE}</h3>
+                            </div>
+                            <div class="pre-top clear">
+                                <div class="fl"><img src="{@effectiveCoupons[key].PIC}" /></div>
+                                <div class="fl pre-top-right">
+                                    <div class="intro">
+                                        <p>有效期：<br/>{@effectiveCoupons[key].BEGIN_DATE} 至 {@effectiveCoupons[key].END_DATE}</p>
+                                        <p>礼券号：<br />{@effectiveCoupons[key].COUPON_NO}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreach>
+                </div>
+                <div class="pre-box" id="usedCouponsContent" style="display:none">
+                    <foreach for="@usedCoupons" key="key">
+                        <div class="pre-box-content" onclick="window.location.href = '/lavico/member/card_blank/coupon/rule?wxid={@wxid}&code={@usedCoupons[key].PROMOTION_CODE}&coupon_no={@usedCoupons[key].COUPON_NO}&status={@usedCoupons[key].COUPON_STATUS}'">
+                            <div class="pre_title">
+                                <h2>{@usedCoupons[key].COUPON_NAME}<em>{@usedCoupons[key].COUPON_TYPE}</em>&nbsp;{@usedCoupons[key].COUPON_QTY}</h2>
+                                <h3>{@usedCoupons[key].BIND_DATE}</h3>
+                            </div>
+                            <div class="pre-top clear">
+                                <div class="fl"><img src="{@usedCoupons[key].PIC}" /></div>
+                                <div class="fl pre-top-right">
+                                    <div class="intro">
+                                        <p>有效期：<br />{@usedCoupons[key].BEGIN_DATE} 至 {@usedCoupons[key].END_DATE}</p>
+                                        <p>礼券号：<br />{@usedCoupons[key].COUPON_NO}</p>
+                                        <p>使用时间:<br />{@usedCoupons[key].USED_DATE}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreach>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--正在加载-->
+    <div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
+    <else/>
+    <div class="wrapper" style="background-color: #eee;">
+        <div class="store-title">
+            <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">专属礼券</span></p>
+        </div>
+        <div class="points5">
+            <div class="points5-content">
+                <div class="banner"><img src="/lavico/public/images/coupons.jpg" /></div>
+                <div class="tab new_tab">
+                    <ul>
+                        <li><a id="overdueCoupons" class="couponBtn" href="javascript:void(0);">已过期 (0)</a></li>
+                        <li style="width:34%;"><a id="effectiveCoupons" class="couponBtn on" href="javascript:void(0);">可使用(0)</a></li>
+                        <li><a id="usedCoupons" class="couponBtn" href="javascript:void(0);">已使用 (0)</a></li>
+                    </ul>
+                </div>
+                <div class="pre-box" id="overdueCouponsContent" style="display:none">
+                </div>
+                <div class="pre-box" id="effectiveCouponsContent" style="display:block">
+                </div>
+                <div class="pre-box" id="usedCouponsContent" style="display:none">
+                </div>
+            </div>
+        </div>
+    </div>
+</if>
+<input id="error" type="hidden" value="{@error}"/>
+<input id="wxid" type="hidden" value="{@wxid}"/>
+

@@ -28,6 +28,14 @@ module.exports = {
         this.step(function(){
 
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+
+                if(doc){
+                    nut.model.isFollow = doc.isFollow ? true : false;
+                }else{
+                    nut.model.isFollow = false;
+                }
+
+
                 if(!doc){
                     nut.disable();//不显示模版
                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -62,19 +70,38 @@ module.exports = {
         var wxid = $('#uid').val();
         var referer = $("#referer").val();//用户访问的上一个页面
         var host = window.location.host;
-
+        var isFollow = $('#isFollow').val();
         /*判断是否会员已经绑定*/
         if($("#error").val()=="you_has_bound_already"){
-            window.popupStyle2.on("您已经是LaVico的会员",function(event){
+            if(isFollow=='true'){
+
+                window.popupStyle2.on("您已经是LaVico的会员",function(event){
 
                 if(referer == window.location.href || referer.length == 0){
                     window.location.href = "/lavico/member/index?wxid="+wxid;
                 }else{
                     window.location.href = referer;
                 }
-            });
+                });
+            }else{
+                window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信，参加互动活动。',function(event){
+                });
+            }
         }
 
+        if(isFollow!='true'){
+            $('input').attr('disabled','disabled');
+            $('#get_id_code').unbind();
+            $('.apply').bind('click',function(){
+                if($("#error").val()=="you_has_bound_already"){
+                    window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信',function(event){
+                    });
+                }else{
+                    window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信,才能绑定LaVico会员',function(event){
+                    });
+                }
+            });
+        }
         $("#year").change(function(){
             $(this).parent().find("input").val($(this).val()+'年');
         });
@@ -109,7 +136,6 @@ module.exports = {
             }else{
                 window.location.href="/lavico/member/card_blank/bind?wxid="+wxid+"&go="+encodeURIComponent(referer);
                 //window.location.href="/lavico/member/card_blank/bind?wxid="+wxid;
-
             }
         });
 
@@ -179,7 +205,10 @@ module.exports = {
         var flag = 0;
 
         /*获得验证码*/
-        $("#get_id_code").click(function(){
+        $("#get_id_code").bind('click',function(){
+            if(isFollow!='true'){
+                return	false;
+            }
             if($("#mobile").val() =='' || !(/^1[358]\d{9}$/i.test($("#mobile").val())) ){
                 window.popupStyle2.on("请输入正确的手机号码",function(event){});
 

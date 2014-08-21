@@ -28,6 +28,12 @@ module.exports = {
         });
         this.step(function(){
             helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+
+                if(doc){
+                    nut.model.isFollow = doc.isFollow ? true : false;
+                }else{
+                    nut.model.isFollow = false;
+                }
                 if(!doc){
                     nut.disable();//不显示模版
                     this.res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -57,6 +63,8 @@ module.exports = {
             /*前端设计JS*/
             $('#loading').hide();//隐藏加载框
             jQuery('.popupStyle2').css('z-index','10002');
+            var isFollow = $('#isFollow').val();
+
 
             var wxid = $('#wxid').val();
             var referer = $("#referer").val();//用户访问的上一个页面
@@ -65,19 +73,41 @@ module.exports = {
             /*判断是否会员已经绑定*/
             if($("#error").val()=="you_has_bound_already"){
 
-                window.popupStyle2.on("您已绑定",function(event){
-                    if(referer == window.location.href || referer.length == 0){
-                        window.location.href = "/lavico/member/index?wxid="+wxid;
-                    }else{
-                        if(/lavico\/member\/card_blank\/register/g.test(referer)){
-                            window.location.href = referer;
-                        }else{
+                if(isFollow=='true'){
+                    window.popupStyle2.on("您已绑定",function(event){
+                        if(referer == window.location.href || referer.length == 0){
                             window.location.href = "/lavico/member/index?wxid="+wxid;
+                        }else{
+                            if(/lavico\/member\/card_blank\/register/g.test(referer)){
+                                window.location.href = referer;
+                            }else{
+                                window.location.href = "/lavico/member/index?wxid="+wxid;
+                            }
                         }
-                    }
-                });
+                    });
+                }else{
+                    window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信，参加互动活动。',function(event){
+                    });
+                }
 
             }
+            /*判断是否把绑定*/
+            if(isFollow!='true'){
+                $('input').attr('disabled','disabled');
+                $('#get_id_code').unbind();
+                $('.link-cardContent').bind('click',function(){
+                    if($("#error").val()=="you_has_bound_already"){
+
+                        window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信',function(event){
+                        });
+
+                    }else{
+                        window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信,才能绑定LaVico会员',function(event){
+                        });
+                    }
+                });
+            }
+
             /*申请会员卡*/
             $("#registerUrl").click(function(){
                 window.location.href="/lavico/member/card_blank/register?wxid="+wxid+"&go="+encodeURIComponent(referer);

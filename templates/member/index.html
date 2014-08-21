@@ -84,9 +84,15 @@
 
             <div class="radius radius1">
                 <ul class="list">
+                    <if condition="@bindStatus != 'bind'">
+                        <li><a id="blank-coupon" href="{@blankCoupon}">查看礼券</a></li>
+                    </if>
                     <li class="border-none"><a id="store" href="{@store}">门店查询</a></li>
+
                 </ul>
             </div>
+
+
             <div class="blank"></div>
         </div>
     </div>

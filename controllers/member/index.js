@@ -195,6 +195,9 @@ module.exports = {
             /*门店地址*/
             nut.model.store = "/lavico/store/currentCustomerLocation?wxid="+wxid;
 
+            /*游客查看优惠券*/
+            nut.model.blankCoupon = "/lavico/member/card_blank/coupon?wxid="+wxid;
+
             /*申领会员卡*/
             nut.model.register = "/lavico/member/card_blank/register?wxid="+wxid;;
 
