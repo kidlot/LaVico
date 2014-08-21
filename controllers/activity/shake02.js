@@ -181,7 +181,7 @@ module.exports = {
         var uid = $("#uid").val();
         var aid = $("#aid").val();
         var error = $('#error').val();
-        $("#shake_start").click(function(){
+        $("#shake_start").bind('click',function(){
 
             if(aid == 'undefined'){
                 if(error == 'activity_no_start'){
