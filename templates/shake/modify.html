@@ -57,26 +57,26 @@
                     <div class="col-sm-10">
 
                         <if condition="@shake.parm=='01'">
-                                    <input type="radio" name="parm" value="01" checked="checked"/>先注册后游戏（前置）
+                                    <input type="radio" name="parm" value="01" checked="checked"/>先注册后游戏(必须关注且注册)（前置）
                         <elseif condition="@shake.parm=='02'"/>
-                                    <input type="radio" name="parm" value="01"/>先注册后游戏（前置）
+                                    <input type="radio" name="parm" value="01"/>先注册后游戏(必须关注且注册)（前置）
                         <elseif condition="@shake.parm=='03'"/>
-                                    <input type="radio" name="parm" value="01"/>先注册后游戏（前置）
+                                    <input type="radio" name="parm" value="01"/>先注册后游戏(必须关注且注册)（前置）
                         <else/>
-                                    <input type="radio" name="parm" value="01" checked="checked"/>先注册后游戏（前置）
+                                    <input type="radio" name="parm" value="01" checked="checked"/>先注册后游戏(必须关注且注册)（前置）
                         </if>
 
 
                         <if condition="@shake.parm=='02'">
-                            <input type="radio" name="parm" value="02" checked="checked"/>先游戏后注册（后置）
+                            <input type="radio" name="parm" value="02" checked="checked"/>先游戏后注册(必须关注)（后置）
                             <else/>
-                            <input type="radio" name="parm" value="02"/>先游戏后注册（后置）
+                            <input type="radio" name="parm" value="02"/>先游戏后注册(必须关注)（后置）
                         </if>
 
                         <if condition="@shake.parm=='03'">
-                            <input type="radio" name="parm" value="03" checked="checked"/>先游戏后不提示注册（后置）
+                            <input type="radio" name="parm" value="03" checked="checked"/>先游戏后不提示注册（不要求注册和关注）（后置）
                             <else/>
-                            <input type="radio" name="parm" value="03"/>先游戏后不提示注册（后置）
+                            <input type="radio" name="parm" value="03"/>先游戏后不提示注册（不要求关注和注册）（后置）
                         </if>
 
                     </div>

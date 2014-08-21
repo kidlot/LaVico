@@ -1,0 +1,52 @@
+<input type='hidden' id='uid' value="{@uid}" />
+<input type='hidden' id='aid' value="{@aid}" />
+<input type='hidden' id='error' value="{@error}" />
+<input type='hidden' id='member_id' value="{@member_id}" />
+<input type="hidden" id="wxid" value='{@uid}'>
+
+<div class="wrapper">
+    <div class="coupon-banner">
+        <if condition="@pic!='undefined'">
+            <img src="{@pic}">
+            <else/>
+            <img src="/lavico/public/images/coupons-list.jpg" />
+        </if>
+
+    </div>
+    <div class="activity-rules">
+        <div class="begin">
+            <a id="shake_start">立即开始</a>
+        </div>
+
+        <div class="text">
+            <if condition="@isShowUrl == 'true'">
+                <p class="check_coupon_p" style="text-align: center;">
+                    <a id="check_coupon" href="{@check_coupon_url}">查看礼券</a>
+                </p>
+            </if>
+            <if condition="@content!='undefined'" >
+                {@content}
+                <else/>
+                <div class="title">活动及使用规则</div>
+                <div class="subtext">
+                    <div class="title1">活动说明：
+                    </div>
+                    <p style="padding-top:2%;">朗维高“来张优惠券”不止是摇出各种额度的优惠券那么简单，还有意想不到的专属礼遇特别奉献。就像潘多拉的魔盒充满着不可获知的惊喜！</p>
+                    <p>该活动只有朗维高会员才有权限参与，如果你还不是会员,请点击菜单-我的会员卡-<a href="/lavico/member/card_blank/register?wxid={@uid}" target="_blank" class="login_size">注册会员</a></p>
+                    </div>
+                    <div class="title1">活动规则：</div>
+                    <div class="subtext">
+                        <p>1.不同额度的优惠券</p>
+                        <p>2.每次摇一摇将消耗你的会员积分。</p>
+                    </div>
+                    <div class="title1">免责声明：</div>
+                    <div class="subtext">
+                        <p>1.券请在指定期限内兑换使用，过期作废</p>
+                        <p>2.券仅限会员本人使用，不可借用</p>
+                        <p>3.除有特殊说明，否则券不可累积使用</p>
+                        <p>4.本活动最终解释权归朗维高品牌所有</p>
+                    </div>
+                </if>
+        </div>
+    </div>
+</div>

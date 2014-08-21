@@ -1,0 +1,34 @@
+<script>
+    window.hideShareButtion.on()
+</script>
+<style>
+        .box_rotate {
+            -moz-transform: rotate(5deg); /* FF3.5+ */
+            -o-transform: rotate(5deg); /* Opera 10.5 */
+            -webkit-transform: rotate(5deg); /* Saf3.1+, Chrome */
+            filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.8660,M12=-0.5,M21=0.5,M22=0.8660,SizingMethod='auto expand');
+            -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.8660,M12=-0.5,M21=0.5,M22=0.8660,SizingMethod='auto expand')"; /* IE8 */
+        }
+        .box_rotate2 {
+            -moz-transform: rotate(-5deg); /* FF3.5+ */
+            -o-transform: rotate(-5deg); /* Opera 10.5 */
+            -webkit-transform: rotate(-5deg); /* Saf3.1+, Chrome */
+            filter: progid:DXImageTransform.Microsoft.Matrix(M11=-0.8660,M12=0.5,M21=-0.5,M22=-0.8660,SizingMethod='auto expand');
+            -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=-0.8660,M12=0.5,M21=-0.5,M22=-0.8660,SizingMethod='auto expand')"; /* IE8 */
+        }
+    </style>
+<!--正在加载-->
+<div id="loading" class="loading"><img src="/lavico/public/images/loading.gif"></div>
+
+<div class="wrapper shake_bg">
+    <!--<div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>-->
+    <div class="mobile">
+        <div class="mobile-pic"><img src="/lavico/public/images/mobilePhone.png" /></div>
+        <div class="mobile-btn"><a href="javascript:;" class="mobileBtnClick">你的手机没法摇？那就直接点这里</a></div>
+    </div>
+
+</div>
+<input type='hidden' id='uid' value="{@uid}" />
+<input type='hidden' id='aid' value="{@aid}" />
+<input type='hidden' id='points' value="{@points}" />
+
