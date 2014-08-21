@@ -94,12 +94,29 @@ module.exports = {
                         nut.model.isFollow = false;
                     }
 
+                    if(doc&&doc.shake){
+                        nut.model.shake = "true";
+                    }else{
+                        nut.model.shake = "false";
+                    }
+
                     if(doc && doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.memberID && doc.HaiLanMemberInfo.action=='bind' ){
                         nut.model.member_id = "normal";
                     }else{
                         nut.model.member_id = "undefined";
                     }
 
+                    nut.model.check_coupon_url = '/lavico/member/card_blank/coupon?wxid='+wxid;//游客查看礼券链接
+                    console.log("++++++++++++++++++++++++++++++++");
+                    console.log(nut.model.shake);
+                    console.log(nut.model.member_id);
+                    console.log("++++++++++++++++++++++++++++++++");
+
+                    if(nut.model.member_id == "undefined" && nut.model.shake =="true"){
+                        nut.model.isShowUrl = 'true';
+                    }else{
+                        nut.model.isShowUrl = 'false';
+                    }
                 }));
 
             }

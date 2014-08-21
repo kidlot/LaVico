@@ -17,7 +17,13 @@
         <div class="begin">
             <a id="shake_start">立即开始</a>
         </div>
+
         <div class="text">
+            <if condition="@isShowUrl == 'true'">
+                <p class="check_coupon_p" style="text-align: center;">
+                    <a id="check_coupon" href="{@check_coupon_url}">查看礼券</a>
+                </p>
+            </if>
             <if condition="@content!='undefined'" >
                 {@content}
                 <else/>
