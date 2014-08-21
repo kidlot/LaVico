@@ -35,10 +35,11 @@ module.exports = {
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
                 {display: '日期', name : $(".unwind").val()+'.createDate', width : 80, sortable : true},
+                {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true, hide:true},
                 {display: '姓名', name : 'realname', width : 80, sortable : true},
                 {display: '标签', name : 'tags', width : 292, sortable : true, hide:false},
                 {display: '手机号码', name : 'mobile', width : 100, sortable : true},
-                {display: 'memberID', name :$(".unwind").val()+'.memberID', width : 80, sortable : true},
+                {display: 'memberID', name :'memberID', width : 80, sortable : true},
 //                {display: '券名', name : $(".unwind").val()+'.promotion_name', width : 100, sortable : true},
                 {display: '券号', name : $(".unwind").val()+'.coupon_no', width : 180, sortable : true},
                 {display: '券中奖率', name : $(".unwind").val()+'.lottery_chance', width : 80, sortable : true},
@@ -48,7 +49,6 @@ module.exports = {
                 {display: '性别', name : 'gender', width : 80, sortable : true, hide:false},
                 {display: '省份', name : 'province', width : 80, sortable : true, hide:true},
                 {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
-                {display: '微信ID', name : $(".unwind").val()+'.uid', width : 50, sortable : true, hide:true},
                 {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true}
 
             ],
@@ -209,6 +209,9 @@ module.exports = {
                                 }
                                 docs[i].tags = tags.join("&nbsp;")
                                 docs[i].followTimebak = docs[i].followTime;
+                                docs[i].mobile = docs[i].mobile || '';
+                                docs[i].memberID = (docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.memberID)?docs[i].HaiLanMemberInfo.memberID:'';
+
                                 docs[i].followTime = parseInt(((new Date()) - (new Date(docs[i].followTime*1000))) / (1000*60*60*24))
                                 docs[i].registerTime = parseInt(((new Date()) - (new Date(docs[i].registerTime))) / (1000*60*60*24))
                                 docs[i].lastMessageTime = parseInt(((new Date()) - (new Date(docs[i].lastMessageTime))) / (1000*60*60*24))
