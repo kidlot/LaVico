@@ -210,7 +210,7 @@ module.exports = {
                                 docs[i].tags = tags.join("&nbsp;")
                                 docs[i].followTimebak = docs[i].followTime;
                                 docs[i].mobile = docs[i].mobile || '';
-                                docs[i].memberID = (docs[i].HaiLanMemberInfo&&docs[i].HaiLanMemberInfo.memberID)?docs[i].HaiLanMemberInfo.memberID:'';
+                                docs[i].memberID = (docs[i].HaiLanMemberInfo&&(docs[i].HaiLanMemberInfo.memberID!='undefined'))?docs[i].HaiLanMemberInfo.memberID:'';
 
                                 docs[i].followTime = parseInt(((new Date()) - (new Date(docs[i].followTime*1000))) / (1000*60*60*24))
                                 docs[i].registerTime = parseInt(((new Date()) - (new Date(docs[i].registerTime))) / (1000*60*60*24))
