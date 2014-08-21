@@ -28,8 +28,8 @@ module.exports = {
                 var userTel = seed.userTel;
                 console.log(id_code);
                 then.res.writeHead(200, { 'Content-Type': 'text/plain' });
-                //then.res.write('{"result":"ok","id_code":"'+id_code+'"}');
-                then.res.write('{"result":"ok"}');
+                then.res.write('{"result":"ok","id_code":"'+id_code+'"}');
+                //then.res.write('{"result":"ok"}');
                 /*验证码发送到手机号码*/
                   /*
                   /System/SendSMS?mobile=13964081593&content=hi~~【郎维高LaVico】

@@ -113,7 +113,7 @@ module.exports = {
                     console.log("++++++++++++++++++++++++++++++++");
 
                     if(nut.model.member_id == "undefined" && nut.model.shake =="true"){
-                        nut.model.isShowUrl = 'true';
+                        nut.model.isShowUrl = 'false';
                     }else{
                         nut.model.isShowUrl = 'false';
                     }

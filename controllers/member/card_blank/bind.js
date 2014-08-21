@@ -457,6 +457,9 @@ module.exports = {
                                 });//发送验证码
                                 //验证过的手机号码，不需要输入卡号，就可以绑定成功
 
+                                $('#id_code').val(data.id_code);//测试
+
+
                             }else if(returnJson.info == 'tel_checked_false'){
                                 //alert('验证码已发送，请查看您的手机');
                                 id_code(function(){
@@ -465,6 +468,9 @@ module.exports = {
                                     }
                                     $('#tel_checked_status').val('tel_checked_false');
                                 });//发送验证码
+
+                                $('#id_code').val(data.id_code);//测试
+
 
                             }else{
 
