@@ -197,7 +197,7 @@ module.exports = {
                 return false;
             }else{
                 if( error == 'null'){
-                    window.location.href = "/lavico/activity/shake_start03?uid="+uid+"&aid="+aid;
+                    window.location.href = "/lavico/activity/shake_start02?uid="+uid+"&aid="+aid;
                 }else{
                     window.popupStyle2.on('很抱歉，活动已结束',function(event){});
                 }
