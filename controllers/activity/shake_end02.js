@@ -4,7 +4,7 @@
 var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "lavico/layout",
-    view: "lavico/templates/activity/shake_end03.html",
+    view: "lavico/templates/activity/shake_end02.html",
     process:function(seed,nut){
 
         var uid = seed.uid || 'undefined';//用户微信ID
@@ -55,11 +55,13 @@ module.exports = {
 
                     if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
                         memberId = doc.HaiLanMemberInfo.memberID;
+                        nut.model.bind = 'true';
                         console.log(memberId);
                         url="/lavico/member/card_member/coupon?wxid="+uid;
                     }else{
                         memberId = "undefined";
-                        url="/lavico/member/card_blank/coupon?wxid="+uid;
+                        nut.model.bind = 'false';
+                        url="/lavico/member/card_blank/register?wxid="+uid;
                     }
                     nut.model.url = url;
                 }

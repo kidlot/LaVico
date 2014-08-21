@@ -4,7 +4,7 @@
 var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "lavico/layout",
-    view: "lavico/templates/activity/shake_start03.html",
+    view: "lavico/templates/activity/shake_start02.html",
     process:function(seed,nut){
 
         /*MemberID会员判断*/
@@ -140,10 +140,18 @@ module.exports = {
 
                     console.log("costPerShake:"+costPerShake);
 
-                    if(costPerShake >  0){
+                    if(costPerShake >=  0){
                         helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
 
                             console.log(doc);
+                            if(doc){
+                                nut.model.isFollow = doc.isFollow ? true : false;
+                            }else{
+                                nut.model.isFollow = false;
+                            }
+                            if(nut.model.isFollow == false){
+                                write_info(then,'{"result":"wxid_no_bind_to_welab"}');
+                            }
 
                             if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
                                 memberId = doc.HaiLanMemberInfo.memberID;
@@ -330,6 +338,14 @@ module.exports = {
                         //获取用户信息，判断该用户是否为会员，会员memberId帐号
                         helper.db.coll('welab/customers').findOne({wechatid:wxid},then.hold(function(err,doc){
                             console.log(doc);
+                            if(doc){
+                                nut.model.isFollow = doc.isFollow ? true : false;
+                            }else{
+                                nut.model.isFollow = false;
+                            }
+                            if(nut.model.isFollow == false){
+                                write_info(then,'{"result":"wxid_no_bind_to_welab"}');
+                            }
 
                             if(doc&&doc.HaiLanMemberInfo&&doc.HaiLanMemberInfo.action=='bind'){
                                 memberId = doc.HaiLanMemberInfo.memberID;
@@ -421,7 +437,6 @@ module.exports = {
                         console.log('has-count:'+count);
                         console.log('system-count:'+shake.lottery_count);
                         if(count >= shake.lottery_count){
-
                             write_info(then,'{"result":"has-no-chance","lottery_cycle":"'+lottery_cycle+'"}');
                         }
                     }
@@ -627,7 +642,7 @@ module.exports = {
 
         var init = function(){
 
-            $.get('/lavico/activity/shake_start03:init',{
+            $.get('/lavico/activity/shake_start02:init',{
                 uid:$("#uid").val(),//微信ID
                 aid:$("#aid").val()//摇一摇活动ID,也就是_id
             },function(data){
@@ -681,6 +696,11 @@ module.exports = {
                 }else if(data.result == 'something-error'){
 
                     window.popupStyle2.on('很抱歉，活动已结束',function(event){
+                        flag = 1;
+                    });
+                }else if(data.result == 'wxid_no_bind_to_welab'){
+
+                    window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信，参加互动活动。',function(event){
                         flag = 1;
                     });
 
@@ -829,7 +849,7 @@ module.exports = {
             $('#loading').show();
 
             var _nowTime = new Date().getTime();
-            $.get('/lavico/activity/shake_start03:shakeit',{
+            $.get('/lavico/activity/shake_start02:shakeit',{
                 uid:$("#uid").val(),//微信ID
                 aid:$("#aid").val()//摇一摇活动ID
             },function(data){
@@ -843,7 +863,7 @@ module.exports = {
                     if(data.result == 'win'){
                         var _coupon_no = data.coupon_no;
                         var _PROMOTION_CODE = data.PROMOTION_CODE;
-                        window.location.href="/lavico/activity/shake_end03?uid="+$("#uid").val()+"&aid="+$("#aid").val()+"&activity="+_PROMOTION_CODE+"&coupon_no="+data.coupon_no;
+                        window.location.href="/lavico/activity/shake_end02?uid="+$("#uid").val()+"&aid="+$("#aid").val()+"&activity="+_PROMOTION_CODE+"&coupon_no="+data.coupon_no;
 
                     }else if(data.result == 'has-no-chance'){
 
@@ -882,6 +902,11 @@ module.exports = {
                     }else if(data.result == 'activity_is_over'){
 
                         window.popupStyle2.on('很抱歉，活动已结束',function(event){
+                            flag = 1;
+                        });
+                    }else if(data.result == 'wxid_no_bind_to_welab'){
+
+                        window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信，参加互动活动。',function(event){
                             flag = 1;
                         });
 

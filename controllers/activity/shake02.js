@@ -9,7 +9,7 @@
 var middleware = require('../../lib/middleware.js');
 module.exports = {
     layout: "lavico/layout",
-    view: "lavico/templates/activity/shake03.html",
+    view: "lavico/templates/activity/shake02.html",
     process:function(seed,nut){
 
         var wxid = seed.uid ? seed.uid : 'undefined';//uid是用户的wechatid
@@ -93,7 +93,7 @@ module.exports = {
                     }else{
                         nut.model.isFollow = false;
                     }
-
+                    console.log('isFollow:'+nut.model.isFollow);
                     if(doc&&doc.shake){
                         nut.model.shake = "true";
                     }else{

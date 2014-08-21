@@ -59,7 +59,9 @@ module.exports = {
                         url="/lavico/member/card_member/coupon?wxid="+uid;
                     }else{
                         memberId = "undefined";
-                        url="/lavico/member/card_blank/coupon?wxid="+uid;
+                        //url="/lavico/member/card_blank/coupon?wxid="+uid;
+                        url = "/lavico/member/card_blank/register?wxid="+uid;
+
                     }
                     nut.model.url = url;
                 }
