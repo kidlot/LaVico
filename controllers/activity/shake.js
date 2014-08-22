@@ -14,6 +14,7 @@ module.exports = {
         var error;
         nut.model.fromWelab = seed.fromWelab || ""
 
+
         var member_id;
         var shake;
 

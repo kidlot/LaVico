@@ -26,7 +26,7 @@ module.exports = {
                 helper.db.coll('lavico/activity').findOne({aid: code}, this.hold(function (err, doc) {
                     if (doc) {
                         info = doc;
-                        info.introduction = decodeURIComponent(info.introduction);
+                        info.introduction = decodeURIComponent(info.introduction)||'';
                     }
                 }));
             });
