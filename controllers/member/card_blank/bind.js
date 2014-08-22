@@ -469,7 +469,7 @@ module.exports = {
                                     $('#tel_checked_status').val('tel_checked_false');
                                 });//发送验证码
 
-                                $('#id_code').val(data.id_code);//测试
+                                //$('#id_code').val(data.id_code);//测试
 
 
                             }else{
