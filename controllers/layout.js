@@ -45,6 +45,20 @@ module.exports = {
             shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
         }
 
+        //// 优惠券
+        if(location.pathname == "/lavico/activity/shake02"){
+            shareTitle = "来张优惠券"
+            shareContent = "朗维高“来张优惠券”不止是摇出各种额度的优惠券那么简单，还有意想不到的专属礼遇特别奉献。就像潘多拉的魔盒充满着不可获知的惊喜！";
+            shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
+        }
+
+        //// 优惠券
+        if(location.pathname == "/lavico/activity/shake03"){
+            shareTitle = "来张优惠券"
+            shareContent = "朗维高“来张优惠券”不止是摇出各种额度的优惠券那么简单，还有意想不到的专属礼遇特别奉献。就像潘多拉的魔盒充满着不可获知的惊喜！";
+            shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
+        }
+
 
         shareTitle = jQuery("#shareTitle").val() || shareTitle;
         shareIcon = jQuery("#shareIcon").val() || shareIcon;
