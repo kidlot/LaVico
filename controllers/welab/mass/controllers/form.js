@@ -389,7 +389,7 @@ module.exports = {
                                     updateReply.articles.push({
                                         "thumb_media_id":doc.media_id,
                                         "title":reply.title,
-                                        "content_source_url":reply.link,
+                                        "content_source_url":reply.link.replace("{host}",this.req.headers.host).replace("{wxid}",""),
                                         "content":reply.content,
                                         "digest":reply.tabloid,
                                         "show_cover_pic":"1"
@@ -410,7 +410,7 @@ module.exports = {
                                             updateReply.articles.push({
                                                 "thumb_media_id":doc.media_id,
                                                 "title":reply.items[i].title,
-                                                "content_source_url":reply.items[i].link,
+                                                "content_source_url":reply.items[i].link.replace("{host}",this.req.headers.host).replace("{wxid}",""),
                                                 "content":reply.items[i].content,
                                                 "digest":reply.items[i].tabloid,
                                                 "show_cover_pic":"1"
@@ -433,7 +433,7 @@ module.exports = {
                                     updateReply.articles.push({
                                         "thumb_media_id":doc.media_id,
                                         "title":reply.title,
-                                        "content_source_url":reply.link,
+                                        "content_source_url":reply.link.replace("{host}",this.req.headers.host).replace("{wxid}",""),
                                         "content":reply.content,
                                         "digest":reply.tabloid,
                                         "show_cover_pic":"1"
