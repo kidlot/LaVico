@@ -409,10 +409,10 @@ module.exports = {
 
                                             updateReply.articles.push({
                                                 "thumb_media_id":doc.media_id,
-                                                "title":reply.title,
-                                                "content_source_url":reply.link,
-                                                "content":reply.content,
-                                                "digest":reply.tabloid,
+                                                "title":reply.items[i].title,
+                                                "content_source_url":reply.items[i].link,
+                                                "content":reply.items[i].content,
+                                                "digest":reply.items[i].tabloid,
                                                 "show_cover_pic":"1"
                                             })
                                         }));
