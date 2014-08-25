@@ -22,7 +22,7 @@ module.exports = {
 
         this.step(function(){
             //oauth认证
-            if(wxid == 'undefined'){
+            if(wxid == 'undefined'|| wxid == '{wxid}'){
 
                 if(this.req.session.oauthTokenInfo && this.req.session.oauthTokenInfo.openid){
 

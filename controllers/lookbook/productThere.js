@@ -13,7 +13,7 @@ module.exports = {
         this.res.setHeader("Pragma","no-cache");
 
         this.step(function(){
-            if(wxid == undefined){
+            if(wxid == undefined || wxid == '{wxid}'){
                 if(this.req.session.oauthTokenInfo && this.req.session.oauthTokenInfo.openid){
                     console.log("从SESSION中读取OPENID",this.req.session.oauthTokenInfo.openid)
                     wxid = this.req.session.oauthTokenInfo.openid

@@ -26,7 +26,7 @@ module.exports = {
 
         var wxid = seed.wxid ? seed.wxid : false;//预先定义微信ID
 
-        if(!wxid){
+        if(!wxid || wxid == '{wxid}'){
 
             if(this.req.session.oauthTokenInfo && this.req.session.oauthTokenInfo.openid){
 

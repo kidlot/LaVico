@@ -16,7 +16,7 @@ module.exports = {
 
         var wxid = seed.wxid;
 
-        if(!wxid){
+        if(!wxid || wxid == '{wxid}'){
 
             if(this.req.session.oauthTokenInfo && this.req.session.oauthTokenInfo.openid){
 
