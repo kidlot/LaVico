@@ -48,8 +48,11 @@ module.exports = {
             if(wxid != undefined){
                 helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
                     var doc = doc || {};
-                    //console.log("doc:"+doc.isFollow)
+                    console.log('********************************');
+                    console.log(doc);
+                    console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
+                    console.log('********************************');
                 }));
             }else{
                 nut.model.isFollow = false;
