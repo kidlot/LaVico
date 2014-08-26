@@ -158,6 +158,9 @@ module.exports = {
 
             /*David.xu添加最高价格at2014-06-19*/
             aFormInput['categoryId'] = $("#categoryId").val();
+            /*David.xu添加最高价格at2014-08-26*/
+            aFormInput['parm'] = $('input[name="parm"]:checked').val();
+
             //alert($("#categoryId").val());
             console.log(aFormInput);
 

@@ -43,7 +43,7 @@
             <tbody>
             <foreach for="@page.docs" var="doc">
                 <tr data-itemid="{@ doc._id}:{@ doc.orderId}" style="height: 80px;">
-                    <td width="5%">{@ doc.name}</td>
+                    <td width="5%"><a href="/lavico/bargain/form?_id={@ doc._id}&type=1">{@ doc.name}</a></td>
                     <td id="docstatus" width="10%">{@ doc.stat}</td>
                     <td width="3%">{@ doc.price}</td>
                     <td width="3%">{@ doc.minPrice}</td>

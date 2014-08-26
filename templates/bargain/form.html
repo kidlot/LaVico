@@ -33,6 +33,34 @@
                         </td>
                     </tr>
                     <tr>
+                        <th style="width: 100px;font-size: 14px;">流程设置</th>
+                        <td colspan="3">
+                            <if condition="@doc.parm=='01'">
+                                <input class="postData" type="radio" name="parm" value="01" checked="checked"/>先注册后游戏(必须关注且注册)（前置）
+                                <elseif condition="@doc.parm=='02'"/>
+                                <input class="postData" type="radio" name="parm" value="01"/>先注册后游戏(必须关注且注册)（前置）
+                                <elseif condition="@doc.parm=='03'"/>
+                                <input class="postData" type="radio" name="parm" value="01"/>先注册后游戏(必须关注且注册)（前置）
+                                <else/>
+                                <input class="postData" type="radio" name="parm" value="01" checked="checked"/>先注册后游戏(必须关注且注册)（前置）
+                            </if>
+                            <br/>
+
+                            <if condition="@doc.parm=='02'">
+                                <input class="postData" type="radio" name="parm" value="02" checked="checked"/>先游戏后注册(必须关注)（后置）
+                                <else/>
+                                <input class="postData" type="radio" name="parm" value="02"/>先游戏后注册(必须关注)（后置）
+                            </if>
+                            <br/>
+                            <if condition="@doc.parm=='03'">
+                                <input class="postData" type="radio" name="parm" value="03" checked="checked"/>先游戏后不提示注册（不要求注册和关注)
+                                <else/>
+                                <input class="postData" type="radio" name="parm" value="03"/>先游戏后不提示注册（不要求关注和注册）
+                            </if>
+                        </td>
+                    </tr>
+
+                    <tr>
                         <th style="font-size: 14px;">产品简介</th>
                         <td colspan="3">
                             <textarea class="form-control postData" rows="3" id="introduction" style="width: 300px">{@ doc.introduction}</textarea>
