@@ -385,7 +385,7 @@ module.exports = {
                             if(fs.existsSync(path.join(__dirname,"../../../../../../") + reply.pic)){
                                 process.wxApi.uploadMedia(path.join(__dirname,"../../../../../../") + reply.pic, 'image', then.hold(function(err,doc){
                                     if(err)console.log(err)
-
+                                    reply.content = decodeURIComponent(reply.content);//David.xu修改，编辑器的内容解析
                                     updateReply.articles.push({
                                         "thumb_media_id":doc.media_id,
                                         "title":reply.title,
@@ -406,6 +406,7 @@ module.exports = {
                                     if(fs.existsSync(path.join(__dirname,"../../../../../../") + reply.items[i].pic)){
                                         process.wxApi.uploadMedia(path.join(__dirname,"../../../../../../") + reply.items[i].pic, 'image', then.hold(function(err,doc){
                                             if(err)console.log(err)
+                                            reply.items[i].content = decodeURIComponent(reply.items[i].content);//David.xu修改，编辑器的内容解析
 
                                             updateReply.articles.push({
                                                 "thumb_media_id":doc.media_id,
