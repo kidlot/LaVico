@@ -430,7 +430,7 @@ module.exports = {
                                 process.wxApi.uploadMedia(path.join(__dirname,"../../../../../../") + reply.pic, 'image', then.hold(function(err,doc){                               console.log('single-come-on');
 
                                     if(err)console.log(err)
-
+                                    reply.content = decodeURIComponent(reply.content);//David.xu修改，编辑器的内容解析
                                     updateReply.articles.push({
                                         "thumb_media_id":doc.media_id,
                                         "title":reply.title,
