@@ -7,12 +7,19 @@ module.exports = {
     , process: function(seed,nut)
     {
         var doc = {};
+        //david.xu parm:01 先注册后游戏(必须关注且注册)（前置）
+        //david.xu parm:02 先游戏后注册(必须关注)（后置）
+        //david.xu parm:03 先游戏后不提示注册（不要求关注和注册）
+        var parm = '01';
+        var showFollowDialog;
+        var showRegisterDialog;
+
 
         this.res.setHeader("Cache-Control", "no-cache");
         this.res.setHeader("Cache-Control", "no-store");
         this.res.setHeader("Pragma","no-cache");
 
-        if(seed.wxid && seed._id){
+        if(seed.wxid && seed._id && (seed.wxid!='{wxid}')){
 
             nut.model.wxid = seed.wxid
             nut.model._id = seed._id
@@ -23,6 +30,9 @@ module.exports = {
                 var customers = customers || {}
 
                 nut.model.isVip = false
+                nut.model.isFollow = customers.isFollow ? true : false;
+                nut.model.memberID = undefined;
+
                 if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
                     nut.model.isVip = true
                     nut.model.memberID = customers.HaiLanMemberInfo.memberID
@@ -32,6 +42,15 @@ module.exports = {
 
             helper.db.coll("lavico/bargain").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,_doc){
                 doc = _doc || {}
+                parm = doc.parm || '01';//流程设置
+                nut.model.parm = parm;
+                if(nut.model.parm=='02'){
+                    doc.parmDes = '关注LaVico的用户';
+                }else if(nut.model.parm=='03'){
+                    doc.parmDes = '所有用户';
+                }else{
+                    doc.parmDes = 'LaVico会员';
+                }
                 nut.model.doc = doc
             }))
 
@@ -51,10 +70,47 @@ module.exports = {
         // 查询剩余积分
         this.step(function(){
 
+            if(parm=='01'){
+                if(nut.model.isFollow){
+                    showFollowDialog = false;
+                }else{
+                    showFollowDialog = true;
+                }
+
+                if(nut.model.isVip){
+                    showRegisterDialog = false;
+                }else{
+                    showRegisterDialog = true;
+                }
+            }
+
+            if(parm=='02'){
+                if(nut.model.isFollow){
+                    showFollowDialog = false;
+                }else{
+                    showFollowDialog = true;
+                }
+                showRegisterDialog = false;
+            }
+
+            if(parm=='03'){
+                showFollowDialog = false;
+                showRegisterDialog = false;
+            }
+            nut.model.showFollowDialog = showFollowDialog;
+            nut.model.showRegisterDialog = showRegisterDialog;
+
+            console.log('++++++++++++');
+            console.log(parm);
+            console.log('++++++++++++');
+            console.log('关注窗口：'+nut.model.showFollowDialog);
+            console.log('@@@@@@@@@@@@');
+            console.log('注册窗口：'+nut.model.showRegisterDialog);
+
             var then = this;
             nut.model.jf = nut.model.doc.deductionIntegral || 0;
 
-            if(nut.model.doc.deductionIntegral){
+            if(nut.model.doc.deductionIntegral&& nut.model.isVip == true){
 
                 middleware.request("Point/" + nut.model.memberID,
                     {memberId: nut.model.memberID},
@@ -146,6 +202,7 @@ module.exports = {
         })
 
     }
+
 }
 
 

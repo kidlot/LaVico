@@ -1,3 +1,12 @@
+<if condition="@showFollowDialog">
+    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
+</if>
+<if condition="@showRegisterDialog">
+    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 997 " onclick="register()"></div>
+</if>
+
+
+
 <input type="hidden" id="setPriceV" value="{@ doc.maxPrice}">
 <div class="wrapper">
     <div class="bargin">
@@ -9,6 +18,7 @@
                 <input type="hidden" value="{@ doc.deductionIntegral}" id="point">
                 <input type="hidden" value="{@ isVip}" id="isVip">
                 <input type="hidden" value="{@ memberID}" id="memberID">
+                <input type="hidden" value="{@ parm}" id="parm"/>
                 <p class="title name">{@ doc.name}</p>
 
                 <p class="color">
@@ -30,6 +40,10 @@
                         <span class="pice">{@ doc.price}</span>元
                     </span>
                 </p>
+                <p class="color">
+                    <span class="color-title" style="width: 80px">参与范围：</span><span class="color-con">{@ doc.parmDes}</span>
+                </p>
+
                 <p class="look_store"><a href="/lavico/bargain/maps?_id={@doc._id}&wxid={@wxid}">查看活动参与门店 > </a></p>
             </div>
             <div class="fl bargin-left"><img src="{@ doc.pic}"/></div> 
@@ -183,6 +197,9 @@
 </div>
 
 <script>
+var parm = '{@parm}';
+var isVip = '{@isVip}';
+
 function giveup(){
 
     $.ajax({
@@ -225,32 +242,50 @@ function _step(channelName){
         $("#_win_"+channelName).show()
         $("#_alert").show()
     }
+
+    var _txt = '';
+    var _url = '';
+    if(parm=='02'){
+        if(isVip =='false'){
+            _txt = "恭喜您，你已成功侃价，请先注册为朗维高LaVico的会员后领取礼券";
+            _url = "/lavico/member/card_blank/register?wxid="+$("#wxid").val();
+        }else{
+            _txt =  "您已成功侃价，请查看您的“专属礼券”";
+            _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
+        }
+    }else if(parm=='03'){
+        if(isVip =='false'){
+            _txt = "恭喜您，你已成功侃价，请点击查看您的侃价礼券";
+            _url = "/lavico/member/card_blank/coupon?wxid="+$("#wxid").val();
+        }else{
+            _txt =  "您已成功侃价，请查看您的“专属礼券”";
+            _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
+        }
+    }else{
+        _txt =  "您已成功侃价，请查看您的“专属礼券”";
+        _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
+    }
+
     if(channelName == "success"){
+
         deal(function(){
-            $("#fixed").text("您已成功侃价，请查看您的“专属礼券”")
-            $("#fixed").attr('href',"/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
+            $("#fixed").text(_txt)
+            $("#fixed").attr('href',_url);
             _func()
         })
     }else{
         _func()
     }
 }
+function register(){
+    window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
 
+        if(event == "confirm"){
+            location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
+        }
+    })
+}
 function _check(){
-
-
-    if($("#isVip").val() == "false"){
-
-        window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
-
-            if(event == "confirm"){
-                location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
-            }
-        })
-
-        return false;
-    }
-
 
     var bargainStatus = '{@ bargainStatus}'
     if(bargainStatus){

@@ -103,7 +103,16 @@ module.exports = {
                 }
             })
         })
+        //流程设置
+        $('input[name="parm"]').change(function (){
+            var _parm  = $('input[name="parm"]:checked').val();
+            if(_parm=='02'||_parm=='03'){
+                $('#deductionIntegral').val(0).attr("readonly","readonly");
+            }else{
+                $('#deductionIntegral').removeAttr("readonly");
+            }
 
+        });
 
         //保存
         window.save = function(){
@@ -286,6 +295,10 @@ module.exports = {
                 var fetchCouponStatus = true;
                 var _memo;
                 //用户获取优惠券的成功与否状态，默认为可以获取,by David.xu at 2014-06-23
+                var parm;//活动流程设置
+                //david.xu parm:01 先注册后游戏(必须关注且注册)（前置）
+                //david.xu parm:02 先游戏后注册(必须关注)（后置）
+                //david.xu parm:03 先游戏后不提示注册（不要求关注和注册）
 
                 this.step(function(){
 
@@ -295,6 +308,7 @@ module.exports = {
                             console.log(err)
                         }
                         bargain = doc || {};
+                        parm = bargain.parm || '01';
                         return bargain;
                     })) ;
                 })
@@ -306,9 +320,31 @@ module.exports = {
                     // 差价
                     var qty = parseInt(bargain.price) - parseInt(seed.price);
                     var _memo = bargain.activityName || '我要侃价';
+
+                    var _req;
+                    if(parm =='02'||parm =='03'){
+                        _req = {
+                            openid: seed.wxid,
+                            otherPromId: seed.promotionsCode,
+                            PROMOTION_CODE: seed.promotionsCode,
+                            qty: qty,
+                            parm: '02',
+                            point: 0,
+                            memo:_memo};
+                    }else{
+                        _req = {
+                            openid: seed.wxid,
+                            otherPromId: seed.promotionsCode,
+                            PROMOTION_CODE: seed.promotionsCode,
+                            qty: qty,
+                            parm: '01',
+                            point: 0,
+                            memo:_memo};
+                    }
+
                     // 获得券
                     middleware.request("Coupon/FetchCoupon",
-                        {openid: seed.wxid, otherPromId: seed.promotionsCode, PROMOTION_CODE: seed.promotionsCode, qty: qty, point: 0, memo:_memo},
+                        _req,
                         this.hold(function (err, doc) {
                             var doc = JSON.parse(doc);
                             if(doc&&doc.success&&doc.success==true){
@@ -323,7 +359,7 @@ module.exports = {
 
                                 // 更新用户表中的记录。用于统计
                                 var bargain = {price:parseInt(seed.price),_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:true}
-                                helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
+                                helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},{upsert:true},this.hold(function(err,doc){
                                     if(err ){
                                         console.log(err)
                                     }
@@ -350,7 +386,7 @@ module.exports = {
                 // 减少积分
                 this.step(function(){
                     //fetchCouponStatus 获取券的是否成功
-                    if(fetchCouponStatus == true && bargain.deductionIntegral && bargain.deductionIntegral!="" && bargain.deductionIntegral > 0){
+                    if(parm == '01' && fetchCouponStatus == true && bargain.deductionIntegral && bargain.deductionIntegral!="" && bargain.deductionIntegral > 0){
                         var qty = "-"+bargain.deductionIntegral;
                         middleware.request("Point/Change",
                             {memberId: seed.memberID, qty:qty, memo:_memo},
@@ -384,7 +420,7 @@ module.exports = {
             process: function(seed,nut){
 
                 var bargain = {price:parseInt(seed.price),_id:seed.productID,name:seed.name,createDate:new Date().getTime(),stat:false}
-                helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},this.hold(function(err,doc){
+                helper.db.coll("welab/customers").update({wechatid : seed.wxid}, {$addToSet:{bargain:bargain}},{upsert:true},this.hold(function(err,doc){
                     if(err ){
                         throw err;
                     }

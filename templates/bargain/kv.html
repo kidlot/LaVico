@@ -29,7 +29,7 @@
     </div>
 </div>
 
-<if condition="@ !isFollow">
+<if condition="@ wxid=='{wxid}'">
     <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
 </if>
 <script>
@@ -72,9 +72,11 @@
 
         }else{
 
-            window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
-                window.location.href = "/lavico/member/card_blank/register?wxid="+wxid;
-            });
+            location.href = "/lavico/bargain/list?wxid="+wxid;
+
+//            window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
+//                window.location.href = "/lavico/member/card_blank/register?wxid="+wxid;
+//            });
         }
     }
 </script>
