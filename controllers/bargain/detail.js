@@ -163,7 +163,7 @@ module.exports = {
                 var _url = '';
                 isVip = nut.model.isVip;
                 if(parm=='02'){
-                    if(isVip =='false'){
+                    if(isVip ==false){
                         _txt = "恭喜您，你已成功侃价，请先注册为朗维高LaVico的会员后领取礼券";
                         var _encodeUlr = encodeURIComponent("/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
                         _url = "/lavico/member/card_blank/register?wxid="+seed.wxid+"&go="+_encodeUlr;
@@ -172,7 +172,7 @@ module.exports = {
                         _url = "/lavico/member/card_member/coupon/index?wxid="+seed.wxid;
                     }
                 }else if(parm=='03'){
-                    if(isVip =='false'){
+                    if(isVip ==false){
                         _txt = "恭喜您，你已成功侃价，请点击查看您的侃价礼券";
                         _url = "/lavico/member/card_blank/coupon?wxid="+seed.wxid;
                     }else{
@@ -180,7 +180,7 @@ module.exports = {
                         _url = "/lavico/member/card_member/coupon/index?wxid="+seed.wxid;
                     }
                 }else{
-                    if(isVip =='false'){
+                    if(isVip ==false){
                         _txt = "恭喜您，你已成功侃价，请点击查看您的侃价礼券";
                         _url = "/lavico/member/card_blank/coupon?wxid="+seed.wxid;
                     }else{
