@@ -28,12 +28,12 @@ module.exports = {
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
-                {display: '日期', name : $(".unwind").val()+'.createDate', width : 150, sortable : true},
+                {display: '日期', name : $(".unwind").val()+'.createDate', width : 100, sortable : true},
+                {display: '微信ID', name : 'wechatid', width : 150, sortable : true, hide:false},
                 {display: '姓名', name : 'realname', width : 150, sortable : true},
                 {display: '标签', name : 'tags', width : 292, sortable : true},
                 {display: '成交价', name : $(".unwind").val()+'.price', width : 150, sortable : true},
                 {display: '名称', name : $(".unwind").val()+'.name', width : 150, sortable : true},
-
                 {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
                 {display: '年龄', name : 'birthday', width : 80, sortable : true, hide:true},
                 {display: '城市', name : 'city', width : 80, sortable : true, hide:true},
