@@ -165,7 +165,7 @@ module.exports = {
                 if(parm=='02'){
                     if(isVip ==false){
                         _txt = "恭喜您，你已成功侃价，请先注册为朗维高LaVico的会员后领取礼券";
-                        var _encodeUlr = encodeURIComponent("/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
+                        var _encodeUlr = encodeURIComponent("/lavico/member/card_member/coupon/index?wxid="+seed.wxid);
                         _url = "/lavico/member/card_blank/register?wxid="+seed.wxid+"&go="+_encodeUlr;
                     }else{
                         _txt =  "您已成功侃价，请查看您的“专属礼券”";
