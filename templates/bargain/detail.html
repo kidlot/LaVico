@@ -199,7 +199,8 @@
 <script>
 var parm = '{@parm}';
 var isVip = '{@isVip}';
-
+var _txt = '';
+var _url = '';
 function giveup(){
 
     $.ajax({
@@ -243,12 +244,11 @@ function _step(channelName){
         $("#_alert").show()
     }
 
-    var _txt = '';
-    var _url = '';
     if(parm=='02'){
         if(isVip =='false'){
             _txt = "恭喜您，你已成功侃价，请先注册为朗维高LaVico的会员后领取礼券";
-            _url = "/lavico/member/card_blank/register?wxid="+$("#wxid").val();
+            var _encodeUlr = encodeURIComponent("/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
+            _url = "/lavico/member/card_blank/register?wxid="+$("#wxid").val()+"&go="+_encodeUlr;
         }else{
             _txt =  "您已成功侃价，请查看您的“专属礼券”";
             _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
@@ -262,15 +262,23 @@ function _step(channelName){
             _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
         }
     }else{
-        _txt =  "您已成功侃价，请查看您的“专属礼券”";
-        _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
+        if(isVip =='false'){
+            _txt = "恭喜您，你已成功侃价，请点击查看您的侃价礼券";
+            _url = "/lavico/member/card_blank/coupon?wxid="+$("#wxid").val();
+        }else{
+            _txt =  "您已成功侃价，请查看您的“专属礼券”";
+            _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
+        }
     }
 
     if(channelName == "success"){
 
+        //$('#fixed')
         deal(function(){
-            $("#fixed").text(_txt)
-            $("#fixed").attr('href',_url);
+            //$("#fixed").text(_txt)
+            //$("#fixed").attr('href',_url);
+            $('#_win_success').find('.msg').html(_txt);
+            $('#_win_success').find('.goconfirmBtn').attr('onclick',"location.href='"+_url+"'");
             _func()
         })
     }else{
@@ -279,9 +287,9 @@ function _step(channelName){
 }
 function register(){
     window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
-
+        var _encodeUlr = encodeURIComponent(window.location.href);
         if(event == "confirm"){
-            location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()
+            location.href="/lavico/member/card_blank/register?wxid="+$("#wxid").val()+"&go="+_encodeUlr;
         }
     })
 }

@@ -18,16 +18,19 @@ module.exports = {
         nut.model.code = code;//活动ID
         nut.model.coupon_no = coupon_no;//优惠券码
         nut.model.status = status;
-        this.step(function(){
-            this.step(function (activity) {
-                helper.db.coll('lavico/activity').findOne({aid: code}, this.hold(function (err, doc) {
-                    if (doc) {
-                        info = doc;
-                        info.introduction = decodeURIComponent(info.introduction);
-                    }
-                }));
-            });
+
+        this.step(function (activity) {
+            helper.db.coll('lavico/activity').findOne({aid: code}, this.hold(function (err, doc) {
+                if (doc) {
+                    info = doc;
+                    info.introduction = decodeURIComponent(info.introduction);
+                }else{
+                    info = {};
+                    info.introduction = '';
+                }
+            }));
         });
+
     },
     actions:{
         getPromotionInfo:{

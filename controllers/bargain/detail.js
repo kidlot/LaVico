@@ -13,7 +13,7 @@ module.exports = {
         var parm = '01';
         var showFollowDialog;
         var showRegisterDialog;
-
+        var isVip;
 
         this.res.setHeader("Cache-Control", "no-cache");
         this.res.setHeader("Cache-Control", "no-store");
@@ -31,7 +31,6 @@ module.exports = {
 
                 nut.model.isVip = false
                 nut.model.isFollow = customers.isFollow ? true : false;
-                nut.model.memberID = undefined;
 
                 if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
                     nut.model.isVip = true
@@ -110,7 +109,7 @@ module.exports = {
             var then = this;
             nut.model.jf = nut.model.doc.deductionIntegral || 0;
 
-            if(nut.model.doc.deductionIntegral&& nut.model.isVip == true){
+            if(nut.model.doc.deductionIntegral > 0&& nut.model.isVip == true&&parm=='01'){
 
                 middleware.request("Point/" + nut.model.memberID,
                     {memberId: nut.model.memberID},
@@ -146,14 +145,53 @@ module.exports = {
         nut.model.res = {}
         // repeat
         this.step(function(){
+            var _condition4 = {};
+            if(parm == '02'||parm == '03'){
+                //非注册会员
+                _condition4 = {"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":4,"data.stat":true}
+            }else{
+                //注册会员
+                _condition4 = {"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true}
+            }
+            console.log(_condition4)
 
-            console.log({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true})
-            helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/user/logs").find(_condition4).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                 console.log(doc)
-                if(doc.length > 0){
 
-                    nut.model.res = {err:1,msg:"您已成功侃价，请查看您的“专属礼券”",url:"/lavico/member/card_member/coupon/index?wxid="+seed.wxid};
+                var _txt = '';
+                var _url = '';
+                isVip = nut.model.isVip;
+                if(parm=='02'){
+                    if(isVip =='false'){
+                        _txt = "恭喜您，你已成功侃价，请先注册为朗维高LaVico的会员后领取礼券";
+                        var _encodeUlr = encodeURIComponent("/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
+                        _url = "/lavico/member/card_blank/register?wxid="+seed.wxid+"&go="+_encodeUlr;
+                    }else{
+                        _txt =  "您已成功侃价，请查看您的“专属礼券”";
+                        _url = "/lavico/member/card_member/coupon/index?wxid="+seed.wxid;
+                    }
+                }else if(parm=='03'){
+                    if(isVip =='false'){
+                        _txt = "恭喜您，你已成功侃价，请点击查看您的侃价礼券";
+                        _url = "/lavico/member/card_blank/coupon?wxid="+seed.wxid;
+                    }else{
+                        _txt =  "您已成功侃价，请查看您的“专属礼券”";
+                        _url = "/lavico/member/card_member/coupon/index?wxid="+seed.wxid;
+                    }
+                }else{
+                    if(isVip =='false'){
+                        _txt = "恭喜您，你已成功侃价，请点击查看您的侃价礼券";
+                        _url = "/lavico/member/card_blank/coupon?wxid="+seed.wxid;
+                    }else{
+                        _txt =  "您已成功侃价，请查看您的“专属礼券”";
+                        _url = "/lavico/member/card_member/coupon/index?wxid="+seed.wxid;
+                    }
+                }
+
+                if(doc.length > 0){
+                     console.log({err:1,msg:_txt,url:_url});
+                     nut.model.res = {err:1,msg:_txt,url:_url};
                 }
                 return;
             }))
@@ -164,7 +202,17 @@ module.exports = {
 
             if(nut.model.res.err != 1){
 
-                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":3}).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+                var _condition3 = {};
+                if(parm == '02'||parm == '03'){
+                    //非注册会员
+                    _condition3 = {"data.productID":seed._id,wxid:seed.wxid,wxid:seed.wxid,action:"侃价","data.step":3}
+                }else{
+                    //注册会员
+                    _condition3 = {"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":3}
+                }
+                console.log(_condition3)
+
+                helper.db.coll("lavico/user/logs").find(_condition3).sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
 
                     if(doc.length > 0){
                         var timeout = 60 * 3 * 1000
@@ -184,7 +232,18 @@ module.exports = {
         this.step(function(){
 
             if(nut.model.res.err != 1){
-                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true}).count(this.hold(function(err,num){
+
+                var _condition4 = {};
+                if(parm == '02'||parm == '03'){
+                    //非注册会员
+                    _condition4 = {"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":4,"data.stat":true};
+                }else{
+                    //注册会员
+                    _condition4 = {"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true};
+                }
+                console.log(_condition4)
+
+                helper.db.coll("lavico/user/logs").find(_condition4).count(this.hold(function(err,num){
 
                     if(num >= doc.surplus){
                         nut.model.res = {err:1,msg:"此商品已销售完毕，请选其它商品。"};
