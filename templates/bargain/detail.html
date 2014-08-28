@@ -70,9 +70,9 @@
             <if condition="@res.err==1">
 
                 <if condition="@res.url">
-                    <a href="{@res.url}" class="bargainBtn" id="fixed" >{@res.msg}</a>
+                    <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.0rem;">{@res.msg}</a>
                 <else/>
-                    <a href="javascript:;" class="bargainBtn" id="fixed" >{@res.msg}</a>
+                    <a href="javascript:;" class="bargainBtn" id="fixed" style="font-size: 1.0rem;">{@res.msg}</a>
                 </if>
             <else/>
                 <a href="javascript:;" class="bargainBtn" id="fixed" onclick="_check();">立即侃价</a>

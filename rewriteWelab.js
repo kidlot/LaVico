@@ -196,7 +196,7 @@ exports.load = function () {
         this.step(function(){
             for(var i=0;i<UserList.length;i++){
                 (function(i){
-                    console.log("UserList[i]",UserList[i])
+                   // console.log("UserList[i]",UserList[i])
                     helper.db.coll("welab/customers").findOne({"_id":helper.db.id(UserList[i])},then.hold(function(err,doc){
                         if(err) throw err;
 //                        console.log("doc",doc)

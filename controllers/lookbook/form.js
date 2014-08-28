@@ -44,6 +44,23 @@ module.exports = {
             });
         });
 
+        //精英搭配类型切换
+        $('select[name="type"]').change(function(){
+            var _imagTitle = $('.imgTitle');
+            if($(this).val()=='整图型'){
+                _imagTitle.html('搭配效果图 (134 x 640)');
+            }else{
+                _imagTitle.html('搭配效果图 (600 x 400)');
+            }
+        });
+        setTimeout(function(){
+            if($('select[name="type"]').val()=='整图型'){
+                $('.imgTitle').html('搭配效果图 (134 x 640)');
+            }else{
+                $('.imgTitle').html('搭配效果图 (600 x 400)');
+        }},100);
+
+
     }
 
     , actions: {
