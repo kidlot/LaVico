@@ -196,7 +196,7 @@ exports.load = function () {
         this.step(function(){
             for(var i=0;i<UserList.length;i++){
                 (function(i){
-//                    console.log("UserList[i]",UserList[i])
+                    console.log("UserList[i]",UserList[i])
                     helper.db.coll("welab/customers").findOne({"_id":helper.db.id(UserList[i])},then.hold(function(err,doc){
                         if(err) throw err;
 //                        console.log("doc",doc)
@@ -235,8 +235,9 @@ exports.load = function () {
                             }
                             result.cardNumber = doc.cardNumber;
 
-                            if(doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.favoriteStyle){
-                                doc.favoriteStyle = doc.HaiLanMemberInfo.favoriteStyle;
+                            //款式喜好
+                            if(doc.favoriteStyle){
+                                doc.favoriteStyle = doc.favoriteStyle;
                             }else{
                                 doc.favoriteStyle = '--';
                             }
@@ -249,8 +250,9 @@ exports.load = function () {
                             }
                             result.memberID = doc.memberID;
 
-                            if(doc.HaiLanMemberInfo && doc.HaiLanMemberInfo.favoriteColor){
-                                doc.favoriteColor = doc.HaiLanMemberInfo.favoriteColor;
+                            //颜色喜好
+                            if(doc.favoriteColor){
+                                doc.favoriteColor = doc.favoriteColor;
                             }else{
                                 doc.favoriteColor = '--';
                             }
@@ -277,7 +279,10 @@ exports.load = function () {
         })
 
         this.step(function(){
+
             var nodeExcel = require('excel-export');
+            console.log('********************************')
+
             var conf = {};
             conf.cols = [
                 {
@@ -624,9 +629,9 @@ exports.load = function () {
         count("replyViewLog","totalShare",{$or:[{action:"share.friend"},{action:"share.timeline"}]},otherData) ;
         count("replyViewLog","totalViewFriend",{$or:[{action:"view.friend"},{action:"view.timeline"}]},otherData) ;
 
-//        console.log('*************0*************');
-//        console.log(JSON.stringify(seed));
-//        console.log('*************0*************');
+        console.log('*************0*************');
+        console.log(JSON.stringify(seed));
+        console.log('*************0*************');
 
         var conditions = search.conditions(seed) ;
 
@@ -1056,6 +1061,7 @@ exports.load = function () {
     }
 
     welabUserlist.children.page.viewIn = function(){
+
         $("#userList").flexigrid({
             url: '/welab/user/list:jsonData',
             dataType: 'json',
@@ -1070,8 +1076,6 @@ exports.load = function () {
                 {display: '卡类型', name : 'cardtype', width : 90, sortable : true},
                 {display: '关注来源', name : 'source', width : 90, sortable : true},
                 {display: '标签', name : 'tags', width : 200, sortable : true},
-
-
                 {display: '已关注(天)', name : 'followTime', width : 70, sortable : true, hide:true},
                 {display: '已注册(天)', name : 'registerTime', width : 70, sortable : true, hide:true},
                 {display: '未会话(天)', name : 'lastMessageTime', width : 70, sortable : true, hide:true},
