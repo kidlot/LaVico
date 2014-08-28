@@ -66,18 +66,23 @@ module.exports = {
             if (list && list.docs) {
                 for (var i = 0; i < list.docs.length; i++) {
                     (function (i) {
-                        middleware.request('Coupon/Promotions', {
-                            perPage: perPage,
-                            pageNum: 1,
-                            code: list.docs[i].aid
-                        }, then.hold(function (err, doc) {
-                            console.log(doc);
-                            doc = doc.replace(/[\n\r\t]/, '');
-                            var doc_json = eval('(' + doc + ')');
-                            for (var o in doc_json.list[0]) {
-                                list.docs[i][o] = doc_json.list[0][o];
-                            }
-                        }))
+                        console.log('******************')
+                        console.log(list.docs[i].aid);
+                        if(list.docs[i].aid){
+                            middleware.request('Coupon/Promotions', {
+                                perPage: perPage,
+                                pageNum: 1,
+                                code: list.docs[i].aid
+                            }, then.hold(function (err, doc) {
+                                console.log(doc);
+                                doc = doc.replace(/[\n\r\t]/, '');
+                                var doc_json = eval('(' + doc + ')');
+                                for (var o in doc_json.list[0]) {
+                                    list.docs[i][o] = doc_json.list[0][o];
+                                }
+                            }))
+                        }
+
                     })(i);
                 }
             }
