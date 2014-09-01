@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="telephone=no" name="format-detection">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate,post-check=0,ptr-check=0">
+	<title></title>
+	<link rel="stylesheet" href="http://test.welab.lavicouomo.com/lavico/public/css/hongbao/base.css">
+	<link rel="stylesheet" href="http://test.welab.lavicouomo.com/lavico/public/css/hongbao/redBag.css">
+	<link rel="stylesheet" href="http://test.welab.lavicouomo.com/lavico/public/css/hongbao/mts.css">
+	<body class="body-gradient">
+	<div class="wrapper">
+	<section class="send-btn-pare">
+	<input value="{@ wxid}"  id="sharewxid" style="display:none">
+        <div class="">
+		<ul class="red-bag-list">
+		<li><img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/red-bag-bg.png"  style="width:330px"/>
+		<img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/note.gif" /></li>
+
+                <li id="foot">
+		<if condition="@ is_me">
+		    <if condition="@ !has_amount">
+                    <p style="padding-top: 145px;color:#f4d333;font-size:16px">您还没有收到别人的红包!</p>
+		    </if>
+		    <if condition="@ has_amount">
+		    <p style="padding-top: 145px;color:#f4d333;font-size:16px">红包金额已累计:{@ total_amount}元</p>
+		    </if>
+		</if>
+		<if condition="@ !is_me">
+		    <p style="padding-top: 145px;color:#f4d333;font-size:16px">您已成功送出{@ givehongbao}元红包一份!</p>
+		</if>
+                </li>
+		</ul>
+	</div>
+	<if condition="@ is_me">
+        <div class="send-red-btn" style="margin-bottom: 60px;"><a id="share_btn" onclick="scroll(0,0);;$('.shareTips').fadeIn();">点此按钮 拉好友</a></div>
+	</if>
+	<if condition="@ !is_me">
+        <div class="send-red-btn" style="margin-bottom: 60px;"><a id="share_btn" onclick="window.location.href ='/lavico/hongbao/hongbao'">我也要攒红包</a></div>
+	</if>
+	<if condition="@ has_amount">
+	<div class="red-bag-list1" style="background-color:#f9edc7;width:250px">
+		<p class="dashed_tbl" style="font-size:18px;font-weight: bold;">给力红包大放送</p>
+		<ul>
+		<foreach for="@page.docs" var="doc">
+		<li class="dashed_tbl"><img src="{@ doc.headimgurl}"  width="45px"  style=" padding-right: 120px;"/>
+		<div><p style=" margin-top: -50px; margin-left: -40px;">{@ doc.nickname}</p>
+		<p style=" margin-top: -30px; margin-left: 48px;">送出{@ doc.amount}元红包一份！</p>	
+		</div>		
+		</li>
+		</foreach>
+		</ul>
+		
+	</div>
+	<br/>
+	<br/>
+	<br/>
+	</if>
+	<ul class="red-bag-list">
+	<li><img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/sr.jpg" width="100px" style="padding-right: 30px;" onclick="window.location.href ='http://wx.lavicouomo.com/lavico/lookbook/detail?_id=53f1b2d8a97067b648000c98&wxid={@ wxid}';">
+	<img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/hq.jpg" width="100px" onclick="window.location.href ='http://wx.lavicouomo.com/lavico/lookbook/detail?_id=53f1b2d8a97067b648000c98&wxid={@ wxid}';"></li>
+	<li style="margin-top: 100px;"><img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/guize.gif" style="width:250px"/></li>
+	 </ul>
+	 
+
+	</section>
+        <div class="shareTips" onclick="$(this).fadeOut();">
+            <img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/shareTips.gif" width="360" height="586"  style="filter:alpha(opacity=90);/* IE */-moz-opacity:0.9;/* Moz + FF */opacity: 0.9;/* 支持CSS3的浏览器（FF 1.5也支持）*/"/>
+            <a href="javascript:void()" class="shareWeiboBtn"></a>
+            <a href="javascript:void()" class="shareBackground"></a>
+        </div>
+
+    <style>
+	.shareTips {
+	    display: none;
+	    left: 0;
+	    position: absolute;
+	    top: 0;
+	    z-index: 12212;
+	}
+	.wrapper {
+	    height: 100%;
+	    margin: 0 auto;
+	    position: relative;
+	}
+	.dashed_tbl{
+	 border-bottom:1px dashed #f1d128;
+	 height:50px;
+	 line-height: 50px;
+	}
+	.red-bag-list1{position:relative;width:330px;margin:0px auto 0;z-index:3;}
+    </style>
+	</div>
+
+</body></html>
