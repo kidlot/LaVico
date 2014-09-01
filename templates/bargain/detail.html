@@ -70,9 +70,17 @@
             <if condition="@res.err==1">
 
                 <if condition="@res.url">
-                    <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.0rem;">{@res.msg}</a>
+                    <if condition="@res.msg=='恭喜您，你已成功侃价，请点击查看您的侃价礼券'">
+                        <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.5rem;">{@res.msg}</a>
+                    </if>
+                    <if condition="@res.msg=='恭喜您，你已成功侃价，请先注册为朗维高LaVico的会员后领取礼券'">
+                        <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.2rem;">{@res.msg}</a>
+                    </if>
+                    <if condition="@res.msg=='您已成功侃价，请查看您的“专属礼券”'">
+                        <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.6rem;">{@res.msg}</a>
+                    </if>
                 <else/>
-                    <a href="javascript:;" class="bargainBtn" id="fixed" style="font-size: 1.0rem;">{@res.msg}</a>
+                    <a href="javascript:;" class="bargainBtn" id="fixed" style="font-size: 1.4rem;">{@res.msg}</a>
                 </if>
             <else/>
                 <a href="javascript:;" class="bargainBtn" id="fixed" onclick="_check();">立即侃价</a>
