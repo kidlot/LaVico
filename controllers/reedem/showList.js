@@ -79,7 +79,10 @@ module.exports={
                                     if(err) throw err;
                                     if(doc){
                                         var resultJson=JSON.parse(doc)
-                                        var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
+                                        var stillUse
+                                        if(resultJson&&resultJson.list&&resultJson.list[0]&&resultJson.list[0].TOTAL){
+                                           stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
+                                        }
                                         //还有剩余票可用
                                         if(stillUse>0){
 
