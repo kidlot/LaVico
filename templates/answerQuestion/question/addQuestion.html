@@ -121,7 +121,9 @@
         for(var i=0;i<titleCount;i++){
             $li=$val.find("ul[name='chooses'] li").first();
             for(var j=0;j<$val.find("ul[name='chooses'] li").length;j++){
-                $li.find("input[name='txtChooseScore']").val(0);
+                if($li.find("input[name='txtChooseScore']").val()==""){
+                    $li.find("input[name='txtChooseScore']").val(0);
+                }
                 $li.find("input[name='txtChooseScore']").attr("readonly","readonly");
                 $li=$li.next();
             }
@@ -132,13 +134,21 @@
         $fcount=$("div[name=contentSet]").find("div[name=setGift]");
         for(var v=0;v<count;v++){
             //条件分值（小）
-            $fcount.find("input[name='conditionMinScore']:eq("+v+")").val(0);
+            if($fcount.find("input[name='conditionMinScore']:eq("+v+")").val()==""){
+                $fcount.find("input[name='conditionMinScore']:eq("+v+")").val(0);
+            }
+
             $fcount.find("input[name='conditionMinScore']:eq("+v+")").attr("readonly","readonly");
             //条件分值（大）
-            $fcount.find("input[name='conditionMaxScore']:eq("+v+")").val(0);
+            if($fcount.find("input[name='conditionMaxScore']:eq("+v+")").val()==""){
+                $fcount.find("input[name='conditionMaxScore']:eq("+v+")").val(0);
+            }
             $fcount.find("input[name='conditionMaxScore']:eq("+v+")").attr("readonly","readonly");
 
-            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+            if($fcount.find("input[name='getScore']:eq("+v+")").val()==""){
+                $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+            }
+
             $fcount.find("input[name='getScore']:eq("+v+")").attr("readonly","readonly");
         }
     }
@@ -149,7 +159,9 @@
         for(var i=0;i<titleCount;i++){
             $li=$val.find("ul[name='chooses'] li").first();
             for(var j=0;j<$val.find("ul[name='chooses'] li").length;j++){
-                $li.find("input[name='txtChooseScore']").val(0);
+                if($li.find("input[name='txtChooseScore']").val()==""){
+                    $li.find("input[name='txtChooseScore']").val(0);
+                }
                 $li.find("input[name='txtChooseScore']").removeAttr("readonly");
                 $li=$li.next();
             }
@@ -160,13 +172,20 @@
         $fcount=$("div[name=contentSet]").find("div[name=setGift]");
         for(var v=0;v<count;v++){
             //条件分值（小）
-            $fcount.find("input[name='conditionMinScore']:eq("+v+")").val(0);
+            if($fcount.find("input[name='conditionMinScore']:eq("+v+")").val()==""){
+                $fcount.find("input[name='conditionMinScore']:eq("+v+")").val(0);
+            }
             $fcount.find("input[name='conditionMinScore']:eq("+v+")").removeAttr("readonly");
             //条件分值（大）
-            $fcount.find("input[name='conditionMaxScore']:eq("+v+")").val(0);
+            if($fcount.find("input[name='conditionMaxScore']:eq("+v+")").val()==""){
+                $fcount.find("input[name='conditionMaxScore']:eq("+v+")").val(0);
+            }
+
             $fcount.find("input[name='conditionMaxScore']:eq("+v+")").removeAttr("readonly");
 
-            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+            if($fcount.find("input[name='getScore']:eq("+v+")").val()==""){
+                $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+            }
             $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
         }
     }
