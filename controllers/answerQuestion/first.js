@@ -54,25 +54,12 @@ module.exports= {
                     nut.model.conent = "很抱歉，活动已结束"
                 }
             }
-//            console.log("saas"+new Date(endTime).getTime())
-//            console.log("sss:"+new Date(createTime()).getTime())
-//            if(new Date(endTime).getTime()<new Date(createTime()).getTime()){
-//                if(isOpen==0){
-//                    nut.model.ok = "1";
-//                    nut.model.conent = "很抱歉，活动已结束"
-//                }
-//            }else{
-//                nut.model.ok = "1";
-//                nut.model.conent = "很抱歉，活动已结束"
-//            }
         })
 
         this.step(function(){
             if(new Date(beginTime).getTime()>new Date(createTime()).getTime()){
-                //if(isOpen==0){
-                    nut.model.ok = "3";
-                    nut.model.conent = "很抱歉，活动未开始，敬请期待"
-                //}
+                nut.model.ok = "3";
+                nut.model.conent = "很抱歉，活动未开始，敬请期待"
             }
         })
 
@@ -151,6 +138,7 @@ module.exports= {
                     themeQuestion = doc.options;
                     themetype = doc.themeType;
                     nut.model.docs=doc;
+                    nut.model.pram = doc.pram;
                     nut.model.themetype = themetype;
                     nut.model.themeQuestion = JSON.stringify(doc);
                 }
@@ -160,21 +148,21 @@ module.exports= {
         this.step(function(){
             helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
                 "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
-                if(err) throw err;
-                if(result){
-                    result_false = result;
-                }
-            }))
+                    if(err) throw err;
+                    if(result){
+                        result_false = result;
+                    }
+                }))
         })
 
         this.step(function(){
             helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
                 "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
-                if(err) throw err;
-                if(result){
-                    result_true = result;
-                }
-            }))
+                    if(err) throw err;
+                    if(result){
+                        result_true = result;
+                    }
+                }))
         })
 
         this.step(function(){

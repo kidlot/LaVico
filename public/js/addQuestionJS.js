@@ -1,209 +1,210 @@
 //$(function () {
-   function save(){
-       var jsonData = "{";
-       var beginTime=$("input[name='beginTime']").val();
-        var endTime=$("input[name='endTime']").val();
-        var isOpen=$("select[name='isOpen']").val();
-        var theme=$("input[name='title']").val();
-        var themeType=$("select[name='themeType']").val();//0答题抢积分 1型男测试 2调查问卷
-        var volumename=$("input[name='volumename']").val();
-        var url=$("input[name='url']").val();
-        var showtype="";
-       if(themeType==3){
-           showtype = $("select[name='showType']").val();
-       }
+function save(){
+    var jsonData = "{";
+    var beginTime=$("input[name='beginTime']").val();
+    var endTime=$("input[name='endTime']").val();
+    var isOpen=$("select[name='isOpen']").val();
+    var theme=$("input[name='title']").val();
+    var themeType=$("select[name='themeType']").val();//0答题抢积分 1型男测试 2调查问卷
+    var volumename=$("input[name='volumename']").val();
+    var url=$("input[name='url']").val();
+    var showtype="";
+    if(themeType==3){
+        showtype = $("select[name='showType']").val();
+    }
 
 
-        var _inputCheck = true;
-       if(themeType==3 && showtype==2 && !volumename){
-           _inputCheck = false;
-           $.globalMessenger().post({
-               message: "请填写劵名称！",
-               type: 'error',
-               showCloseButton: true})
-       }
-        if(!beginTime){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "请选择开始时间！",
-                type: 'error',
-                showCloseButton: true})
-        }
-        if(!endTime){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "请选择结束时间！",
-                type: 'error',
-                showCloseButton: true})
+    var _inputCheck = true;
+    if(themeType==3 && showtype==2 && !volumename){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "请填写劵名称！",
+            type: 'error',
+            showCloseButton: true})
+    }
+    if(!beginTime){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "请选择开始时间！",
+            type: 'error',
+            showCloseButton: true})
+    }
+    if(!endTime){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "请选择结束时间！",
+            type: 'error',
+            showCloseButton: true})
 
-        }
-        if(!theme){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "请选择主题名称！",
-                type: 'error',
-                showCloseButton: true})
-        }
+    }
+    if(!theme){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "请选择主题名称！",
+            type: 'error',
+            showCloseButton: true})
+    }
 
-        if(!volumename && themeType==1){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "请填写劵名称！",
-                type: 'error',
-                showCloseButton: true})
-        }
+    if(!volumename && themeType==1){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "请填写劵名称！",
+            type: 'error',
+            showCloseButton: true})
+    }
 
-        if(beginTime>endTime){
-            _inputCheck = false;
-            $.globalMessenger().post({
-                message: "开始时间不能大于结束时间！",
-                type: 'error',
-                showCloseButton: true})
-        }
+    if(beginTime>endTime){
+        _inputCheck = false;
+        $.globalMessenger().post({
+            message: "开始时间不能大于结束时间！",
+            type: 'error',
+            showCloseButton: true})
+    }
 
-        if(!_inputCheck){
-            return false;
-        }
+    if(!_inputCheck){
+        return false;
+    }
 
-
-
-        jsonData += "showtype:'"+showtype+ "',volumename:'"+volumename+ "',url:'"+url+"',themeType:"+themeType+",isOpen:'"+isOpen+"',endTime:'"+endTime+"',beginTime:'"+beginTime+"',createTime:'"+createTime()+"',theme:\'" + theme + "\',";
-        jsonData += "explanation:\'活动说明\',description:\'活动规则\',relief:\'免责声明\',themePicUrl:\'主题图片路径\',themeUrl:\'主题点击链接\',options:[";
-
-        //题目数
-        //var titleCount=$(".option:visible").length;
-        var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
-
-        //获取题目div
-        //var $arr=$("div[name='option']:visible");
-
-        $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
-        //$val=$("div[name='mainContent']").find("div[name='option']:visible").first();
-        for(var i=0;i<titleCount;i++){
-            //title
-            title=$val.find("input[name='txtQuestion']").val();
-            type=$val.find("select[name='type']").val();
-
-            jsonData+="{optionId:"+(i+1)+",title:'"+title+"',type:"+type;
-
-            //single
-            if($val.find("select[name='type']").val()==0){
-                jsonData+=",choose:[";
-                //choose
-                $li=$val.find("ul[name='chooses'] li").first();
-                for(var j=0;j<$val.find("ul[name='chooses'] li").length;j++){
-                    if($li.find("input[name='chooseName']").val()!=""){
-                        chooseID=j;
-                        isCorrect=$li.find("input[name='chkCorrect']").is(':checked');
-                        if(isCorrect){
-                            isCorrect=1;
-                        }else{
-                            isCorrect=0;
-                        }
-
-                        chooseName=$li.find("input[name='txtChooseContent']").val();
-                        chooseScore=$li.find("input[name='txtChooseScore']").val();
-                        chooseNext=$li.find("input[name='txtNext']").val();
-                        customerLabel=$li.find("input[name='txtLab']").val().trim();//自定义标签
-                        stopLabel=$li.find("input[name='txtStop']").val();//停止标签
-                        uploadFile=$li.find("input[name='uploadFile']").val();
-
-                        jsonData+="{customerLabel:'"+customerLabel+"',stopLabel:'"+stopLabel+"',chooseID:"+chooseID+",isCorrect:"+isCorrect+",chooseName:'"+chooseName+"',chooseScore:'"+chooseScore+"',chooseNext:'"+
-                            chooseNext+"',uploadFile:'"+uploadFile+"'}";
-
-                        if(j<$val.find("ul[name='chooses'] li").length-1){jsonData+=","}
+    var pram = $("input[name='parm']:checked").val();
 
 
+    jsonData +="pram:'"+pram+ "',showtype:'"+showtype+ "',volumename:'"+volumename+ "',url:'"+url+"',themeType:"+themeType+",isOpen:'"+isOpen+"',endTime:'"+endTime+"',beginTime:'"+beginTime+"',createTime:'"+createTime()+"',theme:\'" + theme + "\',";
+    jsonData += "explanation:\'活动说明\',description:\'活动规则\',relief:\'免责声明\',themePicUrl:\'主题图片路径\',themeUrl:\'主题点击链接\',options:[";
+
+    //题目数
+    //var titleCount=$(".option:visible").length;
+    var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
+
+    //获取题目div
+    //var $arr=$("div[name='option']:visible");
+
+    $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
+    //$val=$("div[name='mainContent']").find("div[name='option']:visible").first();
+    for(var i=0;i<titleCount;i++){
+        //title
+        title=$val.find("input[name='txtQuestion']").val();
+        type=$val.find("select[name='type']").val();
+
+        jsonData+="{optionId:"+(i+1)+",title:'"+title+"',type:"+type;
+
+        //single
+        if($val.find("select[name='type']").val()==0){
+            jsonData+=",choose:[";
+            //choose
+            $li=$val.find("ul[name='chooses'] li").first();
+            for(var j=0;j<$val.find("ul[name='chooses'] li").length;j++){
+                if($li.find("input[name='chooseName']").val()!=""){
+                    chooseID=j;
+                    isCorrect=$li.find("input[name='chkCorrect']").is(':checked');
+                    if(isCorrect){
+                        isCorrect=1;
+                    }else{
+                        isCorrect=0;
                     }
-                    $li=$li.next();
-                }
-                jsonData+="]}";
-            }else if($val.find("select[name='type']").val()==1){
-                //mutile
-                jsonData+=",choose:[";
-                $mutil=$val.find("div[name='mutilWDiv']").find("li.oneChoose").first();
-                for(var j=0;j<$val.find("div[name='mutilWDiv']").find("li.oneChoose").length;j++){
-                    if($mutil.find("input[name='mutilTitle']").val()!=""){
-                        isCorrect=$mutil.find("input[name='chkCorrect']").is(':checked');
-                        //console.log("mutil:"+isCorrect);
-                        if(isCorrect=="checked"){
-                            isCorrect=1;
 
-                        }else{
-                            isCorrect=0;
-                        }
-                        chooseMutileName=$mutil.find("input[name='txtChooseContent']").val();
-                        chooseMutileScore=$mutil.find("input[name='txtChooseScore']").val();
-                        chooseMutilePic=$mutil.find("input[name='uploadFile']").val();
-                        chooseID=j+"0";
-                        chooseNext="";
-                        //并接json
-                        jsonData+="{isCorrect:"+isCorrect+",chooseID:'"+chooseID+"',chooseName:'"+chooseMutileName+"',chooseScore:'"+
-                            chooseMutileScore+"',chooseNext:'"+chooseNext+"',uploadFile:'"+chooseMutilePic+"'}";
-                        if(j<$val.find("div[name='mutilWDiv']").find("li.oneChoose").length-1){jsonData+=","}
-                    }
-                    $mutil=$mutil.next();
-                }
-                jsonData+="]}";
-            }else if($val.find("select[name='type']").val()==2){
+                    chooseName=$li.find("input[name='txtChooseContent']").val();
+                    chooseScore=$li.find("input[name='txtChooseScore']").val();
+                    chooseNext=$li.find("input[name='txtNext']").val();
+                    customerLabel=$li.find("input[name='txtLab']").val().trim();//自定义标签
+                    stopLabel=$li.find("input[name='txtStop']").val();//停止标签
+                    uploadFile=$li.find("input[name='uploadFile']").val();
 
-                singleScore=$val.find("div[name=simpleAnswer]").find("input[name=simpleScore]").val()
-                singleMax=$val.find("div[name=simpleAnswer]").find("input[name=simpleMinLen]").val()
-                singleMin=$val.find("div[name=simpleAnswer]").find("input[name=simpleMaxLen]").val()
-                jsonData+=",answerScore:"+singleScore+",answerRange:{minCount:'"+singleMax+"',maxCount:'"+singleMin+"'}}";
+                    jsonData+="{customerLabel:'"+customerLabel+"',stopLabel:'"+stopLabel+"',chooseID:"+chooseID+",isCorrect:"+isCorrect+",chooseName:'"+chooseName+"',chooseScore:'"+chooseScore+"',chooseNext:'"+
+                        chooseNext+"',uploadFile:'"+uploadFile+"'}";
+
+                    if(j<$val.find("ul[name='chooses'] li").length-1){jsonData+=","}
+
+
+                }
+                $li=$li.next();
             }
-            if(i<titleCount-1){jsonData+=",";}
-            $val=$val.next();
-        }
-        jsonData+="],scoreMinMax:[";
+            jsonData+="]}";
+        }else if($val.find("select[name='type']").val()==1){
+            //mutile
+            jsonData+=",choose:[";
+            $mutil=$val.find("div[name='mutilWDiv']").find("li.oneChoose").first();
+            for(var j=0;j<$val.find("div[name='mutilWDiv']").find("li.oneChoose").length;j++){
+                if($mutil.find("input[name='mutilTitle']").val()!=""){
+                    isCorrect=$mutil.find("input[name='chkCorrect']").is(':checked');
+                    //console.log("mutil:"+isCorrect);
+                    if(isCorrect=="checked"){
+                        isCorrect=1;
 
-         //奖项设置数量
-        count=$("div[name=contentSet]").find("div[name=setGift]").find("div[name=setGiftOne]").length;
-        $fcount=$("div[name=contentSet]").find("div[name=setGift]");
-        for(var v=0;v<count;v++){
-            //jsonData
-            jsonData+="{";
-            //条件分值（小）
-            var conditionSmallScore=$fcount.find("input[name='conditionMinScore']:eq("+v+")").val();
-            //条件分值（大）
-            var conditionBigScore=$fcount.find("input[name='conditionMaxScore']:eq("+v+")").val();
-            //条件标签
-            var conditionLabel=$fcount.find("input[name='conditionLabel']:eq("+v+")").val();
-            //获得标签
-            var getLabel=$fcount.find("input[name='getLabel']:eq("+v+")").val().trim();
-            //获得标签内容
-            var tipContent=$fcount.find("textarea[name='tipContent']:eq("+v+")").val();
-            tipContent = tipContent.replace(/[\n\r\t]/,'<br/>');
-            //获得积分
-            var getScore=$fcount.find("input[name='getScore']:eq("+v+")").val();
-            //获得活动编号
-            var getActivities=$fcount.find("select[name='getActivities']:eq("+v+")").val();
-
-            jsonData+="conditionMinScore:'"+conditionSmallScore+"',conditionMaxScore:'"+
-                conditionBigScore+"',conditionLabel:'"+conditionLabel+"',getLabel:'"+getLabel+"',getScore:'"+
-                getScore+"',getActivities:'"+getActivities+"',tipContent:'"+tipContent+"'}";
-            if (v < count - 1) {jsonData += ','}
-        }
-        jsonData+="]}";
-
-        //document.write(jsonData);
-
-        $.ajax({
-            type: "POST",
-            url: "/lavico/answerQuestion/question/addQuestion:save",
-            data:{json:jsonData}
-        }).done(function(msg){
-                alert("成功");
-                if(themeType==1){
-                    $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
-                }else if(themeType==3){
-                    $.controller("/lavico/answerQuestion/statistics/statistics_list_3")
-                }else{
-                    $.controller("/lavico/answerQuestion/statistics/statistics_list")
+                    }else{
+                        isCorrect=0;
+                    }
+                    chooseMutileName=$mutil.find("input[name='txtChooseContent']").val();
+                    chooseMutileScore=$mutil.find("input[name='txtChooseScore']").val();
+                    chooseMutilePic=$mutil.find("input[name='uploadFile']").val();
+                    chooseID=j+"0";
+                    chooseNext="";
+                    //并接json
+                    jsonData+="{isCorrect:"+isCorrect+",chooseID:'"+chooseID+"',chooseName:'"+chooseMutileName+"',chooseScore:'"+
+                        chooseMutileScore+"',chooseNext:'"+chooseNext+"',uploadFile:'"+chooseMutilePic+"'}";
+                    if(j<$val.find("div[name='mutilWDiv']").find("li.oneChoose").length-1){jsonData+=","}
                 }
-            });
+                $mutil=$mutil.next();
+            }
+            jsonData+="]}";
+        }else if($val.find("select[name='type']").val()==2){
 
-    };
+            singleScore=$val.find("div[name=simpleAnswer]").find("input[name=simpleScore]").val()
+            singleMax=$val.find("div[name=simpleAnswer]").find("input[name=simpleMinLen]").val()
+            singleMin=$val.find("div[name=simpleAnswer]").find("input[name=simpleMaxLen]").val()
+            jsonData+=",answerScore:"+singleScore+",answerRange:{minCount:'"+singleMax+"',maxCount:'"+singleMin+"'}}";
+        }
+        if(i<titleCount-1){jsonData+=",";}
+        $val=$val.next();
+    }
+    jsonData+="],scoreMinMax:[";
+
+    //奖项设置数量
+    count=$("div[name=contentSet]").find("div[name=setGift]").find("div[name=setGiftOne]").length;
+    $fcount=$("div[name=contentSet]").find("div[name=setGift]");
+    for(var v=0;v<count;v++){
+        //jsonData
+        jsonData+="{";
+        //条件分值（小）
+        var conditionSmallScore=$fcount.find("input[name='conditionMinScore']:eq("+v+")").val();
+        //条件分值（大）
+        var conditionBigScore=$fcount.find("input[name='conditionMaxScore']:eq("+v+")").val();
+        //条件标签
+        var conditionLabel=$fcount.find("input[name='conditionLabel']:eq("+v+")").val();
+        //获得标签
+        var getLabel=$fcount.find("input[name='getLabel']:eq("+v+")").val().trim();
+        //获得标签内容
+        var tipContent=$fcount.find("textarea[name='tipContent']:eq("+v+")").val();
+        tipContent = tipContent.replace(/[\n\r\t]/,'<br/>');
+        //获得积分
+        var getScore=$fcount.find("input[name='getScore']:eq("+v+")").val();
+        //获得活动编号
+        var getActivities=$fcount.find("select[name='getActivities']:eq("+v+")").val();
+
+        jsonData+="conditionMinScore:'"+conditionSmallScore+"',conditionMaxScore:'"+
+            conditionBigScore+"',conditionLabel:'"+conditionLabel+"',getLabel:'"+getLabel+"',getScore:'"+
+            getScore+"',getActivities:'"+getActivities+"',tipContent:'"+tipContent+"'}";
+        if (v < count - 1) {jsonData += ','}
+    }
+    jsonData+="]}";
+
+    //document.write(jsonData);
+
+    $.ajax({
+        type: "POST",
+        url: "/lavico/answerQuestion/question/addQuestion:save",
+        data:{json:jsonData}
+    }).done(function(msg){
+            alert("成功");
+            if(themeType==1){
+                $.controller("/lavico/answerQuestion/statistics/statistics_list_1")
+            }else if(themeType==3){
+                $.controller("/lavico/answerQuestion/statistics/statistics_list_3")
+            }else{
+                $.controller("/lavico/answerQuestion/statistics/statistics_list")
+            }
+        });
+
+};
 //});
 
 /*

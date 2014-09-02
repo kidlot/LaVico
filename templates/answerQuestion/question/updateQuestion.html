@@ -50,44 +50,36 @@
         $("div[name=addThemes]").hide();
         $("div[name=gift]").show();
     }
-//    window.onload=function(){
-//        $("li[name=editTheme]").click(function(){
-//            if($(this).css("background-color")!="#bdc3c7"){
-//                $(this).css("background-color","#bdc3c7");
-//                $(this).next().css("background-color","");
-//
-//                $("div[name=mainContent]").show();
-//                $("div[name=addThemes]").show();
-//                $("div[name=gift]").hide();
-//            }
-//        });
-//
-//        $("li[name=editGift]").click(function(){
-//            if($(this).css("background-color")!="#bdc3c7"){
-//                $(this).css("background-color","#bdc3c7");
-//                $(this).prev().css("background-color","");
-//
-//                $("div[name=mainContent]").hide();
-//                $("div[name=addThemes]").hide();
-//                $("div[name=gift]").show();
-//            }
-//
-//        });
-//
-//
-//    }
 
     function addTheme(){
         $("div[name=mainContent]").append($("div[name='hiddenOption']").find("div[name='option']").clone());
+        var pram = $("input[name='parm']:checked").val();
+        if(pram == "1"){
+            selectPramOld();
+        }else{
+            selectPram();
+        }
     }
     function addOptions(btnAddChoose){
         if($(btnAddChoose).parent().prev().find("li:visible").length<6){
             $(btnAddChoose).parent().prev().append($("div[name='hiddenOneChoose']").find("li").clone());
         }
+        var pram = $("input[name='parm']:checked").val();
+        if(pram == "1"){
+            selectPramOld();
+        }else{
+            selectPram();
+        }
     }
 
     function addGift(){
         $("div[name='setGift']:last").append($("div[name='hiddenGift']").find("div[name='setGiftOne']").clone());
+        var pram = $("input[name='parm']:checked").val();
+        if(pram == "1"){
+            selectPramOld();
+        }else{
+            selectPram();
+        }
     }
 
     function delChoose(btnDelChoose){
@@ -118,6 +110,75 @@
             $(btnSelect).parent().parent().parent().find("div[name=mutilWDiv]").hide();
             $(btnSelect).parent().parent().parent().find("div[name=simpleAnswer]").show();
         }
+    }
+
+    function selectPram(){
+        var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
+        $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
+        for(var i=0;i<titleCount;i++){
+            $li=$val.find("ul[name='chooses'] li").first();
+            for(var j=0;j<$val.find("ul[name='chooses'] li").length;j++){
+                $li.find("input[name='txtChooseScore']").val(0);
+                $li.find("input[name='txtChooseScore']").attr("readonly","readonly");
+                $li=$li.next();
+            }
+            $val=$val.next();
+        }
+
+        count=$("div[name=contentSet]").find("div[name=setGift]").find("div[name=setGiftOne]").length;
+        $fcount=$("div[name=contentSet]").find("div[name=setGift]");
+        for(var v=0;v<count;v++){
+            //条件分值（小）
+            $fcount.find("input[name='conditionMinScore']:eq("+v+")").val(0);
+            $fcount.find("input[name='conditionMinScore']:eq("+v+")").attr("readonly","readonly");
+            //条件分值（大）
+            $fcount.find("input[name='conditionMaxScore']:eq("+v+")").val(0);
+            $fcount.find("input[name='conditionMaxScore']:eq("+v+")").attr("readonly","readonly");
+
+            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+            $fcount.find("input[name='getScore']:eq("+v+")").attr("readonly","readonly");
+        }
+    }
+
+    function selectPramOld(){
+        var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
+        $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
+        for(var i=0;i<titleCount;i++){
+            $li=$val.find("ul[name='chooses'] li").first();
+            for(var j=0;j<$val.find("ul[name='chooses'] li").length;j++){
+                $li.find("input[name='txtChooseScore']").val(0);
+                $li.find("input[name='txtChooseScore']").removeAttr("readonly");
+                $li=$li.next();
+            }
+            $val=$val.next();
+        }
+
+        count=$("div[name=contentSet]").find("div[name=setGift]").find("div[name=setGiftOne]").length;
+        $fcount=$("div[name=contentSet]").find("div[name=setGift]");
+        for(var v=0;v<count;v++){
+            //条件分值（小）
+            $fcount.find("input[name='conditionMinScore']:eq("+v+")").val(0);
+            $fcount.find("input[name='conditionMinScore']:eq("+v+")").removeAttr("readonly");
+            //条件分值（大）
+            $fcount.find("input[name='conditionMaxScore']:eq("+v+")").val(0);
+            $fcount.find("input[name='conditionMaxScore']:eq("+v+")").removeAttr("readonly");
+
+            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+            $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
+        }
+    }
+
+    function load(){
+        var pram = $("input[name='parm']:checked").val();
+        if(pram == "1"){
+            selectPramOld();
+        }else{
+            selectPram();
+        }
+    }
+
+    window.onload =function() {
+        load();
     }
 </script>
 <ul class="breadcrumb clearfix">
@@ -157,6 +218,37 @@
             </div>
             <div>题目名称:&nbsp;&nbsp;
                 <input type="text" value="{@docs.theme}"  name="title" class="form-control input-sm" style="width: 350px">
+            </div>
+            <div>
+                <table style="margin-left: 70px;">
+                    <tr>
+                        流程设置:&nbsp;&nbsp;
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <if condition="{@type==0}">
+                                    <input type="radio" value="1" name="parm" checked="checked" onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）
+                                <elseif condition="{@type==2}"/>
+                                    <input type="radio" value="1" name="parm" checked="checked" onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）
+                                <else/>
+                                    <if condition="{@docs.pram=='1'}">
+                                        <input type="radio" name="parm" value="1" checked="checked" onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）<br/>
+                                        <input type="radio" name="parm" value="2" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>
+                                        <input type="radio" name="parm" value="3" onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>
+                                    <elseif condition="{@docs.pram=='2'}"/>
+                                        <input type="radio" name="parm" value="1"  onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）<br/>
+                                        <input type="radio" name="parm" value="2"  checked="checked" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>
+                                        <input type="radio" name="parm" value="3"  onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>
+                                    <elseif condition="{@docs.pram=='3'}"/>
+                                        <input type="radio" name="parm" value="1" onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）<br/>
+                                        <input type="radio" name="parm" value="2" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>
+                                        <input type="radio" name="parm" value="3" checked="checked"  onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>
+                                    </if>
+
+                            </if>
+                        <td/>
+                    </tr>
+                </table>
             </div>
             <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;
                 <input type="text" value="{@docs.volumename}"  name="volumename" class="form-control input-sm" style="width: 350px">
@@ -1017,13 +1109,32 @@
                     <strong>设置标签:</strong><input type='text' value='{@doc.conditionLabel}' name='conditionLabel'><br/>
                     <strong>结果:</strong>所获标签:<input type='text' value='{@doc.getLabel}' name='getLabel' class="form-control input-sm" style="width: 150px">
                     所获积分:<input type='text' name='getScore' value='{@doc.getScore}' class="form-control input-sm" style="width: 150px">
-                    所获奖券:
-                    <select name="getActivities"  class="form-control input-sm" style="width: 150px">
-                        <option value="-1">无券</option>
-                        <foreach for="{@list}" var="docs">
-                            <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
-                        </foreach>
-                    </select>
+                    <if condition="{@type==0}">
+                        <label style="display: none">所获奖券:</label>
+                        <select name="getActivities"  class="form-control input-sm" style="width: 150px;display: none">
+                            <option value="-1">无券</option>
+                            <foreach for="{@list}" var="docs">
+                                <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                            </foreach>
+                        </select>
+                    <elseif condition="{@type==2}"/>
+                        <label style="display: none">所获奖券:</label>
+                        <select name="getActivities"  class="form-control input-sm" style="width: 150px;display: none">
+                            <option value="-1">无券</option>
+                            <foreach for="{@list}" var="docs">
+                                <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                            </foreach>
+                        </select>
+                    <else/>
+                        <label>所获奖券:</label>
+                        <select name="getActivities"  class="form-control input-sm" style="width: 150px">
+                            <option value="-1">无券</option>
+                            <foreach for="{@list}" var="docs">
+                                <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                            </foreach>
+                        </select>
+                    </if>
+
                     <br>标签文本设置:
                     <textarea  rows="5" cols="80" class="form-control input-sm"  name="tipContent" rows="3"  id="tipContent" style="width: 550px">{@doc.tipContent}</textarea>
                     <!--<textarea rows="5" cols="80" name="tipContent" id="tipContent" class="form-control input-sm" style="width: 550px">-->

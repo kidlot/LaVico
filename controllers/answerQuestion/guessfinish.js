@@ -198,12 +198,19 @@ module.exports={
                                     //调用接口开始
                                     var memoString = "竞猜型:" + getLabel;
                                     //得券接口
+                                    var parm;
+                                    if(pram == "1"){
+                                        pram = "01";
+                                    }else{
+                                        parm = "02";
+                                    }
                                     then.step(function () {
                                         var jsonData = {
                                             openid: wechatid,
                                             otherPromId: _id,
                                             PROMOTION_CODE: getActivities,
                                             memo: memoString,
+                                            parm:parm,
                                             point: 0
                                         }
                                         if(ok){
