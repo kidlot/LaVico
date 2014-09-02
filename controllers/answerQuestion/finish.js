@@ -12,7 +12,7 @@ module.exports={
         var stopLab=seed.stopLab ? seed.stopLab : "null";
         nut.model.wechatid = seed.wechatid
         nut.model.id = _id;
-        nut.model.parm = seed.parm : "undefined";
+        nut.model.parm = seed.parm || "undefined";
 
         var isRecord=seed.isRecord ? seed.isRecord : "no";
         var go=true;
