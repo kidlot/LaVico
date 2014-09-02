@@ -70,23 +70,44 @@ module.exports={
         this.step(function(docOne){
             if(docOne){
                 then.req.session.scoreAll+=parseInt(docOne.answerScore);
-                helper.db.coll("lavico/custReceive").insert({
-                    "wechatid": wechatId,
-                    "themeId": helper.db.id(_id),
-                    "isFinish": false,
-                    "optionId": parseInt(optionId),
-                    "chooseId": '主观题',
-                    "getChooseScore": parseInt(docOne.answerScore),
-                    "getChooseLabel":"",
-                    "getLabel": "",
-                    "getGift":  "",
-                    "getScore": "",
-                    "createTime": new Date().getTime(),
-                    "resultValue":receiveAnswer,
-                    "memberId":memberid,
-                    "themetype":themetype,
-                    "type":type
-                },function(err,doc){});
+                if(parm!="1"){
+                    helper.db.coll("lavico/custReceive").insert({
+                        "wechatid": wechatId,
+                        "themeId": helper.db.id(_id),
+                        "isFinish": false,
+                        "optionId": parseInt(optionId),
+                        "chooseId": '主观题',
+                        "getChooseScore": parseInt(docOne.answerScore),
+                        "getChooseLabel":"",
+                        "getLabel": "",
+                        "getGift":  "",
+                        "getScore": "",
+                        "createTime": new Date().getTime(),
+                        "resultValue":receiveAnswer,
+                        "memberId":"",
+                        "themetype":themetype,
+                        "type":type
+                    },function(err,doc){});
+                }else{
+                    helper.db.coll("lavico/custReceive").insert({
+                        "wechatid": wechatId,
+                        "themeId": helper.db.id(_id),
+                        "isFinish": false,
+                        "optionId": parseInt(optionId),
+                        "chooseId": '主观题',
+                        "getChooseScore": parseInt(docOne.answerScore),
+                        "getChooseLabel":"",
+                        "getLabel": "",
+                        "getGift":  "",
+                        "getScore": "",
+                        "createTime": new Date().getTime(),
+                        "resultValue":receiveAnswer,
+                        "memberId":memberid,
+                        "themetype":themetype,
+                        "type":type
+                    },function(err,doc){});
+                }
+
             }
         })
 

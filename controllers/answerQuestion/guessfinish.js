@@ -25,6 +25,7 @@ module.exports={
         var newActivity="";
         var getActivities ="";
         var getTipContent="您已答完此题,获奖名单择期公布";
+        var pram;
 
         //查找单题组,获取分值范围数组
         this.step(function () {
@@ -33,6 +34,7 @@ module.exports={
                 scoreRange = doc.scoreMinMax;
                 volumename = doc.volumename || "";
                 docTheme = doc;
+                pram = doc.pram;
                 themeType = doc.themeType;
                 nut.model.themeType = themeType;
                 nut.model.themeTitle = doc.theme
@@ -135,22 +137,42 @@ module.exports={
             if(go){
                 if(ok){
                     //插入总积分
-                    helper.db.coll("lavico/custReceive").insert({
-                        "wechatid": wechatid,
-                        "themeId": helper.db.id(_id),
-                        "isFinish": true,
-                        "optionId": 0,
-                        "chooseId": 0,
-                        "getChooseScore":parseInt(score),
-                        "getChooseLabel": "",
-                        "getLabel": "",
-                        "getActivities": "",
-                        "getScore": "",
-                        "createTime": new Date().getTime(),
-                        "memberId":memberid,
-                        "themetype":themetype,
-                        "type":"0"
-                    }, function (err, doc) {});
+                    if(pram!="1"){
+                        helper.db.coll("lavico/custReceive").insert({
+                            "wechatid": wechatid,
+                            "themeId": helper.db.id(_id),
+                            "isFinish": true,
+                            "optionId": 0,
+                            "chooseId": 0,
+                            "getChooseScore":parseInt(score),
+                            "getChooseLabel": "",
+                            "getLabel": "",
+                            "getActivities": "",
+                            "getScore": "",
+                            "createTime": new Date().getTime(),
+                            "memberId":"",
+                            "themetype":themetype,
+                            "type":"0"
+                        }, function (err, doc) {});
+                    }else{
+                        helper.db.coll("lavico/custReceive").insert({
+                            "wechatid": wechatid,
+                            "themeId": helper.db.id(_id),
+                            "isFinish": true,
+                            "optionId": 0,
+                            "chooseId": 0,
+                            "getChooseScore":parseInt(score),
+                            "getChooseLabel": "",
+                            "getLabel": "",
+                            "getActivities": "",
+                            "getScore": "",
+                            "createTime": new Date().getTime(),
+                            "memberId":memberid,
+                            "themetype":themetype,
+                            "type":"0"
+                        }, function (err, doc) {});
+                    }
+
                 }
             }
         })
@@ -171,26 +193,30 @@ module.exports={
                                 type = scoreRange[i].getActivities;
                                 if( docTheme.showtype == 1){//发放积分
                                     then.step(function () {
-                                        var jsonData = {};
-                                        jsonData.memberId = memberid;
-                                        jsonData.qty = getScore;
-                                        jsonData.memo = nut.model.themeTitle;
-                                        if(ok){
-                                            middleware.request('Point/Change', jsonData,
-                                                this.hold(function (err, doc) {
-                                                    if (err) throw err;
-                                                    console.log(doc);
-                                                })
-                                            )
+                                        if(pram!="1"){
+                                            var jsonData = {};
+                                            jsonData.memberId = memberid;
+                                            jsonData.qty = getScore;
+                                            jsonData.memo = nut.model.themeTitle;
+                                            if(ok){
+                                                middleware.request('Point/Change', jsonData,
+                                                    this.hold(function (err, doc) {
+                                                        if (err) throw err;
+                                                        console.log(doc);
+                                                    })
+                                                )
+                                            }
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = "";
+                                            results.volumename = "";
+                                            resultList.push(results);
                                         }
-                                        var results={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = "";
-                                        results.volumename = "";
-                                        resultList.push(results);
+
+
                                     })
                                 }else if(docTheme.showtype == 2 && typeof(getActivities) != "undefined" && getActivities != "" && getActivities != "-1"){//发放优惠劵
                                     newActivity = ""
@@ -284,25 +310,48 @@ module.exports={
 
                     then.step(function(){
                         if(ok){
-                            helper.db.coll("lavico/custReceive").insert({
-                                "wechatid": wechatid,
-                                "themeId": helper.db.id(_id),
-                                "isFinish": true,
-                                "optionId": 0,
-                                "chooseId": 0,
-                                "getChooseScore": parseInt(score),
-                                "getChooseLabel": "",
-                                "getLabel": getLabel,
-                                "getActivities": newActivity,
-                                "getScore": getScore,
-                                "getTipContent": getTipContent,
-                                "createTime": new Date().getTime(),
-                                "memberId":memberid,
-                                "themetype":themetype,
-                                "code":getActivities,
-                                "volumename":volumename,
-                                "type":type
-                            }, function (err, doc) {});
+                            if(pram!="1"){
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(score),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getActivities": newActivity,
+                                    "getScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":"",
+                                    "themetype":themetype,
+                                    "code":getActivities,
+                                    "volumename":volumename,
+                                    "type":type
+                                }, function (err, doc) {});
+                            }else{
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(score),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getActivities": newActivity,
+                                    "getScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":memberid,
+                                    "themetype":themetype,
+                                    "code":getActivities,
+                                    "volumename":volumename,
+                                    "type":type
+                                }, function (err, doc) {});
+                            }
+
                         }
                     })
                 }
@@ -330,28 +379,31 @@ module.exports={
                                     getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                     type = scoreRange[i].getActivities;
                                     if( docTheme.showtype == 1){//发放积分
-                                        then.step(function () {
-                                            var jsonData = {};
-                                            jsonData.memberId = memberid;
-                                            jsonData.qty = getScore;
-                                            jsonData.memo = nut.model.themeTitle;
-                                            if(ok){
-                                                middleware.request('Point/Change', jsonData,
-                                                    this.hold(function (err, doc) {
-                                                        if (err) throw err;
-                                                        console.log(doc);
-                                                    })
-                                                )
-                                            }
-                                            var results={};
-                                            results.getLabel = getLabel;
-                                            results.getScore = getScore;
-                                            results.getTipContent = getTipContent;
-                                            results.code = getActivities;
-                                            results.getActivities = "";
-                                            results.volumename = "";
-                                            resultList.push(results);
-                                        })
+                                        if(pram!="1"){
+                                            then.step(function () {
+                                                var jsonData = {};
+                                                jsonData.memberId = memberid;
+                                                jsonData.qty = getScore;
+                                                jsonData.memo = nut.model.themeTitle;
+                                                if(ok){
+                                                    middleware.request('Point/Change', jsonData,
+                                                        this.hold(function (err, doc) {
+                                                            if (err) throw err;
+                                                            console.log(doc);
+                                                        })
+                                                    )
+                                                }
+                                                var results={};
+                                                results.getLabel = getLabel;
+                                                results.getScore = getScore;
+                                                results.getTipContent = getTipContent;
+                                                results.code = getActivities;
+                                                results.getActivities = "";
+                                                results.volumename = "";
+                                                resultList.push(results);
+                                            })
+                                        }
+
                                     }else if(docTheme.showtype == 2 && typeof(getActivities) != "undefined" && getActivities != "" && getActivities != "-1"){//发放优惠劵
                                         newActivity = ""
                                         //服务器返回的券
@@ -438,25 +490,48 @@ module.exports={
 
                     then.step(function(){
                         if(ok){
-                            helper.db.coll("lavico/custReceive").insert({
-                                "wechatid": wechatid,
-                                "themeId": helper.db.id(_id),
-                                "isFinish": true,
-                                "optionId": 0,
-                                "chooseId": 0,
-                                "getChooseScore": parseInt(score),
-                                "getChooseLabel": "",
-                                "getLabel": getLabel,
-                                "getActivities": newActivity,
-                                "getScore": getScore,
-                                "getTipContent": getTipContent,
-                                "createTime": new Date().getTime(),
-                                "memberId":memberid,
-                                "themetype":themetype,
-                                "code":getActivities,
-                                "volumename":volumename,
-                                "type":type
-                            }, function (err, doc) {});
+                            if(pram!="1"){
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(score),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getActivities": newActivity,
+                                    "getScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":"",
+                                    "themetype":themetype,
+                                    "code":getActivities,
+                                    "volumename":volumename,
+                                    "type":type
+                                }, function (err, doc) {});
+                            }else{
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(score),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getActivities": newActivity,
+                                    "getScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":memberid,
+                                    "themetype":themetype,
+                                    "code":getActivities,
+                                    "volumename":volumename,
+                                    "type":type
+                                }, function (err, doc) {});
+                            }
+
                         }
                     })
                 }
@@ -473,7 +548,7 @@ module.exports={
                 nut.model.label =resultList[0].getLabel;
                 console.log("resultlist",resultList)
 
-                if(ok){
+                if(ok && pram=="1"){
                     if (getLabel != "" || getLabel != null || getScore!=""|| typeof (getLabel)!="undefined") {
                         //发送标签至CRM
                         var memoString="";
@@ -487,7 +562,6 @@ module.exports={
                         jsonData = {};
                         jsonData.memberId = memberid;
                         jsonData.tag = memoString;
-                        console.log("jsonData",jsonData)
                         middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                             if (err) throw err;
                             console.log("tag record:" + doc);

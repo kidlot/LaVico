@@ -60,6 +60,98 @@ module.exports={
                             then.req.session.scoreAll+=parseInt(score);
                         }
                         //记录积分
+                        if(parm != "1"){
+                            helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                                    "themetype":themetype,"optionId":parseInt(optionId)},
+                                {$set: {
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": false,
+                                    "optionId": parseInt(optionId),
+                                    "chooseId": parseInt(chooseId),
+                                    "getChooseScore": scores,
+                                    "getChooseLabel":"",
+                                    "getLabel": "",
+                                    "getGift":  "",
+                                    "getScore": "",
+                                    "type":type,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":"",
+                                    "themetype":themetype
+                                }}, {upsert: true},function(err,doc){
+                                    if(err) throw err;
+                                    console.log(doc)
+                                })
+                        }else{
+                            helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                                    "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
+                                {$set: {
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": false,
+                                    "optionId": parseInt(optionId),
+                                    "chooseId": parseInt(chooseId),
+                                    "getChooseScore": scores,
+                                    "getChooseLabel":"",
+                                    "getLabel": "",
+                                    "getGift":  "",
+                                    "getScore": "",
+                                    "type":type,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":memberid,
+                                    "themetype":themetype
+                                }}, {upsert: true},function(err,doc){
+                                    if(err) throw err;
+                                    console.log(doc)
+                                })
+                        }
+
+                    }
+                    if(parm == "1"){
+                        var memoString = themeQuestion_doc.theme +"--"+ customerLabel;
+                        jsonData = {};
+                        jsonData.memberId = memberid;
+                        jsonData.tag = memoString;
+                        console.log("jsonData",jsonData)
+                        middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                            if (err) throw err;
+                            console.log("tag record:" + doc);
+                        }))
+                        helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+                            if(err ){
+                                throw err;
+                            }
+                        }));
+                    }
+
+                }else if(type==1){
+                    then.req.session.scoreAll+=parseInt(score);
+                    var selectChooseIdArr=seed.chooseId;
+                    var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
+                    var selId="["+selectChooseId.replace("_",",")+"]";
+                    if(parm != "1"){
+                        helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                                "themetype":themetype,"optionId":parseInt(optionId)},
+                            {$set: {
+                                "wechatid": wechatid,
+                                "themeId": helper.db.id(_id),
+                                "isFinish": false,
+                                "optionId": parseInt(optionId),
+                                "chooseId": selId,
+                                "getChooseScore": "",
+                                "getChooseLabel":"",
+                                "getLabel": "",
+                                "getGift":  "",
+                                "getScore": "",
+                                "type":type,
+                                "createTime": new Date().getTime(),
+                                "memberId":"",
+                                "themetype":themetype
+                            }}, {upsert: true},function(err,doc){
+                                if(err) throw err;
+                                console.log(doc)
+                            })
+                    }else{
                         helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
                                 "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
                             {$set: {
@@ -67,8 +159,8 @@ module.exports={
                                 "themeId": helper.db.id(_id),
                                 "isFinish": false,
                                 "optionId": parseInt(optionId),
-                                "chooseId": parseInt(chooseId),
-                                "getChooseScore": scores,
+                                "chooseId": selId,
+                                "getChooseScore": "",
                                 "getChooseLabel":"",
                                 "getLabel": "",
                                 "getGift":  "",
@@ -82,60 +174,23 @@ module.exports={
                                 console.log(doc)
                             })
                     }
-                    var memoString = themeQuestion_doc.theme +"--"+ customerLabel;
-                    jsonData = {};
-                    jsonData.memberId = memberid;
-                    jsonData.tag = memoString;
-                    console.log("jsonData",jsonData)
-                    middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
-                        if (err) throw err;
-                        console.log("tag record:" + doc);
-                    }))
-                    helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
-                        if(err ){
-                            throw err;
-                        }
-                    }));
-                }else if(type==1){
-                    then.req.session.scoreAll+=parseInt(score);
-                    var selectChooseIdArr=seed.chooseId;
-                    var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
-                    var selId="["+selectChooseId.replace("_",",")+"]";
-                    helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
-                            "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
-                        {$set: {
-                            "wechatid": wechatid,
-                            "themeId": helper.db.id(_id),
-                            "isFinish": false,
-                            "optionId": parseInt(optionId),
-                            "chooseId": selId,
-                            "getChooseScore": "",
-                            "getChooseLabel":"",
-                            "getLabel": "",
-                            "getGift":  "",
-                            "getScore": "",
-                            "type":type,
-                            "createTime": new Date().getTime(),
-                            "memberId":memberid,
-                            "themetype":themetype
-                        }}, {upsert: true},function(err,doc){
-                            if(err) throw err;
-                            console.log(doc)
-                        })
-                    var memoString = docOptions.theme + customerLabel;
-                    jsonData = {};
-                    jsonData.memberId = memberid;
-                    jsonData.tag = memoString;
-                    console.log("jsonData",jsonData)
-                    middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
-                        if (err) throw err;
-                        console.log("tag record:" + doc);
-                    }))
-                    helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
-                        if(err ){
-                            throw err;
-                        }
-                    }));
+                    if(parm == "1"){
+                        var memoString = docOptions.theme + customerLabel;
+                        jsonData = {};
+                        jsonData.memberId = memberid;
+                        jsonData.tag = memoString;
+                        console.log("jsonData",jsonData)
+                        middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                            if (err) throw err;
+                            console.log("tag record:" + doc);
+                        }))
+                        helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:memoString}},this.hold(function(err,doc){
+                            if(err ){
+                                throw err;
+                            }
+                        }));
+                    }
+
                 }
                 if(chooseNext!=""){
                     then.req.session.optionId = parseInt(chooseNext);
@@ -181,27 +236,52 @@ module.exports={
                             then.req.session.scoreAll+=parseInt(score);
                         }
                         //记录积分
-                        helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
-                                "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
-                            {$set: {
-                                "wechatid": wechatid,
-                                "themeId": helper.db.id(_id),
-                                "isFinish": false,
-                                "optionId": parseInt(optionId),
-                                "chooseId": parseInt(chooseId),
-                                "getChooseScore": scores,
-                                "getChooseLabel":"",
-                                "getLabel": "",
-                                "getGift":  "",
-                                "getScore": "",
-                                "type":type,
-                                "createTime": new Date().getTime(),
-                                "memberId":memberid,
-                                "themetype":themetype
-                            }}, {upsert: true},function(err,doc){
-                                if(err) throw err;
-                                console.log(doc)
-                            })
+                        if(parm != "1"){
+                            helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                                    "themetype":themetype,"optionId":parseInt(optionId)},
+                                {$set: {
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": false,
+                                    "optionId": parseInt(optionId),
+                                    "chooseId": parseInt(chooseId),
+                                    "getChooseScore": scores,
+                                    "getChooseLabel":"",
+                                    "getLabel": "",
+                                    "getGift":  "",
+                                    "getScore": "",
+                                    "type":type,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":"",
+                                    "themetype":themetype
+                                }}, {upsert: true},function(err,doc){
+                                    if(err) throw err;
+                                    console.log(doc)
+                                })
+                        }else{
+                            helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                                    "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
+                                {$set: {
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": false,
+                                    "optionId": parseInt(optionId),
+                                    "chooseId": parseInt(chooseId),
+                                    "getChooseScore": scores,
+                                    "getChooseLabel":"",
+                                    "getLabel": "",
+                                    "getGift":  "",
+                                    "getScore": "",
+                                    "type":type,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":memberid,
+                                    "themetype":themetype
+                                }}, {upsert: true},function(err,doc){
+                                    if(err) throw err;
+                                    console.log(doc)
+                                })
+                        }
+
                     }
 
                     if(chooseNext!=""){
@@ -266,27 +346,53 @@ module.exports={
                     var selectChooseIdArr=seed.chooseId;
                     var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
                     var selId="["+selectChooseId.replace("_",",")+"]";
-                    helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
-                            "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
-                        {$set: {
-                            "wechatid": wechatid,
-                            "themeId": helper.db.id(_id),
-                            "isFinish": false,
-                            "optionId": parseInt(optionId),
-                            "chooseId": selId,
-                            "getChooseScore": parseInt(score),
-                            "getChooseLabel":"",
-                            "getLabel": "",
-                            "getGift":  "",
-                            "getScore": "",
-                            "createTime": new Date().getTime(),
-                            "type":type,
-                            "memberId":memberid,
-                            "themetype":themetype
+
+                    if(parm != "1"){
+                        helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                                "themetype":themetype,"optionId":parseInt(optionId)},
+                            {$set: {
+                                "wechatid": wechatid,
+                                "themeId": helper.db.id(_id),
+                                "isFinish": false,
+                                "optionId": parseInt(optionId),
+                                "chooseId": selId,
+                                "getChooseScore": parseInt(score),
+                                "getChooseLabel":"",
+                                "getLabel": "",
+                                "getGift":  "",
+                                "getScore": "",
+                                "createTime": new Date().getTime(),
+                                "type":type,
+                                "memberId":"",
+                                "themetype":themetype
                             }}, {upsert: true},function(err,doc){
                                 if(err) throw err;
-                            console.log(doc)
-                        })
+                                console.log(doc)
+                            })
+                    }else{
+                        helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
+                                "themetype":themetype,"memberId":""+memberid,"optionId":parseInt(optionId)},
+                            {$set: {
+                                "wechatid": wechatid,
+                                "themeId": helper.db.id(_id),
+                                "isFinish": false,
+                                "optionId": parseInt(optionId),
+                                "chooseId": selId,
+                                "getChooseScore": parseInt(score),
+                                "getChooseLabel":"",
+                                "getLabel": "",
+                                "getGift":  "",
+                                "getScore": "",
+                                "createTime": new Date().getTime(),
+                                "type":type,
+                                "memberId":memberid,
+                                "themetype":themetype
+                            }}, {upsert: true},function(err,doc){
+                                if(err) throw err;
+                                console.log(doc)
+                            })
+                    }
+
                     //判断是否为最后一页
                     if(finish!="true"){
                         //下一题页
@@ -338,23 +444,44 @@ module.exports={
                             then.req.session.scoreAll+=parseInt(score);
                         }
                         //记录积分
-                        helper.db.coll("lavico/custReceive").insert({
-                            "wechatid": wechatid,
-                            "themeId": helper.db.id(_id),
-                            "isFinish": false,
-                            "optionId": parseInt(optionId),
-                            "chooseId": parseInt(chooseId),
-                            "getChooseScore": scores,
-                            "getChooseLabel":"",
-                            "getLabel": "",
-                            "getGift":  "",
-                            "getScore": "",
-                            "type":type,
-                            "createTime":new Date().getTime(),
-                            "memberId":memberid,
-                            "themetype":themetype
-                        },function(err,doc){
-                        });
+                        if(parm != "1"){
+                            helper.db.coll("lavico/custReceive").insert({
+                                "wechatid": wechatid,
+                                "themeId": helper.db.id(_id),
+                                "isFinish": false,
+                                "optionId": parseInt(optionId),
+                                "chooseId": parseInt(chooseId),
+                                "getChooseScore": scores,
+                                "getChooseLabel":"",
+                                "getLabel": "",
+                                "getGift":  "",
+                                "getScore": "",
+                                "type":type,
+                                "createTime":new Date().getTime(),
+                                "memberId":"",
+                                "themetype":themetype
+                            },function(err,doc){
+                            });
+                        }else{
+                            helper.db.coll("lavico/custReceive").insert({
+                                "wechatid": wechatid,
+                                "themeId": helper.db.id(_id),
+                                "isFinish": false,
+                                "optionId": parseInt(optionId),
+                                "chooseId": parseInt(chooseId),
+                                "getChooseScore": scores,
+                                "getChooseLabel":"",
+                                "getLabel": "",
+                                "getGift":  "",
+                                "getScore": "",
+                                "type":type,
+                                "createTime":new Date().getTime(),
+                                "memberId":memberid,
+                                "themetype":themetype
+                            },function(err,doc){
+                            });
+                        }
+
                     }
 
                     if(chooseNext!=""){
@@ -419,22 +546,42 @@ module.exports={
                     var selectChooseIdArr=seed.chooseId;
                     var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
                     var selId="["+selectChooseId.replace("_",",")+"]";
-                    helper.db.coll("lavico/custReceive").insert({
-                        "wechatid": wechatid,
-                        "themeId": helper.db.id(_id),
-                        "isFinish": false,
-                        "optionId": parseInt(optionId),
-                        "chooseId": selId,
-                        "getChooseScore": parseInt(score),
-                        "getChooseLabel":"",
-                        "getLabel": "",
-                        "getGift":  "",
-                        "getScore": "",
-                        "createTime": new Date().getTime(),
-                        "type":type,
-                        "memberId":memberid,
-                        "themetype":themetype
-                    },function(err,doc){});
+                    if(parm!="1"){
+                        helper.db.coll("lavico/custReceive").insert({
+                            "wechatid": wechatid,
+                            "themeId": helper.db.id(_id),
+                            "isFinish": false,
+                            "optionId": parseInt(optionId),
+                            "chooseId": selId,
+                            "getChooseScore": parseInt(score),
+                            "getChooseLabel":"",
+                            "getLabel": "",
+                            "getGift":  "",
+                            "getScore": "",
+                            "createTime": new Date().getTime(),
+                            "type":type,
+                            "memberId":"",
+                            "themetype":themetype
+                        },function(err,doc){});
+                    }else{
+                        helper.db.coll("lavico/custReceive").insert({
+                            "wechatid": wechatid,
+                            "themeId": helper.db.id(_id),
+                            "isFinish": false,
+                            "optionId": parseInt(optionId),
+                            "chooseId": selId,
+                            "getChooseScore": parseInt(score),
+                            "getChooseLabel":"",
+                            "getLabel": "",
+                            "getGift":  "",
+                            "getScore": "",
+                            "createTime": new Date().getTime(),
+                            "type":type,
+                            "memberId":memberid,
+                            "themetype":themetype
+                        },function(err,doc){});
+                    }
+
                     //判断是否为最后一页
                     if(finish!="true"){
                         //下一题页

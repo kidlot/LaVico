@@ -14,6 +14,7 @@ module.exports={
         nut.model.wxid = wechatid;
         nut.model.optionId = optionId;
         var memberId;
+        var parm;
 
         nut.model.isok = "0";
         nut.model.conent = "undefined"
@@ -60,13 +61,24 @@ module.exports={
                 beginTime=doc.beginTime;
                 endTime=doc.endTime;
                 isOpen=doc.isOpen;
+                parm = doc.parm;
                 nut.model.themeType = doc.themeType;
                 nut.model.themequestion = JSON.stringify(doc.options);
             }));
         })
 
         this.step(function(){
-            if(member_id!="undefined"){
+            if(parm!="1"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result.length>0){
+                            nut.model.isRecord = "1";
+                        }else{
+                            nut.model.isRecord = "0";
+                        }
+                    }))
+            }else if(member_id!="undefined"){
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+member_id,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;

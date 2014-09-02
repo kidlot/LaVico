@@ -26,8 +26,7 @@
     var wechatId = '{@wechatId}';
     var memberid = '{@memberid}';
     function isReg(){
-        if(ok=="1")
-        {
+        if(ok=="1"){
             window.popupStyle2.on(conent,function(event){
                 if(event == "confirm"){
                 }
@@ -35,8 +34,7 @@
             return false;
         }
 
-        if(ok=="3")
-        {
+        if(ok=="3"){
             window.popupStyle2.on(conent,function(event){
                 if(event == "confirm"){
                 }
@@ -47,9 +45,9 @@
         var themetype = "{@themetype}";
         var pram = "{@pram}";
         var flag="{@flag}";
+        var follow="{@follow}";
         if(themetype == 0 || themetype ==2){
             if(flag=="1"){
-
                 window.popupStyle2.on("您还不是LaVico的会员，请先注册会员!",function(event){
                     if(event == "confirm"){
                         var url = encodeURIComponent(location.href);
@@ -60,18 +58,18 @@
             }
         }else{
             if(pram == 2){
-                window.popupStyle2.on("您还未关注LaVico,请先关注!",function(event){
-                    if(event == "confirm"){
-                    }
-                })
-                return false;
+                if(!follow){
+                    window.popupStyle2.on("您还未关注LaVico,请先关注!",function(event){
+                        if(event == "confirm"){
+                        }
+                    })
+                    return false;
+                }
             }
         }
 
         var flag="{@isok}";
-        if(flag=="0")
-        {
-
+        if(flag=="0"){
             window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到上次答题的结果",function(event){
                 if(event == "confirm"){
                     if('{@themeType}'==3){
@@ -84,11 +82,8 @@
             })
             return false;
         }
-
         var choose="{@choose}";
-        if(choose!="-1")
-        {
-
+        if(choose!="-1"){
             window.popupStyle2.on("您之前未能完成答题，请重新答题",function(event){
                 if(event == "confirm"){
                     location.href="/lavico/answerQuestion/answer?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&optionId=1&status=true";

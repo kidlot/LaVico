@@ -122,6 +122,11 @@ module.exports= {
                         memberid = doc.HaiLanMemberInfo.memberID;
                         nut.model.flag="1";
                     }
+                }else if(doc){
+                    nut.model.follow = doc.isFollow;
+                    //未绑定
+                    memberid = "undefined";
+                    nut.model.flag="1";
                 }else{
                     //未绑定
                     memberid = "undefined";

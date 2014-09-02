@@ -168,22 +168,42 @@ module.exports={
             if(go){
                 if(ok){
                     //插入总积分
-                    helper.db.coll("lavico/custReceive").insert({
-                        "wechatid": wechatid,
-                        "themeId": helper.db.id(_id),
-                        "isFinish": true,
-                        "optionId": 0,
-                        "chooseId": 0,
-                        "getChooseScore":parseInt(score),
-                        "getChooseLabel": "",
-                        "getLabel": "",
-                        "getActivities": "",
-                        "getScore": "",
-                        "createTime": new Date().getTime(),
-                        "memberId":memberid,
-                        "themetype":themetype,
-                        "type":"0"
-                    }, function (err, doc) {});
+                    if(pram!="1"){
+                        helper.db.coll("lavico/custReceive").insert({
+                            "wechatid": wechatid,
+                            "themeId": helper.db.id(_id),
+                            "isFinish": true,
+                            "optionId": 0,
+                            "chooseId": 0,
+                            "getChooseScore":parseInt(score),
+                            "getChooseLabel": "",
+                            "getLabel": "",
+                            "getActivities": "",
+                            "getScore": "",
+                            "createTime": new Date().getTime(),
+                            "memberId":"",
+                            "themetype":themetype,
+                            "type":"0"
+                        }, function (err, doc) {});
+                    }else{
+                        helper.db.coll("lavico/custReceive").insert({
+                            "wechatid": wechatid,
+                            "themeId": helper.db.id(_id),
+                            "isFinish": true,
+                            "optionId": 0,
+                            "chooseId": 0,
+                            "getChooseScore":parseInt(score),
+                            "getChooseLabel": "",
+                            "getLabel": "",
+                            "getActivities": "",
+                            "getScore": "",
+                            "createTime": new Date().getTime(),
+                            "memberId":memberid,
+                            "themetype":themetype,
+                            "type":"0"
+                        }, function (err, doc) {});
+                    }
+
                 }
             }
         })
@@ -300,11 +320,11 @@ module.exports={
                                         memoString = "型男测试-" + getLabel;
                                     }
                                     //得券接口
-                                    var parm;
+                                    var parm_can;
                                     if(pram == "1"){
-                                        pram = "01";
+                                        parm_can = "01";
                                     }else{
-                                        parm = "02";
+                                        parm_can = "02";
                                     }
                                     then.step(function () {
                                         var jsonData = {
@@ -312,7 +332,7 @@ module.exports={
                                             otherPromId: _id,
                                             PROMOTION_CODE: getActivities,
                                             memo: memoString,
-                                            parm:parm,
+                                            parm:parm_can,
                                             point: 0
                                         }
                                         if(ok){
@@ -378,25 +398,48 @@ module.exports={
 
                     then.step(function(){
                         if(ok){
-                            helper.db.coll("lavico/custReceive").insert({
-                                "wechatid": wechatid,
-                                "themeId": helper.db.id(_id),
-                                "isFinish": true,
-                                "optionId": 0,
-                                "chooseId": 0,
-                                "getChooseScore": parseInt(score),
-                                "getChooseLabel": "",
-                                "getLabel": getLabel,
-                                "getActivities": newActivity,
-                                "getScore": getScore,
-                                "getTipContent": getTipContent,
-                                "createTime": new Date().getTime(),
-                                "memberId":memberid,
-                                "themetype":themetype,
-                                "code":getActivities,
-                                "volumename":volumename,
-                                "type":type
-                            }, function (err, doc) {});
+                            if(pram!="1"){
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(score),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getActivities": newActivity,
+                                    "getScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":"",
+                                    "themetype":themetype,
+                                    "code":getActivities,
+                                    "volumename":volumename,
+                                    "type":type
+                                }, function (err, doc) {});
+                            }else{
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(score),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getActivities": newActivity,
+                                    "getScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":memberid,
+                                    "themetype":themetype,
+                                    "code":getActivities,
+                                    "volumename":volumename,
+                                    "type":type
+                                }, function (err, doc) {});
+                            }
+
                         }
 
                     })
@@ -518,11 +561,11 @@ module.exports={
                                             memoString = "型男测试-" + getLabel;
                                         }
                                         //得券接口
-                                        var parm;
+                                        var parm_can;
                                         if(pram == "1"){
-                                            pram = "01";
+                                            parm_can = "01";
                                         }else{
-                                            parm = "02";
+                                            parm_can = "02";
                                         }
                                         then.step(function () {
                                             var jsonData = {
@@ -530,7 +573,7 @@ module.exports={
                                                 otherPromId: _id,
                                                 PROMOTION_CODE: getActivities,
                                                 memo: memoString,
-                                                parm:parm,
+                                                parm:parm_can,
                                                 point: 0
                                             }
                                             if(ok){
@@ -598,25 +641,48 @@ module.exports={
                     })
                     then.step(function(){
                         if(ok){
-                            helper.db.coll("lavico/custReceive").insert({
-                                "wechatid": wechatid,
-                                "themeId": helper.db.id(_id),
-                                "isFinish": true,
-                                "optionId": 0,
-                                "chooseId": 0,
-                                "getChooseScore": parseInt(score),
-                                "getChooseLabel": "",
-                                "getLabel": getLabel,
-                                "getActivities": newActivity,
-                                "getScore": getScore,
-                                "getTipContent": getTipContent,
-                                "createTime": new Date().getTime(),
-                                "memberId":memberid,
-                                "themetype":themetype,
-                                "code":getActivities,
-                                "volumename":volumename,
-                                "type":type
-                            }, function (err, doc) {});
+                            if(pram!="1"){
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(score),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getActivities": newActivity,
+                                    "getScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":"",
+                                    "themetype":themetype,
+                                    "code":getActivities,
+                                    "volumename":volumename,
+                                    "type":type
+                                }, function (err, doc) {});
+                            }else{
+                                helper.db.coll("lavico/custReceive").insert({
+                                    "wechatid": wechatid,
+                                    "themeId": helper.db.id(_id),
+                                    "isFinish": true,
+                                    "optionId": 0,
+                                    "chooseId": 0,
+                                    "getChooseScore": parseInt(score),
+                                    "getChooseLabel": "",
+                                    "getLabel": getLabel,
+                                    "getActivities": newActivity,
+                                    "getScore": getScore,
+                                    "getTipContent": getTipContent,
+                                    "createTime": new Date().getTime(),
+                                    "memberId":memberid,
+                                    "themetype":themetype,
+                                    "code":getActivities,
+                                    "volumename":volumename,
+                                    "type":type
+                                }, function (err, doc) {});
+                            }
+
                         }
 
                     })
