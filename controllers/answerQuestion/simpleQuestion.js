@@ -21,14 +21,18 @@ module.exports={
         //判断是否是下一题或完成按钮
         var status = seed.status ? seed.status : "false";
         var themeQuestion_doc;
+
+        var parm;
         //字数判断
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
                 if(err) throw err;
 
-                if(doc)
+                if(doc){
                     themeQuestion_doc = doc;
-                    return doc;
+                    parm = doc.parm;
+                }
+                return doc;
             }))
         })
 
@@ -109,11 +113,11 @@ module.exports={
                     }));
 
                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/guessfinish?wechatid="+
-                        wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
+                        wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype+"&parm="+parm});
                     this.res.end();
                 }else{
                     this.res.writeHead(302, {
-                        'Location': "/lavico/answerQuestion/finish?wechatid="+wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
+                        'Location': "/lavico/answerQuestion/finish?wechatid="+wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype+"&parm="+parm});
                     this.res.end();
                 }
             }

@@ -179,17 +179,6 @@ function build(){
 
     }
 
-//判断开还关
-    //alert(document.cookie);
-//    var strCookie=document.cookie;
-//    var arrCookie=strCookie.split(",");
-//    for(var i=0;i<arrCookie.length;i++){
-//        var arr=arrCookie[i].split("=");
-//        if(arr[1]==jsonObject.optionId){
-//            $("#tip").html("您已经答过此题");
-//        }
-//    }
-
     //当前显示编号是否已经至最后一题，显示“下一题”或“完成”
     if(jsonObject.optionId<optionCount){
         $('.btn').append('<input type="button" name="next" value="下一题" onclick="nextChoose()">');
@@ -270,14 +259,26 @@ function showCorrents(t){
 //finish完成按钮“触发"事件
 function finish(){
     var isRecord = '{@isRecord}';
-    if(isRecord=="1"){
-        window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!",function(event){
-            if(event == "confirm"){
-                location.href="/lavico/answerQuestion/finish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true";
-            }
-        })
-        return;
+    if(jsonObject.parm == "1"){
+        if(isRecord=="1"){
+            window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!",function(event){
+                if(event == "confirm"){
+                    location.href="/lavico/answerQuestion/finish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true"+"&parm="+jsonObject.parm;
+                }
+            })
+            return;
+        }
+    }else{
+        if(isRecord=="1"){
+            window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!",function(event){
+                if(event == "confirm"){
+                    location.href="/lavico/answerQuestion/guessfinish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true"+"&parm="+jsonObject.parm;
+                }
+            })
+            return;
+        }
     }
+
 
     var value=0;
     var valueArr="";
@@ -573,22 +574,6 @@ function showCorrents_finish(){
 
     }
 }
-
-//function check(){
-//    var ok = '{@isok}';
-//    var conent = '{@conent}'
-//    if(ok=="2")
-//    {
-//
-//        window.popupStyle2.on(conent,function(event){
-//            if(event == "confirm"){
-//                location.href='/lavico/member/card_blank/register?wxid='+wxid
-//            }
-//        })
-//        return false;
-//    }
-//}
-
 window.onload =function() {
     build();
 }

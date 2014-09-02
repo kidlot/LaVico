@@ -12,6 +12,7 @@ module.exports={
         var promotion_name;
         var code = seed.code ? seed.code :"undefined";
         var type = seed.type ? seed.type :"undefined";
+        nut.model.parm = seed.parm || "undefined";
         nut.model.type = type;
         var memberID;//memberID
         var themetype = seed.themetype ? seed.themetype :"undefined";
