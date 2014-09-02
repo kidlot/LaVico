@@ -124,32 +124,18 @@
                 if($li.find("input[name='txtChooseScore']").val()==""){
                     $li.find("input[name='txtChooseScore']").val(0);
                 }
-                $li.find("input[name='txtChooseScore']").attr("readonly","readonly");
                 $li=$li.next();
             }
             $val=$val.next();
         }
-
         count=$("div[name=contentSet]").find("div[name=setGift]").find("div[name=setGiftOne]").length;
         $fcount=$("div[name=contentSet]").find("div[name=setGift]");
         for(var v=0;v<count;v++){
-            //条件分值（小）
-            if($fcount.find("input[name='conditionMinScore']:eq("+v+")").val()==""){
-                $fcount.find("input[name='conditionMinScore']:eq("+v+")").val(0);
-            }
-
-            $fcount.find("input[name='conditionMinScore']:eq("+v+")").attr("readonly","readonly");
-            //条件分值（大）
-            if($fcount.find("input[name='conditionMaxScore']:eq("+v+")").val()==""){
-                $fcount.find("input[name='conditionMaxScore']:eq("+v+")").val(0);
-            }
-            $fcount.find("input[name='conditionMaxScore']:eq("+v+")").attr("readonly","readonly");
-
-            if($fcount.find("input[name='getScore']:eq("+v+")").val()==""){
-                $fcount.find("input[name='getScore']:eq("+v+")").val(0);
-            }
-
+            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
             $fcount.find("input[name='getScore']:eq("+v+")").attr("readonly","readonly");
+            $fcount.find("input[name='conditionLabel']:eq("+v+")").removeAttr("readonly");
+            $fcount.find("input[name='getLabel']:eq("+v+")").removeAttr("readonly");
+            $fcount.find("textarea[name='tipContent']:eq("+v+")").removeAttr("readonly");
         }
     }
 
@@ -162,31 +148,18 @@
                 if($li.find("input[name='txtChooseScore']").val()==""){
                     $li.find("input[name='txtChooseScore']").val(0);
                 }
-                $li.find("input[name='txtChooseScore']").removeAttr("readonly");
                 $li=$li.next();
             }
             $val=$val.next();
         }
-
         count=$("div[name=contentSet]").find("div[name=setGift]").find("div[name=setGiftOne]").length;
         $fcount=$("div[name=contentSet]").find("div[name=setGift]");
         for(var v=0;v<count;v++){
-            //条件分值（小）
-            if($fcount.find("input[name='conditionMinScore']:eq("+v+")").val()==""){
-                $fcount.find("input[name='conditionMinScore']:eq("+v+")").val(0);
-            }
-            $fcount.find("input[name='conditionMinScore']:eq("+v+")").removeAttr("readonly");
-            //条件分值（大）
-            if($fcount.find("input[name='conditionMaxScore']:eq("+v+")").val()==""){
-                $fcount.find("input[name='conditionMaxScore']:eq("+v+")").val(0);
-            }
-
-            $fcount.find("input[name='conditionMaxScore']:eq("+v+")").removeAttr("readonly");
-
-            if($fcount.find("input[name='getScore']:eq("+v+")").val()==""){
-                $fcount.find("input[name='getScore']:eq("+v+")").val(0);
-            }
+            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
             $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
+            $fcount.find("input[name='conditionLabel']:eq("+v+")").attr("readonly","readonly");
+            $fcount.find("input[name='getLabel']:eq("+v+")").attr("readonly","readonly");
+            $fcount.find("textarea[name='tipContent']:eq("+v+")").attr("readonly","readonly");
         }
     }
 
@@ -595,7 +568,7 @@
                 </if>
 
                 <br>标签文本设置:
-                <textarea rows="5" cols="80" name="tipContent" id="tipContent" class="form-control input-sm" style="width: 550px"></textarea>
+                <textarea rows="5" cols="80" name="tipContent" id="tipContent" class="form-control input-sm"  style="width: 550px"></textarea>
             </div>
         </div>
     </div>
