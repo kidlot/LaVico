@@ -119,6 +119,8 @@
         $("#showtype").append("<OPTION selected='selected' VALUE='0'>只显示提示</OPTION>");
         $("#showtype").append("<OPTION  VALUE='2'>发放优惠劵</OPTION>");
 
+        var pram = $("input[name='parm']:checked").val();
+
         var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
         $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
         for(var i=0;i<titleCount;i++){
@@ -134,8 +136,13 @@
         count=$("div[name=contentSet]").find("div[name=setGift]").find("div[name=setGiftOne]").length;
         $fcount=$("div[name=contentSet]").find("div[name=setGift]");
         for(var v=0;v<count;v++){
-            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
-            $fcount.find("input[name='getScore']:eq("+v+")").attr("readonly","readonly");
+            if(pram!="1"){
+                $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+                $fcount.find("input[name='getScore']:eq("+v+")").attr("readonly","readonly");
+            }else{
+                $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
+            }
+
             if(type!=1){
                 $fcount.find("input[name='conditionLabel']:eq("+v+")").removeAttr("readonly");
                 $fcount.find("input[name='getLabel']:eq("+v+")").removeAttr("readonly");
@@ -150,6 +157,8 @@
         $("#showtype").append("<OPTION  VALUE='1'>发放积分</OPTION>");
         $("#showtype").append("<OPTION  VALUE='2'>发放优惠劵</OPTION>");
 
+        var pram = $("input[name='parm']:checked").val();
+
         var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
         $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
         for(var i=0;i<titleCount;i++){
@@ -165,8 +174,15 @@
         count=$("div[name=contentSet]").find("div[name=setGift]").find("div[name=setGiftOne]").length;
         $fcount=$("div[name=contentSet]").find("div[name=setGift]");
         for(var v=0;v<count;v++){
-            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
-            $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
+
+            if(pram!="1"){
+                $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+                $fcount.find("input[name='getScore']:eq("+v+")").attr("readonly","readonly");
+            }else{
+                $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
+            }
+//            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
+//            $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
             if(type!=1){
                 $fcount.find("input[name='conditionLabel']:eq("+v+")").attr("readonly","readonly");
                 $fcount.find("input[name='getLabel']:eq("+v+")").attr("readonly","readonly");
@@ -274,25 +290,24 @@
             </div>
             <if condition="{@docs.themeType==3}">
                 <div>发放类型:&nbsp;&nbsp;
-                    <select name="showType" class="form-control input-sm" style="width: 200px">
+                    <select name="showType" id="showtype" class="form-control input-sm" style="width: 200px">
                         <if condition="{@docs.showtype==0}">
                             <option value="0" selected="selected">只显示提示</option>
                             <if condition="{@docs.parm==1}">
                                 <option value="1">发放积分</option>
-                            </if>
+                                </if>
                             <option value="2">发放优惠劵</option>
                             <elseif condition="{@docs.showtype==1}"/>
                             <option value="0">只显示提示</option>
                             <if condition="{@docs.parm==1}">
                                 <option value="1" selected="selected">发放积分</option>
                             </if>
-
                             <option value="2">发放优惠劵</option>
                             <else/>
                             <option value="0">只显示提示</option>
                             <if condition="{@docs.parm==1}">
                                 <option value="1">发放积分</option>
-                            </if>
+                                </if>
                             <option value="2" selected="selected">发放优惠劵</option>
                         </if>
                     </select>
