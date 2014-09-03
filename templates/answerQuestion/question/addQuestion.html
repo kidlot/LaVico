@@ -117,6 +117,10 @@
 
     var type = '{@type}';
     function selectPram(){
+        $("#showtype").empty();
+        $("#showtype").append("<OPTION selected='selected' VALUE='0'>只显示提示</OPTION>");
+        $("#showtype").append("<OPTION  VALUE='2'>发放优惠劵</OPTION>");
+
         var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
         $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
         for(var i=0;i<titleCount;i++){
@@ -143,6 +147,12 @@
     }
 
     function selectPramOld(){
+
+        $("#showtype").empty();
+        $("#showtype").append("<OPTION selected='selected' VALUE='0'>只显示提示</OPTION>");
+        $("#showtype").append("<OPTION  VALUE='1'>发放积分</OPTION>");
+        $("#showtype").append("<OPTION  VALUE='2'>发放优惠劵</OPTION>");
+        
         var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
         $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
         for(var i=0;i<titleCount;i++){
@@ -244,7 +254,7 @@
     </div>
     <if condition="{@type==3}">
         <div>发放类型:&nbsp;
-            <select name="showType" class="form-control input-sm" style="width: 200px">
+            <select name="showType" id="showtype" class="form-control input-sm" style="width: 200px">
                 <option value="0" selected="selected">只显示提示</option>
                 <option value="1">发放积分</option>
                 <option value="2">发放优惠劵</option>
