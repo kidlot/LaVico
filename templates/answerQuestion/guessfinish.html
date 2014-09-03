@@ -101,6 +101,18 @@
             </div>
             <div class="line">
             </div>
+            <p style="margin-top: 10px;">
+                <if condition="{@pram!='2'}">
+                    可在“专属礼券”内查询
+                    <else/>
+                    <if condition="{@memberid=='undefined'}">
+                        注册LaVico朗维高会员后领取优惠券
+                        <elseif/>
+                        可在“专属礼券”内查询
+                    </if>
+
+                </if>
+            </p>
             <if condition="{@resultString.getActivities!=''}">
                 <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&code={@code}">领取优惠券</a></div>
                 <else/>

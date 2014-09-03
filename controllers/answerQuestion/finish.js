@@ -17,6 +17,7 @@ module.exports={
         var isRecord=seed.isRecord ? seed.isRecord : "no";
         var go=true;
         var memberid=seed.memberid || "undefined";
+        nut.model.memberid = memberid;
         var themetype = seed.themetype;
         nut.model.themeType = themetype;
         var stutas= seed.stutas ? seed.stutas :"false";
@@ -634,6 +635,7 @@ module.exports={
                 nut.model.result = resultList;
                 nut.model.jsonResult = resultList
                 nut.model.label =resultList[0].getLabel;
+                nut.model.pram = pram;
                 if(ok){
                     if (getLabel != "" || getLabel != null || getScore!="" || typeof (getLabel)!="undefined") {
                         //发送标签至CRM

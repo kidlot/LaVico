@@ -11,6 +11,7 @@ module.exports={
         var themetype = seed.themetype || "null";
         var stutas= seed.stutas ? seed.stutas :"false";
         nut.model.stutas = stutas;
+        nut.model.memberid  =memberid;
         var stopLab=seed.stopLab ? seed.stopLab : "null";
         var newActivity="";
         var docs=[];
@@ -214,12 +215,6 @@ module.exports={
 
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
-                            console.log("stopLabel",then.req.session.stopLabel)
-                            console.log("conditionLabel",scoreRange[i].conditionLabel)
-                            console.log("score",score)
-                            console.log("minlen",minlen)
-                            console.log("maxlen",maxlen)
-                            console.log("memberid",memberid)
                             if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                 getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
@@ -588,6 +583,7 @@ module.exports={
                 then.req.session.optionId = ""
                 nut.model.result = resultList;
                 nut.model.jsonResult = resultList
+                nut.model.pram = pram;
                 nut.model.label =resultList[0].getLabel;
                 console.log("resultlist",resultList)
 
