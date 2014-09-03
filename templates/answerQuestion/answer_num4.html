@@ -104,7 +104,7 @@ window.onload=function(){
                     <else/>
                     <if condition="{@memberid=='undefined'}">
                         注册LaVico朗维高会员后领取优惠券
-                    <elseif/>
+                    <else/>
                         可在“专属礼券”内查询
                     </if>
 
@@ -112,13 +112,13 @@ window.onload=function(){
             </p>
             <if condition="{@resultString.getActivities!=''}">
                     <div class="mobile-btn linebottom">
-                        <a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&type={@code}">
+                        <a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&type={@code}" onclick="return isReg()">
                             查看优惠券
                         </a>
                     </div>
                 <else/>
                 <div class="mobile-btn linebottom">
-                    <a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&type={@code}">
+                    <a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&type={@code}" onclick="return isReg()">
                         查看优惠券
                     </a>
                 </div>
@@ -127,4 +127,22 @@ window.onload=function(){
     </div>
 </div>
 </if>
+<script>
+    function isReg(){
+        var memberid = '{@memberid}';
+        var pram = '{@pram}';
+        if(pram == "2"){
+            if(memberid == "undefined"){
+                window.popupStyle2.on("注册LaVico朗维高会员后领取优惠券!",function(event){
+                    if(event == "confirm"){
+                        var url = encodeURIComponent(location.href);
+                        location.href="/lavico/member/card_blank/register?wxid={@wechatid}&go="+url;
+                    }
+                })
+                return false;
+            }
+        }
+
+    }
+</script>
 

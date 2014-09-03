@@ -17,7 +17,7 @@ module.exports={
         var isRecord=seed.isRecord ? seed.isRecord : "no";
         var go=true;
         var memberid=seed.memberid || "undefined";
-        nut.model.memberid = memberid;
+        //nut.model.memberid = memberid;
         var themetype = seed.themetype;
         nut.model.themeType = themetype;
         var stutas= seed.stutas ? seed.stutas :"false";
@@ -185,8 +185,11 @@ module.exports={
                 this.hold(function (err, result) {
                     if (err) throw err;
                     if (result && result.HaiLanMemberInfo && result.HaiLanMemberInfo.memberID) {
-                        nut.model.memberID = result.HaiLanMemberInfo.memberID;
+                        nut.model.memberid = result.HaiLanMemberInfo.memberID;
                         memberID =  result.HaiLanMemberInfo.memberID
+                    }
+                    else{
+                        nut.model.memberid = "undefined";
                     }
                 })
             )
