@@ -237,7 +237,7 @@ module.exports= {
 
         this.step(function(){
             if(memberid =="undefined"){
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"isFinish":true},
+                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"wechatid":wechatid,"isFinish":true},
                     this.hold(function(err,doc){
                         if(err) throw err;
                         if(doc){
@@ -248,7 +248,7 @@ module.exports= {
                     })
                 )
             }else{
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"wechatid":wechatid,"isFinish":true},
+                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid,"wechatid":wechatid,"isFinish":true},
                     this.hold(function(err,doc){
                         if(err) throw err;
                         if(doc){
