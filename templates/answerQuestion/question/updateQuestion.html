@@ -114,6 +114,11 @@
 
     var type = '{@type}';
     function selectPram(){
+
+        $("#showtype").empty();
+        $("#showtype").append("<OPTION selected='selected' VALUE='0'>只显示提示</OPTION>");
+        $("#showtype").append("<OPTION  VALUE='2'>发放优惠劵</OPTION>");
+
         var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
         $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
         for(var i=0;i<titleCount;i++){
@@ -140,6 +145,11 @@
     }
 
     function selectPramOld(){
+        $("#showtype").empty();
+        $("#showtype").append("<OPTION selected='selected' VALUE='0'>只显示提示</OPTION>");
+        $("#showtype").append("<OPTION  VALUE='1'>发放积分</OPTION>");
+        $("#showtype").append("<OPTION  VALUE='2'>发放优惠劵</OPTION>");
+
         var titleCount= $("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").length;
         $val=$("div[name=contentSet]").find("div[name=mainContent]").find("div[name=option]").first();
         for(var i=0;i<titleCount;i++){
@@ -267,15 +277,22 @@
                     <select name="showType" class="form-control input-sm" style="width: 200px">
                         <if condition="{@docs.showtype==0}">
                             <option value="0" selected="selected">只显示提示</option>
-                            <option value="1">发放积分</option>
+                            <if condition="{@docs.parm==1}">
+                                <option value="1">发放积分</option>
+                            </if>
                             <option value="2">发放优惠劵</option>
                             <elseif condition="{@docs.showtype==1}"/>
                             <option value="0">只显示提示</option>
-                            <option value="1" selected="selected">发放积分</option>
+                            <if condition="{@docs.parm==1}">
+                                <option value="1" selected="selected">发放积分</option>
+                            </if>
+
                             <option value="2">发放优惠劵</option>
                             <else/>
                             <option value="0">只显示提示</option>
-                            <option value="1">发放积分</option>
+                            <if condition="{@docs.parm==1}">
+                                <option value="1">发放积分</option>
+                            </if>
                             <option value="2" selected="selected">发放优惠劵</option>
                         </if>
                     </select>
