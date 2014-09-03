@@ -11,7 +11,7 @@ module.exports={
         var themetype = seed.themetype || "null";
         var stutas= seed.stutas ? seed.stutas :"false";
         nut.model.stutas = stutas;
-        nut.model.memberid  =memberid;
+        //nut.model.memberid  =memberid;
         var stopLab=seed.stopLab ? seed.stopLab : "null";
         var newActivity="";
         var docs=[];
@@ -27,6 +27,21 @@ module.exports={
         var getActivities ="";
         var getTipContent="您已答完此题,获奖名单择期公布";
         var pram;
+
+        //查memberId
+        this.step(function () {
+            helper.db.coll("welab/customers").findOne({wechatid: seed.wechatid},
+                this.hold(function (err, result) {
+                    if (err) throw err;
+                    if (result && result.HaiLanMemberInfo && result.HaiLanMemberInfo.memberID) {
+                        nut.model.memberid = result.HaiLanMemberInfo.memberID;
+                        memberid =  result.HaiLanMemberInfo.memberID
+                    }else{
+                        nut.model.memberid = "undefined";
+                    }
+                })
+            )
+        })
 
         //查找单题组,获取分值范围数组
         this.step(function () {
