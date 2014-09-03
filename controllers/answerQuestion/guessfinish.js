@@ -7,7 +7,7 @@ module.exports={
         nut.model.wechatid = wechatid;
         var _id = seed._id || "null";
         var optionid = seed.optionId || "null";
-        var memberid  = seed.memberid  || "null";
+        var memberid  = seed.memberid  || "undefined";
         var themetype = seed.themetype || "null";
         var stutas= seed.stutas ? seed.stutas :"false";
         nut.model.stutas = stutas;
@@ -42,18 +42,34 @@ module.exports={
         });
 
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
-                "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
-                    if(err) throw err;
-                    if(doc){
-                        docs = doc;
-                    }
-                    if(doc.length==0){
-                        ok=true;
-                    }else{
-                        ok = false;
-                    }
-                }))
+            if(memberid =="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            docs = doc;
+                        }
+                        if(doc.length==0){
+                            ok=true;
+                        }else{
+                            ok = false;
+                        }
+                    }))
+            }else{
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                    "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            docs = doc;
+                        }
+                        if(doc.length==0){
+                            ok=true;
+                        }else{
+                            ok = false;
+                        }
+                    }))
+            }
+
         })
 
         this.step(function(){
@@ -113,13 +129,24 @@ module.exports={
         //查询每道题获得的积分
         this.step(function(){
             if(go){
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
-                    "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result){
-                            scoreArr = result;
-                        }
-                    }))
+                if(memberid=="undefined"){
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                        "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                            if(err) throw err;
+                            if(result){
+                                scoreArr = result;
+                            }
+                        }))
+                }else{
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                        "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                            if(err) throw err;
+                            if(result){
+                                scoreArr = result;
+                            }
+                        }))
+                }
+
             }
         })
 
@@ -137,7 +164,7 @@ module.exports={
             if(go){
                 if(ok){
                     //插入总积分
-                    if(pram!="1"){
+                    if(memberid=="undefined"){
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
@@ -184,13 +211,15 @@ module.exports={
                     if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
 
                         for (var i = 0; i < scoreRange.length; i++){
+
+                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             console.log("stopLabel",then.req.session.stopLabel)
                             console.log("conditionLabel",scoreRange[i].conditionLabel)
                             console.log("score",score)
                             console.log("minlen",minlen)
                             console.log("maxlen",maxlen)
-                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
-                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
+                            console.log("memberid",memberid)
                             if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                 getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
@@ -199,7 +228,7 @@ module.exports={
                                 type = scoreRange[i].getActivities;
                                 if(docTheme.showtype == 1){//发放积分
                                     then.step(function () {
-                                        if(pram!="1"){
+                                        if(memberid!="undefined"){
                                             var jsonData = {};
                                             jsonData.memberId = memberid;
                                             jsonData.qty = getScore;
@@ -316,7 +345,7 @@ module.exports={
 
                     then.step(function(){
                         if(ok){
-                            if(pram!="1"){
+                            if(memberid=="undefined"){
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -386,7 +415,7 @@ module.exports={
                                     getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                     type = scoreRange[i].getActivities;
                                     if( docTheme.showtype == 1){//发放积分
-                                        if(pram!="1"){
+                                        if(memberid!="undefined"){
                                             then.step(function () {
                                                 var jsonData = {};
                                                 jsonData.memberId = memberid;
@@ -504,7 +533,7 @@ module.exports={
 
                     then.step(function(){
                         if(ok){
-                            if(pram!="1"){
+                            if(memberid=="undefined"){
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -562,7 +591,7 @@ module.exports={
                 nut.model.label =resultList[0].getLabel;
                 console.log("resultlist",resultList)
 
-                if(ok && pram=="1"){
+                if(ok &&memberid=="undefined"){
                     if (getLabel != "" || getLabel != null || getScore!=""|| typeof (getLabel)!="undefined") {
                         //发送标签至CRM
                         var memoString="";
