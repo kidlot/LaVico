@@ -143,11 +143,6 @@
                 $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
             }
 
-            if(type!=1){
-                $fcount.find("input[name='conditionLabel']:eq("+v+")").removeAttr("readonly");
-                $fcount.find("input[name='getLabel']:eq("+v+")").removeAttr("readonly");
-                $fcount.find("textarea[name='tipContent']:eq("+v+")").removeAttr("readonly");
-            }
         }
     }
 
@@ -181,13 +176,7 @@
             }else{
                 $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
             }
-//            $fcount.find("input[name='getScore']:eq("+v+")").val(0);
-//            $fcount.find("input[name='getScore']:eq("+v+")").removeAttr("readonly");
-            if(type!=1){
-                $fcount.find("input[name='conditionLabel']:eq("+v+")").attr("readonly","readonly");
-                $fcount.find("input[name='getLabel']:eq("+v+")").attr("readonly","readonly");
-                $fcount.find("textarea[name='tipContent']:eq("+v+")").attr("readonly","readonly");
-            }
+//
         }
     }
 
