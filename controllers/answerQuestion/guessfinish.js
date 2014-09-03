@@ -182,7 +182,13 @@ module.exports={
                 //非停止标签过来
                 if (stopLab != "true") {
                     if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
+
                         for (var i = 0; i < scoreRange.length; i++){
+                            console.log("stopLabel",then.req.session.stopLabel)
+                            console.log("conditionLabel",scoreRange[i].conditionLabel)
+                            console.log("score",score)
+                            console.log("minlen",minlen)
+                            console.log("maxlen",maxlen)
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
@@ -191,7 +197,7 @@ module.exports={
                                 getActivities = scoreRange[i].getActivities == "" ? "-1" : scoreRange[i].getActivities;
                                 getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 type = scoreRange[i].getActivities;
-                                if( docTheme.showtype == 1){//发放积分
+                                if(docTheme.showtype == 1){//发放积分
                                     then.step(function () {
                                         if(pram!="1"){
                                             var jsonData = {};
@@ -224,11 +230,11 @@ module.exports={
                                     //调用接口开始
                                     var memoString = "竞猜型:" + getLabel;
                                     //得券接口
-                                    var parm;
+                                    var parm_can;
                                     if(pram == "1"){
-                                        pram = "01";
+                                        parm_can = "01";
                                     }else{
-                                        parm = "02";
+                                        parm_can = "02";
                                     }
                                     then.step(function () {
                                         var jsonData = {
@@ -236,7 +242,7 @@ module.exports={
                                             otherPromId: _id,
                                             PROMOTION_CODE: getActivities,
                                             memo: memoString,
-                                            parm:parm,
+                                            parm:parm_can,
                                             point: 0
                                         }
                                         if(ok){
@@ -366,10 +372,11 @@ module.exports={
                     if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
 
                         for (var i = 0; i < scoreRange.length; i++){
+                            console.log("stopLabel",then.req.session.stopLabel)
+                            console.log("conditionLabel",scoreRange[i].conditionLabel)
+                            console.log("scoreRange",scoreRange)
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
-                                console.log(then.req.session.stopLabel)
-                                console.log(scoreRange[i].conditionLabel)
-                                console.log(scoreRange)
+
                                 var minlen = scoreRange[i].conditionMinScore;//获取低分值
                                 var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                                 if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
@@ -410,12 +417,19 @@ module.exports={
                                         //调用接口开始
                                         var memoString = "竞猜型:" + getLabel;
                                         //得券接口
+                                        var parm_can;
+                                        if(pram == "1"){
+                                            parm_can = "01";
+                                        }else{
+                                            parm_can = "02";
+                                        }
                                         then.step(function () {
                                             var jsonData = {
                                                 openid: wechatid,
                                                 otherPromId: _id,
                                                 PROMOTION_CODE: getActivities,
                                                 memo: memoString,
+                                                parm:parm_can,
                                                 point: 0
                                             }
                                             if(ok){

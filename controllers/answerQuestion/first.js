@@ -7,7 +7,7 @@ module.exports= {
         var wechatid=seed.wechatid || undefined;
         nut.model.fromWelab = seed.fromWelab || ""
         var _id = seed._id;
-        var memberid;
+        var memberid || "undefined";
         var themetype;
         var result_false;
         var isok = true;
@@ -153,23 +153,45 @@ module.exports= {
         })
 
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
-                "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
-                    if(err) throw err;
-                    if(result){
-                        result_false = result;
-                    }
-                }))
+            if(memberid =="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            result_false = result;
+                        }
+                    }))
+            }else{
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            result_false = result;
+                        }
+                    }))
+            }
+
         })
 
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
-                "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
-                    if(err) throw err;
-                    if(result){
-                        result_true = result;
-                    }
-                }))
+            if(memberid =="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            result_true = result;
+                        }
+                    }))
+            }else{
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            result_true = result;
+                        }
+                    }))
+            }
+
         })
 
         this.step(function(){
@@ -214,8 +236,8 @@ module.exports= {
         })
 
         this.step(function(){
-            if(pram == "1"){
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid,"isFinish":true},
+            if(memberid =="undefined"){
+                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"isFinish":true},
                     this.hold(function(err,doc){
                         if(err) throw err;
                         if(doc){

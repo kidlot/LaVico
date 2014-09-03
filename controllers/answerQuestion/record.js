@@ -14,7 +14,7 @@ module.exports={
         var finish=seed.finish;//是否为“完成”按钮 true
         var stopLabel=seed.stopLabel;//停止标签
         var customerLabel=seed.customerLabel;//自定义标签
-        var memberid=seed.memberid;
+        var memberid=seed.memberid || "undefined";
         var docvar=null;//是否已经有存储,即，是否已经做过此题
         var themetype = seed.themetype;
         //判断是否是下一题或完成按钮
@@ -60,7 +60,7 @@ module.exports={
                             then.req.session.scoreAll+=parseInt(score);
                         }
                         //记录积分
-                        if(parm != "1"){
+                        if(memberid =="undefined"){
                             helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
                                     "themetype":themetype,"optionId":parseInt(optionId)},
                                 {$set: {
@@ -129,7 +129,7 @@ module.exports={
                     var selectChooseIdArr=seed.chooseId;
                     var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
                     var selId="["+selectChooseId.replace("_",",")+"]";
-                    if(parm != "1"){
+                    if(memberid =="undefined"){
                         helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
                                 "themetype":themetype,"optionId":parseInt(optionId)},
                             {$set: {
@@ -174,7 +174,7 @@ module.exports={
                                 console.log(doc)
                             })
                     }
-                    if(parm == "1"){
+                    if(memberid =="undefined"){
                         var memoString = docOptions.theme + customerLabel;
                         jsonData = {};
                         jsonData.memberId = memberid;
@@ -236,7 +236,7 @@ module.exports={
                             then.req.session.scoreAll+=parseInt(score);
                         }
                         //记录积分
-                        if(parm != "1"){
+                        if(memberid =="undefined"){
                             helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
                                     "themetype":themetype,"optionId":parseInt(optionId)},
                                 {$set: {
@@ -347,7 +347,7 @@ module.exports={
                     var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
                     var selId="["+selectChooseId.replace("_",",")+"]";
 
-                    if(parm != "1"){
+                    if(memberid =="undefined"){
                         helper.db.coll("lavico/custReceive").update({"themeId":helper.db.id(_id),"type":type,
                                 "themetype":themetype,"optionId":parseInt(optionId)},
                             {$set: {
@@ -444,7 +444,7 @@ module.exports={
                             then.req.session.scoreAll+=parseInt(score);
                         }
                         //记录积分
-                        if(parm != "1"){
+                        if(memberid =="undefined"){
                             helper.db.coll("lavico/custReceive").insert({
                                 "wechatid": wechatid,
                                 "themeId": helper.db.id(_id),
@@ -546,7 +546,7 @@ module.exports={
                     var selectChooseIdArr=seed.chooseId;
                     var selectChooseId=selectChooseIdArr.substring(0,selectChooseIdArr.length-1);
                     var selId="["+selectChooseId.replace("_",",")+"]";
-                    if(parm!="1"){
+                    if(memberid =="undefined"){
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),

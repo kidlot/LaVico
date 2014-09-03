@@ -14,7 +14,7 @@ module.exports={
         var optionId=seed.optionId;
         var receiveAnswer=seed.receiveAnswer;
         var wechatId=seed.wechatid;
-        var memberid = seed.memberid;
+        var memberid = seed.memberid || "undefined";
         var themetype = seed.themetype;
         var type = seed.type;
         var customerLabel=seed.customerLabel;//自定义标签
@@ -70,7 +70,7 @@ module.exports={
         this.step(function(docOne){
             if(docOne){
                 then.req.session.scoreAll+=parseInt(docOne.answerScore);
-                if(parm!="1"){
+                if(memberid =="undefined"){
                     helper.db.coll("lavico/custReceive").insert({
                         "wechatid": wechatId,
                         "themeId": helper.db.id(_id),

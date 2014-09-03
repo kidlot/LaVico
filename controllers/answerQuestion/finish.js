@@ -16,7 +16,7 @@ module.exports={
 
         var isRecord=seed.isRecord ? seed.isRecord : "no";
         var go=true;
-        var memberid=seed.memberid;
+        var memberid=seed.memberid || "undefined";
         var themetype = seed.themetype;
         nut.model.themeType = themetype;
         var stutas= seed.stutas ? seed.stutas :"false";
@@ -47,22 +47,61 @@ module.exports={
         var doc_json;
 
         var resultList=[];//显示记录
+        //查找单题组,获取分值范围数组
+        this.step(function () {
+            helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
+                if (err) throw err;
+                scoreRange = doc.scoreMinMax;
+                if(doc.volumename){
+                    volumename = doc.volumename;
+                }else{
+                    volumename = "undefined";
+                }
+                docTheme = doc || {};
+                if(doc){
+                    themeType = doc.themeType;
+                    pram = doc.pram;
+                    nut.model.pram = doc.pram;
+                }else{
+                    themeType = "undefined";
+                    pram = "undefined";
+                }
 
+                nut.model.themeType = themeType;
+                nut.model.themeTitle = doc.theme
+            }));
+        });
 
         var docs;
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
-                "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
-                    if(err) throw err;
-                    if(doc){
-                        docs = doc;
-                    }
-                    if(doc.length==0){
-                        ok=true;
-                    }else{
-                        ok = false;
-                    }
-                }))
+            if(memberid =="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                    "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            docs = doc;
+                        }
+                        if(doc.length==0){
+                            ok=true;
+                        }else{
+                            ok = false;
+                        }
+                    }))
+            }else{
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                    "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            docs = doc;
+                        }
+                        if(doc.length==0){
+                            ok=true;
+                        }else{
+                            ok = false;
+                        }
+                    }))
+            }
+
         })
 
         this.step(function(){
@@ -107,13 +146,24 @@ module.exports={
         //查询每道题获得的积分
         this.step(function(){
             if(go){
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
-                    "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result){
-                            scoreArr = result;
-                        }
-                    }))
+                if(memberid =="undefined"){
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                        "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                            if(err) throw err;
+                            if(result){
+                                scoreArr = result;
+                            }
+                        }))
+                }else{
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                        "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                            if(err) throw err;
+                            if(result){
+                                scoreArr = result;
+                            }
+                        }))
+                }
+
             }
         })
 
@@ -126,30 +176,7 @@ module.exports={
             }
         })
 
-        //查找单题组,获取分值范围数组
-        this.step(function () {
-            helper.db.coll("lavico/themeQuestion").findOne({"_id": helper.db.id(_id)}, then.hold(function (err, doc) {
-                if (err) throw err;
-                scoreRange = doc.scoreMinMax;
-                if(doc.volumename){
-                    volumename = doc.volumename;
-                }else{
-                    volumename = "undefined";
-                }
-                docTheme = doc || {};
-                if(doc){
-                    themeType = doc.themeType;
-                    pram = doc.pram;
-                    nut.model.pram = doc.pram;
-                }else{
-                    themeType = "undefined";
-                    pram = "undefined";
-                }
 
-                nut.model.themeType = themeType;
-                nut.model.themeTitle = doc.theme
-            }));
-        });
 
         //查memberId
         this.step(function () {
@@ -169,7 +196,7 @@ module.exports={
             if(go){
                 if(ok){
                     //插入总积分
-                    if(pram!="1"){
+                    if(memberid =="undefined"){
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
@@ -355,7 +382,7 @@ module.exports={
 
                     then.step(function(){
                         if(ok){
-                            if(pram!="1"){
+                            if(memberid =="undefined"){
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -549,7 +576,7 @@ module.exports={
                     })
                     then.step(function(){
                         if(ok){
-                            if(pram!="1"){
+                            if(memberid =="undefined"){
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
