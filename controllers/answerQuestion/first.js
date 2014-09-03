@@ -7,7 +7,7 @@ module.exports= {
         var wechatid=seed.wechatid || undefined;
         nut.model.fromWelab = seed.fromWelab || ""
         var _id = seed._id;
-        var memberid || "undefined";
+        var memberid;
         var themetype;
         var result_false;
         var isok = true;
