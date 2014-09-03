@@ -12,7 +12,7 @@ module.exports={
         var promotion_name;
         var code = seed.code ? seed.code :"undefined";
         var type = seed.type ? seed.type :"undefined";
-        nut.model.parm = seed.parm || "undefined";
+        //nut.model.parm = seed.parm || "undefined";
         nut.model.type = type;
         var memberID;//memberID
         var themetype = seed.themetype ? seed.themetype :"undefined";
@@ -24,18 +24,17 @@ module.exports={
             helper.db.coll("welab/customers").findOne({wechatid: seed.wxid},
                 this.hold(function (err, result) {
                     if (err) throw err;
-                    if (result) {
+                    if (result && result.HaiLanMemberInfo && result.HaiLanMemberInfo.memberID) {
                         nut.model.memberID = result.HaiLanMemberInfo.memberID;
                         memberID =  result.HaiLanMemberInfo.memberID
+                    }else{
+                        nut.model.memberID = "undefined";
                     }
                 })
             )
         })
 
         this.step(function(){
-            console.log(seed.wxid)
-            console.log(themetype)
-            console.log(id)
             console.log(typeof (nut.model.memberID))
             if(themetype!="undefined" && id !="undefined"){
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(id),"memberId":""+nut.model.memberID,"wechatid":seed.wxid,

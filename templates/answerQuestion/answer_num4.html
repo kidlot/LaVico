@@ -96,15 +96,12 @@ window.onload=function(){
         <div class="line">
         </div>
         <if condition="{@code=='-1'}">
-                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}
-                &code={@resultString.code}&wxid={@wechatid}&stuas=true&type={@code}&themetype={@themeType}&id={@id}">领取积分</a></div>
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&type={@code}&themetype={@themeType}&id={@id}">领取积分</a></div>
             <else/>
             <if condition="{@resultString.getActivities!=''}">
-                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}
-                    &wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&type={@code}&parm={@parm}">领取优惠券</a></div>
+                    <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&type={@code}">领取优惠券</a></div>
                 <else/>
-                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?
-                getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&type={@code}&parm={@parm}">领取优惠券</a></div>
+                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&type={@code}">领取优惠券</a></div>
             </if>
         </if>
     </div>

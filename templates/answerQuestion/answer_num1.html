@@ -45,8 +45,8 @@
         var themetype = "{@themetype}";
         var pram = "{@pram}";
         var flag="{@flag}";
-        var follow="{@follow}";
-        if(themetype == 0 || themetype ==2){
+        var follow="{@isFollow}";
+        if(pram=="1"){
             if(flag=="1"){
                 window.popupStyle2.on("您还不是LaVico的会员，请先注册会员!",function(event){
                     if(event == "confirm"){
@@ -58,7 +58,7 @@
             }
         }else{
             if(pram == 2){
-                if(!follow){
+                if(follow != "true"){
                     window.popupStyle2.on("您还未关注LaVico,请先关注!",function(event){
                         if(event == "confirm"){
                         }

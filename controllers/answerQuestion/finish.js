@@ -12,7 +12,7 @@ module.exports={
         var stopLab=seed.stopLab ? seed.stopLab : "null";
         nut.model.wechatid = seed.wechatid
         nut.model.id = _id;
-        nut.model.parm = seed.parm || "undefined";
+        //nut.model.parm = seed.parm || "undefined";
 
         var isRecord=seed.isRecord ? seed.isRecord : "no";
         var go=true;
@@ -140,6 +140,7 @@ module.exports={
                 if(doc){
                     themeType = doc.themeType;
                     pram = doc.pram;
+                    nut.model.pram = doc.pram;
                 }else{
                     themeType = "undefined";
                     pram = "undefined";
@@ -155,7 +156,7 @@ module.exports={
             helper.db.coll("welab/customers").findOne({wechatid: seed.wechatid},
                 this.hold(function (err, result) {
                     if (err) throw err;
-                    if (result) {
+                    if (result && result.HaiLanMemberInfo && result.HaiLanMemberInfo.memberID) {
                         nut.model.memberID = result.HaiLanMemberInfo.memberID;
                         memberID =  result.HaiLanMemberInfo.memberID
                     }
@@ -209,7 +210,6 @@ module.exports={
         })
 
         this.step(function(){
-            console.log(ok)
             if(go){
                 //非停止标签过来
                 if (stopLab != "true") {
@@ -217,7 +217,8 @@ module.exports={
                         var minlen = scoreRange[i].conditionMinScore;//获取低分值
                         var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                         //判断是否是发放卷
-                        if((pram != "undefined" && pram == "1") && (themeType == 0 || themeType == 2)){
+//                            //在分值范围中
+                        if(scoreRange[i].getActivities=="-1"){
                             type = scoreRange[i].getActivities;
                             //在分值范围中
 
@@ -226,78 +227,36 @@ module.exports={
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                 getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                 getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                console.log(then.req.session.stopLabel)
-                                console.log(scoreRange[i].conditionLabel)
-                                console.log(scoreRange[i])
                                 //获取奖励
-                                then.step(function (memberID) {
-                                    //根据memberId调用接口给账户加分
-                                    var jsonData = {};
-                                    jsonData.memberId = nut.model.memberID;
-                                    jsonData.qty = getScore;
-                                    jsonData.memo = nut.model.themeTitle;
-                                    console.log("问答测试:"+JSON.stringify(jsonData));
-                                    if(ok){
-                                        middleware.request('Point/Change', jsonData,
-                                            this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                console.log(doc);
-                                            })
-                                        )
-                                    }
-                                    var results={};
-                                    results.getLabel = getLabel;
-                                    results.getScore = getScore;
-                                    results.getTipContent = getTipContent;
-                                    results.code = getActivities;
-                                    results.getActivities = "您没有获得任何礼券";
-                                    results.volumename = volumename;
-                                    resultList.push(results);
-                                    nut.model.sta = "false";
-                                    nut.model.score = "1";
-                                    nut.model.getScores ="1";
-                                })
-                            }
-                        }else if(scoreRange[i].getActivities=="-1"){
-                            type = scoreRange[i].getActivities;
-                            //在分值范围中
+                                if(pram == "1"){
+                                    then.step(function (memberID) {
+                                        //根据memberId调用接口给账户加分
+                                        var jsonData = {};
+                                        jsonData.memberId = nut.model.memberID;
+                                        jsonData.qty = getScore;
+                                        jsonData.memo = nut.model.themeTitle;
+                                        if(ok){
+                                            middleware.request('Point/Change', jsonData,
+                                                this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                    console.log("doc",doc);
+                                                })
+                                            )
+                                        }
+                                        var results={};
+                                        results.getLabel = getLabel;
+                                        results.getScore = getScore;
+                                        results.getTipContent = getTipContent;
+                                        results.code = getActivities;
+                                        results.getActivities = "您没有获得任何礼券";
+                                        results.volumename = volumename;
+                                        resultList.push(results);
+                                        nut.model.sta = "false";
+                                        nut.model.score = "1";
+                                        nut.model.getScores ="1";
+                                    })
+                                }
 
-                            if(score >= minlen && score <= maxlen){
-                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                console.log(then.req.session.stopLabel)
-                                console.log(scoreRange[i].conditionLabel)
-                                console.log(scoreRange[i])
-                                //获取奖励
-                                then.step(function (memberID) {
-                                    //根据memberId调用接口给账户加分
-                                    var jsonData = {};
-                                    jsonData.memberId = nut.model.memberID;
-                                    jsonData.qty = getScore;
-                                    jsonData.memo = nut.model.themeTitle;
-                                    console.log("问答测试:"+JSON.stringify(jsonData));
-                                    if(ok){
-                                        middleware.request('Point/Change', jsonData,
-                                            this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                console.log(doc);
-                                            })
-                                        )
-                                    }
-                                    var results={};
-                                    results.getLabel = getLabel;
-                                    results.getScore = getScore;
-                                    results.getTipContent = getTipContent;
-                                    results.code = getActivities;
-                                    results.getActivities = "您没有获得任何礼券";
-                                    results.volumename = volumename;
-                                    resultList.push(results);
-                                    nut.model.sta = "false";
-                                    nut.model.score = "1";
-                                    nut.model.getScores ="1";
-                                })
                             }
 
                         }else{
@@ -336,14 +295,12 @@ module.exports={
                                             point: 0
                                         }
                                         if(ok){
-                                            console.log("!+1")
                                             middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                 if (err) throw err;
                                                 var docJson = JSON.parse(doc)
-                                                console.log(docJson)
+                                                console.log("doc",doc)
                                                 if (docJson.success) {
                                                     newActivity = docJson.coupon_no
-                                                    console.log(docJson)
                                                     nut.model.err = docJson.success
                                                     if (docJson.coupon_no) {
                                                         nut.model.errString = "无";
@@ -453,94 +410,48 @@ module.exports={
                 if (stopLab == "true") {
                     for (var i = 0; i < scoreRange.length; i++) {
                         if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
-                            console.log(then.req.session.stopLabel)
-                            console.log(scoreRange[i].conditionLabel)
-                            console.log(scoreRange)
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             //判断是否是发放卷
-                            if((pram != "undefined" && pram == "1") && (themeType == 0 || themeType == 2)){
+                            if(scoreRange[i].getActivities=="-1"){
                                 type = scoreRange[i].getActivities;
                                 //在分值范围中
-
-                                if(score >= minlen && score <= maxlen){
-                                    getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                    console.log(then.req.session.stopLabel)
-                                    console.log(scoreRange[i].conditionLabel)
-                                    console.log(scoreRange[i])
-                                    //获取奖励
-                                    then.step(function (memberID) {
-                                        //根据memberId调用接口给账户加分
-                                        var jsonData = {};
-                                        jsonData.memberId = nut.model.memberID;
-                                        jsonData.qty = getScore;
-                                        jsonData.memo = nut.model.themeTitle;
-                                        console.log("问答测试:"+JSON.stringify(jsonData));
-                                        if(ok){
-                                            middleware.request('Point/Change', jsonData,
-                                                this.hold(function (err, doc) {
-                                                    if (err) throw err;
-                                                    console.log(doc);
-                                                })
-                                            )
-                                        }
-                                        var results={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = "您没有获得任何礼券";
-                                        results.volumename = volumename;
-                                        resultList.push(results);
-                                        nut.model.sta = "false";
-                                        nut.model.score = "1";
-                                        nut.model.getScores ="1";
-                                    })
-                                }
-                            }else if(scoreRange[i].getActivities=="-1"){
-                                console.log("3")
-                                type = scoreRange[i].getActivities;
-                                //在分值范围中
-                                console.log("score:"+score);
-                                console.log("minlen:"+minlen);
-                                console.log("maxlen:"+maxlen);
                                 if(score >= minlen && score <= maxlen){
                                     getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                     getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                     getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                     getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                     //获取奖励
-                                    then.step(function (memberID) {
-                                        //根据memberId调用接口给账户加分
-                                        var jsonData = {};
-                                        jsonData.memberId = nut.model.memberID;
-                                        jsonData.qty = getScore;
-                                        jsonData.memo = nut.model.themeTitle;
+                                    if(pram =="1"){
+                                        then.step(function (memberID) {
+                                            //根据memberId调用接口给账户加分
+                                            var jsonData = {};
+                                            jsonData.memberId = nut.model.memberID;
+                                            jsonData.qty = getScore;
+                                            jsonData.memo = nut.model.themeTitle;
 
-                                        if(ok){
-                                            console.log("问答测试:"+JSON.stringify(jsonData));
-                                            middleware.request('Point/Change', jsonData,
-                                                this.hold(function (err, doc) {
-                                                    if (err) throw err;
-                                                })
-                                            )
-                                        }
-                                        var results ={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = "您没有获得任何礼券";
-                                        results.volumename = volumename;
-                                        resultList.push(results)
-                                        nut.model.sta = "false";
-                                        nut.model.score = "1";
-                                        nut.model.getScores ="1";
-                                        nut.model.type = type;
-                                    })
+                                            if(ok){
+                                                middleware.request('Point/Change', jsonData,
+                                                    this.hold(function (err, doc) {
+                                                        if (err) throw err;
+                                                    })
+                                                )
+                                            }
+                                            var results ={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = "您没有获得任何礼券";
+                                            results.volumename = volumename;
+                                            resultList.push(results)
+                                            nut.model.sta = "false";
+                                            nut.model.score = "1";
+                                            nut.model.getScores ="1";
+                                            nut.model.type = type;
+                                        })
+                                    }
+
                                 }
                             }else{
                                 if(score >= minlen && score <= maxlen){
@@ -580,10 +491,9 @@ module.exports={
                                                 middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
                                                     if (err) throw err;
                                                     var docJson = JSON.parse(doc)
-                                                    console.log(docJson)
+                                                    console.log("docJson",docJson)
                                                     if (docJson.success) {
                                                         newActivity = docJson.coupon_no
-                                                        console.log(docJson)
                                                         nut.model.err = docJson.success
                                                         if (docJson.coupon_no) {
                                                             nut.model.errString = "无";
@@ -600,8 +510,6 @@ module.exports={
 
                                         })
                                         then.step(function(){
-                                            console.log("3")
-                                            console.log("sa:"+newActivity)
                                             var results={};
                                             results.getLabel = getLabel;
                                             results.getScore = getScore;

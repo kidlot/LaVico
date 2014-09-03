@@ -44,7 +44,7 @@
                     <br />
                     可在“专属礼券”内查询</p>
                 <p class="click-look">
-                    <if condition="{@parm!='1'}">
+                    <if condition="{@memberID!='undefined'}">
                         <a href="/lavico/member/card_blank/coupon/index?wxid={@wxid}">点击查看</a>
                     <else/>
                         <a href="/lavico/member/card_member/coupon/index?wxid={@wxid}">点击查看</a>

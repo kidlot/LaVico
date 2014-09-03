@@ -134,11 +134,11 @@ module.exports={
                     }));
 
                     this.res.writeHead(302, {'Location': "/lavico/answerQuestion/guessfinish?wechatid="+
-                        wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype+"&parm="+parm});
+                        wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                     this.res.end();
                 }else{
                     this.res.writeHead(302, {
-                        'Location': "/lavico/answerQuestion/finish?wechatid="+wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype+"&parm="+parm});
+                        'Location': "/lavico/answerQuestion/finish?wechatid="+wechatId+"&_id="+_id+"&optionId="+optionId+"&memberid="+memberid+"&themetype="+themetype});
                     this.res.end();
                 }
             }
