@@ -18,6 +18,7 @@ module.exports= {
         var chooseNextArr;
         var result_true;
         var beginTime="",endTime="",isOpen="";
+        var pram;
 
         nut.model.ok = "0";
         nut.model.conent = "undefined"
@@ -144,6 +145,7 @@ module.exports= {
                     themetype = doc.themeType;
                     nut.model.docs=doc;
                     nut.model.pram = doc.pram;
+                    pram = doc.pram;
                     nut.model.themetype = themetype;
                     nut.model.themeQuestion = JSON.stringify(doc);
                 }
@@ -212,16 +214,29 @@ module.exports= {
         })
 
         this.step(function(){
-            helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid,"isFinish":true},
-                this.hold(function(err,doc){
-                    if(err) throw err;
-                    if(doc){
-                        nut.model.isok = "0";
-                    }else{
-                        nut.model.isok = "1";
-                    }
-                })
-            )
+            if(pram == "1"){
+                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid,"isFinish":true},
+                    this.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            nut.model.isok = "0";
+                        }else{
+                            nut.model.isok = "1";
+                        }
+                    })
+                )
+            }else{
+                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"wechatid":wechatid,"isFinish":true},
+                    this.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            nut.model.isok = "0";
+                        }else{
+                            nut.model.isok = "1";
+                        }
+                    })
+                )
+            }
         })
     }
 }
