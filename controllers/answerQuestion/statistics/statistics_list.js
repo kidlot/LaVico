@@ -33,7 +33,7 @@ module.exports={
 
                             //参与人数
                             (function(i,jsonOne){
-                                helper.db.coll("lavico/custReceive").find({"themeId":i,"isFinish":false,"optionId":1})
+                                helper.db.coll("lavico/custReceive").find({"themeId":i,"isFinish":false,"optionId":0})
                                     .count(
                                         then.hold(function(err,doc){
                                             if(err)throw err;

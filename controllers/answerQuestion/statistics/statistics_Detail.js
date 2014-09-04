@@ -30,7 +30,7 @@ module.exports={
 
         //参与
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(themeId),isFinish:false,"optionId":1}).toArray(this.hold(function(err,doc){
+            helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(themeId),isFinish:false,"optionId":0}).toArray(this.hold(function(err,doc){
                 if(err) throw  err;
                 if(doc){
                     for(var i=0;i<doc.length;i++){
