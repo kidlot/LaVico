@@ -174,6 +174,7 @@ module.exports= {
         })
 
         this.step(function(){
+
             if(memberid =="undefined"){
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
                     "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
@@ -236,7 +237,10 @@ module.exports= {
         })
 
         this.step(function(){
+            console.log("memberid",memberid)
+
             if(memberid=="undefined"){
+                console.log("action","1")
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
@@ -247,6 +251,7 @@ module.exports= {
                         }
                     }))
             }else if(memberid!="undefined"){
+                console.log("action","2")
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
@@ -257,6 +262,7 @@ module.exports= {
                         }
                     }))
             }else{
+                console.log("action","3")
                 nut.model.isok = "0";
             }
         })
