@@ -261,10 +261,10 @@ module.exports={
                                 getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 //获取奖励
                                 if(pram == "1"){
-                                    then.step(function (memberID) {
+                                    then.step(function (memberid) {
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
-                                        jsonData.memberId = nut.model.memberID;
+                                        jsonData.memberId = memberid;
                                         jsonData.qty = getScore;
                                         jsonData.memo = nut.model.themeTitle;
                                         if(ok){
@@ -455,10 +455,10 @@ module.exports={
                                     getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                     //获取奖励
                                     if(pram =="1"){
-                                        then.step(function (memberID) {
+                                        then.step(function (memberid) {
                                             //根据memberId调用接口给账户加分
                                             var jsonData = {};
-                                            jsonData.memberId = nut.model.memberID;
+                                            jsonData.memberId = memberid;
                                             jsonData.qty = getScore;
                                             jsonData.memo = nut.model.themeTitle;
 
@@ -650,7 +650,7 @@ module.exports={
                             memoString = "型男测试-" + getLabel;
                         }
                         jsonData = {};
-                        jsonData.memberId = nut.model.memberID;
+                        jsonData.memberId = memberid;
                         jsonData.tag = memoString;
                         middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
                             if (err) throw err;
