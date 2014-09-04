@@ -68,31 +68,77 @@ module.exports={
             }));
         })
 
+
         this.step(function(){
-            if(member_id=="undefined"){
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
-                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result.length>0){
-                            nut.model.isRecord = "1";
-                        }else{
-                            nut.model.isRecord = "0";
-                        }
-                    }))
-            }else if(member_id!="undefined"){
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+member_id,"wechatid":wechatid,
-                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
-                        if(err) throw err;
-                        if(result.length>0){
-                            nut.model.isRecord = "1";
-                        }else{
-                            nut.model.isRecord = "0";
-                        }
-                    }))
-            }else{
-                nut.model.isRecord = "0";
-            }
-        })
+                console.log("memberid",memberid)
+
+                if(memberid=="undefined"){
+                    console.log("action","1")
+                    console.log("member_id",member_id)
+                    console.log("member_id",typeof member_id)
+                    console.log("wechatid",wechatid)
+                    console.log("wechatid",typeof wechatid)
+                    console.log("ut.model.themeType",nut.model.themeType)
+                    console.log("ut.model.themeType",typeof nut.model.themeType)
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                        "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                            if(err) throw err;
+                            console.log("result_1",result)
+                            if(result && result.length>0){
+                                nut.model.isRecord = "1";
+                            }else{
+                                nut.model.isRecord = "0";
+                            }
+                        }))
+                }else if(memberid!="undefined"){
+                    console.log("action","2")
+                    console.log("memberId",memberid)
+                    console.log("memberId",typeof memberid)
+                    console.log("wechatid",wechatid)
+                    console.log("wechatid",typeof wechatid)
+                    console.log("ut.model.themeType",nut.model.themeType)
+                    console.log("ut.model.themeType",typeof nut.model.themeType)
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+member_id,"wechatid":wechatid,
+                        "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                            if(err) throw err;
+                            console.log("result_2",result)
+                            if(result.length>0){
+                                nut.model.isRecord = "1";
+                            }else{
+                                nut.model.isRecord = "0";
+                            }
+                        }))
+                }else{
+                    console.log("action","3")
+                    nut.model.isRecord = "0";
+                }
+        }
+
+//        this.step(function(){
+//            if(member_id=="undefined"){
+//                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+//                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+//                        if(err) throw err;
+//                        if(result.length>0){
+//                            nut.model.isRecord = "1";
+//                        }else{
+//                            nut.model.isRecord = "0";
+//                        }
+//                    }))
+//            }else if(member_id!="undefined"){
+//                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+member_id,"wechatid":wechatid,
+//                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+//                        if(err) throw err;
+//                        if(result.length>0){
+//                            nut.model.isRecord = "1";
+//                        }else{
+//                            nut.model.isRecord = "0";
+//                        }
+//                    }))
+//            }else{
+//                nut.model.isRecord = "0";
+//            }
+//        })
 
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,cursor){
