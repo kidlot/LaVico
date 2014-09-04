@@ -299,11 +299,12 @@ module.exports={
                                                     }
                                                     newActivity= docJson.coupon_no
                                                 } else {
-                                                    newActivity="数据错误";
                                                     nut.model.err = docJson.success;
                                                     nut.model.errString = docJson.error;
                                                 }
                                             }));
+                                        }else{
+                                            newActivity="已领过此卷";
                                         }
                                     })
                                     then.step(function(){
@@ -486,12 +487,13 @@ module.exports={
                                                         }
                                                         newActivity= docJson.coupon_no
                                                     } else {
-                                                        console.log("docJson.success",docJson.success)
 //                                                        newActivity="数据错误";
                                                         nut.model.err = docJson.success;
                                                         nut.model.errString = docJson.error;
                                                     }
                                                 }));
+                                            }else{
+                                                newActivity="已领过此卷";
                                             }
                                         })
                                         then.step(function(){

@@ -113,7 +113,7 @@
 
                 </if>
             </p>
-            <if condition="{@resultString.getActivities==''}">
+            <if condition="{@resultString.getActivities!=''}">
                 <div class="mobile-btn linebottom">
                     <a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&code={@code}" onclick="return isReg()">
                         领取优惠券
