@@ -241,8 +241,8 @@ module.exports= {
 
             if(memberid=="undefined"){
                 console.log("action","1")
-                console.log("memberId",memberId)
-                console.log("memberId",typeof memberId)
+                console.log("memberId",memberid)
+                console.log("memberId",typeof memberid)
                 console.log("wechatid",wechatid)
                 console.log("wechatid",typeof wechatid)
                 console.log("ut.model.themeType",nut.model.themeType)
@@ -259,8 +259,8 @@ module.exports= {
                     }))
             }else if(memberid!="undefined"){
                 console.log("action","2")
-                console.log("memberId",memberId)
-                console.log("memberId",typeof memberId)
+                console.log("memberId",memberid)
+                console.log("memberId",typeof memberid)
                 console.log("wechatid",wechatid)
                 console.log("wechatid",typeof wechatid)
                 console.log("ut.model.themeType",nut.model.themeType)
