@@ -68,7 +68,7 @@ module.exports={
         })
 
         this.step(function(){
-            if(parm!="1"){
+            if(member_id=="undefined"){
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
