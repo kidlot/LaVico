@@ -130,10 +130,10 @@
 </if>
 <script>
     function isReg(){
-        var memberid = '{@memberid}';
+        var isok = '{@isok}';
         var pram = '{@pram}';
         if(pram == "2"){
-            if(memberid == "undefined"){
+            if(isok == "1"){
                 window.popupStyle2.on("注册LaVico朗维高会员后领取优惠券!",function(event){
                     if(event == "confirm"){
                         var url = encodeURIComponent(location.href);

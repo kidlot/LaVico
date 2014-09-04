@@ -39,6 +39,15 @@ module.exports={
                     }else{
                         nut.model.memberid = "undefined";
                     }
+                    if(dresultoc && result.HaiLanMemberInfo){
+                        if(result.HaiLanMemberInfo.action=='bind') {
+                            nut.model.isok="0";
+                        }else{
+                            nut.model.isok = "1";
+                        }
+                    }else{
+                        nut.model.isok = "1";
+                    }
                 })
             )
         })

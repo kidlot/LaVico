@@ -73,6 +73,22 @@ module.exports={
             }));
         });
 
+        this.step(function(){
+            helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,doc){
+                if(err) throw err;
+
+                if(doc && doc.HaiLanMemberInfo){
+                    if(doc.HaiLanMemberInfo.action=='bind') {
+                        nut.model.isok="0";
+                    }else{
+                        nut.model.isok = "1";
+                    }
+                }else{
+                    nut.model.isok = "1";
+                }
+            }))
+        })
+
         var docs;
         this.step(function(){
             if(memberid =="undefined"){
