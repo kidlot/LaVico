@@ -76,7 +76,7 @@ module.exports={
         var docs;
         this.step(function(){
             if(memberid =="undefined"){
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
                     "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
                         if(err) throw err;
                         if(doc){
