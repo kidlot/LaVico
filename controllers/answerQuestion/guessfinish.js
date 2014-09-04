@@ -26,7 +26,7 @@ module.exports={
         var newActivity="";
         var getActivities ="";
         var getTipContent="您已答完此题,获奖名单择期公布";
-        var pram = seed.parm;
+        var pram = seed.pram;
 
         //查memberId
         this.step(function () {
