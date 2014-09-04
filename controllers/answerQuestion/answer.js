@@ -13,7 +13,7 @@ module.exports={
         var member_id;
         nut.model.wxid = wechatid;
         nut.model.optionId = optionId;
-        var memberId;
+        var memberId = seed.memberid || "undefined";
         var parm;
 
         nut.model.isok = "0";
@@ -30,10 +30,10 @@ module.exports={
                     if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
                         member_id = result.HaiLanMemberInfo.memberID;
                     }else{
-                        member_id ="undefined";
+                        //member_id ="undefined";
                     }
                 }else{
-                    member_id ="undefined";
+                    //member_id ="undefined";
                     nut.model.isok = "1";
                     nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
                 }
@@ -41,8 +41,8 @@ module.exports={
 //                    nut.model.isok = "1";
 //                    nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
 //                }
-                memberId = member_id;
-                nut.model.member_id =member_id;
+                //memberId = member_id;
+                nut.model.member_id =memberId;
             }))
         });
 
@@ -98,7 +98,7 @@ module.exports={
                 console.log("wechatid",typeof wechatid)
                 console.log("ut.model.themeType",nut.model.themeType)
                 console.log("ut.model.themeType",typeof nut.model.themeType)
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+member_id,"wechatid":wechatid,
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberId,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
                         if(result.length>0){
