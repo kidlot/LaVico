@@ -261,8 +261,8 @@ module.exports= {
                     }))
             }else if(memberid!="undefined"){
                 console.log("action","2")
-                console.log("themeId",themeId)
-                console.log("themeId",typeof themeId)
+                console.log("themeId",_id)
+                console.log("themeId",typeof _id)
                 console.log("memberId",memberId)
                 console.log("memberId",typeof memberId)
                 console.log("wechatid",wechatid)
