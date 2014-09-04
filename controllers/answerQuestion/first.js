@@ -244,6 +244,7 @@ module.exports= {
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
+                        console.log("result_1",result)
                         if(result && result.length>0){
                             nut.model.isok = "1";
                         }else{
@@ -255,6 +256,7 @@ module.exports= {
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
+                        console.log("result_2",result)
                         if(result && result.length>0){
                             nut.model.isok = "1";
                         }else{
