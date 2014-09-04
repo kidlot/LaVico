@@ -42,7 +42,7 @@ module.exports={
         var getActivities
         var getTipContent
 
-        var pram;//新流程  判断流程类型
+        var pram = seed.pram;//新流程  判断流程类型
 
         //查找全部券
         var doc_json;
@@ -107,6 +107,7 @@ module.exports={
 
         this.step(function(){
             if(stutas=="true"){
+                nut.model.pram = pram;
                 go = false;
                 var sa;
                 var resultList=[];
