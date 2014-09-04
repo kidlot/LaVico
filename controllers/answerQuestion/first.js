@@ -230,27 +230,20 @@ module.exports= {
             }else{
                 chooseNext = "-1";
             }
-            if(chooseNext==""){
+            if(chooseNext == result_false.options.length){
+                chooseNext = "-1";
+            }else if(chooseNext==""){
                 chooseNext = parseInt(max)+1
             }
             nut.model.choose = chooseNext;
         })
 
         this.step(function(){
-            console.log("memberid",memberid)
 
             if(memberid=="undefined"){
-                console.log("action","1")
-                console.log("memberId",memberid)
-                console.log("memberId",typeof memberid)
-                console.log("wechatid",wechatid)
-                console.log("wechatid",typeof wechatid)
-                console.log("ut.model.themeType",nut.model.themeType)
-                console.log("ut.model.themeType",typeof nut.model.themeType)
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
-                        console.log("result_1",result)
                         if(result && result.length>0){
                             nut.model.isok = "1";
                         }else{
@@ -258,17 +251,9 @@ module.exports= {
                         }
                     }))
             }else if(memberid!="undefined"){
-                console.log("action","2")
-                console.log("memberId",memberid)
-                console.log("memberId",typeof memberid)
-                console.log("wechatid",wechatid)
-                console.log("wechatid",typeof wechatid)
-                console.log("ut.model.themeType",nut.model.themeType)
-                console.log("ut.model.themeType",typeof nut.model.themeType)
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
-                        console.log("result_2",result)
                         if(result.length>0){
                             nut.model.isok = "1";
                         }else{
