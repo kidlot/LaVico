@@ -25,6 +25,7 @@ module.exports={
             //查找此会员是否存在
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
                 if(err) throw err;
+                console.log("wechatid",wechatid)
                 if(result){
                     if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
                         member_id = result.HaiLanMemberInfo.memberID;
@@ -32,13 +33,14 @@ module.exports={
                         member_id ="undefined";
                     }
                 }else{
+                    member_id ="undefined";
                     nut.model.isok = "1";
                     nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
                 }
-                if(member_id=="undefined"){
-                    nut.model.isok = "1";
-                    nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
-                }
+//                if(member_id=="undefined"){
+//                    nut.model.isok = "1";
+//                    nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
+//                }
                 memberId = member_id;
                 nut.model.member_id =member_id;
             }))
