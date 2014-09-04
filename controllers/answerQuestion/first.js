@@ -265,8 +265,8 @@ module.exports= {
                 console.log("wechatid",typeof wechatid)
                 console.log("ut.model.themeType",nut.model.themeType)
                 console.log("ut.model.themeType",typeof nut.model.themeType)
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
-                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
+                    "themetype":nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
                         console.log("result_2",result)
                         if(result.length>0){
