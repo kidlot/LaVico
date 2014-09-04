@@ -230,9 +230,9 @@ module.exports= {
             }else{
                 chooseNext = "-1";
             }
-//            if(chooseNext==""){
-//                chooseNext = parseInt(max)+1
-//            }
+            if(chooseNext==""){
+                chooseNext = parseInt(max)+1
+            }
             nut.model.choose = chooseNext;
         })
 
@@ -249,7 +249,7 @@ console.log("memberid",memberid)
                         }
                     }))
             }else if(memberid!="undefined"){
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":memberid,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
                         if(result.length>0){
