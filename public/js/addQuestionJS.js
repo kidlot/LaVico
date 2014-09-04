@@ -80,8 +80,8 @@ function save(){
     //$val=$("div[name='mainContent']").find("div[name='option']:visible").first();
     for(var i=0;i<titleCount;i++){
         //title
-        title=$val.find("input[name='txtQuestion']").val();
-        type=$val.find("select[name='type']").val();
+        var title=$val.find("input[name='txtQuestion']").val();
+        var type=$val.find("select[name='type']").val();
 
         jsonData+="{optionId:"+(i+1)+",title:'"+title+"',type:"+type;
 
