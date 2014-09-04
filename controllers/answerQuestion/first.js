@@ -269,10 +269,10 @@ module.exports= {
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
                         console.log("result_2",result)
-                        if(result && result.length>0){
-                            nut.model.isok = "1";
+                        if(result.length>0){
+                            nut.model.isRecord = "1";
                         }else{
-                            nut.model.isok = "0";
+                            nut.model.isRecord = "0";
                         }
                     }))
             }else{
