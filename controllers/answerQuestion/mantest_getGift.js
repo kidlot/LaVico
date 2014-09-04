@@ -31,8 +31,8 @@ module.exports={
                         nut.model.memberID = "undefined";
                     }
 
-                    if(doc && doc.HaiLanMemberInfo){
-                        if(doc.HaiLanMemberInfo.action=='bind') {
+                    if(result && result.HaiLanMemberInfo){
+                        if(result.HaiLanMemberInfo.action=='bind') {
                             nut.model.isok="0";
                         }else{
                             nut.model.isok = "1";
