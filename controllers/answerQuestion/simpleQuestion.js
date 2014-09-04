@@ -114,7 +114,7 @@ module.exports={
         this.step(function(){
             if(seed.finish!='true'){
                 this.res.writeHead(302, {
-                    'Location': "/lavico/answerQuestion/answer?wechatid="+wechatId+"&optionId="+(parseInt(optionId)+1)+"&_id="+_id
+                    'Location': "/lavico/answerQuestion/answer?wechatid="+wechatId+"&optionId="+(parseInt(optionId)+1)+"&_id="+_id+"&memberid="+memberid
                 });
                 this.res.end();
             }else{
