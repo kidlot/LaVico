@@ -61,7 +61,8 @@ module.exports={
                 beginTime=doc.beginTime;
                 endTime=doc.endTime;
                 isOpen=doc.isOpen;
-                parm = doc.parm;
+                parm = doc.pram;
+                nut.model.pram = doc.pram;
                 nut.model.themeType = doc.themeType;
                 nut.model.themequestion = JSON.stringify(doc.options);
             }));
