@@ -35,7 +35,7 @@ module.exports={
                     if (err) throw err;
                     if (result && result.HaiLanMemberInfo && result.HaiLanMemberInfo.memberID) {
                         nut.model.memberid = result.HaiLanMemberInfo.memberID;
-                        memberid =  result.HaiLanMemberInfo.memberID
+                        //memberid =  result.HaiLanMemberInfo.memberID
                     }else{
                         nut.model.memberid = "undefined";
                     }
