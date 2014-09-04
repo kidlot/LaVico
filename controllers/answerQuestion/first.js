@@ -236,28 +236,28 @@ module.exports= {
         })
 
         this.step(function(){
-            if(memberid =="undefined"){
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"wechatid":wechatid,"isFinish":true},
-                    this.hold(function(err,doc){
+            if(memberid=="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
-                        if(doc){
-                            nut.model.isok = "0";
-                        }else{
+                        if(result && result.length>0){
                             nut.model.isok = "1";
+                        }else{
+                            nut.model.isok = "0";
                         }
-                    })
-                )
+                    }))
+            }else if(memberid!="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result && result.length>0){
+                            nut.model.isok = "1";
+                        }else{
+                            nut.model.isok = "0";
+                        }
+                    }))
             }else{
-                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid,"wechatid":wechatid,"isFinish":true},
-                    this.hold(function(err,doc){
-                        if(err) throw err;
-                        if(doc){
-                            nut.model.isok = "0";
-                        }else{
-                            nut.model.isok = "1";
-                        }
-                    })
-                )
+                nut.model.isok = "0";
             }
         })
     }
