@@ -28,7 +28,7 @@ module.exports={
                 console.log("wechatid",wechatid)
                 if(result){
                     if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
-                        member_id = result.HaiLanMemberInfo.memberID;
+                        memberId = result.HaiLanMemberInfo.memberID;
                     }else{
                         //member_id ="undefined";
                     }
@@ -72,7 +72,7 @@ module.exports={
 
         this.step(function(){
             console.log("memberid",member_id)
-            if(member_id=="undefined"){
+            if(memberId=="undefined"){
                 console.log("action","1")
                 console.log("memberId",member_id)
                 console.log("memberId",typeof member_id)
@@ -90,7 +90,7 @@ module.exports={
                             nut.model.isRecord = "0";
                         }
                     }))
-            }else if(member_id!="undefined"){
+            }else if(memberId!="undefined"){
                 console.log("action","2")
                 console.log("memberId",member_id)
                 console.log("memberId",typeof member_id)
