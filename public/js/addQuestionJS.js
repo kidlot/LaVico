@@ -12,8 +12,6 @@ function save(){
     if(themeType==3){
         showtype = $("select[name='showType']").val();
     }
-
-
     var _inputCheck = true;
     if(themeType==3 && showtype==2 && !volumename){
         _inputCheck = false;
