@@ -230,11 +230,9 @@ module.exports= {
             }else{
                 chooseNext = "-1";
             }
-            if(chooseNext == result_false.options.length){
-                chooseNext = "-1";
-            }else if(chooseNext==""){
-                chooseNext = parseInt(max)+1
-            }
+//            if(chooseNext==""){
+//                chooseNext = parseInt(max)+1
+//            }
             nut.model.choose = chooseNext;
         })
 
