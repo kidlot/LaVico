@@ -241,6 +241,14 @@ module.exports= {
 
             if(memberid=="undefined"){
                 console.log("action","1")
+                console.log("themeId",themeId)
+                console.log("themeId",typeof themeId)
+                console.log("memberId",memberId)
+                console.log("memberId",typeof memberId)
+                console.log("wechatid",wechatid)
+                console.log("wechatid",typeof wechatid)
+                console.log("ut.model.themeType",nut.model.themeType)
+                console.log("ut.model.themeType",typeof nut.model.themeType)
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
@@ -253,6 +261,14 @@ module.exports= {
                     }))
             }else if(memberid!="undefined"){
                 console.log("action","2")
+                console.log("themeId",themeId)
+                console.log("themeId",typeof themeId)
+                console.log("memberId",memberId)
+                console.log("memberId",typeof memberId)
+                console.log("wechatid",wechatid)
+                console.log("wechatid",typeof wechatid)
+                console.log("ut.model.themeType",nut.model.themeType)
+                console.log("ut.model.themeType",typeof nut.model.themeType)
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
