@@ -930,12 +930,13 @@ exports.load = function () {
                     }
                     result.cardNumber = doc[i].cardNumber;
 
-                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.favoriteStyle){
-                        doc[i].favoriteStyle = doc[i].HaiLanMemberInfo.favoriteStyle;
-                    }else{
-                        doc[i].favoriteStyle = '--';
-                    }
-                    result.favoriteStyle = doc[i].favoriteStyle;
+                    //doc[i].favoriteStyle = doc[i].favoriteStyle || "--"
+//                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.favoriteStyle){
+//                        doc[i].favoriteStyle = doc[i].HaiLanMemberInfo.favoriteStyle;
+//                    }else{
+//                        doc[i].favoriteStyle = '--';
+//                    }
+                    result.favoriteStyle = doc[i].favoriteStyle || "--";
 
                     if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.memberID){
                         doc[i].memberID = doc[i].HaiLanMemberInfo.memberID;
@@ -944,12 +945,12 @@ exports.load = function () {
                     }
                     result.memberID = doc[i].memberID;
 
-                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.favoriteColor){
-                        doc[i].favoriteColor = doc[i].HaiLanMemberInfo.favoriteColor;
-                    }else{
-                        doc[i].favoriteColor = '--';
-                    }
-                    result.favoriteColor = doc[i].favoriteColor;
+//                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.favoriteColor){
+//                        doc[i].favoriteColor = doc[i].HaiLanMemberInfo.favoriteColor;
+//                    }else{
+//                        doc[i].favoriteColor = '--';
+//                    }
+                    result.favoriteColor = doc[i].favoriteColor || "--";
 
                     var tags = [];
                     if(doc[i].tags){
@@ -1858,7 +1859,6 @@ exports.load = function () {
 
     welabUserDetail.view = "lavico/templates/welab/user/detail.html";
     welabUserDetail.process = function(seed,nut){
-
 
         this.step(function(){
             helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
