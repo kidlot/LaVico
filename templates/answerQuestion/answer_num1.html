@@ -118,6 +118,12 @@
     </div>
     <div class="activity-rules">
         <div class="begin"><a href="/lavico/answerQuestion/answer?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()" style="text-decoration:none;">立即开始</a></div>
+        <if condition="{@pram==3}">
+            <if condition="{@isok=='1'}">
+                <a href="/lavico/member/card_blank/coupon/index?wxid={@wechatId}">查看优惠卷</a>
+            </if>
+        </if>
+
         <div class="text">
             <div class="title">活动及使用规则</div>
             <div class="title1">活动说明：</div>
