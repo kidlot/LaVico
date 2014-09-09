@@ -117,18 +117,22 @@ module.exports= {
 
                 if(doc && doc.HaiLanMemberInfo){
                     if(doc.HaiLanMemberInfo.action=='bind') {
+                        nut.model.bind = "true";
                         memberid = doc.HaiLanMemberInfo.memberID;
                         nut.model.flag = "0";
                     }else{
+                        nut.model.bind = "false";
                         memberid = doc.HaiLanMemberInfo.memberID;
                         nut.model.flag="1";
                     }
                 }else if(doc){
+                    nut.model.bind = "false";
                     nut.model.follow = doc.isFollow;
                     //未绑定
                     memberid = "undefined";
                     nut.model.flag="1";
                 }else{
+                    nut.model.bind = "false";
                     //未绑定
                     memberid = "undefined";
                     nut.model.flag="1";
