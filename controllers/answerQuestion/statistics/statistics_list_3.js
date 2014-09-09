@@ -35,32 +35,32 @@ module.exports={
                             //参与人数
                             (function(i,jsonOne){
                                 console.log("i",typeof i)
-//                                helper.db.coll("lavico/custReceive").find({"themeId":i,"optionId":1})
-//                                    .count(
-//                                        then.hold(function(err,doc){
-//                                            if(err)throw err;
-//                                            console.log("doc",doc)
-//                                            if(doc==0){
-//                                                jsonOne.totalPop=0;
-//                                            }
-//                                            else{
-//                                                jsonOne.totalPop=doc;
-//                                            }
-//                                        })
-//                                    )
-                                helper.db.coll("lavico/custReceive").aggregate(
-                                    [
-                                        {$match:{themeId:i}},
-                                        {$group:{_id:"$memberId"}}
-                                    ],then.hold(function(err,doc){
-                                        if(err) throw err;
-                                        try{
-                                            jsonOne.totalPop=doc.length;
-                                        }catch(e){
-                                            jsonOne.totalPop=0;
-                                        }
-
-                                    }));
+                                helper.db.coll("lavico/custReceive").find({"themeId":i,"optionId":1})
+                                    .count(
+                                        then.hold(function(err,doc){
+                                            if(err)throw err;
+                                            console.log("doc",doc)
+                                            if(doc==0){
+                                                jsonOne.totalPop=0;
+                                            }
+                                            else{
+                                                jsonOne.totalPop=doc;
+                                            }
+                                        })
+                                    )
+//                                helper.db.coll("lavico/custReceive").aggregate(
+//                                    [
+//                                        {$match:{themeId:i}},
+//                                        {$group:{_id:"$memberId"}}
+//                                    ],then.hold(function(err,doc){
+//                                        if(err) throw err;
+//                                        try{
+//                                            jsonOne.totalPop=doc.length;
+//                                        }catch(e){
+//                                            jsonOne.totalPop=0;
+//                                        }
+//
+//                                    }));
 
                             })(doc[e]._id,jsonOne);
 
