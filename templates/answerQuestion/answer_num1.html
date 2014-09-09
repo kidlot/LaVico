@@ -2,108 +2,103 @@
 <link rel="stylesheet" href="/lavico/public/css/main.css" />
 <input type="hidden" id="wxid" value='{@wechatId}'>
 <script>
-//    window.onload=function(){
-//        var flag="{@flag}";
-//        if(flag=="1")
-//        {
-//            window.popupStyle2.on("您还不是LaVico的会员，请先注册会员",function(event){
-//                if(event == "confirm"){
-//                    location.href="/lavico/member/index?wxid={@wechatId}";
-//                }
-//            })
-//        }
-//    }
-function load(){
+    function load(){
+        //// 抢积分，型男
+        if(location.pathname == "/lavico/answerQuestion/first"){
+            shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
+            if(jQuery("#themetitle").val() == "答题抢积分"){
 
-
-    //// 抢积分，型男
-    if(location.pathname == "/lavico/answerQuestion/first"){
-        shareIcon = location.origin + jQuery(".coupon-banner").find("img").attr("src");
-        if(jQuery("#themetitle").val() == "答题抢积分"){
-
-            shareTitle = "答题抢积分"
-            shareContent = "都说穿西装的男人最有范，每个男人的衣柜一定都少不了一套笔挺的西装。但是对于西装您真的了解吗？想要了解西装的秘密，快来参与朗维高“答题抢积分”活动，答对题目即可获取积分奖励！";
-        }else{
-            shareTitle = "型男测试"
-            shareContent = "父亲总是代表着特殊的含义；责任、奉献、伟大…可能不知不觉中你也已是为人父，话说做老爸的男人最有魅力，干得了家务带得了萌娃，酷帅有型却又温情脉脉。除了责任感， 家庭重任外你还是那个昔日型男吗？点击下方“阅读全文”或者选择菜单栏中型爸测试开始游戏，快来测测你究竟是哪种型爸？”赢取朗维高2014父亲节积分好礼！";
+                shareTitle = "答题抢积分"
+                shareContent = "都说穿西装的男人最有范，每个男人的衣柜一定都少不了一套笔挺的西装。但是对于西装您真的了解吗？想要了解西装的秘密，快来参与朗维高“答题抢积分”活动，答对题目即可获取积分奖励！";
+            }else{
+                shareTitle = "型男测试"
+                shareContent = "父亲总是代表着特殊的含义；责任、奉献、伟大…可能不知不觉中你也已是为人父，话说做老爸的男人最有魅力，干得了家务带得了萌娃，酷帅有型却又温情脉脉。除了责任感， 家庭重任外你还是那个昔日型男吗？点击下方“阅读全文”或者选择菜单栏中型爸测试开始游戏，快来测测你究竟是哪种型爸？”赢取朗维高2014父亲节积分好礼！";
+            }
         }
     }
-}
 
-
-window.onload =function() {
-    load();
-}
-var ok = '{@ok}';
-var conent = '{@conent}'
-var doc = JSON.parse('{@themeQuestion}');
-var wechatId = '{@wechatId}';
-var memberid = '{@memberid}';
-function isReg(){
-    if(ok=="1")
-    {
-        window.popupStyle2.on(conent,function(event){
-            if(event == "confirm"){
-            }
-        })
-        return false;
+    window.onload =function() {
+        load();
     }
-
-    if(ok=="3")
-    {
-        window.popupStyle2.on(conent,function(event){
-            if(event == "confirm"){
-            }
-        })
-        return false;
-    }
-
-
-    var flag="{@flag}";
-        if(flag=="1")
-        {
-
-            window.popupStyle2.on("您还不是LaVico的会员，请先注册会员!",function(event){
+    var ok = '{@ok}';
+    var conent = '{@conent}'
+    var doc = JSON.parse('{@themeQuestion}');
+    var wechatId = '{@wechatId}';
+    var memberid = '{@memberid}';
+    function isReg(){
+        if(ok=="1"){
+            window.popupStyle2.on(conent,function(event){
                 if(event == "confirm"){
-                    location.href="/lavico/member/card_blank/register?wxid={@wechatId}";
                 }
             })
             return false;
         }
-    var flag="{@isok}";
-    if(flag=="0")
-    {
 
-        window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到上次答题的结果",function(event){
-            if(event == "confirm"){
-                if('{@themeType}'==3){
-                    location.href="/lavico/answerQuestion/guessfinish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true";
-                }else{
-                    location.href="/lavico/answerQuestion/finish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true";
+        if(ok=="3"){
+            window.popupStyle2.on(conent,function(event){
+                if(event == "confirm"){
                 }
+            })
+            return false;
+        }
 
+        var themetype = "{@themetype}";
+        var pram = "{@pram}";
+        var flag="{@flag}";
+        var follow="{@isFollow}";
+        if(pram=="1"){
+            if(flag=="1"){
+                window.popupStyle2.on("您还不是LaVico的会员，请先注册会员!",function(event){
+                    if(event == "confirm"){
+                        var url = encodeURIComponent(location.href);
+                        location.href="/lavico/member/card_blank/register?wxid={@wechatId}&go="+url;
+                    }
+                })
+                return false;
             }
-        })
-        return false;
-    }
-
-    var choose="{@choose}";
-    if(choose!="-1")
-    {
-
-        window.popupStyle2.on("您之前未能完成答题，请重新答题",function(event){
-            if(event == "confirm"){
-                //location.href="/lavico/answerQuestion/answer?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&optionId="+choose;
-                location.href="/lavico/answerQuestion/answer?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&optionId=1&status=true";
+        }else{
+            if(pram == 2){
+                if(follow != "true"){
+                    window.popupStyle2.on("您还未关注LaVico,请先关注!",function(event){
+                        if(event == "confirm"){
+                        }
+                    })
+                    return false;
+                }
             }
-        })
-        return false;
+        }
+
+        var isok="{@isok}";
+        if(isok=="1"){
+            window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到上次答题的结果",function(event){
+                if(event == "confirm"){
+                    if('{@themeType}'==3){
+                        location.href="/lavico/answerQuestion/guessfinish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true&pram="+pram;
+                    }else{
+                        location.href="/lavico/answerQuestion/finish?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&themetype="+doc.themeType+"&stutas=true&pram="+pram;
+                    }
+
+                }
+            })
+            return false;
+        }
+        var choose="{@choose}";
+        if(choose!="-1"){
+            window.popupStyle2.on("您之前未能完成答题，请重新答题",function(event){
+                if(event == "confirm"){
+                    location.href="/lavico/answerQuestion/answer?_id="+doc._id+"&wechatid="+wechatId+"&memberid="+memberid+"&optionId=1&status=true";
+                }
+            })
+            return false;
+        }
     }
-}
 </script>
-<if condition="@ !isFollow">
-    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
+<if condition="{@pram!=3}">
+    <if condition="@ !isFollow">
+        <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
+    </if>
 </if>
+
 <div class="wrapper">
     <div class="coupon-banner">
         <if condition="@pic!='undefined'">
@@ -113,60 +108,40 @@ function isReg(){
                 <input type="hidden" id="themetitle" value="型男测试">
                 <img src="/public/files/2014/6/9/~!dad3765ef671652fe592caf9e0c294e5!E5A4B4E59BBE4.jpg" style="text-align:center;" />
                 <elseif condition="@docs.themeType=='3'"/>
-                    <input type="hidden" id="themetitle" value="竞猜型">
-                    <img src="/lavico/public/images/guess.jpg" />
+                <input type="hidden" id="themetitle" value="竞猜型">
+                <img src="/lavico/public/images/guess.jpg" />
                 <else/>
-                    <input type="hidden" id="themetitle" value="答题抢积分">
-                    <img src="/lavico/public/images/questions-top-image.jpg" />
+                <input type="hidden" id="themetitle" value="答题抢积分">
+                <img src="/lavico/public/images/questions-top-image.jpg" />
             </if>
         </if>
     </div>
     <div class="activity-rules">
         <div class="begin"><a href="/lavico/answerQuestion/answer?_id={@docs._id}&optionId=1&wechatid={@wechatId}&memberid={@memberid}" onclick="return isReg()" style="text-decoration:none;">立即开始</a></div>
-        <!--<if condition="@themetype == 1">-->
-            <!--<div class="text">-->
-                <!--<div class="title">活动及使用规则</div>-->
-                <!--<div class="title1">活动说明：</div>-->
-                <!--<div class="subtext">-->
-                    <!--父亲总是代表着特殊的含义；责任、奉献、伟大…可能不知不觉中您也已是为人父，话说做老爸的男人最有魅力，干得了家务带得了萌娃，酷帅有型却又温情脉脉。除了责任感， 家庭重任外您还是那个昔日型男吗？参加<a href="/lavico/answerQuestion/first?_id=53734ac3a22738b033000c7f&optionId=1&wechatid={@wechatId}">型爸测试</a>，测测您究竟是哪种型爸？赢取朗维高2014父亲节积分好礼！-->
-                <!--</div>-->
-                <!--<div class="title1">活动规则：</div>-->
-                <!--<div class="subtext">1、关注LaVico朗维高官方微信；<br/>-->
-                    <!--2、注册或绑定LaVico朗维高会员/VIP,成功后参与测试；<br/>-->
-                    <!--3、完成测试即可获得LaVico朗维高积分好礼；<br/>-->
-                    <!--4、活动时间：2014年6月12日至2014年6月15日。</div>-->
-                <!--<div class="title1">免责声明：</div>-->
-                <!--<div class="subtext">-->
-                    <!--1、每位会员或VIP均可参与一次测试，获得一次积分；<br/>-->
-                    <!--2、本活动最终解释权归上海克瑞特所有。<br/>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--<else/>-->
-            <div class="text">
-                <div class="title">活动及使用规则</div>
-                <div class="title1">活动说明：</div>
-                <div class="subtext">
-                    <div id="explanation">{@explanation}</div>
-                    <!--<p>该活动只有朗维高会员才有权限参与，如果你还不是会员,请点击菜单-我的会员卡--->
-                        <!--<a href="/lavico/member/card_blank/register?wxid={@wechatId}" target="_blank" class="login_size">注册会员</a>-->
-                    <!--</p>-->
-                </div>
-                <div class="title1">活动规则：</div>
-                <div id="description" class="subtext">{@description}</div>
-                <div class="title1">免责声明：</div>
-                <div id="relief" class="subtext">{@relief}</div>
+        <div style="text-align: center;margin-top: 20px;">
+            <if condition="{@bind=='false'}">
+                <if condition="{@pram==3}">
+                    <if condition="{@isok=='1'}">
+                        <a href="/lavico/member/card_blank/coupon/index?wxid={@wechatId}" style="font-size: 12px">点此查看已领礼券信息</a>
+                    </if>
+                </if>
+            </if>
+
+        </div>
+        <div class="text">
+            <div class="title">活动及使用规则</div>
+            <div class="title1">活动说明：</div>
+            <div class="subtext">
+                <div id="explanation">{@explanation}</div>
+                <!--<p>该活动只有朗维高会员才有权限参与，如果你还不是会员,请点击菜单-我的会员卡--->
+                <!--<a href="/lavico/member/card_blank/register?wxid={@wechatId}" target="_blank" class="login_size">注册会员</a>-->
+                <!--</p>-->
             </div>
-        <!--</if>-->
+            <div class="title1">活动规则：</div>
+            <div id="description" class="subtext">{@description}</div>
+            <div class="title1">免责声明：</div>
+            <div id="relief" class="subtext">{@relief}</div>
+        </div>
 
     </div>
 </div>
-<!--<script>-->
-
-    <!--var description = decodeURIComponent('{@docs.description}');-->
-    <!--var relief = decodeURIComponent('{@docs.relief}');-->
-    <!--var explanation = decodeURIComponent('{@docs.explanation}');-->
-    <!--document.getElementById("description").innerHTML = description;-->
-    <!--document.getElementById("relief").innerHTML = relief;-->
-    <!--document.getElementById("explanation").innerHTML = explanation;-->
-
-<!--</script>-->

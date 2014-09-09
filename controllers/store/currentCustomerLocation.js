@@ -91,6 +91,9 @@ module.exports={
                     }
                 })
             }
+//            viewIn:function(){
+//                $('#loading').hide();//隐藏加载框
+//            }
         }
     }
 

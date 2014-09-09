@@ -14,21 +14,25 @@ module.exports={
         var optionId=seed.optionId;
         var receiveAnswer=seed.receiveAnswer;
         var wechatId=seed.wechatid;
-        var memberid = seed.memberid;
+        var memberid = seed.memberid || "undefined";
         var themetype = seed.themetype;
         var type = seed.type;
         var customerLabel=seed.customerLabel;//自定义标签
         //判断是否是下一题或完成按钮
         var status = seed.status ? seed.status : "false";
         var themeQuestion_doc;
+
+        var parm;
         //字数判断
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
                 if(err) throw err;
 
-                if(doc)
+                if(doc){
                     themeQuestion_doc = doc;
-                    return doc;
+                    parm = doc.parm;
+                }
+                return doc;
             }))
         })
 
@@ -66,30 +70,51 @@ module.exports={
         this.step(function(docOne){
             if(docOne){
                 then.req.session.scoreAll+=parseInt(docOne.answerScore);
-                helper.db.coll("lavico/custReceive").insert({
-                    "wechatid": wechatId,
-                    "themeId": helper.db.id(_id),
-                    "isFinish": false,
-                    "optionId": parseInt(optionId),
-                    "chooseId": '主观题',
-                    "getChooseScore": parseInt(docOne.answerScore),
-                    "getChooseLabel":"",
-                    "getLabel": "",
-                    "getGift":  "",
-                    "getScore": "",
-                    "createTime": new Date().getTime(),
-                    "resultValue":receiveAnswer,
-                    "memberId":memberid,
-                    "themetype":themetype,
-                    "type":type
-                },function(err,doc){});
+                if(memberid =="undefined"){
+                    helper.db.coll("lavico/custReceive").insert({
+                        "wechatid": wechatId,
+                        "themeId": helper.db.id(_id),
+                        "isFinish": false,
+                        "optionId": parseInt(optionId),
+                        "chooseId": '主观题',
+                        "getChooseScore": parseInt(docOne.answerScore),
+                        "getChooseLabel":"",
+                        "getLabel": "",
+                        "getGift":  "",
+                        "getScore": "",
+                        "createTime": new Date().getTime(),
+                        "resultValue":receiveAnswer,
+                        "memberId":"",
+                        "themetype":themetype,
+                        "type":type
+                    },function(err,doc){});
+                }else{
+                    helper.db.coll("lavico/custReceive").insert({
+                        "wechatid": wechatId,
+                        "themeId": helper.db.id(_id),
+                        "isFinish": false,
+                        "optionId": parseInt(optionId),
+                        "chooseId": '主观题',
+                        "getChooseScore": parseInt(docOne.answerScore),
+                        "getChooseLabel":"",
+                        "getLabel": "",
+                        "getGift":  "",
+                        "getScore": "",
+                        "createTime": new Date().getTime(),
+                        "resultValue":receiveAnswer,
+                        "memberId":memberid,
+                        "themetype":themetype,
+                        "type":type
+                    },function(err,doc){});
+                }
+
             }
         })
 
         this.step(function(){
             if(seed.finish!='true'){
                 this.res.writeHead(302, {
-                    'Location': "/lavico/answerQuestion/answer?wechatid="+wechatId+"&optionId="+(parseInt(optionId)+1)+"&_id="+_id
+                    'Location': "/lavico/answerQuestion/answer?wechatid="+wechatId+"&optionId="+(parseInt(optionId)+1)+"&_id="+_id+"&memberid="+memberid
                 });
                 this.res.end();
             }else{

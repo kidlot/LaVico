@@ -15,7 +15,7 @@
         <tbody>
         <foreach for="@data" var="doc" key="key">
             <tr class="borderBtm">
-                <td class="width150"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}">{@doc.theme}</a></td>
+                <td class="width150"><a target="_blank" href="/lavico/answerQuestion/question/updateQuestion?_id={@doc.themeId}&optionId=1">{@doc.theme}</a></td>
                 <td class="width70" id="openClose">{@doc.status}<input type="hidden" name="id" id="docId" value="{@doc.themeId}"></td>
                 <td class="width100">{@doc.beginTime}</td>
                 <td class="width100">{@doc.endTime}</td>

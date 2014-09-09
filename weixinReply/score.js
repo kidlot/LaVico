@@ -18,15 +18,10 @@
                 {
                     title: '列表',
                     controller: '/lavico/answerQuestion/statistics/statistics_list'
-//                    controller: '/lavico/answerQuestion/themeList'
                 }, {
                     title: '添加',
                     controller: '/lavico/answerQuestion/question/addQuestion'
-                },
-//                {
-//                    title: '统计',
-//                    controller: '/lavico/answerQuestion/statistics/statistics_list'
-//                }
+                }
             ],
             start: function() {
                 return this.on = true;

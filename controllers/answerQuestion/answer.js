@@ -13,7 +13,8 @@ module.exports={
         var member_id;
         nut.model.wxid = wechatid;
         nut.model.optionId = optionId;
-        var memberId;
+        var memberId = seed.memberid || "undefined";
+        var parm;
 
         nut.model.isok = "0";
         nut.model.conent = "undefined"
@@ -24,27 +25,24 @@ module.exports={
             //查找此会员是否存在
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,result){
                 if(err) throw err;
+                console.log("wechatid",wechatid)
                 if(result){
                     if(result.HaiLanMemberInfo&&result.HaiLanMemberInfo.memberID&&result.HaiLanMemberInfo.action=='bind'){
-                        member_id = result.HaiLanMemberInfo.memberID;
+                        memberId = result.HaiLanMemberInfo.memberID;
                     }else{
-                        member_id ="undefined";
+                        //member_id ="undefined";
                     }
                 }else{
+                    //member_id ="undefined";
                     nut.model.isok = "1";
                     nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
-                    //nut.disable();
-                    //write_info(then,"您的访问不对请和核查访问方式![缺少微信ID]");
                 }
-                if(member_id=="undefined"){
-                    nut.model.isok = "1";
-                    nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
-                    //nut.view.disable();
-                    // nut.write("<script>window.onload=function(){window.popupStyle2.on('您还不是LaVico的会员，请先注册会员',function(event){location.href='/lavico/member/index?wxid="+wechatid+"'})}</script>");
-
-                }
-                memberId = member_id;
-                nut.model.member_id =member_id;
+//                if(member_id=="undefined"){
+//                    nut.model.isok = "1";
+//                    nut.model.conent = "您还不是LaVico的会员，请先注册会员!"
+//                }
+                //memberId = member_id;
+                nut.model.member_id =memberId;
             }))
         });
 
@@ -52,7 +50,7 @@ module.exports={
             if(status=="true"){
                 helper.db.coll("lavico/custReceive").remove({"wechatid":wechatid,"themeId":helper.db.id(_id),"memberId":""+memberId},this.hold(function(err,doc){
                     if(err)
-                    throw err;
+                        throw err;
                 }))
 
             }
@@ -65,14 +63,26 @@ module.exports={
                 beginTime=doc.beginTime;
                 endTime=doc.endTime;
                 isOpen=doc.isOpen;
+                parm = doc.pram;
+                nut.model.pram = doc.pram;
                 nut.model.themeType = doc.themeType;
                 nut.model.themequestion = JSON.stringify(doc.options);
             }));
         })
 
         this.step(function(){
-            if(member_id!="undefined"){
-                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+member_id,"wechatid":wechatid,
+            if(memberId=="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result.length>0){
+                            nut.model.isRecord = "1";
+                        }else{
+                            nut.model.isRecord = "0";
+                        }
+                    }))
+            }else if(memberId!="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberId,"wechatid":wechatid,
                     "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
                         if(err) throw err;
                         if(result.length>0){
@@ -86,25 +96,12 @@ module.exports={
             }
         })
 
-//        this.step(function(){
-//            if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
-//                if(isOpen==0){
-//                    nut.model.isok = "2";
-//                    nut.model.conent = "很抱歉，活动已经停止"
-//                }
-//            }else{
-//                nut.model.isok = "2";
-//                nut.model.conent = "很抱歉，活动已经停止"
-//            }
-//        })
-
         this.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(_id)},this.hold(function(err,cursor){
                 if(err) throw err;
                 if(optionId>cursor.options.length){
                     nut.model.isok = "2";
-                    nut.model.conent = "无此题，联系管理员"
-                    //异常情况：当optionId大于题数时
+                    nut.model.conent = "无此题，联系管理员";
                     nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，联系管理员',function(event){history.back()})}</script>");
                     nut.view.disable();
                 }
@@ -128,31 +125,7 @@ module.exports={
                     }
 
                 }
-//                if(optionId>cursor.options.length){
-//                    nut.model.isok = "2";
-//                    nut.model.conent = "无此题，联系管理员"
-//                    //异常情况：当optionId大于题数时
-//                    //nut.write("<script>window.onload=function(){window.popupStyle2.on('无此题，联系管理员',function(event){history.back()})}</script>");
-//                    //nut.view.disable();
-//                }
             }));
-            //判断活动是否开启或到期1-2
-//            if(new Date(beginTime).getTime()<new Date(createTime()).getTime() && new Date(endTime).getTime()>new Date(createTime()).getTime()){
-//                if(isOpen==0){
-//                    //nut.model.isok = "2";
-//                    //nut.model.conent = "很抱歉，活动已经停止"
-//                    nut.view.disable();
-//                    nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
-//                }else{
-//                    //显示题目
-//
-//                }
-//            }else{
-//                //nut.model.isok = "3";
-//                //nut.model.conent = "很抱歉，活动已经停止"
-//                nut.view.disable();
-//                nut.write("<script>window.onload=function(){window.popupStyle2.on('很抱歉，活动已经停止',function(event){history.back()})}</script>");
-//            }
         });
 
         this.step(function(){
@@ -175,4 +148,3 @@ function createTime(){
     s=vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay);
     return s;
 }
-

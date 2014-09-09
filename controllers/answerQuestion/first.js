@@ -18,6 +18,7 @@ module.exports= {
         var chooseNextArr;
         var result_true;
         var beginTime="",endTime="",isOpen="";
+        var pram;
 
         nut.model.ok = "0";
         nut.model.conent = "undefined"
@@ -54,25 +55,12 @@ module.exports= {
                     nut.model.conent = "很抱歉，活动已结束"
                 }
             }
-//            console.log("saas"+new Date(endTime).getTime())
-//            console.log("sss:"+new Date(createTime()).getTime())
-//            if(new Date(endTime).getTime()<new Date(createTime()).getTime()){
-//                if(isOpen==0){
-//                    nut.model.ok = "1";
-//                    nut.model.conent = "很抱歉，活动已结束"
-//                }
-//            }else{
-//                nut.model.ok = "1";
-//                nut.model.conent = "很抱歉，活动已结束"
-//            }
         })
 
         this.step(function(){
             if(new Date(beginTime).getTime()>new Date(createTime()).getTime()){
-                //if(isOpen==0){
-                    nut.model.ok = "3";
-                    nut.model.conent = "很抱歉，活动未开始，敬请期待"
-                //}
+                nut.model.ok = "3";
+                nut.model.conent = "很抱歉，活动未开始，敬请期待"
             }
         })
 
@@ -129,13 +117,22 @@ module.exports= {
 
                 if(doc && doc.HaiLanMemberInfo){
                     if(doc.HaiLanMemberInfo.action=='bind') {
+                        nut.model.bind = "true";
                         memberid = doc.HaiLanMemberInfo.memberID;
                         nut.model.flag = "0";
                     }else{
+                        nut.model.bind = "false";
                         memberid = doc.HaiLanMemberInfo.memberID;
                         nut.model.flag="1";
                     }
+                }else if(doc){
+                    nut.model.bind = "false";
+                    nut.model.follow = doc.isFollow;
+                    //未绑定
+                    memberid = "undefined";
+                    nut.model.flag="1";
                 }else{
+                    nut.model.bind = "false";
                     //未绑定
                     memberid = "undefined";
                     nut.model.flag="1";
@@ -151,6 +148,8 @@ module.exports= {
                     themeQuestion = doc.options;
                     themetype = doc.themeType;
                     nut.model.docs=doc;
+                    nut.model.pram = doc.pram;
+                    pram = doc.pram;
                     nut.model.themetype = themetype;
                     nut.model.themeQuestion = JSON.stringify(doc);
                 }
@@ -158,23 +157,46 @@ module.exports= {
         })
 
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
-                "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
-                if(err) throw err;
-                if(result){
-                    result_false = result;
-                }
-            }))
+            if(memberid =="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            result_false = result;
+                        }
+                    }))
+            }else{
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":false} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            result_false = result;
+                        }
+                    }))
+            }
+
         })
 
         this.step(function(){
-            helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
-                "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
-                if(err) throw err;
-                if(result){
-                    result_true = result;
-                }
-            }))
+
+            if(memberid =="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            result_true = result;
+                        }
+                    }))
+            }else{
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                    "themetype":""+themetype,"isFinish":true} ).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result){
+                            result_true = result;
+                        }
+                    }))
+            }
+
         })
 
         this.step(function(){
@@ -219,16 +241,33 @@ module.exports= {
         })
 
         this.step(function(){
-            helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(seed._id),"memberId":""+memberid,"isFinish":true},
-                this.hold(function(err,doc){
-                    if(err) throw err;
-                    if(doc){
-                        nut.model.isok = "0";
-                    }else{
-                        nut.model.isok = "1";
-                    }
-                })
-            )
+console.log("memberid",memberid)
+            console.log("memberid",typeof memberid)
+            if(memberid=="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
+                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        if(result && result.length>0){
+                            nut.model.isok = "1";
+                        }else{
+                            nut.model.isok = "0";
+                        }
+                    }))
+            }else if(memberid!="undefined"){
+                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"memberId":""+memberid,"wechatid":wechatid,
+                    "themetype":""+nut.model.themeType,"isFinish":true}).toArray(this.hold(function(err,result){
+                        if(err) throw err;
+                        console.log("result",result)
+                        if(result.length>0){
+                            nut.model.isok = "1";
+                        }else{
+                            nut.model.isok = "0";
+                        }
+                    }))
+            }else{
+                console.log("action","3")
+                nut.model.isok = "0";
+            }
         })
     }
 }
