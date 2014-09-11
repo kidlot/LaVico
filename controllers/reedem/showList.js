@@ -60,10 +60,13 @@ module.exports={
 
         this.step(function(resultPoint){
             if(memberId){
+                var endTime =  parseInt(new Date(createTime()+" 23:59:59").getTime());
+
+                var startTime = parseInt(new Date(createTime()+" 00:00:00").getTime());
                 var currentTime=new Date().getTime();
                 //查找积分兑换表,获取所有所有兑换商品
                 reedemJson.point=resultPoint[0]
-                helper.db.coll("lavico/reddem").find({"switcher":"on","startDate":{"$lt":currentTime},"endDate":{"$gt":currentTime}}).toArray(this.hold(function(err,result){
+                helper.db.coll("lavico/reddem").find({"switcher":"on","startDate":{"$lt":startTime},"endDate":{"$gt":endTime}}).toArray(this.hold(function(err,result){
                     if(err) throw err;
                     reedemJson.canUse=[];//可兑换商品数组
                     reedemJson.noCanUse=[];//不可兑换商品数组
@@ -249,7 +252,7 @@ module.exports={
                             if(err) throw err;
                             //console.log("doc:"+doc)//不删
                             var docJson=JSON.parse(doc)
-                            console.log(docJson)
+                            return docJson
                             if(docJson.success){
                                 //扣除积分
                                 //返回true，表成功兑换，返回券值
@@ -265,8 +268,9 @@ module.exports={
 
                 this.step(function(docJson){
                     if(isok){
+                        console.log("docJson",docJson)
                         //把兑换记录，记录至数据库
-                        if(docJson){
+                        if(docJson.success){
 
                             var record={};
                             record.wechatId=wechatId;
@@ -293,7 +297,7 @@ module.exports={
                             }))
                         }else{
                             nut.view.disable();
-                            nut.write("<script>window.onload=function(){window.popupStyle2.on('数据错误',function(event){history.back()})}</script>");
+                            nut.write("<script>window.onload=function(){window.popupStyle2.on('"+docJson.error+"'"+",function(event){history.back()})}</script>");
                         }
                     }
                 })
@@ -360,4 +364,16 @@ function write_info_text(then,info){
     then.res.write(info);
     then.res.end();
     then.terminate();
+}
+
+
+function   createTime(){
+    var   now = new Date();
+    var   year=now.getFullYear();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+    return   year+"-"+month+"-"+date;
 }
