@@ -60,69 +60,75 @@ module.exports={
 
         this.step(function(resultPoint){
             if(memberId){
-                var endTime =  parseInt(new Date(createTime()+" 23:59:59").getTime());
+                var endTime =  new Date(createTime()+" 23:59:59").getTime();
 
-                var startTime = parseInt(new Date(createTime()+" 00:00:00").getTime());
+                var startTime = new Date(createTime()+" 00:00:00").getTime();
                 var currentTime=new Date().getTime();
+                console.log("endTime",endTime)
+                console.log("startTime",startTime)
+                console.log("currentTime",currentTime)
                 //查找积分兑换表,获取所有所有兑换商品
                 reedemJson.point=resultPoint[0]
-                helper.db.coll("lavico/reddem").find({"switcher":"on","startDate":{"$lt":endTime},"endDate":{"$gt":endTime}}).toArray(this.hold(function(err,result){
+                helper.db.coll("lavico/reddem").find({"switcher":"on"}).toArray(this.hold(function(err,result){
                     if(err) throw err;
                     reedemJson.canUse=[];//可兑换商品数组
                     reedemJson.noCanUse=[];//不可兑换商品数组
                     for(var i=0;i<result.length;i++){
-                        if(resultPoint[0]>=result[i].needScore){
-                            //调用接口：查找所有可兑换券
-                            (function(i){
-                                middleware.request('Coupon/Promotions',{
-                                    perPage:10000,
-                                    pageNum:1,
-                                    code:result[i].aid
-                                },then.hold(function(err,doc){
-                                    if(err) throw err;
-                                    if(doc){
-                                        var resultJson=JSON.parse(doc)
-                                        var stillUse
-                                        if(resultJson&&resultJson.list&&resultJson.list[0]&&resultJson.list[0].TOTAL){
-                                           stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
-                                        }
-                                        //还有剩余票可用
-                                        if(stillUse>0){
+                        if( result[i].startDate < currentTime && startTime < result[i].endDate){
+                            if(resultPoint[0]>=result[i].needScore){
+                                //调用接口：查找所有可兑换券
+                                (function(i){
+                                    middleware.request('Coupon/Promotions',{
+                                        perPage:10000,
+                                        pageNum:1,
+                                        code:result[i].aid
+                                    },then.hold(function(err,doc){
+                                        if(err) throw err;
+                                        if(doc){
+                                            var resultJson=JSON.parse(doc)
+                                            var stillUse
+                                            if(resultJson&&resultJson.list&&resultJson.list[0]&&resultJson.list[0].TOTAL){
+                                                stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;//剩余数
+                                            }
+                                            //还有剩余票可用
+                                            if(stillUse>0){
 
-                                            result[i].stillUse=stillUse;
-                                            result[i].memberId=resultPoint[1];
-                                            result[i].wechatId=seed.wechatId;
-                                            reedemJson.canUse.push(result[i]);//追加数组
+                                                result[i].stillUse=stillUse;
+                                                result[i].memberId=resultPoint[1];
+                                                result[i].wechatId=seed.wechatId;
+                                                reedemJson.canUse.push(result[i]);//追加数组
+                                            }
+                                        }else{
+                                            nut.view.disable();
+                                            nut.write("<script>window.onload=function(){window.popupStyle2.on('商家没有提供可兑换券',function(event){history.back()})}</script>");
                                         }
-                                    }else{
-                                        nut.view.disable();
-                                        nut.write("<script>window.onload=function(){window.popupStyle2.on('商家没有提供可兑换券',function(event){history.back()})}</script>");
-                                    }
-                                }))
-                            })(i)
-                        }else{
-                            //调用接口：查找所有券
-                            (function(i){
-                                middleware.request('Coupon/Promotions',{
-                                    perPage:10000,
-                                    pageNum:1,
-                                    code:result[i].aid
-                                },then.hold(function(err,doc){
-                                    if(err) throw err;
-                                    if(doc){
-                                        var resultJson=JSON.parse(doc)
-                                        var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;
-                                        if(stillUse>0){
-                                            result[i].stillUse=stillUse;
-                                            result[i].memberId=resultPoint[1];
-                                            result[i].wechatId=seed.wechatId;
-                                            reedemJson.noCanUse.push(result[i]);//分数过大的追加不可兑换数组
+                                    }))
+                                })(i)
+                            }else{
+                                //调用接口：查找所有券
+                                (function(i){
+                                    middleware.request('Coupon/Promotions',{
+                                        perPage:10000,
+                                        pageNum:1,
+                                        code:result[i].aid
+                                    },then.hold(function(err,doc){
+                                        if(err) throw err;
+                                        if(doc){
+                                            var resultJson=JSON.parse(doc)
+                                            var stillUse=resultJson.list[0].TOTAL-resultJson.list[0].USED;
+                                            if(stillUse>0){
+                                                result[i].stillUse=stillUse;
+                                                result[i].memberId=resultPoint[1];
+                                                result[i].wechatId=seed.wechatId;
+                                                reedemJson.noCanUse.push(result[i]);//分数过大的追加不可兑换数组
+                                            }
                                         }
-                                    }
-                                }))
-                            })(i)
+                                    }))
+                                })(i)
 
+                            }
                         }
+
                     }
                 }))
 
@@ -198,7 +204,9 @@ module.exports={
                             QTY=result.QTY;//面值
                             t_name=result.name;//商品名
                             var currentTime=new Date().getTime();
-                            if(currentTime<result.startDate || currentTime>result.endDate){
+                            var endTime =  new Date(createTime()+" 23:59:59").getTime();
+                            var startTime = new Date(createTime()+" 00:00:00").getTime();
+                            if( result.startDate > currentTime && startTime < result.endDate){
                                 //超出
                                 nut.view.disable();
                                 nut.write("<script>window.onload=function(){window.popupStyle2.on('sorry很抱歉！此活动已经下架',function(event){history.back()})}</script>");
