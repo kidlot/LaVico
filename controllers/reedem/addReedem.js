@@ -141,9 +141,25 @@ module.exports={
                 })
 
                 this.step(function(){
+                    var codelist=[];
+                    console.log("list",list)
+                    console.log("reedem",redem)
+                    for(var i=0;i<list.length;i++){
+                        var ls = {};
+                        if(list[i].PROMOTION_CODE == redem.aid){
+                            ls.PROMOTION_CODE = list[i].PROMOTION_CODE;
+                            ls.selected = "selected";
+                            ls.PROMOTION_NAME = list[i].PROMOTION_NAME;
+                            codelist.push(ls);
+                        }else{
+                            ls.PROMOTION_NAME = list[i].PROMOTION_NAME;
+                            ls.PROMOTION_CODE = list[i].PROMOTION_CODE;
+                            ls.selected = "";
+                            codelist.push(ls);
+                        }
+                    }
+
                     nut.model.list = list;//全部券名
-                    console.log("list")
-                    console.log(list)
                     nut.model.reedem = redem;
                 });
             },
@@ -213,6 +229,15 @@ module.exports={
                         _inputCheck = false;
                         $.globalMessenger().post({
                             message: "请选择结束时间！",
+                            type: 'error',
+                            showCloseButton: true})
+
+                    }
+
+                    if($("#startDate").val() > $("#endDate").val()){
+                        _inputCheck = false;
+                        $.globalMessenger().post({
+                            message: "开始时间不能大于结束时间！",
                             type: 'error',
                             showCloseButton: true})
 
@@ -387,6 +412,14 @@ module.exports={
                 _inputCheck = false;
                 $.globalMessenger().post({
                     message: "请选择结束时间！",
+                    type: 'error',
+                    showCloseButton: true})
+
+            }
+            if($("#startDate").val() > $("#endDate").val()){
+                _inputCheck = false;
+                $.globalMessenger().post({
+                    message: "开始时间不能大于结束时间！",
                     type: 'error',
                     showCloseButton: true})
 

@@ -7,6 +7,9 @@ module.exports={
         var perPage = 10;
         var pageNum = seed.page ? seed.page : 1;
         var then = this;
+        var startTime =  parseInt(new Date(createTime()+" 23:59:59").getTime());
+
+        var endTime = parseInt(new Date(createTime()+" 00:00:00").getTime());
 
         var list = {};
         helper.db.coll("lavico/reddem").find({}).sort({createTime:-1}).page(perPage,pageNum,then.hold(function(err,page){
@@ -17,7 +20,7 @@ module.exports={
             {
                 if(new Date().getTime() < list.docs[i].startDate){
                     list.docs[i].status = "未开始"
-                }else if(new Date().getTime() > list.docs[i].endDate){
+                }else if(endTime > list.docs[i].endDate){
                     list.docs[i].status = "已结束"
                 }else{
                     if(list.docs[i].switcher=="on"){
@@ -99,4 +102,16 @@ module.exports={
             }
         }
     }
+}
+
+
+function   createTime(){
+    var   now = new Date();
+    var   year=now.getFullYear();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+    return   year+"-"+month+"-"+date;
 }

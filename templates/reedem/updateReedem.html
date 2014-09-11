@@ -53,7 +53,7 @@
                             <select class="form-control" style="width: 150px" id='activity_select' name="type">
                                 <option value="0">请选择优惠券</option>
                                 <foreach for="@list" var="doc">
-                                    <option value="{@doc.PROMOTION_CODE}">{@doc.PROMOTION_NAME}</option>
+                                    <option value="{@doc.PROMOTION_CODE}" selected="{@docs.selected}">{@doc.PROMOTION_NAME}</option>
                                 </foreach>
                             </select>
                         </div >
