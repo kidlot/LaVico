@@ -66,7 +66,7 @@ module.exports={
                 var currentTime=new Date().getTime();
                 //查找积分兑换表,获取所有所有兑换商品
                 reedemJson.point=resultPoint[0]
-                helper.db.coll("lavico/reddem").find({"switcher":"on","startDate":{"$lt":currentTime},"endDate":{"$gt":currentTime}}).toArray(this.hold(function(err,result){
+                helper.db.coll("lavico/reddem").find({"switcher":"on","startDate":{"$lt":endTime},"endDate":{"$gt":endTime}}).toArray(this.hold(function(err,result){
                     if(err) throw err;
                     reedemJson.canUse=[];//可兑换商品数组
                     reedemJson.noCanUse=[];//不可兑换商品数组
