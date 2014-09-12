@@ -1,4 +1,9 @@
 <div name="getMember" class="maginTop20">
+    <div style="float: right; width: 306px;">
+        <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
+        <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
+        <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
+    </div>
     <table class="table table-hover" id="tagList">
         <thead>
         <tr>
@@ -25,5 +30,15 @@
         </foreach>
         </tbody>
     </table>
-    <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_singleDetail:singledetail?themeId={@themeId}&chooseID={@chooseID}&optionId={@optionId}&page=%pagenum%" />
+    <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_singleDetail:singledetail?themeId={@themeId}&startTime={@startDate}&stopDate={@stopDate}&chooseID={@chooseID}&optionId={@optionId}&page=%pagenum%" />
 </div>
+<script>
+    function search(){
+        var id = '{@themeId}';
+        var optionId = '{@optionId}';
+        var chooseID = '{@chooseID}';
+        var startTime = $("#startDate").val();
+        var stopDate = $("#stopDate").val();
+        window.location.href = "/lavico/answerQuestion/statistics/statistics_singleDetail?themeId="+id+"&optionId="+optionId+"&chooseID="+ chooseID+"&startTime="+startTime+"&stopDate="+stopDate;
+    }
+</script>

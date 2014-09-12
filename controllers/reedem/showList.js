@@ -111,7 +111,7 @@ module.exports={
                                         perPage:10000,
                                         pageNum:1,
                                         code:result[i].aid
-                                    },then.hold(function(err,doc){
+                                    },then.hold(function(err,doc){createTime
                                         if(err) throw err;
                                         if(doc){
                                             var resultJson=JSON.parse(doc)

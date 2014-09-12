@@ -29,6 +29,11 @@
             <h6 style="margin-top: 2px; color: #1ABC9C">详情</h6>
         </div>
     </div>
+    <div style="float: right; width: 306px;margin-top: 10px;">
+        <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
+        <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
+        <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
+    </div>
     <div name="title" style="padding: 10px;">
         <div nam="main">
             <div name="getMember" class="maginTop20">
@@ -51,8 +56,16 @@
                     </foreach>
                     </tbody>
                 </table>
-                <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_Detail?themeId={@themeId}&page=%pagenum%" />
+                <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_Detail?themeId={@themeId}&startTime={@startDate}&stopDate={@stopDate}&page=%pagenum%" />
             </div>
         </div>
     </div>
 </div>
+<script>
+    function search(){
+        var id = '{@themeId}';
+        var startTime = $("#startDate").val();
+        var stopDate = $("#stopDate").val();
+        window.location.href = "/lavico/answerQuestion/statistics/statistics_Detail?themeId="+id+"&startTime="+startTime+"&stopDate="+stopDate;
+    }
+</script>

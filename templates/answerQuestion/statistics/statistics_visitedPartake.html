@@ -18,13 +18,18 @@
             <h7 style="margin-left: 10px; color: #1ABC9C;">参与过的人</h7>
         </div>
 
-        <div>
+        <div style="float: left">
             <a href="/lavico/answerQuestion/statistics/statistics_oneDetail:exportXsl?_id={@_id}&optionId={@optionId}" class="btn btn-xs btn-primary mhm pull-left" target="_blank">全部导出</a>&nbsp;
             <foreach for="{@theme.type}" var="docc">
                 <if condition="{@docc==2}">
                     <a href="/lavico/answerQuestion/statistics/statistics_simpleList?themeId={@_id}&optionId={@optionId}" target="_blank">显示用户答案</a>
                 </if>
             </foreach>
+        </div>
+        <div style="float: right; width: 306px;">
+            <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
+            <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
+            <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
         </div>
     </div>
     <table class="table table-hover" id="tagList">
@@ -55,5 +60,14 @@
         </foreach>
         <tbody>
     </table>
-    <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_oneDetail:visitedPartake?_id={@_id}&optionId={@optionId}&page=%pagenum%" /></div>
+    <div style="margin-left: 17px;"><include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_oneDetail:visitedPartake?_id={@_id}&startTime={@startDate}&stopDate={@stopDate}&optionId={@optionId}&page=%pagenum%" /></div>
 </div>
+<script>
+    function search(){
+        var id = '{@_id}';
+        var optionId = '{@optionId}'
+        var startTime = $("#startDate").val();
+        var stopDate = $("#stopDate").val();
+        window.location.href = "/lavico/answerQuestion/statistics/statistics_oneDetail?themeId="+id+"&optionId="+optionId+"&startTime="+startTime+"&stopDate="+stopDate;
+    }
+</script>
