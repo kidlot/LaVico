@@ -2311,6 +2311,462 @@ exports.load = function () {
     var welabAppsMassForm = require("welab/apps/mass/controllers/form");
     welabAppsMassForm = "lavico/controllers/welab/mass/controllers/form"
 
+    var welabReplylist = require("welab/controllers/reply/list.js");
 
+    welabReplylist.process = function(seed,nut){
+        this.step(function(){
+            helper.db.coll("lavico/tags").find({}).toArray(this.hold(function(err,docs){
+                if(err) throw  err;
+                nut.model.taglist = docs || {};
+            }))
+        })
+    }
+
+    welabReplylist.view = "lavico/templates/welab/reply/list.html";
+    welabReplylist.children.page.viewIn = function(){
+        /**
+         * 设置标签
+         */
+
+        $(".tagBtn").click(function(){
+
+            var tags = $("#tag option:selected").val();
+            if( tags == "-1"){
+                $.globalMessenger().post({
+                    message: '请选择一个标签.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyList",value:getReplyList().join(",")});
+            oLinkOptions.data.push({name:"tagList",value:tags});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/tags:setTag";
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $('#tagModal').modal('toggle');
+
+
+                // 更改页面数据
+                $("tr:gt(0)").each(function( i, o){
+                    var tds = $(o).find("td");
+
+                    if(tds.eq(0).find("input")[0].checked){
+
+                        // tags
+                        var aOldTagsList = [];
+                        tds.eq(4).find("span").each(function(i,o){
+                            aOldTagsList.push($(o).find("span").text());
+                        })
+
+                        var tags = $("input[type='hidden'][name='tagsVal']").val();
+                        var aNewTagsList = tags.split(",");
+
+                        var _is = false;
+                        for (var iii=0; iii<aNewTagsList.length; iii++)
+                        {
+                            _is = false;
+
+                            for (var ii=0; ii<aOldTagsList.length; ii++)
+                            {
+                                if( aOldTagsList[ii].toLowerCase() == aNewTagsList[iii].toLowerCase()){
+                                    _is = true;
+                                    break;
+                                }
+                            }
+                            if( _is == false){
+                                var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="#" class="tm-tag-remove" data-dismiss="alert" onclick="removeTagOrKeyword( \'tag\', this)">×</a></span>';
+                                tds.eq(4).append(_span);
+                            }
+                        }
+                    }
+                })
+
+            }) ;
+
+            return false;
+        });
+
+        /**
+         * 设置关键字
+         */
+
+        $(".keywordBtn").click(function(){
+
+            var keywordsVal = $("input[type='hidden'][name='keywordsVal']").val();
+            if( keywordsVal == ""){
+
+                $.globalMessenger().post({
+                    message: '至少设置一个关键词.',
+                    type: 'error',
+                    showCloseButton: true})
+                return false;
+            }
+
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyList",value:getReplyList().join(",")});
+            oLinkOptions.data.push({name:"keyword",value:keywordsVal});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/keywords:setKeyword";
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $('#keywordModal').modal('toggle');
+
+                // 更改页面数据
+                $("tr:gt(0)").each(function( i, o){
+                    var tds = $(o).find("td");
+
+                    if(tds.eq(0).find("input")[0].checked){
+
+                        // tags
+                        var aOldTagsList = [];
+                        tds.eq(3).find("span").each(function(i,o){
+                            aOldTagsList.push($(o).find("span").text());
+                        })
+
+                        var tags = $("input[type='hidden'][name='keywordsVal']").val();
+                        var aNewTagsList = tags.split(",");
+
+                        var _is = false;
+                        for (var iii=0; iii<aNewTagsList.length; iii++)
+                        {
+                            _is = false;
+
+                            for (var ii=0; ii<aOldTagsList.length; ii++)
+                            {
+                                if( aOldTagsList[ii].toLowerCase() == aNewTagsList[iii].toLowerCase()){
+                                    _is = true;
+                                    break;
+                                }
+                            }
+                            if( _is == false){
+                                var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="#" class="tm-tag-remove" data-dismiss="alert" onclick="removeTagOrKeyword( \'keyword\', this)">×</a></span>';
+                                tds.eq(3).append(_span);
+                            }
+                        }
+                    }
+                })
+
+            }) ;
+
+            return false;
+        });
+    }
+
+    welabReplylist.viewIn = function(){
+        $(".switch1").click(function(){
+
+            var _is = $(this).hasClass("switch-on")
+            if(_is){
+                $(this).addClass("switch-off")
+                $(this).removeClass("switch-on")
+
+                var _isValid = "setInvalid"
+            }else{
+                $(this).removeClass("switch-off")
+                $(this).addClass("switch-on")
+                var _isValid = "setValid"
+            }
+
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyid",value:$(this).parents('tr').find("input[_id]").attr("_id")});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/form:"+_isValid;
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+
+                nut.msgqueue.popup() ;
+
+            }) ;
+
+        })
+
+
+//        jQuery("#tags").tagsManager({
+//            prefilled: [],
+//            hiddenTagListName: 'tagsVal'
+//        });
+
+        jQuery(".keywordText").tagsManager({
+            prefilled: [],
+            hiddenTagListName: 'keywordsVal'
+        });
+
+        /**
+         * 删除动作
+         */
+        var oLinkOptions ;
+        $(".removeView").on("click",function(){
+
+            $('#removeModal').modal('toggle');
+            oLinkOptions = this ;
+            oLinkOptions.href = "/welab/reply/form:remove?list="+$(this).parents("tr").find("input[type='checkbox']").attr("_id");
+            return false;
+        })
+
+        $(".removeBtn").click(function(){
+
+            $(oLinkOptions).action(function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $('#removeModal').modal('toggle');
+                $.controller("/welab/reply/list",null,"lazy");
+
+            }) ;
+            return false;
+        });
+
+        /**
+         * 设置标签
+         */
+        $(".setTagView").on("click",function(){
+
+            var aList = getReplyList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一条回复.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            $('#tagModal').modal('toggle');
+            jQuery("#tags").tagsManager('empty');
+            return false;
+        })
+
+
+        /**
+         * 设置关键字
+         */
+        $(".setKeywordView").on("click",function(){
+
+            var aList = getReplyList();
+            if( aList.length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一条回复.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+
+            $('#keywordModal').modal('toggle');
+            jQuery("#keywords").tagsManager('empty');
+            return false;
+
+        })
+
+
+        /**
+         * 修改
+         */
+        $(".editBtn").on("click",function(){
+
+            var aList = [];
+            $("#tagList").find("tr:gt(0)").each(function(i,o){
+
+                var _oInput = jQuery(o).find("td:eq(0) > input[_id]")
+                var _id = _oInput.attr("_id");
+
+                if( _id && _oInput[0].checked){
+                    aList.push(_oInput);
+                }
+            })
+
+
+            if( aList.length != 1){
+                $.globalMessenger().post({
+                    message: '只能选择一条回复.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+            var type = aList[0].attr("_type")
+
+            var url = "/welab/reply/form"
+            if( type == "text"){
+                url += "Text?_id="+aList[0].attr("_id")+"&type=text"
+            }else if(type == "voice"){
+                url += "Audio?_id="+aList[0].attr("_id")+"&type=voice"
+            }else{
+                url += "?_id="+aList[0].attr("_id")+"&type="+type
+            }
+            $.controller(url,null,"lazy");
+            return false;
+
+        })
+
+
+        // 设定为加关注自动回复
+        $(".setFollowAutoReplyBtn").click(function(){
+
+            oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyid",value:getReplyList().join(",")});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/form:setFollowAutoReply";
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/welab/reply/list",null,"lazy");
+
+            }) ;
+            return false;
+        });
+        // 设定为消息自动回复
+        $(".setMessageAutoReplyBtn").click(function(){
+
+            oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyid",value:getReplyList().join(",")});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/form:setMessageAutoReply";
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/welab/reply/list",null,"lazy");
+            }) ;
+            return false;
+        });
+        // 启用
+        $(".validBtn").click(function(){
+
+            oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyid",value:getReplyList().join(",")});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/form:setValid";
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/welab/reply/list",null,"lazy");
+            }) ;
+            return false;
+        });
+        // 停用
+        $(".invalidBtn").click(function(){
+
+            oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyid",value:getReplyList().join(",")});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/form:setInvalid";
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/welab/reply/list",null,"lazy");
+            }) ;
+            return false;
+        });
+
+        //设置标签
+        $(".tagBtn").click(function(){
+            var tags = $("#tag option:selected").val();
+            if( tags == "-1"){
+                $.globalMessenger().post({
+                    message: '请选择一个标签.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyList",value:getReplyList().join(",")});
+            oLinkOptions.data.push({name:"tagList",value:tags});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/tags:setTag";
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $('#tagModal').modal('toggle');
+
+
+                // 更改页面数据
+                $("tr:gt(0)").each(function( i, o){
+                    var tds = $(o).find("td");
+
+                    if(tds.eq(0).find("input")[0].checked){
+
+                        // tags
+                        var aOldTagsList = [];
+                        tds.eq(4).find("span").each(function(i,o){
+                            aOldTagsList.push($(o).find("span").text());
+                        })
+
+                        var tags = $("#tag option:selected").val();
+                        var aNewTagsList = tags.split(",");
+
+                        var _is = false;
+                        for (var iii=0; iii<aNewTagsList.length; iii++)
+                        {
+                            _is = false;
+
+                            for (var ii=0; ii<aOldTagsList.length; ii++)
+                            {
+                                if( aOldTagsList[ii].toLowerCase() == aNewTagsList[iii].toLowerCase()){
+                                    _is = true;
+                                    break;
+                                }
+                            }
+                            if( _is == false){
+                                var _span = '<span class="tm-tag tm-tag-info" ><span>'+aNewTagsList[iii]+'</span><a href="#" class="tm-tag-remove" data-dismiss="alert" onclick="removeTagOrKeyword( \'tag\', this)">×</a></span>';
+                                tds.eq(4).append(_span);
+                            }
+                        }
+                    }
+                })
+
+            }) ;
+
+            return false;
+        });
+
+
+        // search box
+        $.searchInitConditions([
+            {field:'createTime',title:'时间',type:'date'}
+            , {field:'name',title:'名称',type:'text'}
+            , {field:'type',title:'类型',type:'replytype'}
+            , {field:'tags',title:'标签',type:'value'}
+            , {field:'keywords',title:'关键词',type:'value'}
+        ]) ;
+
+
+        $(".btnsearch").click(function(){
+            var conditions = $(this).searchConditions() ;
+            if(!conditions.length)
+                return ;
+
+            $.controller("/welab/reply/list:page",{
+                conditions:JSON.stringify(conditions)
+                , logic: $("[name=searchLogic]").val()
+            },'.childview>.ocview') ;
+        }) ;
+
+        $(".btncancel").click(function(){
+
+            $('#searchView').fadeOut('100')
+            $('.searchConditionOuter').empty()
+            $.controller("/welab/reply/list:page",{
+                conditions:JSON.stringify({})
+                , logic: $("[name=searchLogic]").val()
+            },'.childview>.ocview') ;
+        }) ;
+    }
 };
 

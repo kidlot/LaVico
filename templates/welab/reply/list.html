@@ -1,0 +1,78 @@
+<ul class="breadcrumb clearfix">
+    <li class="b01"><a href="/welab/dashboard" class="stay">首页</a> <em></em></li>
+    <li class="b02"><a href="/welab/reply/list" class="stay">回复</a> <em></em></li>
+    <li class="active"><span>回复管理</span></li>
+</ul>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <button class="btn btn-primary handle_btn" type="button" onclick="$('#searchView').fadeIn('100')">条件筛选</button>
+        <a href="#" class="btn btn-primary handle_btn setTagView" style="background-color: #1abc9c;">设定标签</a>
+        <!--
+        <div class="btn-group">
+            <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown"><em class="icon02"></em> 操作 <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="setTagView">设定标签</a></li>
+                <li><a href="#" class="setKeywordView">设定关键词</a></li>
+                <li role="presentation" class="divider"></li>
+                <li><a href="#" class="setFollowAutoReplyBtn">设定为加关注自动回复</a></li>
+                <li><a href="#" class="setMessageAutoReplyBtn">设定为消息自动回复</a></li>
+                <li role="presentation" class="divider"></li>
+                <li><a href="#" class="validBtn">启用</a></li>
+                <li><a href="#" class="invalidBtn">停用</a></li>
+                <li role="presentation" class="divider"></li>
+                <li><a href="#" class="editBtn">修改</a></li>
+                <li><a href="#" class="removeView">删除</a></li>
+            </ul>
+        </div>
+        -->
+        <div class="btn-group">
+            <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown" style="background-color: #1abc9c;"><em class="icon02"></em> 新建回复 <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="/welab/reply/formText" class="stay-top">文本</a></li>
+                <li><a href="/welab/reply/form?type=single" class="stay-top">单图文</a></li>
+                <li><a href="/welab/reply/form?type=list" class="stay-top">多图文</a></li>
+                <li><a href="/welab/reply/formAudio" class="stay-top">语音</a></li>
+            </ul>
+        </div>
+    </div>
+    <include file="welab/templates/searchForm.html" />
+    <div class="panel-body">
+        <div class="childview">
+            <view name="page" />
+        </div>
+    </div>
+</div>
+
+
+<!-- 设置标签 -->
+<div class="modal fade" id="tagModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">设置标签</h4>
+            </div>
+            <div class="modal-body">
+                <select id="tag"  class="form-control input-sm" style="width: 250px">
+                    <option value="-1" selected="selected">请选择标签</option>
+                    <foreach for="{@taglist}" var="tags">
+                        <option value="{@tags.title}">{@tags.title}</option>
+                    </foreach>
+                </select>
+                <!--<input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm tm-input tm-input-info" style="width:240px;"/>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary tagBtn">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">
+<script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>
+
+<script src="/welab/public/js/searchbox.js"></script>
+<link href="/welab/public/css/searchbox.css" rel="stylesheet">
