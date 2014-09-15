@@ -91,12 +91,11 @@
         <script>
             function load(){
                 if(location.pathname == "/lavico/lookbook/detail"){
-                    shareIcon = location.origin + $(".new_list li").find("img:eq(0)").attr("src");
-                    shareTitle = jQuery(".new_top").find("p").html();
-                    shareContent =jQuery(".new_top").find("p").html();
+                    shareIcon = location.origin + jQuery(".new_list li").find("img:eq(0)").attr("src");
+                    shareTitle = jQuery(".new_top").find("span").html();
+                    shareContent =jQuery(".new_top").find("span").html();
                 }
             }
-
             window.onload =function() {
                 load();
             }
@@ -136,20 +135,6 @@
         <input type="hidden" id="wxid" value="{@wxid}">
         <input type="hidden" id="id" value="{@ _id}">
     </section>
-    <script>
-        function load(){
-            if(location.pathname == "/lavico/lookbook/detail"){
-                shareIcon = location.origin + $("#slider li").find("img:eq(0)").attr("src");
-                shareTitle = jQuery(".switch_list").find("h2").html();
-                shareContent =jQuery(".switch_list").find("h2").html();
-            }
-            alert(shareIcon)
-        }
-
-        window.onload =function() {
-            load();
-        }
-    </script>
     <script>
         var wrapper = document.getElementById("wrapper_03_01");
         var wrapper_Li = document.getElementById("slider").getElementsByTagName("li");
@@ -208,9 +193,18 @@
                 }
             });
         }
+
+        function load(){
+            if(location.pathname == "/lavico/lookbook/detail"){
+                shareIcon = location.origin + $("#slider li").find("img:eq(0)").attr("src");
+                shareTitle = jQuery(".switch_list").find("h2:eq(0)").html();
+                shareContent =jQuery(".switch_list").find("h2:eq(0)").html();
+            }
+        }
         window.onload=function(){
             init();
             loaded();
+            load();
         }
         function loaded() {
             var data = JSON.parse($("#jsonData").text())
