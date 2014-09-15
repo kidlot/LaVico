@@ -10,7 +10,10 @@ module.exports={
         var themetype = seed.themetype ? seed.themetype : 0;
         nut.model.themetype = themetype;
 
-        seed["$visitedPartake"]={_id:themeId,optionId:optionId}
+        var startTime = seed.startTime;
+        var stopDate = seed.stopDate;
+
+        seed["$visitedPartake"]={_id:themeId,optionId:optionId,startTime:startTime,stopDate:stopDate}
 
         then.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(themeId)},then.hold(function(err,doc){
@@ -53,12 +56,63 @@ module.exports={
             view:"lavico/templates/answerQuestion/statistics/statistics_visitedPartake.html",
             process:function(seed,nut){
 
+                var startTime = seed.startTime || "undefined";
+                var stopTime = seed.stopDate || "undefined";
+
+                var dTime = new Date();
+                var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()-2);//默认三个月内的数据
+                var _end_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1);//默认三个月内的数据
+
+                var startDate = new Date(startTime+" 00:00:00").getTime();
+                var endTime =  new Date(stopTime+" 23:59:59").getTime();
+
+                if(startTime == "undefined" && stopTime == "undefined"){
+                    startDate = new Date(_start_ym+" 00:00:00").getTime();
+                    endTime =  new Date(_end_ym+" 23:59:59").getTime();
+                }
+
+                var startTimeStamp = seed.startTime ? new Date(seed.startTime + " 00:00:00").getTime() : new Date(_start_ym+"-01 00:00:00").getTime();
+                var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_end_ym+"-31 23:59:59").getTime();
+
+                if(startTime == "undefined" && stopTime == "undefined"){
+                    nut.model.startDate = _start_ym;
+                    nut.model.stopDate = _end_ym;
+                }else{
+                    nut.model.startDate = startTime
+                    nut.model.stopDate = stopTime
+                }
+
+                this.step(function(){
+
+                    if(startTime != "undefined" && stopTime != "undefined"){
+                        nut.model.startDate = startTime;
+                        nut.model.stopDate = stopTime;
+                    }else{
+                        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                    }
+                })
+
+
                 var then = this
                 var visitedPeople=[];
                 var themeQuestionList = []
                 var visitePeopleList=[]
                 this.step(function(){
-                    helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(seed._id),isFinish:false,"type":"0","optionId":parseInt(seed.optionId)}).toArray(this.hold(function(err,doc){
+                    helper.db.coll("lavico/custReceive").find(
+                        {$and:[
+                            {
+                                themeId:helper.db.id(seed._id),
+                                isFinish:false,
+                                "type":"0",
+                                "optionId":parseInt(seed.optionId)
+                            },
+                            {$or:[
+                                {"createTime":{$gte:startTime,$lte:stopTime}},
+                                {"createTime":{$gte:startDate,$lte:endTime}}
+                            ]}
+                        ]}
+                    ).toArray(this.hold(function(err,doc){
                         if(err) console.log(err);
                         if(doc.length>0){
                             for(var i=0;i<doc.length;i++){
@@ -69,20 +123,6 @@ module.exports={
                             }
                         }
                     }))
-//                    helper.db.coll("lavico/custReceive").aggregate(
-//                        [
-//                            {$match:{optionId:parseInt(seed.optionId),themeId:helper.db.id(seed._id)}},
-//                            {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$memberId"}}}
-//                        ],this.hold(function(err,doc){
-//                            if(err)throw err
-//                            if(doc!=""){
-//                                visitedPeople=doc[0].count
-//                            }else{
-//
-//                                this.terminate();
-//                            }
-//                        })
-//                    )
                 })
 
                 this.step(function(){
@@ -150,6 +190,18 @@ module.exports={
                     nut.model._id=seed._id
                     nut.model.optionId=seed.optionId
                 })
+            },viewIn:function(){
+                $('#startDate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
+                })
+
+                $('#stopDate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
+                })
             }
         }
     },
@@ -173,17 +225,6 @@ module.exports={
                             }
                         }
                     }))
-
-//                    helper.db.coll("lavico/custReceive").aggregate(
-//                        [
-//                            {$match:{optionId:1,themeId:helper.db.id(seed._id)}},
-//                            {$group:{_id:{themeId:"$themeId",optionId:"$optionId"},count:{$addToSet:"$wechatid"}}}
-//                        ],this.hold(function(err,doc){
-//                            if(err)throw err
-//
-//                            visitedPeople=doc[0].count
-//                        })
-//                    )
                 })
 
                 this.step(function(){

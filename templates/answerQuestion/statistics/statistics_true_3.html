@@ -6,9 +6,15 @@
 <div name="getMember" class="maginTop20">
     <div>
         <input type="hidden" name="_id" value="{@_id}">
-        <div style="margin-left: 17px; height: 30px;">
-            <a href="/lavico/answerQuestion/statistics/statistics_true:exportXsl?_id={@_id}&themetype={@themetype}" class="btn btn-xs btn-primary mhm pull-left">>全部导出</a>
+        <div style="margin-left: 17px; height: 30px; float: left">
+            <a href="/lavico/answerQuestion/statistics/statistics_true:exportXsl?_id={@_id}&themetype={@themetype}" class="btn btn-xs btn-primary mhm pull-left">全部导出</a>
             <a href="javascript:;" class="btn btn-xs btn-primary mhm pull-left" style="display: none"  onclick="sa()">筛选导出</a>
+
+        </div>
+        <div style="float: right; width: 306px;">
+            <input type="text" id="startDate" name="startDate" class="form-control input-sm" style="width: 95px" value="{@ startDate}">
+            <input type="text" id="stopDate" name="stopDate" class="form-control input-sm" style="width: 95px" value="{@ stopDate}">
+            <input type="button" class="btn btn-xs btn-primary mhm" value="搜索" onclick="search()">
         </div>
     </div>
 
@@ -47,10 +53,22 @@
             </foreach>
     </table>
     <div style="margin-left: 17px;">
-        <include file="welab/templates/paginator.html" model="@page" model.url="/lavico/answerQuestion/statistics/statistics_true:finishPeople?_id={@_id}&themetype={@themetype}&finishCount={@finishCount}&totalPop={@totalPop}&page=%pagenum%" />
+        <include file="welab/templates/paginator.html" model="@page"
+                 model.url="/lavico/answerQuestion/statistics/statistics_true:finishPeople?_id={@_id}&themetype={@themetype}&finishCount={@finishCount}&totalPop={@totalPop}&startTime={@startDate}&stopDate={@stopDate}&page=%pagenum%" />
     </div>
 </div>
 <script>
+
+    function search(){
+        var id = '{@_id}';
+        var themetype = '{@themetype}';
+        var finishCount = '{@finishCount}';
+        var totalPop = '{@totalPop}';
+        var startTime = $("#startDate").val();
+        var stopDate = $("#stopDate").val();
+        window.location.href = "/lavico/answerQuestion/statistics/statistics_true?_id="+id+"&themetype="+themetype+"&finishCount="+ finishCount+"&totalPop="+totalPop+"&startTime="+startTime+"&stopDate="+stopDate;
+    }
+
     function CheckAll(value,obj)  {
         var num = document.getElementsByName("is_s");
         for(var i=0;i<num.length;i++){

@@ -15,14 +15,15 @@ module.exports={
         nut.model.showtype = seed.showtype || -1;
         var allRight=[]
 
-
+        var startTime = seed.startTime;
+        var stopDate = seed.stopDate;
 
         docOne.finishCount=seed.finishCount
         docOne.totalPop=seed.totalPop
         //父进程变量传入子变量
         seed["$lab"]= {_id:seed._id}
         seed["$score"]={_id:seed._id,themetype:themetype}
-        seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop,themetype:themetype}
+        seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop,themetype:themetype,startTime:startTime,stopDate:stopDate}
         seed["$exportXsl"]={_id:seed._id,themetype:themetype}
         seed["filterexport"]={_id:seed._id}
 
@@ -447,12 +448,75 @@ module.exports={
                 nut.model.totalPop=totalPop;
 
                 nut.model.themetype = seed.themetype;
+                var then=this;
+                var docs_themeQuestion3;
+                var _id=seed._id;
+
+                var finishCount=seed.finishCount;
+                var totalPop=seed.totalPop;
+                nut.model._id=_id;
+
+
+
+                nut.model.themetype = seed.themetype ? seed.themetype : 0;
+
+                nut.model.finishCount=finishCount
+                nut.model.totalPop=totalPop;
+
+                nut.model.themetype = seed.themetype;
+
+                var startTime = seed.startTime || "undefined";
+                var stopTime = seed.stopDate || "undefined";
+
+                var dTime = new Date();
+                var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()-2);//默认三个月内的数据
+                var _end_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1);//默认三个月内的数据
+
+                var startDate = new Date(startTime+" 00:00:00").getTime();
+                var endTime =  new Date(stopTime+" 23:59:59").getTime();
+
+                if(startTime == "undefined" && stopTime == "undefined"){
+                    startDate = new Date(_start_ym+" 00:00:00").getTime();
+                    endTime =  new Date(_end_ym+" 23:59:59").getTime();
+                }
+
+                var startTimeStamp = seed.startTime ? new Date(seed.startTime + " 00:00:00").getTime() : new Date(_start_ym+"-01 00:00:00").getTime();
+                var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_end_ym+"-31 23:59:59").getTime();
+
+                if(startTime == "undefined" && stopTime == "undefined"){
+                    nut.model.startDate = _start_ym;
+                    nut.model.stopDate = _end_ym;
+                }else{
+                    nut.model.startDate = startTime
+                    nut.model.stopDate = stopTime
+                }
+
+                this.step(function(){
+
+                    if(startTime != "undefined" && stopTime != "undefined"){
+                        nut.model.startDate = startTime;
+                        nut.model.stopDate = stopTime;
+                    }else{
+                        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                    }
+                })
+
 
                 var finishMan=[];
                 try{
                     then.step(function(){
-                        helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id),isFinish:true,"type":"0"})
-                            .toArray(then.hold(function(err,doc){
+                        helper.db.coll("lavico/custReceive").find(
+                            {$and:[
+                                {
+                                    themeId:helper.db.id(_id),isFinish:true,"type":"0"
+                                },
+                                {$or:[
+                                    {"createTime":{$gte:startTime,$lte:stopTime}},
+                                    {"createTime":{$gte:startDate,$lte:endTime}}
+                                ]}
+                            ]}
+                        ).toArray(then.hold(function(err,doc){
                                 for(var i=0;i<doc.length;i++){
                                     var manInfo={};
                                     manInfo.createTime = formatTime(doc[i].createTime)
@@ -544,6 +608,18 @@ module.exports={
                 $("input[name=btnExcel]").click(function(){
                     $.get("statistics_true:exportXsl",{_id:$("input[name=_id]").val()},function(result){
                     });
+                })
+
+                $('#startDate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
+                })
+
+                $('#stopDate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
                 })
             }
         },

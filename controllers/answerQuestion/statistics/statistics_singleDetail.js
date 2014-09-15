@@ -7,7 +7,10 @@ module.exports={
         nut.model.optionId = seed.optionId;
         nut.model.chooseID = seed.chooseID;
         nut.model.themeId = seed.themeId;
-        seed["$singledetail"]= {themeId:seed.themeId,optionId:seed.optionId,chooseID:seed.chooseID}
+        var startTime = seed.startTime;
+        var stopDate = seed.stopDate;
+
+        seed["$singledetail"]= {themeId:seed.themeId,optionId:seed.optionId,chooseID:seed.chooseID,startTime:startTime,stopDate:stopDate}
     },
     children:{
         singledetail:{
@@ -21,9 +24,58 @@ module.exports={
                 var then = this;
                 var resultlist=[];
 
+
+                var startTime = seed.startTime || "undefined";
+                var stopTime = seed.stopDate || "undefined";
+
+                var dTime = new Date();
+                var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()-2);//默认三个月内的数据
+                var _end_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1);//默认三个月内的数据
+
+                var startDate = new Date(startTime+" 00:00:00").getTime();
+                var endTime =  new Date(stopTime+" 23:59:59").getTime();
+
+                if(startTime == "undefined" && stopTime == "undefined"){
+                    startDate = new Date(_start_ym+" 00:00:00").getTime();
+                    endTime =  new Date(_end_ym+" 23:59:59").getTime();
+                }
+
+                var startTimeStamp = seed.startTime ? new Date(seed.startTime + " 00:00:00").getTime() : new Date(_start_ym+"-01 00:00:00").getTime();
+                var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_end_ym+"-31 23:59:59").getTime();
+
+                if(startTime == "undefined" && stopTime == "undefined"){
+                    nut.model.startDate = _start_ym;
+                    nut.model.stopDate = _end_ym;
+                }else{
+                    nut.model.startDate = startTime
+                    nut.model.stopDate = stopTime
+                }
+
                 this.step(function(){
-                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(themeId),
-                        "optionId":parseInt(optionId),"chooseId":parseInt(chooseID)}).toArray(this.hold(function(err,docs){
+
+                    if(startTime != "undefined" && stopTime != "undefined"){
+                        nut.model.startDate = startTime;
+                        nut.model.stopDate = stopTime;
+                    }else{
+                        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                    }
+                })
+
+                this.step(function(){
+                    helper.db.coll("lavico/custReceive").find(
+                        {$and:[
+                            {
+                                "themeId":helper.db.id(themeId),
+                                "optionId":parseInt(optionId),
+                                "chooseId":parseInt(chooseID)
+                            },
+                            {$or:[
+                                {"createTime":{$gte:startTime,$lte:stopTime}},
+                                {"createTime":{$gte:startDate,$lte:endTime}}
+                            ]}
+                        ]}
+                    ).toArray(this.hold(function(err,docs){
                             if(err) throw err;
                             custReceivelist = docs || {};
                         }))
@@ -88,6 +140,18 @@ module.exports={
                     nut.model.themeId = seed.themeId;
                     nut.model.optionId = seed.optionId;
                     nut.model.chooseID = seed.chooseID;
+                })
+            },viewIn:function(){
+                $('#startDate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
+                })
+
+                $('#stopDate').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
                 })
             }
         }
