@@ -21,10 +21,11 @@
                 }, {
                     title: '添加',
                     controller: '/lavico/reedem/addReedem'
-                },{
-                    title: '加分',
-                    controller: '/lavico/reedem/addCoin_Test'
                 }
+//                ,{
+//                    title: '加分',
+//                    controller: '/lavico/reedem/addCoin_Test'
+//                }
             ],
             start: function() {
                 return this.on = true;
