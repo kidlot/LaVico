@@ -38,10 +38,12 @@ module.exports={
     viewIn:function(){
         $("input[name=btnSave]").click(function(){
             //request-ajax submit
+            var content = encodeURIComponent(contentEditor.document.getBody().getHtml());
+            var jsonData={title:$("input[name='announcementTitle']").val(),content:content}
             var oLinkOptions = {} ;
             oLinkOptions.data = [{name:'title',value:$("input[name='announcementTitle']").val()},
-                                 {name:"content",value:$("#content").val()},
-                                 {name:"_id",value:$("input[name='id']").val()}];
+                                 {name:"content",value:content},
+                                 {name:"_id",value:$("#announcementId").val()}];
             oLinkOptions.type = "POST";
             oLinkOptions.url = "lavico/announcement/updateAnnouncement:save";
             $.request(oLinkOptions,function(err,nut){
@@ -54,5 +56,18 @@ module.exports={
         $("input[name='btnBack']").click(function(){
             location.href="/lavico/announcement/announcementIndex";
         })
+
+        //正文内容-编辑器
+        var contentEditor = CKEDITOR.replace( 'content', {
+            toolbar: [
+                [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+            ]
+        });
+        contentEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+        contentEditor.config.enterMode = CKEDITOR.ENTER_BR;
+        contentEditor.config.language = 'zh-cn';
+        contentEditor.config.width = 600;
+        contentEditor.config.height = 400;
+        contentEditor.config.allowedContent = true;//防止过滤标签的css-style属性
     }
 }
