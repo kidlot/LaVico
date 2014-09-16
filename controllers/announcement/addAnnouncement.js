@@ -25,7 +25,8 @@ module.exports={
     },
     viewIn:function(){
         window.save = function(){
-            var jsonData={title:$("input[name='announcementTitle']").val(),content:$("#content").val()}
+            var content = encodeURIComponent(contentEditor.document.getBody().getHtml());
+            var jsonData={title:$("input[name='announcementTitle']").val(),content:content}
             $.get("/lavico/announcement/addAnnouncement:save",jsonData,
                 function(data){
                     $("span[name='resultShowArea']").html("the data added successfully");
@@ -33,5 +34,18 @@ module.exports={
                 }
             );
         }
+
+        //正文内容-编辑器
+        var contentEditor = CKEDITOR.replace( 'content', {
+            toolbar: [
+                [ 'Source','Image','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+            ]
+        });
+        contentEditor.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+        contentEditor.config.enterMode = CKEDITOR.ENTER_BR;
+        contentEditor.config.language = 'zh-cn';
+        contentEditor.config.width = 600;
+        contentEditor.config.height = 400;
+        contentEditor.config.allowedContent = true;//防止过滤标签的css-style属性
     }
 }

@@ -70,10 +70,10 @@
             <if condition="@res.err==1">
 
                 <if condition="@res.url">
-                    <if condition="@res.msg=='恭喜您，你已成功侃价，请点击查看您的侃价礼券'">
+                    <if condition="@res.msg=='恭喜您已成功侃价，请点击查看您的侃价礼券'">
                         <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.5rem;">{@res.msg}</a>
                     </if>
-                    <if condition="@res.msg=='恭喜您，你已成功侃价，请先注册为朗维高LaVico的会员后领取礼券'">
+                    <if condition="@res.msg=='恭喜您已成功侃价，请先注册为朗维高LaVico的会员后领取礼券'">
                         <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.2rem;">{@res.msg}</a>
                     </if>
                     <if condition="@res.msg=='您已成功侃价，请查看您的“专属礼券”'">
@@ -103,7 +103,7 @@
 
         <div class="fade4 channel" id="_win_success">
             <div class="first-price">
-                <p class="msg">恭喜您，您已成功侃价，获得现金抵用券一张，请至“专属礼券”查看</p>
+                <p class="msg">恭喜您已成功侃价，获得现金抵用券一张，请至“专属礼券”查看</p>
 
                 <p class="confirm"><input class="goconfirmBtn" style="background: url('/lavico/public/images/click_btn.jpg'); background-size: 100% 100%;"
                                           type="submit" border="0" value="确认" onclick="location.href='/lavico/member/card_member/coupon/index?wxid='+$('#wxid').val()"/></p>
@@ -254,7 +254,7 @@ function _step(channelName){
 
     if(parm=='02'){
         if(isVip =='false'){
-            _txt = "恭喜您，你已成功侃价，请先注册为朗维高LaVico的会员后领取礼券";
+            _txt = "恭喜您已成功侃价，请先注册为朗维高LaVico的会员后领取礼券";
             var _encodeUlr = encodeURIComponent("/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
             _url = "/lavico/member/card_blank/register?wxid="+$("#wxid").val()+"&go="+_encodeUlr;
         }else{
@@ -263,7 +263,7 @@ function _step(channelName){
         }
     }else if(parm=='03'){
         if(isVip =='false'){
-            _txt = "恭喜您，你已成功侃价，请点击查看您的侃价礼券";
+            _txt = "恭喜您已成功侃价，请点击查看您的侃价礼券";
             _url = "/lavico/member/card_blank/coupon?wxid="+$("#wxid").val();
         }else{
             _txt =  "您已成功侃价，请查看您的“专属礼券”";
@@ -271,7 +271,7 @@ function _step(channelName){
         }
     }else{
         if(isVip =='false'){
-            _txt = "恭喜您，你已成功侃价，请点击查看您的侃价礼券";
+            _txt = "恭喜您已成功侃价，请点击查看您的侃价礼券";
             _url = "/lavico/member/card_blank/coupon?wxid="+$("#wxid").val();
         }else{
             _txt =  "您已成功侃价，请查看您的“专属礼券”";
