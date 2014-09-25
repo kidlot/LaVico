@@ -49,6 +49,7 @@
             <p class="confirm"><input class="gocollection" type="submit" border="0" value="转至收藏夹" onclick="location.href='/lavico/lookbook/favorites?wxid={@ wxid}&fromWelab={@fromWelab}&cb='+encodeURIComponent('{'+location.href+'}')"></p>
         </div>
     </div>
+
     <script>
         var myScroll;
         function loaded() {
@@ -74,6 +75,16 @@
             });
         }
 
+        function load(){
+            if(location.pathname == "/lavico/lookbook/product"){
+                shareIcon = location.origin + $("#thelist li").find("img:eq(0)").attr("src");
+                shareTitle = jQuery(".article").find("p:eq(0)").html();
+                shareContent =jQuery(".article ").find("h3:eq(0)").html();
+            }
+        }
+        window.onload=function(){
+            load();
+        }
 
         document.addEventListener('DOMContentLoaded', loaded, false);
 

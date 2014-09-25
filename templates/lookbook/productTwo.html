@@ -91,7 +91,16 @@
             });
         }
 
-
+        function load(){
+            if(location.pathname == "/lavico/lookbook/productTwo"){
+                shareIcon = location.origin + $("#thelist_02 li a").find("img:eq(0)").attr("src");
+                shareTitle = jQuery(".show_lookbook").find("p:eq(0)").html();
+                shareContent =jQuery(".show_lookbook ").find("h2:eq(0)").html();
+            }
+        }
+        window.onload=function(){
+            load();
+        }
         document.addEventListener('DOMContentLoaded', loaded, false);
 
     </script>

@@ -744,7 +744,7 @@ exports.load = function () {
 
 
 
-
+            console.log("conditions",conditions)
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
 //                console.log(page);
