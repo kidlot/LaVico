@@ -192,7 +192,21 @@ exports.load = function () {
         var UserList = seed.UserList.split(",");
         var resultList=[];
         var then = this;
+        //门店信息
+        var storeList;
 
+        this.step(function(){
+            /*关注来源数字与门店对应，查询lavico/stores表*/
+            helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+
+                if(err) throw err ;
+                if(doc&&doc[0]&&doc[0].storeList){
+                    storeList = doc[0].storeList;
+                }else{
+                    storeList = false;
+                }
+            }));
+        })
         this.step(function(){
             for(var i=0;i<UserList.length;i++){
                 (function(i){
@@ -271,6 +285,22 @@ exports.load = function () {
                             result.tags = tags;
 
                             result.source = doc.source || '--';
+
+//                            /*门店查询David.xu-2014-07-23*/
+                            if(doc.source&&storeList){
+
+                                var _source = [];
+                                var _sourceObject = doc.source;
+
+                                for(var _i in _sourceObject){
+
+                                    if(_i == 0){
+                                        _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                                        _source =  [_sourceObject[_i]];
+                                    }
+                                }
+                                result.source =  _source || '';
+                            }
                             resultList.push(result);
                         }
                     }))
@@ -691,8 +721,6 @@ exports.load = function () {
 
             //关注时间 任意
             if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
-//                console.log(JSON.stringify(conditions));
-//                console.log(conditions.$or[0].followTime.$gt)
                 conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
                 conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
 
@@ -743,8 +771,7 @@ exports.load = function () {
 //            }));
 
 
-
-
+            console.log("conditions",conditions)
             helper.db.coll("welab/customers").find(conditions).sort(sort).page((parseInt(seed.rp) || 20),seed.page||1,this.hold(function(err,page){
                 if(err) throw err ;
 //                console.log(page);
@@ -775,7 +802,7 @@ exports.load = function () {
                         for(var _i in _sourceObject){
 
                             if(_i == 0){
-                                _sourceObject[_i] = storeList[_sourceObject[_i]][1];
+                                _sourceObject[_i] = storeList[_sourceObject[_i]][2];
                                 _source =  [_sourceObject[_i]];
                             }
                             //_sourceObject[_i] = storeList[_sourceObject[_i]][1];
@@ -836,7 +863,8 @@ exports.load = function () {
     //筛选导出
     welabUserlist.actions.fexports = {process:
         function(seed,nut){
-
+            //门店信息
+            var storeList;
             nut.disabled = true ;
             var conditions = search.conditions(seed)
             if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
@@ -893,6 +921,18 @@ exports.load = function () {
                     }
                 }))
             })
+            this.step(function(){
+                /*关注来源数字与门店对应，查询lavico/stores表*/
+                helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+
+                    if(err) throw err ;
+                    if(doc&&doc[0]&&doc[0].storeList){
+                        storeList = doc[0].storeList;
+                    }else{
+                        storeList = false;
+                    }
+                }));
+            })
 
             this.step(function(){
                 for(var i=0;i<doc.length;i++){
@@ -929,13 +969,6 @@ exports.load = function () {
                         doc[i].cardNumber = '--';
                     }
                     result.cardNumber = doc[i].cardNumber;
-
-                    //doc[i].favoriteStyle = doc[i].favoriteStyle || "--"
-//                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.favoriteStyle){
-//                        doc[i].favoriteStyle = doc[i].HaiLanMemberInfo.favoriteStyle;
-//                    }else{
-//                        doc[i].favoriteStyle = '--';
-//                    }
                     result.favoriteStyle = doc[i].favoriteStyle || "--";
 
                     if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.memberID){
@@ -944,12 +977,6 @@ exports.load = function () {
                         doc[i].memberID = '--';
                     }
                     result.memberID = doc[i].memberID;
-
-//                    if(doc[i].HaiLanMemberInfo && doc[i].HaiLanMemberInfo.favoriteColor){
-//                        doc[i].favoriteColor = doc[i].HaiLanMemberInfo.favoriteColor;
-//                    }else{
-//                        doc[i].favoriteColor = '--';
-//                    }
                     result.favoriteColor = doc[i].favoriteColor || "--";
 
                     var tags = [];
@@ -965,6 +992,22 @@ exports.load = function () {
                     result.tags = tags;
 
                     result.source = doc[i].source || '--';
+
+                    /*门店查询David.xu-2014-07-23*/
+                    if(doc[i].source&&storeList){
+
+                        var _source = [];
+                        var _sourceObject = doc[i].source;
+
+                        for(var _i in _sourceObject){
+
+                            if(_i == 0){
+                                _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                                _source =  [_sourceObject[_i]];
+                            }
+                        }
+                        result.source =  _source || '';
+                    }
                     resultList.push(result);
                 }
             })

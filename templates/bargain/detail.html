@@ -76,7 +76,7 @@
                     <if condition="@res.msg=='恭喜您已成功侃价，请先注册为朗维高LaVico的会员后领取礼券'">
                         <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.2rem;">{@res.msg}</a>
                     </if>
-                    <if condition="@res.msg=='您已成功侃价，请查看您的“专属礼券”'">
+                    <if condition="@res.msg=='恭喜您已成功侃价，请查看您的“专属礼券”'">
                         <a href="{@res.url}" class="bargainBtn" id="fixed" style="font-size: 1.6rem;">{@res.msg}</a>
                     </if>
                 <else/>
@@ -258,7 +258,7 @@ function _step(channelName){
             var _encodeUlr = encodeURIComponent("/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
             _url = "/lavico/member/card_blank/register?wxid="+$("#wxid").val()+"&go="+_encodeUlr;
         }else{
-            _txt =  "您已成功侃价，请查看您的“专属礼券”";
+            _txt =  "恭喜您已成功侃价，请查看您的“专属礼券”";
             _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
         }
     }else if(parm=='03'){
@@ -266,7 +266,7 @@ function _step(channelName){
             _txt = "恭喜您已成功侃价，请点击查看您的侃价礼券";
             _url = "/lavico/member/card_blank/coupon?wxid="+$("#wxid").val();
         }else{
-            _txt =  "您已成功侃价，请查看您的“专属礼券”";
+            _txt =  "恭喜您已成功侃价，请查看您的“专属礼券”";
             _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
         }
     }else{
@@ -274,7 +274,7 @@ function _step(channelName){
             _txt = "恭喜您已成功侃价，请点击查看您的侃价礼券";
             _url = "/lavico/member/card_blank/coupon?wxid="+$("#wxid").val();
         }else{
-            _txt =  "您已成功侃价，请查看您的“专属礼券”";
+            _txt =  "恭喜您已成功侃价，请查看您的“专属礼券”";
             _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
         }
     }

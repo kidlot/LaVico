@@ -88,8 +88,17 @@
                     var data = JSON.parse($("#jsonPage").text())
                     $("#thelist_bot").find("a").text(data[myScroll.currPageX].name)
                 }
-
             });
+        }
+        function load(){
+            if(location.pathname == "/lavico/lookbook/productThere"){
+                shareIcon = location.origin + $("#thelist_03 li a").find("img:eq(0)").attr("src");
+                shareTitle = jQuery("#thelist_03 li a").find("h2:eq(0)").html();
+                shareContent =jQuery("#thelist_03 li a").find("p:eq(0)").html();
+            }
+        }
+        window.onload=function(){
+            load();
         }
 
 
