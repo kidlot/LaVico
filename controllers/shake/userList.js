@@ -21,9 +21,9 @@ module.exports = {
         nut.model.stopDate = seed.stopDate;
         nut.model.unwind = seed.unwind;
         nut.model._id = seed._id;
-        console.log('+++++++++++++++++++++++++');
-        console.log(nut.model);
-        console.log('+++++++++++++++++++++++++');
+       // console.log('+++++++++++++++++++++++++');
+        //console.log(nut.model);
+        //console.log('+++++++++++++++++++++++++');
 
 
     }
@@ -168,7 +168,7 @@ module.exports = {
                     if(seed._id){
                         conditions[seed.unwind+".aid"] = seed._id
                     }
-                    console.log(seed._id);
+                    //console.log(seed._id);
                     arrregateParams.push({$match:conditions})
                     //console.log(arrregateParams)
                     helper.db.coll("welab/customers").aggregate(
@@ -262,14 +262,10 @@ module.exports = {
         , exports: {
 
             process: function (seed, nut) {
-
                 nut.disabled = true ;
                 //门店信息
                 var storeList;
                 var conditions = search.conditions(seed) || {} ;
-                console.log('---------seed.conditions-----------');
-                console.log(seed.conditions);
-                console.log('---------seed.conditions-----------');
                 //this.terminate();
                 var _data = {};
                 var _rows = [];
@@ -280,9 +276,6 @@ module.exports = {
                     var order = seed.sortorder == "asc" ? 1 : -1;
                     sort = eval("({\""+seed.sortname+"\":"+order+"})")
                 }
-                console.log('-----------------sort------------');
-                console.log(sort);
-                console.log('-----------------sort------------');
                 this.step(function(){
                     /*关注来源数字与门店对应，查询lavico/stores表*/
                     helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
@@ -304,9 +297,6 @@ module.exports = {
                     if(seed.unwind){
                         arrregateParams.push({$unwind: "$"+seed.unwind})
                     }
-                    console.log('---------arrregateParams-----------');
-                    console.log(arrregateParams);
-                    console.log('---------arrregateParams-----------');
 
 
                     if(seed._id){
@@ -315,21 +305,11 @@ module.exports = {
                     arrregateParams.push({$match:conditions})
 
                     arrregateParams.push({$sort:sort});
-                    console.log('---------seed._id-----------');
-                    console.log(seed._id);
-                    console.log('---------seed._id-----------');
-
-                    console.log('---------arrregateParams-----------');
-                    console.log(arrregateParams);
-                    console.log('---------arrregateParams-----------');
 
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
                             if(err) console.log(err) ;
-                            console.log('---------docs-----------');
-                            //console.log(docs);
-                            console.log('---------docs-----------');
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
@@ -352,15 +332,37 @@ module.exports = {
                                             tags.push(docs[i].tags[ii])
                                         }
                                     }
+
+                                    docs[i].source = docs[i].source;
+
+                                    /*门店查询David.xu-2014-07-23*/
+
                                     if(docs[i].source&&storeList){
+
+                                        var _source = [];
                                         var _sourceObject = docs[i].source;
-                                        for(var _i in _sourceObject){
-                                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                                        if(_sourceObject){
+                                            for(var _i in _sourceObject){
+
+                                                if(_i == 0){
+                                                    _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                                                    _source =  [_sourceObject[_i]];
+                                                }
+                                            }
                                         }
-                                        docs[i].source = _sourceObject || '';
-                                    }else{
-                                        docs[i].source=""
+
+                                        docs[i].source =  _source || '';
                                     }
+
+//                                    if(docs[i].source&&storeList){
+//                                        var _sourceObject = docs[i].source;
+//                                        for(var _i in _sourceObject){
+//                                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+//                                        }
+//                                        docs[i].source = _sourceObject || '';
+//                                    }else{
+//                                        docs[i].source=""
+//                                    }
                                     docs[i].tags = tags.join(",")
                                     docs[i].followTimebak = docs[i].followTime;
                                     docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
@@ -387,8 +389,6 @@ module.exports = {
 
 
                 this.step(function(){
-
-                    //console.log(_data)
 
                     try{
                         var nodeExcel = require('excel-export');
@@ -499,7 +499,7 @@ module.exports = {
                                 _data[i].birthday,
                                 _data[i].profession,
                                 _data[i].tags || "",
-                                _data[i].source,
+                                _data[i].source ||"",
                                 _data[i].followTime,
                                 _data[i].registerTime,
                                 _data[i].mobile,
