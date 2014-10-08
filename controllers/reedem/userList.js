@@ -285,11 +285,12 @@ module.exports = {
                     }
                     arrregateParams.push({$match:conditions})
                     arrregateParams.push({$sort:sort})
+                    console.log("arrregateParams",JSON.stringify(arrregateParams));
                     helper.db.coll("welab/customers").aggregate(
                         arrregateParams
                         ,this.hold(function(err,docs){
                             if(err) console.log(err) ;
-
+                            console.log("docs",docs)
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
@@ -437,6 +438,7 @@ module.exports = {
                         if(e) console.log(e)
                     }
 
+                    console.log("conf",conf)
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                     this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
