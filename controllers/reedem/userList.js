@@ -415,7 +415,8 @@ module.exports = {
                                 _data[i].registerTime,
 
                             ]
-
+                            console.log("seed.unwind",seed.unwind)
+                            console.log("seed.data",seed.data)
                             if(seed.unwind && seed.data){
                                 var data = JSON.parse(seed.data)
                                 for(var ii in data){
