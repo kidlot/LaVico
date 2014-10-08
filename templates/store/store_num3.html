@@ -57,6 +57,25 @@ var city = '{@city}';
 <div class="fl footer-right"><p><a href="tel:4001008866">400-100-8866</a></p></div>
 </div> 
 </div>
+<script>
+    var log = "{@searchCity.LOG}";
+    function load(){
+        if(log==null || log==""){
+            shareIcon = location.origin + "/lavico/public/images/lavico_default.png";
+        }else{
+            shareIcon = jQuery("#allmap").html();
+        }
+        //alert(shareIcon)
+        shareTitle = $(".store-name").html();
+        shareContent = $(".store-name").html() +"恭候您光临!";
+//        alert(shareTitle)
+//        alert(shareContent)
+    }
+
+    window.onload =function() {
+        load();
+    }
+</script>
 <script type="text/javascript">
     function baidumap(log,lat,address){
         console.log(log)
