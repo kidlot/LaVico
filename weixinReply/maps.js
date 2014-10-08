@@ -78,7 +78,7 @@ exports.load = function () {
                         reply.title=storeList[i].NAME+"店距离:"+storeList[i].distance+"公里";
                         reply.description=storeList[i].ADDR;
                         if(storeList[i].PICURL==null)
-                            reply.picurl="http://wx.lavicouomo.com/lavico/public/images/lavico_default.png";
+                            reply.picurl="http://test.welab.lavicouomo.com/lavico/public/images/lavico_default.png";
                         else{
                             reply.picurl=storeList[i].PICURL;
                         }
@@ -90,7 +90,7 @@ exports.load = function () {
                             city="null";
                         }
                             //reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName;
-                            reply.url='http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName+'&city='+city;
+                            reply.url='http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE='+newCODE+'&wxid='+msg.FromUserName+'&city='+city;
 
                         if(i<10)
                             replyArr.push(reply);
@@ -224,7 +224,7 @@ exports.load = function () {
                             city="null";
                         }
                             //reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName;
-                            reply.url="http://wx.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName+'&city='+city;
+                            reply.url="http://test.welab.lavicouomo.com/lavico/store/searchByCity:show?CODE="+newCODE2+"&wxid="+msg.FromUserName+'&city='+city;
 
                         if(i<10)
                             replyArr.push(reply);
