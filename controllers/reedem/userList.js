@@ -290,7 +290,6 @@ module.exports = {
                         arrregateParams
                         ,this.hold(function(err,docs){
                             if(err) console.log(err) ;
-                            console.log("docs",docs)
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
@@ -313,14 +312,25 @@ module.exports = {
                                             tags.push(docs[i].tags[ii])
                                         }
                                     }
+                                    docs[i].source = docs[i].source;
+
+                                    /*门店查询David.xu-2014-07-23*/
+
                                     if(docs[i].source&&storeList){
+
+                                        var _source = [];
                                         var _sourceObject = docs[i].source;
-                                        for(var _i in _sourceObject){
-                                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                                        if(_sourceObject){
+                                            for(var _i in _sourceObject){
+
+                                                if(_i == 0){
+                                                    _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+                                                    _source =  [_sourceObject[_i]];
+                                                }
+                                            }
                                         }
-                                        docs[i].source = _sourceObject || '';
-                                    }else{
-                                        docs[i].source=""
+
+                                        docs[i].source =  _source || '';
                                     }
                                     docs[i].tags = tags.join(",")
                                     docs[i].province = docs[i].province || '';
@@ -410,13 +420,11 @@ module.exports = {
                                 _data[i].birthday,
                                 _data[i].profession,
                                 _data[i].tags || "",
-                                _data[i].source,
+                                _data[i].source || "",
                                 _data[i].followTime,
                                 _data[i].registerTime,
 
                             ]
-                            console.log("seed.unwind",seed.unwind)
-                            console.log("seed.data",seed.data)
                             if(seed.unwind && seed.data){
                                 var data = JSON.parse(seed.data)
                                 for(var ii in data){
@@ -438,8 +446,6 @@ module.exports = {
                     }catch(e){
                         if(e) console.log(e)
                     }
-
-                    console.log("conf",conf)
                     var result = nodeExcel.execute(conf);
                     this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                     this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
