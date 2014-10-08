@@ -1426,7 +1426,6 @@ exports.load = function () {
     //复写 view
     welabUserlist.view = "lavico/templates/welab/user/list.html"
 
-
     var welabMessagelist = require("welab/controllers/MessageList.js");
 
     welabMessagelist.view = "lavico/templates/welab/message/MessageList.html";
@@ -2810,6 +2809,128 @@ exports.load = function () {
                 , logic: $("[name=searchLogic]").val()
             },'.childview>.ocview') ;
         }) ;
+    }
+
+    //重写活跃度 yu.zhao 2014-10-08
+    var userActive = require("welab/controllers/summary/userActive.js");
+
+    userActive.children.page.view = "lavico/templates/welab/summary/userActivePage.html"
+    userActive.actions.exportXsl = {
+        view:null,
+        process: function(seed,nut){
+            nut.disabled = true;
+            var _docs;
+            var totalMessage = {};
+            var totalmessagecount = 0;
+            var resultList = [];
+            // 总消息数
+            this.step(function(){
+                helper.db.coll("welab/messages").find({replyFor:{$exists:false}}).count(this.hold(function(err,cnt){
+                    if(err) throw err ;
+                    totalmessagecount = 0;
+                }));
+            })
+
+            // 用户列表
+            this.step(function(){
+                helper.db.coll("welab/customers").find({}).toArray(this.hold(function(err,docs){
+                    if(err) throw err;
+                    _docs = docs || docs;
+                }))
+            })
+            this.step(function(){
+                console.log("totalmessagecount",totalmessagecount)
+                for(var i=0;i<_docs.length;i++){
+                    var result={};
+                    result.realname = _docs[i].realname || "--";
+                    result.gender = _docs[i].gender == 'female'?"女":"男";
+                    result.birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
+                    result.province = _docs[i].province || "--";
+                    result.city = _docs[i].city || "--";
+                    var tags = [];
+                    if(_docs[i].tags){
+                        for (var j=0; j<_docs[i].tags.length; j++)
+                        {
+                            tags.push(_docs[i].tags[j]);
+                        }
+                        _docs[i].tags = tags.join(",");
+                    }else{
+                        _docs[i].tags = '未知';
+                    }
+                    result.tags = tags;
+                    result.followTime =  _docs[i].followTime?"是":"否"
+                    result.registerTime =  _docs[i].registerTime?"是":"否"
+                    var messagePercentage = 0;
+                    if(_docs[i].messageCount &&typeof _docs[i].messageCount!= undefined){
+                        messagePercentage = _docs[i].messageCount ? parseInt((_docs[i].messageCount/totalmessagecount) *100) : 0;
+                    }else{
+                        messagePercentage = 0;
+                    }
+                    result.messagePercentage = messagePercentage || "0";
+
+                    result.messageCount = _docs[i].messageCount || "0";
+                    result.message = result.messageCount  + " " + result.messagePercentage+"%",
+                    result.lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
+                    resultList.push(result);
+                }
+            })
+            this.step(function(){
+                var nodeExcel = require('excel-export');
+                var conf = {};
+                conf.cols = [
+                    {
+                        caption: '姓名',
+                        type: 'string'
+                    }, {
+                        caption: '性别',
+                        type: 'string'
+                    }, {
+                        caption: '年龄',
+                        type: 'string'
+                    }, {
+                        caption: '城市',
+                        type: 'string'
+                    }, {
+                        caption: '标签',
+                        type: 'string'
+                    }, {
+                        caption: '关注',
+                        type: 'string'
+                    }, {
+                        caption: '注册',
+                        type: 'string'
+                    }, {
+                        caption: '信息数（占比）',
+                        type: 'string'
+                    }, {
+                        caption: '未会话（天）',
+                        type: 'string'
+                    }
+                ];
+                conf.rows = [];
+                for(var i=0 ;i < resultList.length ;i++){
+
+                    var rows;
+                    rows = [
+                        resultList[i].realname || "未知",
+                        resultList[i].gender = 'female'?"女":"男",
+                        resultList[i].birthday,
+                        resultList[i].province +"-"+resultList[i].city,
+                        resultList[i].tags,
+                        resultList[i].followTime,
+                        resultList[i].registerTime,
+                        resultList[i].message,
+                        resultList[i].lastMessageTime,
+                    ]
+                    conf.rows.push(rows)
+                }
+                var result = nodeExcel.execute(conf);
+                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                this.res.write(result, 'binary');
+                this.res.end();
+            })
+        }
     }
 };
 
