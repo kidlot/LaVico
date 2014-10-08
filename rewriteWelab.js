@@ -2827,7 +2827,7 @@ exports.load = function () {
             this.step(function(){
                 helper.db.coll("welab/messages").find({replyFor:{$exists:false}}).count(this.hold(function(err,cnt){
                     if(err) throw err ;
-                    totalmessagecount = 0;
+                    totalmessagecount = cnt;
                 }));
             })
 
@@ -2861,7 +2861,8 @@ exports.load = function () {
                     result.followTime =  _docs[i].followTime?"是":"否"
                     result.registerTime =  _docs[i].registerTime?"是":"否"
                     var messagePercentage = 0;
-                    if(_docs[i].messageCount &&typeof _docs[i].messageCount!= undefined){
+
+                    if(_docs[i].messageCount){
                         messagePercentage = _docs[i].messageCount ? parseInt((_docs[i].messageCount/totalmessagecount) *100) : 0;
                     }else{
                         messagePercentage = 0;
