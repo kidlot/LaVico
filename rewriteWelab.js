@@ -2933,5 +2933,164 @@ exports.load = function () {
             })
         }
     }
+
+    //重写影响力 yu.zhao 2014-10-09
+    var userInfluence = require("welab/controllers/summary/userInfluence.js");
+    userInfluence.children.page.view = "lavico/templates/welab/summary/userInfluencePage.html";
+    userInfluence.actions.exportXsl = {
+        view:null,
+        process: function(seed,nut){
+            var util = require("welab/controllers/summary/util.js");
+            nut.disabled = true;
+            var _docs;
+            var resultList = [];
+            var then = this;
+
+            //好友浏览
+            var totalViewFriend = 0;
+            this.step(function(){
+                helper.db.coll("welab/replyViewLog").find({$or:[{action:"view.friend"},{action:"view.timeline"}]}).count(this.hold(function(err,cnt){
+                    if(err) throw err ;
+                    totalViewFriend = cnt;
+                }));
+            })
+
+            //分享
+            var totalShare = 0;
+            this.step(function(){
+                helper.db.coll("welab/replyViewLog").find({$or:[{action:"share.friend"},{action:"share.timeline"}]}).count(this.hold(function(err,cnt){
+                    if(err) throw err ;
+                    totalShare = cnt;
+                }));
+            })
+
+            //自己浏览
+            var totalView = 0;
+            this.step(function(){
+                helper.db.coll("welab/replyViewLog").find({action:"view"}).count(this.hold(function(err,cnt){
+                    if(err) throw err ;
+                    totalView = cnt;
+                }));
+            })
+
+            // 用户列表
+            this.step(function(){
+                helper.db.coll("welab/customers").find({}).sort({viewCount:-1}).toArray(this.hold(function(err,docs){
+                    if(err) throw err;
+                    _docs = docs || docs;
+                }))
+            })
+
+            this.step(function(){
+                for (var i=0; i<_docs.length; i++){
+                    (function(_docs,i){
+                        util.userViewLogData(_docs[i]._id , then.hold(function(doc){
+                            _docs[i].otherData = doc;
+                        }));
+                    })(_docs,i)
+                }
+            })
+
+            this.step(function(){
+                for(var i=0;i<_docs.length;i++){
+                    var result={};
+                    result.realname = _docs[i].realname || "--";
+                    result.gender = _docs[i].gender == 'female'?"女":"男";
+                    result.birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
+                    result.province = _docs[i].province || "--";
+                    result.city = _docs[i].city || "--";
+                    var tags = [];
+                    if(_docs[i].tags){
+                        for (var j=0; j<_docs[i].tags.length; j++)
+                        {
+                            tags.push(_docs[i].tags[j]);
+                        }
+                        _docs[i].tags = tags.join(",");
+                    }else{
+                        _docs[i].tags = '未知';
+                    }
+                    result.tags = tags;
+                    result.followTime =  _docs[i].followTime?"是":"否"
+                    result.registerTime =  _docs[i].registerTime?"是":"否"
+
+                    //自己浏览
+                    ViewPercentage = totalView ?  ((_docs[i].otherData.view/totalView) *100).toFixed(2) : "0.00" ;
+                    result.ViewPercentage = ViewPercentage || "0.00";
+                    result.totalView = _docs[i].otherData.view  + " (" +result.ViewPercentage+"% )";
+
+                    //分享
+                    SharePercentage = totalShare ?  ((_docs[i].otherData.share/totalShare) *100).toFixed(2) : "0.00" ;
+                    result.SharePercentage = SharePercentage || "0.00";
+                    result.totalShare = _docs[i].otherData.share  + " (" +result.SharePercentage+"% )";
+
+                    //好友浏览totalViewFriend
+                    ViewFriendPercentage = totalViewFriend ?  ((_docs[i].otherData.viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
+                    result.ViewFriendPercentage = ViewFriendPercentage || "0.00";
+                    result.totalViewFriend = _docs[i].otherData.viewfriend  + " (" +result.ViewFriendPercentage+"% )";
+
+                    resultList.push(result);
+                }
+            })
+            this.step(function(){
+                var nodeExcel = require('excel-export');
+                var conf = {};
+                conf.cols = [
+                    {
+                        caption: '姓名',
+                        type: 'string'
+                    }, {
+                        caption: '性别',
+                        type: 'string'
+                    }, {
+                        caption: '年龄',
+                        type: 'string'
+                    }, {
+                        caption: '城市',
+                        type: 'string'
+                    }, {
+                        caption: '标签',
+                        type: 'string'
+                    }, {
+                        caption: '关注',
+                        type: 'string'
+                    }, {
+                        caption: '注册',
+                        type: 'string'
+                    }, {
+                        caption: '自己浏览(占比)',
+                        type: 'string'
+                    }, {
+                        caption: '分享(占比)',
+                        type: 'string'
+                    },{
+                        caption: '好友浏览(占比)',
+                        type: 'string'
+                    }
+                ];
+                conf.rows = [];
+                for(var i=0 ;i < resultList.length ;i++){
+                    var rows;
+                    rows = [
+                        resultList[i].realname || "未知",
+                        resultList[i].gender = 'female'?"女":"男",
+                        resultList[i].birthday,
+                        resultList[i].province +"-"+resultList[i].city,
+                        resultList[i].tags,
+                        resultList[i].followTime,
+                        resultList[i].registerTime,
+                        resultList[i].totalView,
+                        resultList[i].totalShare,
+                        resultList[i].totalViewFriend,
+                    ]
+                    conf.rows.push(rows)
+                }
+                var result = nodeExcel.execute(conf);
+                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                this.res.write(result, 'binary');
+                this.res.end();
+            })
+        }
+    }
 };
 
