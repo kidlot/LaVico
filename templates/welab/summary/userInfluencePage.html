@@ -1,0 +1,102 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <ul class="nav nav-tabs nav-head">
+            <li><a href="/welab/summary/userTrend" class="stay">趋势</a></li>
+            <li><a href="/welab/summary/userProperty" class="stay">属性</a></li>
+            <li><a href="/welab/summary/userActive" class="stay">活跃度</a></li>
+            <li class="active"><a href="/welab/summary/userInfluence" class="stay">影响力</a></li>
+            <li><a href="/welab/summary/userLoyalty" class="stay">忠诚度</a></li>
+            <li><a href="/welab/summary/userLost" class="stay">流失</a></li>
+        </ul>
+    </div>
+
+
+
+    <div class="panel-body">
+        <div class="row">
+
+            <div class="col-md-4" style="display: none">
+                <div class="panel panel-default property">
+                    <div class="panel-heading"><span class="box-title">前十自己浏览</span></div>
+                    <div class="panel-body block320">
+                        <div class="myChart">
+                            <canvas id="myChart1" width="215" height="212" style="margin-bottom: 10px;"></canvas>
+                            <div id="myChart_Data1" style="display: none">{@myChart_Data1}</div>
+                        </div>
+                        <ul class="textual_data_i">
+                            <li class="mb10" style="color:#3498db"><span>浏览数前十的总浏览数:{@viewFirst10Total.countTotal}</span></li>
+                            <li class="mb10" style="color:#b1d4e5"><span>其他浏览数:{@(totalView - viewFirst10Total.countTotal)}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default property">
+                    <div class="panel-heading"><span class="box-title">前十分享</span></div>
+                    <div class="panel-body block320">
+                        <div class="myChart">
+                            <canvas id="myChart2" width="215" height="212" style="margin-bottom: 10px;"></canvas>
+                            <div id="myChart_Data2" style="display: none">{@myChart_Data2}</div>
+                        </div>
+                        <ul class="textual_data_i">
+                            <li class="mb10" style="color:#9b59b6"><span>分享数前十的总分享数:{@shareFirst10Total.countTotal}</span></li>
+                            <li class="mb10" style="color:#c78edf"><span>其他分享数:{@totalShare-shareFirst10Total.countTotal}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default property">
+                    <div class="panel-heading"><span class="box-title">前十好友浏览</span></div>
+                    <div class="panel-body block320">
+                        <div class="myChart">
+                            <canvas id="myChart3" width="215" height="212" style="margin-bottom: 10px;"></canvas>
+                            <div id="myChart_Data3" style="display: none">{@myChart_Data3}</div>
+                        </div>
+                        <ul class="textual_data_i">
+                            <li class="mb10" style="color:#76a632"><span>回流数前十的总回流数:{@ViewFriendFirst10Total.countTotal}</span></li>
+                            <li class="mb10" style="color:#b3dc78"><span>其他浏览数:{@totalViewFriend-ViewFriendFirst10Total.countTotal}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <a href="/welab/summary/userInfluence:exportXsl" class="btn btn-xs btn-primary mhm">全部导出</a>
+        </div>
+        <table class="table table-striped" id="tagList">
+            <thead>
+            <tr>
+                <th class="header headerSortUp" style="word-wrap:break-word;word-break:break-all;">姓名<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">性别<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">年龄<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">城市<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">标签<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">关注<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">注册<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">自己浏览(占比)<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">分享(占比)<span class="icon ml10">&nbsp;</span></th>
+                <th class="header" style="word-wrap:break-word;word-break:break-all;">好友浏览(占比)<span class="icon ml10">&nbsp;</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach for="@list.docs" var="doc" key="key">
+                <tr>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@doc.realname||"未注册用户"}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@ doc.gender=='female'?"女":"男"}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@ doc.birthday && parseInt(((new Date()) - (parseInt(doc.birthday))) / (1000*60*60*24*365))}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@doc.province}-{@doc.city}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@doc.tags}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@ doc.followTime?"是":"否"}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@ doc.registerTime?"是":"否"}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@ doc.otherData.view} <span style="color: #1ABC9C">({@ totalView ? ((doc.otherData.view/totalView) *100).toFixed(2) : '0.00'}%)</span></td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@ doc.otherData.share} <span style="color: #1ABC9C">({@ totalShare ? ((doc.otherData.share/totalShare) *100).toFixed(2) : '0.00'}%)</span></td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{@ doc.otherData.viewfriend} <span style="color: #1ABC9C">({@ totalViewFriend ? ((doc.otherData.viewfriend/totalViewFriend) *100).toFixed(2) : '0.00'}%)</span></td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+
+        <include file="welab/templates/paginator.html" model="@list" model.url="/welab/summary/userInfluence:page?page=%pagenum%" />
+    </div>
+</div>
