@@ -8,12 +8,10 @@ module.exports={
      process:function(seed,nut){
          id=seed._id;
          nut.model._id=seed._id;
-         helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(id)},function(err,doc){
-                 if(err) throw err
-                     if(doc)
-                         nut.model.doc=doc;
-                         console.log(doc);
-             });
+         helper.db.coll("lavico/themeQuestion").findOne({"_id":helper.db.id(id)},this.hold(function(err,doc){
+             if(err) throw err
+             nut.model.doc=doc || {};
+         }));
      },
      viewIn:function(){
          //活动说明-编辑器
