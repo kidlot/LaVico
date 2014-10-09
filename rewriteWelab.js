@@ -3023,7 +3023,7 @@ exports.load = function () {
                     result.SharePercentage = SharePercentage || "0.00";
                     result.totalShare = _docs[i].otherData.share  + " (" +result.SharePercentage+"% )";
 
-                    //好友浏览totalViewFriend
+                    //好友浏览
                     ViewFriendPercentage = totalViewFriend ?  ((_docs[i].otherData.viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
                     result.ViewFriendPercentage = ViewFriendPercentage || "0.00";
                     result.totalViewFriend = _docs[i].otherData.viewfriend  + " (" +result.ViewFriendPercentage+"% )";
