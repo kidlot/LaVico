@@ -1,6 +1,6 @@
-<if condition="@ !isFollow">
-    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
-</if>
+<!--<if condition="@ !isFollow">-->
+    <!--<div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>-->
+<!--</if>-->
 <link rel="stylesheet" href="/lavico/public/css/product.css" />
 
 <input type="hidden" id="pageNum" value={@pageNum}>
@@ -29,7 +29,7 @@
             </ul>
         </div>
     </div>
-    {@isFollow}
+
     <div class="slide_bottom">
         <a href="#" class="slide_top_but" id="slide_top_but"></a>
         <div class="show_lookbook" style="display: none">
@@ -131,6 +131,15 @@
         }
 
         function favorites(wxid){
+
+            var isFollow = '{@isFollow}'
+            if(isFollow == "false"){
+                window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信，参加互动活动。',function(event){
+
+                });
+                return false;
+            }
+
 
             var isvip = '{@isVip}'
             if(isvip == "false"){
