@@ -1,6 +1,6 @@
-<if condition="@ !isFollow">
-    <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
-</if>
+<!--<if condition="@ !isFollow">-->
+    <!--<div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>-->
+<!--</if>-->
 <link rel="stylesheet" href="/lavico/public/css/LaVico_03.css" />
 <script src="/lavico/public/js/iscroll.js"></script>
 
@@ -19,7 +19,6 @@
     <div id="nav_03">
         <ul id="indicator_03"></ul>
     </div>
-    {@isFollow}
     <div id="wrapper_03">
         <div id="scroller_03">
             <ul id="thelist_03">
@@ -130,6 +129,14 @@
         }
 
         function favorites(wxid){
+
+            var isFollow = '{@isFollow}'
+            if(isFollow == "false"){
+                window.popupStyle2.on('请搜索"LaVico朗维高"关注我们的官方微信，参加互动活动。',function(event){
+
+                });
+                return false;
+            }
 
             var isvip = '{@isVip}'
             if(isvip == "false"){
