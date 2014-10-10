@@ -47,7 +47,7 @@ module.exports = {
             if(wxid != undefined){
                 helper.db.coll('welab/customers').findOne({"wechatid":wxid},this.hold(function(err, doc){
                     var doc = doc || {};
-                    console.log("doc:"+doc)
+                    console.log("doc",doc)
                     nut.model.isFollow = doc.isFollow ? true : false;
                     nut.model.isVip = false
                     if(doc && doc.HaiLanMemberInfo){
@@ -64,8 +64,8 @@ module.exports = {
                     }
                 }));
             }else{
-                nut.model.isFollow = false;
                 nut.model.isVip = false;
+                nut.model.isFollow = false;
             }
         })
 
