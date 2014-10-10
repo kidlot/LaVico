@@ -70,7 +70,7 @@ module.exports = {
                 nut.model.fromWelab = seed.fromWelab || undefined
                 nut.model.pageNum = seed.pageNum || 1
 
-                helper.db.coll("welab/customers").findOne({wechatid:seed.wxid},this.hold(function(err,customers){
+                helper.db.coll("welab/customers").findOne({"wechatid":seed.wxid},this.hold(function(err,customers){
                     var customers = customers || {}
 
                     nut.model.isVip = false

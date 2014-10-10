@@ -45,7 +45,7 @@ module.exports = {
         this.step(function(){
             console.log("wechatid:"+wxid)
             if(wxid != undefined){
-                helper.db.coll('welab/customers').findOne({wechatid:wxid},this.hold(function(err, doc){
+                helper.db.coll('welab/customers').findOne({"wechatid":wxid},this.hold(function(err, doc){
                     var doc = doc || {};
                     console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
