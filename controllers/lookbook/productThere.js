@@ -49,8 +49,22 @@ module.exports = {
                     var doc = doc || {};
                     console.log("doc:"+doc.isFollow)
                     nut.model.isFollow = doc.isFollow ? true : false;
+                    nut.model.isVip = false
+                    if(doc && doc.HaiLanMemberInfo){
+                        if(doc.HaiLanMemberInfo.action=="bind"){
+                            nut.model.isVip = true;
+                            nut.model.memberID = doc.HaiLanMemberInfo.memberID
+                        }else{
+                            nut.model.isVip = false;
+                            nut.model.memberID = doc.HaiLanMemberInfo.memberID
+                        }
+                    }else{
+                        nut.model.memberID= "undefined";
+                        nut.model.isVip = false;
+                    }
                 }));
             }else{
+                nut.model.isVip = false;
                 nut.model.isFollow = false;
             }
         })
