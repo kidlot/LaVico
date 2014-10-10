@@ -47,10 +47,24 @@ module.exports = {
             if(wxid != undefined){
                 helper.db.coll('welab/customers').findOne({"wechatid":wxid},this.hold(function(err, doc){
                     var doc = doc || {};
-                    console.log("doc:"+doc.isFollow)
+                    console.log("doc:"+doc)
                     nut.model.isFollow = doc.isFollow ? true : false;
+                    nut.model.isVip = false
+                    if(doc && doc.HaiLanMemberInfo){
+                        if(doc.HaiLanMemberInfo.action=="bind"){
+                            nut.model.isVip = true;
+                            nut.model.memberID = doc.HaiLanMemberInfo.memberID
+                        }else{
+                            nut.model.isVip = false;
+                            nut.model.memberID = doc.HaiLanMemberInfo.memberID
+                        }
+                    }else{
+                        nut.model.memberID= "undefined";
+                        nut.model.isVip = false;
+                    }
                 }));
             }else{
+                nut.model.isVip = false;
                 nut.model.isFollow = false;
             }
         })
@@ -61,7 +75,7 @@ module.exports = {
 
         this.step(function(){
             if(seed._id){
-
+                console.log("wechatid11111:"+wxid)
                 //nut.model.wxid = seed.wxid
                 nut.model._id = seed._id
                 nut.model.productId = seed.productId
