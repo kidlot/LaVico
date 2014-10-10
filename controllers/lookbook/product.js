@@ -65,7 +65,6 @@ module.exports = {
                 }));
             }else{
                 nut.model.isVip = false;
-                console.log("nut.model.isVip",nut.model.isVip)
                 nut.model.isFollow = false;
             }
         })
