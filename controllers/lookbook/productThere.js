@@ -47,7 +47,7 @@ module.exports = {
             if(wxid != undefined){
                 helper.db.coll('welab/customers').findOne({"wechatid":wxid},this.hold(function(err, doc){
                     var doc = doc || {};
-                    console.log("doc:"+doc.isFollow)
+                    console.log("doc",doc)
                     nut.model.isFollow = doc.isFollow ? true : false;
                     nut.model.isVip = false
                     if(doc && doc.HaiLanMemberInfo){
@@ -87,18 +87,18 @@ module.exports = {
                 helper.db.coll("welab/customers").findOne({"wechatid":seed.wxid},this.hold(function(err,customers){
                     var customers = customers || {}
 
-                    nut.model.isVip = false
+                    //nut.model.isVip = false
                     if(customers && customers.HaiLanMemberInfo){
                         if(customers.HaiLanMemberInfo.action=="bind"){
-                            nut.model.isVip = true;
+                           // nut.model.isVip = true;
                             nut.model.memberID = customers.HaiLanMemberInfo.memberID
                         }else{
-                            nut.model.isVip = false;
+                           // nut.model.isVip = false;
                             nut.model.memberID = customers.HaiLanMemberInfo.memberID
                         }
                     }else{
                         nut.model.memberID= "undefined";
-                        nut.model.isVip = false;
+                        //nut.model.isVip = false;
                     }
 //                    if(customers.HaiLanMemberInfo && customers.HaiLanMemberInfo.memberID && customers.HaiLanMemberInfo.action == "bind"){
 //                        nut.model.isVip = true
