@@ -56,16 +56,12 @@
                     waterFall("wrap");
                 }              
             }
-            function load(){
-                if(location.pathname == "/lavico/lookbook/detail"){
-                    shareIcon = location.origin + jQuery(".elite").find("img:eq(0)").attr("src");
-                    shareTitle = $(".elite_details").html();
-                    shareContent = $(".elite_details").html();
-                }
-            }
-
-            window.onload =function() {
-                load();
+        </script>
+        <script>
+            if(location.pathname == "/lavico/lookbook/detail"){
+                shareIcon = location.origin + jQuery(".elite").find("img:eq(0)").attr("src");
+                shareTitle = $(".elite_details").html();
+                shareContent = $(".elite_details").html();
             }
         </script>
     </section>
