@@ -920,6 +920,16 @@ module.exports = {
 
                             });
 
+                            var tags = {};
+                            this.step(function(){
+                                helper.db.coll("welab/customers").find({"mobile":userTel,"HaiLanMemberInfo":{$exists:true},
+                                    "HaiLanMemberInfo.action":{$exists:true}, "HaiLanMemberInfo.action":"unbind"}).sort({"registerTime":-1}).toArray(this.hold(function(err,doc){
+                                    if(err) console.log("welab/customers err",err);
+                                    if(doc[0] && doc[0].tags){
+                                        tags = doc[0].tags;
+                                    }
+                                }));
+                            })
 
 
                             this.step(function(doc){
@@ -946,6 +956,7 @@ module.exports = {
                                                 'lastModified':new Date().getTime(),
                                                 'type':type
                                             },
+                                            'tags':tags,
                                             'email':email,
                                             'profession':profession,
                                             'province':province,
