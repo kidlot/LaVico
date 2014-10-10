@@ -35,6 +35,18 @@
     </div>
 </div>
 <script>
+
+    function load(){
+
+        var users =JSON.parse('{@json}');
+        $("#title").val(users.nickname);
+        $("#password").val("");
+        $("#pwd").val("");
+    }
+    window.onload = function(){
+        load();
+    }
+
     function save(){
         var aFormInput = {}
         var _inputCheck = true;

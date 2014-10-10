@@ -8,6 +8,7 @@ module.exports = {
                     if(err) throw err
                     console.log("doc",doc)
                     nut.model.users = doc || {};
+                    nut.model.json = JSON.stringify(doc);
                 })
             )
         })

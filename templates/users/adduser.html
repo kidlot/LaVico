@@ -32,6 +32,14 @@
     </div>
 </div>
 <script>
+    function load(){
+        $("#title").val("");
+        $("#nickname").val("");
+        $("#password").val("");
+    }
+    window.onload = function(){
+        load();
+    }
     function save(){
         var aFormInput = {}
         var _inputCheck = true;
