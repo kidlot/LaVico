@@ -56,16 +56,12 @@
                     waterFall("wrap");
                 }              
             }
-            function load(){
-                if(location.pathname == "/lavico/lookbook/detail"){
-                    shareIcon = location.origin + jQuery(".elite").find("img:eq(0)").attr("src");
-                    shareTitle = $(".elite_details").html();
-                    shareContent = $(".elite_details").html();
-                }
-            }
-
-            window.onload =function() {
-                load();
+        </script>
+        <script>
+            if(location.pathname == "/lavico/lookbook/detail"){
+                shareIcon = location.origin + jQuery(".elite").find("img:eq(0)").attr("src");
+                shareTitle = $(".elite_details").html();
+                shareContent = $(".elite_details").html();
             }
         </script>
     </section>
@@ -195,10 +191,11 @@
         }
 
         function load(){
+            var data = JSON.parse($("#jsonData").text())
             if(location.pathname == "/lavico/lookbook/detail"){
                 shareIcon = location.origin + $("#slider li").find("img:eq(0)").attr("src");
                 shareTitle = jQuery(".switch_list").find("h2:eq(0)").html();
-                shareContent =jQuery(".switch_list").find("h2:eq(0)").html();
+                shareContent =data.page[0].detail;
             }
         }
         window.onload=function(){
