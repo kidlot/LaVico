@@ -32,14 +32,20 @@
     </div>
 </div>
 <script>
-    function load(){
-        $("#title").val("");
-        $("#nickname").val("");
-        $("#password").val("");
-    }
     window.onload = function(){
-        load();
-    }
+        document.getElementById('title').value="";
+        document.getElementById('nickname').value="";
+        document.getElementById('password').value="";
+    };
+    //    function load(){
+//
+//        $("#title").val("");
+//        $("#nickname").val("");
+//        $("#password").val("");
+//    }
+//    window.onload = function(){
+//        load();
+//    }
     function save(){
         var aFormInput = {}
         var _inputCheck = true;
