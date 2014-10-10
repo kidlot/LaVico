@@ -1,8 +1,9 @@
-<link rel="stylesheet" href="/lavico/public/css/LaVico_03.css" />
-<script src="/lavico/public/js/iscroll.js"></script>
 <if condition="@ !isFollow">
     <div style="position: fixed;width: 100%;height: 100%; top:0px; left:0px; opacity: 0;z-index: 998 " onclick="welcome()"></div>
 </if>
+<link rel="stylesheet" href="/lavico/public/css/LaVico_03.css" />
+<script src="/lavico/public/js/iscroll.js"></script>
+
 <input type="hidden" id="pageNum" value={@pageNum}>
 <input type="hidden" id="productId" value={@productId}>
 <div style="display: none" id="jsonPage">{@jsonDoc}</div>
