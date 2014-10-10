@@ -78,8 +78,8 @@
         function load(){
             if(location.pathname == "/lavico/lookbook/product"){
                 shareIcon = location.origin + $("#thelist li").find("img:eq(0)").attr("src");
-                shareTitle = jQuery(".article").find("p:eq(0)").html();
-                shareContent =jQuery(".article ").find("h3:eq(0)").html();
+                shareTitle = jQuery(".article ").find("h3:eq(0)").html();
+                shareContent =jQuery(".article").find("p:eq(0)").html();
             }
         }
         window.onload=function(){
