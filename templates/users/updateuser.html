@@ -23,13 +23,13 @@
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2">新密码</label>
             <div class="col-sm-10">
-                <input type="password" disableautocomplete autocomplete="off" id="password" class="form-control input-sm" style="width: 350px"/><br><br>
+                <input type="text" onfocus="this.type='password'" disableautocomplete autocomplete="off" id="pwd1" class="form-control input-sm" style="width: 350px"/><br><br>
             </div>
         </div>
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2">再次确认密码</label>
             <div class="col-sm-10">
-                <input type="password" disableautocomplete autocomplete="off" id="pwd" class="form-control input-sm" style="width: 350px"/><br><br>
+                <input type="text" onfocus="this.type='password'" disableautocomplete autocomplete="off" id="pwd" class="form-control input-sm" style="width: 350px"/><br><br>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
 
         var users =JSON.parse('{@json}');
         $("#title").val(users.nickname);
-        $("#password").val("");
+        $("#pwd1").val("");
         $("#pwd").val("");
     }
     window.onload = function(){
@@ -54,7 +54,7 @@
         var createTime = $("#createTime").val();
         var userid = $("#userid").val();
         var nickname = $("#title").val();
-        var password = $("#password").val();
+        var password = $("#pwd1").val();
         var pwd = $("#pwd").val();
         if(!nickname){
             _inputCheck = false;
