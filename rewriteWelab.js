@@ -2920,7 +2920,7 @@ exports.load = function () {
                     var rows;
                     rows = [
                         resultList[i].realname || "未知",
-                        resultList[i].gender = 'female'?"女":"男",
+                        resultList[i].gender,
                         resultList[i].birthday,
                         resultList[i].province +"-"+resultList[i].city,
                         resultList[i].tags,
@@ -3083,7 +3083,7 @@ exports.load = function () {
                     var rows;
                     rows = [
                         resultList[i].realname || "未知",
-                        resultList[i].gender = 'female'?"女":"男",
+                        resultList[i].gender,
                         resultList[i].birthday,
                         resultList[i].province +"-"+resultList[i].city,
                         resultList[i].tags,
