@@ -2823,6 +2823,13 @@ exports.load = function () {
             var totalMessage = {};
             var totalmessagecount = 0;
             var resultList = [];
+
+            var pageNum = seed.page;
+            var pageSize = 20;
+            var currentPage = typeof(pageNum) == "undefined" ? 1 : parseInt(pageNum);
+            var pageNum = (currentPage-1) * pageSize;
+
+
             // 总消息数
             this.step(function(){
                 helper.db.coll("welab/messages").find({replyFor:{$exists:false}}).count(this.hold(function(err,cnt){
@@ -2833,13 +2840,12 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
-                helper.db.coll("welab/customers").find({}).toArray(this.hold(function(err,docs){
+                helper.db.coll("welab/customers").find({}).skip(pageNum).limit(pageSize).toArray(this.hold(function(err,docs){
                     if(err) throw err;
                     _docs = docs || docs;
                 }))
             })
             this.step(function(){
-                console.log("totalmessagecount",totalmessagecount)
                 for(var i=0;i<_docs.length;i++){
                     var result={};
                     result.realname = _docs[i].realname || "--";
@@ -2914,7 +2920,7 @@ exports.load = function () {
                     var rows;
                     rows = [
                         resultList[i].realname || "未知",
-                        resultList[i].gender = 'female'?"女":"男",
+                        resultList[i].gender,
                         resultList[i].birthday,
                         resultList[i].province +"-"+resultList[i].city,
                         resultList[i].tags,
@@ -2946,6 +2952,11 @@ exports.load = function () {
             var resultList = [];
             var then = this;
 
+            var pageNum = seed.page;
+            var pageSize = 10;
+            var currentPage = typeof(pageNum) == "undefined" ? 1 : parseInt(pageNum);
+            var pageNum = (currentPage-1) * pageSize;
+
             //好友浏览
             var totalViewFriend = 0;
             this.step(function(){
@@ -2975,7 +2986,7 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
-                helper.db.coll("welab/customers").find({}).sort({viewCount:-1}).toArray(this.hold(function(err,docs){
+                helper.db.coll("welab/customers").find({}).skip(pageNum).limit(pageSize).sort({viewCount:-1}).toArray(this.hold(function(err,docs){
                     if(err) throw err;
                     _docs = docs || docs;
                 }))
@@ -3072,7 +3083,7 @@ exports.load = function () {
                     var rows;
                     rows = [
                         resultList[i].realname || "未知",
-                        resultList[i].gender = 'female'?"女":"男",
+                        resultList[i].gender,
                         resultList[i].birthday,
                         resultList[i].province +"-"+resultList[i].city,
                         resultList[i].tags,
