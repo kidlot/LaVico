@@ -40,9 +40,9 @@
                         <span class="pice">{@ doc.price}</span>元
                     </span>
                 </p>
-                <p class="color">
-                    <span class="color-title" style="width: 80px">参与范围：</span><span class="color-con">{@ doc.parmDes}</span>
-                </p>
+                <!--<p class="color">-->
+                    <!--<span class="color-title" style="width: 80px">参与范围：</span><span class="color-con">{@ doc.parmDes}</span>-->
+                <!--</p>-->
 
                 <p class="look_store"><a href="/lavico/bargain/maps?_id={@doc._id}&wxid={@wxid}">查看活动参与门店 > </a></p>
             </div>
@@ -427,6 +427,47 @@ function bargain(){
             console.log(msg);
         }
     });
+}
+
+
+function load(){
+    var resultcount = {@resultcount};
+    if(resultcount>0){
+        if(parm=='02'){
+            if(isVip =='false'){
+                _txt = "您之前已成功侃价，请先注册为朗维高LaVico的会员后领取礼券";
+                var _encodeUlr = encodeURIComponent("/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val());
+                _url = "/lavico/member/card_blank/register?wxid="+$("#wxid").val()+"&go="+_encodeUlr;
+            }else{
+                _txt =  "您之前已成功侃价，请查看您的“专属礼券”";
+                _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
+            }
+        }else if(parm=='03'){
+            if(isVip =='false'){
+                _txt = "您之前已成功侃价，请点击查看您的侃价礼券";
+                _url = "/lavico/member/card_blank/coupon?wxid="+$("#wxid").val();
+            }else{
+                _txt =  "您之前已成功侃价，请查看您的“专属礼券”";
+                _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
+            }
+        }else{
+            if(isVip =='false'){
+                _txt = "您之前已成功侃价，请点击查看您的侃价礼券";
+                _url = "/lavico/member/card_blank/coupon?wxid="+$("#wxid").val();
+            }else{
+                _txt =  "您之前已成功侃价，请查看您的“专属礼券”";
+                _url = "/lavico/member/card_member/coupon/index?wxid="+$("#wxid").val();
+            }
+        }
+        window.popupStyle2.on(_txt,function(event){
+            if(event == "confirm"){
+                location.href=_url;
+            }
+        })
+    }
+}
+window.onload  = function(){
+    load();
 }
 
 window.hideShareButtion.on()

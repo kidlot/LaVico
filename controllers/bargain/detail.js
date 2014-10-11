@@ -259,6 +259,24 @@ module.exports = {
             }
             console.log(nut.model.res)
         })
+        var resultcount = 0;
+        //已成功砍价提示
+        this.step(function(){
+            if(parm == "01"){
+                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,memberID:nut.model.memberID,action:"侃价","data.step":4,"data.stat":true}).count(this.hold(function(err,doc){
+                    if(err) console.log("err",err);
+                    resultcount = doc;
+                }))
+            }else{
+                helper.db.coll("lavico/user/logs").find({"data.productID":seed._id,wxid:seed.wxid,action:"侃价","data.step":4,"data.stat":true}).count(this.hold(function(err,doc){
+                    if(err) console.log("err",err);
+                    resultcount = doc;
+                }))
+            }
+        })
+        this.step(function(){
+            nut.model.resultcount = resultcount;
+        })
 
     }
 
