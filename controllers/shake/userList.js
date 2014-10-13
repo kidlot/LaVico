@@ -503,7 +503,7 @@ module.exports = {
                                 _data[i].followTime,
                                 _data[i].registerTime,
                                 _data[i].mobile,
-                                _data[i].shake.memberID,
+                                _data[i].shake.memberID || "",
                                 _data[i].shake.coupon_no,
                                 _data[i].shake.promotion_qty,
                                 _data[i].shake.lottery_chance,

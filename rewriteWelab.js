@@ -704,6 +704,7 @@ exports.load = function () {
         ) ;
 
 
+
         this.step(function(){
             /*关注来源数字与门店对应，查询lavico/stores表*/
             helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
@@ -716,6 +717,35 @@ exports.load = function () {
                 }
             }));
         })
+
+//        this.step(function(){
+//            if(conditions && conditions.$or){
+//                for(var i =0 ;i<conditions.$or.length;i++){
+//                    if(conditions.$or[i].source){
+//                        if(storeList){
+//                            for(var j=0;j<storeList.length;j++){
+//                                if(conditions.$or[i].source==storeList[j][2]){
+//                                    conditions.$or[i].source =  ""+storeList[j][0];
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }else if(conditions && conditions.$and){
+//                for(var i =0 ;i<conditions.$and.length;i++){
+//                    if(conditions.$and[i].source){
+//                        if(storeList){
+//                            for(var j=0;j<storeList.length;j++){
+//                                if(conditions.$and[i].source==storeList[j][2]){
+//                                    conditions.$and[i].source =  ""+storeList[j][0];
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        })
+
         this.step(function(){
 
 
