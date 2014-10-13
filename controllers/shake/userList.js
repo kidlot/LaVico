@@ -369,7 +369,13 @@ module.exports = {
                                     docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
                                     docs[i].lastMessageTime = docs[i].lastMessageTime ? new Date(docs[i].lastMessageTime).toISOString().substr(0,10) : "未知"
 
-
+                                    if(docs[i] && docs[i].shake && docs[i].shake.memberID){
+                                        docs[i].shake.memberID = docs[i].shake.memberID || '';
+                                    }else if(docs[i] && docs[i].shake && docs[i].shake.memberID =="undefined"){
+                                        docs[i].shake.memberID = '';
+                                    }else{
+                                        docs[i].shake.memberID = '';
+                                    }
 
                                     docs[i].province = docs[i].province || '';
                                     docs[i].mobile = docs[i].mobile || '';
@@ -480,14 +486,7 @@ module.exports = {
                             _data[i].province = _data[i].province || '';
                             _data[i].city = _data[i].city || '';
                             _data[i].gender = _data[i].gender || '';
-                            if(_data[i] && _data[i].shake && _data[i].shake.memberID){
-                                _data[i].shake.memberID = _data[i].shake.memberID || '';
-                            }else if(_data[i] && _data[i].shake && _data[i].shake.memberID =="undefined"){
-                                _data[i].shake.memberID = '';
-                            }else{
-                                _data[i].shake.memberID = '';
-                            }
-
+                            _data[i].shake.memberID = _data[i].shake.memberID || '';
                             _data[i].shake.coupon_no = _data[i].shake.coupon_no || '';
                             _data[i].shake.promotion_name = _data[i].shake.promotion_name || '';
                             _data[i].shake.promotion_code = _data[i].shake.promotion_code || '';
