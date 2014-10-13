@@ -140,52 +140,52 @@ module.exports = {
                         then.terminate();
                     }
                 });
-                this.step(function(){
-
-
-                    var requestData02 = {
-                        'memberId' : member_id,
-                        'perPage':0,
-                        'pageNum':0,
-                        'status':'02'//已生效
-                    };
-
-                    middleware.request( "Coupon/GetCoupons", requestData02,this.hold(function(err,doc){
-
-                        couponData = JSON.parse(doc);
-                        console.log("111",couponData)
-                        nut.model.effectiveCouponsLength = couponData.total;
-                        //记录用户动作
-                    }));
-
-                    var requestData03 = {
-                        'memberId' : member_id,
-                        'perPage':0,
-                        'pageNum':0,
-                        'status':'03'//已使用
-                    };
-                    middleware.request( "Coupon/GetCoupons", requestData03,this.hold(function(err,doc){
-
-                        couponData = JSON.parse(doc);
-                        nut.model.usedCouponsLength = couponData.total;
-                        //记录用户动作
-                    }));
-
-                    var requestData04 = {
-                        'memberId' : member_id,
-                        'perPage':0,
-                        'pageNum':0,
-                        'status':'04'//已过期
-                    };
-                    middleware.request( "Coupon/GetCoupons", requestData04,this.hold(function(err,doc){
-
-                        couponData = JSON.parse(doc);
-                        nut.model.overdueCouponsLength = couponData.total;
-                        //记录用户动作
-                    }));
-
-
-                });
+//                this.step(function(){
+//
+//
+//                    var requestData02 = {
+//                        'memberId' : member_id,
+//                        'perPage':0,
+//                        'pageNum':0,
+//                        'status':'02'//已生效
+//                    };
+//
+//                    middleware.request( "Coupon/GetCoupons", requestData02,this.hold(function(err,doc){
+//
+//                        couponData = JSON.parse(doc);
+//                        console.log("111",couponData)
+//                        nut.model.effectiveCouponsLength = couponData.total;
+//                        //记录用户动作
+//                    }));
+//
+//                    var requestData03 = {
+//                        'memberId' : member_id,
+//                        'perPage':0,
+//                        'pageNum':0,
+//                        'status':'03'//已使用
+//                    };
+//                    middleware.request( "Coupon/GetCoupons", requestData03,this.hold(function(err,doc){
+//
+//                        couponData = JSON.parse(doc);
+//                        nut.model.usedCouponsLength = couponData.total;
+//                        //记录用户动作
+//                    }));
+//
+//                    var requestData04 = {
+//                        'memberId' : member_id,
+//                        'perPage':0,
+//                        'pageNum':0,
+//                        'status':'04'//已过期
+//                    };
+//                    middleware.request( "Coupon/GetCoupons", requestData04,this.hold(function(err,doc){
+//
+//                        couponData = JSON.parse(doc);
+//                        nut.model.overdueCouponsLength = couponData.total;
+//                        //记录用户动作
+//                    }));
+//
+//
+//                });
                 this.step(function(){
                     /*
                     var requestData01 = {
@@ -230,6 +230,8 @@ module.exports = {
 
                         couponArr = couponData.list;
                         //nut.model.effectiveCouponsLength = couponData.total;
+                        nut.model.effectiveCouponsLength = couponData.total;
+
 
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -258,6 +260,7 @@ module.exports = {
                         couponData = JSON.parse(doc);
                         couponArr = couponArr.concat(couponData.list);
                         //nut.model.overdueCouponsLength = couponData.total;
+                        nut.model.usedCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
                             {
@@ -285,6 +288,7 @@ module.exports = {
 
                         couponData = JSON.parse(doc);
                         couponArr = couponArr.concat(couponData.list);
+                        nut.model.overdueCouponsLength = couponData.total;
 
                         helper.db.coll("welab/feeds").insert(
                             {
