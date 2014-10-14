@@ -17,6 +17,7 @@ module.exports = {
         update:{
             process:function(seed,nut){
                 var postData = JSON.parse(seed.postData);
+                console.log("postdata",postData)
                 postData.password = encryptPassword(postData.password,postData)
                 var id = seed.id;
                 this.step(function(){
