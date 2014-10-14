@@ -35,7 +35,7 @@ var city = '{@city}';
     </if>
 </div>
 <div class="way">
-    <p class="text"><span>地址：</span><span style="width: 82%; float: left; line-height: 26px;">{@searchCity.ADDR}</span></p>
+    <p class="text"><span>地址：</span><span id="address" style="width: 82%; float: left; line-height: 26px;">{@searchCity.ADDR}</span></p>
     <p>导航：<a href="javascript:;" onclick="baidumap('{@searchCity.LOG}','{@searchCity.LAT}','{@searchCity.ADDR}')" style="display:inline-block;">行车线路</a></p>
     <p class="text"><span>电话：</span><span style="width: 82%; float: left; line-height: 26px;">{@searchCity.TEL}</span></p>
 </div>
@@ -60,13 +60,9 @@ var city = '{@city}';
 <script>
     var log = "{@searchCity.LOG}";
     function load(){
-        //if(log==null || log==""){
-            shareIcon = location.origin + "/lavico/public/images/lavico_default.png";
-//        }else{
-//            shareIcon = jQuery("#allmap").html();
-//        }
+        shareIcon = location.origin + "/lavico/public/images/lavico_default.png";
         shareTitle = $(".store-name").html();
-        shareContent = $(".store-name").html() +"恭候您光临!";
+        shareContent = $("#address").html();
     }
 
     window.onload =function() {
