@@ -11,7 +11,7 @@
     </div>
     <div name="addContent" class="panel-body col-md-12">
         <input type="hidden" value="{@users._id}" id="userid">
-        <input type="hidden" value="{@users.username}" id="username">
+        <input type="hidden" value="{@users.username}" id="name">
         <input type="hidden" value="{@users.createTime}" id="createTime">
         <h6 style="margin-bottom: 20px;">基础设置</h6>
         <div class="form-group">
@@ -50,7 +50,7 @@
     function save(){
         var aFormInput = {}
         var _inputCheck = true;
-        var username = $("#username").val();
+        var username = $("#name").val();
         var createTime = $("#createTime").val();
         var userid = $("#userid").val();
         var nickname = $("#title").val();
@@ -88,7 +88,7 @@
                 showCloseButton: true})
 
         }
-
+        //alert(password)
         aFormInput['nickname'] = nickname;
         aFormInput['password'] = password;
         aFormInput['username'] = username;
