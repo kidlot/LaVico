@@ -15,6 +15,10 @@ module.exports = {
         })
 
         this.step(function(){
+
+        })
+
+        this.step(function(){
             middleware.getAccessToken(function(err,doc){
                 if(err) console.log("AccessToken_err",err);
                 console.log("AccessToken",doc)
@@ -22,9 +26,6 @@ module.exports = {
                     AccessToken = doc.access_token;
                 }
             })
-        })
-
-        this.step(function(){
             if(list.length>0){
                 for(var i=0;i<list.length;i++){
                     (function(wxid,i){

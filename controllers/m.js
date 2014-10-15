@@ -42,7 +42,7 @@
             method: 'GET'
         };
 
-        console.log("请求用户信息：",options)
+        //console.log("请求用户信息：",options)
         req = http.request(options, function(res) {
             res.setEncoding('utf8');
             var body='';
