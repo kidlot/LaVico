@@ -4,6 +4,7 @@
     var http = require('http');
 
     exports.getUserNickname = function(openid, cb) {
+        console.log("openid",openid)
         var options, req;
 
         options = {
