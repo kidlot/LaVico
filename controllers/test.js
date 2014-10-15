@@ -16,26 +16,31 @@ module.exports = {
         this.step(function(){
             if(list.length>0){
                 for(var i=0;i<list.length;i++){
-                    process.wxOauth._getUser(list[i].wechatid,function(err,doc){
-                        if(err){
-                            console.log("err",err);
-                        }
-                        console.log("doc",doc)
-                        if(doc){
-                            helper.db.coll("welab/customers_copy").update({wechatid: wechatid}, {$set: {
-                                userName: doc.nickname,
-                                nickname: doc.nickname,
-                                gender: doc.sex,
-                                language: doc.language,
-                                city: doc.city,
-                                province: doc.province,
-                                country: doc.country,
-                                face: doc.headimgurl
-                            }}, {upsert: true}, function (err, doc) {
-                                err && console.log(err)
-                            })
-                        }
-                    })
+                    if(process.wxOauth){
+                        process.wxOauth._getUser(list[i].wechatid,function(err,doc){
+                            if(err){
+                                console.log("err",err);
+                            }
+                            console.log("doc",doc)
+                            if(doc){
+                                helper.db.coll("welab/customers_copy").update({wechatid: wechatid}, {$set: {
+                                    userName: doc.nickname,
+                                    nickname: doc.nickname,
+                                    gender: doc.sex,
+                                    language: doc.language,
+                                    city: doc.city,
+                                    province: doc.province,
+                                    country: doc.country,
+                                    face: doc.headimgurl
+                                }}, {upsert: true}, function (err, doc) {
+                                    err && console.log(err)
+                                })
+                            }
+                        })
+                    }else{
+                        console.log("1111111111")
+                    }
+
                 }
             }
 
