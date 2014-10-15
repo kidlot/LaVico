@@ -2,19 +2,20 @@
 (function() {
 
     var http = require('http');
+    var https = require('https');
 
     exports.getAccessToken = function(cb) {
         var options, req;
 
         options = {
             host: 'api.weixin.qq.com',
-            port: 80,
+            port: 443,
             path: "/cgi-bin/token?grant_type=client_credential&appid=wx079e02ae6421c523&secret=1574abeb9b3f9404e722460afb640eeb",
             method: 'GET'
         };
 
         console.log("获取AccessToken：",options)
-        req = http.request(options, function(res) {
+        req = https.request(options, function(res) {
             res.setEncoding('utf8');
             var body='';
             res.on('data', function(data) {
@@ -32,7 +33,7 @@
     };
 
     exports.getUserNickname = function(openid,access_token, cb) {
-        console.log("openid",openid)
+        //console.log("openid",openid)
         var options, req;
 
         options = {
@@ -42,7 +43,7 @@
             method: 'GET'
         };
 
-        console.log("请求用户信息：",options)
+        //console.log("请求用户信息：",options)
         req = http.request(options, function(res) {
             res.setEncoding('utf8');
             var body='';

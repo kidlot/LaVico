@@ -6,7 +6,7 @@ module.exports = {
         var list = [];
         var AccessToken="";
         this.step(function(){
-            helper.db.coll("welab/customers_copy").find({"nickname":null}).toArray(this.hold(function(err,doc){
+            helper.db.coll("welab/customers").find({"nickname":null}).toArray(this.hold(function(err,doc){
                 if(err) console.log("customers_err",err)
                 if(doc){
                     list = doc;
@@ -15,13 +15,14 @@ module.exports = {
         })
 
         this.step(function(){
-            middleware.getAccessToken(function(err,doc){
+            middleware.getAccessToken(this.hold(function(err,doc){
                 if(err) console.log("AccessToken_err",err);
-                console.log("AccessToken",doc)
+                doc = JSON.parse(doc)
                 if(doc && doc.access_token){
+                    console.log("doc",doc)
                     AccessToken = doc.access_token;
                 }
-            })
+            }))
         })
 
         this.step(function(){
@@ -32,9 +33,10 @@ module.exports = {
                             if(err){
                                 console.log("err",err);
                             }
-                            console.log("doc",doc)
+                            doc = JSON.parse(doc)
                             if(doc && doc.nickname){
-                                helper.db.coll("welab/customers_copy").update({"wechatid": wxid}, {$set: {
+                                console.log("isok",true)
+                                helper.db.coll("welab/customers").update({"wechatid": wxid}, {$set: {
                                     userName: doc.nickname,
                                     nickname: doc.nickname,
                                     gender: doc.sex,
