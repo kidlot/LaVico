@@ -34,7 +34,6 @@ module.exports = {
                             }
                             console.log("doc",doc)
                             if(doc && doc.nickname){
-                                console.log("wechatid",wxid)
                                 helper.db.coll("welab/customers_copy").update({"wechatid": wxid}, {$set: {
                                     userName: doc.nickname,
                                     nickname: doc.nickname,
