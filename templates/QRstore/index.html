@@ -233,9 +233,9 @@
 //            console.log(result.worksheets[1].data);
 
 
-            outTable(result.worksheets[1].data);
+            outTable(result[1].data);
 
-            if(result&&result.worksheets&&result.worksheets[1]&&result.worksheets[1].data){
+            if(result&&result[1]&&result[1].data){
                 $.globalMessenger().post({
                     message: "导入成功",
                     type: 'success',
@@ -246,7 +246,7 @@
                     type: 'error',
                     showCloseButton: true});
             }
-            result = JSON.stringify(result.worksheets[1].data);
+            result = JSON.stringify(result[1].data);
             $(tableView).html(result);
             $('.listLoadding').hide();
 
@@ -257,7 +257,7 @@
         var _html = '<table class="table table-striped" id="tagList">';
         for(var _i=0;_i<result.length;_i++){
 
-            if(result[_i]&&result[_i][0]&&result[_i][0].value){
+            if(result[_i]&&result[_i][0]&&result[_i][0]){
                 if(_i==0){
                     _html = _html + '<thead><tr>';
 
@@ -267,18 +267,18 @@
                 for(var _j=0;_j<result[_i].length&&_j<3;_j++){
 
                     if(_i == 0){
-                        if(result[_i][_j]&&result[_i][_j].value){
+                        if(result[_i][_j]&&result[_i][_j]){
                             _html = _html + '<th class="header">';
-                            _html = _html + result[_i][_j].value;
+                            _html = _html + result[_i][_j];
                             _html = _html + '</th>';
                         }else{
                             _html = _html + '<td class="header">' + '&nbsp;' +'</td>'
                         }
                     }else{
 
-                        if(result[_i][_j]&&result[_i][_j].value){
+                        if(result[_i][_j]&&result[_i][_j]){
                             _html = _html + '<td>';
-                            _html = _html + result[_i][_j].value;
+                            _html = _html + result[_i][_j];
                             _html = _html + '</td>';
                         }else{
                             _html = _html + '<td class="header">' + '&nbsp;' +'</td>'

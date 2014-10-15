@@ -33,15 +33,11 @@ module.exports = {
     , actions: {
 
         readXlsx:{
-            process: function(seed,nut)
-            {
+            process: function(seed,nut) {
                 var xlsx = require('node-xlsx');//读取excel文件，需要安装npm i node-xlsx
                 var uploadType = seed.uploadType || 'rewrite';
                 nut.disable() ;
                 var storeOldList;
-
-
-
                 var urlArr = seed.url.split('/');
                 var folder = Application.singleton.rootdir;
 
@@ -49,31 +45,30 @@ module.exports = {
                 var obj = xlsx.parse(url);
                 var info = JSON.stringify(obj);
 
-
                 this.res.writeHead(200,{"Content-Type":"application/json"});
-
                 this.res.write(info);
 
-                if(obj&&obj.worksheets&&obj.worksheets[1]&&obj.worksheets[1].data){
-
-                    var _result = obj.worksheets[1].data;
+                if(obj&&obj[1]&&obj[1].data){
+                    var _result = obj[1].data;
                     var _storeKey = [];
                     var _store = [];
                     var storeList = [];
-                    for(var _i=0;_i<_result.length&&(_result[_i]&&_result[_i][0]&&_result[_i][0].value);_i++){
+                    for(var _i=0;_i<_result.length&&(_result[_i]&&_result[_i][0]&&_result[_i][0]);_i++){
                         if(_i==0){
                             //生成键值
                             for(var _j=0;_j<_result[_i].length;_j++){
-                                if(_result[_i][_j]&&_result[_i][_j].value){
-                                    _storeKey[_j] = _result[_i][_j].value;
+                                if(_result[_i][_j]&&_result[_i][_j]){
+                                    _storeKey[_j] = _result[_i][_j];
                                 }
                             }
                             storeList.push(_storeKey);
                             _storeKey = [];
                         }else{
-                            for(var _j=0;_j<_result[_i].length;_j++){
-                                if(_result[_i][_j]&&_result[_i][_j].value){
-                                    _store[_j] = _result[_i][_j].value;
+                            for(var _j=0;_j<3;_j++){
+                                if(_result[_i][_j]&&_result[_i][_j]){
+                                    _store[_j] = _result[_i][_j];
+                                }else{
+                                    _store[_j] = "";
                                 }
                             }
                             storeList.push(_store);
@@ -86,23 +81,12 @@ module.exports = {
                     insertData.createTime = new Date().getTime();
                     insertData.storeList = storeList;//门店数据
                     if(uploadType == 'rewrite'){
-
-                        console.log('rewrite')
-                        console.log(storeList);
                         helper.db.coll("lavico/stores").insert(insertData, function (err, doc) {
                             if (err) {
                                 throw err;
                             }
                         });
-
-                    }
-                    else if(uploadType == 'appendTo'){
-
-                        console.log('appendTo');
-                        console.log('++++++storeList+++++++');
-                        console.log(storeList);
-                        console.log('++++++storeList+++++++');
-
+                    }else if(uploadType == 'appendTo'){
                         this.step(function(){
                             helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
                                 if(err) throw err ;
@@ -116,13 +100,8 @@ module.exports = {
                         })
 
                         this.step(function(){
-                            console.log('++++++storeOldList+++++++');
-                            console.log(storeOldList);
-                            console.log('++++++storeOldList+++++++');
-
                             if(storeOldList&&storeOldList.length>0&&storeList.length>0){
                                 storeOldList[0] = storeList[0];
-
 
                                 for(var _i=0;_i<storeList.length;_i++){
                                     var j = storeList[_i][0];//要修第几个
@@ -145,35 +124,15 @@ module.exports = {
                                     }
                                     console.log(j);
                                 }
-
-//                                for(var _i=0;_i<storeOldList.length;_i++){
-//                                    if(storeOldList[_i]==undefined){
-//                                        for(var _j=0;_j<storeOldList[_i].length;_j++){
-//                                            if(_j=0){
-//                                                storeOldList[_i][0] = _i;
-//
-//                                            }else{
-//                                                storeOldList[_i][_j] = null;
-//                                            }
-//                                        }
-//                                    }
-//                                }
                             }
 
                             insertData.storeList = storeOldList;
-
-                            console.log(insertData);
-                            console.log('++++++insertData+++++++');
-                            console.log(insertData);
-                            console.log('++++++insertData+++++++');
                             helper.db.coll("lavico/stores").insert(insertData, function (err, doc) {
                                 if (err) {
                                     throw err;
                                 }
                             });
                         });
-
-
                     }else{
                         //
                     }

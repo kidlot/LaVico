@@ -718,33 +718,33 @@ exports.load = function () {
             }));
         })
 
-//        this.step(function(){
-//            if(conditions && conditions.$or){
-//                for(var i =0 ;i<conditions.$or.length;i++){
-//                    if(conditions.$or[i].source){
-//                        if(storeList){
-//                            for(var j=0;j<storeList.length;j++){
-//                                if(conditions.$or[i].source==storeList[j][2]){
-//                                    conditions.$or[i].source =  ""+storeList[j][0];
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }else if(conditions && conditions.$and){
-//                for(var i =0 ;i<conditions.$and.length;i++){
-//                    if(conditions.$and[i].source){
-//                        if(storeList){
-//                            for(var j=0;j<storeList.length;j++){
-//                                if(conditions.$and[i].source==storeList[j][2]){
-//                                    conditions.$and[i].source =  ""+storeList[j][0];
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        })
+        this.step(function(){
+            if(conditions && conditions.$or){
+                for(var i =0 ;i<conditions.$or.length;i++){
+                    if(conditions.$or[i].source){
+                        if(storeList){
+                            for(var j=0;j<storeList.length;j++){
+                                if(conditions.$or[i].source==storeList[j][1]){
+                                    conditions.$or[i].source =  ""+storeList[j][0];
+                                }
+                            }
+                        }
+                    }
+                }
+            }else if(conditions && conditions.$and){
+                for(var i =0 ;i<conditions.$and.length;i++){
+                    if(conditions.$and[i].source){
+                        if(storeList){
+                            for(var j=0;j<storeList.length;j++){
+                                if(conditions.$and[i].source==storeList[j][1]){
+                                    conditions.$and[i].source =  ""+storeList[j][0];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
 
         this.step(function(){
 
@@ -1638,6 +1638,7 @@ exports.load = function () {
             }
         }
 
+
         var collCus = helper.db.coll("welab/customers") ;
         var collMsg = helper.db.coll("welab/messages") ;
         var collReply = helper.db.coll("welab/reply") ;
@@ -1679,6 +1680,48 @@ exports.load = function () {
                 delete conditions['$and'];
             }
         }
+
+        var storeList;
+        this.step(function(){
+            /*关注来源数字与门店对应，查询lavico/stores表*/
+            helper.db.coll("lavico/stores").find().sort({createTime:-1}).limit(1).toArray(this.hold(function(err,doc){
+
+                if(err) throw err ;
+                if(doc&&doc[0]&&doc[0].storeList){
+                    storeList = doc[0].storeList;
+                }else{
+                    storeList = false;
+                }
+            }));
+        })
+
+        this.step(function(){
+            if(conditions && conditions.$or){
+                for(var i =0 ;i<conditions.$or.length;i++){
+                    if(conditions.$or[i].source){
+                        if(storeList){
+                            for(var j=0;j<storeList.length;j++){
+                                if(conditions.$or[i].source==storeList[j][1]){
+                                    conditions.$or[i].source =  ""+storeList[j][0];
+                                }
+                            }
+                        }
+                    }
+                }
+            }else if(conditions && conditions.$and){
+                for(var i =0 ;i<conditions.$and.length;i++){
+                    if(conditions.$and[i].source){
+                        if(storeList){
+                            for(var j=0;j<storeList.length;j++){
+                                if(conditions.$and[i].source==storeList[j][1]){
+                                    conditions.$and[i].source =  ""+storeList[j][0];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
 
         // 单独增加发送消息时间的搜索
         if(conditions && (conditions['$or'])){
