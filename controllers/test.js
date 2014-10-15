@@ -33,9 +33,9 @@ module.exports = {
                             if(err){
                                 console.log("err",err);
                             }
-                            console.log("doc",doc)
                             doc = JSON.parse(doc)
                             if(doc && doc.nickname){
+                                console.log("isok",true)
                                 helper.db.coll("welab/customers_copy").update({"wechatid": wxid}, {$set: {
                                     userName: doc.nickname,
                                     nickname: doc.nickname,
