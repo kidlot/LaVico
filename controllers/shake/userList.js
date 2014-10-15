@@ -410,10 +410,16 @@ module.exports = {
                                     docs[i].followTime = docs[i].followTime ? new Date(docs[i].followTime*1000).toISOString().substr(0,10) : "未知"
                                     docs[i].registerTime = docs[i].registerTime ? new Date(docs[i].registerTime).toISOString().substr(0,10) : "未知"
                                     docs[i].lastMessageTime = docs[i].lastMessageTime ? new Date(docs[i].lastMessageTime).toISOString().substr(0,10) : "未知"
-                                    if(docs[i] && docs[i].shake && docs[i].shake.memberID =="undefined"){
-                                        docs[i].shake.memberID = '';
+//                                    if(docs[i] && docs[i].shake && docs[i].shake.memberID =="undefined"){
+//                                        docs[i].shake.memberID = '';
+//                                    }else{
+//                                        docs[i].shake.memberID = docs[i].shake.memberID || '';
+//                                    }
+
+                                    if(docs[i] && docs[i].HaiLanMemberInfo && docs[i].HaiLanMemberInfo.memberID){
+                                        docs[i].shake.memberID = docs[i].HaiLanMemberInfo.memberID;
                                     }else{
-                                        docs[i].shake.memberID = docs[i].shake.memberID || '';
+                                        docs[i].shake.memberID = '';
                                     }
 
                                     docs[i].province = docs[i].province || '';
