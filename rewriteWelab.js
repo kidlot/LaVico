@@ -2913,7 +2913,7 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
-                helper.db.coll("welab/customers").find({}).toArray(this.hold(function(err,docs){
+                helper.db.coll("welab/customers").find({}).skip(pageNum).limit(pageSize).toArray(this.hold(function(err,docs){
                     if(err) throw err;
                     _docs = docs || docs;
                 }))
