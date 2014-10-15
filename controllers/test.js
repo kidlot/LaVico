@@ -17,11 +17,10 @@ module.exports = {
         this.step(function(){
             middleware.getAccessToken(this.hold(function(err,doc){
                 if(err) console.log("AccessToken_err",err);
-
+                doc = JSON.parse(doc)
                 if(doc && doc.access_token){
                     console.log("doc",doc)
                     AccessToken = doc.access_token;
-                    console.log("11111111")
                 }
             }))
         })
@@ -35,6 +34,7 @@ module.exports = {
                                 console.log("err",err);
                             }
                             console.log("doc",doc)
+                            doc = JSON.parse(doc)
                             if(doc && doc.nickname){
                                 helper.db.coll("welab/customers_copy").update({"wechatid": wxid}, {$set: {
                                     userName: doc.nickname,
