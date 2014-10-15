@@ -15,17 +15,18 @@ module.exports = {
         })
 
         this.step(function(){
+            middleware.getAccessToken(this.hold(function(err,doc){
+                if(err) console.log("AccessToken_err",err);
 
+                if(doc && doc.access_token){
+                    console.log("doc",doc)
+                    AccessToken = doc.access_token;
+                    console.log("11111111")
+                }
+            }))
         })
 
         this.step(function(){
-            middleware.getAccessToken(function(err,doc){
-                if(err) console.log("AccessToken_err",err);
-                console.log("AccessToken",doc)
-                if(doc && doc.access_token){
-                    AccessToken = doc.access_token;
-                }
-            })
             if(list.length>0){
                 for(var i=0;i<list.length;i++){
                     (function(wxid,i){
