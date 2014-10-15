@@ -366,17 +366,20 @@ module.exports = {
                                         }
                                     }
                                     if(docs[i].source&&storeList){
+
+                                        var _source = [];
                                         var _sourceObject = docs[i].source;
-                                        for(var _i in _sourceObject){
+                                        if(_sourceObject){
+                                            for(var _i in _sourceObject){
 
-                                            if(_i==0){
-                                                _sourceObject[_i] = storeList[_sourceObject[_i]][1];
+                                                if(_i == 0){
+                                                    _sourceObject[_i] = storeList[_sourceObject[_i]][1];
+                                                    _source =  [_sourceObject[_i]];
+                                                }
                                             }
-
                                         }
-                                        docs[i].source = _sourceObject || '';
-                                    }else{
-                                        docs[i].source=""
+
+                                        docs[i].source =  _source || '';
                                     }
                                     docs[i].tags = tags.join(",")
                                     docs[i].followTimebak = docs[i].followTime;
