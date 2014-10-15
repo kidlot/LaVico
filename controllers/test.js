@@ -23,7 +23,7 @@ module.exports = {
                         }
                         console.log("doc",doc)
                         if(doc){
-                            console.log("wechatid",openid)
+                            console.log("wechatid",wxid)
                             helper.db.coll("welab/customers_copy").update({"wechatid": wxid}, {$set: {
                                 userName: doc.nickname,
                                 nickname: doc.nickname,
