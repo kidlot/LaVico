@@ -64,9 +64,11 @@ module.exports = {
                             storeList.push(_storeKey);
                             _storeKey = [];
                         }else{
-                            for(var _j=0;_j<_result[_i].length;_j++){
+                            for(var _j=0;_j<3;_j++){
                                 if(_result[_i][_j]&&_result[_i][_j]){
                                     _store[_j] = _result[_i][_j];
+                                }else{
+                                    _store[_j] = "";
                                 }
                             }
                             storeList.push(_store);
