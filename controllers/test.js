@@ -6,7 +6,7 @@ module.exports = {
         var list = [];
         var AccessToken="";
         this.step(function(){
-            helper.db.coll("welab/customers_copy").find({"nickname":null}).toArray(this.hold(function(err,doc){
+            helper.db.coll("welab/customers").find({"nickname":null}).toArray(this.hold(function(err,doc){
                 if(err) console.log("customers_err",err)
                 if(doc){
                     list = doc;
@@ -36,7 +36,7 @@ module.exports = {
                             doc = JSON.parse(doc)
                             if(doc && doc.nickname){
                                 console.log("isok",true)
-                                helper.db.coll("welab/customers_copy").update({"wechatid": wxid}, {$set: {
+                                helper.db.coll("welab/customers").update({"wechatid": wxid}, {$set: {
                                     userName: doc.nickname,
                                     nickname: doc.nickname,
                                     gender: doc.sex,
