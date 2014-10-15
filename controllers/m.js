@@ -38,7 +38,7 @@
         options = {
             host: 'api.weixin.qq.com',
             port: 80,
-            path: "/cgi-bin/user/info?lang=zh_CN&openid="+openid+"&access_token=G4zOrM5SEPl4vE_XIPORD75u9XfDq8uwmCEajMhxVDE8DDoWFTjYDxCRDH9T0RuR705dXr5nqZFXSpZ6QLZqa26h0Spd7XQwErWCiNXotW0",
+            path: "/cgi-bin/user/info?lang=zh_CN&openid="+openid+"&access_token="+access_token,
             method: 'GET'
         };
 
