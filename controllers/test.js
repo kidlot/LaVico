@@ -17,6 +17,32 @@ module.exports = {
             if(list.length>0){
                 for(var i=0;i<list.length;i++){
                     if(process.wxOauth){
+
+
+                        if(!seed.code){
+
+                            var url = process.wxOauth.getAuthorizeURL("http://"+this.req.headers.host+this.req.url,"123","snsapi_base")
+                            console.log("通过oauth获得CODE的url",url)
+                            this.res.writeHeader(302, {'location': url }) ;
+
+                            nut.disable();//不显示模版
+                            this.res.end();
+                            this.terminate();
+
+                        }else{
+
+                            process.wxOauth.getAccessToken(seed.code,this.hold(function(err,doc){
+
+                                if(!err){
+                                    var openid = doc.data.openid
+                                    wxid = openid || undefined;
+                                    console.log("通过oauth获得信息",doc)
+                                    this.req.session.oauthTokenInfo = doc.data;
+                                }
+                            }))
+                        }
+
+
                         process.wxOauth.getUser(list[i].wechatid,function(err,doc){
                             if(err){
                                 console.log("err",err);
