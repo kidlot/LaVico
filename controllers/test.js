@@ -18,7 +18,7 @@ module.exports = {
                 for(var i=0;i<list.length;i++){
                     if(process.wxOauth){
                         console.log("process.wxOauth",process.wxOauth)
-                        process.wxOauth._getUser(list[i].wechatid,function(err,doc){
+                        process.wxOauth.getUser(list[i].wechatid,function(err,doc){
                             if(err){
                                 console.log("err",err);
                             }
