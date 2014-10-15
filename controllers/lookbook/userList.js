@@ -344,7 +344,7 @@ module.exports = {
                         arrregateParams
                         ,this.hold(function(err,docs){
                             if(err) console.log(err) ;
-
+                            console.log("docs",docs)
                             try{
                                 for (var i=0; i<docs.length; i++)
                                 {
@@ -368,7 +368,11 @@ module.exports = {
                                     if(docs[i].source&&storeList){
                                         var _sourceObject = docs[i].source;
                                         for(var _i in _sourceObject){
-                                            _sourceObject[_i] = storeList[_sourceObject[_i]][2];
+
+                                            if(_i==0){
+                                                _sourceObject[_i] = storeList[_sourceObject[_i]][1];
+                                            }
+
                                         }
                                         docs[i].source = _sourceObject || '';
                                     }else{
