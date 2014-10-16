@@ -2913,43 +2913,44 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
+                var nodeExcel = require('excel-export');
+                var conf = {};
+                conf.cols = [
+                    {
+                        caption: '姓名',
+                        type: 'string'
+                    }, {
+                        caption: '性别',
+                        type: 'string'
+                    }, {
+                        caption: '年龄',
+                        type: 'string'
+                    }, {
+                        caption: '城市',
+                        type: 'string'
+                    }, {
+                        caption: '标签',
+                        type: 'string'
+                    }, {
+                        caption: '关注',
+                        type: 'string'
+                    }, {
+                        caption: '注册',
+                        type: 'string'
+                    }, {
+                        caption: '信息数（占比）',
+                        type: 'string'
+                    }, {
+                        caption: '未会话（天）',
+                        type: 'string'
+                    }
+                ];
+                conf.rows = [];
                 helper.db.coll("welab/customers").find({}).toArray(this.hold(function(err,_docs){
                     if(err) throw err;
                     //_docs = docs || docs;
                     console.log("_docs",_docs.length)
-                    var nodeExcel = require('excel-export');
-                    var conf = {};
-                    conf.cols = [
-                        {
-                            caption: '姓名',
-                            type: 'string'
-                        }, {
-                            caption: '性别',
-                            type: 'string'
-                        }, {
-                            caption: '年龄',
-                            type: 'string'
-                        }, {
-                            caption: '城市',
-                            type: 'string'
-                        }, {
-                            caption: '标签',
-                            type: 'string'
-                        }, {
-                            caption: '关注',
-                            type: 'string'
-                        }, {
-                            caption: '注册',
-                            type: 'string'
-                        }, {
-                            caption: '信息数（占比）',
-                            type: 'string'
-                        }, {
-                            caption: '未会话（天）',
-                            type: 'string'
-                        }
-                    ];
-                    conf.rows = [];
+
                     for(var i=0;i<_docs.length;i++){
                         _docs[i].realname = _docs[i].realname || "--";
                         _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
