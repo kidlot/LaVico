@@ -39,7 +39,7 @@ module.exports = {
                                 helper.db.coll("welab/customers").update({"wechatid": wxid}, {$set: {
                                     userName: doc.nickname,
                                     nickname: doc.nickname,
-                                    gender: doc.sex,
+                                    gender: doc.sex==1 ? "male" : "female",
                                     language: doc.language,
                                     city: doc.city,
                                     province: doc.province,
