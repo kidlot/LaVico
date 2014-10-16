@@ -2902,7 +2902,7 @@ exports.load = function () {
 //            var currentPage = typeof(pageNum) == "undefined" ? 1 : parseInt(pageNum);
 //            var pageNum = (currentPage-1) * pageSize;
 
-
+            console.log("time_1",formatTime(new Date().getTime()))
             // 总消息数
             this.step(function(){
                 helper.db.coll("welab/messages").find({replyFor:{$exists:false}}).count(this.hold(function(err,cnt){
@@ -2913,6 +2913,7 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
+                console.log("time_2",formatTime(new Date().getTime()))
                 helper.db.coll("welab/customers").find({},
                     {"realname":1,"gender":1,"birthday":1,"province":1,"city":1,"tags":1,"followTime":1,"registerTime":1,"messageCount":1,"lastMessageTime":1}).toArray(this.hold(function(err,docs){
                     if(err) throw err;
@@ -2921,39 +2922,39 @@ exports.load = function () {
             })
 
             this.step(function(){
-                var nodeExcel = require('excel-export');
-                var conf = {};
-                conf.cols = [
-                    {
-                        caption: '姓名',
-                        type: 'string'
-                    }, {
-                        caption: '性别',
-                        type: 'string'
-                    }, {
-                        caption: '年龄',
-                        type: 'string'
-                    }, {
-                        caption: '城市',
-                        type: 'string'
-                    }, {
-                        caption: '标签',
-                        type: 'string'
-                    }, {
-                        caption: '关注',
-                        type: 'string'
-                    }, {
-                        caption: '注册',
-                        type: 'string'
-                    }, {
-                        caption: '信息数（占比）',
-                        type: 'string'
-                    }, {
-                        caption: '未会话（天）',
-                        type: 'string'
-                    }
-                ];
-                conf.rows = [];
+//                var nodeExcel = require('excel-export');
+//                var conf = {};
+//                conf.cols = [
+//                    {
+//                        caption: '姓名',
+//                        type: 'string'
+//                    }, {
+//                        caption: '性别',
+//                        type: 'string'
+//                    }, {
+//                        caption: '年龄',
+//                        type: 'string'
+//                    }, {
+//                        caption: '城市',
+//                        type: 'string'
+//                    }, {
+//                        caption: '标签',
+//                        type: 'string'
+//                    }, {
+//                        caption: '关注',
+//                        type: 'string'
+//                    }, {
+//                        caption: '注册',
+//                        type: 'string'
+//                    }, {
+//                        caption: '信息数（占比）',
+//                        type: 'string'
+//                    }, {
+//                        caption: '未会话（天）',
+//                        type: 'string'
+//                    }
+//                ];
+//                conf.rows = [];
                 for(var i=0;i<_docs.length;i++){
                     _docs[i].realname = _docs[i].realname || "--";
                     _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
@@ -2985,23 +2986,24 @@ exports.load = function () {
                     _docs[i].messageCount = _docs[i].messageCount || "0";
                     _docs[i].message = _docs[i].messageCount  + " " + messagePercentage+"%";
                     _docs[i].lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
-                    var rows;
-                    rows = [
-                        _docs[i].realname || "未知",
-                        _docs[i].gender,
-                        _docs[i].birthday,
-                        _docs[i].province +"-"+_docs[i].city,
-                        _docs[i].tags,
-                        _docs[i].followTime,
-                        _docs[i].registerTime,
-                        _docs[i].message,
-                        _docs[i].lastMessageTime,
-                    ]
-                    conf.rows.push(rows)
+//                    var rows;
+//                    rows = [
+//                        _docs[i].realname || "未知",
+//                        _docs[i].gender,
+//                        _docs[i].birthday,
+//                        _docs[i].province +"-"+_docs[i].city,
+//                        _docs[i].tags,
+//                        _docs[i].followTime,
+//                        _docs[i].registerTime,
+//                        _docs[i].message,
+//                        _docs[i].lastMessageTime,
+//                    ]
+//                    conf.rows.push(rows)
                 }
-                var result = nodeExcel.execute(conf);
-                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                console.log("time_3",formatTime(new Date().getTime()))
+//                var result = nodeExcel.execute(conf);
+//                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+//                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
                 this.res.write(result, 'binary');
                 this.res.end();
             })
@@ -3172,4 +3174,17 @@ exports.load = function () {
         }
     }
 };
+
+//日期格式转换
+function   formatTime(now){
+    var   now = new Date(now);
+    var   year=now.getFullYear();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+    return month+"月"+date+"日"+ hour + ":" + minute +":"+ second;
+}
+
 
