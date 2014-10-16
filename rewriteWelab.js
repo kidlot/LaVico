@@ -2913,47 +2913,47 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
-                helper.db.coll("welab/customers").find({}).skip(pageNum).limit(pageSize).toArray(this.hold(function(err,docs){
+                helper.db.coll("welab/customers").find({}).toArray(this.hold(function(err,docs){
                     if(err) throw err;
                     _docs = docs || docs;
                 }))
             })
-            this.step(function(){
-                for(var i=0;i<_docs.length;i++){
-                    var result={};
-                    result.realname = _docs[i].realname || "--";
-                    result.gender = _docs[i].gender == 'female'?"女":"男";
-                    result.birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
-                    result.province = _docs[i].province || "--";
-                    result.city = _docs[i].city || "--";
-                    var tags = [];
-                    if(_docs[i].tags){
-                        for (var j=0; j<_docs[i].tags.length; j++)
-                        {
-                            tags.push(_docs[i].tags[j]);
-                        }
-                        _docs[i].tags = tags.join(",");
-                    }else{
-                        _docs[i].tags = '未知';
-                    }
-                    result.tags = tags;
-                    result.followTime =  _docs[i].followTime?"是":"否"
-                    result.registerTime =  _docs[i].registerTime?"是":"否"
-                    var messagePercentage = 0;
-
-                    if(_docs[i].messageCount){
-                        messagePercentage = _docs[i].messageCount ? parseInt((_docs[i].messageCount/totalmessagecount) *100) : 0;
-                    }else{
-                        messagePercentage = 0;
-                    }
-                    result.messagePercentage = messagePercentage || "0";
-
-                    result.messageCount = _docs[i].messageCount || "0";
-                    result.message = result.messageCount  + " " + result.messagePercentage+"%",
-                    result.lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
-                    resultList.push(result);
-                }
-            })
+//            this.step(function(){
+//                for(var i=0;i<_docs.length;i++){
+//                    var result={};
+//                    result.realname = _docs[i].realname || "--";
+//                    result.gender = _docs[i].gender == 'female'?"女":"男";
+//                    result.birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
+//                    result.province = _docs[i].province || "--";
+//                    result.city = _docs[i].city || "--";
+//                    var tags = [];
+//                    if(_docs[i].tags){
+//                        for (var j=0; j<_docs[i].tags.length; j++)
+//                        {
+//                            tags.push(_docs[i].tags[j]);
+//                        }
+//                        _docs[i].tags = tags.join(",");
+//                    }else{
+//                        _docs[i].tags = '未知';
+//                    }
+//                    result.tags = tags;
+//                    result.followTime =  _docs[i].followTime?"是":"否"
+//                    result.registerTime =  _docs[i].registerTime?"是":"否"
+//                    var messagePercentage = 0;
+//
+//                    if(_docs[i].messageCount){
+//                        messagePercentage = _docs[i].messageCount ? parseInt((_docs[i].messageCount/totalmessagecount) *100) : 0;
+//                    }else{
+//                        messagePercentage = 0;
+//                    }
+//                    result.messagePercentage = messagePercentage || "0";
+//
+//                    result.messageCount = _docs[i].messageCount || "0";
+//                    result.message = result.messageCount  + " " + result.messagePercentage+"%",
+//                    result.lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
+//                    resultList.push(result);
+//                }
+//            })
             this.step(function(){
                 var nodeExcel = require('excel-export');
                 var conf = {};
@@ -2988,6 +2988,53 @@ exports.load = function () {
                     }
                 ];
                 conf.rows = [];
+                for(var i=0;i<_docs.length;i++){
+                    _docs[i].realname = _docs[i].realname || "--";
+                    _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
+                    _docs[i].birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
+                    _docs[i].province = _docs[i].province || "--";
+                    _docs[i].city = _docs[i].city || "--";
+                    var tags = [];
+                    if(_docs[i].tags){
+                        for (var j=0; j<_docs[i].tags.length; j++)
+                        {
+                            tags.push(_docs[i].tags[j]);
+                        }
+                        _docs[i].tags = tags.join(",");
+                    }else{
+                        _docs[i].tags = '未知';
+                    }
+                    _docs[i].tags = tags;
+                    _docs[i].followTime =  _docs[i].followTime?"是":"否"
+                    _docs[i].registerTime =  _docs[i].registerTime?"是":"否"
+                    var messagePercentage = 0;
+
+                    if(_docs[i].messageCount){
+                        messagePercentage = _docs[i].messageCount ? parseInt((_docs[i].messageCount/totalmessagecount) *100) : 0;
+                    }else{
+                        messagePercentage = 0;
+                    }
+                    messagePercentage = messagePercentage || "0";
+
+                    _docs[i].messageCount = _docs[i].messageCount || "0";
+                    _docs[i].message = _docs[i].messageCount  + " " + messagePercentage+"%";
+                    _docs[i].lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
+                    var rows;
+                    rows = [
+                        _docs[i].realname || "未知",
+                        _docs[i].gender,
+                        _docs[i].birthday,
+                        _docs[i].province +"-"+_docs[i].city,
+                        _docs[i].tags,
+                        _docs[i].followTime,
+                        _docs[i].registerTime,
+                        _docs[i].message,
+                        _docs[i].lastMessageTime,
+                    ]
+                    conf.rows.push(rows)
+                }
+
+
                 for(var i=0 ;i < resultList.length ;i++){
 
                     var rows;
