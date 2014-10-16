@@ -3034,23 +3034,23 @@ exports.load = function () {
                     conf.rows.push(rows)
                 }
 
-
-                for(var i=0 ;i < resultList.length ;i++){
-
-                    var rows;
-                    rows = [
-                        resultList[i].realname || "未知",
-                        resultList[i].gender,
-                        resultList[i].birthday,
-                        resultList[i].province +"-"+resultList[i].city,
-                        resultList[i].tags,
-                        resultList[i].followTime,
-                        resultList[i].registerTime,
-                        resultList[i].message,
-                        resultList[i].lastMessageTime,
-                    ]
-                    conf.rows.push(rows)
-                }
+//
+//                for(var i=0 ;i < resultList.length ;i++){
+//
+//                    var rows;
+//                    rows = [
+//                        resultList[i].realname || "未知",
+//                        resultList[i].gender,
+//                        resultList[i].birthday,
+//                        resultList[i].province +"-"+resultList[i].city,
+//                        resultList[i].tags,
+//                        resultList[i].followTime,
+//                        resultList[i].registerTime,
+//                        resultList[i].message,
+//                        resultList[i].lastMessageTime,
+//                    ]
+//                    conf.rows.push(rows)
+//                }
                 var result = nodeExcel.execute(conf);
                 this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                 this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
