@@ -3000,12 +3000,15 @@ exports.load = function () {
                     ]
                     conf.rows.push(rows)
                 }
-                console.log("time_3",formatTime(new Date().getTime()))
 //                var result = nodeExcel.execute(conf);
 //                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
 //                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
 //                this.res.write(result, 'binary');
 //                this.res.end();
+            })
+
+            this.step(function(){
+                console.log("time_3",formatTime(new Date().getTime()))
             })
         }
     }
