@@ -2902,7 +2902,7 @@ exports.load = function () {
 //            var currentPage = typeof(pageNum) == "undefined" ? 1 : parseInt(pageNum);
 //            var pageNum = (currentPage-1) * pageSize;
 
-            console.log("time_1",new Date())
+            console.log("time_1",formatTime(new Date().getTime()))
             // 总消息数
             this.step(function(){
                 helper.db.coll("welab/messages").find({replyFor:{$exists:false}}).count(this.hold(function(err,cnt){
@@ -2913,7 +2913,7 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
-                console.log("time_2",new Date())
+                console.log("time_2",formatTime(new Date().getTime()))
                 helper.db.coll("welab/customers").find({},
                     {"realname":1,"gender":1,"birthday":1,"province":1,"city":1,"tags":1,"followTime":1,"registerTime":1,"messageCount":1,"lastMessageTime":1}).toArray(this.hold(function(err,docs){
                     if(err) throw err;
@@ -3000,12 +3000,12 @@ exports.load = function () {
                     ]
                     conf.rows.push(rows)
                 }
-                console.log("time_3",new Date())
-                var result = nodeExcel.execute(conf);
-                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
-                this.res.write(result, 'binary');
-                this.res.end();
+                console.log("time_3",formatTime(new Date().getTime()))
+//                var result = nodeExcel.execute(conf);
+//                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+//                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+//                this.res.write(result, 'binary');
+//                this.res.end();
             })
         }
     }
@@ -3174,4 +3174,17 @@ exports.load = function () {
         }
     }
 };
+
+//日期格式转换
+function   formatTime(now){
+    var   now = new Date(now);
+    var   year=now.getFullYear();
+    var   month=(now.getMonth()+1>9)?(now.getMonth()+1):('0'+(now.getMonth()+1));
+    var   date=(now.getDate()>9)?now.getDate():('0'+now.getDate());
+    var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
+    var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
+    var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
+    var Milliseconds=(now.getMilliseconds()>9)?now.getMilliseconds():('0'+now.getMilliseconds());
+    return month+"月"+date+"日"+ hour + ":" + minute +":"+ second+":"+Milliseconds;;
+}
 
