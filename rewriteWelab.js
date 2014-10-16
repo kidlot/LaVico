@@ -2922,39 +2922,39 @@ exports.load = function () {
             })
 
             this.step(function(){
-//                var nodeExcel = require('excel-export');
-//                var conf = {};
-//                conf.cols = [
-//                    {
-//                        caption: '姓名',
-//                        type: 'string'
-//                    }, {
-//                        caption: '性别',
-//                        type: 'string'
-//                    }, {
-//                        caption: '年龄',
-//                        type: 'string'
-//                    }, {
-//                        caption: '城市',
-//                        type: 'string'
-//                    }, {
-//                        caption: '标签',
-//                        type: 'string'
-//                    }, {
-//                        caption: '关注',
-//                        type: 'string'
-//                    }, {
-//                        caption: '注册',
-//                        type: 'string'
-//                    }, {
-//                        caption: '信息数（占比）',
-//                        type: 'string'
-//                    }, {
-//                        caption: '未会话（天）',
-//                        type: 'string'
-//                    }
-//                ];
-//                conf.rows = [];
+                var nodeExcel = require('excel-export');
+                var conf = {};
+                conf.cols = [
+                    {
+                        caption: '姓名',
+                        type: 'string'
+                    }, {
+                        caption: '性别',
+                        type: 'string'
+                    }, {
+                        caption: '年龄',
+                        type: 'string'
+                    }, {
+                        caption: '城市',
+                        type: 'string'
+                    }, {
+                        caption: '标签',
+                        type: 'string'
+                    }, {
+                        caption: '关注',
+                        type: 'string'
+                    }, {
+                        caption: '注册',
+                        type: 'string'
+                    }, {
+                        caption: '信息数（占比）',
+                        type: 'string'
+                    }, {
+                        caption: '未会话（天）',
+                        type: 'string'
+                    }
+                ];
+                conf.rows = [];
                 for(var i=0;i<_docs.length;i++){
                     _docs[i].realname = _docs[i].realname || "--";
                     _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
@@ -2986,26 +2986,26 @@ exports.load = function () {
                     _docs[i].messageCount = _docs[i].messageCount || "0";
                     _docs[i].message = _docs[i].messageCount  + " " + messagePercentage+"%";
                     _docs[i].lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
-//                    var rows;
-//                    rows = [
-//                        _docs[i].realname || "未知",
-//                        _docs[i].gender,
-//                        _docs[i].birthday,
-//                        _docs[i].province +"-"+_docs[i].city,
-//                        _docs[i].tags,
-//                        _docs[i].followTime,
-//                        _docs[i].registerTime,
-//                        _docs[i].message,
-//                        _docs[i].lastMessageTime,
-//                    ]
-//                    conf.rows.push(rows)
+                    var rows;
+                    rows = [
+                        _docs[i].realname || "未知",
+                        _docs[i].gender,
+                        _docs[i].birthday,
+                        _docs[i].province +"-"+_docs[i].city,
+                        _docs[i].tags,
+                        _docs[i].followTime,
+                        _docs[i].registerTime,
+                        _docs[i].message,
+                        _docs[i].lastMessageTime,
+                    ]
+                    conf.rows.push(rows)
                 }
                 console.log("time_3",formatTime(new Date().getTime()))
 //                var result = nodeExcel.execute(conf);
 //                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
 //                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
-                this.res.write(result, 'binary');
-                this.res.end();
+//                this.res.write(result, 'binary');
+//                this.res.end();
             })
         }
     }
@@ -3184,7 +3184,7 @@ function   formatTime(now){
     var   hour=(now.getHours()>9)?now.getHours():('0'+now.getHours());
     var   minute=(now.getMinutes()>9)?now.getMinutes():('0'+now.getMinutes());
     var   second=(now.getSeconds()>9)?now.getSeconds():('0'+now.getSeconds());
-    return month+"月"+date+"日"+ hour + ":" + minute +":"+ second;
+    var Milliseconds=(now.getMilliseconds()>9)?now.getMilliseconds():('0'+now.getMilliseconds());
+    return month+"月"+date+"日"+ hour + ":" + minute +":"+ second+":"+Milliseconds;;
 }
-
 
