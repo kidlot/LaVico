@@ -2913,9 +2913,112 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
-                helper.db.coll("welab/customers").find({}).toArray(this.hold(function(err,docs){
+                var nodeExcel = require('excel-export');
+                var conf = {};
+                conf.cols = [
+                    {
+                        caption: '姓名',
+                        type: 'string'
+                    }, {
+                        caption: '性别',
+                        type: 'string'
+                    }, {
+                        caption: '年龄',
+                        type: 'string'
+                    }, {
+                        caption: '城市',
+                        type: 'string'
+                    }, {
+                        caption: '标签',
+                        type: 'string'
+                    }, {
+                        caption: '关注',
+                        type: 'string'
+                    }, {
+                        caption: '注册',
+                        type: 'string'
+                    }, {
+                        caption: '信息数（占比）',
+                        type: 'string'
+                    }, {
+                        caption: '未会话（天）',
+                        type: 'string'
+                    }
+                ];
+                conf.rows = [];
+                helper.db.coll("welab/customers").find({}).toArray(this.hold(function(err,_docs){
                     if(err) throw err;
-                    _docs = docs || docs;
+                    //_docs = docs || docs;
+                    console.log("_docs",_docs.length)
+
+                    for(var i=0;i<_docs.length;i++){
+                        _docs[i].realname = _docs[i].realname || "--";
+                        _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
+                        _docs[i].birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
+                        _docs[i].province = _docs[i].province || "--";
+                        _docs[i].city = _docs[i].city || "--";
+                        var tags = [];
+                        if(_docs[i].tags){
+                            for (var j=0; j<_docs[i].tags.length; j++)
+                            {
+                                tags.push(_docs[i].tags[j]);
+                            }
+                            _docs[i].tags = tags.join(",");
+                        }else{
+                            _docs[i].tags = '未知';
+                        }
+                        _docs[i].tags = tags;
+                        _docs[i].followTime =  _docs[i].followTime?"是":"否"
+                        _docs[i].registerTime =  _docs[i].registerTime?"是":"否"
+                        var messagePercentage = 0;
+
+                        if(_docs[i].messageCount){
+                            messagePercentage = _docs[i].messageCount ? parseInt((_docs[i].messageCount/totalmessagecount) *100) : 0;
+                        }else{
+                            messagePercentage = 0;
+                        }
+                        messagePercentage = messagePercentage || "0";
+
+                        _docs[i].messageCount = _docs[i].messageCount || "0";
+                        _docs[i].message = _docs[i].messageCount  + " " + messagePercentage+"%";
+                        _docs[i].lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
+                        var rows;
+                        rows = [
+                            _docs[i].realname || "未知",
+                            _docs[i].gender,
+                            _docs[i].birthday,
+                            _docs[i].province +"-"+_docs[i].city,
+                            _docs[i].tags,
+                            _docs[i].followTime,
+                            _docs[i].registerTime,
+                            _docs[i].message,
+                            _docs[i].lastMessageTime,
+                        ]
+                        conf.rows.push(rows)
+                    }
+
+//
+//                for(var i=0 ;i < resultList.length ;i++){
+//
+//                    var rows;
+//                    rows = [
+//                        resultList[i].realname || "未知",
+//                        resultList[i].gender,
+//                        resultList[i].birthday,
+//                        resultList[i].province +"-"+resultList[i].city,
+//                        resultList[i].tags,
+//                        resultList[i].followTime,
+//                        resultList[i].registerTime,
+//                        resultList[i].message,
+//                        resultList[i].lastMessageTime,
+//                    ]
+//                    conf.rows.push(rows)
+//                }
+                    var result = nodeExcel.execute(conf);
+                    this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                    this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                    this.res.write(result, 'binary');
+                    this.res.end();
                 }))
             })
 //            this.step(function(){
@@ -2954,109 +3057,109 @@ exports.load = function () {
 //                    resultList.push(result);
 //                }
 //            })
-            this.step(function(){
-                var nodeExcel = require('excel-export');
-                var conf = {};
-                conf.cols = [
-                    {
-                        caption: '姓名',
-                        type: 'string'
-                    }, {
-                        caption: '性别',
-                        type: 'string'
-                    }, {
-                        caption: '年龄',
-                        type: 'string'
-                    }, {
-                        caption: '城市',
-                        type: 'string'
-                    }, {
-                        caption: '标签',
-                        type: 'string'
-                    }, {
-                        caption: '关注',
-                        type: 'string'
-                    }, {
-                        caption: '注册',
-                        type: 'string'
-                    }, {
-                        caption: '信息数（占比）',
-                        type: 'string'
-                    }, {
-                        caption: '未会话（天）',
-                        type: 'string'
-                    }
-                ];
-                conf.rows = [];
-                for(var i=0;i<_docs.length;i++){
-                    _docs[i].realname = _docs[i].realname || "--";
-                    _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
-                    _docs[i].birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
-                    _docs[i].province = _docs[i].province || "--";
-                    _docs[i].city = _docs[i].city || "--";
-                    var tags = [];
-                    if(_docs[i].tags){
-                        for (var j=0; j<_docs[i].tags.length; j++)
-                        {
-                            tags.push(_docs[i].tags[j]);
-                        }
-                        _docs[i].tags = tags.join(",");
-                    }else{
-                        _docs[i].tags = '未知';
-                    }
-                    _docs[i].tags = tags;
-                    _docs[i].followTime =  _docs[i].followTime?"是":"否"
-                    _docs[i].registerTime =  _docs[i].registerTime?"是":"否"
-                    var messagePercentage = 0;
-
-                    if(_docs[i].messageCount){
-                        messagePercentage = _docs[i].messageCount ? parseInt((_docs[i].messageCount/totalmessagecount) *100) : 0;
-                    }else{
-                        messagePercentage = 0;
-                    }
-                    messagePercentage = messagePercentage || "0";
-
-                    _docs[i].messageCount = _docs[i].messageCount || "0";
-                    _docs[i].message = _docs[i].messageCount  + " " + messagePercentage+"%";
-                    _docs[i].lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
-                    var rows;
-                    rows = [
-                        _docs[i].realname || "未知",
-                        _docs[i].gender,
-                        _docs[i].birthday,
-                        _docs[i].province +"-"+_docs[i].city,
-                        _docs[i].tags,
-                        _docs[i].followTime,
-                        _docs[i].registerTime,
-                        _docs[i].message,
-                        _docs[i].lastMessageTime,
-                    ]
-                    conf.rows.push(rows)
-                }
-
+//            this.step(function(){
+//                var nodeExcel = require('excel-export');
+//                var conf = {};
+//                conf.cols = [
+//                    {
+//                        caption: '姓名',
+//                        type: 'string'
+//                    }, {
+//                        caption: '性别',
+//                        type: 'string'
+//                    }, {
+//                        caption: '年龄',
+//                        type: 'string'
+//                    }, {
+//                        caption: '城市',
+//                        type: 'string'
+//                    }, {
+//                        caption: '标签',
+//                        type: 'string'
+//                    }, {
+//                        caption: '关注',
+//                        type: 'string'
+//                    }, {
+//                        caption: '注册',
+//                        type: 'string'
+//                    }, {
+//                        caption: '信息数（占比）',
+//                        type: 'string'
+//                    }, {
+//                        caption: '未会话（天）',
+//                        type: 'string'
+//                    }
+//                ];
+//                conf.rows = [];
+//                for(var i=0;i<_docs.length;i++){
+//                    _docs[i].realname = _docs[i].realname || "--";
+//                    _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
+//                    _docs[i].birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
+//                    _docs[i].province = _docs[i].province || "--";
+//                    _docs[i].city = _docs[i].city || "--";
+//                    var tags = [];
+//                    if(_docs[i].tags){
+//                        for (var j=0; j<_docs[i].tags.length; j++)
+//                        {
+//                            tags.push(_docs[i].tags[j]);
+//                        }
+//                        _docs[i].tags = tags.join(",");
+//                    }else{
+//                        _docs[i].tags = '未知';
+//                    }
+//                    _docs[i].tags = tags;
+//                    _docs[i].followTime =  _docs[i].followTime?"是":"否"
+//                    _docs[i].registerTime =  _docs[i].registerTime?"是":"否"
+//                    var messagePercentage = 0;
 //
-//                for(var i=0 ;i < resultList.length ;i++){
+//                    if(_docs[i].messageCount){
+//                        messagePercentage = _docs[i].messageCount ? parseInt((_docs[i].messageCount/totalmessagecount) *100) : 0;
+//                    }else{
+//                        messagePercentage = 0;
+//                    }
+//                    messagePercentage = messagePercentage || "0";
 //
+//                    _docs[i].messageCount = _docs[i].messageCount || "0";
+//                    _docs[i].message = _docs[i].messageCount  + " " + messagePercentage+"%";
+//                    _docs[i].lastMessageTime =_docs[i].lastMessageTime ? parseInt(((new Date()) - (parseInt(_docs[i].lastMessageTime))) / (1000*60*60*24)) : "未会话";
 //                    var rows;
 //                    rows = [
-//                        resultList[i].realname || "未知",
-//                        resultList[i].gender,
-//                        resultList[i].birthday,
-//                        resultList[i].province +"-"+resultList[i].city,
-//                        resultList[i].tags,
-//                        resultList[i].followTime,
-//                        resultList[i].registerTime,
-//                        resultList[i].message,
-//                        resultList[i].lastMessageTime,
+//                        _docs[i].realname || "未知",
+//                        _docs[i].gender,
+//                        _docs[i].birthday,
+//                        _docs[i].province +"-"+_docs[i].city,
+//                        _docs[i].tags,
+//                        _docs[i].followTime,
+//                        _docs[i].registerTime,
+//                        _docs[i].message,
+//                        _docs[i].lastMessageTime,
 //                    ]
 //                    conf.rows.push(rows)
 //                }
-                var result = nodeExcel.execute(conf);
-                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
-                this.res.write(result, 'binary');
-                this.res.end();
-            })
+//
+////
+////                for(var i=0 ;i < resultList.length ;i++){
+////
+////                    var rows;
+////                    rows = [
+////                        resultList[i].realname || "未知",
+////                        resultList[i].gender,
+////                        resultList[i].birthday,
+////                        resultList[i].province +"-"+resultList[i].city,
+////                        resultList[i].tags,
+////                        resultList[i].followTime,
+////                        resultList[i].registerTime,
+////                        resultList[i].message,
+////                        resultList[i].lastMessageTime,
+////                    ]
+////                    conf.rows.push(rows)
+////                }
+//                var result = nodeExcel.execute(conf);
+//                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+//                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+//                this.res.write(result, 'binary');
+//                this.res.end();
+//            })
         }
     }
 
