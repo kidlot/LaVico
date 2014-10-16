@@ -3000,7 +3000,7 @@ exports.load = function () {
                     ]
                     conf.rows.push(rows)
                 }
-//                var result = nodeExcel.execute(conf);
+                var result = nodeExcel.execute(conf);
 //                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
 //                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
 //                this.res.write(result, 'binary');
