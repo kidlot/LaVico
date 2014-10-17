@@ -2896,11 +2896,6 @@ exports.load = function () {
             var totalMessage = {};
             var totalmessagecount = 0;
             var resultList = [];
-//
-//            var pageNum = seed.page;
-//            var pageSize = 20;
-//            var currentPage = typeof(pageNum) == "undefined" ? 1 : parseInt(pageNum);
-//            var pageNum = (currentPage-1) * pageSize;
 
             console.log("time_1",formatTime(new Date().getTime()))
             // 总消息数
@@ -2922,40 +2917,39 @@ exports.load = function () {
             })
 
             this.step(function(){
-                var nodeExcel = require('excel-export-impr');
-                var fs = require("fs");
-                var conf = {};
-                conf.cols = [
-                    {
-                        caption: '姓名',
-                        type: 'string'
-                    }, {
-                        caption: '性别',
-                        type: 'string'
-                    }, {
-                        caption: '年龄',
-                        type: 'string'
-                    }, {
-                        caption: '城市',
-                        type: 'string'
-                    }, {
-                        caption: '标签',
-                        type: 'string'
-                    }, {
-                        caption: '关注',
-                        type: 'string'
-                    }, {
-                        caption: '注册',
-                        type: 'string'
-                    }, {
-                        caption: '信息数（占比）',
-                        type: 'string'
-                    }, {
-                        caption: '未会话（天）',
-                        type: 'string'
-                    }
-                ];
-                conf.rows = [];
+//                var nodeExcel = require('excel-export-impr');
+//                var conf = {};
+//                conf.cols = [
+//                    {
+//                        caption: '姓名',
+//                        type: 'string'
+//                    }, {
+//                        caption: '性别',
+//                        type: 'string'
+//                    }, {
+//                        caption: '年龄',
+//                        type: 'string'
+//                    }, {
+//                        caption: '城市',
+//                        type: 'string'
+//                    }, {
+//                        caption: '标签',
+//                        type: 'string'
+//                    }, {
+//                        caption: '关注',
+//                        type: 'string'
+//                    }, {
+//                        caption: '注册',
+//                        type: 'string'
+//                    }, {
+//                        caption: '信息数（占比）',
+//                        type: 'string'
+//                    }, {
+//                        caption: '未会话（天）',
+//                        type: 'string'
+//                    }
+//                ];
+//                conf.rows = [];
                 var json = [];
                 var list = [ '姓名','性别','年龄','城市','标签','关注','注册','信息数（占比）','未会话（天）',]
                 json.push(list)
@@ -3003,15 +2997,14 @@ exports.load = function () {
                         _docs[i].lastMessageTime,
                     ]
                     json.push(rows)
-                    conf.rows.push(rows)
+//                    conf.rows.push(rows)
 
                 }
 
                 console.log("time_3",formatTime(new Date().getTime()))
                 //console.log("json",json)
                 var xlsx = require('node-xlsx');
-                var list = [ '姓名','性别','年龄','城市','标签','关注','注册','信息数（占比）','未会话（天）',];
-                var data = [list,[true, false, null, 'sheetjs'],['foo','bar',new Date('2014-02-19T14:30Z'), '0.3'], ['baz', null, 'qux']];
+                var list = [ '姓名','性别','年龄','城市','标签','关注','注册','信息数（占比）','未会话（天）'];
                 var buffer = xlsx.build([{name: "mySheetName", data: json}]);
                 this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                 this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
