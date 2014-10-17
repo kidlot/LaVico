@@ -2765,7 +2765,7 @@ exports.load = function () {
             this.step(function(){
                 console.log("time_2",formatTime(new Date()))
                 this.each(_docs,function(i,row){
-                    (function(row,i){
+                    //(function(row,i){
                         // view
                         helper.db.coll("welab/replyViewLog").find({by:row.wechatid, action:"view"}).count(then.hold(function(err, doc){
                             row.view = doc;
@@ -2781,7 +2781,7 @@ exports.load = function () {
                         {
                             row.viewfriend = doc;
                         }))
-                    })(row,i);
+                    //})(row,i);
                 })
             })
 
