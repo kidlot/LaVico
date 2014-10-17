@@ -2722,7 +2722,7 @@ exports.load = function () {
             var resultList = [];
             var then = this;
 
-            var pageNum = seed.page;
+            var pageNum = 5;
             var pageSize = 10;
             var currentPage = typeof(pageNum) == "undefined" ? 1 : parseInt(pageNum);
             var pageNum = (currentPage-1) * pageSize;
@@ -2756,30 +2756,44 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
-                helper.db.coll("welab/customers").find({}).skip(pageNum).limit(pageSize).sort({viewCount:-1}).toArray(this.hold(function(err,docs){
+                helper.db.coll("welab/customers").find({}).sort({viewCount:-1}).toArray(this.hold(function(err,docs){
                     if(err) throw err;
                     _docs = docs || docs;
                 }))
             })
 
             this.step(function(){
-                for (var i=0; i<_docs.length; i++){
-                    (function(_docs,i){
-                        util.userViewLogData(_docs[i]._id , then.hold(function(err,doc){
-                            _docs[i].otherData = doc || {};
-                        }));
-                    })(_docs,i)
-                }
+                this.each(_docs,function(i,row){
+                    (function(row,i){
+                        // view
+                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, action:"view"}).count(then.hold(function(err, doc){
+                            row.view = doc;
+                        }))
+
+                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, $or:[{action:"share.friend"},{action:"share.timeline"}]}).count(then.hold(function(err, doc)
+                        {
+                            row.share = doc;
+                        }))
+
+                        // viewFriend
+                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, $or:[{action:"view.friend"},{action:"view.timeline"}]}).count(then.hold(function(err, doc)
+                        {
+                            row.viewfriend = doc;
+                        }))
+                    })(row,i);
+                })
             })
 
             this.step(function(){
-                for(var i=0;i<_docs.length;i++){
-                    var result={};
-                    result.realname = _docs[i].realname || "--";
-                    result.gender = _docs[i].gender == 'female'?"女":"男";
-                    result.birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
-                    result.province = _docs[i].province || "--";
-                    result.city = _docs[i].city || "--";
+                var json = [];
+                var list = [ '姓名','性别', '年龄','城市','标签','关注','注册', '自己浏览(占比)','分享(占比)', '好友浏览(占比)']
+                json.push(list)
+                for(var i=0 ;i < _docs.length ;i++){
+                    _docs[i].realname = _docs[i].realname || "--";
+                    _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
+                    _docs[i].birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
+                    _docs[i].province = _docs[i].province || "--";
+                    _docs[i].city = _docs[i].city || "--";
                     var tags = [];
                     if(_docs[i].tags){
                         for (var j=0; j<_docs[i].tags.length; j++)
@@ -2790,50 +2804,41 @@ exports.load = function () {
                     }else{
                         _docs[i].tags = '未知';
                     }
-                    result.tags = tags;
-                    result.followTime =  _docs[i].followTime?"是":"否"
-                    result.registerTime =  _docs[i].registerTime?"是":"否"
+                    _docs[i].followTime =  _docs[i].followTime?"是":"否"
+                    _docs[i].registerTime =  _docs[i].registerTime?"是":"否"
 
                     //自己浏览
-                    ViewPercentage = totalView ?  ((_docs[i].otherData.view/totalView) *100).toFixed(2) : "0.00" ;
-                    result.ViewPercentage = ViewPercentage || "0.00";
-                    result.totalView = _docs[i].otherData.view  + " (" +result.ViewPercentage+"% )";
+                    ViewPercentage = totalView ?  ((_docs[i].view/totalView) *100).toFixed(2) : "0.00" ;
+                    _docs[i].ViewPercentage = ViewPercentage || "0.00";
+                    _docs[i].totalView = _docs[i].view  + " (" +_docs[i].ViewPercentage+"% )";
 
                     //分享
-                    SharePercentage = totalShare ?  ((_docs[i].otherData.share/totalShare) *100).toFixed(2) : "0.00" ;
-                    result.SharePercentage = SharePercentage || "0.00";
-                    result.totalShare = _docs[i].otherData.share  + " (" +result.SharePercentage+"% )";
+                    SharePercentage = totalShare ?  ((_docs[i].share/totalShare) *100).toFixed(2) : "0.00" ;
+                    _docs[i].SharePercentage = SharePercentage || "0.00";
+                    _docs[i].totalShare = _docs[i].share  + " (" +_docs[i].SharePercentage+"% )";
 
                     //好友浏览
-                    ViewFriendPercentage = totalViewFriend ?  ((_docs[i].otherData.viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
-                    result.ViewFriendPercentage = ViewFriendPercentage || "0.00";
-                    result.totalViewFriend = _docs[i].otherData.viewfriend  + " (" +result.ViewFriendPercentage+"% )";
+                    ViewFriendPercentage = totalViewFriend ?  ((_docs[i].viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
+                    _docs[i].ViewFriendPercentage = ViewFriendPercentage || "0.00";
+                    _docs[i].totalViewFriend = _docs[i].viewfriend  + " (" +_docs[i].ViewFriendPercentage+"% )";
 
-                    resultList.push(result);
-                }
-            })
-            this.step(function(){
-                var json = [];
-                var list = [ '姓名','性别', '年龄','城市','标签','关注','注册', '自己浏览(占比)','分享(占比)', '好友浏览(占比)']
-                json.push(list)
-                for(var i=0 ;i < resultList.length ;i++){
                     var rows;
                     rows = [
-                        resultList[i].realname || "未知",
-                        resultList[i].gender,
-                        resultList[i].birthday,
-                        resultList[i].province +"-"+resultList[i].city,
-                        resultList[i].tags,
-                        resultList[i].followTime,
-                        resultList[i].registerTime,
-                        resultList[i].totalView,
-                        resultList[i].totalShare,
-                        resultList[i].totalViewFriend,
+                        _docs[i].realname || "未知",
+                        _docs[i].gender,
+                        _docs[i].birthday,
+                        _docs[i].province +"-"+_docs[i].city,
+                        _docs[i].tags,
+                        _docs[i].followTime,
+                        _docs[i].registerTime,
+                        _docs[i].totalView,
+                        _docs[i].totalShare,
+                        _docs[i].totalViewFriend,
                     ]
                     json.push(rows)
                 }
                 var xlsx = require('node-xlsx');
-                var buffer = xlsx.build([{name: "mySheetName", data: json}]);
+                var buffer = xlsx.build([{name: "影响力", data: json}]);
                 this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                 this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
                 this.res.write(buffer, 'binary');
