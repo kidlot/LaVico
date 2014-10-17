@@ -2727,12 +2727,6 @@ exports.load = function () {
             var viewfriendlist ={};
             //share
             var sharelist = {};
-
-            var pageNum = 5;
-            var pageSize = 10;
-            var currentPage = typeof(pageNum) == "undefined" ? 1 : parseInt(pageNum);
-            var pageNum = (currentPage-1) * pageSize;
-            console.log("time_1",formatTime(new Date()))
             //好友浏览
             var totalViewFriend = 0;
             this.step(function(){
@@ -2885,7 +2879,6 @@ exports.load = function () {
                 this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
                 this.res.write(buffer, 'binary');
                 this.res.end();
-                console.log("time_5",formatTime(new Date()))
             })
         }
     }
