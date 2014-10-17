@@ -2726,7 +2726,7 @@ exports.load = function () {
             var pageSize = 10;
             var currentPage = typeof(pageNum) == "undefined" ? 1 : parseInt(pageNum);
             var pageNum = (currentPage-1) * pageSize;
-
+            console.log("time_1",formatTime(new Date()))
             //好友浏览
             var totalViewFriend = 0;
             this.step(function(){
@@ -2763,6 +2763,7 @@ exports.load = function () {
             })
 
             this.step(function(){
+                console.log("time_2",formatTime(new Date()))
                 this.each(_docs,function(i,row){
                     (function(row,i){
                         // view
@@ -2785,6 +2786,7 @@ exports.load = function () {
             })
 
             this.step(function(){
+                console.log("time_3",formatTime(new Date()))
                 var json = [];
                 var list = [ '姓名','性别', '年龄','城市','标签','关注','注册', '自己浏览(占比)','分享(占比)', '好友浏览(占比)']
                 json.push(list)
@@ -2938,12 +2940,15 @@ exports.load = function () {
 //                    ]
 //                    json.push(rows)
 //                }
+                console.log("time_4",formatTime(new Date()))
                 var xlsx = require('node-xlsx');
+
                 var buffer = xlsx.build([{name: "影响力", data: json}]);
                 this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                 this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
                 this.res.write(buffer, 'binary');
                 this.res.end();
+                console.log("time_5",formatTime(new Date()))
             })
         }
     }
