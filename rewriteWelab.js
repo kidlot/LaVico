@@ -2788,55 +2788,156 @@ exports.load = function () {
                 var json = [];
                 var list = [ '姓名','性别', '年龄','城市','标签','关注','注册', '自己浏览(占比)','分享(占比)', '好友浏览(占比)']
                 json.push(list)
-                for(var i=0 ;i < _docs.length ;i++){
-                    _docs[i].realname = _docs[i].realname || "--";
-                    _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
-                    _docs[i].birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
-                    _docs[i].province = _docs[i].province || "--";
-                    _docs[i].city = _docs[i].city || "--";
+
+                _docs.forEach(function(row){
+                    row.realname = row.realname || "--";
+                    row.gender = row.gender == 'female'?"女":"男";
+                    row.birthday = row.birthday ?  parseInt(((new Date()) - (parseInt(row.birthday))) / (1000*60*60*24*365)) :"--"
+                    row.province = row.province || "--";
+                    row.city = row.city || "--";
                     var tags = [];
-                    if(_docs[i].tags){
-                        for (var j=0; j<_docs[i].tags.length; j++)
+                    if(row.tags){
+                        for (var j=0; j<row.tags.length; j++)
                         {
-                            tags.push(_docs[i].tags[j]);
+                            tags.push(row.tags[j]);
                         }
-                        _docs[i].tags = tags.join(",");
+                        row.tags = tags.join(",");
                     }else{
-                        _docs[i].tags = '未知';
+                        row.tags = '未知';
                     }
-                    _docs[i].followTime =  _docs[i].followTime?"是":"否"
-                    _docs[i].registerTime =  _docs[i].registerTime?"是":"否"
+                    row.followTime =  row.followTime?"是":"否"
+                    row.registerTime =  row.registerTime?"是":"否"
 
                     //自己浏览
-                    ViewPercentage = totalView ?  ((_docs[i].view/totalView) *100).toFixed(2) : "0.00" ;
-                    _docs[i].ViewPercentage = ViewPercentage || "0.00";
-                    _docs[i].totalView = _docs[i].view  + " (" +_docs[i].ViewPercentage+"% )";
+                    ViewPercentage = totalView ?  ((row.view/totalView) *100).toFixed(2) : "0.00" ;
+                    row.ViewPercentage = ViewPercentage || "0.00";
+                    row.totalView = row.view  + " (" +row.ViewPercentage+"% )";
 
                     //分享
-                    SharePercentage = totalShare ?  ((_docs[i].share/totalShare) *100).toFixed(2) : "0.00" ;
-                    _docs[i].SharePercentage = SharePercentage || "0.00";
-                    _docs[i].totalShare = _docs[i].share  + " (" +_docs[i].SharePercentage+"% )";
+                    SharePercentage = totalShare ?  ((row.share/totalShare) *100).toFixed(2) : "0.00" ;
+                    row.SharePercentage = SharePercentage || "0.00";
+                    row.totalShare = row.share  + " (" +row.SharePercentage+"% )";
 
                     //好友浏览
-                    ViewFriendPercentage = totalViewFriend ?  ((_docs[i].viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
-                    _docs[i].ViewFriendPercentage = ViewFriendPercentage || "0.00";
-                    _docs[i].totalViewFriend = _docs[i].viewfriend  + " (" +_docs[i].ViewFriendPercentage+"% )";
+                    ViewFriendPercentage = totalViewFriend ?  ((row.viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
+                    row.ViewFriendPercentage = ViewFriendPercentage || "0.00";
+                    row.totalViewFriend = row.viewfriend  + " (" +row.ViewFriendPercentage+"% )";
 
                     var rows;
                     rows = [
-                        _docs[i].realname || "未知",
-                        _docs[i].gender,
-                        _docs[i].birthday,
-                        _docs[i].province +"-"+_docs[i].city,
-                        _docs[i].tags,
-                        _docs[i].followTime,
-                        _docs[i].registerTime,
-                        _docs[i].totalView,
-                        _docs[i].totalShare,
-                        _docs[i].totalViewFriend,
+                        row.realname || "未知",
+                        row.gender,
+                        row.birthday,
+                        row.province +"-"+row.city,
+                        row.tags,
+                        row.followTime,
+                        row.registerTime,
+                        row.totalView,
+                        row.totalShare,
+                        row.totalViewFriend,
                     ]
                     json.push(rows)
-                }
+                })
+
+
+//                this.each(_docs,function(i,row){
+//                    row.realname = row.realname || "--";
+//                    row.gender = row.gender == 'female'?"女":"男";
+//                    row.birthday = row.birthday ?  parseInt(((new Date()) - (parseInt(row.birthday))) / (1000*60*60*24*365)) :"--"
+//                    row.province = row.province || "--";
+//                    row.city = row.city || "--";
+//                    var tags = [];
+//                    if(row.tags){
+//                        for (var j=0; j<row.tags.length; j++)
+//                        {
+//                            tags.push(row.tags[j]);
+//                        }
+//                        row.tags = tags.join(",");
+//                    }else{
+//                        row.tags = '未知';
+//                    }
+//                    row.followTime =  row.followTime?"是":"否"
+//                    row.registerTime =  row.registerTime?"是":"否"
+//
+//                    //自己浏览
+//                    ViewPercentage = totalView ?  ((row.view/totalView) *100).toFixed(2) : "0.00" ;
+//                    row.ViewPercentage = ViewPercentage || "0.00";
+//                    row.totalView = row.view  + " (" +row.ViewPercentage+"% )";
+//
+//                    //分享
+//                    SharePercentage = totalShare ?  ((row.share/totalShare) *100).toFixed(2) : "0.00" ;
+//                    row.SharePercentage = SharePercentage || "0.00";
+//                    row.totalShare = row.share  + " (" +row.SharePercentage+"% )";
+//
+//                    //好友浏览
+//                    ViewFriendPercentage = totalViewFriend ?  ((row.viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
+//                    row.ViewFriendPercentage = ViewFriendPercentage || "0.00";
+//                    row.totalViewFriend = row.viewfriend  + " (" +row.ViewFriendPercentage+"% )";
+//
+//                    var rows;
+//                    rows = [
+//                        row.realname || "未知",
+//                        row.gender,
+//                        row.birthday,
+//                        row.province +"-"+row.city,
+//                        row.tags,
+//                        row.followTime,
+//                        row.registerTime,
+//                        row.totalView,
+//                        row.totalShare,
+//                        row.totalViewFriend,
+//                    ]
+//                    json.push(rows)
+//                })
+//                for(var i=0 ;i < _docs.length ;i++){
+//                    _docs[i].realname = _docs[i].realname || "--";
+//                    _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
+//                    _docs[i].birthday = _docs[i].birthday ?  parseInt(((new Date()) - (parseInt(_docs[i].birthday))) / (1000*60*60*24*365)) :"--"
+//                    _docs[i].province = _docs[i].province || "--";
+//                    _docs[i].city = _docs[i].city || "--";
+//                    var tags = [];
+//                    if(_docs[i].tags){
+//                        for (var j=0; j<_docs[i].tags.length; j++)
+//                        {
+//                            tags.push(_docs[i].tags[j]);
+//                        }
+//                        _docs[i].tags = tags.join(",");
+//                    }else{
+//                        _docs[i].tags = '未知';
+//                    }
+//                    _docs[i].followTime =  _docs[i].followTime?"是":"否"
+//                    _docs[i].registerTime =  _docs[i].registerTime?"是":"否"
+//
+//                    //自己浏览
+//                    ViewPercentage = totalView ?  ((_docs[i].view/totalView) *100).toFixed(2) : "0.00" ;
+//                    _docs[i].ViewPercentage = ViewPercentage || "0.00";
+//                    _docs[i].totalView = _docs[i].view  + " (" +_docs[i].ViewPercentage+"% )";
+//
+//                    //分享
+//                    SharePercentage = totalShare ?  ((_docs[i].share/totalShare) *100).toFixed(2) : "0.00" ;
+//                    _docs[i].SharePercentage = SharePercentage || "0.00";
+//                    _docs[i].totalShare = _docs[i].share  + " (" +_docs[i].SharePercentage+"% )";
+//
+//                    //好友浏览
+//                    ViewFriendPercentage = totalViewFriend ?  ((_docs[i].viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
+//                    _docs[i].ViewFriendPercentage = ViewFriendPercentage || "0.00";
+//                    _docs[i].totalViewFriend = _docs[i].viewfriend  + " (" +_docs[i].ViewFriendPercentage+"% )";
+//
+//                    var rows;
+//                    rows = [
+//                        _docs[i].realname || "未知",
+//                        _docs[i].gender,
+//                        _docs[i].birthday,
+//                        _docs[i].province +"-"+_docs[i].city,
+//                        _docs[i].tags,
+//                        _docs[i].followTime,
+//                        _docs[i].registerTime,
+//                        _docs[i].totalView,
+//                        _docs[i].totalShare,
+//                        _docs[i].totalViewFriend,
+//                    ]
+//                    json.push(rows)
+//                }
                 var xlsx = require('node-xlsx');
                 var buffer = xlsx.build([{name: "影响力", data: json}]);
                 this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
