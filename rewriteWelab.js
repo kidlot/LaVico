@@ -2721,6 +2721,12 @@ exports.load = function () {
             var _docs;
             var resultList = [];
             var then = this;
+            //view
+            var viewlist = {};
+            //viewfriendlist
+            var viewfriendlist ={};
+            //share
+            var sharelist = {};
 
             var pageNum = 5;
             var pageSize = 10;
@@ -2756,36 +2762,86 @@ exports.load = function () {
 
             // 用户列表
             this.step(function(){
-                helper.db.coll("welab/customers").find({}).sort({viewCount:-1}).toArray(this.hold(function(err,docs){
+                helper.db.coll("welab/customers").find({},{"wechatid":1,"realname":1,"gender":1,"birthday":1,"province":1,"city":1,"tags":1,"followTime":1,"registerTime":1}).sort({viewCount:-1}).toArray(this.hold(function(err,docs){
                     if(err) throw err;
                     _docs = docs || docs;
                 }))
             })
 
+            // view
             this.step(function(){
-                console.log("time_2",formatTime(new Date()))
-                this.each(_docs,function(i,row){
-                    //(function(row,i){
-                        // view
-                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, action:"view"}).count(then.hold(function(err, doc){
-                            row.view = doc;
-                        }))
+                helper.db.collection("welab/replyViewLog").aggregate([{$match:{action:"view"}},{$group:{_id:"$by",count:{$sum:1}}}],this.hold(function(err,doc){
+                    if(err) throw err;
+                    viewlist = doc;
+                }));
+            })
 
-                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, $or:[{action:"share.friend"},{action:"share.timeline"}]}).count(then.hold(function(err, doc)
-                        {
-                            row.share = doc;
-                        }))
+            // share
+            this.step(function(){
+                helper.db.collection("welab/replyViewLog").aggregate([{$match:{ $or:[{action:"share.friend"},{action:"share.timeline"}]}},{$group:{_id:"$by",count:{$sum:1}}}],this.hold(function(err,doc){
+                    if(err) throw err;
+                    sharelist = doc;
+                }));
+            })
 
-                        // viewFriend
-                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, $or:[{action:"view.friend"},{action:"view.timeline"}]}).count(then.hold(function(err, doc)
-                        {
-                            row.viewfriend = doc;
-                        }))
-                    //})(row,i);
-                })
+            // viewfriend
+            this.step(function(){
+                helper.db.collection("welab/replyViewLog").aggregate([{$match:{$or:[{action:"view.friend"},{action:"view.timeline"}]}},{$group:{_id:"$by",count:{$sum:1}}}],this.hold(function(err,doc){
+                    if(err) throw err;
+                    viewfriendlist = doc;
+                }));
             })
 
             this.step(function(){
+                for(var i =0;i<_docs.length;i++){
+                    for(var v = 0;v<viewlist.length;v++){
+                        if(_docs[i].wechatid == viewlist[v]._id){
+                            _docs[i].view = viewlist[v].count;
+                        }
+                    }
+
+                    for(var s = 0;s<sharelist.length;s++){
+                        if(_docs[i].wechatid == sharelist[s]._id){
+                            _docs[i].share = sharelist[s].count;
+                        }
+                    }
+
+                    for(var vi = 0;vi<viewfriendlist.length;vi++){
+                        if(_docs[i].wechatid == viewfriendlist[vi]._id){
+                            _docs[i].viewfriend = viewfriendlist[vi].count;
+                        }
+                    }
+                }
+            })
+
+//            this.step(function(){
+//                console.log("view",viewlist)
+//                console.log("sharelist",sharelist)
+//                console.log("viewfriendlist",viewfriendlist)
+//                console.log("time_2",formatTime(new Date()))
+//                this.each(_docs,function(i,row){
+//                    (function(row,i){
+//                        // view
+//                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, action:"view"}).count(then.hold(function(err, doc){
+//                            row.view = doc;
+//                        }))
+//
+//                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, $or:[{action:"share.friend"},{action:"share.timeline"}]}).count(then.hold(function(err, doc)
+//                        {
+//                            row.share = doc;
+//                        }))
+//
+//                        // viewFriend
+//                        helper.db.coll("welab/replyViewLog").find({by:row.wechatid, $or:[{action:"view.friend"},{action:"view.timeline"}]}).count(then.hold(function(err, doc)
+//                        {
+//                            row.viewfriend = doc;
+//                        }))
+//                    })(row,i);
+//                })
+//            })
+
+            this.step(function(){
+//                console.log("_docs",_docs)
                 console.log("time_3",formatTime(new Date()))
                 var json = [];
                 var list = [ '姓名','性别', '年龄','城市','标签','关注','注册', '自己浏览(占比)','分享(占比)', '好友浏览(占比)']
@@ -2810,17 +2866,27 @@ exports.load = function () {
                     row.followTime =  row.followTime?"是":"否"
                     row.registerTime =  row.registerTime?"是":"否"
 
+
                     //自己浏览
+                    if(!row.view){
+                        row.view = 0;
+                    }
                     ViewPercentage = totalView ?  ((row.view/totalView) *100).toFixed(2) : "0.00" ;
                     row.ViewPercentage = ViewPercentage || "0.00";
                     row.totalView = row.view  + " (" +row.ViewPercentage+"% )";
 
                     //分享
+                    if(!row.share){
+                        row.share = 0;
+                    }
                     SharePercentage = totalShare ?  ((row.share/totalShare) *100).toFixed(2) : "0.00" ;
                     row.SharePercentage = SharePercentage || "0.00";
                     row.totalShare = row.share  + " (" +row.SharePercentage+"% )";
 
                     //好友浏览
+                    if(!row.viewfriend){
+                        row.viewfriend = 0;
+                    }
                     ViewFriendPercentage = totalViewFriend ?  ((row.viewfriend/totalViewFriend) *100).toFixed(2) : "0.00" ;
                     row.ViewFriendPercentage = ViewFriendPercentage || "0.00";
                     row.totalViewFriend = row.viewfriend  + " (" +row.ViewFriendPercentage+"% )";
