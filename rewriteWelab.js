@@ -2922,7 +2922,8 @@ exports.load = function () {
             })
 
             this.step(function(){
-                var nodeExcel = require('excel-export');
+                var nodeExcel = require('excel-export-impr');
+                var fs = require("fs");
                 var conf = {};
                 conf.cols = [
                     {
@@ -2955,6 +2956,9 @@ exports.load = function () {
                     }
                 ];
                 conf.rows = [];
+                var json = [];
+                var list = [ '姓名','性别','年龄','城市','标签','关注','注册','信息数（占比）','未会话（天）',]
+                json.push(list)
                 for(var i=0;i<_docs.length;i++){
                     _docs[i].realname = _docs[i].realname || "--";
                     _docs[i].gender = _docs[i].gender == 'female'?"女":"男";
@@ -2998,10 +3002,24 @@ exports.load = function () {
                         _docs[i].message,
                         _docs[i].lastMessageTime,
                     ]
+                    json.push(rows)
                     conf.rows.push(rows)
+
                 }
+
                 console.log("time_3",formatTime(new Date().getTime()))
-                var result = nodeExcel.execute(conf);
+                //console.log("json",json)
+                var xlsx = require('node-xlsx');
+                var list = [ '姓名','性别','年龄','城市','标签','关注','注册','信息数（占比）','未会话（天）',];
+                var data = [list,[true, false, null, 'sheetjs'],['foo','bar',new Date('2014-02-19T14:30Z'), '0.3'], ['baz', null, 'qux']];
+                var buffer = xlsx.build([{name: "mySheetName", data: json}]);
+                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
+                this.res.write(buffer, 'binary');
+                this.res.end();
+
+
+//                var result = nodeExcel.execute(conf);
 //                this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
 //                this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
 //                this.res.write(result, 'binary');
