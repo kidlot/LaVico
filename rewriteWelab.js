@@ -2951,7 +2951,7 @@ exports.load = function () {
 //                ];
 //                conf.rows = [];
                 var json = [];
-                var list = [ '姓名','性别','年龄','城市','标签','关注','注册','信息数（占比）','未会话（天）',]
+                var list = [ '姓名','性别','年龄','城市','标签','关注','注册','信息数（占比）','未会话（天）']
                 json.push(list)
                 for(var i=0;i<_docs.length;i++){
                     _docs[i].realname = _docs[i].realname || "--";
@@ -3004,7 +3004,6 @@ exports.load = function () {
                 console.log("time_3",formatTime(new Date().getTime()))
                 //console.log("json",json)
                 var xlsx = require('node-xlsx');
-                var list = [ '姓名','性别','年龄','城市','标签','关注','注册','信息数（占比）','未会话（天）'];
                 var buffer = xlsx.build([{name: "mySheetName", data: json}]);
                 this.res.setHeader('Content-Type', 'application/vnd.openxmlformats');
                 this.res.setHeader("Content-Disposition", "attachment; filename=Report.xlsx");
