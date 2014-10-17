@@ -13,6 +13,7 @@ module.exports={
         nut.model.stutas = stutas;
         //nut.model.memberid  =memberid;
         var stopLab=seed.stopLab ? seed.stopLab : "null";
+        console.log("stopLab",stopLab)
         var newActivity="";
         var docs=[];
         var resultList=[];//显示记录
@@ -180,6 +181,7 @@ module.exports={
         //分数累加
         this.step(function(){
             if(go){
+                console.log("scoreArr",scoreArr)
                 for(var i=0;i<scoreArr.length;i++){
                     score+=scoreArr[i].getChooseScore;
                 }
@@ -233,8 +235,10 @@ module.exports={
 
         this.step(function(){
             if(go){
+                console.log("docTheme.showtype",docTheme.showtype)
                 //非停止标签过来
                 if (stopLab != "true") {
+                    console.log("docTheme.showtype",docTheme.showtype)
                     if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
 
                         for (var i = 0; i < scoreRange.length; i++){
@@ -327,14 +331,23 @@ module.exports={
                                         resultList.push(results);
                                     })
                                 }else{
-                                    var results={};
-                                    results.getLabel = "对不起,您没有获得任何奖励";
-                                    results.getScore = "0";
-                                    results.getTipContent = "对不起,您没有获得任何奖励";
-                                    results.code = "";
-                                    results.getActivities = "对不起,您没有获得任何奖励";
-                                    results.volumename = "";
-                                    resultList.push(results);
+                                    console.log("!!!!!!!!!!!!!!!1")
+                                    for (var i = 0; i < scoreRange.length; i++){
+                                        console.log("score",score)
+                                        console.log("minlen",minlen)
+                                        console.log("maxlen",maxlen)
+                                        if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
+                                            getLabel = scoreRange[i].getLabel == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].getLabel;
+                                        }
+                                        var results={};
+                                        results.getLabel = getLabel;
+                                        results.getScore = "0";
+                                        results.getTipContent = "对不起,您没有获得任何奖励";
+                                        results.code = "";
+                                        results.getActivities = "对不起,您没有获得任何奖励";
+                                        results.volumename = "";
+                                        resultList.push(results);
+                                    }
                                 }
                             }
 
@@ -419,7 +432,7 @@ module.exports={
             if(go){
                 //停止标签过来
                 if (stopLab == "true") {
-
+                    console.log("docTheme.showtype1111111111111",docTheme.showtype)
                     if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
 
                         for (var i = 0; i < scoreRange.length; i++){
@@ -516,27 +529,45 @@ module.exports={
                                             resultList.push(results);
                                         })
                                     }else{
-                                        var results={};
-                                        results.getLabel = "对不起,您没有获得任何奖励";
-                                        results.getScore = "0";
-                                        results.getTipContent = "对不起,您没有获得任何奖励";
-                                        results.code = "";
-                                        results.getActivities = "对不起,您没有获得任何奖励";
-                                        results.volumename = "";
-                                        resultList.push(results);
+                                        for (var i = 0; i < scoreRange.length; i++){
+                                            console.log("score",score)
+                                            console.log("minlen",minlen)
+                                            console.log("maxlen",maxlen)
+                                            if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
+                                                getLabel = scoreRange[i].getLabel == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].getLabel;
+                                            }
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = "0";
+                                            results.getTipContent = "对不起,您没有获得任何奖励";
+                                            results.code = "";
+                                            results.getActivities = "对不起,您没有获得任何奖励";
+                                            results.volumename = "";
+                                            resultList.push(results);
+                                        }
                                     }
                                 }
                             }
                         }
                     }else{
-                        var results={};
-                        results.getLabel = "您已答完此题,获奖名单择期公布";
-                        results.getScore = "0";
-                        results.getTipContent = "您已答完此题,获奖名单择期公布";
-                        results.code = "";
-                        results.getActivities = "您已答完此题,获奖名单择期公布";
-                        results.volumename = "";
-                        resultList.push(results);
+                        for (var i = 0; i < scoreRange.length; i++){
+                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
+                            console.log("score",score)
+                            console.log("minlen",minlen)
+                            console.log("maxlen",maxlen)
+                            if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
+                                getLabel = scoreRange[i].getLabel == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].getLabel;
+                            }
+                            var results={};
+                            results.getLabel = getLabel;
+                            results.getScore = "0";
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "";
+                            results.getActivities = "对不起,您没有获得任何奖励";
+                            results.volumename = "";
+                            resultList.push(results);
+                        }
                     }
 
                     then.step(function(){
