@@ -20,6 +20,7 @@ module.exports={
         //判断是否是下一题或完成按钮
         var status = seed.status ? seed.status : "false";
 
+        console.log("score",score)
         var themeQuestion_doc;
         var parm;
         this.step(function(){
@@ -138,7 +139,7 @@ module.exports={
                                 "isFinish": false,
                                 "optionId": parseInt(optionId),
                                 "chooseId": selId,
-                                "getChooseScore": "",
+                                "getChooseScore": parseInt(score),
                                 "getChooseLabel":"",
                                 "getLabel": "",
                                 "getGift":  "",
@@ -160,7 +161,7 @@ module.exports={
                                 "isFinish": false,
                                 "optionId": parseInt(optionId),
                                 "chooseId": selId,
-                                "getChooseScore": "",
+                                "getChooseScore": parseInt(score),
                                 "getChooseLabel":"",
                                 "getLabel": "",
                                 "getGift":  "",
