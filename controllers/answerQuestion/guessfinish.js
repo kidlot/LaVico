@@ -353,14 +353,24 @@ module.exports={
 
                         }
                     }else{
-                        var results={};
-                        results.getLabel = "您已答完此题,获奖名单择期公布";
-                        results.getScore = "0";
-                        results.getTipContent = "您已答完此题,获奖名单择期公布";
-                        results.code = "";
-                        results.getActivities = "您已答完此题,获奖名单择期公布";
-                        results.volumename = "";
-                        resultList.push(results);
+                        for (var i = 0; i < scoreRange.length; i++){
+                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
+                            console.log("score",score)
+                            console.log("minlen",minlen)
+                            console.log("maxlen",maxlen)
+                            if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
+                                getLabel = scoreRange[i].getLabel == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].getLabel;
+                            }
+                            var results={};
+                            results.getLabel = getLabel;
+                            results.getScore = "0";
+                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.code = "";
+                            results.getActivities = "对不起,您没有获得任何奖励";
+                            results.volumename = "";
+                            resultList.push(results);
+                        }
                     }
 
                     then.step(function(){
