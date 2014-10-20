@@ -471,7 +471,7 @@ module.exports={
                                     getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                     //获取奖励
                                     if(pram =="1"){
-                                        then.step(function (memberid) {
+                                        then.step(function () {
                                             //根据memberId调用接口给账户加分
                                             var jsonData = {};
                                             jsonData.memberId = memberid;
