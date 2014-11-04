@@ -1939,14 +1939,18 @@ exports.load = function () {
             //for (var i=0; i<aTagList.length; i++) {
                 //tag = aTagList[i];
                 for(var j=0;j<stutas.length;j++){
-                    if(stutas[j].stat==true){
+                    //if(stutas[j].stat==true){
 
                         helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:aTagList}},then.hold(function(err,doc){
                             if(err ){
                                 throw err;
                             }
+                            console.log("doc",doc)
+                            if(doc){
+                                stutas[j].stat = true;
+                            }
                         }))
-                    }
+                   // }
                 }
             //}
         });
