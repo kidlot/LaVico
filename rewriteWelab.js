@@ -1935,28 +1935,28 @@ exports.load = function () {
         })
 
         this.step(function(){
-//            console.log("stutas",stutas)
             //for (var i=0; i<aTagList.length; i++) {
                 //tag = aTagList[i];
                 for(var j=0;j<stutas.length;j++){
                     //if(stutas[j].stat==true){
 
-                        helper.db.coll("welab/customers").update({_id : helper.db.id(stutas[j].id)}, {$addToSet:{tags:aTagList}},then.hold(function(err,doc){
+                    (function(i){
+                        helper.db.coll("welab/customers").update({_id : helper.db.id(i.id)}, {$addToSet:{tags:aTagList}},then.hold(function(err,doc){
                             if(err ){
                                 throw err;
                             }
-                            console.log("doc",doc)
                             if(doc){
-                                stutas[j].stat = true;
+                                i.stat = true;
                             }
                         }))
-                   // }
+                    })(stutas[j])
+
+                    //}
                 }
             //}
         });
 
         this.step(function(){
-//            console.log("stutas.length",stutas.length)
             for(var j=0;j<stutas.length;j++){
                 if(stutas[j].stat==false){
                     errID.push(stutas[j].id);
@@ -1968,9 +1968,6 @@ exports.load = function () {
 
         this.step(function(){
             nut.model.jsonData = jsonData;
-//            console.log("jsonData",jsonData)
-//            console.log(errID.length)
-//            console.log(successID.length)
             if(errID.length==0){
                 nut.message("操作完成",null,"success");
             }else{
