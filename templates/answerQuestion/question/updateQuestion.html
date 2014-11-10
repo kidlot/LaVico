@@ -251,12 +251,16 @@
                                         <input type="radio" name="parm" value="1"  onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）<br/>
                                         <input type="radio" name="parm" value="2"  checked="checked" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>
                                         <input type="radio" name="parm" value="3"  onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>
-                                    <elseif condition="{@docs.pram=='3'}"/>
+                                    <else/>
                                         <input type="radio" name="parm" value="1" onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）<br/>
                                         <input type="radio" name="parm" value="2" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>
                                         <input type="radio" name="parm" value="3" checked="checked"  onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>
                                     </if>
-
+                                    <!--<elseif condition="{@docs.pram=='3'}"/>-->
+                                        <!--<input type="radio" name="parm" value="1" onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）<br/>-->
+                                        <!--<input type="radio" name="parm" value="2" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>-->
+                                        <!--<input type="radio" name="parm" value="3" checked="checked"  onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>-->
+                                    <!--</if>-->
                             </if>
                         <td/>
                     </tr>
