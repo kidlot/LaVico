@@ -180,7 +180,7 @@
                 })();
             }
             t2 = new TouchSlider({
-                id: 'slider', speed: 600, timeout: 6000, before: function (index) {
+                id: 'slider', speed: 600, timeout: 6000, auto: false,before: function (index) {
                     as[active].className = '';
                     active = index;
                     as[active].className = 'active';
