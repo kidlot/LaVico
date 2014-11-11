@@ -285,7 +285,7 @@ module.exports={
                                     var memoString = "竞猜型:" + getLabel;
                                     //得券接口
                                     var parm_can;
-                                    if(pram == "1"){
+                                    if(memberid!="undefined"){
                                         parm_can = "01";
                                     }else{
                                         parm_can = "02";
@@ -492,7 +492,7 @@ module.exports={
                                         var memoString = "竞猜型:" + getLabel;
                                         //得券接口
                                         var parm_can;
-                                        if(pram == "1"){
+                                        if(memberid!="undefined"){
                                             parm_can = "01";
                                         }else{
                                             parm_can = "02";
@@ -656,7 +656,7 @@ module.exports={
                 nut.model.label =resultList[0].getLabel;
                 console.log("resultlist",resultList)
 
-                if(ok &&memberid=="undefined"){
+                if(ok){
                     if (getLabel != "" || getLabel != null || getScore!=""|| typeof (getLabel)!="undefined") {
                         //发送标签至CRM
                         var memoString="";

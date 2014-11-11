@@ -67,7 +67,6 @@ module.exports={
                     themeType = "undefined";
                     pram = "undefined";
                 }
-
                 nut.model.themeType = themeType;
                 nut.model.themeTitle = doc.theme
             }));
@@ -76,7 +75,6 @@ module.exports={
         this.step(function(){
             helper.db.coll("welab/customers").findOne({"wechatid":wechatid},this.hold(function(err,doc){
                 if(err) throw err;
-
                 if(doc && doc.HaiLanMemberInfo){
                     if(doc.HaiLanMemberInfo.action=='bind') {
                         nut.model.isok="0";
@@ -91,6 +89,7 @@ module.exports={
 
         var docs;
         this.step(function(){
+            console.log("memberid",memberid)
             if(memberid =="undefined"){
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"wechatid":wechatid,
                     "themetype":themetype,"isFinish":true,"type":{$ne:"0"}} ).toArray(this.hold(function(err,doc){
@@ -194,8 +193,6 @@ module.exports={
             }
         })
 
-
-
         //查memberId
         this.step(function () {
             helper.db.coll("welab/customers").findOne({wechatid: seed.wechatid},
@@ -259,25 +256,30 @@ module.exports={
 
         this.step(function(){
             if(go){
+                console.log("stopLab",stopLab)
                 //非停止标签过来
                 if (stopLab != "true") {
+                    console.log("scoreRange.length",scoreRange.length)
                     for (var i = 0; i < scoreRange.length; i++) {
                         var minlen = scoreRange[i].conditionMinScore;//获取低分值
                         var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                         //判断是否是发放卷
 //                            //在分值范围中
-                        if(scoreRange[i].getActivities=="-1"){
-                            type = scoreRange[i].getActivities;
-                            //在分值范围中
-
-                            if(score >= minlen && score <= maxlen){
+                        console.log("score",score)
+                        if(score >= minlen && score <= maxlen){
+                            console.log("___111___")
+                            if(scoreRange[i].getActivities=="-1"){
+                                console.log("___222___")
+                                type = scoreRange[i].getActivities;
+                                //在分值范围中
                                 getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                 getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                 getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                 getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 //获取奖励
-                                if(pram == "1"){
-                                    console.log("memberid",memberid)
+                                if(pram == "1" || memberid!="undefined"){
+                                    console.log("___333___")
+                                    console.log("memberid111111",memberid)
                                     then.step(function () {
                                         //根据memberId调用接口给账户加分
                                         var jsonData = {};
@@ -305,79 +307,81 @@ module.exports={
                                         nut.model.getScores ="1";
                                     })
                                 }
-
-                            }
-
-                        }else{
-                            type = scoreRange[i].getActivities;
-
-                            if(score >= minlen && score <= maxlen){
-                                //获取奖励
-                                getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                if (typeof(getActivities) != "undefined" && getActivities != "") {
-                                    newActivity = ""
-                                    //服务器返回的券
-                                    //调用接口开始
-                                    var memoString = "主观题-" + getScore+"积分";
-                                    if (themeType == 0) {
-                                        memoString = "答题抢积分-" + getScore+"积分";
-                                    } else if (themeType == 1) {
-                                        memoString = "型男测试-" + getLabel;
-                                    }
-                                    //得券接口
-                                    var parm_can;
-                                    if(pram == "1"){
-                                        parm_can = "01";
-                                    }else{
-                                        parm_can = "02";
-                                    }
-                                    then.step(function () {
-                                        var jsonData = {
-                                            openid: wechatid,
-                                            otherPromId: _id,
-                                            PROMOTION_CODE: getActivities,
-                                            memo: memoString,
-                                            parm:parm_can,
-                                            point: 0
+                            }else{
+                                console.log("___444___")
+                                type = scoreRange[i].getActivities;
+                                if(score >= minlen && score <= maxlen){
+                                    console.log("___555___")
+                                    //获取奖励
+                                    getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+                                    if (typeof(getActivities) != "undefined" && getActivities != "") {
+                                        console.log("___666___")
+                                        newActivity = ""
+                                        //服务器返回的券
+                                        //调用接口开始
+                                        var memoString = "主观题-" + getScore+"积分";
+                                        if (themeType == 0) {
+                                            memoString = "答题抢积分-" + getScore+"积分";
+                                        } else if (themeType == 1) {
+                                            memoString = "型男测试-" + getLabel;
                                         }
-                                        if(ok){
-                                            middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
-                                                if (err) throw err;
-                                                var docJson = JSON.parse(doc)
-                                                console.log("doc",doc)
-                                                if (docJson.success) {
-                                                    newActivity = docJson.coupon_no
-                                                    nut.model.err = docJson.success
-                                                    if (docJson.coupon_no) {
-                                                        nut.model.errString = "无";
-                                                    }
-                                                    newActivity= docJson.coupon_no
-                                                } else {
-                                                    nut.model.err = docJson.success;
-                                                    nut.model.errString = docJson.error;
-                                                }
-                                            }));
+                                        //得券接口
+                                        var parm_can;
+                                        if(memberid!="undefined"){
+                                            parm_can = "01";
                                         }else{
-                                            newActivity="已领过此卷";
+                                            parm_can = "02";
                                         }
-                                    })
-                                    then.step(function(){
-                                        var results={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = getScore;
-                                        results.getTipContent = getTipContent;
-                                        results.code = getActivities;
-                                        results.getActivities = newActivity;
-                                        results.volumename = volumename;
-                                        resultList.push(results);
-                                        nut.model.sta = "false";
-                                        nut.model.score = "1";
-                                        nut.model.getScores ="1";
-                                        nut.model.type = type;
-                                    })
+                                        then.step(function () {
+                                            var jsonData = {
+                                                openid: wechatid,
+                                                otherPromId: _id,
+                                                PROMOTION_CODE: getActivities,
+                                                memo: memoString,
+                                                parm:parm_can,
+                                                point: 0
+                                            }
+                                            if(ok){
+                                                middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
+                                                    if (err) throw err;
+                                                    var docJson = JSON.parse(doc)
+                                                    console.log("doc",doc)
+                                                    if (docJson.success) {
+                                                        newActivity = docJson.coupon_no
+                                                        nut.model.err = docJson.success
+                                                        if (docJson.coupon_no) {
+                                                            nut.model.errString = "无";
+                                                        }
+                                                        newActivity= docJson.coupon_no
+                                                    } else {
+                                                        nut.model.err = docJson.success;
+                                                        nut.model.errString = docJson.error;
+                                                    }
+                                                }));
+                                            }else{
+                                                newActivity="已领过此卷";
+                                            }
+                                        })
+                                        then.step(function(){
+                                            var results={};
+                                            results.getLabel = getLabel;
+                                            results.getScore = getScore;
+                                            results.getTipContent = getTipContent;
+                                            results.code = getActivities;
+                                            results.getActivities = newActivity;
+                                            results.volumename = volumename;
+                                            resultList.push(results);
+                                            nut.model.sta = "false";
+                                            nut.model.score = "1";
+                                            nut.model.getScores ="1";
+                                            nut.model.type = type;
+                                        })
+                                    }else{
+                                        console.log("222222222222222222")
+                                    }
                                 }
                             }
                         }
@@ -387,11 +391,11 @@ module.exports={
                     then.step(function(){
                         if(resultList.length==0){
                             var results={};
-                            results.getLabel = "对不起,您没有获得任何奖励";
+                            results.getLabel = "对不起,您没有获得任何奖励1111111";
                             results.getScore = 0;
-                            results.getTipContent = "对不起,您没有获得任何奖励";
+                            results.getTipContent = "对不起,您没有获得任何奖励11111111111111";
                             results.code = "undefined";
-                            results.getActivities = "您没有获得任何礼券";
+                            results.getActivities = "您没有获得任何礼券111111111111";
                             results.volumename = volumename;
                             resultList.push(results)
                             nut.model.stutas = "true";
@@ -457,21 +461,27 @@ module.exports={
             if(go){
                 //停止标签过来
                 if (stopLab == "true") {
+                    console.log("*****111*****")
                     for (var i = 0; i < scoreRange.length; i++) {
+                        console.log("*****222*****")
+                        console.log("then.req.session.stopLabel",then.req.session.stopLabel)
                         if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
+                            console.log("*****333*****")
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             //判断是否是发放卷
-                            if(scoreRange[i].getActivities=="-1"){
-                                type = scoreRange[i].getActivities;
-                                //在分值范围中
-                                if(score >= minlen && score <= maxlen){
+                            if(score >= minlen && score <= maxlen){
+                                if(scoreRange[i].getActivities=="-1"){
+                                    type = scoreRange[i].getActivities;
+                                    //在分值范围中
+
                                     getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                     getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                     getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                     getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                    //获取奖励
-                                    if(pram =="1"){
+                                        //获取奖励
+                                    if(pram =="1" || memberid!="undefined"){
+                                        console.log("*****444*****")
                                         console.log("memberid",memberid)
                                         then.step(function () {
                                             //根据memberId调用接口给账户加分
@@ -479,7 +489,6 @@ module.exports={
                                             jsonData.memberId = memberid;
                                             jsonData.qty = getScore;
                                             jsonData.memo = nut.model.themeTitle;
-
                                             if(ok){
                                                 middleware.request('Point/Change', jsonData,
                                                     this.hold(function (err, doc) {
@@ -501,83 +510,81 @@ module.exports={
                                             nut.model.type = type;
                                         })
                                     }
-
-                                }
-                            }else{
-                                if(score >= minlen && score <= maxlen){
-                                    type = scoreRange[i].getActivities;
-                                    //获取奖励
-                                    getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
-                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
-                                    getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
-                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
-                                    if (typeof(getActivities) != "undefined" && getActivities != "") {
-                                        newActivity = ""
-                                        //服务器返回的券
-                                        //调用接口开始
-                                        var memoString = "主观题-" + getScore+"积分";
-                                        if (themeType == 0) {
-                                            memoString = "答题抢积分-" + getScore+"积分";
-                                        } else if (themeType == 1) {
-                                            memoString = "型男测试-" + getLabel;
-                                        }
-                                        //得券接口
-                                        var parm_can;
-                                        if(pram == "1"){
-                                            parm_can = "01";
-                                        }else{
-                                            parm_can = "02";
-                                        }
-                                        then.step(function () {
-                                            var jsonData = {
-                                                openid: wechatid,
-                                                otherPromId: _id,
-                                                PROMOTION_CODE: getActivities,
-                                                memo: memoString,
-                                                parm:parm_can,
-                                                point: 0
+                                }else{
+                                    if(score >= minlen && score <= maxlen){
+                                        type = scoreRange[i].getActivities;
+                                        //获取奖励
+                                        getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
+                                        getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                        getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
+                                        getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+                                        if (typeof(getActivities) != "undefined" && getActivities != "") {
+                                            newActivity = ""
+                                            //服务器返回的券
+                                            //调用接口开始
+                                            var memoString = "主观题-" + getScore+"积分";
+                                            if (themeType == 0) {
+                                                memoString = "答题抢积分-" + getScore+"积分";
+                                            } else if (themeType == 1) {
+                                                memoString = "型男测试-" + getLabel;
                                             }
-                                            if(ok){
-                                                middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
-                                                    if (err) throw err;
-                                                    var docJson = JSON.parse(doc)
-                                                    console.log("docJson",docJson)
-                                                    if (docJson.success) {
-                                                        newActivity = docJson.coupon_no
-                                                        nut.model.err = docJson.success
-                                                        if (docJson.coupon_no) {
-                                                            nut.model.errString = "无";
-                                                        }
-                                                        newActivity =  docJson.coupon_no
-                                                    } else {
-                                                        nut.model.err = docJson.success;
-                                                        nut.model.errString = docJson.error;
-                                                    }
-                                                }));
+                                            //得券接口
+                                            var parm_can;
+                                            if(memberid!="undefined"){
+                                                parm_can = "01";
                                             }else{
-                                                newActivity="已领过此卷";
+                                                parm_can = "02";
                                             }
+                                            then.step(function () {
+                                                var jsonData = {
+                                                    openid: wechatid,
+                                                    otherPromId: _id,
+                                                    PROMOTION_CODE: getActivities,
+                                                    memo: memoString,
+                                                    parm:parm_can,
+                                                    point: 0
+                                                }
+                                                if(ok){
+                                                    middleware.request("Coupon/FetchCoupon", jsonData, this.hold(function (err, doc) {
+                                                        if (err) throw err;
+                                                        var docJson = JSON.parse(doc)
+                                                        console.log("docJson",docJson)
+                                                        if (docJson.success) {
+                                                            newActivity = docJson.coupon_no
+                                                            nut.model.err = docJson.success
+                                                            if (docJson.coupon_no) {
+                                                                nut.model.errString = "无";
+                                                            }
+                                                            newActivity =  docJson.coupon_no
+                                                        } else {
+                                                            nut.model.err = docJson.success;
+                                                            nut.model.errString = docJson.error;
+                                                        }
+                                                    }));
+                                                }else{
+                                                    newActivity="已领过此卷";
+                                                }
 
-                                        })
-                                        then.step(function(){
-                                            var results={};
-                                            results.getLabel = getLabel;
-                                            results.getScore = getScore;
-                                            results.getTipContent = getTipContent;
-                                            results.code = getActivities;
-                                            results.getActivities = newActivity;
-                                            results.volumename = volumename;
-                                            resultList.push(results);
-                                            nut.model.sta = "false";
-                                            nut.model.score = "1";
-                                            nut.model.getScores ="1";
-                                            nut.model.type = type;
-                                        })
+                                            })
+                                            then.step(function(){
+                                                var results={};
+                                                results.getLabel = getLabel;
+                                                results.getScore = getScore;
+                                                results.getTipContent = getTipContent;
+                                                results.code = getActivities;
+                                                results.getActivities = newActivity;
+                                                results.volumename = volumename;
+                                                resultList.push(results);
+                                                nut.model.sta = "false";
+                                                nut.model.score = "1";
+                                                nut.model.getScores ="1";
+                                                nut.model.type = type;
+                                            })
 
+                                        }
                                     }
                                 }
                             }
-
                         }
                     }
 
@@ -651,6 +658,7 @@ module.exports={
 
         this.step(function () {
             if(go){
+                console.log("resultList",resultList)
                 nut.model.code = type;
                 nut.model.type = type;
                 then.req.session.optionId = ""

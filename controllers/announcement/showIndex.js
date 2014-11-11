@@ -97,6 +97,7 @@ module.exports={
             view:"lavico/templates/announcement/member_num14.html",
             process:function(seed,nut){
                 nut.model.wxid=seed.wxid;
+                var isok = true;
                 this.step(function(){
                     helper.db.coll("welab/customers").update({"wechatid":seed.wxid}, {$addToSet:{announcement:seed._id}},this.hold(function(err,doc){
                         if(err ){
@@ -106,12 +107,20 @@ module.exports={
                 })
 
                 this.step(function(){
-                    helper.db.coll("lavico/announcement").findOne({_id:helper.db.id(seed._id)},this.hold(function(err,doc){
+                    helper.db.coll("lavico/announcement").findOne({_id:helper.db.id(seed._id),"isOpen":true},this.hold(function(err,doc){
                         if(err) throw err;
-                        nut.model.doc=doc;
+                        if(doc){
+                            isok = true;
+                        }else{
+                            isok = false;
+                        }
+                        nut.model.doc=doc ||{};
                     }));
                 })
 
+                this.step(function(){
+                    nut.model.isok = isok;
+                })
             }
         }
     }

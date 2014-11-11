@@ -45,7 +45,6 @@ module.exports={
         })
 
         this.step(function(){
-            console.log(typeof (nut.model.memberID))
             if(themetype!="undefined" && id !="undefined"){
                 helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(id),"memberId":""+nut.model.memberID,"wechatid":seed.wxid,
                     "themetype":themetype,"isFinish":true} ).toArray(this.hold(function(err,doc){
@@ -83,16 +82,13 @@ module.exports={
             }else{
                 var sa;
                 var resultList=[];
-                console.log(docs)
                 if(docs){
                     for(var i=0;i<docs.length;i++){
-                        if(docs.type!="0"){
+                        if(docs[i].type!="0"){
                             sa = docs[i];
                         }
                     }
-                    console.log(sa)
                     if(sa){
-
                         resultList.push(sa);
                         nut.model.jsonResult =resultList;
                         nut.model.label =resultList[0].getLabel;
