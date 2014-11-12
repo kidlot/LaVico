@@ -24,15 +24,19 @@
 </div>
 <script>
     function func_remove(id){
-        var oLinkOptions = {} ;
-        oLinkOptions.data = [{name:'id',value:id}];
-        oLinkOptions.type = "POST";
-        oLinkOptions.url = "/lavico/tags/Taglist:del";
+        if (confirm("确定要删除吗??")){
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [{name:'id',value:id}];
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/lavico/tags/Taglist:del";
 
-        $.request(oLinkOptions,function(err,nut){
-            if(err) throw err ;
-            nut.msgqueue.popup() ;
-            $.controller("/lavico/tags/Taglist",null,"lazy");
-        });
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+                nut.msgqueue.popup() ;
+                $.controller("/lavico/tags/Taglist",null,"lazy");
+            });
+        }else{
+            return false;
+        }
     }
 </script>
