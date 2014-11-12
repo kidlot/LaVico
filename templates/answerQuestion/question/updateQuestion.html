@@ -262,9 +262,11 @@
                     </tr>
                 </table>
             </div>
-            <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;
-                <input type="text" value="{@docs.volumename}"  name="volumename" class="form-control input-sm" style="width: 350px">
-            </div>
+            <if condition="{@type!=0}">
+                <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;
+                    <input type="text" value="{@docs.volumename}"  name="volumename" class="form-control input-sm" style="width: 350px">
+                </div>
+            </if>
             <div>题目类型:&nbsp;&nbsp;
                 <select name="themeType" class="form-control input-sm" style="width: 200px">
                     <if condition="{@docs.themeType==1}">
