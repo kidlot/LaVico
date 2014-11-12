@@ -288,24 +288,37 @@
             <if condition="{@docs.themeType==3}">
                 <div>发放类型:&nbsp;&nbsp;
                     <select name="showType" id="showtype" class="form-control input-sm" style="width: 200px">
-                        <if condition="{@docs.showtype==0}">
-                            <option value="0" selected="selected">只显示提示</option>
-                            <if condition="{@docs.parm==1}">
-                                <option value="1">发放积分</option>
-                                </if>
-                            <option value="2">发放优惠劵</option>
-                            <elseif condition="{@docs.showtype==1}"/>
-                            <option value="0">只显示提示</option>
-                            <if condition="{@docs.parm==1}">
-                                <option value="1" selected="selected">发放积分</option>
-                            </if>
-                            <option value="2">发放优惠劵</option>
+                        <if condition="{@docs.pram=='1'}">
+                            <if condition="{@docs.showtype=='0'}">
+                                <option value="0" selected="selected">只显示提示</option>
                             <else/>
-                            <option value="0">只显示提示</option>
-                            <if condition="{@docs.parm==1}">
+                                <option value="0" selected="selected">只显示提示</option>
+                            </if>
+
+
+                            <if condition="{@docs.showtype=='1'}">
+                                <option value="1" selected="selected">发放积分</option>
+                            <else/>
                                 <option value="1">发放积分</option>
-                                </if>
-                            <option value="2" selected="selected">发放优惠劵</option>
+                            </if>
+
+                            <if condition="{@docs.showtype=='2'}">
+                                <option value="2" selected="selected">发放优惠劵</option>
+                                <else/>
+                                <option value="2">发放优惠劵</option>
+                            </if>
+                        <else/>
+                            <if condition="{@docs.showtype=='0'}">
+                                <option value="0" selected="selected">只显示提示</option>
+                                <else/>
+                                <option value="0" selected="selected">只显示提示</option>
+                            </if>
+
+                            <if condition="{@docs.showtype=='2'}">
+                                <option value="2" selected="selected">发放优惠劵</option>
+                                <else/>
+                                <option value="2">发放优惠劵</option>
+                            </if>
                         </if>
                     </select>
                 </div>
