@@ -10,6 +10,7 @@ module.exports={
         var memberid  = seed.memberid  || "undefined";
         var themetype = seed.themetype || "null";
         var stutas= seed.stutas ? seed.stutas :"false";
+        console.log("stutas",stutas)
         nut.model.stutas = stutas;
         //nut.model.memberid  =memberid;
         var stopLab=seed.stopLab ? seed.stopLab : "null";
@@ -188,10 +189,13 @@ module.exports={
 
         //插入总积分
         this.step(function(){
+            console.log("go",go)
+            console.log("ok",ok)
             if(go){
                 if(ok){
                     //插入总积分
                     if(memberid=="undefined"){
+                        console.log("111111111111111111")
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
@@ -209,6 +213,7 @@ module.exports={
                             "type":"0"
                         }, function (err, doc) {});
                     }else{
+                        console.log("22222222222222222222222222222222222")
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
@@ -330,6 +335,7 @@ module.exports={
                                         resultList.push(results);
                                     })
                                 }else{
+                                    var results={};
                                     for (var i = 0; i < scoreRange.length; i++){
                                         var minlen = scoreRange[i].conditionMinScore;//获取低分值
                                         var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
@@ -340,7 +346,7 @@ module.exports={
                                         if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                             console.log("scoreRange[i]",scoreRange[i])
                                             getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
-                                            var results={};
+
                                             results.getLabel = getLabel;
                                             results.getScore = "0";
                                             results.getTipContent = "对不起,您没有获得任何奖励";
@@ -356,6 +362,7 @@ module.exports={
 
                         }
                     }else{
+                        var results={};
                         for (var i = 0; i < scoreRange.length; i++){
                             console.log("****6666*****")
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
@@ -365,7 +372,7 @@ module.exports={
                             console.log("maxlen",maxlen)
                             if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                 getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
-                                var results={};
+
                                 results.getLabel = getLabel;
                                 results.getScore = "0";
                                 results.getTipContent = "对不起,您没有获得任何奖励";
@@ -396,6 +403,7 @@ module.exports={
                     then.step(function(){
                         if(ok){
                             if(memberid=="undefined"){
+                                console.log("33333333333333333333333333333")
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -416,6 +424,7 @@ module.exports={
                                     "type":type
                                 }, function (err, doc) {});
                             }else{
+                                console.log("444444444444444444444")
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -453,12 +462,12 @@ module.exports={
                         for (var i = 0; i < scoreRange.length; i++){
                             console.log("stopLabel",then.req.session.stopLabel)
                             console.log("conditionLabel",scoreRange[i].conditionLabel)
-                            console.log("scoreRange",scoreRange)
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
 
                                 var minlen = scoreRange[i].conditionMinScore;//获取低分值
                                 var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                                 if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
+                                    console.log("getScore",getScore)
                                     getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                     getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                     getActivities = scoreRange[i].getActivities == "" ? "-1" : scoreRange[i].getActivities;
@@ -544,6 +553,7 @@ module.exports={
                                             resultList.push(results);
                                         })
                                     }else{
+                                        var results={};
                                         for (var i = 0; i < scoreRange.length; i++){
                                             console.log("______111__________")
                                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
@@ -555,7 +565,7 @@ module.exports={
                                             if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                                 if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
                                                     getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
-                                                    var results={};
+
                                                     results.getLabel = getLabel;
                                                     results.getScore = "0";
                                                     results.getTipContent = "对不起,您没有获得任何奖励";
@@ -573,6 +583,7 @@ module.exports={
                             }
                         }
                     }else{
+                        var results={};
                         for (var i = 0; i < scoreRange.length; i++){
                             console.log("______222__________")
                             console.log("then.req.session.stopLabel",then.req.session.stopLabel)
@@ -587,7 +598,7 @@ module.exports={
                                 if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                     console.log("222222222222")
                                     getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
-                                    var results={};
+
                                     results.getLabel = getLabel;
                                     results.getScore = "0";
                                     results.getTipContent = "对不起,您没有获得任何奖励";
@@ -619,6 +630,7 @@ module.exports={
                     then.step(function(){
                         if(ok){
                             if(memberid=="undefined"){
+                                console.log("55555555555555")
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -639,6 +651,7 @@ module.exports={
                                     "type":type
                                 }, function (err, doc) {});
                             }else{
+                                console.log("666666666666666666666666666666")
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),

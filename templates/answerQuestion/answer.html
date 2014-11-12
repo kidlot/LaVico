@@ -105,7 +105,7 @@ function build(){
     }
     var value=Request.QueryString("optionId");
     for(var i=0;i<custReceive.length;i++){
-        if(custReceive[i].themetype=="1"){
+        if(custReceive[i].themetype=="1" || custReceive[i].themetype=="3"){
             if(custReceive[i].optionId==value){
                 if(custReceive[i].chooseId == "主观题"){
                     $("textarea[name='descContent']").val(custReceive[i].resultValue);
@@ -211,7 +211,7 @@ function showCorrent(t){
         //竞猜型
         $("span[name='correntImg']").css("visibility","hidden");//隐藏
     }else{
-        $("span[name='correntImg']").css("visibility","hidden");//显示
+        $("span[name='correntImg']").css("visibility","visible");//显示
         $("input[name='singleChooseInput']").attr("disabled",true);//
     }
 
@@ -523,57 +523,63 @@ function showCorrents_finish(){
     var valueArr="";
     var score=0;
     var valueSelect="";
-    //判断是否为主观题
-    if(jsonObject.type==2){
-
-        //获取填写值
-        var content=$("textarea[name='descContent']").val();
-
-        if(content==""){
-            window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
-            })
-            return;
-        }
-        //跳转“答案记录题”
-        $.get("/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&finish=true&score="+
-                jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content+"&memberid="+member_id+"&themetype="+themetype+"&type=2&status=true",function(data){})
+    if(themetype == "3"){
+        location.href="/lavico/answerQuestion/finish?_id="+_id+"&wechatid="+wechatid+"&memberid="+member_id+"&themetype="+themeType+"&stutas=true"+"&pram="+pram;
     }else{
-        //单选
-        if($("input[name='singleChooseInput']").length>0){
-            //
-            if($("input[name='singleChooseInput']:checked").length==0) {
-                window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
-                })
-                return;
-            }
-            //获取单选值
-            value=$("input[name='singleChooseInput']:checked").val();
-            valueArr=value.split('+');
-            //跳转“记录页”
-            $.get("/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=0&optionId="+valueArr[0]+
-                    "&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+
-                    "&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype+"&status=true",function(data){})
-        }else if($("input[name='mutilChooseInput']:checked").length>0){
-            //
-            if($("input[name='mutilChooseInput']:checked").length==0) {
-                window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
-                })
-                return;
-            }
-            //多选
-            var selectChooseIdArr="";
 
-            $("input[name='mutilChooseInput']:checked").each(function(){
-                value=$(this).val();
+
+        //判断是否为主观题
+        if(jsonObject.type==2){
+
+            //获取填写值
+            var content=$("textarea[name='descContent']").val();
+
+            if(content==""){
+                window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
+                })
+                return;
+            }
+            //跳转“答案记录题”
+            $.get("/lavico/answerQuestion/simpleQuestion?wechatid="+wechatid+"&finish=true&score="+
+                    jsonObject.answerScore+"&_id="+_id+"&optionId="+jsonObject.optionId+"&receiveAnswer="+content+"&memberid="+member_id+"&themetype="+themetype+"&type=2&status=true",function(data){})
+        }else{
+            //单选
+            if($("input[name='singleChooseInput']").length>0){
+                //
+                if($("input[name='singleChooseInput']:checked").length==0) {
+                    window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
+                    })
+                    return;
+                }
+                //获取单选值
+                value=$("input[name='singleChooseInput']:checked").val();
                 valueArr=value.split('+');
-                selectChooseIdArr+=valueArr[1]+",";//点击的所有选项ID
-                if(!isNaN(parseInt(valueArr[2])))
-                    score+=parseInt(valueArr[2]);//累计选项积分
-            });
-            $.get("/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=1&optionId="+
-                    valueArr[0]+"&_id="+_id+"&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&memberid="+member_id+"&themetype="+themetype+"&status=true",function(data){})
-        }
+                //跳转“记录页”
+                $.get("/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=0&optionId="+valueArr[0]+
+                        "&_id="+_id+"&chooseId="+valueArr[1]+"&score="+valueArr[2]+"&chooseNext="+valueArr[3]+"&stopLabel="+valueArr[4]+
+                        "&customerLabel="+valueArr[5]+"&memberid="+member_id+"&themetype="+themetype+"&status=true",function(data){})
+            }else if($("input[name='mutilChooseInput']:checked").length>0){
+                //
+                if($("input[name='mutilChooseInput']:checked").length==0) {
+                    window.popupStyle2.on("您还没有选择,请先完成此题",function(event){
+                    })
+                    return;
+                }
+                //多选
+                var selectChooseIdArr="";
 
+                $("input[name='mutilChooseInput']:checked").each(function(){
+                    value=$(this).val();
+                    valueArr=value.split('+');
+                    selectChooseIdArr+=valueArr[1]+",";//点击的所有选项ID
+                    if(!isNaN(parseInt(valueArr[2])))
+                        score+=parseInt(valueArr[2]);//累计选项积分
+                });
+                $.get("/lavico/answerQuestion/record?wechatid="+wechatid+"&finish=true&type=1&optionId="+
+                        valueArr[0]+"&_id="+_id+"&chooseId="+selectChooseIdArr+"&score="+score+"&chooseNext="+valueArr[3]+"&memberid="+member_id+"&themetype="+themetype+"&status=true",function(data){})
+            }
+
+        }
     }
 }
 window.onload =function() {
