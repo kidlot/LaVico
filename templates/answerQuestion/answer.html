@@ -8,7 +8,6 @@
     #sed{padding: 20 0 0 0;}
     #tip{font-size: 30px; text-align: center;}*/
 </style>
-
 <script>
 
 window.hideShareButtion.on()
@@ -32,11 +31,8 @@ if(window.name != "bencalie"){
     window.name = "";
 }
 
-
-
 //初始化事件
 function build(){
-
     if(member_id=='undefined'){
         if(jsonObject.parm=="1"){
             window.popupStyle2.on("请先申请会员卡或者绑定会员,然后参加活动!",function(event){
@@ -261,12 +257,11 @@ function showCorrents(t){
         }
     }
 }
-
 //finish完成按钮“触发"事件
 function finish(){
     var pram = '{@pram}'
     var isRecord = '{@isRecord}';
-    if(jsonObject.parm == "1"){
+    if(themetype != "3"){
         if(isRecord=="1"){
             window.popupStyle2.on("您已经答过此题,不能再答题!您将会看到你上次答题的结果!",function(event){
                 if(event == "confirm"){

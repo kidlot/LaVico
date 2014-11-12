@@ -268,7 +268,7 @@ module.exports={
                         console.log("score",score)
                         if(score >= minlen && score <= maxlen){
                             console.log("___111___")
-                            if(scoreRange[i].getActivities=="-1"){
+                            if(scoreRange[i].getActivities=="-1" && (pram == "1" || memberid!="undefined")){
                                 console.log("___222___")
                                 type = scoreRange[i].getActivities;
                                 //在分值范围中
@@ -277,7 +277,7 @@ module.exports={
                                 getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                 getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 //获取奖励
-                                if(pram == "1" || memberid!="undefined"){
+                                //if(pram == "1" || memberid!="undefined"){
                                     console.log("___333___")
                                     console.log("memberid111111",memberid)
                                     then.step(function () {
@@ -306,7 +306,7 @@ module.exports={
                                         nut.model.score = "1";
                                         nut.model.getScores ="1";
                                     })
-                                }
+                                //}
                             }else{
                                 console.log("___444___")
                                 type = scoreRange[i].getActivities;
@@ -471,7 +471,7 @@ module.exports={
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             //判断是否是发放卷
                             if(score >= minlen && score <= maxlen){
-                                if(scoreRange[i].getActivities=="-1"){
+                                if(scoreRange[i].getActivities=="-1" && (pram =="1" || memberid!="undefined")){
                                     type = scoreRange[i].getActivities;
                                     //在分值范围中
 
@@ -480,7 +480,7 @@ module.exports={
                                     getActivities = scoreRange[i].getActivities == "" ? 0 : scoreRange[i].getActivities;
                                     getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                         //获取奖励
-                                    if(pram =="1" || memberid!="undefined"){
+                                   // if(pram =="1" || memberid!="undefined"){
                                         console.log("*****444*****")
                                         console.log("memberid",memberid)
                                         then.step(function () {
@@ -509,7 +509,7 @@ module.exports={
                                             nut.model.getScores ="1";
                                             nut.model.type = type;
                                         })
-                                    }
+                                  //  }
                                 }else{
                                     if(score >= minlen && score <= maxlen){
                                         type = scoreRange[i].getActivities;
