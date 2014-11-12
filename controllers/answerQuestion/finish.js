@@ -391,11 +391,11 @@ module.exports={
                     then.step(function(){
                         if(resultList.length==0){
                             var results={};
-                            results.getLabel = "对不起,您没有获得任何奖励1111111";
+                            results.getLabel = "对不起,您没有获得任何奖励";
                             results.getScore = 0;
-                            results.getTipContent = "对不起,您没有获得任何奖励11111111111111";
+                            results.getTipContent = "对不起,您没有获得任何奖励";
                             results.code = "undefined";
-                            results.getActivities = "您没有获得任何礼券111111111111";
+                            results.getActivities = "您没有获得任何礼券";
                             results.volumename = volumename;
                             resultList.push(results)
                             nut.model.stutas = "true";
