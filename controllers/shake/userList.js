@@ -100,14 +100,28 @@ module.exports = {
 
                 var conditions = search.conditions(seed) || {} ;
 
+                //关注时间 任意
                 if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].followTime){
                     conditions.$or[0].followTime.$gt = parseInt(conditions.$or[0].followTime.$gt/1000);
                     conditions.$or[0].followTime.$lt = parseInt(conditions.$or[0].followTime.$lt/1000);
+
                 }
 
+                if(conditions && conditions.$or && conditions.$or[1] && conditions.$or[1].followTime){
+                    conditions.$or[1].followTime.$gt = parseInt(conditions.$or[1].followTime.$gt/1000);
+                    conditions.$or[1].followTime.$lt = parseInt(conditions.$or[1].followTime.$lt/1000);
+
+                }
+
+                //关注时间 全部
                 if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].followTime){
                     conditions.$and[0].followTime.$gt = parseInt(conditions.$and[0].followTime.$gt/1000);
                     conditions.$and[0].followTime.$lt = parseInt(conditions.$and[0].followTime.$lt/1000);
+                }
+
+                if(conditions && conditions.$and && conditions.$and[1] && conditions.$and[1].followTime){
+                    conditions.$and[1].followTime.$gt = parseInt(conditions.$and[1].followTime.$gt/1000);
+                    conditions.$and[1].followTime.$lt = parseInt(conditions.$and[1].followTime.$lt/1000);
                 }
                 //年龄 任意
                 if(conditions && conditions.$or && conditions.$or[0] && conditions.$or[0].birthday){
@@ -126,6 +140,23 @@ module.exports = {
                         conditions.$or[0].birthday=investigation;
                     }
                 }
+
+                if(conditions && conditions.$or && conditions.$or[1] && conditions.$or[1].birthday){
+                    if(conditions.$or[1].birthday.$gt){
+                        conditions.$or[1].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[1].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$or[1].birthday.$lt){
+                        conditions.$or[1].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[1].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                    }else if(conditions.$or[1].birthday.$lte){
+                        conditions.$or[1].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[1].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$or[1].birthday.$gte){
+                        conditions.$or[1].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[1].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                    }else{
+                        var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[1].birthday)))+"-01-01 00:00:00").getTime();
+                        var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$or[1].birthday)))+"-12-31 23:59:59").getTime();
+                        var investigation  = {$gte:gt,$lte:lt};
+                        conditions.$or[1].birthday=investigation;
+                    }
+                }
                 //年龄 全部
                 if(conditions && conditions.$and && conditions.$and[0] && conditions.$and[0].birthday){
                     if(conditions.$and[0].birthday.$gt){
@@ -140,7 +171,24 @@ module.exports = {
                         var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-01-01 00:00:00").getTime();
                         var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[0].birthday)))+"-12-31 23:59:59").getTime();
                         var investigation  = {$gte:gt,$lte:lt};
-                        conditions.$and[0].birthday = investigation;
+                        conditions.$and[0].birthday=investigation;
+                    }
+                }
+
+                if(conditions && conditions.$and && conditions.$and[1] && conditions.$and[1].birthday){
+                    if(conditions.$and[1].birthday.$gt){
+                        conditions.$and[1].birthday.$gt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[1].birthday.$gt)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$and[1].birthday.$lt){
+                        conditions.$and[1].birthday.$lt =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[1].birthday.$lt)))+"-01-01 00:00:00").getTime();
+                    }else if(conditions.$and[1].birthday.$lte){
+                        conditions.$and[1].birthday.$lte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[1].birthday.$lte)))+"-12-31 23:59:59").getTime();
+                    }else if(conditions.$and[1].birthday.$gte){
+                        conditions.$and[1].birthday.$gte =new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[1].birthday.$gte)))+"-01-01 00:00:00").getTime();
+                    }else{
+                        var gt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[1].birthday)))+"-01-01 00:00:00").getTime();
+                        var lt = new Date((parseInt(new Date().getFullYear()-parseInt(conditions.$and[1].birthday)))+"-12-31 23:59:59").getTime();
+                        var investigation  = {$gte:gt,$lte:lt};
+                        conditions.$and[1].birthday=investigation;
                     }
                 }
 

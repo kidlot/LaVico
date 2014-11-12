@@ -152,6 +152,8 @@ module.exports= {
                     pram = doc.pram;
                     nut.model.themetype = themetype;
                     nut.model.themeQuestion = JSON.stringify(doc);
+                }else{
+                    nut.model.docs={};
                 }
             }));
         })
