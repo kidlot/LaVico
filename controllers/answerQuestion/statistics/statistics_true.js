@@ -39,36 +39,37 @@ module.exports={
             helper.db.coll("lavico/custReceive").find({themeId:helper.db.id(_id)}).toArray(this.hold(function(err,doc){
                 if(err) throw err
                 for(var doco=0;doco<docOne.doc.options.length;doco++){
-                    for(var i=0;i<docOne.doc.options[doco].choose.length;i++){
-                        if(docOne.doc.options[doco].choose[i].isCorrect==1){
-                            //全对
-                            (function(a,j){
-                                var allRightList={};
-                                //答对的正确的人
-                                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(_id),"optionId":j.optionId,
-                                    "chooseId":j.choose[a].chooseID},then.hold(function(err,doc){
-                                    if(err)throw err
-                                    var rightOne={}
-                                    rightOne.themeId=_id
-                                    rightOne.optionId= j.optionId
-                                    rightOne.rightNum=doc
-                                    allRight.push(rightOne)
-                                }))
-
-                                //答过此题的人
-                                helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(_id),"optionId":j.optionId},
-                                    then.hold(function(err,doc){
+                    if(docOne.doc.options[doco].choose){
+                        for(var i=0;i<docOne.doc.options[doco].choose.length;i++){
+                            if(docOne.doc.options[doco].choose[i].isCorrect==1){
+                                //全对
+                                (function(a,j){
+                                    var allRightList={};
+                                    //答对的正确的人
+                                    helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(_id),"optionId":j.optionId,
+                                        "chooseId":j.choose[a].chooseID},then.hold(function(err,doc){
                                         if(err)throw err
-                                        for(var k=0;k<allRight.length;k++){
-                                            if(allRight[k].themeId==_id && allRight[k].optionId== j.optionId){
-                                                allRight[k].allNum=doc
-                                            }
-                                        }
+                                        var rightOne={}
+                                        rightOne.themeId=_id
+                                        rightOne.optionId= j.optionId
+                                        rightOne.rightNum=doc
+                                        allRight.push(rightOne)
                                     }))
 
-                                //所有答对题的人
-                                helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"optionId":j.optionId,
-                                    "chooseId":j.choose[a].chooseID}).toArray(
+                                    //答过此题的人
+                                    helper.db.coll("lavico/custReceive").count({"themeId":helper.db.id(_id),"optionId":j.optionId},
+                                        then.hold(function(err,doc){
+                                            if(err)throw err
+                                            for(var k=0;k<allRight.length;k++){
+                                                if(allRight[k].themeId==_id && allRight[k].optionId== j.optionId){
+                                                    allRight[k].allNum=doc
+                                                }
+                                            }
+                                        }))
+
+                                    //所有答对题的人
+                                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"optionId":j.optionId,
+                                        "chooseId":j.choose[a].chooseID}).toArray(
                                         then.hold(function(err,doc){
                                             if(err) throw err;
 
@@ -88,10 +89,12 @@ module.exports={
                                         })
                                     )
 
-                            })(i,docOne.doc.options[doco])
-                        }
+                                })(i,docOne.doc.options[doco])
+                            }
 
+                        }
                     }
+
                 }
 
                 nut.model.allCountPeople=then.req.session.allCountPeople
