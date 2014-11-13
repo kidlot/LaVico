@@ -311,7 +311,7 @@ module.exports={
                                 if (err) throw err;
                                 console.log("tag record:" + doc);
                             }))
-                            helper.db.coll("welab/customers").update({"wechatid" : wechatid}, {$addToSet:{tags:'积分兑换-'+t_name}},this.hold(function(err,doc){
+                            helper.db.coll("welab/customers").update({"wechatid" : wechatId}, {$addToSet:{tags:'积分兑换-'+t_name}},this.hold(function(err,doc){
                                 if(err ){
                                     throw err;
                                 }
@@ -348,8 +348,9 @@ module.exports={
                         helper.db.coll("lavico/activity").findOne({aid:record.aid},this.hold(function(err,result){
                             if(err) throw err;
                             if(result){
-
-                                record.pic=result.pic;
+                                if(record){
+                                    record.pic=result.pic || "";
+                                }
                             }
                             return record;
                         }))
@@ -357,7 +358,11 @@ module.exports={
                 })
 
                 this.step(function(record){
-
+                    if(!record){
+                        record = {};
+                        record.pic = "";
+                    }
+                    console.log('record',record)
                     nut.model.record=record;
                     nut.model.wechatId=wechatId;
                 })
