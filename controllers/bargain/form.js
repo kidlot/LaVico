@@ -374,6 +374,19 @@ module.exports = {
                                         console.log(err)
                                     }
                                 })) ;
+
+                                var TagJson = {};
+                                TagJson.memberId = seed.memberID;
+                                TagJson.tag = "我要侃价"+"-"+seed.name;
+                                middleware.request("Tag/Add", TagJson, this.hold(function (err, doc) {
+                                    if (err) throw err;
+                                    console.log("tag record:" + doc);
+                                }))
+                                helper.db.coll("welab/customers").update({"wechatid" : seed.wxid}, {$addToSet:{tags:TagJson.tag}},this.hold(function(err,doc){
+                                    if(err ){
+                                        throw err;
+                                    }
+                                }));
                                 this.req.session._bargain_step = 1;
 
                             }
