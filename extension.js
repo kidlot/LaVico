@@ -137,18 +137,18 @@ exports.onload = function(application){
 
 
     // default
-    //wechatapi.registerReply(14, function (params, req, res, next) {
-    //    console.log("default reply")
-    //    //res.reply('如果有任何建议及疑问欢迎随时留言')
-    //    res.reply("LaVico微信平台使用指南全了解！\n" +
-    //    "如您对产品及门店服务有疑问，敬请拨打客服电话垂询，400-100-8866！\n" +
-    //    "1、了解品牌新品推荐，点击菜单'风尚—精英搭配'\n" +
-    //    "2、了解品牌最新线上活动，点击菜单'礼遇'\n" +
-    //    "3、找到身边的LaVico门店，点击菜单'风尚—附近门店'\n" +
-    //    "4、了解LaVico会员特权，点击菜单'会员—我的会员卡'\n" +
-    //    "LaVico男装感谢您的关注与支持！ ");
-    //
-    //});
+    wechatapi.registerReply(14, function (params, req, res, next) {
+        console.log("default reply")
+        //res.reply('如果有任何建议及疑问欢迎随时留言')
+        res.reply("LaVico微信平台使用指南全了解！\n" +
+        "如您对产品及门店服务有疑问，敬请拨打客服电话垂询，400-100-8866！\n" +
+        "1、了解品牌新品推荐，点击菜单'风尚—精英搭配'\n" +
+        "2、了解品牌最新线上活动，点击菜单'礼遇'\n" +
+        "3、找到身边的LaVico门店，点击菜单'风尚—附近门店'\n" +
+        "4、了解LaVico会员特权，点击菜单'会员—我的会员卡'\n" +
+        "LaVico男装感谢您的关注与支持！ ");
+
+    });
     wechatapi.makeQueue() ;
 
 
