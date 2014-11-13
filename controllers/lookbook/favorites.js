@@ -1,3 +1,4 @@
+var middleware = require('../../lib/middleware.js');//引入中间件
 module.exports = {
 
     layout: "lavico/layout"
@@ -132,6 +133,7 @@ module.exports = {
             {
                 nut.disable();
                 var memberid = false;
+                var name="";
 
                 try{
 
@@ -176,6 +178,9 @@ module.exports = {
 
                             console.log(doc)
                             var oProduct,oPage
+                            if(_doc){
+                                name = _doc.name;
+                            }
 
                             for(var i=0 ; i<doc.page.length ; i++){
                                 for(var ii=0 ; ii<doc.page[i].product.length ; ii++){
@@ -208,6 +213,19 @@ module.exports = {
                                     throw err;
                                 }
                             })) ;
+
+                            var TagJson = {};
+                            TagJson.memberId = memberid;
+                            TagJson.tag = name+"--"+oProduct.name;
+                            middleware.request("Tag/Add", TagJson, this.hold(function (err, doc) {
+                                if (err) throw err;
+                                console.log("tag record:" + doc);
+                            }))
+                            helper.db.coll("welab/customers").update({"wechatid" : seed.wxid}, {$addToSet:{tags:TagJson.tag}},this.hold(function(err,doc){
+                                if(err ){
+                                    throw err;
+                                }
+                            }));
 
                         }))
 
