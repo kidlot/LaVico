@@ -807,17 +807,17 @@ module.exports = {
                         {$set: {"memberID":parseInt(arr[i][0])}},{upsert:false,multi:true},then.hold(function(err,doc){
                             if(err) throw err;
                             console.log("doc",doc)
-                            if(doc>0){
+                            if(doc==0){
                                 var list = {};
                                 list.oldmemberid = arr[i][1]
                                 list.newmemberid = arr[i][0]
-                                list.status = "成功";
+                                list.status = "失败";
                                 result.push(list)
                             }else{
                                 var list = {};
                                 list.oldmemberid = arr[i][1]
                                 list.newmemberid = arr[i][0]
-                                list.status = "失败";
+                                list.status = "成功";
                                 result.push(list)
                             }
                         }))
