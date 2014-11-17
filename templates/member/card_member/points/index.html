@@ -4,7 +4,9 @@
     </div>
     <div class="points2">
         <div class="title">
-            <p class="text">{@isTop.title}&nbsp;<a href="/lavico/announcement/showIndex:show?_id={@isTop._id}&wxid={@wxid}">查看详情 > </a></p>
+            <if condition="@isok == true">
+                <p class="text">{@isTop.title}&nbsp;<a href="/lavico/announcement/showIndex:show?_id={@isTop._id}&wxid={@wxid}">查看详情 > </a></p>
+            </if>
         </div>
         <if condition="@info=='return_data_true'">
 
