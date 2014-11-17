@@ -75,7 +75,9 @@
                     <elseif condition="@doc.type=='link'"/>
                     <a href="{@doc.url}">链接</a>
                     <elseif condition="@doc.type=='voice'"/>
-                    <audio src="/welab/{@doc.voice}" controls="controls" style="width:45px;height:30px;"></audio>
+                    <a href="/{@doc.filename}">下载</a>
+
+                    <!--<audio src="/{@doc.filename}" controls="controls" style="width:45px;height:30px;"></audio>-->
                 </if>
             </td>
 

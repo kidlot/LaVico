@@ -1,0 +1,26 @@
+<div name="container" class="panel panel-default">
+    <div name="title" style="padding: 10px;">
+        <div nam="main">
+            <div name="getMember" class="maginTop20">
+                <table class="table table-hover" id="tagList">
+                    <thead>
+                    <tr class="staCount borderBtm">
+                        <th class="width150">旧member_id</th>
+                        <th class="width70">新member_id</th>
+                        <th class="width100">状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <foreach for="@result" var="doc" key="key">
+                        <tr class="borderBtm">
+                            <td class="width35">{@doc.oldmemberid}</td>
+                            <td class="width35">{@doc.newmemberid}</td>
+                            <td class="width35">{@doc.status}</td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
