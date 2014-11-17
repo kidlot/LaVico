@@ -303,6 +303,19 @@ module.exports={
                                 if(err) throw err;
                                 return record;//return只能放在hold
                             }))
+
+                            var jsonData = {};
+                            jsonData.memberId = memberId;
+                            jsonData.tag = '积分兑换-'+t_name;
+                            middleware.request("Tag/Add", jsonData, this.hold(function (err, doc) {
+                                if (err) throw err;
+                                console.log("tag record:" + doc);
+                            }))
+                            helper.db.coll("welab/customers").update({"wechatid" : wechatId}, {$addToSet:{tags:'积分兑换-'+t_name}},this.hold(function(err,doc){
+                                if(err ){
+                                    throw err;
+                                }
+                            }));
                         }else{
                             nut.view.disable();
                             nut.write("<script>window.onload=function(){window.popupStyle2.on('"+docJson.error+"'"+",function(event){history.back()})}</script>");
@@ -335,8 +348,9 @@ module.exports={
                         helper.db.coll("lavico/activity").findOne({aid:record.aid},this.hold(function(err,result){
                             if(err) throw err;
                             if(result){
-
-                                record.pic=result.pic;
+                                if(record){
+                                    record.pic=result.pic || "";
+                                }
                             }
                             return record;
                         }))
@@ -344,7 +358,11 @@ module.exports={
                 })
 
                 this.step(function(record){
-
+                    if(!record){
+                        record = {};
+                        record.pic = "";
+                    }
+                    console.log('record',record)
                     nut.model.record=record;
                     nut.model.wechatId=wechatId;
                 })

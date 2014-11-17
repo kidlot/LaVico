@@ -242,7 +242,11 @@
             </tr>
         </table>
     </div>
-    <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;<input type="text" name="volumename" class="form-control input-sm" style="width: 350px"></div>
+    <if condition="{@type!=0}">
+        <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;
+            <input type="text" name="volumename" class="form-control input-sm" style="width: 350px">
+        </div>
+    </if>
     <div>题目类型:&nbsp;
         <select name="themeType" class="form-control input-sm" style="width: 200px">
             <if condition="{@type==1}">
@@ -251,7 +255,7 @@
                 <option value="3">竞猜型</option>
                 <else/>
                 <option value="0" selected="selected">对错型</option>
-                <option value="2">调查型</option>
+                <!--<option value="2">调查型</option>-->
             </if>
         </select>
     </div>

@@ -10,10 +10,10 @@ module.exports={
         var memberid  = seed.memberid  || "undefined";
         var themetype = seed.themetype || "null";
         var stutas= seed.stutas ? seed.stutas :"false";
+        console.log("stutas",stutas)
         nut.model.stutas = stutas;
         //nut.model.memberid  =memberid;
         var stopLab=seed.stopLab ? seed.stopLab : "null";
-        console.log("stopLab",stopLab)
         var newActivity="";
         var docs=[];
         var resultList=[];//显示记录
@@ -181,7 +181,6 @@ module.exports={
         //分数累加
         this.step(function(){
             if(go){
-                console.log("scoreArr",scoreArr)
                 for(var i=0;i<scoreArr.length;i++){
                     score+=scoreArr[i].getChooseScore;
                 }
@@ -190,10 +189,13 @@ module.exports={
 
         //插入总积分
         this.step(function(){
+            console.log("go",go)
+            console.log("ok",ok)
             if(go){
                 if(ok){
                     //插入总积分
                     if(memberid=="undefined"){
+                        console.log("111111111111111111")
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
@@ -211,6 +213,7 @@ module.exports={
                             "type":"0"
                         }, function (err, doc) {});
                     }else{
+                        console.log("22222222222222222222222222222222222")
                         helper.db.coll("lavico/custReceive").insert({
                             "wechatid": wechatid,
                             "themeId": helper.db.id(_id),
@@ -235,12 +238,11 @@ module.exports={
 
         this.step(function(){
             if(go){
-                console.log("docTheme.showtype",docTheme.showtype)
                 //非停止标签过来
                 if (stopLab != "true") {
-                    console.log("docTheme.showtype",docTheme.showtype)
-                    if(docTheme && docTheme.showtype!="" && docTheme.showtype!=0){//发放优惠劵或者发放积分
-
+                    console.log("****1111*****")
+                    if(docTheme && docTheme.showtype!="" && docTheme.showtype!="0"){//发放优惠劵或者发放积分
+                        console.log("****2222*****")
                         for (var i = 0; i < scoreRange.length; i++){
 
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
@@ -251,7 +253,8 @@ module.exports={
                                 getActivities = scoreRange[i].getActivities == "" ? "-1" : scoreRange[i].getActivities;
                                 getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
                                 type = scoreRange[i].getActivities;
-                                if(docTheme.showtype == 1){//发放积分
+                                if(docTheme.showtype == "1"){//发放积分
+                                    console.log("****3333*****")
                                     then.step(function () {
                                         if(memberid!="undefined"){
                                             var jsonData = {};
@@ -278,14 +281,15 @@ module.exports={
 
 
                                     })
-                                }else if(docTheme.showtype == 2 && typeof(getActivities) != "undefined" && getActivities != "" && getActivities != "-1"){//发放优惠劵
+                                }else if(docTheme.showtype == "2" && typeof(getActivities) != "undefined" && getActivities != "" && getActivities != "-1"){//发放优惠劵
+                                    console.log("****4444*****")
                                     newActivity = ""
                                     //服务器返回的券
                                     //调用接口开始
                                     var memoString = "竞猜型:" + getLabel;
                                     //得券接口
                                     var parm_can;
-                                    if(pram == "1"){
+                                    if(memberid!="undefined"){
                                         parm_can = "01";
                                     }else{
                                         parm_can = "02";
@@ -331,45 +335,53 @@ module.exports={
                                         resultList.push(results);
                                     })
                                 }else{
-                                    console.log("!!!!!!!!!!!!!!!1")
+                                    var results={};
                                     for (var i = 0; i < scoreRange.length; i++){
+                                        var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                                        var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
+                                        console.log("****5555*****")
                                         console.log("score",score)
                                         console.log("minlen",minlen)
                                         console.log("maxlen",maxlen)
                                         if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
-                                            getLabel = scoreRange[i].getLabel == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].getLabel;
+                                            console.log("scoreRange[i]",scoreRange[i])
+                                            getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
+
+                                            results.getLabel = getLabel;
+                                            results.getScore = "0";
+                                            results.getTipContent = "对不起,您没有获得任何奖励";
+                                            results.code = "";
+                                            results.getActivities = "对不起,您没有获得任何奖励";
+                                            results.volumename = "";
+                                            resultList.push(results);
                                         }
-                                        var results={};
-                                        results.getLabel = getLabel;
-                                        results.getScore = "0";
-                                        results.getTipContent = "对不起,您没有获得任何奖励";
-                                        results.code = "";
-                                        results.getActivities = "对不起,您没有获得任何奖励";
-                                        results.volumename = "";
-                                        resultList.push(results);
+
                                     }
                                 }
                             }
 
                         }
                     }else{
+                        var results={};
                         for (var i = 0; i < scoreRange.length; i++){
+                            console.log("****6666*****")
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             console.log("score",score)
                             console.log("minlen",minlen)
                             console.log("maxlen",maxlen)
                             if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
-                                getLabel = scoreRange[i].getLabel == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].getLabel;
+                                getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
+
+                                results.getLabel = getLabel;
+                                results.getScore = "0";
+                                results.getTipContent = "对不起,您没有获得任何奖励";
+                                results.code = "";
+                                results.getActivities = "对不起,您没有获得任何奖励";
+                                results.volumename = "";
+                                resultList.push(results);
                             }
-                            var results={};
-                            results.getLabel = getLabel;
-                            results.getScore = "0";
-                            results.getTipContent = "对不起,您没有获得任何奖励";
-                            results.code = "";
-                            results.getActivities = "对不起,您没有获得任何奖励";
-                            results.volumename = "";
-                            resultList.push(results);
+
                         }
                     }
 
@@ -391,6 +403,7 @@ module.exports={
                     then.step(function(){
                         if(ok){
                             if(memberid=="undefined"){
+                                console.log("33333333333333333333333333333")
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -411,6 +424,7 @@ module.exports={
                                     "type":type
                                 }, function (err, doc) {});
                             }else{
+                                console.log("444444444444444444444")
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -448,12 +462,12 @@ module.exports={
                         for (var i = 0; i < scoreRange.length; i++){
                             console.log("stopLabel",then.req.session.stopLabel)
                             console.log("conditionLabel",scoreRange[i].conditionLabel)
-                            console.log("scoreRange",scoreRange)
                             if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
 
                                 var minlen = scoreRange[i].conditionMinScore;//获取低分值
                                 var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                                 if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
+                                    console.log("getScore",getScore)
                                     getScore = scoreRange[i].getScore == "" ? 0 : scoreRange[i].getScore;
                                     getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
                                     getActivities = scoreRange[i].getActivities == "" ? "-1" : scoreRange[i].getActivities;
@@ -492,7 +506,7 @@ module.exports={
                                         var memoString = "竞猜型:" + getLabel;
                                         //得券接口
                                         var parm_can;
-                                        if(pram == "1"){
+                                        if(memberid!="undefined"){
                                             parm_can = "01";
                                         }else{
                                             parm_can = "02";
@@ -539,44 +553,62 @@ module.exports={
                                             resultList.push(results);
                                         })
                                     }else{
+                                        var results={};
                                         for (var i = 0; i < scoreRange.length; i++){
+                                            console.log("______111__________")
+                                            var minlen = scoreRange[i].conditionMinScore;//获取低分值
+                                            var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                                             console.log("score",score)
                                             console.log("minlen",minlen)
                                             console.log("maxlen",maxlen)
+                                            console.log("then.req.session.stopLabel",then.req.session.stopLabel)
                                             if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
-                                                getLabel = scoreRange[i].getLabel == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].getLabel;
+                                                if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
+                                                    getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
+
+                                                    results.getLabel = getLabel;
+                                                    results.getScore = "0";
+                                                    results.getTipContent = "对不起,您没有获得任何奖励";
+                                                    results.code = "";
+                                                    results.getActivities = "对不起,您没有获得任何奖励";
+                                                    results.volumename = "";
+                                                    resultList.push(results);
+                                                }
+
                                             }
-                                            var results={};
-                                            results.getLabel = getLabel;
-                                            results.getScore = "0";
-                                            results.getTipContent = "对不起,您没有获得任何奖励";
-                                            results.code = "";
-                                            results.getActivities = "对不起,您没有获得任何奖励";
-                                            results.volumename = "";
-                                            resultList.push(results);
+
                                         }
                                     }
                                 }
                             }
                         }
                     }else{
+                        var results={};
                         for (var i = 0; i < scoreRange.length; i++){
+                            console.log("______222__________")
+                            console.log("then.req.session.stopLabel",then.req.session.stopLabel)
                             var minlen = scoreRange[i].conditionMinScore;//获取低分值
                             var maxlen = scoreRange[i].conditionMaxScore;//获取高分值
                             console.log("score",score)
                             console.log("minlen",minlen)
                             console.log("maxlen",maxlen)
-                            if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
-                                getLabel = scoreRange[i].getLabel == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].getLabel;
+                            console.log("scoreRange[i].conditionLabel",scoreRange[i].conditionLabel)
+                            if (then.req.session.stopLabel == scoreRange[i].conditionLabel) {
+                                console.log("11111111111")
+                                if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
+                                    console.log("222222222222")
+                                    getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
+
+                                    results.getLabel = getLabel;
+                                    results.getScore = "0";
+                                    results.getTipContent = "对不起,您没有获得任何奖励";
+                                    results.code = "";
+                                    results.getActivities = "对不起,您没有获得任何奖励";
+                                    results.volumename = "";
+                                    resultList.push(results);
+                                }
                             }
-                            var results={};
-                            results.getLabel = getLabel;
-                            results.getScore = "0";
-                            results.getTipContent = "对不起,您没有获得任何奖励";
-                            results.code = "";
-                            results.getActivities = "对不起,您没有获得任何奖励";
-                            results.volumename = "";
-                            resultList.push(results);
+
                         }
                     }
 
@@ -598,6 +630,7 @@ module.exports={
                     then.step(function(){
                         if(ok){
                             if(memberid=="undefined"){
+                                console.log("55555555555555")
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -618,6 +651,7 @@ module.exports={
                                     "type":type
                                 }, function (err, doc) {});
                             }else{
+                                console.log("666666666666666666666666666666")
                                 helper.db.coll("lavico/custReceive").insert({
                                     "wechatid": wechatid,
                                     "themeId": helper.db.id(_id),
@@ -656,7 +690,7 @@ module.exports={
                 nut.model.label =resultList[0].getLabel;
                 console.log("resultlist",resultList)
 
-                if(ok &&memberid=="undefined"){
+                if(ok){
                     if (getLabel != "" || getLabel != null || getScore!=""|| typeof (getLabel)!="undefined") {
                         //发送标签至CRM
                         var memoString="";

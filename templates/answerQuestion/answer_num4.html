@@ -1,31 +1,26 @@
 <script>
+    window.hideShareButtion.on()
 
-window.hideShareButtion.on()
-
-window.onload=function(){
-
-    var label ='{@label}';
-    var sa = label.replace(/[ ]/g,"");
-    var str = sa.substr(0,1);
-    var art;
-    var cha;
-    var getlabel;
-    if(str=="A"||str=="B"||str=="C"||str=="D"||str=="E"||str=="F"){
-
-        art = sa.substr(1);
-        if(art.indexOf(":")>=0){
-            cha=(0==art.indexOf(':')?art.substr(1):art);
-            getlabel=cha;
+    window.onload=function(){
+        var label ='{@label}';
+        var sa = label.replace(/[ ]/g,"");
+        var str = sa.substr(0,1);
+        var art;
+        var cha;
+        var getlabel;
+        if(str=="A"||str=="B"||str=="C"||str=="D"||str=="E"||str=="F"){
+            art = sa.substr(1);
+            if(art.indexOf(":")>=0){
+                cha=(0==art.indexOf(':')?art.substr(1):art);
+                getlabel=cha;
+            }else{
+                getlabel =art;
+            }
         }else{
-            getlabel =art;
+            getlabel=sa;
         }
-    }else{
-        getlabel=sa;
-    }
-    $("#getlabel").html(getlabel);
-
-
-    var tipDiv="no";
+        $("#getlabel").html(getlabel);
+        var tipDiv="no";
         if(tipDiv=="yes"){
             window.popupStyle2.on("您已经答过次提",function(event){
             if(event == "confirm"){
@@ -34,98 +29,101 @@ window.onload=function(){
         })
     }
 }
-
 </script>
 <if condition="{@themeType!='1'}">
-<div class="wrapper">
-    <div class="header"><img src="/lavico/public/images/head_bg.jpg" /></div>
-    <div class="coupon">
-        <div class="points-content">
-            <img src="/lavico/public/images/points_banner-604X319.jpg" />
-            <div class="points_txt">
-
-                <foreach for="{@jsonResult}" var="resultString">
-                    <label style="font-size: 2.4rem">{@resultString.getScore}积分</label>
-                </foreach>
-            </div>
+    <div class="wrapper">
+        <div class="header">
+            <img src="/lavico/public/images/head_bg.jpg" />
         </div>
-    </div>
-    <foreach for="{@jsonResult}" var="resultString">
-        <div class="look-text">
-            <p class="get">
-                <if condition="{@stutas=='true'}">
-                    <if condition="{@score=='0'}">
-                        <if condition="{@getScores=='0'}">
-                            对不起,您获得:
-                            <else/>
-                            您上次答题获得
-                        </if>
-                        <else/>
-                        您上次答题获得
-                    </if>
-
-                    <else/>
-                    恭喜您获得
-                </if>
-                {@resultString.getScore}积分<br />
-                可在“积分明细”内查询</p>
-            <p class="click-look"><a href="/lavico/member/card_member/points/index?wxid={@wechatid}">点击查看</a></p>
-        </div>
-    </foreach>
-</div>
-<else/>
-<div class="wrapper">
-    <div class="mobile">
-        <div class="points-content">
-            <img src="/lavico/public/images/man_test_result-642X385.png" />
-            <div style="text-align: left;position:absolute; top: 20%; left: 18%;width:30%">
-                <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
-                <foreach for="{@jsonResult}" var="resultString">
-                    <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
-                            您是<label id="getlabel"></label>
-                    </p>
-                </foreach>
+        <div class="coupon">
+            <div class="points-content">
+                <img src="/lavico/public/images/points_banner-604X319.jpg" />
+                <div class="points_txt">
+                    <foreach for="{@jsonResult}" var="resultString">
+                        <label style="font-size: 2.4rem">{@resultString.getScore}积分</label>
+                    </foreach>
+                </div>
             </div>
         </div>
         <foreach for="{@jsonResult}" var="resultString">
-            <div class="man-test-content">
-                <div class="title1">{@resultString.getLabel}</div>
-                <div class="subtext">{@resultString.getTipContent}</div>
+            <div class="look-text">
+                <p class="get">
+                    <if condition="{@stutas=='true'}">
+                        <if condition="{@score=='0'}">
+                            <if condition="{@getScores=='0'}">
+                                对不起,您获得:
+                            <else/>
+                                您上次答题获得
+                            </if>
+                        <else/>
+                            您上次答题获得
+                        </if>
+                    <else/>
+                        恭喜您获得
+                    </if>
+                    {@resultString.getScore}积分<br />
+                    可在“积分明细”内查询</p>
+                <p class="click-look">
+                    <a href="/lavico/member/card_member/points/index?wxid={@wechatid}">点击查看</a>
+                </p>
             </div>
         </foreach>
-        <div class="line">
-        </div>
-        <if condition="{@code=='-1'}">
-                <div class="mobile-btn linebottom"><a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&type={@code}&themetype={@themeType}&id={@id}">领取积分</a></div>
-            <else/>
-            <p style="margin-top: 10px;">
-                <if condition="{@pram!='2'}">
-                    可在“专属礼券”内查询
-                    <else/>
-                    <if condition="{@memberid=='undefined'}">
-                        注册LaVico朗维高会员后领取优惠券
-                    <else/>
-                        可在“专属礼券”内查询
-                    </if>
+    </div>
+<else/>
+    <div class="wrapper">
+        <div class="mobile">
+            <div class="points-content">
+                <img src="/lavico/public/images/man_test_result-642X385.png" />
+                <div style="text-align: left;position:absolute; top: 20%; left: 18%;width:30%">
+                    <p style="font-size: 1.4rem;font-weight:normal;line-height: 1.2em;width:28%; width:90%">经LaVico  朗维高权威机构鉴定</p>
+                    <foreach for="{@jsonResult}" var="resultString">
+                        <p style="font-size: 1.4rem;color: #a47e3c;font-weight:normal;margin-top: 10px">
+                            您是<label id="getlabel"></label>
+                        </p>
+                    </foreach>
+                </div>
+            </div>
+            <foreach for="{@jsonResult}" var="resultString">
+                <div class="man-test-content">
+                    <div class="title1">{@resultString.getLabel}</div>
+                    <div class="subtext">{@resultString.getTipContent}</div>
+                </div>
+            </foreach>
+            <div class="line">
 
-                </if>
-            </p>
-            <if condition="{@resultString.getActivities!=''}">
+            </div>
+            <if condition="{@code=='-1'}">
+                <div class="mobile-btn linebottom">
+                    <a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&type={@code}&themetype={@themeType}&id={@id}">领取积分</a>
+                </div>
+            <else/>
+                <p style="margin-top: 10px;">
+                    <if condition="{@pram!='2'}">
+                        可在“专属礼券”内查询
+                    <else/>
+                        <if condition="{@memberid=='undefined'}">
+                            注册LaVico朗维高会员后领取优惠券
+                        <else/>
+                            可在“专属礼券”内查询
+                        </if>
+                    </if>
+                </p>
+                <if condition="{@resultString.getActivities!=''}">
                     <div class="mobile-btn linebottom">
                         <a href="/lavico/answerQuestion/mantest_getGift?getActivities={@resultString.code}&code={@resultString.code}&wxid={@wechatid}&stuas=true&volumename={@resultString.volumename}&type={@code}" onclick="return isReg()">
                             查看优惠券
                         </a>
                     </div>
                 <else/>
-                <div class="mobile-btn linebottom">
-                    <a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&type={@code}" onclick="return isReg()">
-                        查看优惠券
-                    </a>
-                </div>
+                    <div class="mobile-btn linebottom">
+                        <a href="/lavico/answerQuestion/mantest_getGift?getActivities=no&code={@resultString.code}&wxid={@wechatid}&volumename={@resultString.volumename}&type={@code}" onclick="return isReg()">
+                            查看优惠券
+                        </a>
+                    </div>
+                </if>
             </if>
-        </if>
+        </div>
     </div>
-</div>
 </if>
 <script>
     function isReg(){

@@ -1,27 +1,30 @@
-
 <div class="wrapper">
-  <div class="store-title">
-    <p><span class="title1"><a href="/lavico/member/index?wxid={@wxid}">会员</a></span><span class="title2">会员公告</span></p>
-  </div>
-  <div class="notice-list">
-    <div class="notice-listContent">
-      <ul>
-        <foreach for="@docs" var="doc">
-            <li><a href="/lavico/announcement/showIndex:show?_id={@doc._id}&wxid={@wxid}">
-              <p class="name">{@doc.title}
-                  <if condition="{@doc.read=='false'}">
-                      <label style="color: red;font-style:italic;">new</label>
-                      <else/>
-                  </if>
-              </p>
-
-              <p>{@(new Date(doc.createTime)).getFullYear()}-{@(new Date(doc.createTime)).getMonth()+1}-{@(new Date(doc.createTime)).getDate()}</p>
-              </a>
-            </li>
-        </foreach>
-
-      </ul>
+    <div class="store-title">
+        <p>
+            <span class="title1">
+                <a href="/lavico/member/index?wxid={@wxid}">会员</a>
+            </span>
+            <span class="title2">会员公告</span>
+        </p>
     </div>
-  </div>
+    <div class="notice-list">
+        <div class="notice-listContent">
+            <ul>
+                <foreach for="@docs" var="doc">
+                    <li>
+                        <a href="/lavico/announcement/showIndex:show?_id={@doc._id}&wxid={@wxid}">
+                            <p class="name">{@doc.title}
+                                <if condition="{@doc.read=='false'}">
+                                    <label style="color: red;font-style:italic;">new</label>
+                                <else/>
+                                </if>
+                            </p>
+                            <p>{@(new Date(doc.createTime)).getFullYear()}-{@(new Date(doc.createTime)).getMonth()+1}-{@(new Date(doc.createTime)).getDate()}</p>
+                        </a>
+                    </li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
 </div>
 

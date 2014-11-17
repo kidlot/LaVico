@@ -1,7 +1,7 @@
 <if condition="@error == 'false'">
 <div class="wrapper">
 
-        <if condition="{@bindStatus=='bind'}"
+        <if condition="{@bindStatus=='bind'}">
             <if condition="{@type=='0'}">
                    <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             <elseif condition="{@type == '1'}"/>
@@ -17,7 +17,7 @@
                 <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
             </if>
         <else/>
-            <div class="vip-card"><img src="/lavico/public/images/type-3-1.jpg" /></div>
+            <div class="vip-card"><img src="/lavico/public/images/novip.jpg" /></div>
         </if>
         <script>
             function vip_card() {

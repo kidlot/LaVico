@@ -256,52 +256,69 @@
                                         <input type="radio" name="parm" value="2" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>
                                         <input type="radio" name="parm" value="3" checked="checked"  onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>
                                     </if>
-                                    <!--<elseif condition="{@docs.pram=='3'}"/>-->
-                                        <!--<input type="radio" name="parm" value="1" onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）<br/>-->
-                                        <!--<input type="radio" name="parm" value="2" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>-->
-                                        <!--<input type="radio" name="parm" value="3" checked="checked"  onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>-->
-                                    <!--</if>-->
+
+                                <!--<elseif condition="{@docs.pram=='3'}"/>-->
+                                <!--<input type="radio" name="parm" value="1" onclick="selectPramOld()"/>先注册后游戏(必须关注且注册)（前置）<br/>-->
+                                <!--<input type="radio" name="parm" value="2" onclick="selectPram()"/>先游戏后注册(必须关注)（后置）<br/>-->
+                                <!--<input type="radio" name="parm" value="3" checked="checked"  onclick="selectPram()"/>先游戏后不提示注册（不要求关注和注册）<br/>-->
+                            <!--</if>-->
+
                             </if>
                         <td/>
                     </tr>
                 </table>
             </div>
-            <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;
-                <input type="text" value="{@docs.volumename}"  name="volumename" class="form-control input-sm" style="width: 350px">
-            </div>
+            <if condition="{@type!=0}">
+                <div>券&nbsp;名&nbsp;称:&nbsp;&nbsp;&nbsp;
+                    <input type="text" value="{@docs.volumename}"  name="volumename" class="form-control input-sm" style="width: 350px">
+                </div>
+            </if>
             <div>题目类型:&nbsp;&nbsp;
                 <select name="themeType" class="form-control input-sm" style="width: 200px">
                     <if condition="{@docs.themeType==1}">
                         <option value="1" selected="selected">测试型</option>
-                        <elseif condition="{@docs.themeType==3}"/>
+                    <elseif condition="{@docs.themeType==3}"/>
                         <option value="3">竞猜型</option>
-                        <else/>
+                    <else/>
                         <option value="0" selected="selected">对错型</option>
-                        <option value="2">调查型</option>
+                        <!--<option value="2">调查型</option>-->
                     </if>
                 </select>
             </div>
             <if condition="{@docs.themeType==3}">
                 <div>发放类型:&nbsp;&nbsp;
                     <select name="showType" id="showtype" class="form-control input-sm" style="width: 200px">
-                        <if condition="{@docs.showtype==0}">
-                            <option value="0" selected="selected">只显示提示</option>
-                            <if condition="{@docs.parm==1}">
-                                <option value="1">发放积分</option>
-                                </if>
-                            <option value="2">发放优惠劵</option>
-                            <elseif condition="{@docs.showtype==1}"/>
-                            <option value="0">只显示提示</option>
-                            <if condition="{@docs.parm==1}">
-                                <option value="1" selected="selected">发放积分</option>
-                            </if>
-                            <option value="2">发放优惠劵</option>
+                        <if condition="{@docs.pram=='1'}">
+                            <if condition="{@docs.showtype=='0'}">
+                                <option value="0" selected="selected">只显示提示</option>
                             <else/>
-                            <option value="0">只显示提示</option>
-                            <if condition="{@docs.parm==1}">
+                                <option value="0" selected="selected">只显示提示</option>
+                            </if>
+
+
+                            <if condition="{@docs.showtype=='1'}">
+                                <option value="1" selected="selected">发放积分</option>
+                            <else/>
                                 <option value="1">发放积分</option>
-                                </if>
-                            <option value="2" selected="selected">发放优惠劵</option>
+                            </if>
+
+                            <if condition="{@docs.showtype=='2'}">
+                                <option value="2" selected="selected">发放优惠劵</option>
+                                <else/>
+                                <option value="2">发放优惠劵</option>
+                            </if>
+                        <else/>
+                            <if condition="{@docs.showtype=='0'}">
+                                <option value="0" selected="selected">只显示提示</option>
+                                <else/>
+                                <option value="0" selected="selected">只显示提示</option>
+                            </if>
+
+                            <if condition="{@docs.showtype=='2'}">
+                                <option value="2" selected="selected">发放优惠劵</option>
+                                <else/>
+                                <option value="2">发放优惠劵</option>
+                            </if>
                         </if>
                     </select>
                 </div>

@@ -329,6 +329,7 @@ module.exports = {
                 var PROMOTION_CODE;
 
                 var lottery_cycle;
+
                 this.step(function(){
                     helper.db.coll('lavico/shake').findOne({_id:helper.db.id(seed.aid),switcher:'on',startDate:{$lte:new Date().getTime()},endDate:{$gte:new Date().getTime()}},this.hold(function(err,doc){
                         shake = doc;
@@ -543,6 +544,20 @@ module.exports = {
                                 helper.db.coll("lavico/shake/logs").insert(activity, function (err, doc) {
                                     err && console.log(doc);
                                 });
+
+                                var TagJson = {};
+                                TagJson.memberId = memberId;
+                                TagJson.tag = shakeActivityName+"-"+activity.promotion_name;
+                                middleware.request("Tag/Add", TagJson, function (err, doc) {
+                                    if (err) throw err;
+                                    console.log("tag record:" + doc);
+                                })
+                                helper.db.coll("welab/customers").update({"wechatid" : seed.uid}, {$addToSet:{tags:TagJson.tag}},function(err,doc){
+                                    if(err ){
+                                        throw err;
+                                    }
+                                });
+
                                 write_info(then, '{"result":"win","PROMOTION_CODE":"' + PROMOTION_CODE + '","coupon_no":"' + doc.coupon_no + '"}');
                             }else{
 
@@ -631,8 +646,6 @@ module.exports = {
                         }else{
                             write_info(then,'{"result":"unwin","limit":"yes","lottery_cycle":"'+lottery_cycle+'","points":"'+shake.points+'","count":"'+_count+'"}');
                         }
-
-
                     }
                 })
             }

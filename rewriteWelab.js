@@ -2548,7 +2548,13 @@ exports.load = function () {
 
         // 设定为加关注自动回复
         $(".setFollowAutoReplyBtn").click(function(){
-
+            if( getReplyList().length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一条数据.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
             oLinkOptions = {} ;
             oLinkOptions.data = [];
             oLinkOptions.data.push({name:"replyid",value:getReplyList().join(",")});
@@ -2565,7 +2571,13 @@ exports.load = function () {
         });
         // 设定为消息自动回复
         $(".setMessageAutoReplyBtn").click(function(){
-
+            if( getReplyList().length == 0){
+                $.globalMessenger().post({
+                    message: '至少选择一条数据.',
+                    type: 'error',
+                    showCloseButton: true})
+                return ;
+            }
             oLinkOptions = {} ;
             oLinkOptions.data = [];
             oLinkOptions.data.push({name:"replyid",value:getReplyList().join(",")});
