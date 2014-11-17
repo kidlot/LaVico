@@ -799,7 +799,7 @@ module.exports = {
         this.step(function(){
             for(var i=0;i<arr.length;i++){
                 (function(i,arr){
-                    helper.db.coll("lavico/custReceive").update({$and:[
+                    helper.db.coll("lavico/exchangeRecord").update({$and:[
                            // {"HaiLanMemberInfo":{$exists:true}},
                             //{"HaiLanMemberInfo.memberID":{$exists:true}},
                             {"memberId":""+parseInt(arr[i][1])}
