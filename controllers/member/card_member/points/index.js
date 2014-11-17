@@ -18,10 +18,18 @@ module.exports = {
         var remaining;//用户积分
 
         /*积分明细-上面积分活动公告设置*/
-        helper.db.coll("lavico/announcement").findOne({"isTop":true},this.hold(function(err,doc){
-            if(err) throw err;
-            nut.model.isTop=doc;
-        }));
+        this.step(function () {
+            helper.db.coll("lavico/announcement").findOne({"isTop":true,"isOpen":true},this.hold(function(err,doc){
+                if(err) throw err;
+                if(doc){
+                    nut.model.isok = true;
+                }else{
+                    nut.model.isok = false;
+                }
+                nut.model.isTop=doc ||{};
+            }));
+        })
+
 
         this.step(function(){
 
