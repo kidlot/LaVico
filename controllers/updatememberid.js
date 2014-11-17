@@ -799,13 +799,14 @@ module.exports = {
         this.step(function(){
             for(var i=0;i<arr.length;i++){
                 (function(i,arr){
-                    helper.db.coll("welab/customers").update({$and:[
-                            {"HaiLanMemberInfo":{$exists:true}},
-                            {"HaiLanMemberInfo.memberID":{$exists:true}},
-                            {"HaiLanMemberInfo.memberID":parseInt(arr[i][1])}
+                    helper.db.coll("lavico/custReceive").update({$and:[
+                           // {"HaiLanMemberInfo":{$exists:true}},
+                            //{"HaiLanMemberInfo.memberID":{$exists:true}},
+                            {"memberId":""+parseInt(arr[i][1])}
                         ]},
-                        {$set: {"HaiLanMemberInfo.memberID":parseInt(arr[i][0])}},{upsert:false,multi:true},then.hold(function(err,doc){
+                        {$set: {"memberId":""+parseInt(arr[i][0])}},{upsert:false,multi:true},then.hold(function(err,doc){
                             if(err) throw err;
+                            console.log("doc",doc)
                             if(doc>0){
                                 var list = {};
                                 list.oldmemberid = arr[i][1]
