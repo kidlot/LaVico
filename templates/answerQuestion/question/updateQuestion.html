@@ -1151,26 +1151,79 @@
                     <if condition="{@type==0}">
                         <label style="display: none">所获奖券:</label>
                         <select name="getActivities"  class="form-control input-sm" style="width: 150px;display: none">
-                            <option value="-1">无券</option>
-                            <foreach for="{@list}" var="docs">
-                                <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
-                            </foreach>
+                            <if condition="{@type==0}">
+                                <option value="-1" selected="selected">无券</option>
+                                <foreach for="{@list}" var="docs">
+                                    <option value="{@docs.code}">{@docs.name}</option>
+                                </foreach>
+                            <else/>
+                                <option value="-1">无券</option>
+                                <foreach for="{@list}" var="docs">
+                                    <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                                </foreach>
+                            </if>
+                            <if condition="{@type==2}">
+                                <option value="-1" selected="selected">无券</option>
+                                <foreach for="{@list}" var="docs">
+                                    <option value="{@docs.code}">{@docs.name}</option>
+                                </foreach>
+                                <else/>
+                                <option value="-1">无券</option>
+                                <foreach for="{@list}" var="docs">
+                                    <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                                </foreach>
+                            </if>
+
                         </select>
                     <elseif condition="{@type==2}"/>
                         <label style="display: none">所获奖券:</label>
-                        <select name="getActivities"  class="form-control input-sm" style="width: 150px;display: none">
+                        <if condition="{@type==0}">
+                            <option value="-1" selected="selected">无券</option>
+                            <foreach for="{@list}" var="docs">
+                                <option value="{@docs.code}">{@docs.name}</option>
+                            </foreach>
+                            <else/>
                             <option value="-1">无券</option>
                             <foreach for="{@list}" var="docs">
                                 <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
                             </foreach>
-                        </select>
+                        </if>
+                        <if condition="{@type==2}">
+                            <option value="-1" selected="selected">无券</option>
+                            <foreach for="{@list}" var="docs">
+                                <option value="{@docs.code}">{@docs.name}</option>
+                            </foreach>
+                            <else/>
+                            <option value="-1">无券</option>
+                            <foreach for="{@list}" var="docs">
+                                <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                            </foreach>
+                        </if>
                     <else/>
                         <label>所获奖券:</label>
                         <select name="getActivities"  class="form-control input-sm" style="width: 150px">
-                            <option value="-1">无券</option>
-                            <foreach for="{@list}" var="docs">
-                                <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
-                            </foreach>
+                            <if condition="{@type==0}">
+                                <option value="-1" selected="selected">无券</option>
+                                <foreach for="{@list}" var="docs">
+                                    <option value="{@docs.code}">{@docs.name}</option>
+                                </foreach>
+                                <else/>
+                                <option value="-1">无券</option>
+                                <foreach for="{@list}" var="docs">
+                                    <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                                </foreach>
+                            </if>
+                            <if condition="{@type==2}">
+                                <option value="-1" selected="selected">无券</option>
+                                <foreach for="{@list}" var="docs">
+                                    <option value="{@docs.code}">{@docs.name}</option>
+                                </foreach>
+                                <else/>
+                                <option value="-1">无券</option>
+                                <foreach for="{@list}" var="docs">
+                                    <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                                </foreach>
+                            </if>
                         </select>
                     </if>
 
@@ -1528,10 +1581,28 @@
             所获积分:<input type='text' name='getScore' class="form-control input-sm" style="width: 150px">
             所获奖券:
             <select name="getActivities"  class="form-control input-sm" style="width: 150px">
-                <option value="-1">无券</option>
-                <foreach for="{@list}" var="docs">
-                    <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
-                </foreach>
+                <if condition="{@type==0}">
+                    <option value="-1" selected="selected">无券</option>
+                    <foreach for="{@list}" var="docs">
+                        <option value="{@docs.code}">{@docs.name}</option>
+                    </foreach>
+                    <else/>
+                    <option value="-1">无券</option>
+                    <foreach for="{@list}" var="docs">
+                        <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                    </foreach>
+                </if>
+                <if condition="{@type==2}">
+                    <option value="-1" selected="selected">无券</option>
+                    <foreach for="{@list}" var="docs">
+                        <option value="{@docs.code}">{@docs.name}</option>
+                    </foreach>
+                    <else/>
+                    <option value="-1">无券</option>
+                    <foreach for="{@list}" var="docs">
+                        <option value="{@docs.code}" selected="{@docs.selected}">{@docs.name}</option>
+                    </foreach>
+                </if>
             </select>
             <br>标签文本设置:
             <textarea  rows="5" cols="80" class="form-control input-sm"  name="tipContent" rows="3"  id="tipContent" style="width: 550px"></textarea>

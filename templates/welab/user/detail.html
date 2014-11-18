@@ -7,219 +7,226 @@
     .btn-edit,.btn-warning{display:none;}
 </style>
 <div class="panel panel-default">
-<div class="panel-heading">
-    <ul class="nav nav-tabs nav-head">
-        <li class="active"><a href="/welab/user/detail?_id={@data._id}" class="stay-top">详细</a></li>
-        <li><a href="/welab/user/dialog?_id={@data._id}" class="stay-top">会话</a></li>
-        <li><a href="/welab/user/activitys?_id={@data._id}" class="stay-top">动态</a></li>
-    </ul>
-</div>
-<div class="panel-body" style="border-bottom:2px #ddd solid;">
-    <div class="btn-group">
-        <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown"><em class="icon02"></em> 操作 <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-            <li><a href="#" class="userSetTagView">设定标签</a></li>
-            <li role="presentation" class="divider"></li>
-            <li style="display: none"><a>结果导出xls (即将推出)</a></li>
-            <li style="display: none"><a>发送微信信息 (即将推出)</a></li>
-            <li style="display: none"><a>发送邮件 (即将推出)</a></li>
-            <li style="display: none"><a>发送短信 (即将推出)</a></li>
-            <li role="presentation" class="divider" style="display: none"></li>
-            <li><a href="/welab/user/form:remove?userList={@data._id}" class="removeUserView">删除</a></li>
+    <div class="panel-heading">
+        <ul class="nav nav-tabs nav-head">
+            <li class="active">
+                <a href="/welab/user/detail?_id={@data._id}" class="stay-top">详细</a>
+            </li>
+            <li>
+                <a href="/welab/user/dialog?_id={@data._id}" class="stay-top">会话</a>
+            </li>
+            <li>
+                <a href="/welab/user/activitys?_id={@data._id}" class="stay-top">动态</a>
+            </li>
         </ul>
     </div>
-    <a class="btn btn-primary handle_btn stay" type="button" href="/welab/user/list">返回</a>
-</div>
+    <div class="panel-body" style="border-bottom:2px #ddd solid;">
+        <div class="btn-group">
+            <button class="btn btn-primary dropdown-toggle handle_btn" data-toggle="dropdown"><em class="icon02"></em> 操作 <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="#" class="userSetTagView">设定标签</a>
+                </li>
+                <li role="presentation" class="divider"></li>
+                <li style="display: none"><a>结果导出xls (即将推出)</a></li>
+                <li style="display: none"><a>发送微信信息 (即将推出)</a></li>
+                <li style="display: none"><a>发送邮件 (即将推出)</a></li>
+                <li style="display: none"><a>发送短信 (即将推出)</a></li>
+                <li role="presentation" class="divider" style="display: none"></li>
+                <li><a href="/welab/user/form:remove?userList={@data._id}" class="removeUserView">删除</a></li>
+            </ul>
+        </div>
+        <a class="btn btn-primary handle_btn stay" type="button" href="/welab/user/list">返回</a>
+    </div>
+    <div class="panel-body">
+    <if condition="@data.face">
+        <a class="thumbnail pull-left" href="#">
+            <img class="media-object" alt="100x100" data-src="holder.js/100x100" style="width: 100px; height: 100px;" src="{@data.face}">
+        </a>
+    </if>
+    <div class="clearfix"></div>
+    <table class="table" id="tagList">
+    <tbody>
+    <tr>
+        <td class="td-name">姓名</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@data.realname || "未注册用户"}</span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.realname}">
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('realname',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+        <td class="td-name">用户ID</td>
+        <td id="_id">{@data._id}</td>
+    </tr>
+    <tr>
+        <td class="td-name">性别</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">
+                    {@ data.gender=='female' ? "女" : ''}
+                    {@ data.gender=='male' ? "男" : ''}
+                    {@ (data.gender!='male' && data.gender!='female') ? "未知" : ''}
+                </span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <select class="form-control input-sm" style="float: left;width:70%">
+                    <option value="male">男</option>
+                    <option value="female">女</option>
+                </select>
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('gender',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+        <td class="td-name">微信ID</td>
+        <td>{@data.wechatid}</td>
+    </tr>
+    <tr>
+        <td class="td-name">生日</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">
+                    {@ data.birthday ? new Date(parseInt(data.birthday)).toISOString().substr(0,10) : "--"}
+                </span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <input type="text" class="form-control input-sm hasDatepicker" utime="{@data.birthday}" value="{@ data.birthday && new Date(parseInt(data.birthday)).toISOString().substr(0,10) }" id="datetimepicker" style="float: left;width:70%;">
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('birthday',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+        <td class="td-name">关注时间</td>
+        <td>
+            {@ data.followTime ? new Date(data.followTime*1000).toISOString().substr(0,10) :'--' }
+        </td>
+    </tr>
+    <tr>
+        <td class="td-name">城市</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@(data.province||'未知') +'-'+ (data.city||'未知')}</span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <select class="form-control input-sm" name="provid" id="provid" onchange="chsel();" style="width:110px">
+                    <option value="" selected="">选择省份</option>
+                </select>
+                <select class="form-control input-sm" name="cityid" id="cityid" style="width:110px">
+                    <option value="" selected="">选择城市</option>
+                </select>
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('city',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+        <!--<td class="td-name">注册时间</td>-->
+        <td class="td-name">注册时间</td>
+        <td>{@ data.registerTime ? new Date(data.registerTime).toISOString().substr(0,10) : '--' }</td>
+    </tr>
+    <tr>
+        <td class="td-name">移动电话</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@data.mobile||'未知'}</span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <input class="form-control input-sm" type="tel" style="float: left;width:70%" value="{@data.mobile}">
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('mobile',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+        <td class="td-name">最近会话时间</td>
+        <td>{@ data.otherData.sessionLastTime ? new Date(data.otherData.sessionLastTime).toISOString().substr(0,10) : '--'}</td>
+    </tr>
+    <tr>
+        <td class="td-name">电子邮件</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@data.email || '未知'}</span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <input class="form-control input-sm" type="email" style="float: left;width:70%" value="{@data.email}">
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('email',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+        <td class="td-name">会话数</td>
+        <td><a href="/welab/user/dialog?_id={@data._id}" class="stay">{@data.otherData.sesseionCount || '--'}</a></td>
+    </tr>
+    <tr>
+        <td class="td-name">绑定状态</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@data.action || '--'}</span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.action}">
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('action',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+    </tr>
 
-<div class="panel-body">
+    <tr>
+        <td class="td-name">卡类型</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@data.type || '--'}</span>
+            </div>
+        </td>
+    </tr>
 
-<if condition="@data.face">
-    <a class="thumbnail pull-left" href="#">
-        <img class="media-object" alt="100x100" data-src="holder.js/100x100" style="width: 100px; height: 100px;" src="{@data.face}">
-    </a>
-</if>
-
-
-
-<div class="clearfix"></div>
-<table class="table" id="tagList">
-<tbody>
-<tr>
-    <td class="td-name">姓名</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.realname || "未注册用户"}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.realname}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('realname',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-    <td class="td-name">用户ID</td>
-    <td id="_id">{@data._id}</td>
-</tr>
-
-<tr>
-    <td class="td-name">性别</td>
-    <td class="editAndView">
-        <div>
-                            <span style="float: left">
-                                {@ data.gender=='female' ? "女" : ''}
-                                {@ data.gender=='male' ? "男" : ''}
-                            {@ (data.gender!='male' && data.gender!='female') ? "未知" : ''}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <select class="form-control input-sm" style="float: left;width:70%">
-                <option value="male">男</option>
-                <option value="female">女</option>
-            </select>
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('gender',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-    <td class="td-name">微信ID</td>
-    <td>{@data.wechatid}</td>
-</tr>
-<tr>
-    <td class="td-name">生日</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@ data.birthday ? new Date(parseInt(data.birthday)).toISOString().substr(0,10) : "--"}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input type="text" class="form-control input-sm hasDatepicker" utime="{@data.birthday}" value="{@ data.birthday && new Date(parseInt(data.birthday)).toISOString().substr(0,10) }" id="datetimepicker" style="float: left;width:70%;">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('birthday',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-    <td class="td-name">关注时间</td>
-    <td>{@ data.followTime ? new Date(data.followTime*1000).toISOString().substr(0,10) :'--' }</td>
-</tr>
-<tr>
-    <td class="td-name">城市</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@(data.province||'未知') +'-'+ (data.city||'未知')}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <select class="form-control input-sm" name="provid" id="provid" onchange="chsel();" style="width:110px">
-                <option value="" selected="">选择省份</option>
-            </select>
-            <select class="form-control input-sm" name="cityid" id="cityid" style="width:110px">
-                <option value="" selected="">选择城市</option>
-            </select>
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('city',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-    <td class="td-name">注册时间</td>
-    <td>{@ data.registerTime ? new Date(data.registerTime).toISOString().substr(0,10) : '--' }</td>
-</tr>
-<tr>
-    <td class="td-name">移动电话</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.mobile||'未知'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="tel" style="float: left;width:70%" value="{@data.mobile}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('mobile',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-    <td class="td-name">最近会话时间</td>
-    <td>{@ data.otherData.sessionLastTime ? new Date(data.otherData.sessionLastTime).toISOString().substr(0,10) : '--'}</td>
-</tr>
-<tr>
-    <td class="td-name">电子邮件</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.email || '未知'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="email" style="float: left;width:70%" value="{@data.email}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('email',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-    <td class="td-name">会话数</td>
-    <td><a href="/welab/user/dialog?_id={@data._id}" class="stay">{@data.otherData.sesseionCount || '--'}</a></td>
-</tr>
-
-<tr>
-    <td class="td-name">绑定状态</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.action || '--'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.action}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('action',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-</tr>
-
-<tr>
-    <td class="td-name">卡类型</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.type || '--'}</span>
-        </div>
-    </td>
-</tr>
-
-<tr>
-    <td class="td-name">会员号码</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.memberID || '--'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.memberID}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('memberID',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-</tr>
-<tr>
-    <td class="td-name">会员卡号码</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.cardNumber || '--'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.cardNumber}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('memberID',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-</tr>
-<tr>
-    <td class="td-name">具体地址</td>
-    <td class="editAndView">
-        <div>
-            <span style="float: left">{@data.address || '--'}</span>
-            <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
-        </div>
-        <div style="display: none">
-            <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.address}">
-            <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('address',this)" type="button">保存</button>
-            <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
-        </div>
-    </td>
-</tr>
-<tr>
+    <tr>
+        <td class="td-name">会员号码</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@data.memberID || '--'}</span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.memberID}">
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('memberID',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td class="td-name">会员卡号码</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@data.cardNumber || '--'}</span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.cardNumber}">
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('memberID',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td class="td-name">具体地址</td>
+        <td class="editAndView">
+            <div>
+                <span style="float: left">{@data.address || '--'}</span>
+                <button class="btn btn-edit" style="float: right" onclick="changeEdit(this)" type="button">修改</button>
+            </div>
+            <div style="display: none">
+                <input class="form-control input-sm" type="text" style="float: left;width:70%" value="{@data.address}">
+                <button class="btn btn-saved" style="float: right;margin-left: 5px;" onclick="changeSave('address',this)" type="button">保存</button>
+                <button class="btn btn-cancel" style="float: right" onclick="changeCancel(this)" type="button">取消</button>
+            </div>
+        </td>
+    </tr>
+    <tr>
     <td class="td-name">喜好颜色</td>
     <td class="editAndView">
         <div>
@@ -234,7 +241,7 @@
     </td>
 </tr>
 
-<tr>
+    <tr>
     <td class="td-name">喜好款式</td>
     <td class="editAndView">
         <div>
@@ -249,7 +256,7 @@
     </td>
 </tr>
 
-<tr>
+    <tr>
     <td class="td-name">所属行业</td>
     <td class="editAndView">
         <div>
@@ -264,7 +271,7 @@
     </td>
 </tr>
 
-<tr style="display:none;">
+    <tr style="display:none;">
     <td class="td-name">摇一摇记录</td>
     <td class="editAndView">
         <div>
@@ -279,7 +286,7 @@
     </td>
 </tr>
 
-<foreach for="@data.regData" var="regData" key="key">
+    <foreach for="@data.regData" var="regData" key="key">
     <tr style="display:none;">
         <td class="td-name">{@key}</td>
         <td class="editAndView">
@@ -298,12 +305,13 @@
         <td></td>
     </tr>
 </foreach>
-<tr>
+        <tr>
     <td class="td-name">标签</td>
     <td colspan="3" class="editAndView">
         <div>
             <foreach for="@data.tags" var="tag">
-                <span class="tm-tag tm-tag-info" ><span>{@tag}</span><a href="#" class="tm-tag-remove" tagidtoremove="1" data-dismiss="alert" onclick="removeTag(this)">×</a></span>
+                <span class="tm-tag tm-tag-info" ><span>{@tag}</span>
+                    <a href="javascript:;" class="tm-tag-remove" tagidtoremove="1"  onclick="removeTag(this)">×</a></span>
             </foreach>
 
         </div>
@@ -444,10 +452,12 @@
 
         $.request(oLinkOptions,function(err,nut){
             if(err) throw err ;
-
+            var status = nut.model.status;
+            console.log("status",typeof status)
+            if(status == 0){
+                $(o).parent().remove();
+            }
             nut.msgqueue.popup() ;
-
-            $(o ).parent().remove();
         }) ;
     }
 
