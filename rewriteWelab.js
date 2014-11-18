@@ -1765,7 +1765,7 @@ exports.load = function () {
         })
 
         this.step(function(){
-            if(status == 0){
+            //if(status == 0){
                 helper.db.coll("welab/customers").update({_id : helper.db.id(_id)}, {"$pull":{tags:tag}},this.hold(function(err,doc){
                     if(err){
                         throw err;
@@ -1777,7 +1777,7 @@ exports.load = function () {
                         status = 1;
                     }
                 }))
-            }
+           // }
             nut.model.status = status;
 //            console.log("nut.model.status",nut.model.status)
             if(status == 0){
