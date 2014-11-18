@@ -493,7 +493,7 @@ module.exports={
                 })
                 var finishMan=[];
                 try{
-                    if(seed.startTime == "undefined" && seed.stopDate == "undefined"){
+                    if(seed.startTime && seed.stopDate){
                         then.step(function(){
                             helper.db.coll("lavico/custReceive").find(
                                 {$and:[
