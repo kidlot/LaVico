@@ -508,26 +508,46 @@ module.exports={
 
                 var finishMan=[];
                 try{
-                    then.step(function(){
-                        helper.db.coll("lavico/custReceive").find(
-                            {$and:[
-                                {
-                                    themeId:helper.db.id(_id),isFinish:true,"type":"0"
-                                },
-                                {$or:[
-                                    {"createTime":{$gte:startTime,$lte:stopTime}},
-                                    {"createTime":{$gte:startDate,$lte:endTime}}
+                    if(seed.startTime && seed.stopDate){
+                        then.step(function(){
+                            helper.db.coll("lavico/custReceive").find(
+                                {$and:[
+                                    {
+                                        themeId:helper.db.id(_id),isFinish:true,"type":"0"
+                                    }
                                 ]}
-                            ]}
-                        ).toArray(then.hold(function(err,doc){
-                                for(var i=0;i<doc.length;i++){
-                                    var manInfo={};
-                                    manInfo.createTime = formatTime(doc[i].createTime)
-                                    manInfo.name=doc[i].wechatid;
-                                    finishMan.push(manInfo);
-                                }
-                            }))
-                    });
+                            ).toArray(then.hold(function(err,doc){
+                                    for(var i=0;i<doc.length;i++){
+                                        var manInfo={};
+                                        manInfo.createTime = formatTime(doc[i].createTime)
+                                        manInfo.name=doc[i].wechatid;
+                                        finishMan.push(manInfo);
+                                    }
+                                }))
+                        });
+                    }else{
+                        then.step(function(){
+                            helper.db.coll("lavico/custReceive").find(
+                                {$and:[
+                                    {
+                                        themeId:helper.db.id(_id),isFinish:true,"type":"0"
+                                    },
+                                    {$or:[
+                                        {"createTime":{$gte:startTime,$lte:stopTime}},
+                                        {"createTime":{$gte:startDate,$lte:endTime}}
+                                    ]}
+                                ]}
+                            ).toArray(then.hold(function(err,doc){
+                                    for(var i=0;i<doc.length;i++){
+                                        var manInfo={};
+                                        manInfo.createTime = formatTime(doc[i].createTime)
+                                        manInfo.name=doc[i].wechatid;
+                                        finishMan.push(manInfo);
+                                    }
+                                }))
+                        });
+                    }
+
 
                     then.step(function(){
                         for(var i=0;i<finishMan.length;i++){
