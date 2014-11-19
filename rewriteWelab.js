@@ -1765,7 +1765,7 @@ exports.load = function () {
         })
 
         this.step(function(){
-            if(status == 0){
+            //if(status == 0){
                 helper.db.coll("welab/customers").update({_id : helper.db.id(_id)}, {"$pull":{tags:tag}},this.hold(function(err,doc){
                     if(err){
                         throw err;
@@ -1777,7 +1777,7 @@ exports.load = function () {
                         status = 1;
                     }
                 }))
-            }
+           // }
             nut.model.status = status;
 //            console.log("nut.model.status",nut.model.status)
             if(status == 0){
@@ -2262,6 +2262,7 @@ exports.load = function () {
     }
 
     welabReplylist.view = "lavico/templates/welab/reply/list.html";
+    welabReplylist.children.page.view = "lavico/templates/welab/reply/listPage.html"
     welabReplylist.children.page.viewIn = function(){
         /**
          * 设置标签
@@ -2446,7 +2447,6 @@ exports.load = function () {
          */
         var oLinkOptions ;
         $(".removeView").on("click",function(){
-
             $('#removeModal').modal('toggle');
             oLinkOptions = this ;
             oLinkOptions.href = "/welab/reply/form:remove?list="+$(this).parents("tr").find("input[type='checkbox']").attr("_id");
@@ -2548,9 +2548,9 @@ exports.load = function () {
 
         // 设定为加关注自动回复
         $(".setFollowAutoReplyBtn").click(function(){
-            if( getReplyList().length == 0){
+            if( getReplyList().length == 0 || getReplyList().length>1){
                 $.globalMessenger().post({
-                    message: '至少选择一条数据.',
+                    message: '只能选择一条数据.',
                     type: 'error',
                     showCloseButton: true})
                 return ;
@@ -2571,9 +2571,9 @@ exports.load = function () {
         });
         // 设定为消息自动回复
         $(".setMessageAutoReplyBtn").click(function(){
-            if( getReplyList().length == 0){
+            if( getReplyList().length == 0 || getReplyList().length>1){
                 $.globalMessenger().post({
-                    message: '至少选择一条数据.',
+                    message: '只能选择一条数据.',
                     type: 'error',
                     showCloseButton: true})
                 return ;

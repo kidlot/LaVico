@@ -1,0 +1,265 @@
+<table class="table" id="tagList">
+    <thead>
+    <tr>
+        <th width="30"><input type="checkbox" onclick="selectAllUser(this)"></th>
+        <th>时间</th>
+        <th>名称</th>
+        <th>类型</th>
+        <th>标签</th>
+        <th>关键词</th>
+        <th>关注自动回复</th>
+        <th>消息自动回复</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <foreach for="@page.docs" var="doc">
+
+        <tr>
+            <td><input type="checkbox" _id="{@doc._id}" _type="{@doc.type}" >
+                <!--<label class="checkbox no-label" for="checkbox-table-2"><input type="checkbox" _type="{@doc.type}" value="" _id="{@doc._id}" data-toggle="checkbox"></label></td>-->
+            </td>
+            <td class="time_Field">{@new Date(doc.createTime).toISOString().substr(0,10)}</td>
+            <td><a href="/welab/reply/detail?_id={@doc._id}&type={@doc.type}" class="stay-top" > {@doc.name}</a></td>
+            <td>
+                <if condition="@doc.type=='text'">
+                    文本
+                    <elseif condition="@doc.type=='list'"/>
+                    多图文
+                    <elseif condition="@doc.type=='single'"/>
+                    单图文
+                    <elseif condition="@doc.type=='voice'"/>
+                    语音
+                </if>
+            </td>
+            <td>
+
+                <foreach for="@doc.tags" var="tag">
+                    <span class="tm-tag tm-tag-info" ><span>{@tag}</span><a href="#" class="tm-tag-remove" tagidtoremove="1" data-dismiss="alert" onclick="removeTagOrKeyword( 'tag', this)">×</a></span>
+                </foreach>
+
+            </td>
+            <td>
+
+                <foreach for="@doc.keywords" var="keyword">
+                    <span class="tm-tag tm-tag-info" ><span>{@keyword}</span><a href="#" class="tm-tag-remove" tagidtoremove="1" data-dismiss="alert" onclick="removeTagOrKeyword( 'keyword', this)">×</a></span>
+                </foreach>
+
+            </td>
+            <td>
+                <if condition="{@doc.followAutoReply==true}">
+                    是
+                    <else/>
+                    否
+                </if>
+            </td>
+            <td>
+                <if condition="{@doc.messageAutoReply==true}">
+                    是
+                    <else/>
+                    否
+                </if>
+            </td>
+            <td>
+
+                <if condition="@doc.isValid">
+                    <div class="switch switch-small has-switch switchOn" style="width: 75;">
+                        <div class="switch-on switch-animate switch1" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;">
+                            <input type="checkbox"><span class="switch-left switch-small switch-success">ON</span><label class="switch-small">&nbsp;</label><span class="switch-right switch-small">OFF</span>
+                        </div>
+                    </div>
+                    <else />
+                    <div class="switch switch-small has-switch switchOn" style="width: 75;">
+                        <div class="switch-off switch-animate switch1" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;">
+                            <input type="checkbox"><span class="switch-left switch-small switch-success">ON</span><label class="switch-small">&nbsp;</label><span class="switch-right switch-small">OFF</span>
+                        </div>
+                    </div>
+                </if>
+
+                <a class="glyphicon glyphicon-remove removeView" style="font-size: 20px; color: #FF0000" href="javascript:;"></a>
+            </td>
+        </tr>
+    </foreach>
+    </tbody>
+</table>
+
+<include file="welab/templates/paginator.html" model="@page" model.url="/welab/reply/list:page?page=%pagenum%" />
+<!-- /pagination -->
+
+
+<!-- 删除 -->
+<div class="modal fade" id="removeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">删除操作</h4>
+            </div>
+            <div class="modal-body">
+                真的要删除吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary removeBtn">删除</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<!--&lt;!&ndash; 设置标签 &ndash;&gt;-->
+<!--<div class="modal fade" id="tagModal">-->
+<!--<div class="modal-dialog">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+<!--<h4 class="modal-title">设置标签</h4>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<input type="text" name="tags" id="tags" placeholder="设置多个标签请用“,”或者“回车”分隔" class="form-control input-sm tm-input tm-input-info" style="width:240px;"/>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+<!--<button type="button" class="btn btn-primary tagBtn">保存</button>-->
+<!--</div>-->
+<!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+<!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
+
+
+<!-- 设置关键词 -->
+<div class="modal fade" id="keywordModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">设置关键词</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="keywordText form-control input-sm tm-input tm-input-info"  name="keywords" id="keywords" placeholder="设置多个标签请用“,”或者“回车”分隔" style="width:240px;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary keywordBtn">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<!--<link type="text/css" href="/welab/public/css/bootstrap-tagmanager.css">-->
+<!--<script type="text/javascript" src="/welab/public/js/bootstrap-tagmanager.js"></script>-->
+
+
+
+<script>
+
+    function selectAllUser( oInput){
+
+        $("#tagList").find("tr:gt(0)").find("td:eq(0) > input").each(function(i,o){
+
+            if( oInput.checked){
+                o.checked = true;
+            }else{
+                o.checked = false;
+            }
+        })
+    }
+
+
+    function getReplyList(){
+
+        var aList = [];
+        $("#tagList").find("tr:gt(0)").each(function(i,o){
+
+            var _oInput = jQuery(o).find("td:eq(0) > input[_id]")
+            var _id = _oInput.attr("_id");
+
+            if( _id && _oInput[0].checked){
+                aList.push(_id);
+            }
+        })
+
+        return aList;
+    }
+
+
+    function removeTagOrKeyword ( sType, o){
+
+        var oLinkOptions = {} ;
+        oLinkOptions.data = [];
+        oLinkOptions.data.push({name:"_id",value:$(o).parents("tr").find("td:eq(0) > input").attr("_id")});
+        oLinkOptions.data.push({name:"name",value:$(o).prev().text()});
+        oLinkOptions.type = "POST";
+
+        if( sType == "tag"){
+
+            oLinkOptions.url = "/welab/reply/form:removeTag";
+        }else{
+
+            oLinkOptions.url = "/welab/reply/form:removeKeyword";
+        }
+
+        $.request(oLinkOptions,function(err,nut){
+            if(err) throw err ;
+
+            nut.msgqueue.popup() ;
+
+            $(o ).parent().remove();
+        }) ;
+    }
+    var oLinkOptions = {} ;
+    var form_remove_list = "";
+    window.onload = function(){
+//        var oLinkOptions ;
+//        $(".removeView").on("click",function(){
+//            $('#removeModal').modal('toggle');
+//            oLinkOptions = this ;
+//            oLinkOptions.href = "/welab/reply/form:remove?list="+$(this).parents("tr").find("input[type='checkbox']").attr("_id");
+//            return false;
+//        })
+//
+//        $(".removeBtn").click(function(){
+//
+//            $(oLinkOptions).action(function(err,nut){
+//                if(err) throw err ;
+//                nut.msgqueue.popup() ;
+//                $('#removeModal').modal('toggle');
+//                $.controller("/welab/reply/list",null,"lazy");
+//
+//            }) ;
+//            return false;
+//        });
+        $(".switch1").click(function(){
+
+            var _is = $(this).hasClass("switch-on")
+            if(_is){
+                $(this).addClass("switch-off")
+                $(this).removeClass("switch-on")
+
+                var _isValid = "setInvalid"
+            }else{
+                $(this).removeClass("switch-off")
+                $(this).addClass("switch-on")
+                var _isValid = "setValid"
+            }
+
+            var oLinkOptions = {} ;
+            oLinkOptions.data = [];
+            oLinkOptions.data.push({name:"replyid",value:$(this).parents('tr').find("input[_id]").attr("_id")});
+            oLinkOptions.type = "POST";
+            oLinkOptions.url = "/welab/reply/form:"+_isValid;
+
+            $.request(oLinkOptions,function(err,nut){
+                if(err) throw err ;
+
+                nut.msgqueue.popup() ;
+                $.controller("/welab/reply/list",null,"lazy");
+            }) ;
+
+        })
+    }
+
+</script>
