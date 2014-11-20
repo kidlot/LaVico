@@ -114,6 +114,9 @@ module.exports={
                         }else{
                             isok = false;
                         }
+                        if(doc && doc.content){
+                            doc.content = decodeURIComponent(doc.content);
+                        }
                         nut.model.doc=doc ||{};
                     }));
                 })

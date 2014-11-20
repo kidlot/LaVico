@@ -26,7 +26,7 @@ module.exports={
     viewIn:function(){
         window.save = function(){
             var content = encodeURIComponent(contentEditor.document.getBody().getHtml());
-            var jsonData={title:$("input[name='announcementTitle']").val(),content:decodeURIComponent(content)}
+            var jsonData={title:$("input[name='announcementTitle']").val(),content:content}
             $.get("/lavico/announcement/addAnnouncement:save",jsonData,
                 function(data){
                     $("span[name='resultShowArea']").html("the data added successfully");

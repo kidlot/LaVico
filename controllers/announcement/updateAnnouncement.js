@@ -39,7 +39,7 @@ module.exports={
         $("input[name=btnSave]").click(function(){
             //request-ajax submit
             var content = encodeURIComponent(contentEditor.document.getBody().getHtml());
-            var jsonData={title:$("input[name='announcementTitle']").val(),content:decodeURIComponent(content)}
+            var jsonData={title:$("input[name='announcementTitle']").val(),content:content}
             var oLinkOptions = {} ;
             oLinkOptions.data = [{name:'title',value:$("input[name='announcementTitle']").val()},
                                  {name:"content",value:content},
