@@ -421,7 +421,8 @@ module.exports={
                                     "themetype":themetype,
                                     "code":getActivities,
                                     "volumename":volumename,
-                                    "type":type
+                                    "type":type,
+                                    "customerLabel":then.req.session.customerLabel
                                 }, function (err, doc) {});
                             }else{
                                 console.log("444444444444444444444")
@@ -442,7 +443,8 @@ module.exports={
                                     "themetype":themetype,
                                     "code":getActivities,
                                     "volumename":volumename,
-                                    "type":type
+                                    "type":type,
+                                    "customerLabel":then.req.session.customerLabel
                                 }, function (err, doc) {});
                             }
 
@@ -648,7 +650,8 @@ module.exports={
                                     "themetype":themetype,
                                     "code":getActivities,
                                     "volumename":volumename,
-                                    "type":type
+                                    "type":type,
+                                    "customerLabel":then.req.session.customerLabel
                                 }, function (err, doc) {});
                             }else{
                                 console.log("666666666666666666666666666666")
@@ -669,7 +672,8 @@ module.exports={
                                     "themetype":themetype,
                                     "code":getActivities,
                                     "volumename":volumename,
-                                    "type":type
+                                    "type":type,
+                                    "customerLabel":then.req.session.customerLabel
                                 }, function (err, doc) {});
                             }
 
@@ -695,7 +699,7 @@ module.exports={
                         //发送标签至CRM
                         var memoString="";
                         if(docTheme.showtype==0){
-                            memoString = nut.model.themeTitle +":"+"已完成";
+                            memoString = nut.model.themeTitle +":"+getLabel;
                         }else if(docTheme.showtype==1){
                             memoString = nut.model.themeTitle +":"+ getScore+"积分";
                         }else{
