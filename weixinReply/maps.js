@@ -124,9 +124,9 @@ exports.load = function () {
             helper.db.coll("welab/location").insert({"wechatid":msg.FromUserName,"lat":msg.Latitude,"lng":msg.Longitude,"createTime":new Date().getTime()},function(err,doc){
 
             })
-            this.res.writeHead(200, { 'Content-Type': 'text/plain' });
-            this.res.write('');
-            this.res.end();
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.write('');
+            res.end();
             //next();
         }else{
             next();
