@@ -1726,6 +1726,7 @@ exports.load = function () {
         var tag = seed.name;
         var memberId;
         var status = 0;// 0:成功 1:失败
+        var memberId_status = 0;
         this.step(function(){
             if(_id){
                 helper.db.coll("welab/customers").findOne({"_id":helper.db.id(_id)},this.hold(function(err,doc){
@@ -1733,34 +1734,37 @@ exports.load = function () {
                     if(doc && doc.HaiLanMemberInfo){
                         memberId = doc.HaiLanMemberInfo.memberID;
                     }else{
-                        status = 1;
+                        //status = 1;
+                        memberId_status  =1;
                     }
                 }))
             }else{
-                status = 1;
+                //status = 1;
+                memberId_status = 1;
             }
         })
 
         this.step(function(){
-            if(status==0 && memberId && tag){
+            if(memberId_status==0 && memberId && tag){
+            //if(status==0 && memberId && tag){
                 middleware.request("Tag/Remove", {memberId: memberId,tag:tag}, this.hold(function (err, doc) {
                     if(err) {
                         console.log(err)
                     }
-                    if(doc){
-                        var docs = JSON.parse(doc);
-//                        console.log("docs",docs)
-                        if(docs.success){
-                            status = 0;
-                        }else{
-                            status = 1;
-                        }
-                    }else{
-                        status = 1;
-                    }
+//                    if(doc){
+//                        var docs = JSON.parse(doc);
+////                        console.log("docs",docs)
+//                        if(docs.success){
+//                            status = 0;
+//                        }else{
+//                            status = 1;
+//                        }
+//                    }else{
+//                        status = 1;
+//                    }
                 }))
             }else{
-                status = 1;
+                memberId_status = 1;
             }
         })
 
