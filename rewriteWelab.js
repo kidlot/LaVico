@@ -1040,7 +1040,7 @@ exports.load = function () {
                 nut.msgqueue.popup() ;
                 // 更改页面数据
                 var jsonData = nut.model.jsonData;
-//                console.log("jsonData",jsonData)
+                console.log("jsonData",jsonData)
                 if(jsonData.length==0){
                     return;
                 }

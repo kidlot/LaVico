@@ -549,6 +549,7 @@ module.exports={
                                                 finishMan[j].getLabel=doc[0].getLabel
                                                 finishMan[j].getGift=doc[0].getGift
                                                 finishMan[j].compScore=doc[0].getScore;
+                                                finishMan[j].customerLabel=doc[0].customerLabel || "--";
 
                                                 (function(j){
                                                     helper.db.coll("welab/customers").findOne({"wechatid":finishMan[j].name},then.hold(function(err,doc){

@@ -108,7 +108,17 @@ module.exports={
                         }
 
                     }
-                    if(parm == "1"){
+                    if(then.req.session.customerLabel && then.req.session.customerLabel.indexOf(customerLabel)<0){
+                        if(then.req.session.customerLabel){
+                            then.req.session.customerLabel+=","+customerLabel;
+                        }else{
+                            then.req.session.customerLabel=customerLabel;
+                        }
+                    }else{
+                        then.req.session.customerLabel=customerLabel;
+                    }
+                  //  if(memberid && memberid !="undefined"){
+
                         var memoString = themeQuestion_doc.theme +"--"+ customerLabel;
                         jsonData = {};
                         jsonData.memberId = memberid;
@@ -123,7 +133,7 @@ module.exports={
                                 throw err;
                             }
                         }));
-                    }
+                  //  }
 
                 }else if(type==1){
                     then.req.session.scoreAll+=parseInt(score);
@@ -175,7 +185,14 @@ module.exports={
                                 console.log(doc)
                             })
                     }
-                    if(memberid =="undefined"){
+                   // if(memberid !="undefined"){
+                    if(then.req.session.customerLabel && then.req.session.customerLabel.indexOf(customerLabel)<0){
+                        if(then.req.session.customerLabel){
+                            then.req.session.customerLabel+=","+customerLabel;
+                        }else{
+                            then.req.session.customerLabel=customerLabel;
+                        }
+                    }
                         var memoString = docOptions.theme + customerLabel;
                         jsonData = {};
                         jsonData.memberId = memberid;
@@ -190,7 +207,7 @@ module.exports={
                                 throw err;
                             }
                         }));
-                    }
+                  //  }
 
                 }
                 if(chooseNext!=""){
@@ -393,6 +410,7 @@ module.exports={
                                 console.log(doc)
                             })
                     }
+
 
                     //判断是否为最后一页
                     if(finish!="true"){
