@@ -30,11 +30,10 @@
                 <th class="width50">城市</th>
                 <th class="width50">获得礼券</th>
                 <if condition="{@themetype==1}">
-                    <if condition="{@themetype==3}">
-                        <th class="width50">获得标签</th>
-                    <else/>
-                        <th class="width50">获得标签</th>
-                    </if>
+                    <th class="width50">获得标签</th>
+                </if>
+                <if condition="{@themetype==3}">
+                    <th class="width50">获得标签</th>
                 </if>
                 <th class="width50">奖励积分</th>
                 <if condition="{@themetype==3}">
@@ -53,11 +52,10 @@
                     <td class="width50">{@onef.city}</td>
                     <td class="width50">{@onef.getGift}</td>
                     <if condition="{@themetype==1}">
-                        <if condition="{@themetype==3}">
-                            <td class="width50">{@onef.getLabel}</td>
-                            <else/>
-                            <td class="width50">{@onef.getLabel}</td>
-                        </if>
+                        <td class="width50">{@onef.getLabel}</td>
+                    </if>
+                    <if condition="{@themetype==3}">
+                        <td class="width50">{@onef.getLabel}</td>
                     </if>
                     <td class="width50">{@onef.compScore}</td>
                     <if condition="{@themetype==3}">
