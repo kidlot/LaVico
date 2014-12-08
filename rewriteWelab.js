@@ -2061,7 +2061,7 @@ exports.load = function () {
         this.step(function(){
             nut.model.jsonData = jsonData;
             if(errID.length==0){
-                nut.message("操作完成",null,"success");
+                nut.message("设置成功",null,"success");
             }else{
                 nut.message("共为"+aUserList.length+"个用户设定标签,"+successID.length+"个标签设定成功,"+ errID.length+"个标签设定失败(不是会员或标签重复)",null,"error") ;
             }
