@@ -2017,7 +2017,8 @@ exports.load = function () {
                         //row.status = docs.success;
                         row.status = true;
                         sta={};
-                        sta.stat = docs.success;
+                        //sta.stat = docs.success;
+                        sta.stat = true;
                         sta.id = row.id;
                         stutas.push(sta);
                     }))
