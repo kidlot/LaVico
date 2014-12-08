@@ -114,6 +114,13 @@
             <view name="score"/>
         </if>
 
+        <if condition="{@themetype==3}">
+            <view name="customerLabel"/>
+        <else/>
+            <div style="display: none">
+                <view name="customerLabel"/>
+            </div>
+        </if>
 
 
         <div name="getTheme" class="maginTop20">

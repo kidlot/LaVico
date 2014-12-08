@@ -1,0 +1,28 @@
+<div name="getLabel" class="maginTop20">
+    <table class="table table-hover" id="tagList">
+        <thead>
+        <tr class="staCount borderBtm">
+            <th class="width250">标注标签</th>
+            <th class="width50">获得</th>
+            <th class="width50">获得率</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach for="@docs_1" var="doc">
+            <tr class="borderBtm">
+                <if condition="@doc.getLabel!=''">
+                    <td class="width250">{@doc.customerLabel}</td>
+                    <td class="width50">{@doc.count}</td>
+                    <td class="width50" name="alltd">
+                        <if condition="{@all==''}">
+                            0%
+                            <else/>
+                            {@parseInt(doc.count/parseInt(all)*100)}%
+                        </if>
+                    </td>
+                </if>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+</div>
