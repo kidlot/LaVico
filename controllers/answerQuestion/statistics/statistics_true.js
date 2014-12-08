@@ -25,7 +25,8 @@ module.exports={
         seed["$score"]={_id:seed._id,themetype:themetype}
         seed["$finishPeople"]= {_id:seed._id,finishCount:seed.finishCount,totalPop:seed.totalPop,themetype:themetype,startTime:startTime,stopDate:stopDate}
         seed["$exportXsl"]={_id:seed._id,themetype:themetype}
-        seed["filterexport"]={_id:seed._id}
+        seed["$filterexport"]={_id:seed._id}
+        seed["$customerLabel"] = {_id:seed._id}
 
         then.step(function(){
             helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},this.hold(function(err,doc){
@@ -792,6 +793,72 @@ module.exports={
 
                 then.step(function(){
                     nut.model.docs_1 =docs_themeQuestion|| {};
+                    nut.model.all = all||0;
+                })
+            }
+        },
+        customerLabel:{
+            view:"lavico/templates/answerQuestion/statistics/customerLabel.html",
+            process:function(seed,nut){
+                var then=this;
+                var docs_themeQuestion
+                var _id=seed._id;
+                var all=0;
+                var custReceive;
+                then.step(function(){
+                    helper.db.coll("lavico/themeQuestion").findOne({_id:helper.db.id(_id)},then.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            docs_themeQuestion=doc;
+                        }
+                    }))
+                });
+
+                then.step(function(){
+                    helper.db.coll("lavico/custReceive").find({"themeId":helper.db.id(_id),"isFinish":true,"type":{$ne:"0"}}).toArray(then.hold(function(err,doc){
+                        if(err) throw  err;
+                        if(doc){
+                            custReceive = doc;
+                        }
+                    }))
+                })
+
+                var themeQuestion_list = [];
+                then.step(function(){
+                    if(docs_themeQuestion){
+                        for(var i=0;i<docs_themeQuestion.options.length;i++){
+                            if(docs_themeQuestion.options[i].choose){
+                                for(var j=0;j<docs_themeQuestion.options[i].choose.length;j++){
+                                    var list = {};
+                                    list.customerLabel = docs_themeQuestion.options[i].choose[j].customerLabel || "--";
+                                    list.count = 0;
+                                    themeQuestion_list.push(list)
+                                }
+                            }
+                        }
+                    }
+                })
+
+                then.step(function(){
+                    for(var i=0;i<themeQuestion_list.length;i++){
+                        for(var k=0;k<custReceive.length;k++){
+                            if(custReceive[k].customerLabel){
+                                var customerLabelList = custReceive[k].customerLabel.split(",");
+                                for(var j = 0;j<customerLabelList.length;j++){
+                                    if(customerLabelList[j] && customerLabelList[j]==themeQuestion_list[i].customerLabel){
+                                        all++;
+                                        themeQuestion_list[i].count +=1;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                })
+
+                then.step(function(){
+                    console.log("all",all)
+                    nut.model.docs_1 =themeQuestion_list|| {};
                     nut.model.all = all||0;
                 })
             }
