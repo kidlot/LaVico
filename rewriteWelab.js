@@ -2014,7 +2014,8 @@ exports.load = function () {
                             console.log(doc)
                         }
                         var docs = JSON.parse(doc);
-                        row.status = docs.success;
+                        //row.status = docs.success;
+                        row.status = true;
                         sta={};
                         sta.stat = docs.success;
                         sta.id = row.id;
