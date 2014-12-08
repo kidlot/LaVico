@@ -1953,6 +1953,7 @@ exports.load = function () {
 
 
     var welabUserTags = require("welab/controllers/user/tags.js");
+
     welabUserTags.actions.setUserTag.process = function(seed,nut){
         nut.view.disable() ;
         nut.model.page = {} ;
@@ -1972,101 +1973,174 @@ exports.load = function () {
                 nut.message("没有指定要操作的ID",null,"error") ;
                 return false;
             }
-            //for(var i=0;i<aTagList.length;i++){
-               // var tag = aTagList[i];
-                //(function(i,tag){
-                    for(var j=0;j<aUserList.length;j++){
-                        (function(j,jsonData){
-                            var id= aUserList[j]
-                            helper.db.coll("welab/customers").findOne({"_id":helper.db.id(aUserList[j])},then.hold(function(err,doc){
-                                if(err) throw err;
-                                if(doc){
-                                    if(doc.HaiLanMemberInfo){
-                                        json={};
-                                        json.memberId = doc.HaiLanMemberInfo.memberID;
-                                        json.tag = aTagList;
-                                        json.id= id;
-                                        jsonData.push(json);
-                                    }else{
-                                        sta={};
-                                        sta.stat = false;
-                                        sta.id = id;
-                                        stutas.push(sta)
-                                    }
-                                }
-                            }))
-                        })(j,jsonData)
-                    }
-                //})(i,tag)
-            //}
+            for(var j=0;j<aUserList.length;j++){
+                (function(j,jsonData){
+                    var id= aUserList[j]
+                    helper.db.coll("welab/customers").findOne({"_id":helper.db.id(aUserList[j])},then.hold(function(err,doc){
+                        if(err) throw err;
+                        if(doc){
+                            if(doc.HaiLanMemberInfo){
+                                json={};
+                                json.memberId = doc.HaiLanMemberInfo.memberID;
+                                json.tag = aTagList;
+                                json.id= id;
+                                jsonData.push(json);
+                            }
+                            sta={};
+                            sta.status = true;
+                            sta.id = id;
+                            sta.tag = aTagList;
+                            stutas.push(sta)
+                        }
+                    }))
+                })(j,jsonData)
+            }
         })
 
         this.step(function(){
-
             this.each(jsonData,function(i,row){
-
                 if(row.memberId){
-
                     middleware.request("Tag/Add", {memberId: row.memberId,tag: row.tag}, this.hold(function (err, doc) {
-                        if (err) {
-                            console.log(err)
-                        }else{
-                            console.log(doc)
-                        }
+                        if (err) throw err;
                         var docs = JSON.parse(doc);
-                        //row.status = docs.success;
                         row.status = true;
-                        sta={};
-                        //sta.stat = docs.success;
-                        sta.stat = true;
-                        sta.id = row.id;
-                        stutas.push(sta);
                     }))
                 }
             })
         })
 
-        this.step(function(){
-            //for (var i=0; i<aTagList.length; i++) {
-                //tag = aTagList[i];
-                for(var j=0;j<stutas.length;j++){
-                    //if(stutas[j].stat==true){
-
-                    (function(i){
-                        helper.db.coll("welab/customers").update({_id : helper.db.id(i.id)}, {$addToSet:{tags:aTagList}},then.hold(function(err,doc){
-                            if(err ){
-                                throw err;
-                            }
-                            if(doc){
-                                i.stat = true;
-                            }
-                        }))
-                    })(stutas[j])
-
-                    //}
-                }
-            //}
-        });
 
         this.step(function(){
-            for(var j=0;j<stutas.length;j++){
-                if(stutas[j].stat==false){
-                    errID.push(stutas[j].id);
-                }else{
-                    successID.push(stutas[j].id);
-                }
-            }
+            this.each(stutas,function(i,row){
+                helper.db.coll("welab/customers").update({_id : helper.db.id(row.id)}, {$addToSet:{"tags":row.tag}},{upsert:true},then.hold(function(err,_doc){
+                    if(err ){
+                        throw err;
+                    }
+                    if(_doc){
+                        row.status = true;
+                    }
+                }))
+            })
         })
-
         this.step(function(){
-            nut.model.jsonData = jsonData;
-            if(errID.length==0){
-                nut.message("设置成功",null,"success");
-            }else{
-                nut.message("共为"+aUserList.length+"个用户设定标签,"+successID.length+"个标签设定成功,"+ errID.length+"个标签设定失败(不是会员或标签重复)",null,"error") ;
-            }
+            nut.model.jsonData = stutas;
+            nut.message("设置成功",null,"success");
         })
     }
+    //welabUserTags.actions.setUserTag.process = function(seed,nut){
+    //    nut.view.disable() ;
+    //    nut.model.page = {} ;
+    //
+    //    var aTagList = seed.sTagList;
+    //    var aUserList = seed.sUserList.split(",");
+    //    var errID = [];
+    //    var successID = [];
+    //    var then = this;
+    //    var jsonData=[];
+    //    var stutas=[];
+    //    var jsontag=[];
+    //    var cuid
+    //
+    //    this.step(function(){
+    //        if( seed.sUserList == "" ){
+    //            nut.message("没有指定要操作的ID",null,"error") ;
+    //            return false;
+    //        }
+    //        //for(var i=0;i<aTagList.length;i++){
+    //           // var tag = aTagList[i];
+    //            //(function(i,tag){
+    //                for(var j=0;j<aUserList.length;j++){
+    //                    (function(j,jsonData){
+    //                        var id= aUserList[j]
+    //                        helper.db.coll("welab/customers").findOne({"_id":helper.db.id(aUserList[j])},then.hold(function(err,doc){
+    //                            if(err) throw err;
+    //                            if(doc){
+    //                                if(doc.HaiLanMemberInfo){
+    //                                    json={};
+    //                                    json.memberId = doc.HaiLanMemberInfo.memberID;
+    //                                    json.tag = aTagList;
+    //                                    json.id= id;
+    //                                    jsonData.push(json);
+    //                                }else{
+    //                                    sta={};
+    //                                    sta.stat = false;
+    //                                    sta.id = id;
+    //                                    stutas.push(sta)
+    //                                }
+    //                            }
+    //                        }))
+    //                    })(j,jsonData)
+    //                }
+    //            //})(i,tag)
+    //        //}
+    //    })
+    //
+    //    this.step(function(){
+    //
+    //        this.each(jsonData,function(i,row){
+    //
+    //            if(row.memberId){
+    //
+    //                middleware.request("Tag/Add", {memberId: row.memberId,tag: row.tag}, this.hold(function (err, doc) {
+    //                    if (err) {
+    //                        console.log(err)
+    //                    }else{
+    //                        console.log(doc)
+    //                    }
+    //                    var docs = JSON.parse(doc);
+    //                    //row.status = docs.success;
+    //                    row.status = true;
+    //                    sta={};
+    //                    //sta.stat = docs.success;
+    //                    sta.stat = true;
+    //                    sta.id = row.id;
+    //                    stutas.push(sta);
+    //                }))
+    //            }
+    //        })
+    //    })
+    //
+    //    this.step(function(){
+    //        //for (var i=0; i<aTagList.length; i++) {
+    //            //tag = aTagList[i];
+    //            for(var j=0;j<stutas.length;j++){
+    //                //if(stutas[j].stat==true){
+    //
+    //                (function(i){
+    //                    helper.db.coll("welab/customers").update({_id : helper.db.id(i.id)}, {$addToSet:{tags:aTagList}},then.hold(function(err,doc){
+    //                        if(err ){
+    //                            throw err;
+    //                        }
+    //                        if(doc){
+    //                            i.stat = true;
+    //                        }
+    //                    }))
+    //                })(stutas[j])
+    //
+    //                //}
+    //            }
+    //        //}
+    //    });
+    //
+    //    this.step(function(){
+    //        for(var j=0;j<stutas.length;j++){
+    //            if(stutas[j].stat==false){
+    //                errID.push(stutas[j].id);
+    //            }else{
+    //                successID.push(stutas[j].id);
+    //            }
+    //        }
+    //    })
+    //
+    //    this.step(function(){
+    //        nut.model.jsonData = jsonData;
+    //        if(errID.length==0){
+    //            nut.message("设置成功",null,"success");
+    //        }else{
+    //            nut.message("共为"+aUserList.length+"个用户设定标签,"+successID.length+"个标签设定成功,"+ errID.length+"个标签设定失败(不是会员或标签重复)",null,"error") ;
+    //        }
+    //    })
+    //}
 
     //复写 reply/detail.js
     var welabReplyDetail = require("welab/controllers/reply/detail.js");
