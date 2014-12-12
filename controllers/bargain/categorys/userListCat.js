@@ -33,8 +33,9 @@ module.exports = {
                 {display: '<input type="checkbox" onclick="selectAllUser(this)">', name : 'input', width : 30, sortable : true},
                 {display: '日期', name : $(".unwind").val()+'.createDate', width : 150, sortable : true},
                 {display: '姓名', name : 'realname', width : 150, sortable : true},
-                {display: '标签', name : 'tags', width : 292, sortable : true},
                 {display: '成交价', name : $(".unwind").val()+'.price', width : 150, sortable : true},
+                {display: '标签', name : 'tags', width : 292, sortable : true},
+
                 {display: '名称', name : $(".unwind").val()+'.name', width : 150, sortable : true},
 
                 {display: '性别', name : 'gender', width : 80, sortable : true, hide:true},
