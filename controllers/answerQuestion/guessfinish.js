@@ -371,11 +371,15 @@ module.exports={
                             console.log("minlen",minlen)
                             console.log("maxlen",maxlen)
                             if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
-                                getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
+                                getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+
+
+                                //getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
 
                                 results.getLabel = getLabel;
                                 results.getScore = "0";
-                                results.getTipContent = "对不起,您没有获得任何奖励";
+                                results.getTipContent = getTipContent;
                                 results.code = "";
                                 results.getActivities = "对不起,您没有获得任何奖励";
                                 results.volumename = "";
@@ -599,11 +603,14 @@ module.exports={
                                 console.log("11111111111")
                                 if(score >= minlen && score <= maxlen && score != 0 && minlen != null && maxlen !=null){
                                     console.log("222222222222")
-                                    getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
+                                    getLabel = scoreRange[i].getLabel == "" ? "" : scoreRange[i].getLabel;
+                                    getTipContent = scoreRange[i].tipContent == "" ? "" : scoreRange[i].tipContent;
+
+                                    //getLabel = scoreRange[i].tipContent == "" ? "对不起,您没有获得任何奖励" : scoreRange[i].tipContent;
 
                                     results.getLabel = getLabel;
                                     results.getScore = "0";
-                                    results.getTipContent = "对不起,您没有获得任何奖励";
+                                    results.getTipContent = getTipContent;
                                     results.code = "";
                                     results.getActivities = "对不起,您没有获得任何奖励";
                                     results.volumename = "";
