@@ -1993,8 +1993,8 @@ exports.load = function () {
         })
 
         this.step(function(){
-           // console.log("arr",arr)
-            //console.log("aUserList",aUserList)
+            console.log("arr",arr)
+            console.log("aUserList",aUserList)
             for(var j=0;j<aUserList.length;j++){
                 (function(j,jsonData){
                     var id= aUserList[j]
