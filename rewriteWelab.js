@@ -1959,20 +1959,42 @@ exports.load = function () {
         nut.model.page = {} ;
 
         var aTagList = seed.sTagList;
-        var aUserList = seed.sUserList.split(",");
+        var arr = seed.sUserList.split(",");
         var errID = [];
         var successID = [];
         var then = this;
         var jsonData=[];
         var stutas=[];
         var jsontag=[];
-        var cuid
+        var cuid;
+        var aUserList = [];
 
         this.step(function(){
             if( seed.sUserList == "" ){
                 nut.message("没有指定要操作的ID",null,"error") ;
                 return false;
             }
+        })
+
+        this.step(function(){
+            var isRepeated;
+            for (var i = 0, len = arr.length; i < len; i++) {
+                isRepeated = false;
+                for (var j = 0, len = aUserList.length; j < len; j++) {
+                    if (arr[i] == aUserList[j]) {
+                        isRepeated = true;
+                        break;
+                    }
+                }
+                if (!isRepeated) {
+                    aUserList.push(arr[i]);
+                }
+            }
+        })
+
+        this.step(function(){
+           // console.log("arr",arr)
+            //console.log("aUserList",aUserList)
             for(var j=0;j<aUserList.length;j++){
                 (function(j,jsonData){
                     var id= aUserList[j]
