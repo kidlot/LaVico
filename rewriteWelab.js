@@ -1977,19 +1977,34 @@ exports.load = function () {
         })
 
         this.step(function(){
-            var isRepeated;
-            for (var i = 0, len = arr.length; i < len; i++) {
-                isRepeated = false;
-                for (var j = 0, len = aUserList.length; j < len; j++) {
-                    if (arr[i] == aUserList[j]) {
-                        isRepeated = true;
+            for(var i = 0;i < arr.length;i++){
+                var isRepeated=true;
+                for(var j = 0;j < aUserList.length;j++){
+                    if(arr[i] == aUserList[j]){
+                        isRepeated = false;
                         break;
                     }
                 }
-                if (!isRepeated) {
+                if(isRepeated){
                     aUserList.push(arr[i]);
                 }
             }
+
+            //var isRepeated;
+            //for (var i = 0, i < arr.length; i++) {
+            //    isRepeated = false;
+            //    for (var j = 0, j < aUserList.length; j++) {
+            //        if (arr[i] == aUserList[j]) {
+            //            isRepeated = true;
+            //            //break;
+            //        }
+            //
+            //        if (!isRepeated) {
+            //            aUserList.push(arr[i]);
+            //        }
+            //    }
+            //
+            //}
         })
 
         this.step(function(){
