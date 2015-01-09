@@ -122,7 +122,7 @@ module.exports = {
 
                                     for(var ii=0 ; ii < aPageList.product[i].bigPic.length ; ii++){
 
-                                        aPageList.product[i].bigPic[ii].detail = aPageList.product[i].detail
+                                        aPageList.product[i].bigPic[ii].detail = nl2br(aPageList.product[i].detail)
                                         aPageList.product[i].bigPic[ii].name = aPageList.product[i].name
                                         aPageList.product[i].bigPic[ii]._id = aPageList.product[i]._id
                                         doc.push(aPageList.product[i].bigPic[ii])
@@ -191,4 +191,7 @@ module.exports = {
 
 
 
-
+function nl2br (str, is_xhtml) {    
+ var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';     
+ return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2'); 
+}
