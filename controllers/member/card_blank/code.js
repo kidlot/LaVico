@@ -40,7 +40,7 @@ module.exports = {
 
                 middleware.request( "System/SendSMS",{
                       'mobile':userTel,
-                      'content':"【LaVico朗维高】"+_content
+                      'content':"【Lavico】"+_content
                   },this.hold(
                   function(err,doc){
                       then.res.end();

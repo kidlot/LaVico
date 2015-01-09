@@ -149,6 +149,29 @@ module.exports = {
                     window.popupStyle2.on("请输入正确的手机号码",function(event){});
                     return false;
                 }
+				
+				$.ajax({
+					url:'/lavico/member/card_blank/bind:check_verify_code',
+					type:'POST',
+					async:false,
+					dataType:'json',
+					data:{
+						'verify_code':$('#verify_code_txt').val()
+					},
+					success:function(data){
+						if(data.code!=0){
+							window.popupStyle2.on("校验码错误，请重新输入",function(event){});
+							flag = 1;
+						}else{
+							flag = 0;
+						}
+					}
+				})
+				
+				if(flag){
+						return false;			
+				}
+				
                 /*判断手机号码是否存在*/
                 $('#loading').show();//显示正在加载
                 var userTel = $("#userTel").val();
@@ -554,7 +577,17 @@ module.exports = {
                 flag = 0;
             }
             /*验证码-结束*/
-
+			$('#submit_verify').click(function(){
+					$.get('/lavico/member/card_blank/bind:verify_code',function(data){
+							//data = eval('('+data+')');
+							$("#submit_verify").attr("src",data.code_img);
+						})			
+			
+			})
+			
+			$(window).load(function() {
+				$('#submit_verify').click();
+			});
 
     //ViewIn End
     }
@@ -993,6 +1026,81 @@ module.exports = {
 
 
                         }
-                }
+                },verify_code:{
+                        layout:null,
+                        view:null,
+                        process:function(seed,nut){
+							nut.disabled = true ;
+							var Canvas = require('canvas'); 
+							console.log('code:');
+                            var getRandom = function(start,end){  
+								return start+Math.random()*(end-start);  
+							};  
+							var canvas = new Canvas(50,20); 
+							var ctx = canvas.getContext('2d');  
+							var s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';  
+							var code = '';  
+							for(var i=0;i<4;i++){  
+								code+= s.substr(parseInt(Math.random()*36),1);  
+							}  
+							var font= 'bold {FONTSIZE}px Impact';//"Bold Italic {FONTSIZE}px arial,sans-serif";//"13px sans-serif";  
+							var start = 3;  
+							var colors = ["rgb(255,165,0)","rgb(16,78,139)","rgb(0,139,0)","rgb(255,0,0)"];  
+							var trans = {c:[-0.108,0.108],b:[-0.05,0.05]};  
+							var fontsizes = [11,12,13,14,15,16];  
+							for(var i in code){  
+								ctx.font = font.replace('{FONTSIZE}',fontsizes[Math.round(Math.random()*10)%6]);  
+								ctx.fillStyle = colors[Math.round(Math.random()*10)%4];//"rgba(0, 0, 200, 0.5)";  
+								ctx.fillText(code[i], start, 15,50);  
+								ctx.fillRect();  
+								//con.translate(start,15);  
+								//ctx.transform(a,b, c, d, e, f);  
+								//参考：  
+								//a:水平缩放，default：1 ,取值：0.89,1.32,-0.56等,  
+								//b:y轴斜切，default：0 ,取值：-0.89,1.32等,  
+								//c:x轴斜切，default：0 ,取值：-0.89,1.32等,  
+								//d:垂直缩放，default：1 ,取值：-0.89，0.88,1.32等,  
+								//e:平移，default：0 ,取值：-53,52等,  
+								//f:纵称，default：0 ,取值：-53,52等,  
+								var c = getRandom(trans['c'][0],trans['c'][1]);  
+								var b = getRandom(trans['b'][0],trans['b'][1]);  
+								//alert(c+','+b);  
+								//ctx.transform(1,b, c, 1, 0, 0);  
+								start+=11;  
+							}
+							
+							console.log('code:'+code);  
+							console.log('<img src="'+canvas.toDataURL()+'" alt="" />');  
+							this.req.session.verify_code = code;
+							this.res.writeHead(200, { 'Content-Type': 'application/json' });
+							this.res.write('{"msg":"success","code_img":"'+canvas.toDataURL()+'"}');
+							this.res.end();
+							this.terminate();							
+                           
+                        }
+						
+						
+			},check_verify_code:{
+						layout:null,
+                        view:null,
+                        process:function(seed,nut){
+							nut.disabled = true ;
+							console.log("verify_code is :"+seed.verify_code);
+							if(seed.verify_code.toUpperCase()!=this.req.session.verify_code.toUpperCase()){
+								this.res.writeHead(200, { 'Content-Type': 'application/json' });
+								this.res.write('{"code":"-1"}');
+								this.res.end();
+								this.terminate();							
+							}else{
+								this.res.writeHead(200, { 'Content-Type': 'application/json' });
+								this.res.write('{"code":"0"}');
+								this.res.end();
+								this.terminate();	
+							}
+						}
+			
+			
+			
+			}
     }
 }

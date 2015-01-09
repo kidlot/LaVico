@@ -1,60 +1,24 @@
-var middleware = require('lavico/controllers/m.js');//引入中间件
 module.exports = {
     layout: null,
     view: null,
     process: function(seed,nut){
-        var list = [];
-        var AccessToken="";
-        this.step(function(){
-            helper.db.coll("welab/customers").find({"nickname":null}).toArray(this.hold(function(err,doc){
-                if(err) console.log("customers_err",err)
-                if(doc){
-                    list = doc;
-                }
-            }));
-        })
 
-        this.step(function(){
-            middleware.getAccessToken(this.hold(function(err,doc){
-                if(err) console.log("AccessToken_err",err);
-                doc = JSON.parse(doc)
-                if(doc && doc.access_token){
-                    console.log("doc",doc)
-                    AccessToken = doc.access_token;
-                }
-            }))
-        })
+var Canvas = require('canvas')
+  , Image = Canvas.Image
+  , canvas = new Canvas(200,200)
+  , ctx = canvas.getContext('2d');
 
-        this.step(function(){
-            if(list.length>0){
-                for(var i=0;i<list.length;i++){
-                    (function(wxid,i){
-                        middleware.getUserNickname(wxid,AccessToken,function(err,doc){
-                            if(err){
-                                console.log("err",err);
-                            }
-                            doc = JSON.parse(doc)
-                            if(doc && doc.nickname){
-                                console.log("isok",true)
-                                helper.db.coll("welab/customers").update({"wechatid": wxid}, {$set: {
-                                    userName: doc.nickname,
-                                    nickname: doc.nickname,
-                                    gender: doc.sex==1 ? "male" : "female",
-                                    language: doc.language,
-                                    city: doc.city,
-                                    province: doc.province,
-                                    country: doc.country,
-                                    face: doc.headimgurl
-                                }}, {upsert: true}, function (err, doc) {
-                                    err && console.log(err)
-                                })
-                            }
-                        })
-                    })(list[i].wechatid,i)
-                }
-            }
+ctx.font = '30px Impact';
+ctx.rotate(.1);
+ctx.fillText("Awesome!", 50, 100);
 
-        })
+var te = ctx.measureText('Awesome!');
+ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+ctx.beginPath();
+ctx.lineTo(50, 102);
+ctx.lineTo(50 + te.width, 102);
+ctx.stroke();
+
+console.log('<img src="' + canvas.toDataURL() + '" />');
     }
 }
-

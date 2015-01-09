@@ -18,6 +18,14 @@
 //    window.onload =function() {
 //        check();
 //    }
+
+
+function nl2br (str, is_xhtml) {    
+ var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';     
+ return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2'); 
+}
+
+
 </script>
 <link rel="stylesheet" href="/lavico/public/css/LaVico_03.css" />
 <script src="/lavico/public/js/iscroll.js"></script>
@@ -215,7 +223,7 @@
                             "<img src='"+data.page[active].product[i].pic+"' class='collocation_list_left' />"
                             +"<article class='collocation_list_right'>" +
                             "<h3>"+data.page[active].product[i].name+"</h3>" +
-                            "<p>"+data.page[active].product[i].detail +"</p>" +
+                            "<p>"+nl2br(data.page[active].product[i].detail) +"</p>" +
                             "<a href='/lavico/lookbook/productThere?_id="+id+"&wxid="+wxid+"&pageNum="+(active+1)+"&productId="+data.page[active].product[i]._id+"'><img src='/lavico/public/images/collocation_but.png'/></a>" +
                             "</article>" +
                             "</li>");

@@ -9,38 +9,55 @@
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate,post-check=0,ptr-check=0">
 	<title></title>
-	<link rel="stylesheet" href="http://test.welab.lavicouomo.com/lavico/public/css/hongbao/base.css">
-	<link rel="stylesheet" href="http://test.welab.lavicouomo.com/lavico/public/css/hongbao/redBag.css">
-	<link rel="stylesheet" href="http://test.welab.lavicouomo.com/lavico/public/css/hongbao/mts.css">
+	<link rel="stylesheet"  href="http://wx.lavicouomo.com/lavico/public/css/hongbao/base.css">
+	<link rel="stylesheet"   href="http://wx.lavicouomo.com/lavico/public/css/hongbao/redBag.css">
+	<link rel="stylesheet" href="http://wx.lavicouomo.com/lavico/public/css/hongbao/mts.css">
 	<body class="body-gradient">
 	<div class="wrapper">
 	<section class="send-btn-pare">
 	<input value="{@ wxid}"  id="sharewxid" style="display:none">
         <div class="">
 		<ul class="red-bag-list">
-		<li><img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/red-bag-bg.png"  style="width:330px"/>
-		<img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/note.gif" /></li>
-
+		<li><img src="http://wx.lavicouomo.com/lavico/public/images/hongbao/red-bag-bg.png" />
+		<img src="http://wx.lavicouomo.com/lavico/public/images/hongbao/note.gif" /></li>
                 <li id="foot">
 		<if condition="@ is_me">
 		    <if condition="@ !has_amount">
-                    <p style="padding-top: 145px;color:#f4d333;font-size:16px">您还没有收到别人的红包!</p>
+                    <p  class = "hongbao-font">您还没有收到别人的红包!</p>
 		    </if>
 		    <if condition="@ has_amount">
-		    <p style="padding-top: 145px;color:#f4d333;font-size:16px">红包金额已累计:{@ total_amount}元</p>
+		    <p  class = "hongbao-font" > 您的红包金额已累计:{@ total_amount}元</p>
 		    </if>
 		</if>
-		<if condition="@ !is_me">
-		    <p style="padding-top: 145px;color:#f4d333;font-size:16px">您已成功送出{@ givehongbao}元红包一份!</p>
+		<if condition="@ !is_me">	
+			<if condition="@ !is_give">
+				<if condition="@ !is_full">
+				<p class = "hongbao-font">您已成功送出{@ givehongbao}元红包一份!</p>
+				</if>
+				<if condition="@ is_full">
+				<p class = "hongbao-font" >您的好友红包累计金额已满！</p>
+				</if>
+			</if>		
+
+			<if condition="@ is_give">
+				<p class = "hongbao-font" >您好友的红包已领取完毕!</p>
+			</if>
 		</if>
                 </li>
 		</ul>
 	</div>
 	<if condition="@ is_me">
-        <div class="send-red-btn" style="margin-bottom: 60px;"><a id="share_btn" onclick="scroll(0,0);;$('.shareTips').fadeIn();">点此按钮 拉好友</a></div>
+        <div class="send-red-btn" style="margin-bottom: 60px;"><a id="share_btn" onclick="scroll(0,0);;$('.shareTips').fadeIn();">点此按钮 邀请好友送红包</a></div>
+	
+	<if condition="@ !is_bindcard">
+	<div class="send-red-btn" style="margin-bottom: 60px;;margin-top: -40px;"><a  onclick="getcoupan('{@wxid}')">兑换婚庆红包</a></div>
+	</if>
+	<if condition="@ is_bindcard">
+	<div class="send-red-btn" style="margin-bottom: 60px;;margin-top: -40px;"><a  onclick="getcoupan('{@wxid}')">查看婚庆红包</a></div>
+	</if>
 	</if>
 	<if condition="@ !is_me">
-        <div class="send-red-btn" style="margin-bottom: 60px;"><a id="share_btn" onclick="window.location.href ='/lavico/hongbao/hongbao'">我也要攒红包</a></div>
+        <div class="send-red-btn" style="margin-bottom: 60px;"><a id="share_btn" onclick="window.location.href ='http://wx.lavicouomo.com/lavico/hongbao/hongbao'">我也要攒红包</a></div>
 	</if>
 	<if condition="@ has_amount">
 	<div class="red-bag-list1" style="background-color:#f9edc7;width:250px">
@@ -48,7 +65,7 @@
 		<ul>
 		<foreach for="@page.docs" var="doc">
 		<li class="dashed_tbl"><img src="{@ doc.headimgurl}"  width="45px"  style=" padding-right: 120px;"/>
-		<div><p style=" margin-top: -50px; margin-left: -40px;">{@ doc.nickname}</p>
+		<div><p style=" margin-top: -50px; margin-left: -20px;">{@ doc.nickname}</p>
 		<p style=" margin-top: -30px; margin-left: 48px;">送出{@ doc.amount}元红包一份！</p>	
 		</div>		
 		</li>
@@ -61,19 +78,18 @@
 	<br/>
 	</if>
 	<ul class="red-bag-list">
-	<li><img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/sr.jpg" width="100px" style="padding-right: 30px;" onclick="window.location.href ='http://wx.lavicouomo.com/lavico/lookbook/detail?_id=53f1b2d8a97067b648000c98&wxid={@ wxid}';">
-	<img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/hq.jpg" width="100px" onclick="window.location.href ='http://wx.lavicouomo.com/lavico/lookbook/detail?_id=53f1b2d8a97067b648000c98&wxid={@ wxid}';"></li>
-	<li style="margin-top: 100px;"><img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/guize.gif" style="width:250px"/></li>
+	<li><img src="http://wx.lavicouomo.com/lavico/public/images/hongbao/sr.jpg" width="100px" style="padding-right: 30px;" onclick="window.location.href ='http://mp.weixin.qq.com/s?__biz=MjM5NjgwMzY2MQ==&mid=201072110&idx=1&sn=fedb80772f5b2a9a63cac7acf76912cf#rd&ADUIN=451888737&ADSESSION=1409617470&ADTAG=CLIENT.QQ.5353_.0&ADPUBNO=26381';">
+	<img src="http://wx.lavicouomo.com/lavico/public/images/hongbao/hq.jpg" width="100px" onclick="window.location.href ='http://mp.weixin.qq.com/s?__biz=MjM5NjgwMzY2MQ==&mid=200601568&idx=1&sn=e25a4a5eff1eb03fc65b6d7f40bbd2f1#rd&ADUIN=451888737&ADSESSION=1409617470&ADTAG=CLIENT.QQ.5353_.0&ADPUBNO=26381';"></li>
+	<li style="margin-top: 100px;"><img src="http://wx.lavicouomo.com/lavico/public/images/hongbao/guize.gif" style="width:250px"/></li>
 	 </ul>
 	 
 
 	</section>
         <div class="shareTips" onclick="$(this).fadeOut();">
-            <img src="http://test.welab.lavicouomo.com/lavico/public/images/hongbao/shareTips.gif" width="360" height="586"  style="filter:alpha(opacity=90);/* IE */-moz-opacity:0.9;/* Moz + FF */opacity: 0.9;/* 支持CSS3的浏览器（FF 1.5也支持）*/"/>
+            <img src="http://wx.lavicouomo.com/lavico/public/images/hongbao/shareTips.gif" width="360" height="586"  style="filter:alpha(opacity=90);/* IE */-moz-opacity:0.9;/* Moz + FF */opacity: 0.9;/* 支持CSS3的浏览器（FF 1.5也支持）*/"/>
             <a href="javascript:void()" class="shareWeiboBtn"></a>
             <a href="javascript:void()" class="shareBackground"></a>
         </div>
-
     <style>
 	.shareTips {
 	    display: none;
@@ -94,6 +110,45 @@
 	}
 	.red-bag-list1{position:relative;width:330px;margin:0px auto 0;z-index:3;}
     </style>
-	</div>
+</div>
 
+
+
+
+<script>
+	function getcoupan(wxid){
+		var has_amount   = {@ has_amount} ;
+		var is_bindcard  = {@ is_bindcard};
+		var isFollow = {@ isFollow};
+		if(is_bindcard){
+			location='/lavico/member/card_blank/coupon';
+		}else{
+		if(!has_amount){
+			alert("您还未收集到红包!");
+			return false;
+		}
+		var isFollow = {@ isFollow};
+		if(isFollow==false){
+			alert("您还未关注朗维高微信平台,请先关注!");
+			location='http://mp.weixin.qq.com/s?__biz=MjM5NjgwMzY2MQ==&mid=201071803&idx=1&sn=5e321b69e47bdf1f8e993c23ce2bcfdc#rd&ADUIN=451888737&ADSESSION=1409617470&ADTAG=CLIENT.QQ.5353_.0&ADPUBNO=26381';
+			return false;
+		
+		}
+		if(window.confirm('确定将红包金额兑换成现金抵扣券，该兑换不可逆，兑换后红包金额将不再累计！')){
+		    $.ajax({
+                        type: "POST",
+                        url: "http://wx.lavicouomo.com/lavico/hongbao/hongbao:getcoupan",
+                        data: {wxid:wxid},
+			success: function(){
+				location='/lavico/member/card_blank/coupon';
+			}
+			});  
+		
+
+		}else{
+		}
+		}
+	
+	}
+</script>
 </body></html>

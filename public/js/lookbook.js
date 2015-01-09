@@ -303,6 +303,8 @@ window.onload = function(){
     })
 
     var formData = JSON.parse($("#jsonDoc").text())
+console.log(formData)
+
     if( formData.on != undefined){
         if(formData.page){
             for (var i=0;i<formData.page.length;i++)
