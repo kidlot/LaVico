@@ -473,8 +473,8 @@ module.exports={
                 var stopTime = seed.stopDate || "undefined";
 
                 var dTime = new Date();
-                var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()-2);//默认三个月内的数据
-                var _end_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1);//默认三个月内的数据
+                var _start_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+1);//默认三个月内的数据
+                var _end_ym = dTime.getFullYear() + "-" + (dTime.getMonth()+2);//默认三个月内的数据
 
                 var startDate = new Date(startTime+" 00:00:00").getTime();
                 var endTime =  new Date(stopTime+" 23:59:59").getTime();
@@ -509,16 +509,16 @@ module.exports={
                     nut.model.stopDate = stopTime
                 }
 
-                //this.step(function(){
-                //
-                //    if(startTime != "undefined" && stopTime != "undefined"){
-                //        nut.model.startDate = startTime;
-                //        nut.model.stopDate = stopTime;
-                //    }else{
-                //        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).getTime();
-                //        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).getTime()
-                //    }
-                //})
+                this.step(function(){
+
+                    if(startTime != "undefined" && stopTime != "undefined"){
+                        nut.model.startDate = startTime;
+                        nut.model.stopDate = stopTime;
+                    }else{
+                        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                    }
+                })
 
 
                 var finishMan=[];
