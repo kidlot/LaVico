@@ -605,7 +605,11 @@ module.exports={
                             data[_i].compScore = data[_i].compScore || "暂无";
                             data[_i].createTime = formatTime(data[_i].createTime) || null;
                             data[_i].gender = sex(data[_i].gender) || null;
-                            data[_i].birthday =year(data[_i].birthday)  || "";
+                            if(data[_i].birthday){
+                                data[_i].birthday = year(data[_i].birthday);
+                            }else{
+                                data[_i].birthday = "";
+                            }
                             data[_i].city = data[_i].city || "暂无";
 
                         }
