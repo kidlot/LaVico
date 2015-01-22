@@ -509,16 +509,16 @@ module.exports={
                     nut.model.stopDate = stopTime
                 }
 
-                this.step(function(){
-
-                    if(startTime != "undefined" && stopTime != "undefined"){
-                        nut.model.startDate = startTime;
-                        nut.model.stopDate = stopTime;
-                    }else{
-                        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).getTime();
-                        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).getTime()
-                    }
-                })
+                //this.step(function(){
+                //
+                //    if(startTime != "undefined" && stopTime != "undefined"){
+                //        nut.model.startDate = startTime;
+                //        nut.model.stopDate = stopTime;
+                //    }else{
+                //        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).getTime();
+                //        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).getTime()
+                //    }
+                //})
 
 
                 var finishMan=[];
