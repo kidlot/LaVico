@@ -470,22 +470,22 @@ module.exports={
                     startDate = new Date(_start_ym+" 00:00:00").getTime();
                     endTime =  new Date(_end_ym+" 23:59:59").getTime();
                 }
-                var startTimeStamp = "";
-                var endTimeStamp = "";
-                if(seed.startTime){
-                    startTimeStamp = new Date(seed.startTime + " 00:00:00").getTime()
-                }else{
-                    startTimeStamp = new Date(_start_ym+"-01 00:00:00").getTime();
-                }
+                //var startTimeStamp = "";
+                //var endTimeStamp = "";
+                //if(seed.startTime){
+                //    startTimeStamp = new Date(seed.startTime + " 00:00:00").getTime()
+                //}else{
+                //    startTimeStamp = new Date(_start_ym+"-01 00:00:00").getTime();
+                //}
+                //
+                //if(seed.stopDate){
+                //    endTimeStamp = new Date(seed.stopDate + " 00:00:00").getTime()
+                //}else{
+                //    endTimeStamp = new Date(_start_ym+"-01 00:00:00").getTime();
+                //}
 
-                if(seed.stopDate){
-                    endTimeStamp = new Date(seed.stopDate + " 00:00:00").getTime()
-                }else{
-                    endTimeStamp = new Date(_start_ym+"-01 00:00:00").getTime();
-                }
-
-                //var startTimeStamp = seed.startTime ? new Date(seed.startTime + " 00:00:00").getTime() : new Date(_start_ym+"-01 00:00:00").getTime();
-                //var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_end_ym+"-31 23:59:59").getTime();
+                var startTimeStamp = seed.startTime ? new Date(seed.startTime + " 00:00:00").getTime() : new Date(_start_ym+"-01 00:00:00").getTime();
+                var endTimeStamp = seed.stopDate ? new Date(seed.stopDate + " 23:59:59").getTime() : new Date(_end_ym+"-31 23:59:59").getTime();
 
                 if(startTime == "undefined" && stopTime == "undefined"){
                     nut.model.startDate = _start_ym;
@@ -501,8 +501,8 @@ module.exports={
                         nut.model.startDate = startTime;
                         nut.model.stopDate = stopTime;
                     }else{
-                        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).toISOString().substr(0,10)
-                        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).toISOString().substr(0,10)
+                        nut.model.startDate = new Date(startTimeStamp+60*60*8*1000).getTime()
+                        nut.model.stopDate = new Date(endTimeStamp+60*60*8*1000).getTime()
                     }
                 })
                 var finishMan=[];
