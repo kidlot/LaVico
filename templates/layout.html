@@ -143,12 +143,12 @@
     var shareContent = "朗维高";
     var shareIcon = location.origin + "/lavico/public/images/logo.png"
 
-    if (document.all){
+   // if (document.all){
         window.attachEvent("onload",share)//对于IE
-    }
-    else{
-        window.addEventListener("load",share,false);//对于FireFox
-    }
+   // }
+   // else{
+        window.addEventListener("onload",share,false);//对于FireFox
+   // }
     var share = function(){
         $.getJSON('http://wx.lavicouomo.com/welab/api/jssdk', function(data) {
             wx.config(data);
