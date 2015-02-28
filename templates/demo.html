@@ -38,6 +38,8 @@
             function zswFun(){
                 if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200){
                     var data = xmlHttpRequest.responseText;
+                    alert(data)
+                    alert(JSON.parse(data))
                     wx.config(JSON.parse(data));
                     var title = "lavico测试！！！_分享标题";
                     var decs = "lavico测试！！！_分享描述";
