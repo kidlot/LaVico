@@ -143,12 +143,13 @@
 
 
     window.onload = function(){
+        var shareTitle = "朗维高"
+        var shareContent = "朗维高";
+        var shareIcon = location.origin + "/lavico/public/images/logo.png"
         $.getJSON('http://wx.lavicouomo.com/welab/api/jssdk', function(data) {
             wx.config(data);
             // 记录分享数
-            var shareTitle = "朗维高"
-            var shareContent = "朗维高";
-            var shareIcon = location.origin + "/lavico/public/images/logo.png"
+
             wx.ready(function(){
                 //隐藏右上角菜单接口
                 //wx.hideOptionMenu();
