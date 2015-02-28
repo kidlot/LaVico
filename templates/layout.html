@@ -143,71 +143,71 @@
     var shareContent = "朗维高";
     var shareIcon = location.origin + "/lavico/public/images/logo.png"
 
-    var timeid = setInterval(function(){
-        if(typeof WeixinJSBridge =="undefined")
-            return ;
-
-        clearTimeout(timeid) ;
-
-        WeixinJSBridge.on('menu:share:timeline', function(argv){
-
-            $.ajax({
-                url:'/lavico/log',
-                type:'POST',
-                data:{
-                    'wxid':getWxid(),
-                    'url':location.href,
-                    'replyid':getReplyID(),
-                    'action' : "share.timeline"
-                },
-                success:function(data){
-
-                },
-                error:function(msg){
-                }
-            });
-
-            WeixinJSBridge.invoke('shareTimeline',{
-                "img_url":shareIcon,
-                "link":replaceWxid(location.href) + "fromWelab=timeline",
-                "desc":shareContent,
-                "title":shareContent
-            }, function(res) {
-
-            });
-        });
-
-        WeixinJSBridge.on('menu:share:appmessage', function(argv){
-
-            $.ajax({
-                url:'/lavico/log',
-                type:'POST',
-                data:{
-                    'wxid':getWxid(),
-                    'url':location.href,
-                    'replyid':getReplyID(),
-                    'action' : "share.friend"
-                },
-                success:function(data){
-
-                },
-                error:function(msg){
-                }
-            });
-
-
-            var contentModel = {
-                "img_url":shareIcon,
-                "link":replaceWxid(location.href) + "fromWelab=friend",
-                "desc":shareContent,
-                "title":shareTitle
-            }
-            WeixinJSBridge.invoke('sendAppMessage',contentModel, function(res) {
-
-            });
-        });
-
-    },300) ;
+//    var timeid = setInterval(function(){
+//        if(typeof WeixinJSBridge =="undefined")
+//            return ;
+//
+//        clearTimeout(timeid) ;
+//
+//        WeixinJSBridge.on('menu:share:timeline', function(argv){
+//
+//            $.ajax({
+//                url:'/lavico/log',
+//                type:'POST',
+//                data:{
+//                    'wxid':getWxid(),
+//                    'url':location.href,
+//                    'replyid':getReplyID(),
+//                    'action' : "share.timeline"
+//                },
+//                success:function(data){
+//
+//                },
+//                error:function(msg){
+//                }
+//            });
+//
+//            WeixinJSBridge.invoke('shareTimeline',{
+//                "img_url":shareIcon,
+//                "link":replaceWxid(location.href) + "fromWelab=timeline",
+//                "desc":shareContent,
+//                "title":shareContent
+//            }, function(res) {
+//
+//            });
+//        });
+//
+//        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+//
+//            $.ajax({
+//                url:'/lavico/log',
+//                type:'POST',
+//                data:{
+//                    'wxid':getWxid(),
+//                    'url':location.href,
+//                    'replyid':getReplyID(),
+//                    'action' : "share.friend"
+//                },
+//                success:function(data){
+//
+//                },
+//                error:function(msg){
+//                }
+//            });
+//
+//
+//            var contentModel = {
+//                "img_url":shareIcon,
+//                "link":replaceWxid(location.href) + "fromWelab=friend",
+//                "desc":shareContent,
+//                "title":shareTitle
+//            }
+//            WeixinJSBridge.invoke('sendAppMessage',contentModel, function(res) {
+//
+//            });
+//        });
+//
+//    },300) ;
 
 
     function welcome(){
