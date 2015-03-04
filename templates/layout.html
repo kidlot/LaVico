@@ -336,5 +336,10 @@
             });
         }
     }
+
+    if(document.all)
+        window.attachEvent("onload",onpost)//对于IE
+    else
+        window.addEventListener("load",onpost,false);//对于FireFox
     //onpost();
 </script>
