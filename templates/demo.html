@@ -1,3 +1,4 @@
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" once="false"></script>
 <p style="font-size: 2.6rem;text-align: center">
     新版分享demo
 </p>
@@ -5,98 +6,126 @@
 <!-- 新版分享必须引用该js-->
 
         <script>
+            var shareTitle = "朗维高"
+            var shareContent = "朗维高";
+            var shareIcon = location.origin + "/lavico/public/images/logo.png"
 
-//            var xmlHttpRequest;
+            var xmlHttpRequest;
+
+            //XmlHttpRequest对象
+            function createXmlHttpRequest(){
+                if(window.ActiveXObject){ //如果是IE浏览器
+                    return new ActiveXObject("Microsoft.XMLHTTP");
+                }else if(window.XMLHttpRequest){ //非IE浏览器
+                    return new XMLHttpRequest();
+                }
+            }
+
+            function onpost(){
+
+                var url = "http://"+location.host+"/welab/api/jssdk";
+
+                //1.创建XMLHttpRequest组建
+                xmlHttpRequest = createXmlHttpRequest();
+
+                //2.设置回调函数
+                xmlHttpRequest.onreadystatechange = zswFun;
+
+                //3.初始化XMLHttpRequest组建
+                xmlHttpRequest.open("POST",url,true);
+
+                //4.发送请求
+                xmlHttpRequest.send(null);
+            }
+
+
+            //回调函数
+            function zswFun(){
+                if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200){
+                    var data = xmlHttpRequest.responseText;
+                    wx.config(JSON.parse(data));
+                    wx.ready(function () {
+                        //隐藏右上角菜单接口
+                        //wx.hideOptionMenu();
+
+                        // 要隐藏的菜单项，所有menu项见附录3
+                        wx.hideMenuItems({
+                            menuList: [
+                                'menuItem:copyUrl',
+                                'menuItem:favorite',
+                                'menuItem:openWithQQBrowser',
+                                'menuItem:openWithSafari'
+                            ]
+                        });
+                        //分享到朋友圈
+                        wx.onMenuShareTimeline({
+                            title: shareTitle, // 分享标题
+                            link: location.href + "fromWelab=timeline", // 分享链接
+                            imgUrl: shareIcon, // 分享图标
+                            success: function () {
+                                // 用户确认分享后执行的回调函数
+//                                $.ajax({
+//                                    url:'/lavico/log',
+//                                    type:'POST',
+//                                    data:{
+//                                        'wxid':getWxid(),
+//                                        'url':location.href,
+//                                        'replyid':getReplyID(),
+//                                        'action' : "share.timeline"
+//                                    },
+//                                    success:function(data){
 //
-//            //XmlHttpRequest对象
-//            function createXmlHttpRequest(){
-//                if(window.ActiveXObject){ //如果是IE浏览器
-//                    return new ActiveXObject("Microsoft.XMLHTTP");
-//                }else if(window.XMLHttpRequest){ //非IE浏览器
-//                    return new XMLHttpRequest();
-//                }
-//            }
+//                                    },
+//                                    error:function(msg){
+//                                    }
+//                                });
+                            },
+                            cancel: function () {
+                                // 用户取消分享后执行的回调函数
+                            }
+                        });
+                        //分享给朋友
+                        wx.onMenuShareAppMessage({
+                            title: shareTitle, // 分享标题
+                            desc: shareContent, // 分享描述
+                            link: location.href + "fromWelab=friend", // 分享链接
+                            imgUrl: shareIcon, // 分享图标
+                            type: '', // 分享类型,music、video或link，不填默认为link
+                            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                            success: function () {
+                                // 用户确认分享后执行的回调函数
+//                                $.ajax({
+//                                    url:'/lavico/log',
+//                                    type:'POST',
+//                                    data:{
+//                                        'wxid':getWxid(),
+//                                        'url':location.href,
+//                                        'replyid':getReplyID(),
+//                                        'action' : "share.friend"
+//                                    },
+//                                    success:function(data){
 //
-//            function onpost(){
-//
-//                var url = "http://wx.lavicouomo.com/welab/api/jssdk";
-//
-//                //1.创建XMLHttpRequest组建
-//                xmlHttpRequest = createXmlHttpRequest();
-//
-//                //2.设置回调函数
-//                xmlHttpRequest.onreadystatechange = zswFun;
-//
-//                //3.初始化XMLHttpRequest组建
-//                xmlHttpRequest.open("POST",url,true);
-//
-//                //4.发送请求
-//                xmlHttpRequest.send(null);
-//            }
-//
-//
-//            //回调函数
-//            function zswFun(){
-//                if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200){
-//                    var data = xmlHttpRequest.responseText;
-//                    alert(data)
-//                    alert(JSON.parse(data))
-//                    wx.config(JSON.parse(data));
-//                    var title = "lavico测试！！！_分享标题";
-//                    var decs = "lavico测试！！！_分享描述";
-//                    var link = "http://www.baidu.com"
-//                    var imgurl = "http://g.hiphotos.baidu.com/album/crop%3D107%2C2%2C731%2C303%3Bh%3D240/sign=42681c5d1bd8bc3ed2475c8abfba9629/c9fcc3cec3fdfc03bcac4adfd63f8794a5c22684.jpg";
-//                    wx.ready(function () {
-//                        //隐藏右上角菜单接口
-//                        //wx.hideOptionMenu();
-//
-//                        // 要隐藏的菜单项，所有menu项见附录3
-//                        wx.hideMenuItems({
-//                            menuList: [
-//                                'menuItem:copyUrl',
-//                                'menuItem:favorite',
-//                                'menuItem:openWithQQBrowser',
-//                                'menuItem:openWithSafari'
-//                            ]
-//                        });
-//                        //分享到朋友圈
-//                        wx.onMenuShareTimeline({
-//                            title: title, // 分享标题
-//                            link: link, // 分享链接
-//                            imgUrl: imgurl, // 分享图标
-//                            success: function () {
-//                                // 用户确认分享后执行的回调函数
-//                            },
-//                            cancel: function () {
-//                                // 用户取消分享后执行的回调函数
-//                            }
-//                        });
-//                        //分享给朋友
-//                        wx.onMenuShareAppMessage({
-//                            title: title, // 分享标题
-//                            desc: decs, // 分享描述
-//                            link: link, // 分享链接
-//                            imgUrl: imgurl, // 分享图标
-//                            type: '', // 分享类型,music、video或link，不填默认为link
-//                            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-//                            success: function () {
-//                                // 用户确认分享后执行的回调函数
-//                            },
-//                            cancel: function () {
-//                                // 用户取消分享后执行的回调函数
-//                            }
-//                        });
-//                    });
-//                    alert(b)
-//                }
-//            }
-//            onpost();
-    // 记录分享数
-    var shareTitle = "朗维高"
-    var shareContent = "朗维高";
-    var shareIcon = location.origin + "/lavico/public/images/logo.png"
+//                                    },
+//                                    error:function(msg){
+//                                    }
+//                                });
+                            },
+                            cancel: function () {
+                                // 用户取消分享后执行的回调函数
+                            }
+                        });
+                    });
+                }
+            }
+
+            if(document.all)
+                window.attachEvent("onload",onpost)//对于IE
+            else
+                window.addEventListener("load",onpost,false);//对于FireFox
+
             window.onload = function(){
-                console.log("@@@@@@@@@@@@@@@@@@@@")
+                 shareTitle = "sa"
+                 shareContent = "qw";
             }
         </script>
 <!--<script>-->
